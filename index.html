@@ -409,32 +409,54 @@
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
   }
   .data-table thead tr { background: var(--navy); }
   .data-table thead th {
     color: white;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
-    padding: 12px 16px;
+    padding: 14px 8px;
     text-align: center;
     letter-spacing: 1px;
+    line-height: 1.3;
   }
-  .data-table thead th:first-child { text-align: left; }
+  .data-table thead th .th-sub {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
   .data-table tbody tr:nth-child(even) { background: #f9f9f9; }
   .data-table tbody tr:nth-child(odd) { background: white; }
-  .data-table tbody tr:first-child td { background: var(--orange-light); font-weight: 900; }
+  .data-table tbody tr:first-child td { background: var(--orange-light); }
 
   .data-table td {
-    padding: 11px 16px;
-    font-size: 13px;
+    padding: 16px 8px;
+    font-size: 18px;
     text-align: center;
     color: var(--navy);
+    font-weight: 600;
   }
-  .data-table td:first-child { text-align: left; font-weight: 700; }
-  .data-table td.num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--orange); }
-  .data-table td.teal-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--teal); }
-  .data-table td.dash { color: #ccc; }
-  .data-table .unit-row td { font-size: 11px; color: #aaa; text-align: right; padding-top: 6px; background: white; }
+  .data-table td.num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--orange); font-weight: 600; }
+  .data-table td.teal-num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--teal); font-weight: 600; }
+  .data-table td.dash { color: #ccc; font-size: 18px; }
+  .data-table .unit-row td { font-size: 12px; color: #aaa; text-align: right; padding-top: 8px; background: white; font-weight: 400; }
+
+  .data-table .rank-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .data-table .rank-cell .rank-icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .data-table .rank-cell .rank-name {
+    font-size: 18px;
+  }
+  .data-table thead .rank-cell .rank-name { color: white; }
+  .data-table thead .rank-cell .rank-icon { color: transparent; }
 
   /* ── SYSTEM FEE ── */
   .fee-section { margin-bottom: 32px; }
@@ -444,7 +466,7 @@
     align-items: center;
     gap: 8px;
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 700;
     color: var(--navy);
     margin-bottom: 14px;
     letter-spacing: 1px;
@@ -486,7 +508,7 @@
 
   .fee-rank {
     font-size: 13px;
-    font-weight: 900;
+    font-weight: 600;
     color: var(--navy);
     letter-spacing: 0.5px;
     line-height: 1.2;
@@ -500,7 +522,7 @@
     font-size: 36px;
     color: var(--orange);
     line-height: 1;
-    font-weight: 700;
+    font-weight: 400;
     text-align: center;
     flex: 1;
     display: flex;
@@ -515,7 +537,7 @@
     font-family: 'Noto Sans TC', sans-serif;
     font-size: 13px;
     color: #999;
-    font-weight: 500;
+    font-weight: 400;
     position: absolute;
     left: 100%;
     bottom: 4px;
@@ -976,7 +998,7 @@
     <div class="two-col">
       <!-- LEFT: RANK -->
       <div>
-        <div class="section-title">職級晉升 × 收入比例</div>
+        <div class="section-title-icon">職級晉升 × 收入比例</div>
         <div class="section-sub">越往上走，收入比例越高！</div>
 
         <div class="rank-ladder">
@@ -1094,22 +1116,22 @@
 
     <!-- TABLE -->
     <div class="table-section">
-      <div class="section-title" style="margin-bottom:14px">各職級獎金對照表</div>
+      <div class="section-title-icon">各職級獎金對照表</div>
       <table class="data-table">
         <thead>
           <tr>
-            <th>職級</th>
+            <th><span class="rank-cell"><span class="rank-icon">👑</span><span class="rank-name">職級</span></span></th>
             <th>績佣</th>
             <th>年終獎金</th>
             <th>產險</th>
-            <th>服務津貼 7-</th>
-            <th>服務津貼 2-6</th>
-            <th>續繳率獎金</th>
+            <th><div>服務津貼</div><div class="th-sub">7-</div></th>
+            <th><div>服務津貼</div><div class="th-sub">2-6</div></th>
+            <th><div>繼續率</div><div class="th-sub">獎金</div></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>👑 副總</td>
+            <td><span class="rank-cell"><span class="rank-icon">👑</span><span class="rank-name">副總</span></span></td>
             <td class="num">90</td>
             <td class="num">90</td>
             <td class="num">90</td>
@@ -1118,7 +1140,7 @@
             <td class="num">90</td>
           </tr>
           <tr>
-            <td>🤝 協理</td>
+            <td><span class="rank-cell"><span class="rank-icon">🤝</span><span class="rank-name">協理</span></span></td>
             <td class="num">82</td>
             <td class="num">82</td>
             <td class="num">82</td>
@@ -1127,7 +1149,7 @@
             <td class="teal-num">60</td>
           </tr>
           <tr>
-            <td>🏢 總監</td>
+            <td><span class="rank-cell"><span class="rank-icon">🏢</span><span class="rank-name">總監</span></span></td>
             <td class="num">70</td>
             <td class="num">70</td>
             <td class="num">70</td>
@@ -1136,7 +1158,7 @@
             <td class="teal-num">30</td>
           </tr>
           <tr>
-            <td>💼 經理</td>
+            <td><span class="rank-cell"><span class="rank-icon">💼</span><span class="rank-name">經理</span></span></td>
             <td class="num">60</td>
             <td class="num">60</td>
             <td class="num">60</td>
@@ -1145,7 +1167,7 @@
             <td class="dash">—</td>
           </tr>
           <tr>
-            <td>📋 襄理</td>
+            <td><span class="rank-cell"><span class="rank-icon">📋</span><span class="rank-name">襄理</span></span></td>
             <td class="num">50</td>
             <td class="num">50</td>
             <td class="num">50</td>
@@ -1154,7 +1176,7 @@
             <td class="dash">—</td>
           </tr>
           <tr>
-            <td>🌱 主任</td>
+            <td><span class="rank-cell"><span class="rank-icon">🌱</span><span class="rank-name">主任</span></span></td>
             <td class="num">40</td>
             <td class="num">40</td>
             <td class="num">40</td>
