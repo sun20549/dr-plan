@@ -31,52 +31,44 @@
     box-shadow: 0 20px 80px rgba(0,0,0,0.12);
   }
 
-  /* ── QUICK ACCESS BAR ── */
+  /* ── QUICK ACCESS BAR (now inside badge-area) ── */
   .quick-bar {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 24px;
-    background: var(--navy);
-    border-bottom: 2px solid rgba(240,90,40,0.4);
+    gap: 8px;
   }
   .quick-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 900;
-    padding: 8px 20px;
-    border-radius: 25px;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
     text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: all .2s;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
   }
-  .quick-btn--ghost {
-    background: transparent;
-    border: 1.5px solid rgba(255,255,255,0.35);
-    color: rgba(255,255,255,0.85);
-  }
-  .quick-btn--ghost:hover {
+  .quick-btn:hover {
     background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.7);
+    border-color: rgba(255,255,255,0.45);
     color: #fff;
-  }
-  .quick-btn--orange {
-    background: var(--orange);
-    border: 1.5px solid var(--orange);
-    color: #fff;
-  }
-  .quick-btn--orange:hover {
-    background: #d44a18;
-    border-color: #d44a18;
+    transform: translateY(-1px);
   }
 
 
   .header {
-    background: var(--navy);
-    padding: 36px 48px 30px;
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
     position: relative;
     overflow: hidden;
   }
@@ -86,7 +78,8 @@
     top: -60px; right: -60px;
     width: 280px; height: 280px;
     border-radius: 50%;
-    background: rgba(240,90,40,0.15);
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
   }
   .header::after {
     content: '';
@@ -94,7 +87,8 @@
     bottom: -40px; left: 200px;
     width: 180px; height: 180px;
     border-radius: 50%;
-    background: rgba(26,107,114,0.2);
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
   }
 
   .header-inner {
@@ -102,9 +96,27 @@
     align-items: center;
     justify-content: space-between;
     position: relative; z-index: 1;
+    gap: 24px;
   }
 
-  .logo-area { display: flex; align-items: center; gap: 16px; }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .logo-area > img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 0 0 1px rgba(255,255,255,0.15);
+  }
 
   .logo-icon {
     width: 72px; height: 72px;
@@ -119,50 +131,127 @@
   }
 
   .logo-text { color: white; }
-  .logo-text .brand { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
-  .logo-text .sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .logo-text .brand {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
 
-  .header-center { text-align: center; }
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
   .header-center .main-title {
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
-    font-size: 15px;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 3px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
     text-transform: uppercase;
     margin-bottom: 4px;
+    font-weight: 500;
   }
   .header-center .big-number {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 96px;
+    font-size: 130px;
     color: var(--orange);
-    line-height: 1;
-    text-shadow: 0 4px 20px rgba(240,90,40,0.4);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: -8px 0 -4px;
   }
   .header-center .big-number span {
-    font-size: 52px;
+    font-size: 64px;
     color: white;
-    margin-left: 4px;
+    font-weight: 400;
   }
   .header-center .sub-title {
-    font-size: 20px;
+    margin-top: 0;
+    font-size: 22px;
     font-weight: 900;
     color: white;
-    letter-spacing: 4px;
+    letter-spacing: 6px;
+    text-indent: 6px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .badge-area {
-    display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 220px;
   }
   .badge {
-    background: var(--orange);
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
     color: white;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
+    padding: 16px 20px;
+    border-radius: 14px;
     text-align: center;
-    line-height: 1.4;
-    box-shadow: 0 4px 16px rgba(240,90,40,0.4);
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   }
 
   .tagline-bar {
@@ -780,31 +869,32 @@
 <body>
 <div class="page">
 
-  <!-- QUICK ACCESS BAR -->
-  <div class="quick-bar">
-    <a href="https://www.rex1688.com/" target="_blank" rel="noopener noreferrer" class="quick-btn quick-btn--ghost">🌐 恩宇團隊</a>
-    <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener noreferrer" class="quick-btn quick-btn--orange">🔐 業務專區</a>
-  </div>
-
   <!-- HEADER -->
   <div class="header">
     <div class="header-inner">
       <div class="logo-area">
-        <img src="images/img_01_44039bd1b179.png" style="width:110px;height:110px;object-fit:contain;">
+        <img src="images/img_01_44039bd1b179.png" alt="鼎綸恩宇 logo">
         <div class="logo-text">
           <div class="brand">鼎綸恩宇</div>
           <div class="sub">Insurance Brokers ®</div>
-          <div class="sub" style="margin-top:4px;color:#F05A28;font-weight:700;">加盟制度</div>
+          <div class="sub tag">加盟制度</div>
         </div>
       </div>
 
       <div class="header-center">
-        <div class="main-title">加盟最高可達</div>
-        <div class="big-number">98<span>% 收入制度</span></div>
+        <div class="big-number">98<span>%</span></div>
+        <div class="sub-title">頂規分潤模型</div>
       </div>
 
       <div class="badge-area">
-        <div class="badge">代理費（來佣）<br>100% 不打折</div>
+        <div class="badge">
+          <div class="badge-line1">代理費（來佣）</div>
+          <div class="badge-line2">100% 不打折</div>
+        </div>
+        <div class="quick-bar">
+          <a href="https://www.rex1688.com/" target="_blank" rel="noopener noreferrer" class="quick-btn">🌐 恩宇團隊</a>
+          <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener noreferrer" class="quick-btn">🔐 業務專區</a>
+        </div>
       </div>
     </div>
   </div>
