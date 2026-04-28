@@ -437,33 +437,98 @@
   .data-table .unit-row td { font-size: 11px; color: #aaa; text-align: right; padding-top: 6px; background: white; }
 
   /* ── SYSTEM FEE ── */
-  .fee-section { margin-bottom: 36px; }
+  .fee-section { margin-bottom: 32px; }
+
+  .section-title-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
 
   .fee-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
+  .fee-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .fee-cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
   .fee-card {
-    text-align: center;
-    padding: 18px 12px;
-    border-radius: 14px;
+    padding: 12px 14px 14px;
+    border-radius: 12px;
     border: 2px solid #eee;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .fee-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
   }
   .fee-card.f1 { border-color: var(--orange); background: var(--orange-light); }
   .fee-card.f2 { border-color: var(--teal); background: var(--teal-light); }
   .fee-card.f3 { border-color: var(--navy); background: rgba(13,42,58,0.06); }
+  .fee-card.f4 { border-color: #d0d0d0; background: #f5f5f5; }
 
-  .fee-rank { font-size: 13px; font-weight: 900; margin-bottom: 6px; color: var(--navy); }
+  .fee-rank {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    min-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .fee-amount {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
+    font-size: 36px;
     color: var(--orange);
     line-height: 1;
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fee-amount .num-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .fee-amount .unit-text {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+    position: absolute;
+    left: 100%;
+    bottom: 4px;
+    margin-left: 4px;
+    white-space: nowrap;
+  }
+  .fee-amount .unit-symbol {
+    font-size: 22px;
+    margin-left: 1px;
   }
   .fee-card.f2 .fee-amount { color: var(--teal); }
   .fee-card.f3 .fee-amount { color: var(--navy); }
-  .fee-unit { font-size: 12px; color: #999; margin-top: 3px; }
+  .fee-card.f4 .fee-amount { color: #555; }
 
   /* ── CONTEST SECTION ── */
   .contest-section {
@@ -1106,70 +1171,57 @@
 
     <!-- SYSTEM FEE -->
     <div class="fee-section">
-      <div class="section-title" style="margin-bottom:14px">每月系統費</div>
+      <div class="section-title-icon">每月系統費</div>
       <div class="fee-cards">
         <div class="fee-card f1">
-          <div class="fee-rank">👑 副總</div>
-          <div class="fee-amount">4,000</div>
-          <div class="fee-unit">元 / 月</div>
+          <div class="fee-rank">副總</div>
+          <div class="fee-amount"><span class="num-wrap">4,000<span class="unit-text">元</span></span></div>
         </div>
         <div class="fee-card f2">
-          <div class="fee-rank">🤝 協理</div>
-          <div class="fee-amount">2,000</div>
-          <div class="fee-unit">元 / 月</div>
+          <div class="fee-rank">協理</div>
+          <div class="fee-amount"><span class="num-wrap">2,000<span class="unit-text">元</span></span></div>
         </div>
         <div class="fee-card f3">
-          <div class="fee-rank">🏢 總監</div>
-          <div class="fee-amount">1,000</div>
-          <div class="fee-unit">元 / 月</div>
+          <div class="fee-rank">總監</div>
+          <div class="fee-amount"><span class="num-wrap">1,000<span class="unit-text">元</span></span></div>
         </div>
-        <div class="fee-card" style="border-color:#ddd;background:#fafafa;">
-          <div class="fee-rank" style="font-size:11px">💼 經理 ／ 📋 襄理 ／ 🌱 主任</div>
-          <div class="fee-amount" style="color:#555;font-size:24px">250</div>
-          <div class="fee-unit">元 / 月</div>
+        <div class="fee-card f4">
+          <div class="fee-rank">經理 / 襄理 / 主任</div>
+          <div class="fee-amount"><span class="num-wrap">250<span class="unit-text">元</span></span></div>
         </div>
       </div>
     </div>
 
     <!-- VP NODE EXPANSION FEE -->
     <div class="fee-section">
-      <div class="section-title" style="margin-bottom:14px">👑 副總節點擴充費（每月）</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--orange);background:var(--orange-light);">
-          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第一代</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange);line-height:1;">1,000</div>
-          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
+      <div class="section-title-icon">每月副總節點擴充費</div>
+      <div class="fee-cards cols-3">
+        <div class="fee-card f1">
+          <div class="fee-rank">第一代</div>
+          <div class="fee-amount"><span class="num-wrap">1,000<span class="unit-text">元</span></span></div>
         </div>
-        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--teal);background:var(--teal-light);">
-          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第二代</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--teal);line-height:1;">400</div>
-          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
+        <div class="fee-card f2">
+          <div class="fee-rank">第二代</div>
+          <div class="fee-amount"><span class="num-wrap">400<span class="unit-text">元</span></span></div>
         </div>
-        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--navy);background:rgba(13,42,58,0.06);">
-          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第三代</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--navy);line-height:1;">200</div>
-          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
+        <div class="fee-card f3">
+          <div class="fee-rank">第三代</div>
+          <div class="fee-amount"><span class="num-wrap">200<span class="unit-text">元</span></span></div>
         </div>
       </div>
     </div>
 
     <!-- LOW-INCREASE / FLAT / CROSS-ZONE -->
     <div class="fee-section">
-      <div class="section-title" style="margin-bottom:14px">低增高・平階・跨區　首佣代數獎金</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:var(--orange-light);border:2px solid var(--orange);">
-          <div style="font-size:28px;">📈</div>
-          <div style="flex:1;">
-            <div style="font-size:13px;font-weight:900;color:var(--navy);">第一代</div>
-          </div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--orange);line-height:1;">2<span style="font-size:20px">%</span></div>
+      <div class="section-title-icon">低增高・平階・跨區　首佣代數獎金</div>
+      <div class="fee-cards cols-2">
+        <div class="fee-card f1">
+          <div class="fee-rank">第一代</div>
+          <div class="fee-amount">2<span class="unit-symbol">%</span></div>
         </div>
-        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:var(--teal-light);border:2px solid var(--teal);">
-          <div style="font-size:28px;">📊</div>
-          <div style="flex:1;">
-            <div style="font-size:13px;font-weight:900;color:var(--navy);">第二代</div>
-          </div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--teal);line-height:1;">1<span style="font-size:20px">%</span></div>
+        <div class="fee-card f2">
+          <div class="fee-rank">第二代</div>
+          <div class="fee-amount">1<span class="unit-symbol">%</span></div>
         </div>
       </div>
     </div>
