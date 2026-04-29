@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<title>經代通路專區 | 恩宇體系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange:#F05A28;--orange-dark:#D04618;--orange-light:#FDE8DF;
+    --teal:#1A6B72;--teal-light:#D0EAEC;
+    --navy:#0D2A3A;--navy-mid:#0a2334;
+    --gold:#E8A020;--white:#ffffff;--light:#F8F5F0;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--navy);}
+  .page{width:900px;margin:0 auto;background:var(--white);box-shadow:0 20px 80px rgba(0,0,0,.12);min-height:100vh;}
+
+  /* HEADER */
+  .header{background:radial-gradient(ellipse at top right,rgba(240,90,40,.18) 0%,transparent 55%),radial-gradient(ellipse at bottom left,rgba(26,107,114,.22) 0%,transparent 50%),linear-gradient(180deg,var(--navy) 0%,var(--navy-mid) 100%);padding:28px 48px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(240,90,40,.08);filter:blur(40px);}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;gap:24px;}
+  .logo-area{display:flex;align-items:center;gap:18px;flex-shrink:0;}
+  .logo-area img{width:80px;height:80px;object-fit:contain;background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(255,255,255,.85));padding:10px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .logo-text .brand{font-size:24px;font-weight:900;letter-spacing:2px;background:linear-gradient(180deg,#fff 0%,#cfd9e0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .logo-text .sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;letter-spacing:1.5px;font-style:italic;}
+  .logo-text .tag{display:inline-block;margin-top:8px;padding:3px 10px;border:1px solid rgba(232,160,32,.5);border-radius:12px;color:var(--gold);font-weight:700;font-size:11px;letter-spacing:2px;background:rgba(232,160,32,.08);}
+  .header-center{flex:1;text-align:center;}
+  .header-center .page-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);letter-spacing:4px;line-height:1;}
+  .header-center .page-title em{color:var(--orange);font-style:normal;}
+  .header-center .page-sub{margin-top:6px;font-size:12px;color:rgba(255,255,255,.5);letter-spacing:2px;}
+  .header-right{flex-shrink:0;}
+  .hdr-contact{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 20px;color:white;font-size:15px;font-weight:900;letter-spacing:2px;}
+  .hdr-contact .label{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:2px;display:block;margin-bottom:3px;}
+
+  /* TAGLINE */
+  .tagline-bar{background:var(--teal);padding:10px 48px;display:flex;align-items:center;justify-content:center;gap:20px;}
+  .tagline-bar span{color:white;font-size:13px;font-weight:700;letter-spacing:3px;}
+  .tagline-bar .dot{color:var(--orange);font-size:18px;}
+
+  /* NAV */
+  .nav{background:var(--white);border-bottom:2px solid #F0F2F5;padding:0 48px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .nav a{display:inline-flex;align-items:center;gap:6px;padding:14px 16px;font-size:13px;font-weight:700;color:#666;text-decoration:none;letter-spacing:1px;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .nav a:hover{color:var(--orange);border-bottom-color:var(--orange);}
+  .nav a.active{color:var(--orange);border-bottom-color:var(--orange);}
+  .nav-spacer{flex:1;}
+  .nav-cta{background:var(--orange)!important;color:white!important;border-radius:20px;padding:8px 18px!important;margin:8px 0;border-bottom:none!important;font-size:12px!important;box-shadow:0 3px 10px rgba(240,90,40,.3);}
+
+  /* BODY */
+  .body{padding:40px 48px 48px;}
+
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .section-header::before{content:'';width:4px;height:22px;background:var(--orange);border-radius:2px;flex-shrink:0;}
+  .sec-title{font-size:18px;font-weight:900;color:var(--navy);letter-spacing:1px;}
+  .sec-sub{font-size:12px;color:#999;margin-left:4px;}
+
+  /* TOP DOCS */
+  .doc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:36px;}
+  .doc-card{text-decoration:none;background:#fafafa;border:2px solid #eee;border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:8px;transition:all .2s;}
+  .doc-card:hover{border-color:var(--orange);box-shadow:0 6px 18px rgba(240,90,40,.12);transform:translateY(-2px);}
+  .doc-card .dc-icon{font-size:26px;}
+  .doc-card .dc-title{font-size:14px;font-weight:900;color:var(--navy);}
+  .doc-card .dc-desc{font-size:11px;color:#999;line-height:1.6;}
+  .doc-card .dc-btn{margin-top:4px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--orange);}
+
+  /* COMPANY TABLE */
+  .co-section{margin-bottom:40px;}
+  .co-table{width:100%;border-collapse:collapse;border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.06);}
+  .co-table thead tr{background:var(--navy);}
+  .co-table thead th{color:white;font-size:13px;font-weight:700;padding:12px 14px;text-align:left;letter-spacing:1px;}
+  .co-table thead th:first-child{width:130px;}
+  .co-table tbody tr:nth-child(even){background:#f9f9f9;}
+  .co-table tbody tr:nth-child(odd){background:white;}
+  .co-table tbody tr:hover{background:var(--orange-light);}
+  .co-table td{padding:12px 14px;font-size:13px;color:var(--navy);font-weight:600;vertical-align:middle;}
+  .co-table td.co-name{font-size:14px;font-weight:900;}
+  .link-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .link-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:16px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.3px;transition:all .2s;white-space:nowrap;}
+  .link-btn.primary{background:var(--orange);color:white;}
+  .link-btn.primary:hover{background:var(--orange-dark);}
+  .link-btn.secondary{background:var(--teal-light);color:var(--teal);border:1px solid rgba(26,107,114,.2);}
+  .link-btn.secondary:hover{background:var(--teal);color:white;}
+  .link-btn.ghost{background:rgba(13,42,58,.06);color:var(--navy);border:1px solid rgba(13,42,58,.1);}
+  .link-btn.ghost:hover{background:var(--navy);color:white;}
+  .link-btn.green{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,.2);}
+  .link-btn.green:hover{background:#2e7d32;color:white;}
+
+  /* CREDIT CARD SECTION */
+  .cc-section{margin-bottom:40px;}
+  .cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .cc-card{border:2px solid #eee;border-radius:14px;overflow:hidden;background:#fafafa;}
+  .cc-head{background:var(--navy);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+  .cc-head .cc-name{font-size:14px;font-weight:900;color:white;}
+  .cc-head .cc-link{font-size:11px;font-weight:700;color:var(--gold);text-decoration:none;border:1px solid rgba(232,160,32,.4);border-radius:10px;padding:3px 8px;}
+  .cc-head .cc-link:hover{background:var(--gold);color:var(--navy);}
+  .cc-body{padding:12px 16px;}
+  .cc-row{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:12px;color:#666;border-bottom:1px solid #f0f0f0;}
+  .cc-row:last-child{border-bottom:none;}
+  .cc-row .cc-label{font-weight:700;color:var(--navy);min-width:40px;flex-shrink:0;}
+  .cc-row .cc-val{color:#555;line-height:1.6;word-break:break-all;}
+  .cc-note{font-size:11px;color:var(--orange);font-weight:700;margin-top:6px;}
+
+  /* HONTAI SPECIAL */
+  .hontai-box{border:2px solid var(--orange);border-radius:14px;overflow:hidden;margin-bottom:40px;}
+  .hontai-head{background:var(--orange);padding:12px 20px;display:flex;align-items:center;gap:10px;}
+  .hontai-head .ht-title{font-size:16px;font-weight:900;color:white;letter-spacing:1px;}
+  .hontai-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .ht-dept{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:14px 16px;}
+  .ht-dept-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .ht-row{font-size:12px;color:#555;line-height:1.9;}
+  .ht-row strong{color:var(--navy);font-weight:700;}
+  .ht-row .tag{display:inline-block;background:var(--orange-light);color:var(--orange);font-size:10px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px;}
+
+  /* FOOTER */
+  .footer{background:var(--orange);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .footer-left .fl-brand{font-size:16px;font-weight:900;color:white;letter-spacing:2px;margin-bottom:2px;}
+  .footer-left .fl-sub{font-size:12px;color:rgba(255,255,255,.7);}
+  .footer-right{font-size:11px;color:rgba(255,255,255,.6);text-align:right;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="images/img_01_44039bd1b179.png" alt="鼎綸恩宇">
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="tag">恩宇體系</div>
+        </div>
+      </div>
+      <div class="header-center">
+        <div class="page-title">經代<em>通路</em>專區</div>
+        <div class="page-sub">各保險公司入口 · 表單下載 · 電子保單 · 信用卡授權</div>
+      </div>
+      <div class="header-right">
+        <div class="hdr-contact">
+          <span class="label">CONTACT</span>
+          📱 0925-000-049
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>經代網</span><span class="dot">◆</span>
+    <span>電子保單</span><span class="dot">◆</span>
+    <span>信用卡授權</span>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html">🏠 首頁</a>
+    <a href="system.html">📊 建議書系統</a>
+    <a href="channel.html" class="active">🤝 經代通路</a>
+    <div class="nav-spacer"></div>
+    <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener" class="nav-cta">🔐 業務專區</a>
+  </nav>
+
+  <div class="body">
+
+    <!-- 常用文件 -->
+    <div class="section-header">
+      <span class="sec-title">常用文件 &amp; 工具</span>
+    </div>
+    <div class="doc-cards">
+      <a href="https://drive.google.com/file/d/1rD2WbqwZTW28GlnYGFBtevilgQ0ofYNS/view?usp=drive_link" target="_blank" class="doc-card">
+        <div class="dc-icon">📋</div>
+        <div class="dc-title">要保人、被保險人資料表</div>
+        <div class="dc-desc">新契約必備文件，填寫要保人及被保險人基本資料</div>
+        <div class="dc-btn">⬇ 下載文件 →</div>
+      </a>
+      <a href="https://drive.google.com/file/d/146gnaJwWjNRFA3dLSCnJeruMe8ZYGNHQ/view?usp=drive_link" target="_blank" class="doc-card">
+        <div class="dc-icon">📄</div>
+        <div class="dc-title">個資 &amp; 書面分析報告</div>
+        <div class="dc-desc">針對新契約使用，個資聲明與書面分析報告合併版</div>
+        <div class="dc-btn">⬇ 下載文件 →</div>
+      </a>
+      <a href="https://www.ice.com.tw/?page_id=298" target="_blank" class="doc-card">
+        <div class="dc-icon">📲</div>
+        <div class="dc-title">飛鼠推播 APP</div>
+        <div class="dc-desc">即時接收保單狀態推播通知，業務管理必備工具</div>
+        <div class="dc-btn">前往下載 →</div>
+      </a>
+    </div>
+
+    <!-- 壽險各公司通路 -->
+    <div class="co-section">
+      <div class="section-header">
+        <span class="sec-title">壽險公司通路入口</span>
+        <span class="sec-sub">經代網 · 建議書 · 表單 · 電子保單</span>
+      </div>
+      <table class="co-table">
+        <thead>
+          <tr>
+            <th>保險公司</th>
+            <th>連結入口</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="co-name">新光(原台新)人壽</td>
+            <td><div class="link-row">
+              <a href="https://myweb.taishinlife.com.tw/tbks" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn ghost">表單區</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">新光人壽</td>
+            <td><div class="link-row">
+              <a href="https://brm.skl.com.tw/PRMWeb/Security/Login" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://eform.skl.com.tw/epolicy" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">宏泰人壽</td>
+            <td><div class="link-row">
+              <a href="https://life.hontai.com.tw/HontaiGP/coagent.aspx" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://proposal.hontai.com.tw/Home/Login" target="_blank" class="link-btn secondary">建議書</a>
+              <span style="font-size:11px;color:#999;align-self:center;">電子保單見下方說明</span>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">元大人壽</td>
+            <td><div class="link-row">
+              <a href="https://mcsp.yuantalife.com.tw/mcsp/verify.aspx" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://wips.yuantalife.com.tw/login" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://sites.google.com/view/joinzoe/" target="_blank" class="link-btn ghost">ZOE機器人</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">保誠人壽</td>
+            <td><div class="link-row">
+              <a href="https://www.eservice.pcalife.com.tw/sso/bragentlogin" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn ghost">表單區</a>
+              <a href="https://online.pcalife.com.tw/eservice/pdp" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">安達人壽</td>
+            <td><div class="link-row">
+              <a href="https://www.chubblife-vul.com.tw/acelifevul/house/agentLogin.do" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://esfp.chubblife-vul.com.tw/illustration/login" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://life.chubb.com/tw-zh/partners/sales-support-for-broker.html" target="_blank" class="link-btn ghost">表單區</a>
+              <a href="https://www.chubblife-vul.com.tw/eins-sign/" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">全球人壽</td>
+            <td><div class="link-row">
+              <a href="https://mpos.transglobe.com.tw/app3/#/login-br" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://eservice.transglobe.com.tw/cs/ePolicy/ePolicySP1.xhtml" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">法國巴黎人壽</td>
+            <td><div class="link-row">
+              <a href="https://my.cardif.com.tw/B2B/Login/Index" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn ghost">表單區</a>
+              <a href="https://my.cardif.com.tw/B2C/EPolicyReceipt/Index" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">友邦人壽</td>
+            <td><div class="link-row">
+              <a href="https://portal.aia.com.tw/BABKPortal/executeIndex" target="_blank" class="link-btn primary">經代網</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">安聯人壽</td>
+            <td><div class="link-row">
+              <a href="https://es.allianz.com.tw/partner/PartnershipPortal/" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://es.allianz.com.tw/epolicy/" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">台灣人壽</td>
+            <td><div class="link-row">
+              <a href="https://customer.taiwanlife.com/eSponsor_New/" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://proposal.taiwanlife.com/login" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://ebook.taiwanlife.com/bb/byCompanyCode.aspx?companycode=Broker#" target="_blank" class="link-btn ghost">表單區</a>
+              <a href="https://tcav.taiwanlife.com/signedEpolicy/login" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">第一金人壽</td>
+            <td><div class="link-row">
+              <a href="https://www.firstlife.com.tw/AvivaEAgent/" target="_blank" class="link-btn primary">經代網</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">富邦人壽</td>
+            <td><div class="link-row">
+              <a href="https://agent.fubonlife.com.tw/" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://me.fubonlife.com.tw/E_Policy.Step1.view" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">遠雄人壽</td>
+            <td><div class="link-row">
+              <a href="https://bw.fglife.com.tw/bw/loginBroker.action" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://e-policy.fglife.com.tw/sign/" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">遠雄人壽 旅平險</td>
+            <td><div class="link-row">
+              <a href="https://slm.fglife.com.tw/frontend/loginBroker.action" target="_blank" class="link-btn primary">旅平險專用入口</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">臺銀人壽</td>
+            <td><div class="link-row">
+              <a href="https://elife.twfhclife.com.tw/eservice_jd/login" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://btlife.twfhclife.com.tw/" target="_blank" class="link-btn secondary">建議書</a>
+              <a href="https://eins.twfhclife.com.tw/" target="_blank" class="link-btn green">電子保單</a>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 產險各公司通路 -->
+    <div class="co-section">
+      <div class="section-header">
+        <span class="sec-title">產險公司通路入口</span>
+      </div>
+      <table class="co-table">
+        <thead>
+          <tr>
+            <th>保險公司</th>
+            <th>連結入口</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="co-name">和泰產物</td>
+            <td><div class="link-row">
+              <a href="https://agent.hotains.com.tw/iz/login" target="_blank" class="link-btn primary">經代網</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">安達產物</td>
+            <td><div class="link-row">
+              <a href="https://tpeb2b.chubb.com.tw/" target="_blank" class="link-btn primary">經代網</a>
+              <a href="https://tpeb2b.chubb.com.tw/#" target="_blank" class="link-btn secondary">建議書</a>
+              <span style="font-size:11px;color:#999;align-self:center;">旅平險登入詳見右側說明</span>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="co-name">兆豐產物</td>
+            <td><div class="link-row">
+              <a href="https://cki.propra.com/" target="_blank" class="link-btn primary">經代網 / 建議書</a>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 宏泰人壽特別說明 -->
+    <div class="hontai-box">
+      <div class="hontai-head">
+        <span style="font-size:22px;">📞</span>
+        <span class="ht-title">宏泰人壽 · 各部門聯絡資訊</span>
+      </div>
+      <div class="hontai-body">
+        <div class="ht-dept">
+          <div class="ht-dept-title">🏷️ 電子保單 / 核保通過後查詢</div>
+          <div class="ht-row">網址格式：</div>
+          <div class="ht-row" style="font-size:11px;word-break:break-all;background:#f0f4f8;padding:8px;border-radius:6px;margin:4px 0;color:#333;">https://www.hontai.com.tw/PolicyClient/ePolicy/View.aspx?Key=<strong>核保通過日期8碼(+1天)</strong>+<strong>保單號碼</strong>+1EBN</div>
+          <div class="ht-row" style="font-size:11px;color:#888;">範例：Key=202508011114205XXX1EBN（核保通過日期 20250731）</div>
+        </div>
+        <div class="ht-dept">
+          <div class="ht-dept-title">📞 客服 / 理賠</div>
+          <div class="ht-row">客服：<strong>0800-068-268</strong><span class="tag">六點後外包</span></div>
+          <div class="ht-row">理賠部（上班日10-12點）：<strong>02-27813557</strong></div>
+          <div class="ht-row">理賠傳真：02-27166831</div>
+          <div class="ht-row">理賠 mail：shuhua.chen@hontai.com.tw</div>
+        </div>
+        <div class="ht-dept">
+          <div class="ht-dept-title">💳 保費扣款 / 信用卡</div>
+          <div class="ht-row">逢6扣款 / 信用卡有效期：<strong>07-2151001</strong></div>
+          <div class="ht-row">傳真：07-2151059</div>
+          <div class="ht-row">分機：1303, 1304, 1305, 1201, 1202, 1102, 1003</div>
+          <div class="ht-row">匯款憑證 mail：service@hontai.com.tw</div>
+        </div>
+        <div class="ht-dept">
+          <div class="ht-dept-title">📋 保全 / 核保</div>
+          <div class="ht-row">保全（契變、解約、復效）：<strong>07-2151001</strong></div>
+          <div class="ht-row">分機：1301, 1302, 1303, 1304, 1201, 1202</div>
+          <div class="ht-row">核保：07-2151001 / 傳真：07-215-1059</div>
+          <div class="ht-row">分機：1201娜姐 / 1203賴先生 / 1205倫</div>
+        </div>
+        <div class="ht-dept">
+          <div class="ht-dept-title">✈️ 單獨出單意外險 / 傳真報備</div>
+          <div class="ht-row">台北總公司：<strong>02-2716-6888</strong></div>
+          <div class="ht-row">蔡小姐 分機3511 / 蘇科長3501</div>
+          <div class="ht-row">傳真報備專線：02-2716-6833</div>
+          <div class="ht-row">報備 mail：nb666@hontai.com.tw</div>
+        </div>
+        <div class="ht-dept">
+          <div class="ht-dept-title">🏢 總公司地址</div>
+          <div class="ht-row">台北市松山區民生東路三段156號4樓</div>
+          <div class="ht-row">電話：02-2716-6888</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 信用卡授權書 -->
+    <div class="cc-section">
+      <div class="section-header">
+        <span class="sec-title">信用卡授權書</span>
+        <span class="sec-sub">各家 Email / 傳真辦理方式</span>
+      </div>
+      <div class="cc-grid">
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">台灣人壽</span>
+            <a href="https://www.taiwanlife.com/portal-api/File/1659" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">post2100-pub@taiwanlife.com</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(02)6603-1909</span></div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">富邦人壽</span>
+            <a href="https://www.fubon.com/life/cms/6BBCDF7C911145C7952CD98A941A24E5/2025-07/202507302030359248587170.pdf" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">scfax.life@fubon.com</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(07)9696630</span></div>
+            <div class="cc-note">可多張保單 / 續期適用</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">安達人壽</span>
+            <a href="https://www.chubblife-vul.com.tw/acelifevul/agentDocs/M01.action" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">CustomerService.TWLife@chubb.com</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">02-7726-1875 / 02-7726-1876</span></div>
+            <div class="cc-row"><span class="cc-label">效期</span><span class="cc-val">效期變更致電客服：02-6623-1688</span></div>
+            <div class="cc-note">不簽業務員可直接辦；簽業務員需繳正本</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">宏泰人壽</span>
+            <a href="http://www.hontai.com.tw/Policyforms/htf/Form_PPAuthorized.aspx" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">僅接受紙本</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">僅接受紙本</span></div>
+            <div class="cc-note">⚠️ 每次序號不同，請勿重複列印</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">安聯人壽</span>
+            <a href="https://es.allianz.com.tw/customer/companyInfo/FileDownload/GetDocFile.aspx?type=A02&PageCnt=1" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">0800007668@allianz.com.tw</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(02)77067350</span></div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">全球人壽</span>
+            <a href="https://www.transglobe.com.tw/transglobe_resource/leap_do/download_picture/1568700716077/%E4%BF%9D%E9%9A%AA%E8%B2%BB%E4%BB%98%E6%AC%BE%E6%8E%88%E6%AC%8A%E6%9B%B8-%E4%BF%A1%E7%94%A8%E5%8D%A1%E5%82%B3%E7%9C%9F%E6%88%96MAIL%E7%89%88-114.11.pdf" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">cscweb@transglobe.com.tw</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(02)66369935</span></div>
+            <div class="cc-note">傳真或MAIL後請致電確認：0800-000-662 或 (02)6622-6258</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">凱基人壽</span>
+            <a href="https://www.kgilife.com.tw/zh-tw/-/media/files/kgil/service-overview/downloads/payment-service/payment/payment03.pdf" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">僅接受紙本</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">僅接受紙本</span></div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">遠雄人壽</span>
+            <a href="https://www.fglife.com.tw/service05_01.html" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">e-member@fglife.com.tw</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(02)2723-5354</span></div>
+            <div class="cc-note">不簽業務員可直接辦；簽業務員需用紙本</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">元大人壽</span>
+            <a href="https://eform.yuantalife.com.tw/" target="_blank" class="cc-link">⬇ 授權書</a>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">Email</span><span class="cc-val">life@yuanta.com</span></div>
+            <div class="cc-row"><span class="cc-label">傳真</span><span class="cc-val">(02)2751-7016</span></div>
+            <div class="cc-note">不簽業務員可直接辦；簽業務員需用紙本</div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">保誠 / 法巴 / 新光 / 友邦 / 第一金 / 臺銀 / 台新</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">說明</span><span class="cc-val">目前 Email / 傳真資訊待補充，請洽所屬公司確認辦理方式</span></div>
+          </div>
+        </div>
+
+        <div class="cc-card">
+          <div class="cc-head">
+            <span class="cc-name">保誠人壽 電子保單密碼</span>
+          </div>
+          <div class="cc-body">
+            <div class="cc-row"><span class="cc-label">密碼</span><span class="cc-val">身分證末4碼 + 出生月日4碼</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="fl-brand">鼎綸恩宇 Insurance Brokers</div>
+      <div class="fl-sub">恩宇體系 · rex1688.com</div>
+    </div>
+    <div class="footer-right">© 2025 鼎綸保險經紀人股份有限公司</div>
+  </footer>
+
+</div>
+</body>
+</html>

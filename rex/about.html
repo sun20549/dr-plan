@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<title>鼎綸介紹 | 恩宇體系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange:#F05A28;--orange-dark:#D04618;--orange-light:#FDE8DF;
+    --teal:#1A6B72;--teal-light:#D0EAEC;
+    --navy:#0D2A3A;--navy-mid:#0a2334;
+    --gold:#E8A020;--white:#ffffff;--light:#F8F5F0;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--navy);}
+  .page{width:900px;margin:0 auto;background:var(--white);box-shadow:0 20px 80px rgba(0,0,0,.12);min-height:100vh;}
+
+  /* HEADER */
+  .header{background:radial-gradient(ellipse at top right,rgba(240,90,40,.18) 0%,transparent 55%),radial-gradient(ellipse at bottom left,rgba(26,107,114,.22) 0%,transparent 50%),linear-gradient(180deg,var(--navy) 0%,var(--navy-mid) 100%);padding:28px 48px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(240,90,40,.08);filter:blur(40px);}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;gap:24px;}
+  .logo-area{display:flex;align-items:center;gap:18px;flex-shrink:0;}
+  .logo-area img{width:80px;height:80px;object-fit:contain;background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(255,255,255,.85));padding:10px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .logo-text .brand{font-size:24px;font-weight:900;letter-spacing:2px;background:linear-gradient(180deg,#fff 0%,#cfd9e0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .logo-text .sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;letter-spacing:1.5px;font-style:italic;}
+  .logo-text .tag{display:inline-block;margin-top:8px;padding:3px 10px;border:1px solid rgba(232,160,32,.5);border-radius:12px;color:var(--gold);font-weight:700;font-size:11px;letter-spacing:2px;background:rgba(232,160,32,.08);}
+  .header-center{flex:1;text-align:center;}
+  .header-center .page-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);letter-spacing:4px;line-height:1;}
+  .header-center .page-title em{color:var(--orange);font-style:normal;}
+  .header-center .page-sub{margin-top:6px;font-size:12px;color:rgba(255,255,255,.5);letter-spacing:2px;}
+  .header-right{flex-shrink:0;}
+  .hdr-contact{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 20px;color:white;font-size:15px;font-weight:900;letter-spacing:2px;}
+  .hdr-contact .label{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:2px;display:block;margin-bottom:3px;}
+
+  /* TAGLINE */
+  .tagline-bar{background:var(--teal);padding:10px 48px;display:flex;align-items:center;justify-content:center;gap:20px;}
+  .tagline-bar span{color:white;font-size:13px;font-weight:700;letter-spacing:3px;}
+  .tagline-bar .dot{color:var(--orange);font-size:18px;}
+
+  /* NAV */
+  .nav{background:var(--white);border-bottom:2px solid #F0F2F5;padding:0 48px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .nav a{display:inline-flex;align-items:center;gap:6px;padding:14px 16px;font-size:13px;font-weight:700;color:#666;text-decoration:none;letter-spacing:1px;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .nav a:hover{color:var(--orange);border-bottom-color:var(--orange);}
+  .nav a.active{color:var(--orange);border-bottom-color:var(--orange);}
+  .nav-spacer{flex:1;}
+  .nav-cta{background:var(--orange)!important;color:white!important;border-radius:20px;padding:8px 18px!important;margin:8px 0;border-bottom:none!important;font-size:12px!important;box-shadow:0 3px 10px rgba(240,90,40,.3);}
+
+  /* BODY */
+  .body{padding:40px 48px 48px;}
+
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .section-header::before{content:'';width:4px;height:22px;background:var(--orange);border-radius:2px;flex-shrink:0;}
+  .sec-title{font-size:18px;font-weight:900;color:var(--navy);letter-spacing:1px;}
+  .sec-sub{font-size:12px;color:#999;margin-left:4px;}
+
+  /* STATS BAR */
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#eee;border-radius:16px;overflow:hidden;margin-bottom:36px;box-shadow:0 2px 16px rgba(0,0,0,.06);}
+  .stat-item{background:var(--white);padding:22px 16px;text-align:center;}
+  .stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--orange);line-height:1;}
+  .stat-num span{font-size:24px;color:#bbb;}
+  .stat-label{font-size:12px;color:#888;font-weight:700;letter-spacing:1px;margin-top:4px;}
+
+  /* ABOUT CARD */
+  .about-card{background:linear-gradient(135deg,var(--navy) 0%,#1a4a5a 100%);border-radius:20px;padding:36px 40px;margin-bottom:36px;border:2px solid rgba(240,90,40,.25);box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .about-card p{font-size:14px;color:rgba(255,255,255,.8);line-height:2;margin-bottom:12px;}
+  .about-card p:last-child{margin-bottom:0;}
+  .about-card strong{color:var(--gold);}
+
+  /* LOGO GRID */
+  .ins-section{margin-bottom:36px;}
+  .ins-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .ins-tag{font-size:12px;font-weight:900;padding:6px 14px;border-radius:20px;letter-spacing:1px;flex-shrink:0;}
+  .ins-tag--life{background:var(--orange);color:#fff;}
+  .ins-tag--nonlife{background:var(--teal);color:#fff;}
+  .ins-title{font-size:20px;font-weight:900;color:var(--navy);line-height:1;}
+  .ins-count{margin-left:auto;font-size:13px;font-weight:700;color:var(--orange);background:var(--orange-light);padding:5px 16px;border-radius:20px;flex-shrink:0;}
+
+  .logo-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .logo-card{text-decoration:none;background:#fff;border:1.5px solid #E4E8EE;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;align-items:center;transition:box-shadow .2s,border-color .2s,transform .2s;}
+  .logo-card:hover{box-shadow:0 6px 24px rgba(240,90,40,.18);border-color:var(--orange);transform:translateY(-2px);}
+  .logo-img-wrap{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:14px;background:#fff;}
+  .logo-img-wrap img{width:100%;height:100%;object-fit:contain;}
+  .logo-name{font-size:10px;font-weight:700;color:var(--navy);text-align:center;padding:6px 4px;background:#F4F7FA;width:100%;border-top:1px solid #E4E8EE;letter-spacing:.3px;}
+
+  /* AWARD */
+  .award-inner{background:linear-gradient(135deg,var(--navy) 0%,#1a4a5a 100%);border-radius:20px;padding:32px 36px;border:2px solid rgba(240,90,40,.3);box-shadow:0 4px 20px rgba(0,0,0,.1);margin-bottom:36px;}
+  .award-header{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+  .award-badge-big{font-size:44px;flex-shrink:0;}
+  .award-header-text{flex:1;}
+  .award-subtitle{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:2px;margin-bottom:4px;}
+  .award-title{font-size:22px;font-weight:900;color:#fff;line-height:1.3;}
+  .award-year{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px;}
+  .award-rank-badge{background:var(--orange);color:#fff;border-radius:14px;padding:12px 20px;font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;text-align:center;flex-shrink:0;}
+  .award-rank-badge span{display:block;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;margin-top:2px;}
+
+  .award-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+  .award-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden;}
+  .award-card-title{background:rgba(255,255,255,.1);padding:10px 14px;font-size:13px;font-weight:900;color:#fff;border-bottom:1px solid rgba(255,255,255,.1);}
+  .award-list{padding:6px 0;}
+  .award-item{display:flex;align-items:center;padding:0 14px;height:34px;gap:8px;border-bottom:1px solid rgba(255,255,255,.05);}
+  .award-item:last-child{border-bottom:none;}
+  .rank-num{font-family:'Bebas Neue',sans-serif;font-size:15px;color:rgba(255,255,255,.35);width:18px;flex-shrink:0;text-align:center;}
+  .award-item .rank-name{flex:1;font-size:12px;color:rgba(255,255,255,.75);font-weight:500;}
+  .award-item .rank-pct{font-size:11px;font-weight:700;color:rgba(255,255,255,.45);}
+  .award-item.rank-1 .rank-num{color:#FFD700;font-size:17px;}
+  .award-item.rank-1 .rank-name{color:#fff;font-weight:700;}
+  .award-item.rank-1 .rank-pct{color:#FFD700;}
+  .award-item.rank-2 .rank-num{color:#C0C0C0;}
+  .award-item.rank-2 .rank-name{color:#fff;font-weight:700;}
+  .award-item.rank-3 .rank-num{color:#CD7F32;}
+  .award-item.rank-3 .rank-name{color:rgba(255,255,255,.95);font-weight:600;}
+  .award-item.highlight{background:rgba(240,90,40,.18);border-left:3px solid var(--orange);}
+  .award-item.highlight .rank-num{color:var(--orange);}
+  .award-item.highlight .rank-name{color:#fff;font-weight:900;}
+  .award-item.highlight .rank-pct{color:var(--orange);}
+  .award-source{font-size:11px;color:rgba(255,255,255,.3);text-align:center;}
+
+  /* FOOTER */
+  .footer{background:var(--orange);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .footer-left .fl-brand{font-size:16px;font-weight:900;color:white;letter-spacing:2px;margin-bottom:2px;}
+  .footer-left .fl-sub{font-size:12px;color:rgba(255,255,255,.7);}
+  .footer-right{font-size:11px;color:rgba(255,255,255,.6);text-align:right;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="images/img_01_44039bd1b179.png" alt="鼎綸恩宇">
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="tag">恩宇體系</div>
+        </div>
+      </div>
+      <div class="header-center">
+        <div class="page-title">鼎綸<em>介紹</em></div>
+        <div class="page-sub">業界最多代理家數 · 壽險 16 家 · 產險 16 家</div>
+      </div>
+      <div class="header-right">
+        <div class="hdr-contact">
+          <span class="label">CONTACT</span>
+          📱 0925-000-049
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>壽險 16 家</span><span class="dot">◆</span>
+    <span>產險 16 家</span><span class="dot">◆</span>
+    <span>業界最完整合作家數</span>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html">🏠 首頁</a>
+    <a href="system.html">📊 建議書系統</a>
+    <a href="channel.html">🤝 經代通路</a>
+    <a href="about.html" class="active">🏢 鼎綸介紹</a>
+    <div class="nav-spacer"></div>
+    <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener" class="nav-cta">🔐 業務專區</a>
+  </nav>
+
+  <div class="body">
+
+    <!-- 數字總覽 -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">16<span>家</span></div>
+        <div class="stat-label">壽險合作公司</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">16<span>家</span></div>
+        <div class="stat-label">產險合作公司</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">32<span>+</span></div>
+        <div class="stat-label">合作公司總計</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">#9<span></span></div>
+        <div class="stat-label">千大企業票選排名</div>
+      </div>
+    </div>
+
+    <!-- 公司介紹 -->
+    <div class="section-header">
+      <span class="sec-title">關於鼎綸保險經紀人</span>
+    </div>
+    <div class="about-card">
+      <p>鼎綸保險經紀人股份有限公司是台灣<strong>代理家數最多</strong>的保險經紀人公司之一，同時擁有<strong>壽險 16 家</strong>與<strong>產險 16 家</strong>的完整合作陣容，能夠為客戶提供跨公司比較、量身規劃的最佳保障方案。</p>
+      <p>透過鼎綸的平台，業務人員不受單一公司商品限制，可依據客戶實際需求，自由選配最適合的壽險、健康險、意外險及財產險商品，真正實現<strong>以客戶為核心</strong>的服務理念。</p>
+      <p>鼎綸長期深耕企業團體保險及個人保險市場，並於 2023 年由《現代保險》雜誌千大企業票選中，在<strong>服務最好、最專業、最值得推薦</strong>三項類別中同步入榜前十名，充分展現市場對鼎綸專業能力的高度肯定。</p>
+    </div>
+
+    <!-- 壽險公司 -->
+    <div class="ins-section">
+      <div class="ins-header">
+        <span class="ins-tag ins-tag--life">壽險</span>
+        <span class="ins-title">壽險合作保險公司</span>
+        <span class="ins-count">16 家</span>
+      </div>
+      <div class="logo-grid">
+        <a class="logo-card" href="https://www.cathaylife.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_02_2f61c2ac79bb.png" alt="國泰人壽"></div>
+          <div class="logo-name">國泰人壽(團險)</div>
+        </a>
+        <a class="logo-card" href="https://www.fubon.com/life/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_03_076781aa2066.png" alt="富邦人壽"></div>
+          <div class="logo-name">富邦人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.nanshanlife.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_04_16fcbe59ba27.png" alt="南山人壽"></div>
+          <div class="logo-name">南山人壽(團險)</div>
+        </a>
+        <a class="logo-card" href="https://www.skl.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_05_1d05f38a7f49.png" alt="新光人壽"></div>
+          <div class="logo-name">新光人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.kgilife.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_06_7cea3bd55411.png" alt="凱基人壽"></div>
+          <div class="logo-name">凱基人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.taiwanlife.com/index" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_07_47b75d46b350.png" alt="台灣人壽"></div>
+          <div class="logo-name">台灣人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.allianz.com.tw/zh_TW.html" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_08_ac3337136856.png" alt="安聯人壽"></div>
+          <div class="logo-name">安聯人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.transglobe.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_09_c2abe5c9d798.png" alt="全球人壽"></div>
+          <div class="logo-name">全球人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.yuantalife.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_10_e2e2af21135a.png" alt="元大人壽"></div>
+          <div class="logo-name">元大人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.fglife.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_11_ece359f5f43c.png" alt="遠雄人壽"></div>
+          <div class="logo-name">遠雄人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.pcalife.com.tw/zh/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_12_6cd7756b6ea3.png" alt="保誠人壽"></div>
+          <div class="logo-name">保誠人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.twfhclife.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_13_70f1e9320094.png" alt="臺銀人壽"></div>
+          <div class="logo-name">臺銀人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.hontai.com.tw/18pages/index/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_14_8b62f5411184.png" alt="宏泰人壽"></div>
+          <div class="logo-name">宏泰人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.chubb.com/tw-zh" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_15_ee8afbd87f31.png" alt="安達人壽"></div>
+          <div class="logo-name">安達人壽</div>
+        </a>
+        <a class="logo-card" href="https://www.aia.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_16_28a25622f95f.png" alt="友邦人壽"></div>
+          <div class="logo-name">友邦人壽</div>
+        </a>
+        <a class="logo-card" href="https://life.cardif.com.tw/zh-TW/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_17_b4a2565a4e2a.png" alt="法國巴黎人壽"></div>
+          <div class="logo-name">法國巴黎人壽</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 產險公司 -->
+    <div class="ins-section">
+      <div class="ins-header">
+        <span class="ins-tag ins-tag--nonlife">產險</span>
+        <span class="ins-title">產險合作保險公司</span>
+        <span class="ins-count">16 家</span>
+      </div>
+      <div class="logo-grid">
+        <a class="logo-card" href="https://www.fubon.com/insurance" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_03_076781aa2066.png" alt="富邦產險"></div>
+          <div class="logo-name">富邦產險</div>
+        </a>
+        <a class="logo-card" href="https://www.cathay-ins.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_02_2f61c2ac79bb.png" alt="國泰產險"></div>
+          <div class="logo-name">國泰產險</div>
+        </a>
+        <a class="logo-card" href="https://www.skinsurance.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_18_e563bca6632d.png" alt="新光產險"></div>
+          <div class="logo-name">新光產險</div>
+        </a>
+        <a class="logo-card" href="https://www.tmnewa.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_19_8d0418375f85.png" alt="新安東京海上"></div>
+          <div class="logo-name">新安東京海上</div>
+        </a>
+        <a class="logo-card" href="https://www.msig-mingtai.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_22_589a90b52f07.png" alt="明台產險"></div>
+          <div class="logo-name">明台產險</div>
+        </a>
+        <a class="logo-card" href="https://www.hotains.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_21_437306ec26b1.png" alt="和泰產險"></div>
+          <div class="logo-name">和泰產險</div>
+        </a>
+        <a class="logo-card" href="https://www.south-china.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_20_ed035a7e960e.png" alt="華南產險"></div>
+          <div class="logo-name">華南產險</div>
+        </a>
+        <a class="logo-card" href="https://www.wwunion.com/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_23_3ca16149ca54.png" alt="旺旺友聯產險"></div>
+          <div class="logo-name">旺旺友聯產險</div>
+        </a>
+        <a class="logo-card" href="https://www.taian.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_24_310da6237844.png" alt="泰安產險"></div>
+          <div class="logo-name">泰安產險</div>
+        </a>
+        <a class="logo-card" href="https://www.cki.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_25_e0d241a5da5a.png" alt="兆豐產險"></div>
+          <div class="logo-name">兆豐產險</div>
+        </a>
+        <a class="logo-card" href="https://www.nanshangeneral.com.tw/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_26_602dc6038f87.png" alt="南山產險"></div>
+          <div class="logo-name">南山產險</div>
+        </a>
+        <a class="logo-card" href="https://www.firstins.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_27_ad6273cf00f9.png" alt="第一產險"></div>
+          <div class="logo-name">第一產險</div>
+        </a>
+        <a class="logo-card" href="https://www.ctbcins.com/" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_30_a74f0433bfae.png" alt="中國信託產險"></div>
+          <div class="logo-name">中國信託產險</div>
+        </a>
+        <a class="logo-card" href="https://www.chubb.com/tw-zh" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_29_997dfeff6275.png" alt="安達產險"></div>
+          <div class="logo-name">安達產險</div>
+        </a>
+        <a class="logo-card" href="https://www.tfmi.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_28_1222500e3815.png" alt="臺灣產險"></div>
+          <div class="logo-name">臺灣產險</div>
+        </a>
+        <a class="logo-card" href="https://www.cardif.com.tw" target="_blank" rel="noopener">
+          <div class="logo-img-wrap"><img src="images/img_17_b4a2565a4e2a.png" alt="法國巴黎產險"></div>
+          <div class="logo-name">法國巴黎產險</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 獎項 -->
+    <div class="section-header">
+      <span class="sec-title">獲獎紀錄</span>
+    </div>
+    <div class="award-inner">
+      <div class="award-header">
+        <div class="award-badge-big">🏆</div>
+        <div class="award-header-text">
+          <div class="award-subtitle">現代保險雜誌 · 第22回</div>
+          <div class="award-title">千大企業票選年度最佳保險經紀人</div>
+          <div class="award-year">2023年度調查</div>
+        </div>
+        <div class="award-rank-badge">#9<span>鼎綸</span></div>
+      </div>
+      <div class="award-grid">
+        <div class="award-card">
+          <div class="award-card-title">🌟 服務最好的10大保經</div>
+          <div class="award-list">
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安</span><span class="rank-pct">20.5%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信</span><span class="rank-pct">18.5%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.3%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林</span><span class="rank-pct">6.8%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德</span><span class="rank-pct">4.9%</span></div>
+            <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
+            <div class="award-item"><span class="rank-num">7</span><span class="rank-name">凱基</span><span class="rank-pct">3.4%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達</span><span class="rank-pct">2.9%</span></div>
+            <div class="award-item highlight"><span class="rank-num">9</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item"><span class="rank-num">10</span><span class="rank-name">和元</span><span class="rank-pct">2.0%</span></div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-card-title">🎯 最專業的10大保經</div>
+          <div class="award-list">
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">達信</span><span class="rank-pct">21.5%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">怡安</span><span class="rank-pct">20.5%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.8%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">利德</span><span class="rank-pct">6.3%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">豐林</span><span class="rank-pct">5.9%</span></div>
+            <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
+            <div class="award-item"><span class="rank-num">7</span><span class="rank-name">凱基</span><span class="rank-pct">3.4%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達</span><span class="rank-pct">3.4%</span></div>
+            <div class="award-item highlight"><span class="rank-num">9</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item"><span class="rank-num">10</span><span class="rank-name">和元</span><span class="rank-pct">2.0%</span></div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-card-title">⭐ 最值得推薦的10大保經</div>
+          <div class="award-list">
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安</span><span class="rank-pct">21.0%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信</span><span class="rank-pct">20.0%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.3%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林</span><span class="rank-pct">7.3%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德</span><span class="rank-pct">6.8%</span></div>
+            <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
+            <div class="award-item"><span class="rank-num">7</span><span class="rank-name">凱基</span><span class="rank-pct">3.4%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">亞太高威</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item"><span class="rank-num">9</span><span class="rank-name">萬達</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item highlight"><span class="rank-num">10</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="award-source">資料來源：第22回「千大企業保險購買行為暨滿意度問卷調查」· 《現代保險》雜誌 2023.11</div>
+    </div>
+
+  </div><!-- /body -->
+
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="fl-brand">鼎綸恩宇 Insurance Brokers</div>
+      <div class="fl-sub">恩宇體系 · rex1688.com</div>
+    </div>
+    <div class="footer-right">© 2025 鼎綸保險經紀人股份有限公司<br>保險業務員應確實了解商品內容，審慎評估後再行銷售</div>
+  </footer>
+
+</div>
+</body>
+</html>
