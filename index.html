@@ -31,44 +31,52 @@
     box-shadow: 0 20px 80px rgba(0,0,0,0.12);
   }
 
-  /* ── QUICK ACCESS BAR (now inside badge-area) ── */
+  /* ── QUICK ACCESS BAR ── */
   .quick-bar {
     display: flex;
-    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    background: var(--navy);
+    border-bottom: 2px solid rgba(240,90,40,0.4);
   }
   .quick-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
-    flex: 1;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 20px;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 8px 20px;
+    border-radius: 25px;
     text-decoration: none;
-    letter-spacing: 1px;
-    transition: all .25s ease;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.18);
-    color: rgba(255,255,255,0.75);
-    backdrop-filter: blur(4px);
-    white-space: nowrap;
+    letter-spacing: 0.5px;
+    transition: all .2s;
   }
-  .quick-btn:hover {
+  .quick-btn--ghost {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.85);
+  }
+  .quick-btn--ghost:hover {
     background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.45);
+    border-color: rgba(255,255,255,0.7);
     color: #fff;
-    transform: translateY(-1px);
+  }
+  .quick-btn--orange {
+    background: var(--orange);
+    border: 1.5px solid var(--orange);
+    color: #fff;
+  }
+  .quick-btn--orange:hover {
+    background: #d44a18;
+    border-color: #d44a18;
   }
 
 
   .header {
-    background:
-      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
-      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
-      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
-    padding: 28px 48px 28px;
+    background: var(--navy);
+    padding: 36px 48px 30px;
     position: relative;
     overflow: hidden;
   }
@@ -78,8 +86,7 @@
     top: -60px; right: -60px;
     width: 280px; height: 280px;
     border-radius: 50%;
-    background: rgba(240,90,40,0.08);
-    filter: blur(40px);
+    background: rgba(240,90,40,0.15);
   }
   .header::after {
     content: '';
@@ -87,8 +94,7 @@
     bottom: -40px; left: 200px;
     width: 180px; height: 180px;
     border-radius: 50%;
-    background: rgba(26,107,114,0.15);
-    filter: blur(40px);
+    background: rgba(26,107,114,0.2);
   }
 
   .header-inner {
@@ -96,27 +102,9 @@
     align-items: center;
     justify-content: space-between;
     position: relative; z-index: 1;
-    gap: 24px;
   }
 
-  .logo-area {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .logo-area > img {
-    width: 96px;
-    height: 96px;
-    object-fit: contain;
-    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
-    padding: 10px;
-    border-radius: 20px;
-    box-shadow:
-      0 8px 24px rgba(0,0,0,0.25),
-      inset 0 1px 2px rgba(255,255,255,0.8),
-      0 0 0 1px rgba(255,255,255,0.15);
-  }
+  .logo-area { display: flex; align-items: center; gap: 16px; }
 
   .logo-icon {
     width: 72px; height: 72px;
@@ -131,127 +119,50 @@
   }
 
   .logo-text { color: white; }
-  .logo-text .brand {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    line-height: 1.1;
-    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .logo-text .sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 4px;
-    letter-spacing: 1.5px;
-    font-style: italic;
-  }
-  .logo-text .sub.tag {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 3px 10px;
-    border: 1px solid rgba(232,160,32,0.5);
-    border-radius: 12px;
-    color: #E8A020;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 2px;
-    font-style: normal;
-    background: rgba(232,160,32,0.08);
-  }
+  .logo-text .brand { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
+  .logo-text .sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
-  .header-center {
-    text-align: center;
-    flex: 1;
-    min-width: 0;
-  }
+  .header-center { text-align: center; }
   .header-center .main-title {
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
-    font-size: 14px;
-    color: rgba(255,255,255,0.65);
-    letter-spacing: 4px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 4px;
-    font-weight: 500;
   }
   .header-center .big-number {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 130px;
+    font-size: 96px;
     color: var(--orange);
-    line-height: 0.9;
-    letter-spacing: 1px;
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    margin: -8px 0 -4px;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(240,90,40,0.4);
   }
   .header-center .big-number span {
-    font-size: 64px;
+    font-size: 52px;
     color: white;
-    font-weight: 400;
+    margin-left: 4px;
   }
   .header-center .sub-title {
-    margin-top: 0;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 900;
     color: white;
-    letter-spacing: 6px;
-    text-indent: 6px;
-    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: 4px;
   }
 
   .badge-area {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    min-width: 220px;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
   }
   .badge {
-    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    background: var(--orange);
     color: white;
-    padding: 16px 20px;
-    border-radius: 14px;
-    text-align: center;
-    line-height: 1.3;
-    box-shadow:
-      0 4px 12px rgba(0,0,0,0.2),
-      inset 0 1px 0 rgba(255,255,255,0.25);
-    border: 1px solid rgba(255,255,255,0.15);
-    position: relative;
-  }
-  .badge-line1 {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    opacity: 0.95;
-    margin-bottom: 4px;
-  }
-  .badge-line2 {
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-  }
-  .badge::before {
-    content: '★';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #E8A020;
-    color: white;
-    width: 24px; height: 24px;
-    border-radius: 50%;
+    padding: 10px 18px;
+    border-radius: 10px;
     font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.4;
+    box-shadow: 0 4px 16px rgba(240,90,40,0.4);
   }
 
   .tagline-bar {
@@ -273,7 +184,7 @@
   /* ── BODY ── */
   .body { padding: 40px 48px; }
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 36px; align-items: stretch; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 36px; }
 
   .section-title {
     font-size: 16px;
@@ -294,7 +205,7 @@
   .rank-row {
     display: flex;
     align-items: center;
-    padding: 14px 16px;
+    padding: 12px 16px;
     border-radius: 12px;
     background: #fafafa;
     border: 1.5px solid #eee;
@@ -314,9 +225,9 @@
   .rank-row.top::before { background: var(--orange); width: 5px; }
 
   .rank-icon { font-size: 22px; margin-right: 12px; }
-  .rank-info { flex: 1; display: flex; align-items: baseline; gap: 8px; }
-  .rank-name { font-size: 20px; font-weight: 700; color: var(--navy); }
-  .rank-role { font-size: 12px; color: #999; }
+  .rank-info { flex: 1; }
+  .rank-name { font-size: 15px; font-weight: 900; color: var(--navy); }
+  .rank-role { font-size: 11px; color: #999; margin-top: 1px; }
   .rank-pct {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 36px;
@@ -343,16 +254,14 @@
   }
 
   /* ── TEAM BONUS ── */
-  .gen-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+  .gen-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
 
   .gen-card {
-    padding: 14px 16px;
+    text-align: center;
+    padding: 16px 10px;
     border-radius: 12px;
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 90px;
   }
   .gen-card.g1 { background: var(--orange); color: white; }
   .gen-card.g2 { background: var(--teal); color: white; }
@@ -361,52 +270,46 @@
   .gen-label {
     font-size: 13px;
     font-weight: 700;
+    margin-bottom: 6px;
     opacity: 0.85;
     letter-spacing: 1px;
-    text-align: left;
   }
   .gen-pct {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
+    font-size: 48px;
     line-height: 1;
-    text-align: right;
-    margin-top: auto;
   }
-  .gen-pct span { font-size: 24px; }
+  .gen-pct span { font-size: 22px; }
   .gen-desc { font-size: 11px; margin-top: 4px; opacity: 0.75; }
 
-  .bonus-rows { display: flex; flex-direction: column; gap: 8px; margin-top: -15px; }
+  .bonus-rows { display: flex; flex-direction: column; gap: 10px; }
 
   .bonus-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 0 16px;
-    height: 66px;
+    gap: 14px;
+    padding: 14px 16px;
     border-radius: 12px;
     background: #fafafa;
     border: 1.5px solid #eee;
   }
   .bonus-icon {
-    width: 28px; height: 28px;
-    border-radius: 8px;
+    width: 40px; height: 40px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
+    font-size: 20px;
     flex-shrink: 0;
   }
   .bonus-icon.orange { background: var(--orange-light); }
   .bonus-icon.teal { background: var(--teal-light); }
-  .bonus-label { font-size: 16px; font-weight: 700; color: var(--navy); white-space: nowrap; }
-  .bonus-desc { font-size: 11px; color: #999; white-space: nowrap; }
-  .bonus-info { flex: 1; display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+  .bonus-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .bonus-desc { font-size: 11px; color: #999; margin-top: 2px; }
   .bonus-pct {
     margin-left: auto;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--orange);
-    flex-shrink: 0;
+    font-size: 32px;
+    color: var(--teal);
   }
-  .bonus-pct span { font-size: 16px; color: #999; }
 
   /* ── TABLE ── */
   .table-section { margin-bottom: 36px; }
@@ -417,148 +320,61 @@
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-    table-layout: fixed;
   }
   .data-table thead tr { background: var(--navy); }
   .data-table thead th {
     color: white;
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 700;
-    padding: 14px 8px;
+    padding: 12px 16px;
     text-align: center;
     letter-spacing: 1px;
-    line-height: 1.3;
   }
-  .data-table thead th .th-sub {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 4px;
-  }
+  .data-table thead th:first-child { text-align: left; }
   .data-table tbody tr:nth-child(even) { background: #f9f9f9; }
   .data-table tbody tr:nth-child(odd) { background: white; }
-  .data-table tbody tr:first-child td { background: var(--orange-light); }
+  .data-table tbody tr:first-child td { background: var(--orange-light); font-weight: 900; }
 
   .data-table td {
-    padding: 16px 8px;
-    font-size: 18px;
+    padding: 11px 16px;
+    font-size: 13px;
     text-align: center;
     color: var(--navy);
-    font-weight: 600;
   }
-  .data-table td.num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--orange); font-weight: 600; }
-  .data-table td.teal-num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--teal); font-weight: 600; }
-  .data-table td.dash { color: #ccc; font-size: 18px; }
-  .data-table .unit-row td { font-size: 12px; color: #aaa; text-align: right; padding-top: 8px; background: white; font-weight: 400; }
-
-  .data-table .rank-cell {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .data-table .rank-cell .rank-icon {
-    font-size: 16px;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-  .data-table .rank-cell .rank-name {
-    font-size: 18px;
-  }
-  .data-table thead .rank-cell .rank-name { color: white; }
-  .data-table thead .rank-cell .rank-icon { color: transparent; }
+  .data-table td:first-child { text-align: left; font-weight: 700; }
+  .data-table td.num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--orange); }
+  .data-table td.teal-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--teal); }
+  .data-table td.dash { color: #ccc; }
+  .data-table .unit-row td { font-size: 11px; color: #aaa; text-align: right; padding-top: 6px; background: white; }
 
   /* ── SYSTEM FEE ── */
-  .fee-section { margin-bottom: 32px; }
-
-  .section-title-icon {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 14px;
-    letter-spacing: 1px;
-  }
-  .section-title-icon::before {
-    content: '';
-    width: 4px;
-    height: 18px;
-    background: var(--orange);
-    border-radius: 2px;
-  }
+  .fee-section { margin-bottom: 36px; }
 
   .fee-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
-  .fee-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
-  .fee-cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
-
   .fee-card {
-    padding: 12px 14px 14px;
-    border-radius: 12px;
+    text-align: center;
+    padding: 18px 12px;
+    border-radius: 14px;
     border: 2px solid #eee;
-    background: #fafafa;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .fee-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
   }
   .fee-card.f1 { border-color: var(--orange); background: var(--orange-light); }
   .fee-card.f2 { border-color: var(--teal); background: var(--teal-light); }
   .fee-card.f3 { border-color: var(--navy); background: rgba(13,42,58,0.06); }
-  .fee-card.f4 { border-color: #d0d0d0; background: #f5f5f5; }
 
-  .fee-rank {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--navy);
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-    min-height: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .fee-rank { font-size: 13px; font-weight: 900; margin-bottom: 6px; color: var(--navy); }
   .fee-amount {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
+    font-size: 28px;
     color: var(--orange);
     line-height: 1;
-    font-weight: 400;
-    text-align: center;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .fee-amount .num-wrap {
-    position: relative;
-    display: inline-block;
-  }
-  .fee-amount .unit-text {
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
-    color: #999;
-    font-weight: 400;
-    position: absolute;
-    left: 100%;
-    bottom: 4px;
-    margin-left: 4px;
-    white-space: nowrap;
-  }
-  .fee-amount .unit-symbol {
-    font-size: 22px;
-    margin-left: 1px;
   }
   .fee-card.f2 .fee-amount { color: var(--teal); }
   .fee-card.f3 .fee-amount { color: var(--navy); }
-  .fee-card.f4 .fee-amount { color: #555; }
+  .fee-unit { font-size: 12px; color: #999; margin-top: 3px; }
 
   /* ── CONTEST SECTION ── */
   .contest-section {
@@ -758,7 +574,7 @@
   }
   .award-card-title {
     background: rgba(255,255,255,0.1);
-    padding: 10px 14px;
+    padding: 14px 16px;
     font-size: 13px;
     font-weight: 900;
     color: #fff;
@@ -775,8 +591,7 @@
   .award-item {
     display: flex;
     align-items: center;
-    padding: 0 14px;
-    height: 36px;
+    padding: 7px 14px;
     gap: 8px;
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
@@ -890,23 +705,17 @@
   .ins-tag {
     font-size: 12px;
     font-weight: 900;
-    padding: 6px 14px;
+    padding: 5px 14px;
     border-radius: 20px;
     letter-spacing: 1px;
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
   }
   .ins-tag--life    { background: var(--orange); color: #fff; }
-  .ins-tag--nonlife { background: var(--orange); color: #fff; }
+  .ins-tag--nonlife { background: var(--navy);   color: #fff; }
   .ins-title {
     font-size: 21px;
-    margin-top: -6px;
     font-weight: 900;
     color: var(--navy);
-    line-height: 1;
   }
   .ins-count {
     margin-left: auto;
@@ -971,32 +780,31 @@
 <body>
 <div class="page">
 
+  <!-- QUICK ACCESS BAR -->
+  <div class="quick-bar">
+    <a href="https://www.rex1688.com/" target="_blank" rel="noopener noreferrer" class="quick-btn quick-btn--ghost">🌐 恩宇團隊</a>
+    <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener noreferrer" class="quick-btn quick-btn--orange">🔐 業務專區</a>
+  </div>
+
   <!-- HEADER -->
   <div class="header">
     <div class="header-inner">
       <div class="logo-area">
-        <img src="images/img_01_44039bd1b179.png" alt="鼎綸恩宇 logo">
+        <img src="images/img_01_44039bd1b179.png" style="width:110px;height:110px;object-fit:contain;">
         <div class="logo-text">
           <div class="brand">鼎綸恩宇</div>
           <div class="sub">Insurance Brokers ®</div>
-          <div class="sub tag">加盟制度</div>
+          <div class="sub" style="margin-top:4px;color:#F05A28;font-weight:700;">加盟制度</div>
         </div>
       </div>
 
       <div class="header-center">
-        <div class="big-number">98<span>%</span></div>
-        <div class="sub-title">千萬合夥人制度</div>
+        <div class="main-title">加盟最高可達</div>
+        <div class="big-number">98<span>% 收入制度</span></div>
       </div>
 
       <div class="badge-area">
-        <div class="badge">
-          <div class="badge-line1">代理費（來佣）</div>
-          <div class="badge-line2">100% 不打折</div>
-        </div>
-        <div class="quick-bar">
-          <a href="https://www.rex1688.com/" target="_blank" rel="noopener noreferrer" class="quick-btn">🌐 恩宇團隊</a>
-          <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener noreferrer" class="quick-btn">🔐 業務專區</a>
-        </div>
+        <div class="badge">代理費（來佣）<br>100% 不打折</div>
       </div>
     </div>
   </div>
@@ -1012,16 +820,16 @@
 
     <div class="two-col">
       <!-- LEFT: RANK -->
-      <div style="display:flex;flex-direction:column;">
-        <div class="section-title-icon">職級晉升 × 收入比例</div>
-        <div class="section-sub">職位晉升，收入同步晉級！</div>
+      <div>
+        <div class="section-title">職級晉升 × 收入比例</div>
+        <div class="section-sub">越往上走，收入比例越高！</div>
 
-        <div class="rank-ladder" style="flex:1;">
+        <div class="rank-ladder">
           <div class="rank-row top">
             <div class="rank-icon">👑</div>
             <div class="rank-info">
               <div class="rank-name">副總</div>
-              <div class="rank-role">千萬合夥人</div>
+              <div class="rank-role">團隊領導者</div>
             </div>
             <div class="rank-pct">90<small style="font-size:18px;color:#999">%</small></div>
           </div>
@@ -1061,18 +869,18 @@
             <div class="rank-icon">🌱</div>
             <div class="rank-info">
               <div class="rank-name">主任</div>
-              <div class="rank-role">基層戰力</div>
+              <div class="rank-role">專業新人</div>
             </div>
             <div class="rank-pct">40<small style="font-size:16px;color:#999">%</small></div>
           </div>
         </div>
-        <div class="up-arrow">快速晉升，獲利無上限</div>
+        <div class="up-arrow">晉升越快，收入越高 ↑</div>
       </div>
 
       <!-- RIGHT: TEAM BONUS -->
-      <div style="display:flex;flex-direction:column;">
-        <div class="section-title-icon">副總代數獎金（首佣・續佣・產險）</div>
-        <div class="section-sub">建構組織，倍增持續性收入</div>
+      <div>
+        <div class="section-title">副總代數獎金（首佣・續佣・產險）</div>
+        <div class="section-sub">建立團隊，持續創造被動收入！</div>
 
         <div class="gen-cards">
           <div class="gen-card g1">
@@ -1089,39 +897,41 @@
           </div>
         </div>
 
-        <div class="section-title-icon">副總營運效率代數獎金</div>
-        <div class="section-sub">引領高效營運，成就頂尖收入</div>
-        <div class="gen-cards">
-          <div class="gen-card g1">
-            <div class="gen-label">第一代</div>
-            <div class="gen-pct">20<span>%</span></div>
-          </div>
-          <div class="gen-card g2">
-            <div class="gen-label">第二代</div>
-            <div class="gen-pct">10<span>%</span></div>
-          </div>
-          <div class="gen-card g3">
-            <div class="gen-label">第三代</div>
-            <div class="gen-pct">5<span>%</span></div>
-          </div>
-        </div>
-
         <div class="bonus-rows">
           <div class="bonus-item">
             <div class="bonus-icon orange">📈</div>
-            <div class="bonus-info">
-              <span class="bonus-label">育成輔導津貼</span>
-              <span class="bonus-desc">培育人才，享管理獎金</span>
+            <div>
+              <div class="bonus-label">訓練管理獎金</div>
+              <div class="bonus-desc">培育人才，享管理獎金</div>
             </div>
-            <div class="bonus-pct">8<span>%</span></div>
+            <div class="bonus-pct" style="color:var(--orange)">8<span style="font-size:16px">%</span></div>
           </div>
           <div class="bonus-item">
-            <div class="bonus-icon orange">💰</div>
-            <div class="bonus-info">
-              <span class="bonus-label">營運效率獎金</span>
-              <span class="bonus-desc">團隊績效越高，獎金越多</span>
+            <div class="bonus-icon teal">💰</div>
+            <div>
+              <div class="bonus-label">營運效率獎金</div>
+              <div class="bonus-desc">團隊績效越高，獎金越多</div>
             </div>
-            <div class="bonus-pct">25<span>%</span></div>
+            <div class="bonus-pct" style="color:var(--teal)">25<span style="font-size:16px">%</span></div>
+          </div>
+          <div class="bonus-item" style="background:var(--teal-light);border-color:var(--teal);padding:10px 16px;">
+            <div style="display:flex;width:100%;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:1px;white-space:nowrap;">↳ 副總營運效率代數獎金</span>
+              <div style="display:flex;gap:8px;flex:1;justify-content:flex-end;">
+                <div style="text-align:center;background:var(--orange);border-radius:8px;padding:6px 10px;">
+                  <div style="font-size:10px;color:rgba(255,255,255,0.85);font-weight:700;">第一代</div>
+                  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:white;line-height:1;">20<span style="font-size:13px">%</span></div>
+                </div>
+                <div style="text-align:center;background:var(--teal);border-radius:8px;padding:6px 10px;">
+                  <div style="font-size:10px;color:rgba(255,255,255,0.85);font-weight:700;">第二代</div>
+                  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:white;line-height:1;">10<span style="font-size:13px">%</span></div>
+                </div>
+                <div style="text-align:center;background:var(--navy);border-radius:8px;padding:6px 10px;">
+                  <div style="font-size:10px;color:rgba(255,255,255,0.85);font-weight:700;">第三代</div>
+                  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:white;line-height:1;">5<span style="font-size:13px">%</span></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1129,22 +939,22 @@
 
     <!-- TABLE -->
     <div class="table-section">
-      <div class="section-title-icon">各職級獎金對照表</div>
+      <div class="section-title" style="margin-bottom:14px">各職級獎金對照表</div>
       <table class="data-table">
         <thead>
           <tr>
-            <th><span class="rank-cell"><span class="rank-icon">👑</span><span class="rank-name">職級</span></span></th>
+            <th>職級</th>
             <th>績佣</th>
             <th>年終獎金</th>
             <th>產險</th>
-            <th><div>服務津貼</div><div class="th-sub">7-</div></th>
-            <th><div>服務津貼</div><div class="th-sub">2-6</div></th>
-            <th><div>繼續率</div><div class="th-sub">獎金</div></th>
+            <th>服務津貼 7-</th>
+            <th>服務津貼 2-6</th>
+            <th>續繳率獎金</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">👑</span><span class="rank-name">副總</span></span></td>
+            <td>👑 副總</td>
             <td class="num">90</td>
             <td class="num">90</td>
             <td class="num">90</td>
@@ -1153,7 +963,7 @@
             <td class="num">90</td>
           </tr>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">🤝</span><span class="rank-name">協理</span></span></td>
+            <td>🤝 協理</td>
             <td class="num">82</td>
             <td class="num">82</td>
             <td class="num">82</td>
@@ -1162,7 +972,7 @@
             <td class="teal-num">60</td>
           </tr>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">🏢</span><span class="rank-name">總監</span></span></td>
+            <td>🏢 總監</td>
             <td class="num">70</td>
             <td class="num">70</td>
             <td class="num">70</td>
@@ -1171,7 +981,7 @@
             <td class="teal-num">30</td>
           </tr>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">💼</span><span class="rank-name">經理</span></span></td>
+            <td>💼 經理</td>
             <td class="num">60</td>
             <td class="num">60</td>
             <td class="num">60</td>
@@ -1180,7 +990,7 @@
             <td class="dash">—</td>
           </tr>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">📋</span><span class="rank-name">襄理</span></span></td>
+            <td>📋 襄理</td>
             <td class="num">50</td>
             <td class="num">50</td>
             <td class="num">50</td>
@@ -1189,7 +999,7 @@
             <td class="dash">—</td>
           </tr>
           <tr>
-            <td><span class="rank-cell"><span class="rank-icon">🌱</span><span class="rank-name">主任</span></span></td>
+            <td>🌱 主任</td>
             <td class="num">40</td>
             <td class="num">40</td>
             <td class="num">40</td>
@@ -1206,57 +1016,70 @@
 
     <!-- SYSTEM FEE -->
     <div class="fee-section">
-      <div class="section-title-icon">每月系統費</div>
+      <div class="section-title" style="margin-bottom:14px">每月系統費</div>
       <div class="fee-cards">
         <div class="fee-card f1">
-          <div class="fee-rank">副總</div>
-          <div class="fee-amount"><span class="num-wrap">4,000<span class="unit-text">元</span></span></div>
+          <div class="fee-rank">👑 副總</div>
+          <div class="fee-amount">4,000</div>
+          <div class="fee-unit">元 / 月</div>
         </div>
         <div class="fee-card f2">
-          <div class="fee-rank">協理</div>
-          <div class="fee-amount"><span class="num-wrap">2,000<span class="unit-text">元</span></span></div>
+          <div class="fee-rank">🤝 協理</div>
+          <div class="fee-amount">2,000</div>
+          <div class="fee-unit">元 / 月</div>
         </div>
         <div class="fee-card f3">
-          <div class="fee-rank">總監</div>
-          <div class="fee-amount"><span class="num-wrap">1,000<span class="unit-text">元</span></span></div>
+          <div class="fee-rank">🏢 總監</div>
+          <div class="fee-amount">1,000</div>
+          <div class="fee-unit">元 / 月</div>
         </div>
-        <div class="fee-card f4">
-          <div class="fee-rank">經理 / 襄理 / 主任</div>
-          <div class="fee-amount"><span class="num-wrap">250<span class="unit-text">元</span></span></div>
+        <div class="fee-card" style="border-color:#ddd;background:#fafafa;">
+          <div class="fee-rank" style="font-size:11px">💼 經理 ／ 📋 襄理 ／ 🌱 主任</div>
+          <div class="fee-amount" style="color:#555;font-size:24px">250</div>
+          <div class="fee-unit">元 / 月</div>
         </div>
       </div>
     </div>
 
     <!-- VP NODE EXPANSION FEE -->
     <div class="fee-section">
-      <div class="section-title-icon">每月副總節點擴充費</div>
-      <div class="fee-cards cols-3">
-        <div class="fee-card f1">
-          <div class="fee-rank">第一代</div>
-          <div class="fee-amount"><span class="num-wrap">1,000<span class="unit-text">元</span></span></div>
+      <div class="section-title" style="margin-bottom:14px">👑 副總節點擴充費（每月）</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--orange);background:var(--orange-light);">
+          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第一代</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange);line-height:1;">1,000</div>
+          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
         </div>
-        <div class="fee-card f2">
-          <div class="fee-rank">第二代</div>
-          <div class="fee-amount"><span class="num-wrap">400<span class="unit-text">元</span></span></div>
+        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--teal);background:var(--teal-light);">
+          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第二代</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--teal);line-height:1;">400</div>
+          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
         </div>
-        <div class="fee-card f3">
-          <div class="fee-rank">第三代</div>
-          <div class="fee-amount"><span class="num-wrap">200<span class="unit-text">元</span></span></div>
+        <div style="text-align:center;padding:18px 12px;border-radius:14px;border:2px solid var(--navy);background:rgba(13,42,58,0.06);">
+          <div style="font-size:13px;font-weight:900;color:var(--navy);margin-bottom:6px;">第三代</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--navy);line-height:1;">200</div>
+          <div style="font-size:12px;color:#999;margin-top:3px;">元 / 月</div>
         </div>
       </div>
     </div>
 
     <!-- LOW-INCREASE / FLAT / CROSS-ZONE -->
     <div class="fee-section">
-      <div class="section-title-icon">低增高・平階・跨區　首佣代數獎金</div>
-      <div class="fee-cards cols-2">
-        <div class="fee-card f1">
-          <div class="fee-rank">第一代</div>
-          <div class="fee-amount">2<span class="unit-symbol">%</span></div>
+      <div class="section-title" style="margin-bottom:14px">低增高・平階・跨區　首佣代數獎金</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:var(--orange-light);border:2px solid var(--orange);">
+          <div style="font-size:28px;">📈</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:900;color:var(--navy);">第一代</div>
+          </div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--orange);line-height:1;">2<span style="font-size:20px">%</span></div>
         </div>
-        <div class="fee-card f2">
-          <div class="fee-rank">第二代</div>
-          <div class="fee-amount">1<span class="unit-symbol">%</span></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:var(--teal-light);border:2px solid var(--teal);">
+          <div style="font-size:28px;">📊</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:900;color:var(--navy);">第二代</div>
+          </div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--teal);line-height:1;">1<span style="font-size:20px">%</span></div>
         </div>
       </div>
     </div>
@@ -1274,7 +1097,7 @@
           <div class="logo-img-wrap"><img src="images/img_02_2f61c2ac79bb.png" alt="國泰人壽(團險)" /></div>
           <div class="logo-name">國泰人壽(團險)</div>
         </a>
-        <a class="logo-card" href="https://www.fubon.com/life/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.fubon.com/life" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_03_076781aa2066.png" alt="富邦人壽" /></div>
           <div class="logo-name">富邦人壽</div>
         </a>
@@ -1290,11 +1113,11 @@
           <div class="logo-img-wrap"><img src="images/img_06_7cea3bd55411.png" alt="凱基人壽" /></div>
           <div class="logo-name">凱基人壽</div>
         </a>
-        <a class="logo-card" href="https://www.taiwanlife.com/index" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.twlife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_07_47b75d46b350.png" alt="台灣人壽" /></div>
           <div class="logo-name">台灣人壽</div>
         </a>
-        <a class="logo-card" href="https://www.allianz.com.tw/zh_TW.html" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.allianzlife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_08_ac3337136856.png" alt="安聯人壽" /></div>
           <div class="logo-name">安聯人壽</div>
         </a>
@@ -1306,19 +1129,19 @@
           <div class="logo-img-wrap"><img src="images/img_10_e2e2af21135a.png" alt="元大人壽" /></div>
           <div class="logo-name">元大人壽</div>
         </a>
-        <a class="logo-card" href="https://www.fglife.com.tw/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.farglorylife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_11_ece359f5f43c.png" alt="遠雄人壽" /></div>
           <div class="logo-name">遠雄人壽</div>
         </a>
-        <a class="logo-card" href="https://www.pcalife.com.tw/zh/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.prulife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_12_6cd7756b6ea3.png" alt="保誠人壽" /></div>
           <div class="logo-name">保誠人壽</div>
         </a>
-        <a class="logo-card" href="https://www.twfhclife.com.tw/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.botlife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_13_70f1e9320094.png" alt="臺銀人壽" /></div>
           <div class="logo-name">臺銀人壽</div>
         </a>
-        <a class="logo-card" href="https://www.hontai.com.tw/18pages/index/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.hontailife.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_14_8b62f5411184.png" alt="宏泰人壽" /></div>
           <div class="logo-name">宏泰人壽</div>
         </a>
@@ -1330,7 +1153,7 @@
           <div class="logo-img-wrap"><img src="images/img_16_28a25622f95f.png" alt="友邦人壽" /></div>
           <div class="logo-name">友邦人壽</div>
         </a>
-        <a class="logo-card" href="https://life.cardif.com.tw/zh-TW/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.cardif.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_17_b4a2565a4e2a.png" alt="法國巴黎人壽" /></div>
           <div class="logo-name">法國巴黎人壽</div>
         </a>
@@ -1357,57 +1180,57 @@
           <div class="logo-img-wrap"><img src="images/img_18_e563bca6632d.png" alt="新光產險" /></div>
           <div class="logo-name">新光產險</div>
         </a>
-        <a class="logo-card" href="https://www.tmnewa.com.tw/" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_19_8d0418375f85.png" alt="新安東京海上產險" /></div>
-          <div class="logo-name">新安東京海上產險</div>
+        <a class="logo-card" href="https://www.tokiomarine.com.tw" target="_blank" rel="noopener noreferrer">
+          <div class="logo-img-wrap"><img src="images/img_19_8d0418375f85.png" alt="新安東京" /></div>
+          <div class="logo-name">新安東京</div>
         </a>
-        <a class="logo-card" href="https://www.msig-mingtai.com.tw/" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_22_589a90b52f07.png" alt="明台產險" /></div>
-          <div class="logo-name">明台產險</div>
+        <a class="logo-card" href="https://www.mingtai.com.tw" target="_blank" rel="noopener noreferrer">
+          <div class="logo-img-wrap"><img src="images/img_20_ed035a7e960e.png" alt="明台產物" /></div>
+          <div class="logo-name">明台產物</div>
         </a>
-        <a class="logo-card" href="https://www.hotains.com.tw/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.hotai-insurance.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_21_437306ec26b1.png" alt="和泰產險" /></div>
           <div class="logo-name">和泰產險</div>
         </a>
         <a class="logo-card" href="https://www.south-china.com.tw" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_20_ed035a7e960e.png" alt="華南產險" /></div>
-          <div class="logo-name">華南產險</div>
+          <div class="logo-img-wrap"><img src="images/img_22_589a90b52f07.png" alt="華南產物" /></div>
+          <div class="logo-name">華南產物</div>
         </a>
-        <a class="logo-card" href="https://www.wwunion.com/" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_23_3ca16149ca54.png" alt="旺旺友聯產險" /></div>
-          <div class="logo-name">旺旺友聯產險</div>
+        <a class="logo-card" href="https://www.union-ins.com.tw" target="_blank" rel="noopener noreferrer">
+          <div class="logo-img-wrap"><img src="images/img_23_3ca16149ca54.png" alt="旺旺友聯" /></div>
+          <div class="logo-name">旺旺友聯</div>
         </a>
         <a class="logo-card" href="https://www.taian.com.tw" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_24_310da6237844.png" alt="泰安產險" /></div>
-          <div class="logo-name">泰安產險</div>
+          <div class="logo-img-wrap"><img src="images/img_24_310da6237844.png" alt="泰安產物" /></div>
+          <div class="logo-name">泰安產物</div>
         </a>
-        <a class="logo-card" href="https://www.cki.com.tw/" target="_blank" rel="noopener noreferrer">
+        <a class="logo-card" href="https://www.megainsurance.com.tw" target="_blank" rel="noopener noreferrer">
           <div class="logo-img-wrap"><img src="images/img_25_e0d241a5da5a.png" alt="兆豐產險" /></div>
           <div class="logo-name">兆豐產險</div>
         </a>
-        <a class="logo-card" href="https://www.nanshangeneral.com.tw/" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_26_602dc6038f87.png" alt="南山產險" /></div>
-          <div class="logo-name">南山產險</div>
+        <a class="logo-card" href="https://www.nanshanins.com.tw" target="_blank" rel="noopener noreferrer">
+          <div class="logo-img-wrap"><img src="images/img_26_602dc6038f87.png" alt="南山產物" /></div>
+          <div class="logo-name">南山產物</div>
         </a>
         <a class="logo-card" href="https://www.firstins.com.tw" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_27_ad6273cf00f9.png" alt="第一產險" /></div>
-          <div class="logo-name">第一產險</div>
+          <div class="logo-img-wrap"><img src="images/img_27_ad6273cf00f9.png" alt="第一產物" /></div>
+          <div class="logo-name">第一產物</div>
         </a>
-        <a class="logo-card" href="https://www.ctbcins.com/" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_30_a74f0433bfae.png" alt="中國信託產險" /></div>
-          <div class="logo-name">中國信託產險</div>
+        <a class="logo-card" href="https://www.ctbcinsurance.com.tw" target="_blank" rel="noopener noreferrer">
+          <div class="logo-img-wrap"><img src="images/img_28_1222500e3815.png" alt="中信產物" /></div>
+          <div class="logo-name">中信產物</div>
         </a>
         <a class="logo-card" href="https://www.chubb.com/tw-zh" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_29_997dfeff6275.png" alt="安達產險" /></div>
-          <div class="logo-name">安達產險</div>
+          <div class="logo-img-wrap"><img src="images/img_29_997dfeff6275.png" alt="安達產物" /></div>
+          <div class="logo-name">安達產物</div>
         </a>
         <a class="logo-card" href="https://www.tfmi.com.tw" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_28_1222500e3815.png" alt="臺灣產險" /></div>
-          <div class="logo-name">臺灣產險</div>
+          <div class="logo-img-wrap"><img src="images/img_30_a74f0433bfae.png" alt="台灣產物" /></div>
+          <div class="logo-name">台灣產物</div>
         </a>
         <a class="logo-card" href="https://www.cardif.com.tw" target="_blank" rel="noopener noreferrer">
-          <div class="logo-img-wrap"><img src="images/img_17_b4a2565a4e2a.png" alt="法國巴黎產險" /></div>
-          <div class="logo-name">法國巴黎產險</div>
+          <div class="logo-img-wrap"><img src="images/img_17_b4a2565a4e2a.png" alt="法國巴黎產物" /></div>
+          <div class="logo-name">法國巴黎產物</div>
         </a>
       </div>
     </div>
@@ -1469,35 +1292,35 @@
 
         <!-- 服務最好 -->
         <div class="award-card">
-          <div class="award-card-title">🌟 服務最好的10大保經</div>
+          <div class="award-card-title">🌟 服務最好的10大保險經紀人</div>
           <div class="award-list">
-            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安</span><span class="rank-pct">20.5%</span></div>
-            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信</span><span class="rank-pct">18.5%</span></div>
-            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.3%</span></div>
-            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林</span><span class="rank-pct">6.8%</span></div>
-            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德</span><span class="rank-pct">4.9%</span></div>
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安（Aon）</span><span class="rank-pct">20.5%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信（Marsh）</span><span class="rank-pct">18.5%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊（Willis）</span><span class="rank-pct">9.3%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林（WOCA）</span><span class="rank-pct">6.8%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德（Alexander Leed）</span><span class="rank-pct">4.9%</span></div>
             <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
             <div class="award-item"><span class="rank-num">6</span><span class="rank-name">凱基</span><span class="rank-pct">3.9%</span></div>
-            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達</span><span class="rank-pct">2.9%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達（Worldwide）</span><span class="rank-pct">2.9%</span></div>
             <div class="award-item award-highlight"><span class="rank-num">9</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.4%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">和元</span><span class="rank-pct">2.0%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">明佳</span><span class="rank-pct">2.0%</span></div>
-            <div class="award-item"><span class="rank-num">10</span><span class="rank-name">亞太高威</span><span class="rank-pct">2.0%</span></div>
+            <div class="award-item"><span class="rank-num">10</span><span class="rank-name">亞太高威（APACGateway）</span><span class="rank-pct">2.0%</span></div>
           </div>
         </div>
 
         <!-- 最專業 -->
         <div class="award-card">
-          <div class="award-card-title">🎯 最專業的10大保經</div>
+          <div class="award-card-title">🎯 最專業的10大保險經紀人</div>
           <div class="award-list">
-            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">達信</span><span class="rank-pct">21.5%</span></div>
-            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">怡安</span><span class="rank-pct">20.5%</span></div>
-            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.8%</span></div>
-            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">利德</span><span class="rank-pct">6.3%</span></div>
-            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">豐林</span><span class="rank-pct">5.9%</span></div>
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">達信（Marsh）</span><span class="rank-pct">21.5%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">怡安（Aon）</span><span class="rank-pct">20.5%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊（Willis）</span><span class="rank-pct">9.8%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">利德（Alexander Leed）</span><span class="rank-pct">6.3%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">豐林（WOCA）</span><span class="rank-pct">5.9%</span></div>
             <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
             <div class="award-item"><span class="rank-num">7</span><span class="rank-name">凱基</span><span class="rank-pct">3.4%</span></div>
-            <div class="award-item"><span class="rank-num">7</span><span class="rank-name">萬達</span><span class="rank-pct">3.4%</span></div>
+            <div class="award-item"><span class="rank-num">7</span><span class="rank-name">萬達（Worldwide）</span><span class="rank-pct">3.4%</span></div>
             <div class="award-item award-highlight"><span class="rank-num">9</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.4%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">和元</span><span class="rank-pct">2.0%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">明佳</span><span class="rank-pct">2.0%</span></div>
@@ -1506,17 +1329,17 @@
 
         <!-- 最值得推薦 -->
         <div class="award-card">
-          <div class="award-card-title">⭐ 最值得推薦的10大保經</div>
+          <div class="award-card-title">⭐ 最值得推薦的10大保險經紀人</div>
           <div class="award-list">
-            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安</span><span class="rank-pct">21.0%</span></div>
-            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信</span><span class="rank-pct">20.0%</span></div>
-            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊</span><span class="rank-pct">9.3%</span></div>
-            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林</span><span class="rank-pct">7.3%</span></div>
-            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德</span><span class="rank-pct">6.8%</span></div>
+            <div class="award-item rank-1"><span class="rank-num">1</span><span class="rank-name">怡安（Aon）</span><span class="rank-pct">21.0%</span></div>
+            <div class="award-item rank-2"><span class="rank-num">2</span><span class="rank-name">達信（Marsh）</span><span class="rank-pct">20.0%</span></div>
+            <div class="award-item rank-3"><span class="rank-num">3</span><span class="rank-name">韋萊（Willis）</span><span class="rank-pct">9.3%</span></div>
+            <div class="award-item"><span class="rank-num">4</span><span class="rank-name">豐林（WOCA）</span><span class="rank-pct">7.3%</span></div>
+            <div class="award-item"><span class="rank-num">5</span><span class="rank-name">利德（Alexander Leed）</span><span class="rank-pct">6.8%</span></div>
             <div class="award-item"><span class="rank-num">6</span><span class="rank-name">美世</span><span class="rank-pct">3.9%</span></div>
             <div class="award-item"><span class="rank-num">7</span><span class="rank-name">凱基</span><span class="rank-pct">3.4%</span></div>
-            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">亞太高威</span><span class="rank-pct">2.4%</span></div>
-            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">亞太高威（APACGateway）</span><span class="rank-pct">2.4%</span></div>
+            <div class="award-item"><span class="rank-num">8</span><span class="rank-name">萬達（Worldwide）</span><span class="rank-pct">2.4%</span></div>
             <div class="award-item award-highlight"><span class="rank-num">10</span><span class="rank-name">🔸 鼎綸</span><span class="rank-pct">2.0%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">和元</span><span class="rank-pct">2.0%</span></div>
             <div class="award-item"><span class="rank-num">10</span><span class="rank-name">明佳</span><span class="rank-pct">2.0%</span></div>
@@ -1530,27 +1353,27 @@
 
     <!-- BENEFITS -->
     <div class="benefits-section">
-      <div class="benefits-title">✦ 成為合夥人，您將享有 ✦</div>
+      <div class="benefits-title">✦ 加入鼎綸，你將擁有 ✦</div>
       <div class="benefits-grid">
         <div class="benefit-item">
           <div class="benefit-icon">📊</div>
-          <div class="benefit-name">頂級利潤共享</div>
-          <div class="benefit-desc">最高 98% 業界天花板<br>極致讓利，每一分努力都直接變現</div>
+          <div class="benefit-name">高比例收入</div>
+          <div class="benefit-desc">最高 98%<br>付出越多，回報越大</div>
         </div>
         <div class="benefit-item">
           <div class="benefit-icon">👥</div>
-          <div class="benefit-name">組織倍增收益</div>
-          <div class="benefit-desc">超優三代分潤制度<br>建構組織，打造持續性財富系統</div>
+          <div class="benefit-name">團隊獎金</div>
+          <div class="benefit-desc">三代獎金制度<br>建立團隊創造被動收入</div>
         </div>
         <div class="benefit-item">
           <div class="benefit-icon">🎁</div>
-          <div class="benefit-name">營運績效分紅</div>
-          <div class="benefit-desc">育成津貼 ＋ 營運分紅<br>雙軌獎勵，加速實現財務自由</div>
+          <div class="benefit-name">多元獎勵</div>
+          <div class="benefit-desc">管理獎金 ＋ 營運獎金<br>加速收入成長</div>
         </div>
         <div class="benefit-item">
           <div class="benefit-icon">🛡️</div>
           <div class="benefit-name">制度透明</div>
-          <div class="benefit-desc">公開公平<br>實力決定上限，努力直接變現</div>
+          <div class="benefit-desc">公開公平<br>努力看得見，收入看得見</div>
         </div>
       </div>
     </div>
@@ -1559,7 +1382,7 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-left">加盟鼎綸恩宇，共創您的千萬保險事業版圖！</div>
+    <div class="footer-left">加入我們，打造自己的保險事業版圖！</div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
       <div class="footer-right">📞 立即加入・成就未來</div>
       <div style="color:white;font-size:15px;font-weight:900;letter-spacing:2px;">📱 0925-000-049</div>
