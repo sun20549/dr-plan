@@ -65,27 +65,28 @@
   .doc-card .dc-desc{font-size:11px;color:#999;line-height:1.6;}
   .doc-card .dc-btn{margin-top:4px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--orange);}
 
-  /* COMPANY TABLE */
+  /* COMPANY CARDS */
   .co-section{margin-bottom:40px;}
-  .co-table{width:100%;border-collapse:collapse;border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.06);}
-  .co-table thead tr{background:var(--navy);}
-  .co-table thead th{color:white;font-size:13px;font-weight:700;padding:12px 14px;text-align:left;letter-spacing:1px;}
-  .co-table thead th:first-child{width:130px;}
-  .co-table tbody tr:nth-child(even){background:#f9f9f9;}
-  .co-table tbody tr:nth-child(odd){background:white;}
-  .co-table tbody tr:hover{background:var(--orange-light);}
-  .co-table td{padding:12px 14px;font-size:13px;color:var(--navy);font-weight:600;vertical-align:middle;}
-  .co-table td.co-name{font-size:14px;font-weight:900;}
+  .co-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .co-card{background:#fafafa;border:2px solid #eee;border-radius:14px;overflow:hidden;transition:box-shadow .2s,border-color .2s;}
+  .co-card:hover{border-color:var(--orange);box-shadow:0 4px 16px rgba(240,90,40,.1);}
+  .co-card-head{background:var(--navy);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+  .co-card-head .co-name{font-size:14px;font-weight:900;color:white;flex:1;}
+  .co-card-head .co-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);letter-spacing:.5px;}
+  .co-card-body{padding:12px 16px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+  .co-note{width:100%;font-size:11px;color:#aaa;padding-top:2px;}
   .link-row{display:flex;flex-wrap:wrap;gap:6px;}
-  .link-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:16px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.3px;transition:all .2s;white-space:nowrap;}
-  .link-btn.primary{background:var(--orange);color:white;}
-  .link-btn.primary:hover{background:var(--orange-dark);}
+  .link-btn{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:all .2s;white-space:nowrap;}
+  .link-btn.primary{background:var(--orange);color:white;box-shadow:0 2px 8px rgba(240,90,40,.25);}
+  .link-btn.primary:hover{background:var(--orange-dark);transform:translateY(-1px);}
   .link-btn.secondary{background:var(--teal-light);color:var(--teal);border:1px solid rgba(26,107,114,.2);}
   .link-btn.secondary:hover{background:var(--teal);color:white;}
-  .link-btn.ghost{background:rgba(13,42,58,.06);color:var(--navy);border:1px solid rgba(13,42,58,.1);}
+  .link-btn.ghost{background:rgba(13,42,58,.06);color:var(--navy);border:1px solid rgba(13,42,58,.12);}
   .link-btn.ghost:hover{background:var(--navy);color:white;}
   .link-btn.green{background:#e8f5e9;color:#2e7d32;border:1px solid rgba(46,125,50,.2);}
   .link-btn.green:hover{background:#2e7d32;color:white;}
+  .link-btn.gold{background:rgba(232,160,32,.12);color:#b07800;border:1px solid rgba(232,160,32,.3);}
+  .link-btn.gold:hover{background:var(--gold);color:white;}
 
   /* CREDIT CARD SECTION */
   .cc-section{margin-bottom:40px;}
@@ -179,11 +180,11 @@
         <div class="dc-desc">針對新契約使用，個資聲明與書面分析報告合併版</div>
         <div class="dc-btn">⬇ 下載文件 →</div>
       </a>
-      <a href="https://www.ice.com.tw/?page_id=298" target="_blank" class="doc-card">
-        <div class="dc-icon">📲</div>
-        <div class="dc-title">飛鼠推播 APP</div>
-        <div class="dc-desc">即時接收保單狀態推播通知，業務管理必備工具</div>
-        <div class="dc-btn">前往下載 →</div>
+      <a href="https://server2.myapp.net.tw/app/hrdinglun_line/manage/pdf/397_%E5%80%8B%E8%B3%87%E5%91%8A%E7%9F%A5%E8%AA%AA%E6%98%8E%E6%9B%B8%E6%9A%A8%E7%97%85%E6%AD%B7%E5%90%8C%E6%84%8F%E6%9B%B8114.08.pdf" target="_blank" class="doc-card">
+        <div class="dc-icon">📝</div>
+        <div class="dc-title">個資告知說明書暨病歷同意書</div>
+        <div class="dc-desc">個資告知說明書暨病歷同意書（114.08版）</div>
+        <div class="dc-btn">⬇ 下載文件 →</div>
       </a>
     </div>
 
@@ -193,137 +194,170 @@
         <span class="sec-title">壽險公司通路入口</span>
         <span class="sec-sub">經代網 · 建議書 · 表單 · 電子保單</span>
       </div>
-      <table class="co-table">
-        <thead>
-          <tr>
-            <th>保險公司</th>
-            <th>連結入口</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="co-name">新光(原台新)人壽</td>
-            <td><div class="link-row">
-              <a href="https://myweb.taishinlife.com.tw/tbks" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn ghost">表單區</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">新光人壽</td>
-            <td><div class="link-row">
-              <a href="https://brm.skl.com.tw/PRMWeb/Security/Login" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://eform.skl.com.tw/epolicy" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">宏泰人壽</td>
-            <td><div class="link-row">
-              <a href="https://life.hontai.com.tw/HontaiGP/coagent.aspx" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://proposal.hontai.com.tw/Home/Login" target="_blank" class="link-btn secondary">建議書</a>
-              <span style="font-size:11px;color:#999;align-self:center;">電子保單見下方說明</span>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">元大人壽</td>
-            <td><div class="link-row">
-              <a href="https://mcsp.yuantalife.com.tw/mcsp/verify.aspx" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://wips.yuantalife.com.tw/login" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://sites.google.com/view/joinzoe/" target="_blank" class="link-btn ghost">ZOE機器人</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">保誠人壽</td>
-            <td><div class="link-row">
-              <a href="https://www.eservice.pcalife.com.tw/sso/bragentlogin" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn ghost">表單區</a>
-              <a href="https://online.pcalife.com.tw/eservice/pdp" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">安達人壽</td>
-            <td><div class="link-row">
-              <a href="https://www.chubblife-vul.com.tw/acelifevul/house/agentLogin.do" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://esfp.chubblife-vul.com.tw/illustration/login" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://life.chubb.com/tw-zh/partners/sales-support-for-broker.html" target="_blank" class="link-btn ghost">表單區</a>
-              <a href="https://www.chubblife-vul.com.tw/eins-sign/" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">全球人壽</td>
-            <td><div class="link-row">
-              <a href="https://mpos.transglobe.com.tw/app3/#/login-br" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://eservice.transglobe.com.tw/cs/ePolicy/ePolicySP1.xhtml" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">法國巴黎人壽</td>
-            <td><div class="link-row">
-              <a href="https://my.cardif.com.tw/B2B/Login/Index" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn ghost">表單區</a>
-              <a href="https://my.cardif.com.tw/B2C/EPolicyReceipt/Index" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">友邦人壽</td>
-            <td><div class="link-row">
-              <a href="https://portal.aia.com.tw/BABKPortal/executeIndex" target="_blank" class="link-btn primary">經代網</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">安聯人壽</td>
-            <td><div class="link-row">
-              <a href="https://es.allianz.com.tw/partner/PartnershipPortal/" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://es.allianz.com.tw/epolicy/" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">台灣人壽</td>
-            <td><div class="link-row">
-              <a href="https://customer.taiwanlife.com/eSponsor_New/" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://proposal.taiwanlife.com/login" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://ebook.taiwanlife.com/bb/byCompanyCode.aspx?companycode=Broker#" target="_blank" class="link-btn ghost">表單區</a>
-              <a href="https://tcav.taiwanlife.com/signedEpolicy/login" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">第一金人壽</td>
-            <td><div class="link-row">
-              <a href="https://www.firstlife.com.tw/AvivaEAgent/" target="_blank" class="link-btn primary">經代網</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">富邦人壽</td>
-            <td><div class="link-row">
-              <a href="https://agent.fubonlife.com.tw/" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://me.fubonlife.com.tw/E_Policy.Step1.view" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">遠雄人壽</td>
-            <td><div class="link-row">
-              <a href="https://bw.fglife.com.tw/bw/loginBroker.action" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://e-policy.fglife.com.tw/sign/" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">遠雄人壽 旅平險</td>
-            <td><div class="link-row">
-              <a href="https://slm.fglife.com.tw/frontend/loginBroker.action" target="_blank" class="link-btn primary">旅平險專用入口</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">臺銀人壽</td>
-            <td><div class="link-row">
-              <a href="https://elife.twfhclife.com.tw/eservice_jd/login" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://btlife.twfhclife.com.tw/" target="_blank" class="link-btn secondary">建議書</a>
-              <a href="https://eins.twfhclife.com.tw/" target="_blank" class="link-btn green">電子保單</a>
-            </div></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="co-grid">
+
+        <!-- 1 富邦人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">富邦人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://agent.fubonlife.com.tw/" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://me.fubonlife.com.tw/E_Policy.Step1.view" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 2 新光人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">新光人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://brm.skl.com.tw/PRMWeb/Security/Login" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://eform.skl.com.tw/epolicy" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 3 新光（原台新）人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">新光（原台新）人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://myweb.taishinlife.com.tw/tbks" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiMzBmNTMzOWEtN2Q4My00MmZjLWIwMGMtZmZiZmMwNzBiZTAzIiwidCI6IjM3OTAxYzJjLThjYTctNDZhOS1iYWRjLTcyMTZmOTM0ZWY5YSIsImMiOjEwfQ%3D%3D" target="_blank" class="link-btn ghost">表單區</a>
+          </div>
+        </div>
+
+        <!-- 4 台灣人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">台灣人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://customer.taiwanlife.com/eSponsor_New/" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://proposal.taiwanlife.com/login" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://ebook.taiwanlife.com/bb/byCompanyCode.aspx?companycode=Broker#" target="_blank" class="link-btn ghost">表單區</a>
+            <a href="https://tcav.taiwanlife.com/signedEpolicy/login" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 4 凱基人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">凱基人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://ssob.apps.ocp4.kgilife.com.tw/SSOB/?service=https://ipartner.kgilife.com.tw/IPRUIX/cas/doLogin/&sysCode=IBR" target="_blank" class="link-btn primary">經代網</a>
+          </div>
+        </div>
+
+        <!-- 5 安聯人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">安聯人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://es.allianz.com.tw/partner/PartnershipPortal/" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://es.allianz.com.tw/epolicy/" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 6 全球人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">全球人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://mpos.transglobe.com.tw/app3/#/login-br" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://eservice.transglobe.com.tw/cs/ePolicy/ePolicySP1.xhtml" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 7 友邦人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">友邦人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://portal.aia.com.tw/BABKPortal/executeIndex" target="_blank" class="link-btn primary">經代網</a>
+          </div>
+        </div>
+
+        <!-- 8 元大人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">元大人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://mcsp.yuantalife.com.tw/mcsp/verify.aspx" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://wips.yuantalife.com.tw/login" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://sites.google.com/view/joinzoe/" target="_blank" class="link-btn gold">ZOE機器人</a>
+          </div>
+        </div>
+
+        <!-- 9 保誠人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">保誠人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://www.eservice.pcalife.com.tw/sso/bragentlogin" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://www.eservice.pcalife.com.tw/agent" target="_blank" class="link-btn ghost">表單區</a>
+            <a href="https://online.pcalife.com.tw/eservice/pdp" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 10 遠雄人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">遠雄人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://bw.fglife.com.tw/bw/loginBroker.action" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://e-policy.fglife.com.tw/sign/" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 11 第一金人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">第一金人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://www.firstlife.com.tw/AvivaEAgent/" target="_blank" class="link-btn primary">經代網</a>
+          </div>
+        </div>
+
+        <!-- 12 臺銀人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">臺銀人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://elife.twfhclife.com.tw/eservice_jd/login" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://btlife.twfhclife.com.tw/" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://eins.twfhclife.com.tw/" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 13 安達人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">安達人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://www.chubblife-vul.com.tw/acelifevul/house/agentLogin.do" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://esfp.chubblife-vul.com.tw/illustration/login" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://life.chubb.com/tw-zh/partners/sales-support-for-broker.html" target="_blank" class="link-btn ghost">表單區</a>
+            <a href="https://www.chubblife-vul.com.tw/eins-sign/" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 14 法國巴黎人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">法國巴黎人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://my.cardif.com.tw/B2B/Login/Index" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn secondary">建議書</a>
+            <a href="https://my.cardif.com.tw/B2B/BrokerDownload" target="_blank" class="link-btn ghost">表單區</a>
+            <a href="https://my.cardif.com.tw/B2C/EPolicyReceipt/Index" target="_blank" class="link-btn green">電子保單</a>
+          </div>
+        </div>
+
+        <!-- 15 宏泰人壽 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">宏泰人壽</span></div>
+          <div class="co-card-body">
+            <a href="https://life.hontai.com.tw/HontaiGP/coagent.aspx" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://proposal.hontai.com.tw/Home/Login" target="_blank" class="link-btn secondary">建議書</a>
+            <span class="co-note">電子保單見下方宏泰說明</span>
+          </div>
+        </div>
+
+        <!-- 16 遠雄人壽 旅平險 -->
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">遠雄人壽 旅平險</span><span class="co-tag">旅平險</span></div>
+          <div class="co-card-body">
+            <a href="https://slm.fglife.com.tw/frontend/loginBroker.action" target="_blank" class="link-btn primary">旅平險專用入口</a>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- 產險各公司通路 -->
@@ -331,36 +365,28 @@
       <div class="section-header">
         <span class="sec-title">產險公司通路入口</span>
       </div>
-      <table class="co-table">
-        <thead>
-          <tr>
-            <th>保險公司</th>
-            <th>連結入口</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="co-name">和泰產物</td>
-            <td><div class="link-row">
-              <a href="https://agent.hotains.com.tw/iz/login" target="_blank" class="link-btn primary">經代網</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">安達產物</td>
-            <td><div class="link-row">
-              <a href="https://tpeb2b.chubb.com.tw/" target="_blank" class="link-btn primary">經代網</a>
-              <a href="https://tpeb2b.chubb.com.tw/#" target="_blank" class="link-btn secondary">建議書</a>
-              <span style="font-size:11px;color:#999;align-self:center;">旅平險登入詳見右側說明</span>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="co-name">兆豐產物</td>
-            <td><div class="link-row">
-              <a href="https://cki.propra.com/" target="_blank" class="link-btn primary">經代網 / 建議書</a>
-            </div></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="co-grid">
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">和泰產物</span></div>
+          <div class="co-card-body">
+            <a href="https://agent.hotains.com.tw/iz/login" target="_blank" class="link-btn primary">經代網</a>
+          </div>
+        </div>
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">兆豐產物</span></div>
+          <div class="co-card-body">
+            <a href="https://cki.propra.com/" target="_blank" class="link-btn primary">經代網 / 建議書</a>
+          </div>
+        </div>
+        <div class="co-card">
+          <div class="co-card-head"><span class="co-name">安達產物</span></div>
+          <div class="co-card-body">
+            <a href="https://tpeb2b.chubb.com.tw/" target="_blank" class="link-btn primary">經代網</a>
+            <a href="https://tpeb2b.chubb.com.tw/#" target="_blank" class="link-btn secondary">建議書</a>
+            <span class="co-note">旅平險登入詳見安達旅平險說明</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 宏泰人壽特別說明 -->

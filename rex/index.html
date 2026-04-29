@@ -124,6 +124,24 @@
   .contact-btn{display:inline-block;margin-top:12px;background:var(--orange);color:white;padding:12px 28px;border-radius:30px;font-size:13px;font-weight:900;letter-spacing:2px;text-decoration:none;box-shadow:0 4px 14px rgba(240,90,40,.35);transition:transform .2s;}
   .contact-btn:hover{transform:translateY(-2px);}
 
+  /* ── INTERNAL SECTION ── */
+  .internal-section{margin-bottom:36px;}
+  .internal-banner{background:linear-gradient(135deg,var(--navy) 0%,#0a3a6e 100%);border-radius:16px;overflow:hidden;border:2px solid rgba(232,160,32,.3);}
+  .internal-banner-top{padding:20px 28px;display:flex;align-items:center;gap:16px;}
+  .internal-banner-icon{font-size:28px;flex-shrink:0;}
+  .internal-banner-text{flex:1;}
+  .internal-banner-title{font-size:18px;font-weight:900;color:white;letter-spacing:1px;margin-bottom:3px;}
+  .internal-banner-desc{font-size:12px;color:rgba(255,255,255,.5);}
+  .internal-banner-btn{background:var(--gold);color:var(--navy);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:900;letter-spacing:1px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .2s;}
+  .internal-banner-btn:hover{background:#f5b830;transform:translateY(-1px);}
+  .internal-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);}
+  .internal-sub-card{text-decoration:none;background:rgba(255,255,255,.04);padding:16px 20px;display:flex;align-items:center;gap:12px;transition:background .2s;}
+  .internal-sub-card:hover{background:rgba(255,255,255,.1);}
+  .internal-sub-icon{font-size:22px;flex-shrink:0;}
+  .internal-sub-title{font-size:13px;font-weight:900;color:white;margin-bottom:2px;}
+  .internal-sub-desc{font-size:11px;color:rgba(255,255,255,.45);}
+  .internal-sub-arrow{margin-left:auto;font-size:16px;color:rgba(255,255,255,.35);flex-shrink:0;}
+
   /* ── FOOTER ── */
   .footer{margin-top:40px;background:var(--orange);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
   .footer-left .fl-brand{font-size:16px;font-weight:900;color:white;letter-spacing:2px;margin-bottom:2px;}
@@ -275,6 +293,50 @@
         <div class="tc-desc">保單狀態即時通知</div>
         <div class="tc-arrow">前往下載 →</div>
       </a>
+    </div>
+
+    <!-- 內部專區 -->
+    <div class="internal-section">
+      <div class="section-header">
+        <span class="sec-title">內部專區</span>
+        <span class="sec-sub">需要權限才能存取</span>
+      </div>
+      <div class="internal-banner">
+        <div class="internal-banner-top">
+          <div class="internal-banner-icon">🔒</div>
+          <div class="internal-banner-text">
+            <div class="internal-banner-title">恩宇內部資源中心</div>
+            <div class="internal-banner-desc">作業文件、教育訓練、內部公告 · 限授權人員存取</div>
+          </div>
+          <a href="https://sites.google.com/view/ian1688/" target="_blank" rel="noopener" class="internal-banner-btn">進入內部專區 →</a>
+        </div>
+        <div class="internal-sub-grid">
+          <a href="https://server2.myapp.net.tw/app/leishan_line/API/share_doc_pass.php?category=%E5%A3%BD%E9%9A%AA%E4%BD%9C%E6%A5%AD%E6%96%87%E4%BB%B6" target="_blank" rel="noopener" class="internal-sub-card">
+            <div class="internal-sub-icon">📋</div>
+            <div>
+              <div class="internal-sub-title">壽險作業文件</div>
+              <div class="internal-sub-desc">壽險相關作業表單與說明</div>
+            </div>
+            <div class="internal-sub-arrow">→</div>
+          </a>
+          <a href="https://server2.myapp.net.tw/app/leishan_line/API/share_doc_pass.php?category=%E7%94%A2%E9%9A%AA%E4%BD%9C%E6%A5%AD%E6%96%87%E4%BB%B6" target="_blank" rel="noopener" class="internal-sub-card">
+            <div class="internal-sub-icon">🏷️</div>
+            <div>
+              <div class="internal-sub-title">產險作業文件</div>
+              <div class="internal-sub-desc">產險相關作業表單與說明</div>
+            </div>
+            <div class="internal-sub-arrow">→</div>
+          </a>
+          <a href="https://sites.google.com/view/ian1688/" target="_blank" rel="noopener" class="internal-sub-card">
+            <div class="internal-sub-icon">✈️</div>
+            <div>
+              <div class="internal-sub-title">旅遊獎勵</div>
+              <div class="internal-sub-desc">競賽獎勵旅遊相關資訊</div>
+            </div>
+            <div class="internal-sub-arrow">→</div>
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- 聯絡 -->
