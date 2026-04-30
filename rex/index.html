@@ -42,12 +42,25 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 .nav-spacer{flex:1;}
 .nav-cta{background:var(--orange)!important;color:#fff!important;border-radius:20px;padding:8px 14px;margin:8px 0 8px 8px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:1px;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
 .nav-cta:hover{background:var(--orange-dark)!important;}
-.nav-search{display:flex;align-items:center;margin:6px 0 6px 8px;position:relative;}
-.nav-search input{width:140px;padding:7px 36px 7px 30px;border:1.5px solid #ddd;border-radius:20px;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--navy);outline:none;transition:border-color .2s,width .2s;}
-.nav-search input:focus{border-color:var(--orange);width:180px;}
-.search-icon{position:absolute;left:10px;font-size:13px;pointer-events:none;color:#aaa;}
-.search-count{position:absolute;right:10px;font-size:10px;color:#aaa;pointer-events:none;}
+/* 搜尋觸發按鈕（在 nav 裡） */
+.nav-search-trigger{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;margin:8px 0 8px 8px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:20px;font-size:12px;font-weight:700;color:#666;cursor:pointer;transition:all .2s;white-space:nowrap;user-select:none;}
+.nav-search-trigger:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-light);}
+
+/* 懸浮搜尋視窗 */
+.float-search{position:fixed;top:70px;right:calc(50% - 450px + 16px);z-index:9999;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.1);padding:12px 16px;display:none;align-items:center;gap:8px;border:2px solid #eee;min-width:320px;}
+.float-search.open{display:flex;}
+.float-search-input-wrap{position:relative;flex:1;}
+.float-search input{width:100%;padding:8px 50px 8px 32px;border:1.5px solid #ddd;border-radius:20px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--navy);outline:none;transition:border-color .2s;}
+.float-search input:focus{border-color:var(--orange);}
+.float-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;color:#aaa;}
+.float-search-count{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:#aaa;pointer-events:none;white-space:nowrap;}
+.float-search-btns{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.float-search-btn{background:#f0f0f0;border:1.5px solid #ddd;border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:#555;transition:all .2s;user-select:none;}
+.float-search-btn:hover{background:var(--orange);border-color:var(--orange);color:#fff;}
+.float-search-close{background:none;border:none;font-size:16px;color:#aaa;cursor:pointer;padding:2px 4px;border-radius:6px;transition:all .2s;flex-shrink:0;}
+.float-search-close:hover{background:#fee;color:#e00;}
 .search-highlight{background:#FFE57F;border-radius:2px;}
+.search-highlight.current{background:#FF9800;outline:2px solid var(--orange);}
 
 .body{padding:36px 48px 48px;}
 .section-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
@@ -201,11 +214,7 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
   <a href="#sec-system" class="nav-link">📊 建議書系統</a>
   <a href="https://sun20549.github.io/dr-plan/" target="_blank" rel="noopener" class="nav-link">🏢 加盟制度</a>
   <div class="nav-spacer"></div>
-  <div class="nav-search">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="搜尋..." oninput="doSearch(this.value)">
-    <span class="search-count" id="searchCount"></span>
-  </div>
+  <div class="nav-search-trigger" onclick="openSearch()" title="搜尋頁面內容（Ctrl+F）">🔍 搜尋</div>
   <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener" class="nav-cta">🔐 業務專區</a>
 </nav>
 
@@ -374,6 +383,20 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 
 </div>
 
+<!-- 懸浮搜尋視窗 -->
+<div class="float-search" id="floatSearch">
+  <div class="float-search-input-wrap">
+    <span class="float-search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="輸入關鍵字搜尋..." oninput="doSearch(this.value)" onkeydown="searchKeyNav(event)" autofocus>
+    <span class="float-search-count" id="searchCount"></span>
+  </div>
+  <div class="float-search-btns">
+    <div class="float-search-btn" onclick="searchMove(-1)" title="上一筆 (Shift+Enter)">▲</div>
+    <div class="float-search-btn" onclick="searchMove(1)" title="下一筆 (Enter)">▼</div>
+  </div>
+  <button class="float-search-close" onclick="closeSearch()" title="關閉">✕</button>
+</div>
+
 <footer class="footer">
   <div class="footer-left">
     <div class="fl-brand">鼎綸恩宇 Insurance Brokers</div>
@@ -384,31 +407,63 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 
 </div>
 <script>
+let searchMatches=[],searchIdx=0;
+
+function openSearch(){
+  document.getElementById('floatSearch').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(),50);
+}
+function closeSearch(){
+  document.getElementById('floatSearch').classList.remove('open');
+  document.querySelectorAll('.search-highlight').forEach(el=>{
+    const p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize();
+  });
+  searchMatches=[];searchIdx=0;
+  document.getElementById('searchCount').textContent='';
+  document.getElementById('searchInput').value='';
+}
 function doSearch(val){
   document.querySelectorAll('.search-highlight').forEach(el=>{
     const p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize();
   });
+  searchMatches=[];searchIdx=0;
   const countEl=document.getElementById('searchCount');
-  if(!val||val.length<2){countEl.textContent='';return;}
+  if(!val||val.length<1){countEl.textContent='';return;}
   const body=document.querySelector('.body');
   const re=new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
   const walker=document.createTreeWalker(body,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('input,script,style')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-  let count=0,firstMatch=null;
   nodes.forEach(node=>{
     if(!re.test(node.textContent))return;re.lastIndex=0;
     const frag=document.createDocumentFragment();let last=0,m;
     while((m=re.exec(node.textContent))!==null){
       frag.appendChild(document.createTextNode(node.textContent.slice(last,m.index)));
-      const span=document.createElement('span');span.className='search-highlight';span.textContent=m[0];frag.appendChild(span);
-      if(!firstMatch)firstMatch=span;last=m.index+m[0].length;count++;
+      const span=document.createElement('span');span.className='search-highlight';span.textContent=m[0];
+      frag.appendChild(span);searchMatches.push(span);last=m.index+m[0].length;
     }
     frag.appendChild(document.createTextNode(node.textContent.slice(last)));
     node.parentNode.replaceChild(frag,node);re.lastIndex=0;
   });
-  countEl.textContent=count?`${count}筆`:'';
-  if(firstMatch)firstMatch.scrollIntoView({behavior:'smooth',block:'center'});
+  if(searchMatches.length){updateCurrent(0);}
+  else{countEl.textContent='無結果';}
 }
+function updateCurrent(idx){
+  searchMatches.forEach(el=>el.classList.remove('current'));
+  if(!searchMatches.length)return;
+  searchIdx=(idx+searchMatches.length)%searchMatches.length;
+  const cur=searchMatches[searchIdx];
+  cur.classList.add('current');
+  cur.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('searchCount').textContent=`${searchIdx+1}/${searchMatches.length}`;
+}
+function searchMove(dir){if(searchMatches.length)updateCurrent(searchIdx+dir);}
+function searchKeyNav(e){
+  if(e.key==='Enter'){e.preventDefault();searchMove(e.shiftKey?-1:1);}
+  if(e.key==='Escape'){closeSearch();}
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='f'){e.preventDefault();openSearch();}
+});
 </script>
 </body>
 </html>
