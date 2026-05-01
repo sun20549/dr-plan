@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+<link rel="shortcut icon" href="../images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon-180.png">
+<title>保險經紀人制度比較</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --gray-light: #f5f5f5;
+    --gray-mid: #ddd;
+    --gray-text: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .page {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .back-link {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .2s;
+  }
+  .back-link:hover { color: #fff; }
+
+  .title-area {
+    flex: 1;
+    text-align: center;
+  }
+  .title-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    background: rgba(232,160,32,0.08);
+    margin-bottom: 10px;
+  }
+  .title-main {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 4px;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .header-spacer { width: 80px; }
+
+  /* ── DISCLAIMER BAR ── */
+  .disclaimer-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .disclaimer-bar strong { color: var(--gold); margin-right: 6px; }
+
+  /* ── BODY ── */
+  .body-content { padding: 32px 48px 60px; }
+
+  /* ── INTRO ── */
+  .intro {
+    background: linear-gradient(135deg, #fafafa 0%, #f0ede8 100%);
+    border-left: 4px solid var(--orange);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .intro strong { color: var(--navy); }
+
+  /* ── CONTROL BAR ── */
+  .control-bar {
+    background: #fff;
+    border: 2px solid var(--gray-mid);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  }
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .control-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .selector-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .selector-tag {
+    background: var(--teal);
+    color: white;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  select {
+    padding: 8px 14px;
+    border: 1.5px solid var(--gray-mid);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--navy);
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s;
+    min-width: 160px;
+  }
+  select:hover, select:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+
+  .add-btn, .remove-btn {
+    padding: 8px 16px;
+    border: 1.5px dashed var(--orange);
+    background: var(--orange-light);
+    color: var(--orange);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+  }
+  .add-btn:hover {
+    background: var(--orange);
+    color: white;
+  }
+  .remove-btn {
+    border-color: #ccc;
+    background: #f5f5f5;
+    color: #666;
+    border-style: solid;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .remove-btn:hover {
+    background: #e63946;
+    color: white;
+    border-color: #e63946;
+  }
+  .add-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ── COMPARISON GRID ── */
+  .comparison-wrap {
+    overflow-x: auto;
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* COLUMN HEADERS */
+  .col-header {
+    background: var(--navy);
+    color: #fff;
+    text-align: center;
+    padding: 18px 12px !important;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+  }
+  .col-header.self {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+  }
+  .col-header.self::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .col-header .col-name {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .col-header .col-tag {
+    font-size: 10px;
+    opacity: 0.8;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  /* LABEL COLUMN */
+  .row-label {
+    background: var(--gray-light);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 13px;
+    width: 140px;
+    letter-spacing: 1px;
+    border-right: 2px solid #fff;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+  .row-label .label-icon {
+    display: inline-block;
+    width: 4px;
+    height: 14px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .row-label .label-sub {
+    display: block;
+    font-size: 10px;
+    color: #999;
+    font-weight: 500;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* DATA CELLS */
+  .data-cell {
+    color: #444;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .data-cell.self {
+    background: rgba(240, 90, 40, 0.05);
+  }
+  .data-cell strong { color: var(--orange); font-weight: 700; }
+
+  /* RANK TABLE INSIDE CELL */
+  .rank-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .rank-mini-header {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) auto auto;
+    column-gap: 12px;
+    padding: 4px 10px 4px;
+    font-size: 9px;
+    color: #999;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    text-align: right;
+  }
+  .rank-mini-header.single {
+    grid-template-columns: minmax(60px, 1fr) auto;
+  }
+  .rank-mini-header .col-name { text-align: left; }
+  .rank-mini-header .col-sys { min-width: 56px; }
+  .rank-mini-header .col-act { min-width: 56px; }
+  .rank-mini-row {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) auto auto;
+    column-gap: 12px;
+    align-items: center;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    font-size: 12px;
+  }
+  .rank-mini-row.single {
+    grid-template-columns: minmax(60px, 1fr) auto;
+  }
+  .data-cell.self .rank-mini-row {
+    background: #fff;
+    border-color: rgba(240,90,40,0.25);
+  }
+  .rank-mini-name {
+    color: var(--navy);
+    font-weight: 600;
+    min-width: 0;
+    word-break: break-word;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .rank-mini-rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    text-align: right;
+    white-space: nowrap;
+    min-width: 56px;
+  }
+  .rank-mini-rate.sys {
+    color: #888;
+    font-size: 14px;
+  }
+  .rank-mini-rate.act {
+    color: var(--orange);
+  }
+  .rank-mini-rate.same {
+    color: var(--orange);
+    min-width: 80px;
+  }
+  /* 複雜數字(含 % 號 + / + 等)字級自動縮小 */
+  .rank-mini-rate.complex {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  /* DISCOUNT BADGE */
+  .discount-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--teal-light);
+    color: var(--teal);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .data-cell.self .discount-badge {
+    background: rgba(240,90,40,0.15);
+    color: var(--orange);
+  }
+
+  /* SECTION HEADERS IN TABLE */
+  .section-header td {
+    background: var(--navy);
+    color: #fff;
+    padding: 8px 16px !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: left;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-text);
+  }
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    margin-top: 28px;
+    background: #fff8f0;
+    border: 1px solid #f0d4a8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: #7a5a2a;
+    line-height: 1.7;
+  }
+  .info-box strong { color: var(--orange); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.65);
+    padding: 24px 48px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    line-height: 1.8;
+  }
+  .footer a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .footer a:hover { color: #fff; }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    .body-content { padding: 20px 16px 40px; }
+    .header { padding: 20px 16px; }
+    .disclaimer-bar { padding: 10px 16px; font-size: 11px; }
+    .footer { padding: 20px 16px; }
+    .title-main { font-size: 22px; letter-spacing: 2px; }
+    .title-sub { font-size: 10px; }
+    .header-spacer { display: none; }
+    .control-row { flex-direction: column; align-items: stretch; }
+    .selector-group { flex-direction: column; }
+    .selector { width: 100%; }
+    select { width: 100%; min-width: 0; }
+    .row-label { width: 90px; font-size: 11px; padding: 10px 8px; }
+    .comparison-table th, .comparison-table td { padding: 10px 8px; font-size: 11px; }
+    .col-header .col-name { font-size: 16px; }
+    .rank-mini-row { padding: 4px 8px; font-size: 10px; column-gap: 6px; }
+    .rank-mini-rate { font-size: 13px; min-width: 40px; }
+    .rank-mini-rate.same { min-width: 56px; }
+    .rank-mini-rate.complex { font-size: 9px; }
+    .rank-mini-header { padding: 4px 8px 2px; font-size: 8px; column-gap: 6px; }
+    .rank-mini-header .col-sys, .rank-mini-header .col-act { min-width: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <a href="../" class="back-link">← 回鼎綸恩宇</a>
+      <div class="title-area">
+        <div class="title-tag">CAREER COMPARISON</div>
+        <div class="title-main">保險經紀人制度比較</div>
+        <div class="title-sub">INSURANCE BROKER SYSTEM COMPARISON</div>
+      </div>
+      <div class="header-spacer"></div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER BAR -->
+  <div class="disclaimer-bar">
+    各公司制度可能已調整,實際內容請以各公司最新公告為準。除鼎綸外,其他公司均以代號呈現。
+  </div>
+
+  <!-- BODY -->
+  <div class="body-content">
+
+    <!-- INTRO -->
+    <div class="intro">
+      <strong>📊 如何使用這份比較表?</strong><br>
+      預設顯示<strong>「鼎綸」</strong>與另一家保經公司並列對照。透過下方選單切換對照公司,點擊<strong>「+ 新增對照」</strong>可同時比較最多 3 家(鼎綸 + 2 家)。表中所有數字皆為制度實際發放比例,可從職階分潤、續年度佣金、組織獎金、績效獎金等多面向評估。
+    </div>
+
+    <!-- CONTROL BAR -->
+    <div class="control-bar">
+      <div class="control-row">
+        <span class="control-label">選擇對照公司</span>
+        <div class="selector-group" id="selectorGroup">
+          <!-- 動態插入 -->
+        </div>
+        <button class="add-btn" id="addBtn" onclick="addCompare()">+ 新增對照</button>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="comparison-wrap">
+      <table class="comparison-table" id="comparisonTable">
+        <!-- 動態插入 -->
+      </table>
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="info-box">
+      <strong>📌 名詞說明:</strong><br>
+      • <strong>FYC(First Year Commission)</strong>:首年度佣金,新契約成立第一年由保險公司支付的佣金。<br>
+      • <strong>代理費率</strong>:保險公司支付給保經公司的佣金比例。「代理費率之80%」表示保經公司另抽取20%作為公司營運費用。<br>
+      • <strong>職級率(K值)</strong>:不同職級可分得佣金的百分比。<br>
+      • <strong>續年度佣金</strong>:保單第2年起,客戶持續繳費時所產生的續期佣金。<br>
+      • <strong>代數獎金</strong>:組織內主管對下線單位收益的分潤,通常分一代、二代、三代。<br>
+      • <strong>K值制度</strong>:保險公司獎勵金以「主管 K值 - 夥伴 K值」差額分配,鼓勵組織發展。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    本資料僅供制度結構參考,不構成任何加盟建議。<br>
+    瞭解鼎綸恩宇加盟制度詳情 → <a href="../">回首頁</a>　|　立即諮詢 📱 0925-000-049
+  </div>
+
+</div>
+
+<script>
+// 保險經紀人制度資料庫
+// 資料時點:2022/04
+// 鼎綸具名,其他公司諧音匿名化
+// 注意:此資料純供制度結構參考,各公司制度可能已調整
+
+// 保險經紀人制度資料庫
+// 資料時點:2022/04(其他公司)/ 2025-2026 最新(鼎綸)
+// 鼎綸具名,其他公司諧音匿名化
+
+const COMPANIES = [
+  {
+    id: 'dinglun',
+    name: '鼎綸',
+    isSelf: true,
+    discount: '代理費(來佣)100% 不打折',
+    ranks: [
+      { name: '🌱 主任', system: '40%', actual: '40%' },
+      { name: '📋 襄理', system: '50%', actual: '50%' },
+      { name: '💼 經理', system: '60%', actual: '60%' },
+      { name: '🏢 總監', system: '70%', actual: '70%' },
+      { name: '🤝 協理', system: '82%', actual: '82%' },
+      { name: '👑 副總', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '2-6年:保費 × 服津率 × 總監30% / 協理60% / 副總90%\n7年起:保費 × 服津率 × 職級率',
+    persistency: '保費 × 獎金率 × 總監30% / 協理60% / 副總90%',
+    org_bonus: '【副總代數獎金】(首佣・續佣・產險)\n第一代5% / 第二代2% / 第三代1%\n\n【低增高 / 平階 / 跨區】首佣代數獎金\n第一代2% / 第二代1%',
+    perf_bonus: '【副總營運效率代數獎金】\n第一代20% / 第二代10% / 第三代5%\n\n育成輔導津貼:8%\n營運效率獎金:25%',
+    insurer_reward: '—',
+    other: '【產險】比照壽險職級率(同%數)\n\n【每月系統費】\n副總4,000元 / 協理2,000元 / 總監1,000元\n經理・襄理・主任250元\n\n【每月副總節點擴充費】\n第一代1,000元 / 第二代400元 / 第三代200元\n\n業界天花板:最高 98%(含育成津貼)'
+  },
+  {
+    id: 'a',
+    name: '富仕大',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '40%', actual: '40%' },
+      { name: '業務主任', system: '48%', actual: '48%' },
+      { name: '業務襄理', system: '56%', actual: '56%' },
+      { name: '業務經理', system: '64%', actual: '64%' },
+      { name: '儲備處經理(含)以上', system: '72%', actual: '72%' },
+      { name: '職場負責人/自負盈虧', system: '72%+15%', actual: '72%+15%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 30%',
+    persistency: '保費 × 獎金率 ×\n個人最高4%/直轄組最高2%/儲備處最高2%/通訊處最高2%',
+    org_bonus: '通訊處:第一代2%/第二代1%/第三代0.5%\n儲備處:第一代2%/第二代0.5%\n主管組:第一代2%',
+    perf_bonus: '通訊處年終超額獎勵\n200-300萬:1%/300-500萬:2%/500萬以上:3%\n每月個人行銷績效獎勵\n5-8萬:4%/8-10萬:5%/10-15萬:6%\n15-20萬:8%/20萬以上:10%',
+    insurer_reward: '—',
+    other: '財務補助(登錄後一年)\n6萬:5千/12萬:2萬/25萬:4萬/40萬:6萬/50萬:8萬'
+  },
+  {
+    id: 'b',
+    name: '富義達',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '60%', actual: '48%' },
+      { name: '業務主任', system: '80%', actual: '64%' },
+      { name: '業務襄理', system: '85%', actual: '68%' },
+      { name: '業務區經理', system: '90%', actual: '72%' },
+      { name: '業務處經理(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務總監(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務協理(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務副總(需付管銷)', system: '90%+12.5%', actual: '72%+10%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 80%',
+    yearend: '保費 × 代理費率 × 職級率 × 80%',
+    service: '無',
+    persistency: '發放第13個月繼續率獎金\n保費 × 獎金率 ×\n總監3%/處經理35%/經手人40%(需綁出席率)',
+    org_bonus: '區:第一代3.2%/第二代1.6%/第三代0.8%\n處:第一代1.2%/第二代0.8%/第三代0.4%\n(已回推實際代理費率)',
+    perf_bonus: '處達成獎金:整處單位業績達360萬以上,達成獎金3%',
+    insurer_reward: '—',
+    other: '處經理(含)以上經營利潤:每月以整處代理費10%發放經營績效獎金(須先扣除合署辦公室管銷費用)\n連鎖津貼:業務總監1.2%/業務協理2%/業務副總2.4%\n有認股制度'
+  },
+  {
+    id: 'c',
+    name: '富贏瑞智',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務主任', system: '50%', actual: '50%' },
+      { name: '業務襄理', system: '58%', actual: '58%' },
+      { name: '區經理', system: '65%', actual: '65%' },
+      { name: '處經理', system: '72%', actual: '72%' },
+      { name: '總監', system: '76%', actual: '76%' },
+      { name: '營運總監', system: '80%', actual: '80%' },
+      { name: '地區營運長', system: '84%', actual: '84%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 職級率 × 年終率',
+    service: '保費 × 服津率 × 50% × 職級率',
+    persistency: '保費 × 獎金率 ×\n主任10%/襄理15%/區經理45%/處經理55%/總監65%/營運總監70%/營運長70%\n營運長另領營運中心10%',
+    org_bonus: '營運總監:第一代4%/第二代2%/第三代1%\n營運長:第一代1%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '低增高:2%/盈餘20%分紅\n平階:總監、處經理2%/區經理、襄理3.5%/主任4%\n利潤中心制:營運中心 FYB 9% + 行政費 - 管銷'
+  },
+  {
+    id: 'd',
+    name: '合誠',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '60%', actual: '48%' },
+      { name: '主任', system: '70%', actual: '56%' },
+      { name: '副理', system: '80%', actual: '64%' },
+      { name: '經理', system: '85%', actual: '68%' },
+      { name: '區經理', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 職級率 × 80%',
+    yearend: '無',
+    service: '無',
+    persistency: '區經理階達成下列條件,取得繼續率獎金資格:\nA. 個人直轄區FYB達100萬以上\nB. 第13及第25工作月繼續率達82%及80%以上\n發放:個人直轄區為該區獎金50%,所屬代數區為10%(計算至第三代)',
+    org_bonus: '區經理:第一代4.8%/第二代3.2%/第三代1.6%\n經理:第一代4.8%/第二代3.2%/第三代1.6%\n(已回推實際代理費率)',
+    perf_bonus: 'A. 副理階以下:FYC達10萬以上,加發個人達成FYC × 5%\nB. 經理階以上:FYC達30萬以上,加發個人達成FYC × 6%\n(FYC = 行銷佣金 + 組織輔導佣金 + 組織代數佣金)',
+    insurer_reward: '—',
+    other: '無'
+  },
+  {
+    id: 'e',
+    name: '臺銘',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '40%' },
+      { name: '業務主任', system: '60%', actual: '48%' },
+      { name: '業務襄理', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '區經理', system: '90%', actual: '72%' },
+      { name: '通訊處經理', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '無',
+    service: '保費 × 服津率 × 30%',
+    persistency: '13月繼續率:處經理:全處 + 保費 × 獎金率 ×(1.4%~3.5%)\n總監、協理、副總:體系 + 保費 × 獎金率 ×(0.2%~0.5%)\n25月繼續率:處經理:全處 + 保費 × 獎金率 ×(0.7%~2.8%)\n總監、協理、副總:體系 + 保費 × 獎金率 ×(0.1%~0.4%)\n*早會等公司活動活動率80%\n*協理與副總為疊加方式計算',
+    org_bonus: '處:第一代1.2%/第二代0.8%/第三代0.4%\n區:第一代3.2%/第二代1.6%/第三代0.8%\n(已回推實際代理費率)',
+    perf_bonus: '保費 × 代理費率 ×\n個人2.4%/區經理直轄1.6%/通訊處1.6%(已回推實際代理費率)',
+    insurer_reward: '—',
+    other: '1. 通訊處經理(含)以上,每月1,500元勞保補貼及團保\n2. 通訊處經理,額外加發整處代理費率1.2%'
+  },
+  {
+    id: 'f',
+    name: '臺達',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '40%' },
+      { name: '業務主任', system: '60%', actual: '48%' },
+      { name: '業務襄理', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '區經理', system: '90%', actual: '72%' },
+      { name: '處經理', system: '90%', actual: '72%' },
+      { name: '總監', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '待查證',
+    service: '保費 × 服津率 × 30%\n早會活動率80% + 半年一件',
+    persistency: '13月繼續率:個人:保費 × 獎金率 ×(0.4%~1%)\n處經理:全處 + 保費 × 獎金率 ×(1.4%~3.5%)\n總監:體系 + 保費 × 獎金率 ×(0.6%~1.5%)\n25月繼續率:個人:保費 × 獎金率 ×(0.4%~1%)\n處經理:全處 + 保費 × 獎金率 ×(0.7%~2.8%)\n總監:體系 + 保費 × 獎金率 ×(0.3%~1.2%)\n*早會活動率80%',
+    org_bonus: '區經理:第一代4%/第二代2%/第三代1%\n處經理:第一代1.5%/第二代1%/第三代0.5%\n總監:全體系3%',
+    perf_bonus: '個人FYB 3%\n區經理:區直轄 + FYB 2%\n處經理以上:全處 + FYB 2%',
+    insurer_reward: '待查證',
+    other: '分紅:年終繼續率服津的75% = 分紅\n分紅25%分給各階,其餘給營運長'
+  },
+  {
+    id: 'g',
+    name: '泰揚',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '60%', actual: '48%' },
+      { name: '業務主任', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '業務區經理', system: '90%', actual: '72%' },
+      { name: '處經理', system: '90%', actual: '72%' },
+      { name: '協理', system: '90%', actual: '72%' },
+      { name: '副總', system: '90%', actual: '72%' },
+      { name: '資深副總', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 80%',
+    yearend: '無',
+    service: '保費 × 代理費率 ×\n個人2.4%/直轄組1.6%/處1.6%(已回推實際代理費率)',
+    persistency: '無',
+    org_bonus: '處:第一代1.2%/第二代0.8%/第三代0.4%\n區:第一代3.2%/第二代1.6%/第三代0.8%\n(已回推實際代理費率)',
+    perf_bonus: '(每半年,已回推實際代理費率)\n協理代理費187.5萬體系0.8%\n副總代理費375萬體系0.8%\n資深副總代理費750萬體系0.8%\n達成獎金:個人最高年度代理費150萬加發5.6%\n處最高年度代理費500萬體系4%\n協理最高年度代理費1875萬體系1.6%\n副總最高年度代理費3750萬體系1.6%\n資深副總最高年度代理費7500萬體系1.6%',
+    insurer_reward: '—',
+    other: '營運費用:處經理(含)以上:代理費之1.2%\n處經理津貼:最高做代理費125萬加發7.2%\n平階輔導津貼:由上一代主管提撥2%\n新秀獎勵專案請見內部專區(已回推實際代理費率)'
+  },
+  {
+    id: 'h',
+    name: '達承',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '60%', actual: '48%' },
+      { name: '主任', system: '80%', actual: '64%' },
+      { name: '襄理', system: '85%', actual: '68%' },
+      { name: '經理', system: '90%', actual: '72%' },
+      { name: '職場負責人/自負盈虧', system: '—', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '待查證',
+    service: '保費 × 服津率 × 80%\n2-6年給事業體 / 7年起給個人',
+    persistency: '保費 × 獎金率 × 80%\n給事業體',
+    org_bonus: '經理:第一代3.2%/第二代1.6%/第三代0.8%\n通訊處:第一代1.2%/第二代0.8%/第三代0.4%\n(實際%數)',
+    perf_bonus: '50萬內:1%/51-100萬以內:3%\n101萬超出:6%/201萬超出:9%',
+    insurer_reward: '待查證',
+    other: '30-50萬:2%/50-100萬:4%/100-200萬:8%\n200-300萬:12%/300-400萬:16%/400萬以上:20%'
+  },
+  {
+    id: 'i',
+    name: '力科安',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '55%-70%', actual: '44%-56%' },
+      { name: '襄理', system: '75%', actual: '60%' },
+      { name: '副理', system: '80%', actual: '64%' },
+      { name: '經理', system: '85%', actual: '68%' },
+      { name: '總監', system: '92%', actual: '73.6%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率\n個人60%/經理60%+10%/總監60%+20%',
+    service: '無',
+    persistency: '保費 × 年期換算係數 ×\n13個月(達80%):5%\n25個月(達75%):3%',
+    org_bonus: '無(只有 Leader 獎金)',
+    perf_bonus: 'Leader 獎金\n第一組:5萬/第二組:10萬/第三組:15萬\n維持六組:100萬/年',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'j',
+    name: '詠煦',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '50%', actual: '40%' },
+      { name: '副理', system: '60%', actual: '48%' },
+      { name: '區經理', system: '70%', actual: '56%' },
+      { name: '處經理', system: '80%', actual: '64%' },
+      { name: '事業體協理', system: '90%', actual: '72%' },
+      { name: '事業部資深協理', system: '100%', actual: '80%' },
+      { name: '資深副總', system: '100%', actual: '80%' },
+      { name: '執行副總', system: '100%', actual: '80%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率\n個人60%/協理60%+10%/資深協理以上60%+20%',
+    service: '保費 × 服津率 × 80%(給事業部資深協理以上)',
+    persistency: '保費 × 獎金率 × 80% ×\n事業部以上100% / 事業體50%',
+    org_bonus: '資協以上:第一代4.8%/第二代1.6%/第三代0.8%\n無限代:資深副總0.4%/執行副總0.8%/營運長1.6%\n行政中心:第一代0.8%/第二代0.4%/第三代0.2%\n(已回推實際代理費率)',
+    perf_bonus: '最高250萬加發\n資深協理0.96% / 協理2.24%\n(已回推實際代理費率)',
+    insurer_reward: '轉換獎勵旅遊',
+    other: '專職獎金:保費 × 代理費 × 4%\n(已回推實際代理費率)(特定商品)'
+  },
+  {
+    id: 'k',
+    name: '兩岸興福',
+    discount: '代理費率之90%',
+    ranks: [
+      { name: '專員', system: '50%', actual: '45%' },
+      { name: '主任', system: '60%', actual: '54%' },
+      { name: '襄理', system: '65%', actual: '58.5%' },
+      { name: '副理', system: '70%', actual: '63%' },
+      { name: '區經理', system: '75%', actual: '67.5%' },
+      { name: '處經理', system: '80%', actual: '72%' },
+      { name: '總監', system: '83%', actual: '74.7%' },
+      { name: '業務協理/業務副總', system: '86%/88%', actual: '77.4%/79.2%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 90%',
+    renewal: '保費 × 代理費率 × 90% × 85.5% × 襄理以下50% / 副理60% / 區經理70% / 處經理90% / 總監95% / 協理98% / 副總100%',
+    yearend: '保費 × 代理費率 × 90% × 年終率 × 85.5% ×\n區經理以下25% / 處經理總監40% / 協理49% / 副總50%',
+    service: '保費 × 服津率 × 95% × 77% ×\n區經理以下25% / 處經理30% / 總監35% / 協理49% / 副總50%',
+    persistency: '保費 × 獎金率 × 95% × 77% ×\n區經理以下25% / 處經理30% / 總監35% / 協理49% / 副總50%',
+    org_bonus: '區經理以下:一3%二1%\n處經理總監:一1.5%二0.5%\n業務協理:一1%二0.5%\n業務副總斷代\n(皆由上一階主管撥出)',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'l',
+    name: '盤實',
+    discount: '代理費率之95%',
+    ranks: [
+      { name: '儲備主管', system: '57%', actual: '54.1%' },
+      { name: '業務經理', system: '69%', actual: '65.5%' },
+      { name: '業務總監', system: '77%', actual: '73.1%' },
+      { name: '資深業務總監', system: '81%', actual: '77%' },
+      { name: '業務協理/副總', system: '85%', actual: '80.8%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 95%',
+    renewal: '保費 × 代理費率 × 職級率 × 95%',
+    yearend: '保費 × 代理費率 × 年終率 × 80% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    service: '(第六年起)保費 × 服津率 × 50% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    persistency: '保費 × 獎金率 × 50% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    org_bonus: '第一代2%/第二代1%/第三代0.5%/第四代0.25%/第五代0.25%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'm',
+    name: '華翰',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '50%' },
+      { name: '業務主任', system: '65%', actual: '65%' },
+      { name: '業務副理', system: '70%', actual: '70%' },
+      { name: '業務經理', system: '75%', actual: '75%' },
+      { name: '資深經理', system: '80%', actual: '80%' },
+      { name: '事業部總監', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '個人:保費 × 服津率 × 30%(2-6年) / 50%(7年後)\n事業部總監:保費 × 服津率 × 10%(2-6年) / 20%(7年後)',
+    persistency: '13及25個月\n個人:保費 × 列表獎金率 × 60%\n事業部總監:保費 × 列表獎金率 × 20%',
+    org_bonus: '第一代3%/第二代0.3%/第三代0.2%',
+    perf_bonus: '無',
+    insurer_reward: '待查證',
+    other: '待查證'
+  },
+  {
+    id: 'n',
+    name: '功盛',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '專員', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '區襄理', system: '68%', actual: '68%' },
+      { name: '區副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '事業部負責人', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率\n(若出席率未達70%,與事業部均分)',
+    service: '續佣發放時:招攬人:無 / 事業部:保費 × 服津率 × 86%\n續佣停發後:招攬人/事業部:皆為保費 × 服津率 × 43%',
+    persistency: '保費 × 獎金率 × 86%(限事業部)',
+    org_bonus: '第一代5%/第二代2%/第三代1%',
+    perf_bonus: '事業部月績效獎金:\nFYC≥30萬+1% / FYC≥60萬+2%\nFYC≥150萬+3% / FYC≥200萬+4%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '保費 × 代理 × 80%(6%給事業部)'
+  },
+  {
+    id: 'o',
+    name: '遠建利民壹',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業專', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '68%', actual: '68%' },
+      { name: '副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '資深經理', system: '80%', actual: '80%' },
+      { name: '事業部', system: '82%', actual: '82%' },
+      { name: '營業部', system: '90%+2%', actual: '90%+2%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '續佣發放時:招攬人:無 / 事業部:保費 × 服津率 × 86%\n續佣停發後:招攬人/事業部:皆為保費 × 服津率 × 43%',
+    persistency: '保費 × 獎金率 × 86%/90%+2%(限事業部/營業部)',
+    org_bonus: '第一代5%/第二代2%/第三代1%',
+    perf_bonus: 'FYC≥30萬+1% / FYC≥60萬+2%\nFYC≥150萬+3% / FYC≥200萬+4%',
+    insurer_reward: '—',
+    other: '保費 × 代理 × 80%(6%給事業部)'
+  },
+  {
+    id: 'p',
+    name: '磊善系統',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '50%' },
+      { name: '業務襄理', system: '60%', actual: '60%' },
+      { name: '業務經理', system: '70%', actual: '70%' },
+      { name: '業務總監', system: '77%', actual: '77%' },
+      { name: '業務副總', system: '80%', actual: '80%' },
+      { name: '執行業務副總', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 10%',
+    service: '無',
+    persistency: '待查證',
+    org_bonus: '待查證',
+    perf_bonus: '保費 × 獎金率 × 82%\nFYB需達:組360萬 / 區720萬 / 處2000萬',
+    insurer_reward: '待查證',
+    other: '—'
+  },
+  {
+    id: 'q',
+    name: '維晟',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '45%', actual: '45%' },
+      { name: '業務主任', system: '55%', actual: '55%' },
+      { name: '業務襄理', system: '65%', actual: '65%' },
+      { name: '區經理', system: '70%', actual: '70%' },
+      { name: '處經理', system: '76%', actual: '76%' },
+      { name: '業務總監', system: '83%', actual: '83%' },
+      { name: '業務協理', system: '89%+1%營運獎金', actual: '89%+1%營運獎金' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 90% × 職級率',
+    service: '保費 × 服津率 × 50% × 職級率\n10年期以下:第7年開始發放\n11年期以上:第2年開始發放',
+    persistency: '保費 × 獎金率 ×\n業務專員5%/業務主任5%/業務襄理5%\n區經理15%/處經理30%/業務總監50%/業務協理75%',
+    org_bonus: '第一代2%/第二代1%/第三代0.5%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'r',
+    name: '巨復',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務顧問', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '65%', actual: '65%' },
+      { name: '區副理', system: '70%', actual: '70%' },
+      { name: '區經理', system: '75%', actual: '75%' },
+      { name: '處經理', system: '82%', actual: '82%' },
+      { name: '協理', system: '86%', actual: '86%' },
+      { name: '總監', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '總監90%/協理86%/處經理82%/區經理、區副理80%/襄理以下75%',
+    yearend: '總監90%/協理86%/處經理82%/區經理75%/區副理以下70%',
+    service: '總監90%/協理86%/處經理70%/區經理、區副理45%/襄理以下30%',
+    persistency: '總監90%/協理86%/處經理70%/區經理、區副理45%/襄理以下30%',
+    org_bonus: '副總:一代處2.5%/二代處1%/三代處0.5%\n總監:第一代1%/協理:第一代1%/處經理:第一代2%\n區經理:第一代2.5%/第二代1%/第三代0.5%',
+    perf_bonus: '總監:100-200萬:1%/200-300萬:2%/300-400萬:3%/400萬以上:4%\n協理:50-100萬:1%/100-150萬:2%/150-200萬:3%/200萬以上:4%\n處經理:30-60萬:1%/60-90萬:2%/90-120萬:3%/120萬以上:4%',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 's',
+    name: '信庵',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '行銷專員', system: '50%', actual: '50%' },
+      { name: '行銷主任', system: '60%', actual: '60%' },
+      { name: '行銷襄理', system: '70%', actual: '70%' },
+      { name: '業務/行銷經理', system: '75%', actual: '75%' },
+      { name: '業務處經理/首席行銷經理', system: '80%', actual: '80%' },
+      { name: '業務/行銷總監', system: '82%', actual: '82%' },
+      { name: '業務/行銷協理', system: '86%', actual: '86%' },
+      { name: '執行/業務副總/自負盈虧', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 職級率\n2-6年給公司 / 7年起套組織',
+    persistency: '保費 × 獎金率 ×\n業務副總90%/業務行銷協理86%/業務行銷總監50%/業務處經理首席行銷經理50%',
+    org_bonus: 'UM以上主管,獎勵金 × K值套組織,首續佣2%',
+    perf_bonus: '營運中心績效獎金:\n100-150萬:1%/150-200萬:1.5%\n200-250萬:2%/250-300萬:2.5%\n300萬以上:3%\n系統營運獎金:\n250-500萬:0.5%/500萬以上:1%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '分紅:公司盈餘20%'
+  },
+  {
+    id: 't',
+    name: '凡亞',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '專員', system: '40%', actual: '40%' },
+      { name: '主任', system: '50%', actual: '50%' },
+      { name: '襄理', system: '60%', actual: '60%' },
+      { name: '副理', system: '68%', actual: '68%' },
+      { name: '區經理', system: '74%', actual: '74%' },
+      { name: '資深經理', system: '78%', actual: '78%' },
+      { name: '處經理', system: '83%', actual: '83%' },
+      { name: '協理/副總/營運長', system: '86%/90%/92%', actual: '86%/90%/92%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '營副90/協處80/資70/區65/副60/襄55/主50/專40',
+    yearend: '營運長、副總經理90% / 協理、處經理80% / 資深經理以下70%',
+    service: '營副80/協處70/資60/區55/副襄主50/專40\n第七年開始發放',
+    persistency: '營運長、副總經理80% / 協理70% / 處經理50%',
+    org_bonus: '營運長:一0.5%/二0.3%\n副總:一1%/二0.5%\n協理:一2%/二0.5%\n處經理:一1.5%/二0.5%\n資深經理:一2.5%/二1%\n(除營運長外,皆跟主管對拆)',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'u',
+    name: '世瑋',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '顧問', system: '60%', actual: '60%' },
+      { name: '主任', system: '65%', actual: '65%' },
+      { name: '襄理', system: '70%', actual: '70%' },
+      { name: '區經理', system: '75%', actual: '75%' },
+      { name: '處經理', system: '80%', actual: '80%' },
+      { name: '事業部', system: '84%', actual: '84%' },
+      { name: '總監', system: '86%', actual: '86%' },
+      { name: '營運中心協理/副總', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '2-6年:營運中心90/總監40/事業部30/處經理20\n7年起:營運中心90/總監80/事業部70/處經理60/其他20',
+    persistency: '保費 × 獎金率 ×\n營運中心90/總監80/事業部70/處經理60/其他20',
+    org_bonus: '營運中心:第一代1.2%/第二代0.8%\n總監:第一代1.2%/第二代0.8%\n事業部:第一代1%',
+    perf_bonus: '營運中心績效獎金:\nFYB≥100萬+1% / FYB≥150萬+1.5%\nFYB≥200萬+2% / FYB≥250萬+2.5%\nFYB≥300萬+3%',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'v',
+    name: '聯衆',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務主任', system: '52%', actual: '52%' },
+      { name: '業務襄理', system: '62%', actual: '62%' },
+      { name: '業務副理', system: '70%', actual: '70%' },
+      { name: '業務經理', system: '76%', actual: '76%' },
+      { name: '業務資深經理', system: '80%', actual: '80%' },
+      { name: '業務總監', system: '82%', actual: '82%' },
+      { name: '事業部負責人', system: '86%', actual: '86%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 職級率\n第二年開始發放,套組織',
+    persistency: '保費 × 獎金率 × 事業部86%',
+    org_bonus: '第一代2.5%/第二代1%/第三代0.5%',
+    perf_bonus: '事業部負責人:\n150萬以下:2%/150-200萬:3%/200-500萬:4%/500萬以上:5%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '—'
+  },
+  {
+    id: 'w',
+    name: '磊善事業',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '資深專員', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '68%', actual: '68%' },
+      { name: '副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '事業部總監', system: '82%', actual: '82%' },
+      { name: '事業部協理', system: '86%', actual: '86%' },
+      { name: '副總/資深副總/營運長', system: '88%', actual: '88%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率(副總88%/資深副總91%/營運長94%)',
+    renewal: '保費 × 代理費率 × 職級率(副總86%/資深副總87%/營運長88%)',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率(副總/資深副總/營運長88%)',
+    service: '保費 × 服津率 ×\n總監82%/協理、副總、資副86%/營運長88%',
+    persistency: '保費 × 獎金率 ×\n總監45%/協理80%/副總、資副86%/營運長88%',
+    org_bonus: '營運長:一代處1%/資副:一代處2%/二代處0.5%\n副總:一代處2.5%/二代處1%/三代處0.5%\n協理:第一代2.5%/第二代1%/第三代0.5%\n總監:第一代4%/第二代2%/第三代2%',
+    perf_bonus: '無(所有獎金無門檻發放)',
+    insurer_reward: '獎勵金 × 95%,給個人',
+    other: '財務補助(登錄後一年)\n6萬:5千/12萬:2萬/25萬:4萬\n40萬:6萬/50萬:8萬'
+  }
+];
+</script>
+<script>
+  // 狀態:目前比較中的公司 ID 列表(不含鼎綸,鼎綸固定第一欄)
+  let comparingIds = ['a']; // 預設對照「富仕大」(A 公司)
+  const MAX_COMPARE = 2; // 鼎綸以外最多 2 家
+
+  function getCompany(id) {
+    return COMPANIES.find(c => c.id === id);
+  }
+
+  function renderSelectors() {
+    const group = document.getElementById('selectorGroup');
+    group.innerHTML = '';
+    comparingIds.forEach((id, idx) => {
+      const tag = String.fromCharCode(65 + idx); // A, B
+      const sel = document.createElement('div');
+      sel.className = 'selector';
+      sel.innerHTML = `
+        <span class="selector-tag">對照 ${tag}</span>
+        <select onchange="changeCompare(${idx}, this.value)">
+          ${COMPANIES.filter(c => !c.isSelf).map(c => `
+            <option value="${c.id}" ${c.id === id ? 'selected' : ''}>${c.name}</option>
+          `).join('')}
+        </select>
+        ${comparingIds.length > 1 ? `<button class="remove-btn" onclick="removeCompare(${idx})">✕</button>` : ''}
+      `;
+      group.appendChild(sel);
+    });
+    document.getElementById('addBtn').disabled = comparingIds.length >= MAX_COMPARE;
+  }
+
+  function changeCompare(idx, newId) {
+    comparingIds[idx] = newId;
+    renderTable();
+  }
+
+  function addCompare() {
+    if (comparingIds.length >= MAX_COMPARE) return;
+    // 找一個還沒被選的公司
+    const used = new Set(comparingIds);
+    const next = COMPANIES.find(c => !c.isSelf && !used.has(c.id));
+    if (next) {
+      comparingIds.push(next.id);
+      renderSelectors();
+      renderTable();
+    }
+  }
+
+  function removeCompare(idx) {
+    comparingIds.splice(idx, 1);
+    if (comparingIds.length === 0) comparingIds.push('a');
+    renderSelectors();
+    renderTable();
+  }
+
+  function renderRankMini(ranks, isSelf) {
+    // 判斷數字是否「複雜」(超過6字元、含 / 或 + 等符號) → 用較小的字體
+    const isComplex = (val) => {
+      if (!val) return false;
+      return val.length > 6 || /[\/+]/.test(val) || /[\u4e00-\u9fff]/.test(val); // 含中文也算複雜
+    };
+    // 判斷這家公司「制度 vs 實際」是否完全一致
+    const allSame = ranks.every(r => r.system === r.actual);
+    const headerHTML = allSame
+      ? `<div class="rank-mini-header single"><span class="col-name">職級</span><span class="col-act">職級率</span></div>`
+      : `<div class="rank-mini-header"><span class="col-name">職級</span><span class="col-sys">制度</span><span class="col-act">實際</span></div>`;
+    const rowsHTML = ranks.map(r => {
+      const sysComplex = isComplex(r.system) ? ' complex' : '';
+      const actComplex = isComplex(r.actual) ? ' complex' : '';
+      if (allSame) {
+        return `<div class="rank-mini-row single">
+          <span class="rank-mini-name">${r.name}</span>
+          <span class="rank-mini-rate same${actComplex}">${r.actual}</span>
+        </div>`;
+      } else {
+        return `<div class="rank-mini-row">
+          <span class="rank-mini-name">${r.name}</span>
+          <span class="rank-mini-rate sys${sysComplex}">${r.system}</span>
+          <span class="rank-mini-rate act${actComplex}">${r.actual}</span>
+        </div>`;
+      }
+    }).join('');
+    return `<div class="rank-mini">${headerHTML}${rowsHTML}</div>`;
+  }
+
+  function renderCell(content, isSelf) {
+    return `<td class="data-cell${isSelf ? ' self' : ''}">${content || '<span style="color:#bbb">—</span>'}</td>`;
+  }
+
+  function renderTable() {
+    const dl = getCompany('dinglun');
+    const others = comparingIds.map(id => getCompany(id));
+    const allCompanies = [dl, ...others];
+
+    const cols = allCompanies.length + 1; // +1 for label column
+
+    const sections = [
+      { title: '基礎制度', rows: [
+        { label: '佣金計算基礎', sub: 'COMMISSION BASE', key: 'discount', render: (c) => `<span class="discount-badge">${c.discount}</span>` },
+        { label: '職階分潤表', sub: 'RANK & RATE', key: 'ranks', render: (c, isSelf) => renderRankMini(c.ranks, isSelf) },
+      ]},
+      { title: '主要佣金項目', rows: [
+        { label: '首年佣金', sub: 'FYC', key: 'fyc' },
+        { label: '續年度佣金', sub: 'RENEWAL', key: 'renewal' },
+        { label: '年終獎金', sub: 'YEAR-END', key: 'yearend' },
+        { label: '服務津貼', sub: 'SERVICE', key: 'service' },
+        { label: '繼續率獎金', sub: 'PERSISTENCY', key: 'persistency' },
+      ]},
+      { title: '組織與績效', rows: [
+        { label: '組織代數獎金', sub: 'OVERRIDE', key: 'org_bonus' },
+        { label: '績效獎金', sub: 'PERFORMANCE', key: 'perf_bonus' },
+        { label: '保險公司獎勵', sub: 'INSURER REWARD', key: 'insurer_reward' },
+        { label: '其他/特色', sub: 'OTHERS', key: 'other' },
+      ]},
+    ];
+
+    let html = '';
+    // 表頭
+    html += '<thead><tr>';
+    html += '<th class="row-label" style="background:var(--navy);color:#fff;text-align:center;border-radius:10px 0 0 0;">項目</th>';
+    allCompanies.forEach(c => {
+      html += `<th class="col-header${c.isSelf ? ' self' : ''}">
+        <span class="col-name">${c.name}</span>
+        <span class="col-tag">${c.isSelf ? '★ OUR COMPANY ★' : '同業參考'}</span>
+      </th>`;
+    });
+    html += '</tr></thead>';
+
+    // 表體
+    html += '<tbody>';
+    sections.forEach(section => {
+      html += `<tr class="section-header"><td colspan="${cols}">${section.title}</td></tr>`;
+      section.rows.forEach(row => {
+        html += '<tr>';
+        html += `<td class="row-label"><span class="label-icon"></span>${row.label}<span class="label-sub">${row.sub}</span></td>`;
+        allCompanies.forEach(c => {
+          const content = row.render ? row.render(c, c.isSelf) : c[row.key];
+          html += renderCell(content, c.isSelf);
+        });
+        html += '</tr>';
+      });
+    });
+    html += '</tbody>';
+
+    document.getElementById('comparisonTable').innerHTML = html;
+  }
+
+  // 初始化
+  renderSelectors();
+  renderTable();
+</script>
+
+</body>
+</html>
