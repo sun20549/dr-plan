@@ -577,6 +577,49 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+  /* 整張卡片變成可點擊連結 */
+  .contest-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+  .contest-link:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0px rgba(180,180,180,0.55);
+  }
+  .contest-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px rgba(180,180,180,0.45);
+  }
+  .contest-poster {
+    overflow: hidden;
+    min-height: 340px;
+    position: relative;
+  }
+  .contest-poster-overlay {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(191, 10, 48, 0.95);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  .contest-link:hover .contest-poster-overlay {
+    background: #FFD700;
+    color: #001840;
+    transform: translateX(-4px);
+  }
   /* LEFT: info panel */
   .contest-text {
     background: linear-gradient(160deg, #001840 0%, #002868 50%, #0a3a6e 100%);
@@ -672,11 +715,7 @@
     letter-spacing: 0.3px;
     margin-top: 4px;
   }
-  /* RIGHT: poster */
-  .contest-poster {
-    overflow: hidden;
-    min-height: 340px;
-  }
+  /* RIGHT: poster (主樣式已在上方定義) */
   .contest-poster img {
     width: 100%;
     height: 100%;
@@ -1419,7 +1458,7 @@
 
     <!-- CONTEST SECTION -->
     <div class="contest-section">
-      <div class="contest-inner">
+      <a href="usa2026/" class="contest-inner contest-link">
 
         <!-- LEFT INFO -->
         <div class="contest-text">
@@ -1445,15 +1484,19 @@
               <div class="contest-stat-value">1/5個名額</div>
             </div>
           </div>
-          <div class="contest-note">※ 獎勵辦法詳見鼎綸保經字第114123101號公文</div>
+          <div class="contest-note">※ 點擊查看完整獎勵辦法 →</div>
         </div>
 
         <!-- RIGHT POSTER -->
         <div class="contest-poster">
           <img src="images/img_31_4e84b679ed82.png" alt="美國東岸之旅競賽海報" />
+          <div class="contest-poster-overlay">
+            <span>查看詳情</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
         </div>
 
-      </div>
+      </a>
     </div>
 
     <!-- AWARD SECTION -->
