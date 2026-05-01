@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+<link rel="shortcut icon" href="../images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon-180.png">
+<title>競賽旅遊｜美國東岸之旅 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --usa-blue: #001840;
+    --usa-blue-mid: #002868;
+    --usa-red: #BF0A30;
+    --usa-gold: #FFD700;
+    --light: #F8F5F0;
+    --navy: #0D2A3A;
+    --orange: #F05A28;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV BAR ── */
+  .top-nav {
+    background: linear-gradient(160deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-nav::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 40px,
+      rgba(255,255,255,0.02) 40px,
+      rgba(255,255,255,0.02) 80px
+    );
+  }
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 24px;
+    transition: all 0.25s ease;
+    position: relative; z-index: 1;
+    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.06);
+  }
+  .nav-back:hover {
+    background: var(--usa-gold);
+    color: var(--usa-blue);
+    border-color: var(--usa-gold);
+    transform: translateX(-3px);
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 14px;
+    position: relative; z-index: 1;
+  }
+  .nav-brand img {
+    width: 32px; height: 32px;
+    object-fit: contain;
+    background: #fff;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    background:
+      linear-gradient(135deg, rgba(0,24,64,0.92) 0%, rgba(0,40,104,0.85) 60%, rgba(191,10,48,0.75) 100%),
+      url('../images/img_31_4e84b679ed82.png') center/cover;
+    padding: 60px 48px 70px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '★';
+    position: absolute;
+    top: -40px; right: -20px;
+    font-size: 320px;
+    color: rgba(255,215,0,0.08);
+    line-height: 1;
+    transform: rotate(15deg);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--usa-red) 0,
+      var(--usa-red) 60px,
+      #fff 60px,
+      #fff 120px
+    );
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--usa-red);
+    padding: 6px 16px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(191,10,48,0.5);
+  }
+  .hero-period {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 1.5px;
+  }
+  .hero-title {
+    font-size: 68px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--usa-gold);
+    text-shadow: 0 4px 20px rgba(255,215,0,0.4);
+  }
+  .hero-subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 6px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 32px;
+  }
+  .hero-desc {
+    max-width: 540px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    border-left: 3px solid var(--usa-gold);
+    padding-left: 18px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── SECTION COMMON ── */
+  .section {
+    padding: 50px 48px;
+    border-bottom: 1px solid #EFEAE0;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--usa-red);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+  }
+  .section-heading {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .section-heading::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--usa-red), var(--usa-gold));
+    margin-top: 12px;
+    border-radius: 2px;
+  }
+
+  /* ── KEY FACTS GRID ── */
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .fact-card {
+    background: linear-gradient(160deg, #fff 0%, #f5f7fa 100%);
+    border-radius: 16px;
+    padding: 24px 20px;
+    border: 1px solid #E8EDF3;
+    box-shadow: 0 4px 14px rgba(0,24,64,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .fact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,24,64,0.12);
+  }
+  .fact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--usa-red);
+  }
+  .fact-card.gold::before { background: var(--usa-gold); }
+  .fact-card.blue::before { background: var(--usa-blue); }
+  .fact-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .fact-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .fact-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+  .fact-value small {
+    font-size: 14px;
+    color: #888;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  /* ── ITINERARY ── */
+  .itinerary-section {
+    background: var(--usa-blue);
+    color: #fff;
+    padding: 60px 48px;
+    border-bottom: none;
+  }
+  .itinerary-section .section-title {
+    color: var(--usa-gold);
+  }
+  .itinerary-section .section-heading {
+    color: #fff;
+  }
+  .itinerary-section .section-heading::after {
+    background: linear-gradient(90deg, var(--usa-gold), #fff);
+  }
+  .timeline {
+    position: relative;
+    padding-left: 36px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--usa-gold) 0%, var(--usa-red) 100%);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 18px 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(6px);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 22px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--usa-gold);
+    border: 3px solid var(--usa-blue);
+    box-shadow: 0 0 0 2px var(--usa-gold);
+  }
+  .timeline-day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--usa-gold);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .timeline-place {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .timeline-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+  }
+
+  /* ── NOTES ── */
+  .notes-section {
+    background: #FFF9E8;
+    border-top: 3px dashed var(--usa-gold);
+    padding: 36px 48px;
+  }
+  .notes-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 1px;
+  }
+  .notes-list {
+    list-style: none;
+    padding: 0;
+  }
+  .notes-list li {
+    padding: 8px 0 8px 24px;
+    font-size: 13px;
+    color: #5A4A2A;
+    line-height: 1.7;
+    position: relative;
+    border-bottom: 1px dotted rgba(0,0,0,0.08);
+  }
+  .notes-list li::before {
+    content: '※';
+    position: absolute;
+    left: 0;
+    color: var(--usa-red);
+    font-weight: 700;
+  }
+  .notes-doc {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(0,24,64,0.04);
+    border-left: 4px solid var(--usa-blue);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--usa-blue);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--usa-red) 0%, #8E0721 100%);
+    padding: 50px 48px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 30px,
+      rgba(255,255,255,0.03) 30px,
+      rgba(255,255,255,0.03) 60px
+    );
+  }
+  .cta-title {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    position: relative; z-index: 1;
+  }
+  .cta-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    position: relative; z-index: 1;
+  }
+  .cta-phone {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--usa-gold);
+    background: rgba(0,0,0,0.25);
+    padding: 14px 32px;
+    border-radius: 40px;
+    border: 2px solid var(--usa-gold);
+    text-decoration: none;
+    position: relative; z-index: 1;
+    transition: all 0.25s ease;
+  }
+  .cta-phone:hover {
+    background: var(--usa-gold);
+    color: var(--usa-red);
+    transform: scale(1.05);
+  }
+
+  /* ── CALCULATOR ── */
+  .calc-section {
+    padding: 50px 48px 60px;
+    background: linear-gradient(180deg, #fff 0%, #FAFBFD 100%);
+    border-bottom: 1px solid #EFEAE0;
+    position: relative;
+  }
+  .calc-section::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--usa-red) 0,
+      var(--usa-red) 60px,
+      #fff 60px,
+      #fff 120px
+    );
+  }
+  .calc-toggle {
+    display: inline-flex;
+    background: #F0F2F5;
+    border-radius: 30px;
+    padding: 4px;
+    margin-bottom: 28px;
+    border: 1px solid #E2E5EA;
+  }
+  .calc-toggle button {
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #888;
+    border-radius: 24px;
+    transition: all 0.25s ease;
+  }
+  .calc-toggle button.active {
+    background: var(--usa-blue);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,24,64,0.25);
+  }
+  .calc-rule-banner {
+    background: linear-gradient(135deg, #FFF9E8 0%, #FFF4D0 100%);
+    border-left: 4px solid var(--usa-gold);
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #5A4A2A;
+    line-height: 1.7;
+  }
+  .calc-rule-banner b {
+    color: var(--usa-blue);
+    letter-spacing: 0.5px;
+  }
+  .policy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .policy-row {
+    background: #fff;
+    border: 1px solid #E2E7EE;
+    border-radius: 14px;
+    padding: 18px 18px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    position: relative;
+    transition: border-color 0.25s ease;
+  }
+  .policy-row:hover {
+    border-color: var(--usa-blue);
+  }
+  .policy-row-num {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    background: var(--usa-blue);
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .policy-row-del {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #E2E7EE;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .policy-row-del:hover {
+    background: var(--usa-red);
+    color: #fff;
+    border-color: var(--usa-red);
+  }
+  .policy-fields {
+    display: grid;
+    grid-template-columns: 1.3fr 2fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+  .policy-fields label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .policy-fields select,
+  .policy-fields input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #DDE1E7;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--navy);
+    background: #FAFBFD;
+    transition: all 0.2s ease;
+  }
+  .policy-fields select:focus,
+  .policy-fields input:focus {
+    outline: none;
+    border-color: var(--usa-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,24,64,0.08);
+  }
+  .policy-fields select:disabled,
+  .policy-fields input:disabled {
+    background: #F5F6F8;
+    color: #BBB;
+    cursor: not-allowed;
+  }
+  /* ── 可搜尋下拉 (Combobox) ── */
+  .combo {
+    position: relative;
+  }
+  .combo-input {
+    width: 100%;
+    padding: 10px 32px 10px 12px;
+    border: 1px solid #DDE1E7;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--navy);
+    background: #FAFBFD;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .combo-input:focus {
+    outline: none;
+    border-color: var(--usa-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,24,64,0.08);
+  }
+  .combo-input:disabled {
+    background: #F5F6F8;
+    color: #BBB;
+    cursor: not-allowed;
+  }
+  .combo-input::placeholder {
+    color: #B0B5BD;
+  }
+  .combo-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #999;
+    font-size: 10px;
+    transition: transform 0.2s ease;
+  }
+  .combo.open .combo-arrow {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  .combo-clear {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #E2E5EA;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .combo-clear:hover { background: var(--usa-red); }
+  .combo.has-value .combo-clear { display: flex; }
+  .combo-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #DDE1E7;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,24,64,0.12);
+    z-index: 50;
+    display: none;
+  }
+  .combo.open .combo-list {
+    display: block;
+  }
+  .combo-item {
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--navy);
+    cursor: pointer;
+    border-bottom: 1px solid #F0F2F5;
+    transition: background 0.12s ease;
+    line-height: 1.4;
+  }
+  .combo-item:last-child { border-bottom: none; }
+  .combo-item:hover,
+  .combo-item.active {
+    background: #F0F4FA;
+    color: var(--usa-blue);
+  }
+  .combo-item mark {
+    background: rgba(255,215,0,0.4);
+    color: var(--usa-red);
+    font-weight: 900;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .combo-empty {
+    padding: 16px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+  }
+  /* ── 外幣匯率欄位 ── */
+  .fx-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #FFF9E8, #FFF4D0);
+    border: 1px dashed var(--usa-gold);
+    border-radius: 10px;
+    animation: fxFadeIn 0.3s ease;
+  }
+  @keyframes fxFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fx-row label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #5A4A2A;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .fx-currency {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid #E8C870;
+    border-radius: 8px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .fx-row input.fx-rate-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid #E8C870;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--usa-blue);
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    -moz-appearance: textfield;
+  }
+  .fx-row input.fx-rate-input::-webkit-outer-spin-button,
+  .fx-row input.fx-rate-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .fx-row input.fx-rate-input:focus {
+    outline: none;
+    border-color: var(--usa-gold);
+    box-shadow: 0 0 0 3px rgba(255,215,0,0.25);
+  }
+  .policy-result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 10px;
+    border-top: 1px dashed #E2E7EE;
+    font-size: 12px;
+  }
+  .policy-result-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .policy-result-item span {
+    color: #999;
+    font-weight: 700;
+  }
+  .policy-result-item b {
+    color: var(--usa-blue);
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .policy-result-item.fyb b {
+    color: var(--usa-red);
+    font-size: 16px;
+  }
+  .policy-result-item.base-fyb b {
+    color: var(--usa-blue);
+    font-size: 14px;
+  }
+  .policy-result-item.base-fyb {
+    border-right: 1px dashed #DDE1E7;
+    padding-right: 14px;
+  }
+  .add-policy-btn {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    border: 2px dashed #C8D0DA;
+    border-radius: 12px;
+    color: var(--usa-blue);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .add-policy-btn:hover {
+    border-color: var(--usa-blue);
+    background: #F0F4FA;
+    transform: translateY(-2px);
+  }
+  /* Result Panel */
+  .calc-result {
+    margin-top: 28px;
+    background: linear-gradient(135deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    border-radius: 18px;
+    padding: 28px;
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(0,24,64,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .calc-result::before {
+    content: '★';
+    position: absolute;
+    right: -30px;
+    bottom: -50px;
+    font-size: 240px;
+    color: rgba(255,215,0,0.06);
+    line-height: 1;
+  }
+  .calc-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+  .calc-result-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .calc-result-fyb {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--usa-gold);
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+  .calc-result-fyb small {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-left: 6px;
+    letter-spacing: 1px;
+  }
+  .calc-result-tier {
+    text-align: right;
+  }
+  .calc-result-tier-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .calc-result-tier-num em {
+    font-style: normal;
+    color: var(--usa-gold);
+  }
+  .calc-result-tier-num span {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7em;
+    margin: 0 4px;
+  }
+  .calc-progress-bar {
+    background: rgba(0,0,0,0.25);
+    height: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative; z-index: 1;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .calc-progress-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    position: relative; z-index: 1;
+  }
+  /* ── 已獲席次徽章列 ── */
+  .seats-trophy-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(255,215,0,0.06) 100%);
+    border: 1px solid rgba(255,215,0,0.4);
+    border-radius: 12px;
+    position: relative; z-index: 1;
+    animation: seatsPulse 0.4s ease;
+  }
+  @keyframes seatsPulse {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .seats-trophy-label {
+    font-size: 11px;
+    color: var(--usa-gold);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-right: 4px;
+  }
+  .seats-trophy-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .seat-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700 0%, #E8A020 100%);
+    color: var(--usa-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(255,215,0,0.5),
+                inset 0 -2px 4px rgba(180,120,0,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.6);
+    animation: seatPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes seatPop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+  .seats-trophy-count {
+    margin-left: auto;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--usa-gold);
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+  .seats-trophy-count small {
+    font-size: 11px;
+    color: rgba(255,215,0,0.7);
+    margin-left: 2px;
+  }
+  /* 席次很多時用緊湊模式 */
+  .seats-trophy-row.compact .seat-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    box-shadow: 0 2px 6px rgba(255,215,0,0.4),
+                inset 0 -1px 2px rgba(180,120,0,0.3);
+  }
+  .calc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--usa-red) 0%, var(--usa-gold) 100%);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(255,215,0,0.4);
+  }
+  .calc-tier-marks {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+  .calc-tier-mark {
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: all 0.3s ease;
+  }
+  .calc-tier-mark.reached {
+    background: rgba(255,215,0,0.15);
+    border-color: var(--usa-gold);
+  }
+  .calc-tier-mark-amount {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .calc-tier-mark.reached .calc-tier-mark-amount {
+    color: var(--usa-gold);
+  }
+  .calc-tier-mark-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .calc-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    position: relative; z-index: 1;
+  }
+  .calc-reward-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 16px 18px;
+    backdrop-filter: blur(6px);
+  }
+  .calc-reward-card .label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .calc-reward-card .value {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--usa-gold);
+    letter-spacing: 1px;
+  }
+  .calc-reward-card .value small {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 700;
+    margin-left: 4px;
+  }
+  /* 主獎勵金卡 */
+  .calc-reward-main {
+    background: linear-gradient(135deg, rgba(255,215,0,0.22) 0%, rgba(255,215,0,0.08) 100%);
+    border-color: var(--usa-gold);
+  }
+  .calc-reward-main .value {
+    color: var(--usa-gold);
+  }
+  .reward-note {
+    margin-top: 4px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+  }
+  /* 下一級距達標建議 */
+  .next-tier-suggest {
+    margin-top: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 18px;
+    position: relative; z-index: 1;
+    backdrop-filter: blur(4px);
+    animation: suggestFadeIn 0.4s ease;
+  }
+  @keyframes suggestFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .suggest-header {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--usa-gold);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .suggest-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+  }
+  .suggest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .suggest-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+  .suggest-row:hover {
+    border-color: var(--usa-gold);
+    background: rgba(255,215,0,0.05);
+  }
+  .suggest-name {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.4;
+  }
+  .suggest-name small {
+    color: rgba(255,215,0,0.7);
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-left: 6px;
+    letter-spacing: 0.5px;
+  }
+  .suggest-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--usa-gold);
+    letter-spacing: 1px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .suggest-amount small {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 4px;
+    letter-spacing: 0;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .calc-next-tip {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255,215,0,0.12);
+    border-left: 3px solid var(--usa-gold);
+    border-radius: 6px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    position: relative; z-index: 1;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    padding: 22px 48px;
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 920px) {
+    .page { width: 100%; }
+    .hero { padding: 40px 24px 50px; }
+    .hero-title { font-size: 44px; letter-spacing: 1px; }
+    .section, .itinerary-section, .notes-section, .cta-section { padding: 36px 24px; }
+    .facts-grid { grid-template-columns: 1fr; }
+    .tier-row { grid-template-columns: 60px 1fr; gap: 14px; padding: 16px 18px; }
+    .tier-rank { width: 56px; height: 56px; font-size: 22px; }
+    .tier-fyb { grid-column: 2; text-align: left; margin-top: 4px; }
+    .top-nav { padding: 14px 20px; }
+    .nav-brand { font-size: 12px; }
+    .calc-section { padding: 36px 20px; }
+    .policy-fields { grid-template-columns: 1fr; }
+    .fx-row { grid-template-columns: 1fr; }
+    .calc-result { padding: 22px 18px; }
+    .calc-result-fyb { font-size: 42px; }
+    .calc-tier-marks { grid-template-columns: repeat(5, 1fr); gap: 3px; }
+    .calc-tier-mark-amount { font-size: 9px; }
+    .calc-tier-mark { padding: 6px 2px; }
+    .calc-rewards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <a href="../" class="nav-back">← 返回首頁</a>
+    <div class="nav-brand">
+      <img src="../images/img_01_44039bd1b179.png" alt="鼎綸恩宇" />
+      <span>鼎綸恩宇 ・ 競賽旅遊</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-tag">🏆 菁英會議競賽獎勵</span>
+    <span class="hero-period">115/01/01 – 115/06/30</span>
+    <h1 class="hero-title">美國<em>東岸</em>之旅</h1>
+    <div class="hero-subtitle">EAST COAST USA · 2026</div>
+    <p class="hero-desc">
+      跨越太平洋，踏上自由之地。從紐約曼哈頓的霓虹璀璨、華盛頓 D.C. 的歷史殿堂，到費城的開國重地——一場屬於頂尖夥伴的壯遊之旅，現正展開。
+    </p>
+  </div>
+
+  <!-- CALCULATOR (置頂) -->
+  <div class="calc-section">
+    <div class="section-title">REWARD CALCULATOR</div>
+    <h2 class="section-heading">獎勵試算機</h2>
+
+    <!-- 組別切換 -->
+    <div class="calc-toggle" id="groupToggle">
+      <button type="button" class="active" data-group="personal">個人組</button>
+      <button type="button" data-group="system">加盟主系統組</button>
+    </div>
+
+    <!-- 規則說明 -->
+    <div class="calc-rule-banner" id="ruleBanner"></div>
+
+    <!-- 保單列表 -->
+    <div class="policy-list" id="policyList"></div>
+
+    <button type="button" class="add-policy-btn" id="addPolicyBtn">＋ 新增一筆保單</button>
+
+    <!-- 試算結果 -->
+    <div class="calc-result">
+      <div class="calc-result-header">
+        <div>
+          <div class="calc-result-label" id="totalFybLabel">預估競賽業績</div>
+          <div class="calc-result-fyb"><span id="totalFyb">0</span><small>元</small></div>
+        </div>
+        <div class="calc-result-tier">
+          <div class="calc-result-label">獎勵名額</div>
+          <div class="calc-result-tier-num" id="tierDisplay"><em>0</em>/5</div>
+        </div>
+      </div>
+
+      <!-- 已獲席次徽章列(達 1 席後才顯示) -->
+      <div class="seats-trophy-row" id="seatsTrophyRow" style="display:none;"></div>
+
+      <!-- 當前席次進度條 -->
+      <div class="calc-progress-label" id="progressLabel">當前進度</div>
+      <div class="calc-progress-bar">
+        <div class="calc-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+
+      <!-- 級距標記(代表「正在追的這一席」的 0~5 分數) -->
+      <div class="calc-tier-marks" id="tierMarks"></div>
+
+      <!-- 旅遊獎勵金 + 超額退現 -->
+      <div class="calc-rewards">
+        <div class="calc-reward-card calc-reward-main">
+          <div class="label">🎁 旅遊獎勵金</div>
+          <div class="value">$<span id="travelReward">0</span><small>元</small></div>
+          <div class="reward-note" id="travelNote">未達標</div>
+        </div>
+        <div class="calc-reward-card" id="overflowCard" style="display:none;">
+          <div class="label">💰 超額退現</div>
+          <div class="value" style="color:#FFD700;">$<span id="overflowReward">0</span><small>元</small></div>
+          <div class="reward-note" id="overflowNote">超過 1 席後的現金回饋</div>
+        </div>
+      </div>
+
+      <!-- 預估獎勵總額(達 1 席後才出現) -->
+      <div class="calc-reward-card" id="totalRewardCard" style="display:none;margin-top:12px;background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.08));border-color:var(--usa-gold);position:relative;z-index:1;">
+        <div class="label" style="color:var(--usa-gold);">🏆 預估獎勵總額</div>
+        <div class="value" style="font-size:32px;">$<span id="totalReward">0</span><small>元</small></div>
+      </div>
+
+      <!-- 下一階段提示 -->
+      <div class="calc-next-tip" id="nextTip">尚未達標,加油!</div>
+
+      <!-- 下一級距達標建議 -->
+      <div class="next-tier-suggest" id="nextTierSuggest" style="display:none;"></div>
+    </div>
+
+    <p style="margin-top:18px; font-size:11px; color:#999; line-height:1.7; letter-spacing:0.3px;">
+      ※ 本計算器僅供參考,實際業績認列以總公司核實計算為準。完整辦法請詳閱《鼎綸保經字第 114123101 號》公文。<br>
+      ※ 競賽業績計算公式:保費(台幣) × 佣率 × 加碼倍率<br>
+      ※ 外幣保單請輸入該幣別保費後,再輸入即時匯率,系統會自動換算為台幣業績
+    </p>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-section">
+    <div class="notes-title">📌 重要注意事項</div>
+    <ul class="notes-list">
+      <li>競賽期間為 115/01/01 至 115/06/30，逾期業績不列入計算。</li>
+      <li>業績以「核實 FYB」為計算標準,需完成保單核保並繳費生效。</li>
+      <li>個人組共開放 5 個獎勵名額,額滿即止。</li>
+      <li>得獎者需親自參與行程,不得轉讓或折換現金。</li>
+      <li>如遇不可抗力因素,主辦單位保留調整行程之權利。</li>
+    </ul>
+    <div class="notes-doc">📄 完整獎勵辦法請詳閱《鼎綸保經字第 114123101 號》公文</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">🇺🇸 一起挑戰美國東岸之旅！</div>
+    <div class="cta-subtitle">立即聯繫您的夥伴,開啟百萬達標計畫</div>
+    <a href="tel:0925000049" class="cta-phone">📱 0925-000-049</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    © 鼎綸恩宇加盟團隊 ・ 共創千萬保險事業版圖
+  </div>
+
+</div>
+
+<script>
+// ===== 商品資料 =====
+const PRODUCTS = {
+  "保誠人壽": [
+    { name: "享利一生終身壽險(定期給付型)", year: "躉", rate: 3.5, bonus: 800, note: "16~80歲" },
+    { name: "享利雙收終身保險113(定期給付型)", year: "3", rate: 15, bonus: 400, note: "0~70歲" },
+    { name: "樂利雙收終身保險113(定期給付型)", year: "3", rate: 15, bonus: 400, note: "0~70歲" },
+    { name: "鑫滿傳家終身壽險113(定期給付型)", year: "3", rate: 25, bonus: 300, note: "0~70歲" },
+    { name: "鑫福安康終身壽險(定期給付型)", year: "3", rate: 18, bonus: 800, note: "0~75歲" },
+    { name: "福安滿利終身壽險(113) 3年", year: "3", rate: 15, bonus: 400, note: "0~70歲" },
+    { name: "福安滿利終身壽險(113) 6年", year: "6", rate: 25, bonus: 300, note: "0~70歲" },
+    { name: "金會旺終身保險(113)", year: "6", rate: 27, bonus: 400, note: "0~70歲" },
+    { name: "金世代終身壽險 6年", year: "6", rate: 35, bonus: 300, note: "0~74歲" },
+    { name: "金世代終身壽險 10年", year: "10", rate: 50, bonus: 300, note: "0~70歲" },
+    { name: "金世代終身壽險 20年", year: "20", rate: 75, bonus: 300, note: "0~65歲" },
+    { name: "新美旺傳家外幣終身壽險", year: "躉", rate: 9, bonus: 800, note: "0~80歲" },
+    { name: "鑫美傳家外幣終身壽險", year: "3", rate: 30, bonus: 300, note: "0~70歲" },
+    { name: "鑫傳家外幣終身壽險", year: "3", rate: 30, bonus: 500, note: "0~77歲" },
+    { name: "鑫發達外幣終身壽險 3年", year: "3", rate: 20, bonus: 200 },
+    { name: "鑫發達外幣終身壽險 6年", year: "6", rate: 40, bonus: 150 },
+    { name: "美滿傳家外幣終身壽險", year: "6", rate: 40, bonus: 400, note: "0~70歲" },
+    { name: "六年鑽外幣終身保險", year: "6", rate: 27, bonus: 400, note: "0~74歲" },
+    { name: "新美滿相傳外幣終身壽險", year: "6", rate: 46, bonus: 300, note: "0~75歲" },
+    { name: "新美康滿利外幣終身壽險 6年", year: "6", rate: 50, bonus: 300, note: "0~74歲" },
+    { name: "新美康滿利外幣終身壽險 10年", year: "10", rate: 60, bonus: 300, note: "0~70歲" },
+    { name: "鑫傳富外幣終身壽險 8年", year: "8", rate: 60, bonus: 300, note: "0~72歲" },
+    { name: "鑫傳富外幣終身壽險 12年", year: "12", rate: 64, bonus: 300, note: "0~68歲" },
+    { name: "鑫傳富外幣終身壽險 15年", year: "15", rate: 70, bonus: 300, note: "0~65歲" },
+    { name: "鑫彩人生外幣終身壽險 10年", year: "10", rate: 60, bonus: 200, note: "0~70歲" },
+    { name: "鑫彩人生外幣終身壽險 20年", year: "20", rate: 80, bonus: 200, note: "0~65歲" },
+    { name: "愛得利外幣終身壽險 10年", year: "10", rate: 60, bonus: 400, note: "0~70歲" },
+    { name: "愛得利外幣終身壽險 20年", year: "20", rate: 80, bonus: 400, note: "0~60歲" },
+    { name: "美年鑽外幣終身保險", year: "12", rate: 50, bonus: 300, note: "0~65歲" },
+    { name: "保誠人壽倍感安心終身醫療 10年", year: "10", rate: 40, bonus: 150 },
+    { name: "保誠人壽倍感安心終身醫療 15年", year: "15", rate: 72, bonus: 150 },
+    { name: "樂齡長青手術醫療 10年", year: "10", rate: 50, bonus: 150 },
+    { name: "樂齡長青手術醫療 15年", year: "15", rate: 80, bonus: 150 },
+    { name: "樂齡長青手術醫療 20年", year: "20", rate: 35, bonus: 200 },
+    { name: "樂齡安康手術醫療 15年", year: "15", rate: 50, bonus: 200 },
+    { name: "樂齡安康手術醫療 20年", year: "20", rate: 75, bonus: 200 },
+    { name: "富御守護醫療終身健康保險", year: "10", rate: 50, bonus: 150 },
+    { name: "富御安康醫療終身保險", year: "10", rate: 50, bonus: 150 },
+    { name: "珍心愛護防癌健康保險", year: "12", rate: 32.5, bonus: 150 },
+    { name: "誠心防癌2.0健康保險 10年", year: "10", rate: 50, bonus: 150 },
+    { name: "誠心防癌2.0健康保險 15年", year: "15", rate: 70, bonus: 150 },
+    { name: "誠心防癌2.0健康保險 20年", year: "20", rate: 80, bonus: 150 },
+    { name: "照護有術定期健康保險 10年", year: "10", rate: 40, bonus: 150 },
+    { name: "照護有術定期健康保險 15年", year: "15", rate: 45, bonus: 150 },
+    { name: "照護有術定期健康保險 20年", year: "20", rate: 50, bonus: 150 },
+    { name: "保誠人壽一保五享健康保險", year: "20", rate: 77, bonus: 300 },
+    { name: "金寶貝終身壽險 3年", year: "3", rate: 15, bonus: 800, note: "115/3/1起計績" },
+    { name: "美鑫雙收外幣終身保險 6年", year: "6", rate: 30, bonus: 500 },
+    { name: "美鑫雙收外幣終身保險 8年", year: "8", rate: 40, bonus: 400 },
+    { name: "美鑫雙收外幣終身保險 10年", year: "10", rate: 45, bonus: 400 },
+    { name: "美鑫雙收外幣終身保險 20年", year: "20", rate: 70, bonus: 400 },
+    { name: "民富傳家人民幣終身壽險", year: "4", rate: 25, bonus: 1000, note: "115/3/1起計績" },
+    { name: "保誠人壽享樂一生終身壽險", year: "躉", rate: 4, bonus: 1300, note: "115/4/1起計績" },
+    { name: "保誠人壽鑫滿安康終身壽險", year: "3", rate: 15, bonus: 900, note: "115/4/1起計績" },
+    { name: "保誠人壽享扶利終身壽險", year: "6", rate: 35, bonus: 400, note: "115/4/13起計績" }
+  ],
+  "新光人壽(台新)": [
+    { name: "美保金鑽美元終身保險 6年", year: "6", rate: 41, bonus: 300 },
+    { name: "美保金鑽美元終身保險 8年", year: "8", rate: 45, bonus: 500 },
+    { name: "美保金鑽美元終身保險 10年", year: "10", rate: 50, bonus: 900 },
+    { name: "美保金鑽美元終身保險 20年", year: "20", rate: 89, bonus: 900 },
+    { name: "美滿豐收美元終身保險 6年", year: "6", rate: 41, bonus: 300 },
+    { name: "美滿豐收美元終身保險 10年", year: "10", rate: 50, bonus: 900 },
+    { name: "美滿豐收美元終身保險 20年", year: "20", rate: 89, bonus: 900 },
+    { name: "鑫好美美元終身壽險 6年", year: "6", rate: 65, bonus: 100 },
+    { name: "鑫好美美元終身壽險 7年", year: "7", rate: 75, bonus: 100 },
+    { name: "鑫好美美元終身壽險 8年", year: "8", rate: 90, bonus: 200 },
+    { name: "美利達美元終身保險 6年", year: "6", rate: 30, bonus: 600 },
+    { name: "美利達美元終身保險 8年", year: "8", rate: 40, bonus: 400 },
+    { name: "美利達美元終身保險 10年", year: "10", rate: 45, bonus: 600 },
+    { name: "美利達美元終身保險 20年", year: "20", rate: 82, bonus: 600 },
+    { name: "台鑫旺分紅終身壽險", year: "躉", rate: 4, bonus: 400 },
+    { name: "台金旺利率變動型 躉繳", year: "躉", rate: 4, bonus: 400 },
+    { name: "台金旺利率變動型 2年", year: "2", rate: 12, bonus: 400 },
+    { name: "台金旺利率變動型 3年", year: "3", rate: 20, bonus: 400 },
+    { name: "台鑫金讚 躉(0-70歲)", year: "躉", rate: 12, bonus: 500 },
+    { name: "台鑫金讚 躉(71-80歲)", year: "躉", rate: 12, bonus: 300 },
+    { name: "台鑫金讚 2年", year: "2", rate: 8, bonus: 300 },
+    { name: "台鑫金讚 3年(0-70歲)", year: "3", rate: 25, bonus: 500 },
+    { name: "台鑫金讚 3年(71-78歲)", year: "3", rate: 25, bonus: 250 },
+    { name: "台鑫金讚 4年", year: "4", rate: 15, bonus: 400 },
+    { name: "美鴻添富美元分紅 6年", year: "6", rate: 56, bonus: 400 },
+    { name: "美鴻添富美元分紅 10年", year: "10", rate: 65, bonus: 400 },
+    { name: "吉美傳家美元終身壽險", year: "3", rate: 35, bonus: 400 },
+    { name: "台有利還本終身保險", year: "3", rate: 11, bonus: 500, note: "0~69歲" },
+    { name: "台享富貴(<300萬)", year: "躉", rate: 3.9, bonus: 400 },
+    { name: "台享富貴(≥300萬)", year: "躉", rate: 3.9, bonus: 200 },
+    { name: "台新雙盈分紅還本 躉", year: "躉", rate: 3.9, bonus: 600 },
+    { name: "台新雙盈分紅還本 2年", year: "2", rate: 12, bonus: 500 },
+    { name: "發拉利美元養老保險", year: "躉", rate: 3.5, bonus: 800 },
+    { name: "美鴻世代美元分紅 躉(0-70歲)", year: "躉", rate: 4, bonus: 1000 },
+    { name: "美鴻世代美元分紅 躉(71-78歲)", year: "躉", rate: 3.5, bonus: 800 },
+    { name: "美鴻世代美元分紅 2年(0-70歲)", year: "2", rate: 6, bonus: 700 },
+    { name: "美鴻世代美元分紅 2年(71-78歲)", year: "2", rate: 3.8, bonus: 400 },
+    { name: "紅利旺分紅保險 躉(0-70歲)", year: "躉", rate: 14.5, bonus: 400 },
+    { name: "紅利旺分紅保險 躉(71-74歲)", year: "躉", rate: 13, bonus: 400 },
+    { name: "紅利旺分紅保險 躉(75-80歲)", year: "躉", rate: 8, bonus: 700 },
+    { name: "紅利旺分紅保險 2年(0-70歲)", year: "2", rate: 28, bonus: 400 },
+    { name: "紅利旺分紅保險 2年(71-74歲)", year: "2", rate: 25, bonus: 400 },
+    { name: "紅利旺分紅保險 2年(75-88歲)", year: "2", rate: 14, bonus: 800 },
+    { name: "美紅勝利美元分紅 2年(0-70歲)", year: "2", rate: 14, bonus: 700 },
+    { name: "美紅勝利美元分紅 2年(71-78歲)", year: "2", rate: 10, bonus: 900 },
+    { name: "吉享紅分紅終身還本", year: "2", rate: 12, bonus: 500 },
+    { name: "美紅鑽美元分紅還本 躉(0-70歲)", year: "躉", rate: 4, bonus: 950 },
+    { name: "美紅鑽美元分紅還本 躉(71-80歲)", year: "躉", rate: 1.5, bonus: 2000 },
+    { name: "美紅鑽美元分紅還本 2年(0-70歲)", year: "2", rate: 13, bonus: 700 },
+    { name: "美紅鑽美元分紅還本 2年(71-80歲)", year: "2", rate: 7.5, bonus: 1200 },
+    { name: "美紅旺美元分紅", year: "6", rate: 27, bonus: 300 },
+    { name: "美世長紅美元分紅", year: "6", rate: 46, bonus: 200 },
+    { name: "美世多美元(0-70歲)", year: "6", rate: 46, bonus: 500 },
+    { name: "美世多美元(71-76歲)", year: "6", rate: 48, bonus: 200 },
+    { name: "大樂美美元終身保險", year: "6", rate: 32.5, bonus: 200 },
+    { name: "美滿傳世美元終身壽險", year: "8", rate: 60, bonus: 500 },
+    { name: "臻美福美元 躉", year: "躉", rate: 3.8, bonus: 300 },
+    { name: "臻美福美元 2年", year: "2", rate: 7, bonus: 800 },
+    { name: "臻美福美元 3年(0-70歲)", year: "3", rate: 28.5, bonus: 600 },
+    { name: "臻美福美元 3年(71-77歲)", year: "3", rate: 19.5, bonus: 400 },
+    { name: "臻美福美元 6年", year: "6", rate: 46, bonus: 200 },
+    { name: "臻美福美元 7年", year: "7", rate: 51, bonus: 300 },
+    { name: "多美富美元養老 0-79歲", year: "躉", rate: 4.6, bonus: 700, note: "115/3/1起" },
+    { name: "多美富美元養老 80-88歲", year: "躉", rate: 3.1, bonus: 1000, note: "115/3/1起" },
+    { name: "溢起健智特定傷病 15年", year: "15", rate: 53, bonus: 400 },
+    { name: "溢起健智特定傷病 20年", year: "20", rate: 70, bonus: 350 }
+  ],
+  "凱基人壽": [
+    { name: "金得利(匯款/轉帳)", year: "躉", rate: 4, bonus: 600 },
+    { name: "金得利(信用卡)", year: "躉", rate: 2.4, bonus: 1000 },
+    { name: "金得利 2年", year: "2", rate: 9, bonus: 600 },
+    { name: "美鑽長青外幣終身壽險", year: "8", rate: 65, bonus: 600 },
+    { name: "美鑽傳世外幣 6年", year: "6", rate: 58, bonus: 300 },
+    { name: "美鑽傳世外幣 8年", year: "8", rate: 78, bonus: 300 },
+    { name: "美鑽傳家外幣 5年", year: "5", rate: 55, bonus: 200 },
+    { name: "美鑽傳家外幣 6年", year: "6", rate: 58, bonus: 300 },
+    { name: "美鑽傳家外幣 8年", year: "8", rate: 78, bonus: 400 },
+    { name: "美鑽盈家外幣終身壽險", year: "10", rate: 63, bonus: 600 },
+    { name: "美利多倍外幣終身壽險", year: "8", rate: 90, bonus: 200 },
+    { name: "美鑽雙新外幣終身壽險", year: "8", rate: 76, bonus: 200, note: "115/4/1起" }
+  ],
+  "台灣人壽": [
+    { name: "美利固美元養老 躉", year: "躉", rate: 4.8, bonus: 200 },
+    { name: "美利固美元養老 2年", year: "2", rate: 14, bonus: 100 },
+    { name: "幸福美滿美元 躉", year: "躉", rate: 4, bonus: 600 },
+    { name: "幸福美滿美元 2年", year: "2", rate: 8, bonus: 300 },
+    { name: "富貴傳家美元 2年", year: "2", rate: 25, bonus: 1000 },
+    { name: "富貴傳家美元 3年", year: "3", rate: 21, bonus: 900 },
+    { name: "美紅富利美元分紅 躉", year: "躉", rate: 25, bonus: 1000 },
+    { name: "美紅富利美元分紅 3年", year: "3", rate: 25, bonus: 500 },
+    { name: "鑫好傳家利率變動型", year: "6", rate: 51, bonus: 600 },
+    { name: "傳富久安美元 6年", year: "6", rate: 40, bonus: 600 },
+    { name: "傳富久安美元 10年", year: "10", rate: 46, bonus: 600 },
+    { name: "傳富久安美元 20年", year: "20", rate: 90, bonus: 150 },
+    { name: "愛分享終身保險", year: "2", rate: 16, bonus: 150 }
+  ],
+  "富邦人壽": [
+    { name: "傳富萬寶龍美元(SY1)", year: "3", rate: 18, bonus: 1000 },
+    { name: "傳富萬豪美元(BH1) 3年", year: "3", rate: 16, bonus: 600 },
+    { name: "傳富萬豪美元(BH1) 6年", year: "6", rate: 27, bonus: 700 },
+    { name: "美年紅旺外幣分紅(PFC) 3年", year: "3", rate: 18, bonus: 900 },
+    { name: "美年紅旺外幣分紅(PFC) 6年", year: "6", rate: 36, bonus: 500 },
+    { name: "美富優退外幣分紅 2年", year: "2", rate: 17, bonus: 800 },
+    { name: "美富優退外幣分紅 6年", year: "6", rate: 34, bonus: 600 },
+    { name: "美富優退外幣分紅 8年", year: "8", rate: 44, bonus: 700 },
+    { name: "美利大運外幣(FBO) 3年", year: "3", rate: 14, bonus: 900 },
+    { name: "美利大運外幣(FBO) 6年", year: "6", rate: 31, bonus: 500 },
+    { name: "紅旺年年分紅終身保險", year: "6", rate: 25, bonus: 700 },
+    { name: "紅運長樂增額分紅", year: "6", rate: 24, bonus: 700 },
+    { name: "活利優退分紅(PALA/B/C) 躉(高)", year: "躉", rate: 14, bonus: 1000 },
+    { name: "活利優退分紅(PALA/B/C) 2年(高)", year: "2", rate: 27, bonus: 1000 },
+    { name: "活利優退分紅(PALA/B/C) 躉", year: "躉", rate: 13, bonus: 800 },
+    { name: "活利優退分紅(PALA/B/C) 2年", year: "2", rate: 26, bonus: 800 },
+    { name: "美滿雄福利2(WR1)", year: "躉", rate: 3, bonus: 1800 },
+    { name: "美滿美利固美元(BQ1)", year: "躉", rate: 4, bonus: 900 },
+    { name: "富貴鑽美利美元(SX1) 2年", year: "2", rate: 10, bonus: 300 },
+    { name: "富貴鑽美利美元(SX1) 3年", year: "3", rate: 16, bonus: 300 }
+  ],
+  "遠雄人壽": [
+    { name: "傳富聚鑫(WH1) 6年", year: "6", rate: 32, bonus: 800 },
+    { name: "傳富聚鑫(WH1) 7年", year: "7", rate: 42, bonus: 600 },
+    { name: "傳富聚鑫(WH1) 12年", year: "12", rate: 66, bonus: 200 },
+    { name: "傳富聚鑫(WH1) 20年", year: "20", rate: 86, bonus: 200 },
+    { name: "傳富美樂富美元", year: "6", rate: 74, bonus: 150, note: "115/3/1起" },
+    { name: "傳富美67美元 6年", year: "6", rate: 70, bonus: 50, note: "115/4/1起" },
+    { name: "傳富美67美元 7年", year: "7", rate: 80, bonus: 100, note: "115/4/1起" },
+    { name: "美滿唯固利美元養老", year: "躉", rate: 4, bonus: 500 },
+    { name: "雄醫靠特定傷病", year: "20", rate: 81, bonus: 600, note: "115/4/1起" }
+  ],
+  "元大人壽": [
+    { name: "美富豐沛外幣保險", year: "躉", rate: 4, bonus: 800 },
+    { name: "美富豐盈外幣保險", year: "2", rate: 8.75, bonus: 250 },
+    { name: "百富美元 6年", year: "6", rate: 72, bonus: 150 },
+    { name: "百富美元 9年", year: "9", rate: 90, bonus: 150 },
+    { name: "金好美美元 躉(0-76歲)", year: "躉", rate: 13, bonus: 800 },
+    { name: "金好美美元 躉(77-85歲)", year: "躉", rate: 5, bonus: 400 },
+    { name: "金好美美元 2年(0-76歲)", year: "2", rate: 26, bonus: 500 },
+    { name: "金好美美元 2年(77-80歲)", year: "2", rate: 10, bonus: 400 },
+    { name: "元大臻旺美元 躉繳", year: "躉", rate: 4.8, bonus: 400 },
+    { name: "元大臻旺美元 2年", year: "2", rate: 14, bonus: 400 },
+    { name: "元享年年還本終身保險", year: "3", rate: 12, bonus: 100, note: "2026/4/1起" }
+  ],
+  "法巴人壽": [
+    { name: "鴻運旺旺來終身壽險", year: "6", rate: 27, bonus: 500 },
+    { name: "鴻運金喜分紅", year: "2", rate: 12, bonus: 400 },
+    { name: "鴻運雙享終身壽險", year: "2", rate: 12, bonus: 400 },
+    { name: "美添鴻運外幣分紅", year: "2", rate: 23.5, bonus: 200 },
+    { name: "鴻運滿億分紅終身保險", year: "2", rate: 12, bonus: 400 },
+    { name: "美吉鴻運外幣分紅", year: "5", rate: 75, bonus: 800, note: "115/4/14起" }
+  ],
+  "投資型 - 法巴人壽": [
+    { name: "金采年華台/外幣變額萬能壽險", year: "躉", rate: 6.3, bonus: 800 },
+    { name: "金采年華台/外幣變額年金保險", year: "躉", rate: 6.3, bonus: 800 },
+    { name: "鑫滿意足台/外幣變額年金保險", year: "躉", rate: 7, bonus: 600 },
+    { name: "鑫滿意足台/外幣變額萬能壽險", year: "躉", rate: 7, bonus: 600 },
+    { name: "華利滿載台/外幣變額萬能壽險", year: "躉", rate: 6.2, bonus: 400 },
+    { name: "華利滿載台/外幣變額年金保險", year: "躉", rate: 6, bonus: 400 }
+  ],
+  "投資型 - 新光人壽": [
+    { name: "超吉馬利外幣變額萬能壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "超吉馬利變額萬能壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "超吉馬利外幣變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "超吉馬利變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "穩萬利外幣投資連結年金", year: "躉", rate: 3.5, bonus: 1500, note: "2026/4/1起" }
+  ],
+  "投資型 - 台灣人壽": [
+    { name: "臻鑽發發變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "臻鑽發發外幣變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "臻鑽發發變額萬能壽險", year: "躉", rate: 5.3, bonus: 500 },
+    { name: "臻鑽發發外幣變額萬能壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "臻鑽旺旺變額萬能壽險", year: "躉", rate: 5.3, bonus: 500 },
+    { name: "臻鑽旺旺外幣變額萬能壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "臻鑽旺旺變額年金保險", year: "躉", rate: 6.6, bonus: 500 },
+    { name: "臻鑽旺旺外幣變額年金保險", year: "躉", rate: 6.8, bonus: 500 }
+  ],
+  "投資型 - 元大人壽": [
+    { name: "元元豐收變額萬能壽險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "元元豐收變額年金保險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "元元豐收外幣變額萬能壽險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "元元豐收外幣變額年金保險", year: "躉", rate: 6.5, bonus: 500 }
+  ],
+  "投資型 - 凱基人壽": [
+    { name: "世紀贏家外幣變額壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "世紀贏家外幣變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "世紀贏家變額壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "世紀贏家變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "招財進保外幣變額壽險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "招財進保變額壽險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "招財進保變額年金保險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "招財進保外幣變額年金保險", year: "躉", rate: 6.5, bonus: 500 },
+    { name: "一生傳富外幣變額壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "一生傳富變額壽險", year: "躉", rate: 7, bonus: 500 },
+    { name: "一生傳富變額年金保險", year: "躉", rate: 7, bonus: 500 },
+    { name: "一生傳富外幣變額年金保險", year: "躉", rate: 7, bonus: 500 }
+  ],
+  "投資型 - 保誠人壽": [
+    { name: "吉利發發變額萬能壽險", year: "躉", rate: 6.3, bonus: 300 },
+    { name: "吉利發發外幣變額萬壽險", year: "躉", rate: 6.3, bonus: 300 },
+    { name: "吉利發發變額年金保險", year: "躉", rate: 5.2, bonus: 300 },
+    { name: "吉利發發外幣變額年金保險", year: "躉", rate: 5.2, bonus: 300 },
+    { name: "10來旺變額萬能壽險", year: "99", rate: 35, bonus: 500, note: "15足-65歲" },
+    { name: "10來旺外幣變額萬能壽險", year: "99", rate: 35, bonus: 500, note: "15足-65歲" },
+    { name: "富貴大贏家台/外幣變額萬能壽險", year: "躉", rate: 5, bonus: 500 },
+    { name: "富貴大贏家台/外幣變額年金保險", year: "躉", rate: 5, bonus: 500 },
+    { name: "智富贏家台/外幣變額萬能壽險", year: "躉", rate: 6.5, bonus: 400 },
+    { name: "智富贏家台/外幣變額年金保險", year: "躉", rate: 6.5, bonus: 400 }
+  ],
+  "投資型 - 安聯人壽": [
+    { name: "金得益台幣/美元變額萬能壽險", year: "躉", rate: 5.85, bonus: 450 },
+    { name: "金得益台幣/美元變額年金保險", year: "躉", rate: 6.25, bonus: 400 }
+  ],
+  "投資型 - 安達人壽": [
+    { name: "新愛家台幣/美元變額萬能壽險", year: "躉", rate: 6.5, bonus: 400 },
+    { name: "享保障變額萬能壽險", year: "躉", rate: 35, bonus: 1500 },
+    { name: "享保障外幣變額萬能壽險", year: "躉", rate: 35, bonus: 1500 }
+  ]
+};
+
+// ===== 合併「投資型 - XXX」到對應公司 =====
+// 例如「投資型 - 凱基人壽」併入「凱基人壽」;若該公司不存在則新建
+(function mergeInvestmentProducts() {
+  const merged = {};
+  Object.keys(PRODUCTS).forEach(key => {
+    if (key.startsWith('投資型 - ')) {
+      const baseCompany = key.replace('投資型 - ', '');
+      // 加上「[投資型]」標記方便辨識
+      const tagged = PRODUCTS[key].map(p => ({ ...p, name: `[投資型] ${p.name}` }));
+      if (!merged[baseCompany]) merged[baseCompany] = [];
+      merged[baseCompany].push(...tagged);
+    } else {
+      if (!merged[key]) merged[key] = [];
+      merged[key].push(...PRODUCTS[key]);
+    }
+  });
+  // 重新指派(取代原 PRODUCTS 的 key)
+  Object.keys(PRODUCTS).forEach(k => delete PRODUCTS[k]);
+  // 公司用中文 / 英文混合排序(用 zh-TW locale)
+  const sortedCompanies = Object.keys(merged).sort((a, b) =>
+    a.localeCompare(b, 'zh-Hant')
+  );
+  sortedCompanies.forEach(k => {
+    // 商品也按名稱排序
+    PRODUCTS[k] = merged[k].sort((a, b) =>
+      a.name.localeCompare(b.name, 'zh-Hant')
+    );
+  });
+})();
+
+// ===== 規則設定 =====
+const RULES = {
+  personal: {
+    label: "個人組",
+    tiers: [100, 200, 300, 400, 500],   // 萬
+    fullReward: 150000,                  // 全額獎勵金
+    perTierCash: 30000,                  // 達 1 名額後每超過 100 萬加 30,000
+    extraStep: 100,                      // 加碼級距 (萬)
+    rule: "個人組:每累計 <b>100 萬</b>競賽業績 = <b>1/5 名額</b>(獎勵金 30,000 元)。每滿 <b>5 個 1/5 名額(500 萬)</b> = <b>1 完整席次</b>(獎勵金 150,000 元)。<b>達標名額無上限,以此類推</b>。"
+  },
+  system: {
+    label: "加盟主系統組",
+    tiers: [500, 1000, 1500, 2000, 2500],
+    fullReward: 150000,
+    perTierCash: 30000,
+    extraStep: 500,
+    rule: "加盟主系統組:每累計 <b>500 萬</b>系統業績 = <b>1/5 名額</b>(獎勵金 30,000 元)。每滿 <b>5 個 1/5 名額(2,500 萬)</b> = <b>1 完整席次</b>(獎勵金 150,000 元)。<br><b style='color:var(--usa-red);'>※ 系統組業績以 100% 計算,不乘加碼倍率(僅算保費 × 佣率)。</b>"
+  }
+};
+
+// ===== State =====
+let currentGroup = 'personal';
+let policies = [];
+let policyId = 0;
+
+// ===== 外幣判斷 =====
+function detectCurrency(productName) {
+  if (/人民幣/.test(productName)) return { code: 'CNY', symbol: '人民幣', defaultRate: 4.4 };
+  if (/美元|外幣/.test(productName)) return { code: 'USD', symbol: '美元', defaultRate: 32.5 };
+  return null;
+}
+
+// ===== DOM =====
+const policyList = document.getElementById('policyList');
+const ruleBanner = document.getElementById('ruleBanner');
+const tierMarks = document.getElementById('tierMarks');
+
+// ===== 初始化 =====
+function init() {
+  renderRule();
+  renderTierMarks();
+  addPolicy();
+
+  document.getElementById('addPolicyBtn').addEventListener('click', addPolicy);
+  document.querySelectorAll('#groupToggle button').forEach(btn => {
+    btn.addEventListener('click', () => switchGroup(btn.dataset.group));
+  });
+
+  // 點擊空白處關閉所有下拉
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.combo')) {
+      document.querySelectorAll('.combo.open').forEach(c => c.classList.remove('open'));
+    }
+  });
+}
+
+function switchGroup(group) {
+  currentGroup = group;
+  document.querySelectorAll('#groupToggle button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.group === group);
+  });
+  renderRule();
+  renderTierMarks();
+  calculate();
+}
+
+function renderRule() {
+  ruleBanner.innerHTML = RULES[currentGroup].rule;
+}
+
+function renderTierMarks() {
+  const tiers = RULES[currentGroup].tiers;
+  tierMarks.innerHTML = tiers.map((t, i) => `
+    <div class="calc-tier-mark" data-tier="${i+1}">
+      <div class="calc-tier-mark-amount">${t}萬</div>
+      <div class="calc-tier-mark-label">${i+1}/5</div>
+    </div>
+  `).join('');
+}
+
+// ===== 保單操作 =====
+function addPolicy() {
+  const id = ++policyId;
+  policies.push({
+    id,
+    company: '',
+    productIdx: -1,
+    premium: 0,         // 原始保費(可能是外幣)
+    fxRate: null,       // 匯率(僅外幣商品需要)
+    companySearch: '',  // 公司搜尋字串
+    productSearch: ''   // 商品搜尋字串
+  });
+  renderPolicies();
+}
+
+function removePolicy(id) {
+  if (policies.length <= 1) {
+    policies = policies.map(p => p.id === id ? {
+      id: p.id, company: '', productIdx: -1, premium: 0,
+      fxRate: null, companySearch: '', productSearch: ''
+    } : p);
+  } else {
+    policies = policies.filter(p => p.id !== id);
+  }
+  renderPolicies();
+  calculate();
+}
+
+// ===== 渲染 =====
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function highlightMatch(text, query) {
+  if (!query) return escapeHtml(text);
+  const safeText = escapeHtml(text);
+  const safeQuery = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safeText.replace(new RegExp(safeQuery, 'gi'), m => `<mark>${m}</mark>`);
+}
+
+function renderPolicies() {
+  policyList.innerHTML = policies.map((p, idx) => {
+    const products = p.company ? PRODUCTS[p.company] : [];
+    const product = (p.company && p.productIdx >= 0) ? products[p.productIdx] : null;
+    const currency = product ? detectCurrency(product.name) : null;
+
+    // ===== 公司可搜尋下拉 =====
+    const companyList = Object.keys(PRODUCTS);
+    const companyFiltered = p.companySearch
+      ? companyList.filter(c => c.toLowerCase().includes(p.companySearch.toLowerCase()))
+      : companyList;
+    const companyItems = companyFiltered.length === 0
+      ? `<div class="combo-empty">查無相符的公司</div>`
+      : companyFiltered.map(c => `
+          <div class="combo-item ${c === p.company ? 'active' : ''}"
+               onclick="selectCompany(${p.id}, '${escapeHtml(c)}')">
+            ${highlightMatch(c, p.companySearch)}
+          </div>
+        `).join('');
+
+    // ===== 商品可搜尋下拉 =====
+    // ===== 商品可搜尋下拉(支援跨公司搜尋) =====
+    // 公司未選時:跨所有公司搜尋(顯示公司名)
+    // 公司已選時:限定該公司
+    const productItems = (() => {
+      let candidates = [];
+      if (p.company) {
+        // 限定該公司
+        candidates = products.map((prod, i) => ({ company: p.company, prod, i }));
+      } else {
+        // 跨所有公司
+        Object.keys(PRODUCTS).forEach(co => {
+          PRODUCTS[co].forEach((prod, i) => {
+            candidates.push({ company: co, prod, i });
+          });
+        });
+      }
+
+      const q = (p.productSearch || '').toLowerCase().trim();
+      const filtered = !q ? candidates : candidates.filter(({ company, prod }) =>
+        prod.name.toLowerCase().includes(q)
+        || company.toLowerCase().includes(q)
+        || (prod.year + '年').includes(q)
+        || (prod.note || '').toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) return `<div class="combo-empty">查無相符的商品</div>`;
+
+      // 沒輸入關鍵字且公司未選時,只顯示前 30 筆避免過長
+      const displayList = (!p.company && !q) ? filtered.slice(0, 30) : filtered;
+
+      const html = displayList.map(({ company, prod, i }) => {
+        const yearLabel = prod.year === '躉' ? '躉繳' : prod.year === '99' ? '終身' : prod.year + '年';
+        const display = `${prod.name} (${yearLabel})`;
+        const isActive = i === p.productIdx && company === p.company;
+        // 公司未選時:選項上標示公司名
+        const companyTag = !p.company
+          ? `<small style="display:block;color:#888;font-size:10.5px;margin-bottom:2px;letter-spacing:0.3px;">${escapeHtml(company)}</small>`
+          : '';
+        return `
+          <div class="combo-item ${isActive ? 'active' : ''}"
+               onclick="selectProduct(${p.id}, ${i}, '${escapeHtml(company)}')">
+            ${companyTag}${highlightMatch(display, q)}
+          </div>
+        `;
+      }).join('');
+
+      // 提示有更多結果
+      if (!p.company && !q && filtered.length > 30) {
+        return html + `<div class="combo-empty" style="font-size:11px;">⋯ 共 ${filtered.length} 筆,請輸入關鍵字精確搜尋</div>`;
+      }
+      return html;
+    })();
+
+    // ===== 商品 input 顯示文字 =====
+    const productDisplay = product
+      ? `${product.name} (${product.year === '躉' ? '躉繳' : product.year === '99' ? '終身' : product.year + '年'})`
+      : '';
+
+    // ===== 保費千分位顯示 =====
+    const premiumDisplay = p.premium ? p.premium.toLocaleString('zh-TW') : '';
+
+    // ===== 外幣匯率欄位 =====
+    let fxHtml = '';
+    if (currency) {
+      const rateValue = p.fxRate != null ? p.fxRate : currency.defaultRate;
+      const tw = (p.premium || 0) * rateValue;
+      fxHtml = `
+        <div class="fx-row">
+          <div>
+            <label>💱 幣別</label>
+            <div class="fx-currency">${currency.symbol} (${currency.code})</div>
+          </div>
+          <div>
+            <label>即時匯率(對台幣)</label>
+            <input type="number" step="0.01" min="0" value="${rateValue}"
+              class="fx-rate-input"
+              placeholder="例:32.5"
+              oninput="updatePolicy(${p.id}, 'fxRate', parseFloat(this.value) || 0)" />
+          </div>
+          <div>
+            <label>換算後台幣保費</label>
+            <div class="fx-currency fx-tw-display" style="background:#fffbe8;color:var(--usa-red);">
+              NT$ ${formatNum(tw)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ===== 計算結果列 =====
+    let resultHtml = '';
+    if (product) {
+      const twPremium = currency
+        ? (p.premium || 0) * (p.fxRate != null ? p.fxRate : currency.defaultRate)
+        : (p.premium || 0);
+      const baseFyb = twPremium * (product.rate / 100);          // 原始 FYB(代理費)
+      const fullFyb = baseFyb * (product.bonus / 100);            // 加碼後 FYB
+      // 加盟主系統組:不乘加碼倍率 / 個人組:乘加碼倍率
+      const contestFyb = currentGroup === 'system' ? baseFyb : fullFyb;
+
+      const contestLabel = currentGroup === 'system' ? '系統業績' : '競賽業績';
+      const bonusDisplay = currentGroup === 'system'
+        ? `<div class="policy-result-item"><span>加碼</span><b style="color:#999;text-decoration:line-through;">${product.bonus}%</b><small style="color:#999;font-size:10px;margin-left:4px;">(系統不計)</small></div>`
+        : `<div class="policy-result-item"><span>加碼</span><b>${product.bonus}%</b></div>`;
+
+      resultHtml = `
+        <div class="policy-result">
+          <div class="policy-result-item"><span>佣率</span><b>${product.rate}%</b></div>
+          ${bonusDisplay}
+          ${currentGroup === 'system'
+            ? ''
+            : `<div class="policy-result-item base-fyb"><span>原始 FYB</span><b>${formatNum(baseFyb)} 元</b></div>`}
+          <div class="policy-result-item fyb"><span>${contestLabel}</span><b>${formatNum(contestFyb)} 元</b></div>
+          ${product.note ? `<div class="policy-result-item" style="margin-left:auto;color:#999;font-size:11px;">📌 ${product.note}</div>` : ''}
+        </div>
+      `;
+    }
+
+    // ===== 保費欄位的 label / placeholder (依幣別調整) =====
+    const premiumLabel = currency ? `年繳保費 (${currency.symbol})` : '年繳保費 (元)';
+    const premiumPlaceholder = currency ? `例:${currency.code === 'USD' ? '3,000' : '20,000'}` : '例:100,000';
+
+    return `
+      <div class="policy-row">
+        <div class="policy-row-num">${idx + 1}</div>
+        <button type="button" class="policy-row-del" onclick="removePolicy(${p.id})" title="刪除">×</button>
+        <div class="policy-fields">
+          <!-- 保險公司(可搜尋,可選) -->
+          <div>
+            <label>保險公司 <small style="color:#888;font-weight:400;">(可選,作為篩選)</small></label>
+            <div class="combo ${p.company ? 'has-value' : ''}" data-id="${p.id}" data-type="company">
+              <input type="text" class="combo-input"
+                     placeholder="輸入或點選..."
+                     value="${escapeHtml(p.companySearch || p.company)}"
+                     onfocus="openCombo(${p.id}, 'company')"
+                     onclick="event.stopPropagation(); openCombo(${p.id}, 'company')"
+                     oninput="onComboInput(${p.id}, 'company', this.value)" />
+              <button type="button" class="combo-clear"
+                onclick="event.stopPropagation(); clearCombo(${p.id}, 'company')">×</button>
+              <span class="combo-arrow">▼</span>
+              <div class="combo-list">${companyItems}</div>
+            </div>
+          </div>
+          <!-- 商品名稱(可跨公司搜尋,不需先選公司) -->
+          <div>
+            <label>商品名稱 <small style="color:#888;font-weight:400;">(可直接搜尋)</small></label>
+            <div class="combo ${product ? 'has-value' : ''}" data-id="${p.id}" data-type="product">
+              <input type="text" class="combo-input"
+                     placeholder="輸入商品/公司關鍵字..."
+                     value="${escapeHtml(p.productSearch || productDisplay)}"
+                     onfocus="openCombo(${p.id}, 'product')"
+                     onclick="event.stopPropagation(); openCombo(${p.id}, 'product')"
+                     oninput="onComboInput(${p.id}, 'product', this.value)" />
+              <button type="button" class="combo-clear"
+                onclick="event.stopPropagation(); clearCombo(${p.id}, 'product')">×</button>
+              <span class="combo-arrow">▼</span>
+              <div class="combo-list">${productItems}</div>
+            </div>
+          </div>
+          <!-- 保費(千分位) -->
+          <div>
+            <label>${premiumLabel}</label>
+            <input type="text" inputmode="numeric"
+              value="${premiumDisplay}"
+              placeholder="${premiumPlaceholder}"
+              oninput="onPremiumInput(${p.id}, this)" />
+          </div>
+        </div>
+        ${fxHtml}
+        ${resultHtml}
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== Combobox 互動 =====
+function openCombo(id, type) {
+  document.querySelectorAll('.combo.open').forEach(c => c.classList.remove('open'));
+  const target = document.querySelector(`.combo[data-id="${id}"][data-type="${type}"]`);
+  if (target) {
+    const input = target.querySelector('.combo-input');
+    if (input.disabled) return;
+    target.classList.add('open');
+    // 開啟時清空搜尋字以顯示完整列表
+    const p = policies.find(x => x.id === id);
+    if (p) {
+      if (type === 'company') p.companySearch = '';
+      else p.productSearch = '';
+      // 清空 input 內容讓使用者直接打字
+      input.value = '';
+      input.focus();
+    }
+  }
+}
+
+function onComboInput(id, type, value) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  // 開啟下拉
+  const target = document.querySelector(`.combo[data-id="${id}"][data-type="${type}"]`);
+  if (target) target.classList.add('open');
+
+  if (type === 'company') {
+    p.companySearch = value;
+    // 只更新清單,不全 re-render(避免 input 失焦)
+    updateComboList(id, type);
+  } else {
+    p.productSearch = value;
+    updateComboList(id, type);
+  }
+}
+
+function updateComboList(id, type) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  const target = document.querySelector(`.combo[data-id="${id}"][data-type="${type}"] .combo-list`);
+  if (!target) return;
+
+  if (type === 'company') {
+    const list = Object.keys(PRODUCTS).filter(c =>
+      c.toLowerCase().includes((p.companySearch || '').toLowerCase())
+    );
+    target.innerHTML = list.length === 0
+      ? `<div class="combo-empty">查無相符的公司</div>`
+      : list.map(c => `
+          <div class="combo-item ${c === p.company ? 'active' : ''}"
+               onclick="selectCompany(${p.id}, '${escapeHtml(c)}')">
+            ${highlightMatch(c, p.companySearch)}
+          </div>
+        `).join('');
+  } else {
+    // 商品搜尋:支援跨公司
+    let candidates = [];
+    if (p.company) {
+      candidates = PRODUCTS[p.company].map((prod, i) => ({ company: p.company, prod, i }));
+    } else {
+      Object.keys(PRODUCTS).forEach(co => {
+        PRODUCTS[co].forEach((prod, i) => {
+          candidates.push({ company: co, prod, i });
+        });
+      });
+    }
+    const q = (p.productSearch || '').toLowerCase().trim();
+    const filtered = !q ? candidates : candidates.filter(({ company, prod }) =>
+      prod.name.toLowerCase().includes(q)
+      || company.toLowerCase().includes(q)
+      || (prod.year + '年').includes(q)
+      || (prod.note || '').toLowerCase().includes(q)
+    );
+
+    if (filtered.length === 0) {
+      target.innerHTML = `<div class="combo-empty">查無相符的商品</div>`;
+      return;
+    }
+
+    const displayList = (!p.company && !q) ? filtered.slice(0, 30) : filtered;
+    let html = displayList.map(({ company, prod, i }) => {
+      const yearLabel = prod.year === '躉' ? '躉繳' : prod.year === '99' ? '終身' : prod.year + '年';
+      const display = `${prod.name} (${yearLabel})`;
+      const isActive = i === p.productIdx && company === p.company;
+      const companyTag = !p.company
+        ? `<small style="display:block;color:#888;font-size:10.5px;margin-bottom:2px;letter-spacing:0.3px;">${escapeHtml(company)}</small>`
+        : '';
+      return `
+        <div class="combo-item ${isActive ? 'active' : ''}"
+             onclick="selectProduct(${p.id}, ${i}, '${escapeHtml(company)}')">
+          ${companyTag}${highlightMatch(display, q)}
+        </div>
+      `;
+    }).join('');
+    if (!p.company && !q && filtered.length > 30) {
+      html += `<div class="combo-empty" style="font-size:11px;">⋯ 共 ${filtered.length} 筆,請輸入關鍵字精確搜尋</div>`;
+    }
+    target.innerHTML = html;
+  }
+}
+
+function selectCompany(id, company) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  p.company = company;
+  p.productIdx = -1;
+  p.companySearch = '';
+  p.productSearch = '';
+  p.fxRate = null;
+  renderPolicies();
+  calculate();
+}
+
+function selectProduct(id, idx, company) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  // 若有傳入公司(跨公司搜尋時),自動回填
+  if (company) p.company = company;
+  p.productIdx = idx;
+  p.productSearch = '';
+  p.companySearch = '';
+  // 切換商品時重設匯率(若是外幣商品會用預設值顯示)
+  const product = PRODUCTS[p.company][idx];
+  const currency = detectCurrency(product.name);
+  p.fxRate = currency ? currency.defaultRate : null;
+  renderPolicies();
+  calculate();
+}
+
+function clearCombo(id, type) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  if (type === 'company') {
+    p.company = '';
+    p.productIdx = -1;
+    p.companySearch = '';
+    p.productSearch = '';
+    p.fxRate = null;
+  } else {
+    p.productIdx = -1;
+    p.productSearch = '';
+    p.fxRate = null;
+  }
+  renderPolicies();
+  calculate();
+}
+
+// ===== 保費輸入(千分位) =====
+function onPremiumInput(id, inputEl) {
+  // 取出純數字
+  const raw = inputEl.value.replace(/[^\d]/g, '');
+  const num = raw ? parseInt(raw, 10) : 0;
+
+  // 更新狀態
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  p.premium = num;
+
+  // 即時更新顯示為千分位
+  const newDisplay = num ? num.toLocaleString('zh-TW') : '';
+  // 計算游標應位置(避免跳動)
+  const cursorPos = inputEl.selectionStart;
+  const oldLen = inputEl.value.length;
+  inputEl.value = newDisplay;
+  const newLen = newDisplay.length;
+  const newCursor = Math.max(0, cursorPos + (newLen - oldLen));
+  inputEl.setSelectionRange(newCursor, newCursor);
+
+  // 重新計算(只更新結果,不全 re-render)
+  updateRowResult(id);
+  calculate();
+}
+
+function updatePolicy(id, field, value) {
+  const p = policies.find(x => x.id === id);
+  if (!p) return;
+  p[field] = value;
+  if (field === 'fxRate') {
+    updateRowResult(id);
+  }
+  calculate();
+}
+
+function updateRowResult(id) {
+  // 局部更新該筆保單的「換算後台幣 / 原始FYB / 競賽業績」顯示,避免 input 失焦
+  const p = policies.find(x => x.id === id);
+  if (!p || !p.company || p.productIdx < 0) return;
+  const product = PRODUCTS[p.company][p.productIdx];
+  const currency = detectCurrency(product.name);
+
+  const row = document.querySelectorAll('.policy-row')[policies.indexOf(p)];
+  if (!row) return;
+
+  const twPremium = currency
+    ? (p.premium || 0) * (p.fxRate != null ? p.fxRate : currency.defaultRate)
+    : (p.premium || 0);
+  const baseFyb = twPremium * (product.rate / 100);
+  const fullFyb = baseFyb * (product.bonus / 100);
+  // 加盟主系統組:不乘加碼倍率
+  const contestFyb = currentGroup === 'system' ? baseFyb : fullFyb;
+
+  // 更新 fx 顯示(只更新「換算後台幣」這個元素,別動到「幣別」)
+  if (currency) {
+    const fxDisplay = row.querySelector('.fx-tw-display');
+    if (fxDisplay) {
+      fxDisplay.innerHTML = `NT$ ${formatNum(twPremium)}`;
+    }
+  }
+  // 更新原始 FYB
+  const baseFybEl = row.querySelector('.policy-result-item.base-fyb b');
+  if (baseFybEl) baseFybEl.textContent = `${formatNum(baseFyb)} 元`;
+  // 更新競賽業績
+  const fybEl = row.querySelector('.policy-result-item.fyb b');
+  if (fybEl) fybEl.textContent = `${formatNum(contestFyb)} 元`;
+}
+
+// ===== 計算 =====
+function calculate() {
+  let totalFyb = 0;
+  policies.forEach(p => {
+    if (p.company && p.productIdx >= 0 && p.premium > 0) {
+      const product = PRODUCTS[p.company][p.productIdx];
+      if (product && product.rate) {
+        const currency = detectCurrency(product.name);
+        const twPremium = currency
+          ? p.premium * (p.fxRate != null ? p.fxRate : currency.defaultRate)
+          : p.premium;
+        const baseFyb = twPremium * (product.rate / 100);
+        // 加盟主系統組:不乘加碼倍率(公文:加盟主計績指定保險公司及商品 100%計算,不列入加乘)
+        // 個人組:乘加碼倍率
+        if (currentGroup === 'system') {
+          totalFyb += baseFyb;
+        } else {
+          totalFyb += baseFyb * ((product.bonus || 0) / 100);
+        }
+      }
+    }
+  });
+
+  const rule = RULES[currentGroup];
+  const fybInWan = totalFyb / 10000;
+
+  // 名額計算:
+  //   - 個人組:每 100 萬 = 1/5 名額;每 500 萬 = 1 席
+  //   - 系統組:每 500 萬 = 1/5 名額;每 2500 萬 = 1 席
+  const tierFull = rule.tiers[rule.tiers.length - 1];   // 1 席門檻
+  const tierStep = rule.tiers[0];                        // 1/5 門檻
+  const fullSeats = Math.floor(fybInWan / tierFull);
+  const remainWan = fybInWan - fullSeats * tierFull;
+  const subTier = Math.floor(remainWan / tierStep);
+
+  // 進度條:當前席的 0~100%
+  const progress = Math.min(100, (remainWan / tierFull) * 100);
+
+  // ===== 獎勵金計算(拆分旅遊金 + 超額退現) =====
+  // 公文:每 1/5 名額 = 30,000 元 → 總獎勵 = floor(業績 / 100萬) × 30,000(個人組)
+  // 但旅遊金 = 1 席 (150,000) 為實際補助出國費用,夥伴只能參加 1 次旅遊
+  // 超出 1 席的部分 = 超額退現
+  const tierStepUnits = Math.floor(fybInWan / tierStep);
+  const totalReward = tierStepUnits * rule.perTierCash;
+  // 旅遊金 = 不超過 fullReward(150,000),也就是達 1 席就封頂
+  const travelReward = Math.min(rule.fullReward, totalReward);
+  // 超額退現 = 超過 1 席後的部分
+  const overflowReward = Math.max(0, totalReward - rule.fullReward);
+
+  // ===== 渲染 =====
+  document.getElementById('totalFyb').textContent = formatNum(totalFyb);
+  document.getElementById('totalFybLabel').textContent =
+    currentGroup === 'system' ? '預估系統業績' : '預估競賽業績';
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('travelReward').textContent = formatNum(travelReward);
+  document.getElementById('overflowReward').textContent = formatNum(overflowReward);
+  document.getElementById('totalReward').textContent = formatNum(totalReward);
+
+  // 旅遊金備註
+  const travelNote = document.getElementById('travelNote');
+  if (travelReward >= rule.fullReward) {
+    travelNote.innerHTML = `✓ 已達上限,可實際參與美國東岸之旅`;
+  } else if (travelReward > 0) {
+    travelNote.innerHTML = `達 5/5 即可獲得完整 150,000 旅遊金`;
+  } else {
+    travelNote.innerHTML = `未達標`;
+  }
+
+  // 超額退現卡片(達 1 席以上才顯示)
+  const overflowCard = document.getElementById('overflowCard');
+  const totalRewardCard = document.getElementById('totalRewardCard');
+  if (overflowReward > 0) {
+    overflowCard.style.display = 'block';
+    totalRewardCard.style.display = 'block';
+    document.getElementById('overflowNote').textContent =
+      `已超過 1 席,多領的部分以現金回饋`;
+  } else {
+    overflowCard.style.display = 'none';
+    totalRewardCard.style.display = 'none';
+  }
+
+  // 名額顯示
+  const tierDisplay = document.getElementById('tierDisplay');
+  if (fullSeats === 0) {
+    tierDisplay.innerHTML = `<em>${subTier}</em>/5`;
+  } else {
+    tierDisplay.innerHTML = `<em>${fullSeats}</em>席 <span style="opacity:.65;font-size:.7em;">+</span> <em>${subTier}</em>/5`;
+  }
+
+  // 進度條級距標記
+  document.querySelectorAll('.calc-tier-mark').forEach((el, i) => {
+    el.classList.toggle('reached', subTier >= i + 1);
+  });
+
+  // 進度條標籤
+  const progressLabel = document.getElementById('progressLabel');
+  progressLabel.textContent = fullSeats === 0
+    ? '當前進度 (第 1 席)'
+    : `衝刺中 (第 ${fullSeats + 1} 席)`;
+
+  // 已獲席次徽章列
+  const seatsRow = document.getElementById('seatsTrophyRow');
+  if (fullSeats === 0) {
+    seatsRow.style.display = 'none';
+  } else {
+    seatsRow.style.display = 'flex';
+    seatsRow.classList.toggle('compact', fullSeats > 6);
+    const badges = Array.from({length: fullSeats}, () => `<div class="seat-badge">🏆</div>`).join('');
+    seatsRow.innerHTML = `
+      <div class="seats-trophy-label">已獲</div>
+      <div class="seats-trophy-badges">${badges}</div>
+      <div class="seats-trophy-count">${fullSeats}<small>席</small></div>
+    `;
+  }
+
+  // ===== 下階段提示 =====
+  const tipEl = document.getElementById('nextTip');
+  let needForNextTier = 0;   // 距離下個 1/5 還需多少業績(萬)
+  let nextTierLabel = '';    // 下個級距的顯示文字
+
+  if (fybInWan === 0) {
+    tipEl.innerHTML = `📝 開始試算你的競賽進度,選擇商品輸入保費即可!`;
+    needForNextTier = tierStep;
+    nextTierLabel = `1/5 名額`;
+  } else {
+    // 下一個 1/5 的目標業績(萬)
+    const nextTargetWan = (tierStepUnits + 1) * tierStep;
+    needForNextTier = nextTargetWan - fybInWan;
+    const nextFullSeats = Math.floor(nextTargetWan / tierFull);
+    const nextSubTier = Math.floor((nextTargetWan - nextFullSeats * tierFull) / tierStep);
+    nextTierLabel = nextFullSeats === 0
+      ? `${nextSubTier}/5`
+      : nextSubTier === 0
+        ? `${nextFullSeats} 席`
+        : `${nextFullSeats} 席 + ${nextSubTier}/5`;
+
+    if (fullSeats >= 1 && subTier === 0 && remainWan === 0) {
+      tipEl.innerHTML = `🎉 <b>恭喜達成 ${fullSeats} 席!</b> 再衝 <b>${needForNextTier.toFixed(1)} 萬</b> 即可達 <b>${nextTierLabel}</b>`;
+    } else if (fullSeats >= 1) {
+      tipEl.innerHTML = `🚀 已達 <b>${fullSeats} 席 + ${subTier}/5</b>!還差 <b>${needForNextTier.toFixed(1)} 萬</b> 即可達 <b>${nextTierLabel}</b>`;
+    } else {
+      tipEl.innerHTML = `🎯 還差 <b>${needForNextTier.toFixed(1)} 萬業績</b> 即可達 <b>${nextTierLabel}</b>(再增 30,000 元獎勵金)`;
+    }
+  }
+
+  // ===== 下一級距:每張保單需多少保費才能補上差距 =====
+  renderNextTierSuggest(needForNextTier, nextTierLabel);
+}
+
+// ===== 下一級距達標建議:列出每張保單需多少保費才能補上差距 =====
+function renderNextTierSuggest(needWan, nextTierLabel) {
+  const suggestEl = document.getElementById('nextTierSuggest');
+  const needTwd = needWan * 10000;  // 換算回元
+
+  // 收集已選擇商品的所有保單
+  const validPolicies = policies.filter(p => p.company && p.productIdx >= 0);
+
+  // 缺口 ≤ 0(剛好達標)或沒有商品 → 隱藏
+  if (needTwd <= 0 || needWan < 0.01 || validPolicies.length === 0) {
+    suggestEl.style.display = 'none';
+    return;
+  }
+
+  // 用商品 key (公司+商品idx) 去重,避免相同商品重覆出現
+  const seen = new Set();
+  const items = [];
+  validPolicies.forEach(p => {
+    const key = `${p.company}::${p.productIdx}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    const product = PRODUCTS[p.company][p.productIdx];
+    if (!product || !product.rate) return;
+    const currency = detectCurrency(product.name);
+    const rate = product.rate / 100;
+    const bonus = product.bonus / 100;
+
+    // 反推保費(依組別):
+    //   個人組:保費 = 缺口業績 / (佣率 × 加碼)
+    //   加盟主系統組:保費 = 缺口業績 / 佣率(不乘加碼)
+    const effectiveMultiplier = currentGroup === 'system' ? rate : (rate * bonus);
+    if (effectiveMultiplier <= 0) return;
+    const twNeeded = needTwd / effectiveMultiplier;
+    if (twNeeded <= 0 || !isFinite(twNeeded)) return;
+
+    let displayPremium, displayUnit;
+    if (currency) {
+      const fxRate = p.fxRate != null && p.fxRate > 0 ? p.fxRate : currency.defaultRate;
+      const fxNeeded = twNeeded / fxRate;
+      displayPremium = formatNum(fxNeeded);
+      displayUnit = `${currency.code} (≈ NT$ ${formatNum(twNeeded)})`;
+    } else {
+      displayPremium = formatNum(twNeeded);
+      displayUnit = '元 (台幣)';
+    }
+
+    const yearLabel = product.year === '躉' ? '躉繳' : product.year === '99' ? '終身' : product.year + '年';
+    items.push(`
+      <div class="suggest-row">
+        <div class="suggest-name">
+          ${escapeHtml(p.company)} · ${escapeHtml(product.name)}
+          <small>${yearLabel} | 佣 ${product.rate}% × 加碼 ${product.bonus}%</small>
+        </div>
+        <div class="suggest-amount">
+          ${displayPremium}<small>${displayUnit}</small>
+        </div>
+      </div>
+    `);
+  });
+
+  if (items.length === 0) {
+    suggestEl.style.display = 'none';
+    return;
+  }
+
+  suggestEl.style.display = 'block';
+  suggestEl.innerHTML = `
+    <div class="suggest-header">💡 達 ${nextTierLabel} 建議方案</div>
+    <div class="suggest-sub">距離下一級距還差 <b style="color:var(--usa-gold);">${needWan.toFixed(1)} 萬業績</b>。下方列出 <b>單獨用每張保單達標</b> 所需的保費(擇一即可,不必同時銷售):</div>
+    <div class="suggest-list">${items.join('')}</div>
+  `;
+}
+
+function formatNum(n) {
+  return Math.round(n).toLocaleString('zh-TW');
+}
+
+// ===== 啟動 =====
+init();
+</script>
+
+</body>
+</html>
