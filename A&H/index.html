@@ -876,81 +876,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .btn-danger { background: var(--red); color: white; }
 .btn-success { background: var(--green); color: white; }
 
-/* ── PDF 匯出模式專用(html2canvas + jsPDF) ── */
-body.pdf-export-mode {
-  background: white !important;
-}
-body.pdf-export-mode .app {
-  max-width: none !important;
-  width: 760px !important;          /* A4 寬度約 794px,留邊 */
-  margin: 0 !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-}
-body.pdf-export-mode .toolbar,
-body.pdf-export-mode .no-print,
-body.pdf-export-mode .add-rider-btn,
-body.pdf-export-mode .product-checkbox,
-body.pdf-export-mode .product-radio,
-body.pdf-export-mode .pl-btn,
-body.pdf-export-mode .icon-btn,
-body.pdf-export-mode .select-all-btn,
-body.pdf-export-mode .switch-row,
-body.pdf-export-mode .chart-controls,
-body.pdf-export-mode .add-rider-row,
-body.pdf-export-mode #productCard,
-body.pdf-export-mode .switch-row {
-  display: none !important;
-}
-/* 強制顯示 print-only 元素 */
-body.pdf-export-mode .print-only { display: block !important; }
-/* SVG 走勢圖固定寬度,避免 html2canvas 尺寸異常 */
-body.pdf-export-mode .chart-svg {
-  width: 720px !important;
-  height: 280px !important;
-  display: block !important;
-}
-body.pdf-export-mode .chart-svg-wrap { padding: 8px 0 !important; }
-body.pdf-export-mode .chart-print-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0D2A3A;
-  margin: 16px 0 6px;
-  padding-left: 10px;
-  border-left: 4px solid #E8A020;
-}
-body.pdf-export-mode .chart-print-extra { margin-top: 16px; }
-/* 理賠卡片改成單欄(雙欄會被切) */
-body.pdf-export-mode .benefits-section { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-body.pdf-export-mode .benefit-card { page-break-inside: avoid; break-inside: avoid; }
-/* 圖表 tooltip 在 PDF 中隱藏 */
-body.pdf-export-mode .chart-tooltip { display: none !important; }
-/* 公司分頁列印不顯示 */
-body.pdf-export-mode .company-tabs { display: none !important; }
-/* PDF 模式時 強制單頁分割 */
-body.pdf-export-mode .card { page-break-inside: avoid; break-inside: avoid; margin-bottom: 12px !important; }
-/* 試算結果表格 */
-body.pdf-export-mode .result-table { width: 100% !important; }
-body.pdf-export-mode .result-table th,
-body.pdf-export-mode .result-table td {
-  padding: 6px 4px !important;
-  font-size: 11px !important;
-}
-body.pdf-export-mode .result-table th:nth-child(1),
-body.pdf-export-mode .result-table td:nth-child(1) { width: 40% !important; }
-body.pdf-export-mode .result-table th:nth-child(2),
-body.pdf-export-mode .result-table td:nth-child(2) { width: 8% !important; }
-body.pdf-export-mode .result-table th:nth-child(3),
-body.pdf-export-mode .result-table td:nth-child(3) { width: 7% !important; text-align: right !important; }
-body.pdf-export-mode .result-table th:nth-child(4),
-body.pdf-export-mode .result-table td:nth-child(4) { width: 5% !important; }
-body.pdf-export-mode .result-table th:nth-child(5),
-body.pdf-export-mode .result-table td:nth-child(5) { width: 12% !important; }
-body.pdf-export-mode .result-table th:nth-child(6),
-body.pdf-export-mode .result-table td:nth-child(6) { width: 10% !important; text-align: center !important; }
-body.pdf-export-mode .result-table th:nth-child(7),
-body.pdf-export-mode .result-table td:nth-child(7) { width: 18% !important; text-align: right !important; }
-
 /* ── Print: 重新設計,保留品牌色彩 ── */
 @media print {
   /* 全域:強制顏色輸出 */
@@ -1395,28 +1320,6 @@ body.pdf-export-mode .result-table td:nth-child(7) { width: 18% !important; text
   .product-item > .product-links { grid-column: span 3; justify-self: end; }
 }
 </style>
-<!-- PDF 下載功能(html2pdf.js,雙 CDN fallback) -->
-<script>
-  (function loadHtml2pdf() {
-    const cdns = [
-      'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
-      'https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js',
-      'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'
-    ];
-    let i = 0;
-    function tryNext() {
-      if (i >= cdns.length) {
-        console.warn('html2pdf.js 載入失敗,PDF 下載功能將不可用,改用列印備援。');
-        return;
-      }
-      const s = document.createElement('script');
-      s.src = cdns[i++];
-      s.onerror = tryNext;
-      document.head.appendChild(s);
-    }
-    tryNext();
-  })();
-</script>
 </head>
 <body>
 
@@ -4027,54 +3930,13 @@ const App = (() => {
   function closeModal(id) { $('#' + id).classList.remove('show'); }
 
   // ── PDF 輸出 ──
-  /** 在 init 時建立 PDF 模式樣式表(把 @media print 複製為 .pdf-export-mode 一般樣式) */
-  function injectPdfStyleSheet() {
-    if (document.getElementById('pdf-export-style')) return;
-    let collectedRules = '';
-    // 找出所有 @media print 規則,把它們改寫為 body.pdf-export-mode 內的一般樣式
-    for (const sheet of document.styleSheets) {
-      try {
-        for (const rule of sheet.cssRules || []) {
-          if (rule.type === CSSRule.MEDIA_RULE && rule.media.mediaText.includes('print')) {
-            for (const inner of rule.cssRules) {
-              // 把選擇器加上 body.pdf-export-mode  前綴
-              const text = inner.cssText;
-              // 簡單作法:整段往前加 body.pdf-export-mode 命名空間
-              // 但 cssText 是 "selector { props }",需切開
-              const m = text.match(/^([^{]+)\{([\s\S]*)\}$/);
-              if (m) {
-                const selectors = m[1].split(',').map(s => {
-                  const sTrim = s.trim();
-                  if (sTrim === 'body' || sTrim === 'html' || sTrim === '*') {
-                    return 'body.pdf-export-mode';
-                  }
-                  return `body.pdf-export-mode ${sTrim}`;
-                }).join(', ');
-                collectedRules += `${selectors} { ${m[2]} }\n`;
-              }
-            }
-          }
-        }
-      } catch (e) {
-        // 跨域 stylesheet 會 throw,忽略
-      }
-    }
-    if (collectedRules) {
-      const style = document.createElement('style');
-      style.id = 'pdf-export-style';
-      style.textContent = collectedRules;
-      document.head.appendChild(style);
-    }
-  }
 
-  /** 直接下載 PDF(使用 html2pdf.js)
+  /** 下載 PDF — 改用瀏覽器列印對話框(使用者選「儲存為 PDF」)
+   *  優勢:列印效果與「列印」按鈕完全一致,且不需外部 JS 庫
    *  檔名:鼎綸恩宇 - 保險建議書系統 - 被保險人姓名 - YYYYMMDD.pdf
+   *  ※ 瀏覽器會把 document.title 當成預設檔名
    */
   function exportPDF() {
-    if (typeof html2pdf === 'undefined') {
-      alert('PDF 下載功能載入中,請稍候再試。或可改用「列印」按鈕另存為 PDF。');
-      return;
-    }
     // 必須有試算結果才能下載
     const resultCard = $('#resultCard');
     if (!resultCard || resultCard.style.display === 'none') {
@@ -4082,71 +3944,39 @@ const App = (() => {
       return;
     }
 
-    // ── 組檔名 ──
+    // ── 組檔名(瀏覽器會把 document.title 當儲存檔名) ──
     const ins = getCurrentInsured();
     const now = new Date();
     const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
-    const insName = (ins.name || '被保險人').replace(/[\\/:*?"<>|]/g, '');  // 過濾不合法字元
-    const filename = `鼎綸恩宇 - 保險建議書系統 - ${insName} - ${dateStr}.pdf`;
+    const insName = (ins.name || '被保險人').replace(/[\\/:*?"<>|]/g, '');
+    const filename = `鼎綸恩宇 - 保險建議書系統 - ${insName} - ${dateStr}`;
 
-    // ── 進度提示 ──
-    const btn = document.querySelector('button[onclick*="exportPDF"]');
-    const oldText = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = '⏳ 產生中...'; }
+    // ── 暫存原 title,改成預期檔名 ──
+    const oldTitle = document.title;
+    document.title = filename;
 
-    // ── 啟用 PDF 列印模式(在 body 加 class,觸發專用 CSS) ──
-    document.body.classList.add('pdf-export-mode');
+    // ── 提示一下使用者 ──
+    // 第一次點時提示,後續不再提示(用 sessionStorage 紀錄)
+    if (!sessionStorage.getItem('pdf-tip-shown')) {
+      sessionStorage.setItem('pdf-tip-shown', '1');
+      // 改用 setTimeout 確保提示框先關才開列印對話框
+      setTimeout(() => {
+        alert('💡 PDF 下載小提示\n\n即將開啟列印對話框,請選擇:\n「目的地 / 印表機」→「另存為 PDF」\n\n檔名已自動設定:\n' + filename + '.pdf');
+        triggerPrint();
+      }, 0);
+    } else {
+      triggerPrint();
+    }
 
-    // ── 確保 SVG 有明確寬高(html2canvas 才能正確渲染) ──
-    document.querySelectorAll('.chart-svg').forEach(svg => {
-      svg.setAttribute('width', '720');
-      svg.setAttribute('height', '280');
-      // 強制重新繪圖確保 viewBox 內容正確
-    });
-
-    // ── 取得需要列印的內容容器 ──
-    const target = document.querySelector('.app');
-
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-        logging: false,
-        windowWidth: 800,
-        // SVG 渲染:必須開啟 foreignObjectRendering 或用 onclone 預處理
-        onclone: function(clonedDoc) {
-          // 確保 cloned doc 也加上 pdf-export-mode
-          clonedDoc.body.classList.add('pdf-export-mode');
-        }
-      },
-      jsPDF: {
-        unit: 'mm',
-        format: 'a4',
-        orientation: 'portrait',
-        compress: true
-      },
-      pagebreak: {
-        mode: ['css', 'legacy'],
-        before: '#chartCard, #benefitsCard',
-        avoid: ['.benefit-card', '.agg-row', '.product-item']
-      }
-    };
-
-    html2pdf().set(opt).from(target).save()
-      .then(() => {
-        document.body.classList.remove('pdf-export-mode');
-        if (btn) { btn.disabled = false; btn.textContent = oldText; }
-      })
-      .catch(err => {
-        console.error('PDF 產生失敗:', err);
-        document.body.classList.remove('pdf-export-mode');
-        if (btn) { btn.disabled = false; btn.textContent = oldText; }
-        alert('PDF 下載失敗,可改用「列印」按鈕另存為 PDF。\n\n錯誤:' + (err.message || err));
-      });
+    function triggerPrint() {
+      // 觸發列印
+      window.print();
+      // 列印對話框關閉後還原 title
+      // 不同瀏覽器 print() 行為不同,用 setTimeout 確保對話框關閉
+      setTimeout(() => {
+        document.title = oldTitle;
+      }, 1000);
+    }
   }
 
   // ── 初始化 ──
