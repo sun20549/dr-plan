@@ -1612,6 +1612,30 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   border-radius: 6px; padding: 10px 14px; margin-top: 8px;
   font-size: 13px; color: var(--navy); line-height: 1.6;
 }
+/* ── XHD+XHO 雜費結構圖解 ── */
+.misc-chart-wrap {
+  margin-top: 14px; padding: 14px;
+  background: white; border: 1px solid #E5E7EB; border-radius: 8px;
+}
+.misc-chart-title {
+  font-size: 14px; font-weight: 900; color: var(--navy);
+  margin-bottom: 4px;
+}
+.misc-chart-sub {
+  font-size: 12px; color: #666; margin-bottom: 10px;
+}
+.misc-chart-svg {
+  width: 100%; height: auto; max-width: 100%;
+  display: block;
+}
+.misc-chart-note {
+  margin-top: 10px; padding: 10px 12px;
+  background: #FFF8EC; border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  font-size: 11.5px; color: #555; line-height: 1.7;
+}
+.misc-chart-note b { color: var(--orange-dark); }
+
 .advice-conclusion {
   background: var(--navy); color: white;
   padding: 14px 18px; border-radius: 8px;
@@ -2243,7 +2267,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
           <label class="form-label">情境模板</label>
           <select class="form-control" id="scenarioSelect">
             <option value="">不套用</option>
-            <option value="新生兒">👶 新生兒規劃</option>
+            <option value="新生兒">👶🏻 新生兒規劃</option>
+            <option value="兒童">🧒🏻 兒童規劃</option>
+            <option value="青少年">🧑🏻‍🎓 青少年規劃</option>
+            <option value="成人">🧑🏻‍💼 成人規劃</option>
           </select>
         </div>
       </div>
@@ -2558,7 +2585,7 @@ const INSURANCE_DB = {
           // 體檢檢查群組:DCF/XDE 等 14 個商品累計保額計算體檢需求
           medicalExamGroup: "majorIllness",
           underwriteNotes: [
-            "投保年齡依繳費年期不同(30年期 0-45 歲,20年期 0-55 歲)",
+            "投保年齡依繳費年期不同(30年期 0-45 歲，20年期 0-55 歲)",
             "本商品累積最高保額 200 萬元",
             "重大傷病險累計上限 500 萬元(含同公司其他商品)",
             "須加入全民健保",
@@ -2593,7 +2620,7 @@ const INSURANCE_DB = {
           underwriteNotes: [
             "投保年齡 0~未滿 15 足歲(15 歲以上不可投保)",
             "保額上限 69 萬元(15 歲以下喪葬費法定上限)",
-            "可繳費至 15 歲,續保有效至 16 歲生效日",
+            "可繳費至 15 歲，續保有效至 16 歲生效日",
             "需填寫「被保險人未滿 15 足歲投保聲明書」"
           ],
           periodOptions: ["1年期"],
@@ -2622,7 +2649,7 @@ const INSURANCE_DB = {
           // 體檢檢查群組:DCF/XDE 等累計保額計算體檢需求
           medicalExamGroup: "majorIllness",
           underwriteNotes: [
-            "投保年齡 0~65 歲,可繳費至 80 歲",
+            "投保年齡 0~65 歲，可繳費至 80 歲",
             "本商品累積最高保額 200 萬元",
             "重大傷病險累計上限 500 萬元(含 DCF/XDE 等)",
             "須加入全民健保",
@@ -2645,7 +2672,7 @@ const INSURANCE_DB = {
           fullName: "全球人壽實分鑫安醫療費用健康保險附約",
           shortName: "實分鑫安實支實付",
           category: "實支實付醫療",
-          description: "日額/雜費二擇一,門診手術,特定醫材,重大手術慰問金",
+          description: "日額/雜費二擇一，門診手術，特定醫材，重大手術慰問金",
           rateType: "natural",  // 自然費率(隨年齡漲)
           maxAgeContinuous: 80,  // 續保有效至此年齡(超過則費率為 0)
           minAge: 0, maxAge: 70,
@@ -2653,7 +2680,7 @@ const INSURANCE_DB = {
           medicalCategory: "medicalDaily",
           dailyByPlan: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000 },
           underwriteNotes: [
-            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "投保年齡 0~70 歲，可繳費至 80 歲",
             "限投保 2 張實支實付型醫療(本公司+同業)",
             "未滿 15 歲住院日額累計上限 8,000 元/日",
             "15 歲以上累計上限 10,000 元/日",
@@ -2687,7 +2714,7 @@ const INSURANCE_DB = {
           },
           underwriteNotes: [
             "投保年齡 0~64 歲(原本以為 75,實際只到 64)",
-            "可繳費至 74 歲,續保有效至 75 歲生效日",
+            "可繳費至 74 歲，續保有效至 75 歲生效日",
             "懷孕 28 週以上至產後 1 個月暫不承保",
             "醫療住院日額同業累計上限 15,000 元/日"
           ],
@@ -2713,7 +2740,7 @@ const INSURANCE_DB = {
           maxAgeContinuous: 80,  // 續保有效至此年齡(超過則費率為 0)
           minAge: 0, maxAge: 70,
           underwriteNotes: [
-            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "投保年齡 0~70 歲，可繳費至 80 歲",
             "限投保 2 張具自負額之實支實付型醫療",
             "懷孕 28 週以上至產後 1 個月暫不承保"
           ],
@@ -2734,13 +2761,13 @@ const INSURANCE_DB = {
           fullName: "全球人壽臻心一意防癌一年期健康保險附約",
           shortName: "臻心一意防癌一次金",
           category: "癌症一次金",
-          description: "初次罹癌一次金,首年/續年費率不同,首年理賠減半",
+          description: "初次罹癌一次金，首年/續年費率不同，首年理賠減半",
           rateType: "natural",  // 自然費率(隨年齡漲)
           maxAgeContinuous: 80,  // 續保有效至此年齡(超過則費率為 0)
           minAge: 0, maxAge: 70,
           minAmount: 20, maxAmount: 200,
           underwriteNotes: [
-            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "投保年齡 0~70 歲，可繳費至 80 歲",
             "本商品累積最高保額 200 萬元",
             "防癌一次金累計上限 300 萬元(含 PCC/PCE/PCF 等)",
             "曾罹癌、C 肝、慢性 B 肝者不接受投保"
@@ -2763,13 +2790,13 @@ const INSURANCE_DB = {
           fullName: "全球人壽臻心全意防癌一年期醫療健康保險附約",
           shortName: "臻心全意防癌療程型",
           category: "癌症療程型",
-          description: "癌症住院、手術、化放療、骨髓移植、義乳重建、標靶,首年/續年不同",
+          description: "癌症住院、手術、化放療、骨髓移植、義乳重建、標靶，首年/續年不同",
           rateType: "natural",  // 自然費率(隨年齡漲)
           maxAgeContinuous: 80,  // 續保有效至此年齡(超過則費率為 0)
           minAge: 0, maxAge: 70,
           minAmount: 1, maxAmount: 3,
           underwriteNotes: [
-            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "投保年齡 0~70 歲，可繳費至 80 歲",
             "本商品最高 3 單位(住院日額 3,000 元)",
             "防癌險日額同業累計上限 12,000 元/日",
             "曾罹癌、C 肝、慢性 B 肝者不接受投保",
@@ -2809,8 +2836,8 @@ const INSURANCE_DB = {
           // 職業等級對保額上限的限制
           maxByJobLevel: { "1": 2000, "2": 2000, "3": 1000, "4": 1000, "5": 500, "6": 500 },
           underwriteNotes: [
-            "投保年齡 0~75 歲,可繳費至 80 歲",
-            "保額上限依年齡:0-14 歲 200 萬、15-59 歲 1000 萬、60-69 歲 500 萬、70-75 歲 300 萬",
+            "投保年齡 0~75 歲，可繳費至 80 歲",
+            "保額上限依年齡：0-14 歲 200 萬、15-59 歲 1000 萬、60-69 歲 500 萬、70-75 歲 300 萬",
             "職業 5/6 級限 500 萬、危險職業限 100 萬",
             "未滿 15 歲須有具喪葬費保障的主約或附約"
           ],
@@ -2837,7 +2864,7 @@ const INSURANCE_DB = {
           minAge: 0, maxAge: 70,
           minAmount: 10000, maxAmount: 40000,  // 1 萬 ~ 4 萬
           underwriteNotes: [
-            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "投保年齡 0~70 歲，可繳費至 80 歲",
             "本商品最高 4 萬元",
             "傷害醫療同業累計上限 20 萬元",
             "若無傷害保險主、附約則限 1 萬元"
@@ -2860,43 +2887,175 @@ const INSURANCE_DB = {
   scenarios: {
     "新生兒": {
       title: "👶🏻 新生兒建議規劃方向",
-      summary: "優先規劃「醫療實支+日額、意外險、重大傷病/癌症一次金」",
+      summary: "把握 0 歲投保黃金期，以最低保費鎖定終身保障。優先規劃「醫療實支實付+日額」「重大傷病/癌症一次金」「意外險」三大支柱。",
       sections: [
         {
           icon: "🏥",
-          title: "一、醫療險:實支實付＋定額醫療",
+          title: "一、醫療險：實支實付+定額醫療，雙軌互補",
           points: [
-            "2024/7 保險新制上路,僅有單實支實付,透過定額型醫療再補足住院、手術花費。",
-            "第一間實支解決醫療花費的問題,定額醫療可彌補爸媽照顧小朋友這段期間的薪水損失。",
-            "各家商品皆有優缺點,兩家搭配可以互補讓保障更全面完整。"
+            "2024/7 保險新制上路後，業界僅可投保 1 張實支實付，單張可能不夠用，需透過「定額型醫療」補足住院、手術自費花費。",
+            "第一張實支主要解決「醫療費用」的問題；搭配定額醫療，可以額外補貼爸媽請假照顧期間的薪資損失。",
+            "各家商品皆有優缺點，跨家搭配可以截長補短，讓寶寶的保障更全面、更完整。"
           ]
         },
         {
           icon: "💰",
-          title: "二、一次性理賠金:癌症一次金、重大傷病",
+          title: "二、一次性理賠金：癌症一次金+重大傷病雙保護",
           points: [
-            "現行醫療進步,各類型新型藥物及手術金額高達數十萬,在疾病發生當下給予百萬預備金。",
-            "因癌症或重傷的發生都需半年至兩年左右的休養及治療,一次性的給付可以彌補隱形的照顧成本。",
-            "照顧生病的小朋友而暫時無法工作或收入中斷時能夠較無後顧之憂。",
-            "重大傷病包含 300 多項疾病,包含自閉症、腦性麻痺、克隆氏症、川崎氏症等,好發於兒童的症狀範圍最廣。"
+            "現代醫療進步，新型藥物(標靶、免疫療法)及新式手術動輒數十萬至上百萬，需要在疾病發生當下立即取得「百萬預備金」。",
+            "癌症或重大傷病的療程多需半年至兩年，一次性給付可以彌補「無法工作的隱形照顧成本」。",
+            "讓爸媽在照顧生病小朋友時，不需要為了收入中斷而擔憂，專心陪伴寶寶康復。",
+            "重大傷病涵蓋 300 多項疾病，包含自閉症、腦性麻痺、克隆氏症、川崎氏症等好發於兒童的疾病，保障範圍最廣。"
           ]
         },
         {
           icon: "🚑",
-          title: "三、意外險:跌倒扭傷、擦傷、骨折都在保障內",
+          title: "三、意外險：跌倒、扭傷、骨折、燒燙傷全方位保障",
           points: [
-            "因法規規定,未滿 15 歲者規劃意外險,需先補足 69 萬的喪葬費用。",
-            "小朋友在幼童時期容易有意外擦傷跌倒,需有基本的意外失能、意外實支、意外住院。"
+            "依保險法規，未滿 15 歲被保險人不給付身故金，規劃意外險時需先補足喪葬費用上限 69 萬。",
+            "幼童時期最容易發生意外擦傷、跌倒、骨折，基本配置應包含「意外失能、意外實支實付、意外住院日額」三項。"
           ]
         }
       ],
       productHighlights: {
-        "XHD+XHO": "全球 XHD+XHO 住院可提供 50 萬的雜費限額,收據實報實銷,解決自費用藥或耗材的花費。XHD+XHO 優勢為住院「雜費與手術費」合併額度計算,門診手術最高 6 萬,有額外包含 145 項處置,市面上門診特定範圍最廣。",
-        "NIR": "幼童時期容易感冒發燒、腸胃炎、支氣管炎等狀況住院,可以透過 NIR 加強整體住院及手術的保障。每日病房實支額度可提升至 10,500 元/天(若住健保房每日賠 6,500 元),提供寶寶單人房的休養品質。",
-        "XCF": "癌症近幾年有許多新型治療方式(標靶藥物、免疫療法都需要高額費用),建議規劃一次給付型防癌險。全球 XCF 保費便宜,可搭配到 200 萬的癌症一次金。",
-        "XDE": "全球 XDE 為重大傷病,領到健保核發重大傷病卡即可理賠一次金,保障範圍多達 400 項。首年理賠或精神疾病領卡皆不打折,後期保費漲幅較為平緩,CP 值較高。"
+        "XHD+XHO": "全球 XHD + XHO 搭配可建構出完整的雜費保障 — XHD 負責前段限額(無自負額)，XHO 補上後段較高限額(有自負額)。實務上 XHD 賠的金額會剛好補上 XHO 的自負額，讓客戶在限額內幾乎零負擔。XHD+XHO 另一優勢為住院「雜費與手術費」合併額度計算，門診手術最高 6 萬，額外包含 145 項處置，門診特定範圍最廣。詳細金額請參下方圖解。",
+        "NIR": "幼童時期容易感冒發燒、腸胃炎、支氣管炎等狀況住院，可以透過 NIR 加強整體住院及手術的保障。每日病房實支額度可提升至 10,500 元/天(若住健保房每日賠 6,500 元)，提供寶寶單人房的休養品質。",
+        "XCF": "癌症治療日新月異(標靶藥物、免疫療法都需要高額費用)，建議規劃一次給付型防癌險。全球 XCF 保費便宜，可規劃到 200 萬癌症一次金，治療資金一次到位。",
+        "XDE": "全球 XDE 屬重大傷病險，領到健保核發的重大傷病卡即可一次給付，保障範圍多達 400 項。首年理賠或精神疾病領卡都不打折，後期保費漲幅較為平緩，CP 值極高。"
       },
-      conclusion: "新生兒建議規劃方向為重大傷病、癌症一次金、實支＋日額、意外險,透過此份保單可以建立完整的保護網。全球重傷(XDE)保費便宜,同時也有定額醫療、癌症一次金、實支可以加強保障額度,此份意外及醫療保障齊全,可做為新生兒保單初次規劃保障參考的方向。"
+      conclusion: "新生兒建議規劃方向為「重大傷病、癌症一次金、實支+日額、意外險」四大主軸，透過此份保單可以建立完整的保護網。全球重大傷病(XDE)保費便宜，搭配定額醫療、癌症一次金、實支實付，可加強整體保障額度，意外及醫療保障齊全，可作為新生兒保單初次規劃的參考方向。0 歲投保最大的優勢就是「保費最便宜+最高的核保通過率」,把握這段黃金期，為寶寶建立最完整的醫療防護。"
+    },
+
+    "兒童": {
+      title: "🧒🏻 兒童建議規劃方向",
+      summary: "1~9 歲是「活動量最大、感染風險最高」的時期，保費仍處低水位。優先規劃「醫療實支+日額」「重大傷病/癌症一次金」「意外險」三大支柱。",
+      sections: [
+        {
+          icon: "🏥",
+          title: "一、醫療險：實支實付+定額醫療，銜接幼兒園/學齡照護",
+          points: [
+            "幼兒園、安親班接觸群體多，腸胃炎、流感、腸病毒、肺炎住院風險高，實支實付可全面覆蓋醫療費用。",
+            "2024/7 保險新制上路後，業界僅可投保 1 張實支實付，需搭配定額型醫療補足自費醫材、自費病房等花費。",
+            "孩子住院期間需要爸媽請假陪伴，定額醫療日額可彌補爸媽暫時無法工作的薪資損失。",
+            "跨家商品搭配可以截長補短，讓孩子的住院、手術、門診治療都有完整保障。"
+          ]
+        },
+        {
+          icon: "💰",
+          title: "二、一次性理賠金：癌症一次金、重大傷病 — 把握保費低點",
+          points: [
+            "兒童時期重大傷病保費極為親民，及早規劃可用最低成本鎖定終身保障，避免日後體況變化導致核保困難。",
+            "重大傷病涵蓋 300 多項疾病，包含自閉症、注意力缺失、川崎氏症、克隆氏症等好發於兒童的疾病。",
+            "兒童癌症雖然發生率較低，但治療期動輒一兩年，一次給付的癌症一次金可作為長期治療基金。",
+            "孩子生病時，爸媽往往需要請長假甚至辭職全心照顧，一次給付可以彌補家庭的隱形照顧成本。"
+          ]
+        },
+        {
+          icon: "🚑",
+          title: "三、意外險：活動量大、跌倒擦傷骨折最常見",
+          points: [
+            "依保險法規，未滿 15 歲被保險人不給付身故金，規劃意外險時需先補足喪葬費用上限 69 萬。",
+            "兒童活動量大，戶外遊玩、運動、騎腳踏車等都可能造成擦傷、扭傷、骨折。",
+            "基本配置應包含「意外失能、意外實支實付、意外住院日額」三項，門診縫合、骨折固定、復健費用都能涵蓋。"
+          ]
+        }
+      ],
+      productHighlights: {
+        "XHD+XHO": "全球 XHD + XHO 搭配可建構出完整的雜費保障 — XHD 負責前段限額(無自負額)，XHO 補上後段較高限額(有自負額)。實務上 XHD 賠的金額會剛好補上 XHO 的自負額，讓客戶在限額內幾乎零負擔。XHD+XHO 另一優勢為住院「雜費與手術費」合併額度計算，門診手術最高 6 萬，額外包含 145 項處置，門診特定範圍最廣。詳細金額請參下方圖解。",
+        "NIR": "兒童期容易因感冒、腸胃炎、流感、肺炎住院，NIR 可加強整體住院及手術的保障。每日病房實支額度可提升至 10,500 元/天，提供孩子單人房的休養品質，爸媽也方便陪伴。",
+        "XCF": "兒童癌症雖發生率低，但治療期長，建議及早規劃一次給付型防癌險。全球 XCF 保費便宜，可規劃到 200 萬癌症一次金，治療資金一次到位。",
+        "XDE": "全球 XDE 屬重大傷病險，領到健保核發的重大傷病卡即可一次給付，保障範圍多達 400 項。涵蓋自閉症、川崎氏症等好發於兒童的疾病，首年理賠不打折，CP 值極高。"
+      },
+      conclusion: "兒童期建議規劃方向為「重大傷病、癌症一次金、實支+日額、意外險」四大主軸。1~9 歲是保費仍處低水位的黃金規劃期，越早規劃可以用越低的成本鎖定終身保障。建議家長把握這段時期，為孩子建立完整的醫療與意外防護網，避免日後因體況變化(過敏、氣喘、生長異常等)導致核保困難或加費承保。"
+    },
+
+    "青少年": {
+      title: "🧑🏻‍🎓 青少年建議規劃方向",
+      summary: "10~19 歲是「學業壓力+運動傷害」的雙重時期，銜接成年期前的最後低保費窗口。優先規劃「醫療實支+日額」「重大傷病/癌症一次金」「意外險」三大支柱。",
+      sections: [
+        {
+          icon: "🏥",
+          title: "一、醫療險：實支實付+定額醫療，銜接成年生活",
+          points: [
+            "青少年時期是身體快速發育階段，運動傷害、扁桃腺發炎、盲腸炎等住院風險不容忽視。",
+            "2024/7 保險新制上路後，業界僅可投保 1 張實支實付，需搭配定額型醫療補足自費項目。",
+            "青少年喜歡運動、戶外活動，運動傷害可能需要復健或手術，自費醫材(如骨釘、運動傷害修復)花費龐大。",
+            "跨家商品搭配可以互補優劣勢，讓住院、手術、門診治療都有完整保障，銜接成年後仍可持續續保。"
+          ]
+        },
+        {
+          icon: "💰",
+          title: "二、一次性理賠金：重大傷病、癌症一次金 — 最後低保費窗口",
+          points: [
+            "青少年期重大傷病保費仍便宜，過了 20 歲後保費會明顯上升，把握這段最後的低保費窗口。",
+            "現代學業壓力大，青少年罹患憂鬱症、焦慮症等精神疾病比例上升，重大傷病涵蓋這類疾病的長期治療費用。",
+            "癌症雖發生率不高，但近年青少年癌症(如骨肉瘤、白血病、淋巴癌)案例增加，一次給付可作為治療資金。",
+            "及早規劃可避免日後體況變化(青春痘、氣喘、過敏、體位過重等)導致核保困難或被加費承保。"
+          ]
+        },
+        {
+          icon: "🚑",
+          title: "三、意外險：運動傷害、通勤事故、騎乘機車風險",
+          points: [
+            "青少年時期運動量大，籃球、足球、排球等運動容易造成扭傷、骨折、韌帶斷裂。",
+            "高中後可能開始騎機車通勤，交通事故風險顯著上升，意外保障額度需提升。",
+            "意外失能保障特別重要，年輕時的失能會影響未來數十年的工作能力。",
+            "基本配置應包含「意外失能、意外實支實付、意外住院日額」三項，門診縫合、骨折固定、復健費用都能涵蓋。"
+          ]
+        }
+      ],
+      productHighlights: {
+        "XHD+XHO": "全球 XHD + XHO 搭配可建構出完整的雜費保障 — XHD 負責前段限額(無自負額)，XHO 補上後段較高限額(有自負額)。實務上 XHD 賠的金額會剛好補上 XHO 的自負額，讓客戶在限額內幾乎零負擔。XHD+XHO 另一優勢為住院「雜費與手術費」合併額度計算，門診手術最高 6 萬，額外包含 145 項處置，門診特定範圍最廣。詳細金額請參下方圖解。",
+        "NIR": "青少年運動傷害、扁桃腺手術、盲腸炎等住院機率不低，NIR 可加強整體住院及手術的保障。手術金可在自費醫材時提供額外補貼，減輕家庭醫療開銷。",
+        "XCF": "青少年癌症(白血病、骨肉瘤、淋巴癌)發生率近年上升，建議規劃癌症一次金。全球 XCF 保費仍便宜，可規劃到 200 萬癌症一次金，治療資金一次到位。",
+        "XDE": "全球 XDE 屬重大傷病險，領到健保核發的重大傷病卡即可一次給付，保障範圍多達 400 項。包含青少年常見的精神疾病(憂鬱症、焦慮症)、紅斑性狼瘡等自體免疫疾病，首年理賠不打折，CP 值極高。"
+      },
+      conclusion: "青少年期建議規劃方向為「重大傷病、癌症一次金、實支+日額、意外險」四大主軸。10~19 歲是步入成年前的最後保費低點，把握這段黃金窗口，可用相對親民的保費鎖定終身保障。特別要注意意外保障的失能項目，年輕時的失能會影響未來數十年的工作收入能力，建議將意外失能保額拉到較高水位。"
+    },
+
+    "成人": {
+      title: "🧑🏻‍💼 成人建議規劃方向",
+      summary: "成人是家庭經濟支柱，規劃重點在於「收入中斷風險」與「醫療品質升級」。優先規劃「重大傷病/癌症一次金」「醫療實支+日額」「意外失能保障」。",
+      sections: [
+        {
+          icon: "💰",
+          title: "一、一次性理賠金：重大傷病、癌症一次金 — 收入中斷的緩衝墊",
+          points: [
+            "成人多為家庭經濟支柱，一旦罹患重大疾病無法工作，房貸、車貸、子女教育等開銷不會因此停止。",
+            "現代醫療進步，新型治療方式(標靶藥物、免疫療法、達文西手術)動輒百萬，需要在疾病發生當下立刻取得大筆現金。",
+            "重大傷病一次金可彌補「半年到兩年無法工作的薪資損失」,讓您安心治療、不被經濟壓力壓垮。",
+            "癌症一次金可自由運用 — 不限治療方式、可用於請看護、購買營養品、自費新藥，給您最大彈性。"
+          ]
+        },
+        {
+          icon: "🏥",
+          title: "二、醫療險：實支實付+定額醫療，守住醫療品質",
+          points: [
+            "2024/7 保險新制上路，業界限投保 1 張實支實付，需搭配「定額型醫療」補足自費醫材、自費病房等花費。",
+            "成人住院期間，單人房病房費差額可能高達 5,000~10,000 元/天，定額醫療補貼能讓您不用為了費用而住健保房。",
+            "新型醫材(自費水晶體、自費骨材、自費瓣膜)動輒 10~30 萬，實支實付可以涵蓋這些自費項目。",
+            "搭配兩家不同公司的商品可以互補優劣勢，讓住院、手術、門診治療都有完整保障。"
+          ]
+        },
+        {
+          icon: "🚑",
+          title: "三、意外險：意外失能 — 真正令人擔憂的不是身故，是失能",
+          points: [
+            "意外失能是「活著但無法繼續工作」的狀態，對家庭經濟的衝擊比身故更嚴重。",
+            "失能保障可依失能等級(1~11 級)按比例理賠，從輕微失能到完全失能皆有保障。",
+            "意外實支實付可補貼健保不給付的醫療費用(門診縫合、骨折復健、脫臼整復等)。",
+            "成人通勤、出差、運動、假日活動的意外風險高，基本配置應包含「意外失能、意外實支、意外住院日額」三項。"
+          ]
+        }
+      ],
+      productHighlights: {
+        "XHD+XHO": "全球 XHD + XHO 搭配可建構出完整的雜費保障 — XHD 負責前段限額(無自負額)，XHO 補上後段較高限額(有自負額)。實務上 XHD 賠的金額會剛好補上 XHO 的自負額，讓客戶在限額內幾乎零負擔。XHD+XHO 另一優勢為住院「雜費與手術費」合併額度計算，門診手術最高 6 萬，額外包含 145 項處置，門診特定範圍最廣。詳細金額請參下方圖解。",
+        "NIR": "成人住院最大的痛點是「自費病房差額」,NIR 可提供日額補貼，讓您可以選擇單人房安心休養。手術金可在自費醫材時提供額外補貼，減輕醫療開銷。",
+        "XCF": "癌症已成為成人十大死因之首，現代癌症治療多元化(標靶、免疫療法、自費新藥)花費龐大。全球 XCF 保費便宜，可規劃到 200 萬癌症一次金，治療資金一次到位、自由運用。",
+        "XDE": "全球 XDE 屬重大傷病險，領到健保核發的重大傷病卡即可一次給付，400 項疾病涵蓋常見的癌症、心臟病、腦中風、洗腎等。首年理賠不打折，是成人「收入中斷風險」的最佳緩衝。",
+        "XAB": "成人意外失能風險高，XAB 可依失能等級按比例給付，從輕微失能到完全失能皆有完整保障，守住您的工作能力。"
+      },
+      conclusion: "成人建議規劃方向以「重大傷病、癌症一次金、實支+日額、意外失能」為四大主軸。成人是家庭經濟支柱，保險的核心目的不是「拿回來的錢比繳的多」,而是「萬一發生風險時，能讓家庭生活不被打斷」。透過這份規劃，可以同時保障您的醫療品質與工作能力，讓家人不必為您的健康狀況擔憂。建議定期檢視保障額度，隨著收入與責任成長同步調整。"
     }
   },
 
@@ -2916,18 +3075,18 @@ const INSURANCE_DB = {
     "DCF": {
       title: "重大傷病終身保障",
       icon: "🛡️",
-      highlights: ["重大傷病一次金保障 300+ 項疾病", "保障終身,期滿仍可領祝壽金"],
+      highlights: ["重大傷病一次金保障 300+ 項疾病", "保障終身，期滿仍可領祝壽金"],
       items: [
-        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "第二保單年度起,首年按 20%" },
+        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "第二保單年度起，首年按 20%" },
         { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元" },
-        { name: "加倍關懷住院保險金", calc: { type: "ratioWan", ratio: 0.01 }, unit: "元/天", note: "同次住院 5 日(含)以上,每年最多 5 次" },
+        { name: "加倍關懷住院保險金", calc: { type: "ratioWan", ratio: 0.01 }, unit: "元/天", note: "同次住院 5 日(含)以上，每年最多 5 次" },
         { name: "祝壽保險金", calc: { type: "note", text: "滿期日當時保險金額(或保費總和×1.02)" } }
       ]
     },
     "XTK": {
       title: "定期壽險(身故/失能保障)",
       icon: "👨‍👩‍👧",
-      highlights: ["提供身故/喪葬費用保險金,符合 15 歲以下喪葬費 69 萬限額規範"],
+      highlights: ["提供身故/喪葬費用保險金，符合 15 歲以下喪葬費 69 萬限額規範"],
       items: [
         { name: "身故/喪葬費用保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
         { name: "完全失能保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元" }
@@ -2936,16 +3095,16 @@ const INSURANCE_DB = {
     "XDE": {
       title: "重大傷病一次金",
       icon: "💼",
-      highlights: ["持健保重大傷病卡即可申請,300+ 項疾病涵蓋"],
+      highlights: ["持健保重大傷病卡即可申請，300+ 項疾病涵蓋"],
       items: [
         { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
-        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "另加給,共可領 120% 保額" }
+        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "另加給，共可領 120% 保額" }
       ]
     },
     "XHD": {
       title: "實支實付醫療(雜費型)",
       icon: "🏥",
-      highlights: ["住院雜費收據實報實銷,門診手術涵蓋 145 項處置"],
+      highlights: ["住院雜費收據實報實銷，門診手術涵蓋 145 項處置"],
       items: [
         { name: "日額保險金/病房費(每日)", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "計劃五": 5000 } }, unit: "元/天" },
         { name: "加護病房病房費(每日)", calc: { type: "plan", planMap: { "計劃一": 2000, "計劃二": 4000, "計劃三": 6000, "計劃四": 8000, "計劃五": 10000 } }, unit: "元/天" },
@@ -2959,7 +3118,7 @@ const INSURANCE_DB = {
     "NIR": {
       title: "健康保險附約(定額醫療)",
       icon: "💊",
-      highlights: ["住院日額補貼,連續未理賠保額自動增值最高 50%"],
+      highlights: ["住院日額補貼，連續未理賠保額自動增值最高 50%"],
       items: [
         { name: "住院日額保險金", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 365 日", star: true },
         { name: "加護病房日額補助", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 30 日" },
@@ -2973,7 +3132,7 @@ const INSURANCE_DB = {
     "XHO": {
       title: "自負額實支實付(住院升等)",
       icon: "🏨",
-      highlights: ["搭配主實支:住院 50 萬雜費,門診 6 萬手術"],
+      highlights: ["搭配主實支：住院 50 萬雜費，門診 6 萬手術"],
       items: [
         { name: "每日病房費限額", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 2000, "計劃3": 3000, "計劃4": 4000, "計劃4A": 4000, "計劃5": 5000 } }, unit: "元/天", note: "自負 1,000 元" },
         { name: "加護病房病房費限額", calc: { type: "plan", planMap: { "計劃1": 2000, "計劃2": 4000, "計劃3": 6000, "計劃4": 8000, "計劃4A": 8000, "計劃5": 10000 } }, unit: "元/天" },
@@ -2986,7 +3145,7 @@ const INSURANCE_DB = {
     "XCF": {
       title: "癌症一次金",
       icon: "🎗️",
-      highlights: ["初次罹癌一次給付,治療方式可彈性運用"],
+      highlights: ["初次罹癌一次給付，治療方式可彈性運用"],
       items: [
         { name: "初次罹患低侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "首年減半" },
         { name: "初次罹患侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "首年減半" },
@@ -3512,10 +3671,6 @@ const App = (() => {
       const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
       html += renderProductRow('rider', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
     });
-    html += `<div class="add-rider-row no-print">
-      <button class="add-rider-btn" onclick="App.openProductAddModal('${c.id}','rider')">+ 新增附約</button>
-      <button class="add-rider-btn" style="margin-left:8px;background:var(--teal);" onclick="App.openProductAddModal('${c.id}','main')">+ 新增主約</button>
-    </div>`;
     html += `</div></div>`;
 
     html += `</div>`;
@@ -4991,12 +5146,20 @@ const App = (() => {
       const highlights = [];
       Object.entries(data.productHighlights).forEach(([keyCombo, text]) => {
         const keys = keyCombo.split('+');
-        if (keys.every(k => codes.includes(k))) highlights.push(text);
+        if (keys.every(k => codes.includes(k))) highlights.push({ combo: keyCombo, text });
       });
       if (highlights.length > 0) {
         html += `<div class="advice-block">
           <div class="advice-block-title">🎯 您所選商品的特色說明</div>
-          ${highlights.map(h => `<div class="advice-highlight-box">${h}</div>`).join('')}
+          ${highlights.map(h => {
+            let box = `<div class="advice-highlight-box">${h.text}`;
+            // XHD + XHO 組合特別加上「雜費保障結構圖」
+            if (h.combo === 'XHD+XHO') {
+              box += renderXhdXhoMiscChart(rows);
+            }
+            box += `</div>`;
+            return box;
+          }).join('')}
         </div>`;
       }
     }
@@ -5010,6 +5173,189 @@ const App = (() => {
 
     html += `</div></div></div>`;
     wrap.innerHTML = html;
+  }
+
+  // ── XHD + XHO 雜費保障結構圖解(動態版) ──
+  // 根據客戶實際選擇的 XHD / XHO 計畫別,動態計算覆蓋範圍與賠付金額
+  function renderXhdXhoMiscChart(rows) {
+    // ── 1. 建立查表(以萬元為單位) ──
+    // XHD 雜費限額(計劃一~五)
+    const xhdLimitMap = {
+      '計劃一': 10, '計劃二': 20, '計劃三': 30, '計劃四': 40, '計劃五': 50
+    };
+    // XHO 雜費限額 + 自負額(根據 PDF 附表一)
+    const xhoMap = {
+      '計劃1A': { limit: 10, deductible: 10 },
+      '計劃2A': { limit: 20, deductible: 10 },
+      '計劃3A': { limit: 30, deductible: 10 },
+      '計劃4A': { limit: 40, deductible: 10 },
+      '計劃1B': { limit: 10, deductible: 20 },
+      '計劃2B': { limit: 20, deductible: 20 },
+      '計劃3B': { limit: 30, deductible: 20 },
+      '計劃1C': { limit: 10, deductible: 30 },
+      '計劃2C': { limit: 20, deductible: 30 }
+    };
+
+    // ── 2. 從 rows 找出 XHD 跟 XHO 各自選的計畫 ──
+    const xhdRow = rows.find(r => r.product.code === 'XHD');
+    const xhoRow = rows.find(r => r.product.code === 'XHO');
+    if (!xhdRow || !xhoRow) return '';  // 沒同時選就不畫
+
+    const xhdPlan = xhdRow.amount;       // 例如「計劃一」
+    const xhoPlan = xhoRow.amount;       // 例如「計劃4A」
+
+    const D = xhdLimitMap[xhdPlan];                  // XHD 限額(萬)
+    const xho = xhoMap[xhoPlan];
+    if (D === undefined || !xho) return '';          // 計畫名不在表內就放棄
+
+    const O = xho.limit;                             // XHO 限額(萬)
+    const N = xho.deductible;                        // XHO 自負(萬)
+    const xhoPay = Math.max(0, O - N);               // XHO 實付最高(萬)
+    const totalPay = D + xhoPay;                     // 合計實付理賠(萬)
+
+    // ── 3. 判斷情境(D ≥ N 完美銜接 / D < N 有缺口) ──
+    const isPerfect = (D >= N);                      // XHD 是否能完整補 XHO 自負額
+    const gap = isPerfect ? 0 : (N - D);             // 缺口(萬)
+
+    // ── 4. 配置 SVG 刻度 ──
+    // X 軸總長 680px,刻度 0 ~ O 萬(以 XHO 限額為終點)
+    const x0 = 20, xMax = 700;
+    const totalWidth = xMax - x0;
+    const scale = totalWidth / O;                    // 每萬元對應幾 px
+    const xAt = (wan) => x0 + wan * scale;
+
+    // 刻度節點:每 10 萬一格(若 O=10 則只標 0/10)
+    const ticks = [];
+    for (let v = 0; v <= O; v += 10) ticks.push(v);
+
+    // ── 5. 視覺顏色 ──
+    const xhdColor = '#0F8C8F';
+    const xhoColor = '#F05A28';
+    const gapColor = '#999';
+    const navy = '#0E2A47';
+    const gold = '#D4A24C';
+
+    // ── 6. 組裝 SVG ──
+    let svgInner = '';
+
+    // 標題列
+    svgInner += `<text x="20" y="24" font-size="13" font-weight="700" fill="${navy}">雜費金額(萬元)</text>`;
+
+    // 刻度線 + 數字
+    svgInner += `<g font-size="11" fill="#666" text-anchor="middle">`;
+    svgInner += `<line x1="${x0}" y1="42" x2="${xMax}" y2="42" stroke="#999" stroke-width="1"/>`;
+    ticks.forEach(v => {
+      const x = xAt(v);
+      const label = (v === 0) ? '0' : (v + '萬');
+      svgInner += `<text x="${x}" y="58">${label}</text>`;
+      svgInner += `<line x1="${x}" y1="38" x2="${x}" y2="46" stroke="#666" stroke-width="1.5"/>`;
+    });
+    svgInner += `</g>`;
+
+    // 主體堆疊條
+    if (isPerfect) {
+      // 情境 A:XHD 完整補 XHO 自負(D ≥ N)
+      // XHD 區段 0~D,XHO 區段 N~O(視覺上接續)
+      // 視覺處理:XHD 區段位置 0~D,XHO 區段位置 D~O(接續排列;雖然金額上 XHD 蓋掉 N 那段,實務說明照常)
+      const xhdW = xAt(D) - x0;
+      const xhoStartX = xAt(D);                      // XHD 末端 = XHO 起點
+      const xhoW = xAt(O) - xhoStartX;
+      const xhdMidX = x0 + xhdW / 2;
+      const xhoMidX = xhoStartX + xhoW / 2;
+
+      // XHD 條
+      svgInner += `<rect x="${x0}" y="78" width="${xhdW}" height="56" fill="${xhdColor}" rx="4"/>`;
+      svgInner += `<text x="${xhdMidX}" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="white">XHD ${xhdPlan}</text>`;
+      svgInner += `<text x="${xhdMidX}" y="123" text-anchor="middle" font-size="11" fill="white">上限 ${D} 萬實支實付</text>`;
+
+      // XHO 條
+      svgInner += `<rect x="${xhoStartX}" y="78" width="${xhoW}" height="56" fill="${xhoColor}" rx="4"/>`;
+      svgInner += `<text x="${xhoMidX}" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="white">XHO ${xhoPlan}</text>`;
+      svgInner += `<text x="${xhoMidX}" y="123" text-anchor="middle" font-size="11" fill="white">上限 ${xhoPay} 萬實支實付(自負由 XHD 代墊)</text>`;
+
+      // 大括號:合計理賠 totalPay
+      const midX = (x0 + xMax) / 2;
+      svgInner += `<path d="M ${x0} 148 L ${x0} 156 L ${midX} 156 L ${midX} 164 L ${midX} 156 L ${xMax} 156 L ${xMax} 148" stroke="${navy}" stroke-width="2" fill="none"/>`;
+      svgInner += `<rect x="${midX - 70}" y="160" width="140" height="22" fill="${navy}" rx="11"/>`;
+      svgInner += `<text x="${midX}" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="${gold}">合計理賠 ${totalPay} 萬</text>`;
+
+      // 賠付金額標示
+      svgInner += `<g font-size="11">`;
+      svgInner += `<line x1="${xhdMidX}" y1="200" x2="${xhdMidX}" y2="215" stroke="${xhdColor}" stroke-width="1.5"/>`;
+      svgInner += `<text x="${xhdMidX}" y="232" text-anchor="middle" fill="${xhdColor}" font-weight="700">XHD 賠 ${D} 萬</text>`;
+      svgInner += `<line x1="${xhoMidX}" y1="200" x2="${xhoMidX}" y2="215" stroke="${xhoColor}" stroke-width="1.5"/>`;
+      svgInner += `<text x="${xhoMidX}" y="232" text-anchor="middle" fill="${xhoColor}" font-weight="700">XHO 賠 ${xhoPay} 萬(${O} 萬限額 - ${N} 萬自負)</text>`;
+      svgInner += `</g>`;
+    } else {
+      // 情境 B:XHD 不夠補 XHO 自負(D < N) → 中間有缺口要客戶自付
+      // XHD 0~D,缺口 D~N(灰色),XHO N~O
+      const xhdW = xAt(D) - x0;
+      const gapStartX = xAt(D);
+      const gapW = xAt(N) - gapStartX;
+      const xhoStartX = xAt(N);
+      const xhoW = xAt(O) - xhoStartX;
+      const xhdMidX = x0 + xhdW / 2;
+      const gapMidX = gapStartX + gapW / 2;
+      const xhoMidX = xhoStartX + xhoW / 2;
+
+      svgInner += `<rect x="${x0}" y="78" width="${xhdW}" height="56" fill="${xhdColor}" rx="4"/>`;
+      svgInner += `<text x="${xhdMidX}" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="white">XHD ${xhdPlan}</text>`;
+      svgInner += `<text x="${xhdMidX}" y="123" text-anchor="middle" font-size="10" fill="white">上限 ${D} 萬實支</text>`;
+
+      svgInner += `<rect x="${gapStartX}" y="78" width="${gapW}" height="56" fill="${gapColor}" rx="4"/>`;
+      svgInner += `<text x="${gapMidX}" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="white">缺口</text>`;
+      svgInner += `<text x="${gapMidX}" y="123" text-anchor="middle" font-size="10" fill="white">客戶自付 ${gap} 萬</text>`;
+
+      svgInner += `<rect x="${xhoStartX}" y="78" width="${xhoW}" height="56" fill="${xhoColor}" rx="4"/>`;
+      svgInner += `<text x="${xhoMidX}" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="white">XHO ${xhoPlan}</text>`;
+      svgInner += `<text x="${xhoMidX}" y="123" text-anchor="middle" font-size="10" fill="white">上限 ${xhoPay} 萬實支</text>`;
+
+      // 警示:此搭配有缺口
+      const midX = (x0 + xMax) / 2;
+      svgInner += `<rect x="${midX - 110}" y="155" width="220" height="22" fill="#D04618" rx="11"/>`;
+      svgInner += `<text x="${midX}" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="white">⚠️ 此搭配中間有 ${gap} 萬缺口</text>`;
+
+      svgInner += `<g font-size="11">`;
+      svgInner += `<line x1="${xhdMidX}" y1="200" x2="${xhdMidX}" y2="215" stroke="${xhdColor}" stroke-width="1.5"/>`;
+      svgInner += `<text x="${xhdMidX}" y="232" text-anchor="middle" fill="${xhdColor}" font-weight="700">XHD 賠 ${D} 萬</text>`;
+      svgInner += `<line x1="${xhoMidX}" y1="200" x2="${xhoMidX}" y2="215" stroke="${xhoColor}" stroke-width="1.5"/>`;
+      svgInner += `<text x="${xhoMidX}" y="232" text-anchor="middle" fill="${xhoColor}" font-weight="700">XHO 賠 ${xhoPay} 萬</text>`;
+      svgInner += `</g>`;
+    }
+
+    // 底部總理賠
+    svgInner += `<rect x="${x0}" y="248" width="${xMax - x0}" height="26" fill="${navy}" rx="4"/>`;
+    const bottomMsg = isPerfect
+      ? `💰 合計實付理賠 ${totalPay} 萬 ‧ 客戶幾乎零負擔`
+      : `💰 合計實付理賠 ${totalPay} 萬(中間缺口需自付 ${gap} 萬)`;
+    svgInner += `<text x="${(x0 + xMax) / 2}" y="266" text-anchor="middle" font-size="13" font-weight="900" fill="${gold}">${bottomMsg}</text>`;
+
+    // ── 7. 底部說明文字 ──
+    let noteHTML;
+    if (isPerfect) {
+      noteHTML = `
+        ※ <b>XHD ${xhdPlan}</b>:住院實支實付,雜費限額 ${D} 萬、無自負額 <br>
+        ※ <b>XHO ${xhoPlan}</b>:自負額住院實支實付,雜費限額 ${O} 萬、自負 ${N} 萬;XHD 賠的 ${D} 萬正好補上 XHO 的自負額,XHO 實際可賠付上限 ${xhoPay} 萬 <br>
+        ※ 兩者皆為「實支實付」型保險,需檢附醫療費用收據申請理賠;雜費收據在 ${O} 萬內可幾乎全數抵充,合計實付理賠最高 <b>${totalPay} 萬</b>
+      `;
+    } else {
+      noteHTML = `
+        ※ <b>XHD ${xhdPlan}</b>:住院實支實付,雜費限額 ${D} 萬、無自負額 <br>
+        ※ <b>XHO ${xhoPlan}</b>:自負額住院實支實付,雜費限額 ${O} 萬、自負 ${N} 萬 <br>
+        ※ ⚠️ <b>此搭配並非最佳組合</b>:XHO 自負額 ${N} 萬 大於 XHD 限額 ${D} 萬,中間有 ${gap} 萬缺口需客戶自付。建議調整 XHO 計畫別,選用「自負額為 10 萬」的計畫(1A/2A/3A/4A)以完整銜接 XHD 計畫一
+      `;
+    }
+
+    return `
+      <div class="misc-chart-wrap">
+        <div class="misc-chart-title">📊 圖解:住院雜費保障結構</div>
+        <div class="misc-chart-sub">客戶實際選擇:XHD ${xhdPlan} + XHO ${xhoPlan}</div>
+        <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" class="misc-chart-svg" preserveAspectRatio="xMidYMid meet">
+          ${svgInner}
+        </svg>
+        <div class="misc-chart-note">${noteHTML}</div>
+      </div>
+    `;
   }
 
   // ── 三欄日期輸入處理 ──
@@ -5075,6 +5421,40 @@ const App = (() => {
     const test = new Date(fullY, mm - 1, dd);
     if (test.getFullYear() !== fullY || test.getMonth() !== mm - 1 || test.getDate() !== dd) return null;
     return `${fullY}-${String(mm).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
+  }
+
+  /** 依被保險人年齡決定情境模板
+   *  - 0 歲      → 新生兒
+   *  - 1~9 歲    → 兒童
+   *  - 10~19 歲  → 青少年
+   *  - 20 歲以上 → 成人
+   *  使用者若手動改選其他選項(包括「不套用」),會被 state.userPickedScenario 標記;
+   *  之後年齡變動仍會強制覆寫(因為情境跟年齡綁定,改年齡就應重新套)。
+   */
+  function pickScenarioByAge(age) {
+    if (age === null || age === undefined || isNaN(age)) return null;
+    if (age === 0) return '新生兒';
+    if (age >= 1 && age <= 9) return '兒童';
+    if (age >= 10 && age <= 19) return '青少年';
+    if (age >= 20) return '成人';
+    return null;
+  }
+
+  function autoApplyScenario() {
+    const ageStr = $('#insured-age').value;
+    if (ageStr === '') return;                            // 沒輸入年齡不動作
+    const age = parseInt(ageStr);
+    if (isNaN(age)) return;
+    const sel = $('#scenarioSelect');
+    if (!sel) return;
+    const target = pickScenarioByAge(age);
+    if (!target) return;
+    // 確認 db 內有對應情境再套(避免將來移除某情境時出錯)
+    if (state.db && state.db.scenarios && state.db.scenarios[target]) {
+      sel.value = target;
+    } else {
+      sel.value = '';   // 沒對應情境就清空
+    }
   }
 
   function bindDateTrio(role) {
@@ -5149,6 +5529,7 @@ const App = (() => {
         const age = calcInsuranceAge(iso, refDate);
         $('#' + role + '-age').value = age;
         if (role === 'proposer') syncIfSelf();
+        if (role === 'insured') autoApplyScenario();
         renderProductSection();
         recompute();
       } else {
@@ -5218,6 +5599,7 @@ const App = (() => {
         }
         $('#' + role + '-birth').value = '';
         if (role === 'proposer') syncIfSelf();
+        if (role === 'insured') autoApplyScenario();
         renderProductSection();
         recompute();
       });
@@ -5230,6 +5612,7 @@ const App = (() => {
       });
       const d = new Date($('#proposalDate').value);
       $('#todayDate').textContent = isNaN(d) ? '' : `規劃日期 ${adToRoc(d)}`;
+      autoApplyScenario();
       renderProductSection();
       recompute();
     };
