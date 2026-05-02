@@ -509,7 +509,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 
 /* ── Chart ── */
-.chart-container { background: white; padding: 16px; }
+.chart-container { background: white; padding: 16px 8px; }
 .chart-controls {
   display: flex; gap: 8px; margin-bottom: 12px;
   flex-wrap: wrap; align-items: center;
@@ -1263,12 +1263,16 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
   border: 2px solid #e9d5ff;
   border-radius: 8px;
-  padding: 12px 10px 10px;
+  padding: 8px 14px;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   transition: all .2s;
   font-family: inherit;
   color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
 }
 .curve-preset:hover {
   border-color: #6f42c1;
@@ -1284,20 +1288,30 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 .curve-preset .cp-icon {
   font-size: 22px;
-  margin-bottom: 4px;
   line-height: 1;
+  flex-shrink: 0;
+}
+.curve-preset .cp-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .curve-preset .cp-name {
   font-size: 13px;
   font-weight: 700;
   color: var(--navy);
-  margin-bottom: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .curve-preset.active .cp-name { color: white; }
 .curve-preset .cp-desc {
   font-size: 10px;
   color: var(--gray);
-  line-height: 1.4;
+  line-height: 1.3;
+  margin-left: auto;
+  text-align: right;
 }
 .curve-preset.active .cp-desc { color: rgba(255,255,255,0.85); }
 .curve-preset .cp-tag {
@@ -2268,16 +2282,20 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
         <div class="curve-presets">
           <div class="curve-presets-title">🤖 智慧推薦 — 一鍵套用合適的曲線設定</div>
           <div class="curve-presets-grid">
-            <button class="curve-preset" data-preset="lifestage">
+            <button class="curve-preset active" data-preset="lifestage">
               <div class="cp-icon">👥</div>
-              <div class="cp-name">人生階段型</div>
-              <div class="cp-desc">45 歲起每年<br>降 5%(留 20%)</div>
+              <div class="cp-text">
+                <div class="cp-name">人生階段型</div>
+                <div class="cp-desc">45 歲起每年降 5%(留 20%)</div>
+              </div>
               <div class="cp-tag">推薦</div>
             </button>
             <button class="curve-preset curve-preset-custom" data-preset="custom">
               <div class="cp-icon">✏️</div>
-              <div class="cp-name">自訂</div>
-              <div class="cp-desc">自行設定<br>所有參數</div>
+              <div class="cp-text">
+                <div class="cp-name">自訂</div>
+                <div class="cp-desc">自行設定所有參數</div>
+              </div>
             </button>
           </div>
           <div id="curvePresetDesc" class="curve-preset-desc" style="display:none;"></div>
@@ -2395,18 +2413,18 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
         </div>
         <div class="chart-svg-wrap">
           <div class="print-only chart-print-title">總保費</div>
-          <svg class="chart-svg" id="rateChart" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet"></svg>
+          <svg class="chart-svg" id="rateChart" viewBox="0 0 1200 320" preserveAspectRatio="none"></svg>
           <div class="chart-tooltip" id="chartTooltip"></div>
         </div>
         <!-- 列印專用:額外輸出兩個圖 -->
         <div class="print-only chart-print-extra">
           <div class="chart-print-title">依公司分</div>
           <div class="chart-svg-wrap">
-            <svg class="chart-svg" id="rateChartByCompany" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart-svg" id="rateChartByCompany" viewBox="0 0 1200 320" preserveAspectRatio="none"></svg>
           </div>
           <div class="chart-print-title">依商品分</div>
           <div class="chart-svg-wrap">
-            <svg class="chart-svg" id="rateChartByProduct" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart-svg" id="rateChartByProduct" viewBox="0 0 1200 320" preserveAspectRatio="none"></svg>
           </div>
         </div>
         <div class="yearly-table-section">
@@ -3032,7 +3050,7 @@ const App = (() => {
     // ── 責任曲線調整 ──
     curve: {
       enabled: false,           // 是否啟用
-      preset: 'custom',         // 'lifestage' | 'costcontrol' | 'responsibility' | 'custom'
+      preset: 'lifestage',      // 預設選取「人生階段型」(視覺 active,實際要 enabled 才生效)
       startAge: 60,             // 從幾歲開始調
       period: 5,                // 每幾年調一次
       step: 25,                 // 每次降幾 %
@@ -4119,7 +4137,12 @@ const App = (() => {
         state.curve.enabled = sw.checked;
         $('#curveLabel').textContent = sw.checked ? '已啟用' : '未啟用';
         $('#curveBody').style.display = sw.checked ? '' : 'none';
-        recompute();
+        // 啟用時,若 preset 是 lifestage 但參數還沒套用,就套用一次
+        if (sw.checked && state.curve.preset === 'lifestage') {
+          applyPreset('lifestage');
+        } else {
+          recompute();
+        }
       };
     }
     // 智慧推薦按鈕
@@ -4435,13 +4458,16 @@ const App = (() => {
   function drawChartTo(rows, insured, theMode, svgSelector, enableHover) {
     const svg = document.querySelector(svgSelector);
     if (!svg) return;
-    const W = 800, H = 320;
-    const padL = 60, padR = 20, padT = 28, padB = 40;
+    const W = 1200, H = 320;
+    const padL = 50, padR = 14, padT = 28, padB = 40;
     const innerW = W - padL - padR;
     const innerH = H - padT - padB;
 
     const ageStart = insured.age;
-    const ageEnd = ageStart + (chartYears - 1);  // 30 年:0~29;60 年:0~59
+    // 上限 80 歲(81 歲後所有商品都期滿,圖會變空)
+    const MAX_AGE = 80;
+    const requestedEnd = ageStart + (chartYears - 1);
+    const ageEnd = Math.min(requestedEnd, MAX_AGE);
     const ages = [];
     for (let a = ageStart; a <= ageEnd; a++) ages.push(a);
 
@@ -4586,7 +4612,8 @@ const App = (() => {
       }
     });
     svgHTML += `<text x="${W / 2}" y="${H - 4}" font-size="11" fill="#666" text-anchor="middle">被保險人年齡 (投保後 ${ageEnd - ageStart + 1} 年)</text>`;
-    svgHTML += `<text x="14" y="${padT + innerH / 2}" font-size="11" fill="#666" text-anchor="middle" transform="rotate(-90 14 ${padT + innerH / 2})">年保費 (元)</text>`;
+    // 左上角放單位(取代垂直旋轉的「年保費(元)」,避免跟 Y 軸數字重疊)
+    svgHTML += `<text x="${padL - 6}" y="${padT - 8}" font-size="10" fill="#999" text-anchor="end">(元)</text>`;
 
     // 折線
     series.forEach(s => {
