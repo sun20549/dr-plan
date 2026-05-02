@@ -76,6 +76,23 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 .tool-card .tc-desc{font-size:11px;color:#999;line-height:1.6;}
 .tool-card .tc-arrow{font-size:12px;font-weight:700;color:var(--orange);margin-top:2px;}
 
+/* 💎 體系專業工具 - 主力工具卡片 */
+.hero-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;}
+.hero-tool-card{position:relative;text-decoration:none;background:#fff;border:2px solid #eee;border-radius:18px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;transition:all .25s ease;overflow:hidden;}
+.hero-tool-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:var(--htc-accent);transform:scaleX(0.3);transform-origin:left;transition:transform .3s ease;}
+.hero-tool-card:hover{border-color:var(--htc-accent);transform:translateY(-3px);box-shadow:0 12px 28px rgba(13,42,58,.12);}
+.hero-tool-card:hover::before{transform:scaleX(1);}
+.hero-tool-orange{--htc-accent:var(--orange);--htc-accent-bg:rgba(240,90,40,.08);color:var(--orange);}
+.hero-tool-teal{--htc-accent:var(--teal);--htc-accent-bg:rgba(26,107,114,.08);color:var(--teal);}
+.htc-tag{display:inline-block;align-self:flex-start;background:var(--htc-accent-bg);color:var(--htc-accent);font-size:11px;font-weight:700;letter-spacing:0.5px;padding:4px 12px;border-radius:14px;margin-bottom:2px;}
+.htc-icon-wrap{width:54px;height:54px;border-radius:14px;background:var(--htc-accent-bg);display:flex;align-items:center;justify-content:center;color:var(--htc-accent);}
+.htc-title{font-size:18px;font-weight:900;color:var(--navy);letter-spacing:0.5px;margin-top:4px;}
+.htc-desc{font-size:12px;color:#666;line-height:1.7;}
+.htc-features{display:flex;flex-direction:column;gap:4px;margin-top:4px;}
+.htc-feature{font-size:11px;color:#888;font-weight:500;}
+.htc-cta{margin-top:auto;padding-top:8px;align-self:flex-start;background:var(--htc-accent);color:#fff;padding:8px 16px;border-radius:18px;font-size:12px;font-weight:700;letter-spacing:0.5px;}
+.hero-tool-card:hover .htc-cta{padding-right:20px;}
+
 .doc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
 .doc-card{text-decoration:none;background:#fafafa;border:2px solid #eee;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:all .2s;min-height:64px;}
 .doc-card:hover{border-color:var(--orange);box-shadow:0 6px 18px rgba(240,90,40,.12);transform:translateY(-2px);}
@@ -188,7 +205,7 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
   .nav{padding:0 8px;overflow-x:auto;}
   .nav a.nav-link{padding:12px 8px;font-size:12px;}
   .body{padding:24px 20px 36px;}
-  .doc-cards,.tools-grid,.co-grid,.company-grid,.cc-grid{grid-template-columns:1fr;}
+  .doc-cards,.tools-grid,.co-grid,.company-grid,.cc-grid,.hero-tools-grid{grid-template-columns:1fr;}
   .hontai-body{grid-template-columns:1fr;}
   .float-search{right:8px;left:8px;min-width:0;}
 }
@@ -225,14 +242,67 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 
 <nav class="nav">
   <a href="#sec-top" class="nav-link">🏠 首頁</a>
+  <a href="#sec-tools" class="nav-link">💎 專業工具</a>
   <a href="#sec-channel" class="nav-link">🤝 經代通路</a>
   <a href="https://sun20549.github.io/dr-plan/" target="_blank" rel="noopener" class="nav-link">🏢 加盟制度</a>
   <div class="nav-spacer"></div>
-  <div class="nav-search-trigger" onclick="openSearch()" title="搜尋頁面內容（Ctrl+F）">🔍 搜尋</div>
+  <div class="nav-search-trigger" onclick="openSearch()" title="搜尋頁面內容(Ctrl+F)">🔍 搜尋</div>
   <a href="https://dinglun.ice.com.tw/Login" target="_blank" rel="noopener" class="nav-cta">🔐 業務專區</a>
 </nav>
 
 <div class="body">
+
+  <!-- 💎 體系專業工具(新增) -->
+  <div id="sec-tools" style="scroll-margin-top:60px;">
+    <div class="section-header"><span class="sec-title">💎 體系專業工具</span><span class="sec-sub">恩宇體系獨家專業工具,助您建立專業形象</span></div>
+
+    <div class="hero-tools-grid">
+      <!-- 卡 1:保險建議書系統 -->
+      <a href="./A&H/" class="hero-tool-card hero-tool-orange">
+        <div class="htc-tag">A&H · 主力工具</div>
+        <div class="htc-icon-wrap">
+          <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
+            <rect x="6" y="4" width="20" height="24" rx="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M11 11H21M11 16H21M11 21H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="22" cy="22" r="5" fill="currentColor"/>
+            <path d="M20 22L21.5 23.5L24 21" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="htc-title">保險建議書系統</div>
+        <div class="htc-desc">即時保費試算 + 自動核保檢核,搭配走勢圖、責任曲線、通膨換算等專業分析工具,協助業務製作專業客戶建議書。</div>
+        <div class="htc-features">
+          <span class="htc-feature">✓ 60 年保費走勢圖</span>
+          <span class="htc-feature">✓ 責任曲線分析</span>
+          <span class="htc-feature">✓ 商品線持續擴充</span>
+        </div>
+        <div class="htc-cta">進入系統 →</div>
+      </a>
+
+      <!-- 卡 2:保險經紀人制度分析 -->
+      <a href="./compare/" class="hero-tool-card hero-tool-teal">
+        <div class="htc-tag">招募輔助 · 同業對照</div>
+        <div class="htc-icon-wrap">
+          <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
+            <path d="M16 4V28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <rect x="4" y="10" width="9" height="14" rx="2" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="2"/>
+            <rect x="19" y="6" width="9" height="18" rx="2" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/>
+            <circle cx="8.5" cy="27" r="1.5" fill="currentColor"/>
+            <circle cx="23.5" cy="27" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="htc-title">保險經紀人制度分析</div>
+        <div class="htc-desc">各家保險經紀人公司制度橫向對照,協助業務向潛在夥伴清楚說明鼎綸恩宇的優勢與差異化價值。</div>
+        <div class="htc-features">
+          <span class="htc-feature">✓ 制度、佣金、訓練全方位</span>
+          <span class="htc-feature">✓ 同業差異一目了然</span>
+          <span class="htc-feature">✓ 招募溝通有力支援</span>
+        </div>
+        <div class="htc-cta">進入系統 →</div>
+      </a>
+    </div>
+  </div>
+
+  <hr class="sec-divider" style="margin:24px 0 36px;">
 
   <!-- 作業文件 -->
   <div id="sec-top" style="scroll-margin-top:60px;">
