@@ -238,7 +238,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .product-item {
   display: grid;
   /* 固定欄寬: 勾選 / 商品名 / 期間 / 保額 / 單位 / 費率 / 連結 / 編輯 */
-  grid-template-columns: 24px 1fr 90px 110px 36px 100px 96px 32px;
+  grid-template-columns: 24px 1fr 90px 110px 36px 100px 145px 32px;
   gap: 8px; align-items: center;
   padding: 10px 14px; border-bottom: 1px solid var(--border);
   background: white; transition: background .15s;
@@ -256,6 +256,71 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   background: var(--accent-light); color: var(--accent);
   padding: 1px 6px; border-radius: 3px; font-weight: 700;
   margin-left: 4px; vertical-align: middle;
+}
+.product-name .pn-age {
+  display: inline-block; font-size: 10px;
+  background: #f0f4f8; color: var(--gray);
+  padding: 1px 6px; border-radius: 3px;
+  margin-left: 4px; vertical-align: middle;
+  font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px;
+}
+
+/* 超齡商品 */
+.product-item.ineligible {
+  background: #fafafa;
+  opacity: 0.65;
+}
+.product-item.ineligible .pn-main {
+  color: var(--gray);
+  text-decoration: line-through;
+}
+.product-item.ineligible .pn-age {
+  background: #ffebee;
+  color: var(--red);
+  font-weight: 700;
+}
+.fee-ineligible {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 12px;
+  background: #ffebee;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: help;
+}
+.age-warn-row {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* ── 核保檢查警告(支援多項目) ── */
+.uw-warns {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-top: 8px;
+}
+.uw-row {
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  display: flex; align-items: flex-start; gap: 6px;
+}
+.uw-row.uw-block {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 3px solid #c62828;
+}
+.uw-row.uw-warn {
+  background: #fff8e1;
+  color: #856404;
+  border-left: 3px solid #ffa000;
 }
 
 .product-period {
@@ -316,17 +381,44 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .product-fee.disabled { color: #ccc; }
 .fee-pending { color: #bbb; font-family: 'Noto Sans TC'; font-size: 12px; }
 
-.product-links { display: flex; gap: 4px; }
+.product-links { display: flex; gap: 4px; position: relative; }
 .pl-btn {
-  width: 26px; height: 26px; border-radius: 5px;
+  min-width: 32px; height: 26px; padding: 0 6px; border-radius: 5px;
   background: #f0f0f0;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--gray);
+  font-size: 11px; font-weight: 700; color: var(--gray);
   text-decoration: none; border: 1px solid var(--border);
   transition: all .15s;
+  position: relative;
+  letter-spacing: 0.5px;
 }
+.pl-btn.pl-dm     { background: #e3f2fd; color: #1976d2; border-color: #bbdefb; }
+.pl-btn.pl-clause { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+.pl-btn.pl-rate   { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+
 .pl-btn:hover { background: var(--orange); color: white; border-color: var(--orange); transform: translateY(-1px); }
-.pl-btn.disabled { opacity: 0.3; pointer-events: none; }
+.pl-btn.disabled { opacity: 0.35; pointer-events: none; }
+
+/* 自製 tooltip:用 data-tip 屬性顯示,蓋掉瀏覽器預設(預設會洩漏 href) */
+.pl-btn::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 42, 58, 0.95);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 10;
+}
+.pl-btn:hover::after { opacity: 1; }
 
 .add-rider-row { padding: 10px; text-align: center; background: #fafafa; }
 .add-rider-btn {
@@ -1512,6 +1604,21 @@ const INSURANCE_DB = {
           shortName: "醫卡好重大傷病終身",
           category: "重大傷病終身險",
           description: "終身保障重大傷病、特定重大傷病、加倍關懷住院、祝壽金",
+          // 核保規則(依全球人壽 2026.04.27 經代通路)
+          minAge: 0, maxAge: 65,  // 各繳費年期年齡上限不同,取最寬鬆的 10 年期
+          ageByPeriod: {
+            "10年期": [0, 65], "15年期": [0, 60], "20年期": [0, 55],
+            "25年期": [0, 50], "30年期": [0, 45]
+          },
+          minAmount: 20,        // 最低保額(萬元)
+          maxAmount: 200,       // 自身累積最高保額(萬元)
+          underwriteNotes: [
+            "投保年齡依繳費年期不同(30年期 0-45 歲,20年期 0-55 歲)",
+            "本商品累積最高保額 200 萬元",
+            "重大傷病險累計上限 500 萬元(含同公司其他商品)",
+            "須加入全民健保",
+            "投保金額 201 萬以上需體檢"
+          ],
           periodOptions: ["20年期", "30年期"],
           defaultPeriod: "30年期",
           amountMode: "wan",
@@ -1542,6 +1649,15 @@ const INSURANCE_DB = {
           shortName: "守護童心定期壽險",
           category: "壽險附約",
           description: "身故/喪葬費用保險金、完全失能保險金",
+          minAge: 0, maxAge: 14,  // 0~未滿15足歲(14 歲含)
+          minAmount: 10,           // 萬元
+          maxAmount: 69,           // 法定喪葬費上限
+          underwriteNotes: [
+            "投保年齡 0~未滿 15 足歲(15 歲以上不可投保)",
+            "保額上限 69 萬元(15 歲以下喪葬費法定上限)",
+            "可繳費至 15 歲,續保有效至 16 歲生效日",
+            "需填寫「被保險人未滿 15 足歲投保聲明書」"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "wan",
@@ -1566,6 +1682,14 @@ const INSURANCE_DB = {
           shortName: "醫卡讚重大傷病附約",
           category: "重大傷病一年期",
           description: "重大傷病保險金、特定重大傷病保險金",
+          minAge: 0, maxAge: 65,
+          minAmount: 20, maxAmount: 200,
+          underwriteNotes: [
+            "投保年齡 0~65 歲,可繳費至 80 歲",
+            "本商品累積最高保額 200 萬元",
+            "重大傷病險累計上限 500 萬元(含 DCF/XDE 等)",
+            "須加入全民健保"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "wan",
@@ -1589,6 +1713,15 @@ const INSURANCE_DB = {
           shortName: "實分鑫安實支實付",
           category: "實支實付醫療",
           description: "日額/雜費二擇一,門診手術,特定醫材,重大手術慰問金",
+          minAge: 0, maxAge: 70,
+          // plan 模式不檢查 minAmount/maxAmount,改用 amountSuggestions 內的計畫範圍
+          underwriteNotes: [
+            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "限投保 2 張實支實付型醫療(本公司+同業)",
+            "未滿 15 歲住院日額累計上限 8,000 元/日",
+            "15 歲以上累計上限 10,000 元/日",
+            "懷孕 28 週以上至產後 1 個月暫不承保"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "plan",
@@ -1616,6 +1749,13 @@ const INSURANCE_DB = {
           shortName: "健康保險附約(定額)",
           category: "定額醫療",
           description: "住院日額、加護病房、手術、健康增值、保費豁免",
+          minAge: 0, maxAge: 64,  // 實際:0~64 歲
+          underwriteNotes: [
+            "投保年齡 0~64 歲(原本以為 75,實際只到 64)",
+            "可繳費至 74 歲,續保有效至 75 歲生效日",
+            "懷孕 28 週以上至產後 1 個月暫不承保",
+            "醫療住院日額同業累計上限 15,000 元/日"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "plan",
@@ -1645,6 +1785,12 @@ const INSURANCE_DB = {
           shortName: "全心全意自負額實支",
           category: "自負額實支實付",
           description: "病房限額4000自負1000、雜費40萬自負10萬",
+          minAge: 0, maxAge: 70,
+          underwriteNotes: [
+            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "限投保 2 張具自負額之實支實付型醫療",
+            "懷孕 28 週以上至產後 1 個月暫不承保"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "plan",
@@ -1672,6 +1818,14 @@ const INSURANCE_DB = {
           shortName: "臻心一意防癌一次金",
           category: "癌症一次金",
           description: "初次罹癌一次金,首年/續年費率不同,首年理賠減半",
+          minAge: 0, maxAge: 70,
+          minAmount: 20, maxAmount: 200,
+          underwriteNotes: [
+            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "本商品累積最高保額 200 萬元",
+            "防癌一次金累計上限 300 萬元(含 PCC/PCE/PCF 等)",
+            "曾罹癌、C 肝、慢性 B 肝者不接受投保"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "wan",
@@ -1701,6 +1855,15 @@ const INSURANCE_DB = {
           shortName: "臻心全意防癌療程型",
           category: "癌症療程型",
           description: "癌症住院、手術、化放療、骨髓移植、義乳重建、標靶,首年/續年不同",
+          minAge: 0, maxAge: 70,
+          minAmount: 1, maxAmount: 3,
+          underwriteNotes: [
+            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "本商品最高 3 單位(住院日額 3,000 元)",
+            "防癌險日額同業累計上限 12,000 元/日",
+            "曾罹癌、C 肝、慢性 B 肝者不接受投保",
+            "66 歲以上需體檢"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "unit",
@@ -1730,6 +1893,24 @@ const INSURANCE_DB = {
           shortName: "御守傷害失能",
           category: "意外險",
           description: "意外身故、意外失能、重大燒燙傷",
+          minAge: 0, maxAge: 75,
+          minAmount: 30,
+          // 保額上限依年齡 + 職業等級而異
+          maxAmount: 1000,  // 給驗證用的最大值,實際以 amountByAge 為準
+          amountByAge: [
+            { ageMin: 0, ageMax: 14, max: 200 },   // 0~未滿15歲: 200萬
+            { ageMin: 15, ageMax: 59, max: 1000 }, // 15~59 歲: 1000萬(1-2 級職)
+            { ageMin: 60, ageMax: 69, max: 500 },  // 60~69 歲: 500萬
+            { ageMin: 70, ageMax: 75, max: 300 }   // 70~75 歲: 300萬
+          ],
+          // 職業等級對保額上限的限制
+          maxByJobLevel: { "1": 2000, "2": 2000, "3": 1000, "4": 1000, "5": 500, "6": 500 },
+          underwriteNotes: [
+            "投保年齡 0~75 歲,可繳費至 80 歲",
+            "保額上限依年齡:0-14 歲 200 萬、15-59 歲 1000 萬、60-69 歲 500 萬、70-75 歲 300 萬",
+            "職業 5/6 級限 500 萬、危險職業限 100 萬",
+            "未滿 15 歲須有具喪葬費保障的主約或附約"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "wan",
@@ -1753,6 +1934,14 @@ const INSURANCE_DB = {
           shortName: "新傷害醫療",
           category: "意外醫療",
           description: "傷害住院日額、傷害醫療實支實付、骨折",
+          minAge: 0, maxAge: 70,
+          minAmount: 10000, maxAmount: 40000,  // 1 萬 ~ 4 萬
+          underwriteNotes: [
+            "投保年齡 0~70 歲,可繳費至 80 歲",
+            "本商品最高 4 萬元",
+            "傷害醫療同業累計上限 20 萬元",
+            "若無傷害保險主、附約則限 1 萬元"
+          ],
           periodOptions: ["1年期"],
           defaultPeriod: "1年期",
           amountMode: "fixedAmount",
@@ -1970,7 +2159,9 @@ const App = (() => {
     activeCompany: null,
     selections: {},   // { companyId: { main: {code,period,amount}, riders: [...] } }
     db: null,
-    showProposer: false   // 預設不顯示要保人
+    showProposer: false,   // 預設不顯示要保人
+    lastAge: null,    // 最近一次 recompute 時的保險年齡(用於商品列表顯示超齡警告)
+    lastJob: 1        // 最近一次的職業等級(核保用)
   };
 
   const $ = sel => document.querySelector(sel);
@@ -2024,9 +2215,105 @@ const App = (() => {
     return rateMap[nearest];
   }
 
+  /** 檢查保險年齡是否在商品的可投保範圍內 */
+  function isAgeEligible(product, age) {
+    if (age == null || isNaN(age)) return true; // 年齡未填,不擋
+    const minAge = product.minAge ?? 0;
+    const maxAge = product.maxAge ?? 99;
+    return age >= minAge && age <= maxAge;
+  }
+  function getAgeLimitText(product) {
+    const minAge = product.minAge ?? 0;
+    const maxAge = product.maxAge ?? 99;
+    return `${minAge}~${maxAge} 歲`;
+  }
+
+  /** 全方位核保檢查 — 回傳所有違規項目陣列(空陣列 = 全部 OK) */
+  function underwriteCheck(product, age, jobLevel, period, amount) {
+    const issues = [];
+    if (age == null || isNaN(age)) return issues;
+
+    // 1) 投保年齡檢查
+    const minAge = product.minAge ?? 0;
+    const maxAge = product.maxAge ?? 99;
+    if (age < minAge || age > maxAge) {
+      issues.push({
+        type: 'age',
+        severity: 'block',
+        msg: `投保年齡限 ${minAge}~${maxAge} 歲,本被保險人 ${age} 歲不符`
+      });
+    }
+
+    // 1a) 主約依繳費年期不同的年齡限制(如 DCF 30 年期 0-45 歲)
+    if (product.ageByPeriod && period && product.ageByPeriod[period]) {
+      const [pMin, pMax] = product.ageByPeriod[period];
+      if (age < pMin || age > pMax) {
+        issues.push({
+          type: 'age_period',
+          severity: 'block',
+          msg: `${period} 投保年齡限 ${pMin}~${pMax} 歲,本被保險人 ${age} 歲不符`
+        });
+      }
+    }
+
+    // 2) 保額檢查(最低/最高)
+    if (amount != null && amount !== '') {
+      const numAmt = parseFloat(amount);
+      if (!isNaN(numAmt)) {
+        // 最低保額
+        if (product.minAmount != null && numAmt < product.minAmount) {
+          issues.push({
+            type: 'amount_min',
+            severity: 'warn',
+            msg: `保額不得低於 ${product.minAmount}${product.amountUnit || ''}(目前 ${numAmt})`
+          });
+        }
+        // 最高保額(自身)
+        if (product.maxAmount != null && numAmt > product.maxAmount) {
+          issues.push({
+            type: 'amount_max',
+            severity: 'block',
+            msg: `本商品保額上限 ${product.maxAmount}${product.amountUnit || ''}(目前 ${numAmt} 已超過)`
+          });
+        }
+        // 依年齡的保額上限(如 XAB)
+        if (product.amountByAge) {
+          const slot = product.amountByAge.find(s => age >= s.ageMin && age <= s.ageMax);
+          if (slot && numAmt > slot.max) {
+            issues.push({
+              type: 'amount_age',
+              severity: 'block',
+              msg: `${age} 歲 ${slot.ageMin}-${slot.ageMax} 歲區間保額上限 ${slot.max}${product.amountUnit || ''}(目前 ${numAmt})`
+            });
+          }
+        }
+        // 依職業等級的保額上限(如 XAB)
+        if (product.maxByJobLevel && jobLevel != null) {
+          const jobMax = product.maxByJobLevel[String(jobLevel)];
+          if (jobMax != null && numAmt > jobMax) {
+            issues.push({
+              type: 'amount_job',
+              severity: 'block',
+              msg: `職業 ${jobLevel} 級保額上限 ${jobMax}${product.amountUnit || ''}(目前 ${numAmt})`
+            });
+          }
+        }
+      }
+    }
+
+    return issues;
+  }
+  /** 是否有 block 等級的違規 */
+  function hasBlockingIssue(product, age, jobLevel, period, amount) {
+    return underwriteCheck(product, age, jobLevel, period, amount).some(i => i.severity === 'block');
+  }
+
   /** 計算單一商品保費(統一單位費率制) */
-  function calcProductFee(product, gender, age, period, amount, isFirstYear = true) {
+  function calcProductFee(product, gender, age, period, amount, isFirstYear = true, jobLevel = 1) {
     if (!product || !period || amount === '' || amount == null) return 0;
+
+    // ★ 核保檢查:有 block 等級違規 → 不能投保(費率 = 0)
+    if (age != null && hasBlockingIssue(product, age, jobLevel, period, amount)) return 0;
 
     let ratesRoot = product.rates;
     if (product.rateMode === 'perUnit_firstYearDiff') {
@@ -2113,6 +2400,8 @@ const App = (() => {
     const ins = getCurrentInsured();
     const validInsured = hasValidInsured();
     const age = validInsured ? ins.age : 0;
+    state.lastAge = validInsured ? age : null;  // 給 renderProductRow 判斷超齡用
+    state.lastJob = ins.job || 1;               // 職業等級給核保檢查用
 
     let html = '<div class="product-section">';
 
@@ -2138,7 +2427,7 @@ const App = (() => {
       const isSelected = sel.main && sel.main.code === p.code;
       const selPeriod = isSelected ? sel.main.period : (p.defaultPeriod || p.periodOptions[0]);
       const selAmount = isSelected ? sel.main.amount : p.defaultAmount;
-      const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount) : 0;
+      const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
       html += renderProductRow('main', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
     });
     html += `</div></div>`;
@@ -2160,7 +2449,7 @@ const App = (() => {
       const isSelected = !!r;
       const selPeriod = isSelected ? r.period : (p.defaultPeriod || p.periodOptions[0]);
       const selAmount = isSelected ? r.amount : p.defaultAmount;
-      const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount) : 0;
+      const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
       html += renderProductRow('rider', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
     });
     html += `<div class="add-rider-row no-print">
@@ -2227,39 +2516,64 @@ const App = (() => {
       if (t.includes('YOUR_GITHUB_USERNAME')) return '';
       return t.replace(/\{code\}/g, p.code);
     };
-    const linkBtn = (label, url, icon) => {
+    const linkBtn = (label, url, key) => {
       const dis = !url ? 'disabled' : '';
-      return `<a class="pl-btn ${dis}" href="${url || '#'}" target="_blank" rel="noopener" title="${label}${url ? ': ' + url : ' (未設定)'}">${icon}</a>`;
+      // 用 data-tip 自製 tooltip,只顯示「商品代碼 + 標籤」(例如 "DCF · DM"),不洩漏網址
+      const tip = url ? `${p.code} · ${label}` : `${p.code} · ${label} (尚未設定)`;
+      return `<a class="pl-btn pl-${key} ${dis}" href="${url || '#'}" target="_blank" rel="noopener" data-tip="${tip}">${label}</a>`;
     };
     const links = `<div class="product-links">
-      ${linkBtn('DM', resolveLink('dm'), '📄')}
-      ${linkBtn('條款', resolveLink('clause'), '📋')}
-      ${linkBtn('費率', resolveLink('rate'), '💰')}
+      ${linkBtn('DM', resolveLink('dm'), 'dm')}
+      ${linkBtn('條款', resolveLink('clause'), 'clause')}
+      ${linkBtn('費率', resolveLink('rate'), 'rate')}
     </div>`;
+
+    // 核保檢查:取得所有違規項目
+    const insJob = state.lastJob ?? 1;
+    const issues = validInsured && state.lastAge != null
+      ? underwriteCheck(p, state.lastAge, insJob, selPeriod, selAmount)
+      : [];
+    const blocked = issues.some(i => i.severity === 'block');
+    const ineligible = blocked;
 
     const feeDisplay = !validInsured
       ? '<span class="fee-pending">待輸入</span>'
-      : (isSelected ? `${fmt(fee)}<span class="product-fee-unit"> 元</span>` : '—');
+      : ineligible
+        ? `<span class="fee-ineligible" title="不符投保規則">不符規則</span>`
+        : (isSelected ? `${fmt(fee)}<span class="product-fee-unit"> 元</span>` : '—');
+
+    // 違規警告列(block 紅、warn 黃)
+    let warnRows = '';
+    if (issues.length > 0) {
+      issues.forEach(i => {
+        const cls = i.severity === 'block' ? 'uw-block' : 'uw-warn';
+        const icon = i.severity === 'block' ? '🚫' : '⚠️';
+        warnRows += `<div class="uw-row ${cls}">${icon} ${i.msg}</div>`;
+      });
+    }
 
     return `
-    <div class="product-item ${isSelected ? 'selected' : ''}">
+    <div class="product-item ${isSelected ? 'selected' : ''} ${ineligible ? 'ineligible' : ''}">
       <input type="${inputType}" class="product-${inputType === 'radio' ? 'radio' : 'checkbox'} prod-toggle"
              ${inputName ? `name="${inputName}"` : ''}
              data-type="${type}" data-cid="${cid}" data-code="${p.code}"
-             ${isSelected ? 'checked' : ''}>
+             ${isSelected ? 'checked' : ''}
+             ${ineligible ? 'disabled' : ''}>
       <div class="product-name">
         <div class="pn-main">${p.name}</div>
         <div>
           <span class="pn-code">${p.code}</span>
           ${p.category ? `<span class="pn-cat">${p.category}</span>` : ''}
+          <span class="pn-age">投保 ${getAgeLimitText(p)}</span>
         </div>
       </div>
       <div class="product-period">${periodSel}</div>
       <div class="product-amount">${amountInput}</div>
       <div class="product-amount-unit">${amountUnit}</div>
-      <div class="product-fee ${!isSelected || !validInsured ? 'disabled' : ''}">${feeDisplay}</div>
+      <div class="product-fee ${!isSelected || !validInsured || ineligible ? 'disabled' : ''}">${feeDisplay}</div>
       ${links}
       <button class="icon-btn no-print" onclick="App.openProductEditModal('${cid}','${type}','${p.code}')" title="編輯">✏️</button>
+      ${warnRows ? `<div class="uw-warns" style="grid-column: 1 / -1;">${warnRows}</div>` : ''}
     </div>`;
   }
 
@@ -2384,11 +2698,14 @@ const App = (() => {
     const c = state.db.companies.find(c => c.id === cid);
     const sel = state.selections[cid];
     if (!sel) return;
-    const allSelected = c.riderProducts.length > 0 && c.riderProducts.every(p => sel.riders.find(r => r.code === p.code));
+    // 只考慮符合年齡資格的商品(超齡的不能投保)
+    const age = state.lastAge;
+    const eligibleRiders = c.riderProducts.filter(p => isAgeEligible(p, age));
+    const allSelected = eligibleRiders.length > 0 && eligibleRiders.every(p => sel.riders.find(r => r.code === p.code));
     if (allSelected) {
       sel.riders = [];
     } else {
-      sel.riders = c.riderProducts.map(p => ({
+      sel.riders = eligibleRiders.map(p => ({
         code: p.code,
         period: p.defaultPeriod || p.periodOptions[0],
         amount: p.defaultAmount
