@@ -766,12 +766,296 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   text-align: right;
 }
 
-@media (max-width: 768px) {
-  .yearly-fee-grid { grid-template-columns: repeat(5, 1fr); }
-  .yearly-fee-cell:nth-child(10n) { border-right: 1px solid var(--border); }
-  .yearly-fee-cell:nth-child(5n) { border-right: none; }
-  .benefits-section { grid-template-columns: 1fr; }
+/* ─────────── 響應式設計 ─────────── */
+
+/* 平板直式(768~900px):縮小欄寬讓 8 欄 grid 仍能容納 */
+@media (max-width: 900px) and (min-width: 768px) {
+  .product-item {
+    grid-template-columns: 22px minmax(0,1fr) 70px 80px 28px 80px 110px 28px;
+    gap: 5px;
+    padding: 8px 10px;
+  }
+  .pn-main { font-size: 12px; line-height: 1.3; }
+  .pn-cat, .pn-age { font-size: 9px; padding: 1px 4px; }
+  .pn-code { font-size: 10px; }
+  .pl-btn { width: 32px; height: 22px; font-size: 9px; flex: 0 0 32px; }
+  .product-period select, .product-amount select, .product-amount input {
+    font-size: 11px; padding: 3px 4px;
+  }
+  .person-flow { grid-template-columns: 1fr; gap: 12px; }
+  .relation-arrow {
+    width: 100%; height: auto; border-radius: 8px;
+    padding: 10px; flex-direction: row; gap: 8px; justify-content: center;
+  }
 }
+
+/* 手機(≤ 767px):重排成單列 + 第二列子資訊 */
+@media (max-width: 767px) {
+  /* 整體間距收緊 */
+  body { font-size: 13px; }
+  .app { padding: 8px; }
+  .card { border-radius: 10px; margin-bottom: 12px; }
+  .card-header {
+    padding: 12px 14px; font-size: 14px;
+  }
+  .card-content, .product-section { padding: 12px; }
+
+  /* Toolbar 緊湊 */
+  .toolbar {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .toolbar-left { gap: 8px; }
+  .brand-text .b-name { font-size: 14px; letter-spacing: 1px; }
+  .brand-text .b-sub { font-size: 9px; letter-spacing: 0.5px; }
+  .brand-logo { width: 36px; height: 36px; font-size: 18px; }
+  .toolbar-right { gap: 6px; flex-wrap: wrap; }
+  .tb-btn { padding: 6px 10px; font-size: 12px; }
+
+  /* 表單卡:縱向排列(覆寫 inline 4 欄 grid) */
+  #proposalCard .form-row {
+    grid-template-columns: 90px 1fr !important;
+    grid-row-gap: 8px;
+    gap: 8px 10px;
+  }
+  .proposal-form-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch !important;
+  }
+  .proposal-form-row > * {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .proposal-form-row label { min-width: auto; }
+  .proposal-form-row input,
+  .proposal-form-row select {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* 投保人員:單欄 */
+  .person-flow { grid-template-columns: 1fr; gap: 10px; }
+  .person-card { padding: 14px 12px; }
+  .person-card .pc-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .person-card .pc-row label {
+    flex: 0 0 60px; font-size: 12px;
+  }
+  .person-card .pc-row input,
+  .person-card .pc-row select {
+    flex: 1; min-width: 0;
+  }
+  .relation-arrow {
+    width: 100%; height: auto; border-radius: 8px;
+    padding: 10px 14px; flex-direction: row; gap: 10px; justify-content: center;
+  }
+  .relation-arrow .ra-label { margin-bottom: 0; white-space: nowrap; }
+
+  /* 出生日期 3 欄改緊湊 */
+  .birth-row { gap: 4px; }
+  .birth-row input { font-size: 12px; padding: 4px 6px; min-width: 0; }
+
+  /* 繳別 + 情境模板 同列 */
+  .form-row-2col { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ★ 商品列表手機版 ★ */
+  .product-item {
+    display: grid;
+    grid-template-columns: 22px 1fr 28px;
+    grid-template-rows: auto auto auto auto;
+    column-gap: 6px;
+    row-gap: 8px;
+    padding: 12px 10px;
+    align-items: start;
+    border-bottom: 1px solid var(--border);
+  }
+  .product-item .product-checkbox,
+  .product-item .product-radio {
+    grid-row: 1; grid-column: 1;
+    align-self: start; margin-top: 4px;
+  }
+  .product-item .product-name {
+    grid-row: 1; grid-column: 2;
+    min-width: 0;
+  }
+  .product-item > .icon-btn {
+    grid-row: 1; grid-column: 3;
+    align-self: start; margin: 0;
+  }
+
+  /* 第二列(展開):期間/保額/單位/費率 用 flex 分布 */
+  .product-item > .product-period,
+  .product-item > .product-amount,
+  .product-item > .product-amount-unit,
+  .product-item > .product-fee {
+    grid-row: 2;
+    grid-column: 2 / -1;
+  }
+  /* 由於 grid 不能直接 flex 多元素,改用顯式並排 */
+  .product-item > .product-period {
+    grid-column: 2 / 3;
+    align-self: center;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  /* 「1 年期」這種固定文字直接顯示,不用 select */
+  .product-item .product-period select { font-size: 11px; padding: 3px 5px; }
+
+  .product-item > .product-amount {
+    grid-row: 3;
+    grid-column: 2 / 3;
+    align-self: center;
+    justify-self: start;
+  }
+  .product-item .product-amount input,
+  .product-item .product-amount select {
+    font-size: 12px; padding: 4px 6px;
+    width: 80px;
+  }
+  .product-item > .product-amount-unit {
+    grid-row: 3;
+    grid-column: 3 / -1;
+    align-self: center;
+    justify-self: start;
+    font-size: 11px; color: var(--gray);
+    padding-left: 4px;
+  }
+
+  .product-item > .product-fee {
+    grid-row: 2;
+    grid-column: 3 / -1;
+    align-self: center;
+    justify-self: end;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 14px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* 連結按鈕列 */
+  .product-item > .product-links {
+    grid-row: 4;
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding-top: 8px;
+    margin-top: 4px;
+    border-top: 1px dashed #e8e8e8;
+    width: 100%;
+  }
+
+  /* 警告列 */
+  .product-item > .uw-warns {
+    grid-row: 5;
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .pl-btn { width: 38px; height: 22px; font-size: 9px; flex: 0 0 38px; }
+  .pn-main { font-size: 13px; font-weight: 700; line-height: 1.35; }
+  .pn-code { font-size: 10px; }
+  .pn-cat, .pn-age { font-size: 9px; padding: 1px 5px; margin-left: 3px; }
+
+  /* 試算結果表:大幅縮小 */
+  .summary-bar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+    text-align: center;
+  }
+  .summary-bar .sb-value { font-size: 28px; }
+  .summary-bar .sb-meta {
+    flex-wrap: wrap; justify-content: center; gap: 8px;
+  }
+  .summary-bar .sb-meta-item {
+    font-size: 11px; padding: 4px 8px;
+  }
+
+  .result-table {
+    font-size: 11px;
+  }
+  .result-table th,
+  .result-table td {
+    padding: 8px 4px;
+    word-break: keep-all;
+  }
+  /* 隱藏「投保對象」欄(資料已在上方) */
+  .result-table th:nth-child(5),
+  .result-table td:nth-child(5) { display: none; }
+
+  /* 走勢圖:縮小 */
+  #rateChart { height: 220px; }
+  .chart-legend {
+    flex-wrap: wrap; gap: 4px 8px; font-size: 10px;
+  }
+  .chart-controls {
+    flex-wrap: wrap; gap: 6px;
+  }
+  .chart-toggle { padding: 6px 10px; font-size: 11px; }
+
+  /* 年度保費表:5 欄/行 改 4 欄,節省空間 */
+  .yearly-fee-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .yearly-fee-cell { padding: 6px 4px; font-size: 10px; }
+  .yearly-fee-cell .yf-fee { font-size: 12px; }
+
+  /* 理賠卡片:單欄 */
+  .benefits-section {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+  .benefit-card { padding: 12px 10px; }
+  .benefit-card .bc-title { font-size: 13px; }
+  .benefit-card .bc-meta { font-size: 11px; }
+
+  .benefit-item { font-size: 11px; padding: 5px 0; }
+  .bi-name { font-size: 11px; }
+  .bi-value { font-size: 13px; }
+  .bi-unit-cell { font-size: 9px; min-width: auto; }
+
+  /* 累計核保警告 */
+  .agg-row { padding: 10px 12px; }
+  .agg-row .agg-msg { font-size: 12px; }
+  .agg-row .agg-detail { font-size: 10px; }
+
+  /* 公司分頁 */
+  .company-tab {
+    padding: 8px 10px; font-size: 12px;
+  }
+  .company-tab .ct-icon { width: 22px; height: 22px; font-size: 11px; }
+
+  /* 列印按鈕、PDF 按鈕在手機改成 icon-only */
+  .tb-btn { white-space: nowrap; }
+
+  /* 開關 */
+  .toggle-switch { transform: scale(0.85); transform-origin: left; }
+
+  /* 模態視窗 */
+  .modal-content {
+    width: 92% !important;
+    margin: 5vh auto !important;
+    padding: 16px !important;
+  }
+  .modal-overlay { padding: 0 !important; }
+
+  /* 累計核保警告調整 */
+  #aggregateCheck { gap: 6px; }
+}
+
+/* 超小螢幕(≤ 380px):再縮小一點 */
+@media (max-width: 380px) {
+  .toolbar-right .tb-btn { padding: 5px 7px; font-size: 11px; }
+  .summary-bar .sb-value { font-size: 24px; }
+  .yearly-fee-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 /* ── 累計核保檢查 ── */
 #aggregateCheck {
   margin-bottom: 16px;
@@ -1303,22 +1587,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
-  .person-flow { grid-template-columns: 1fr; }
-  .relation-arrow {
-    width: 100%; height: auto; border-radius: 10px;
-    padding: 12px; flex-direction: row; gap: 10px;
-  }
-  .relation-arrow .ra-label { margin-bottom: 0; white-space: nowrap; }
-  .product-item {
-    grid-template-columns: auto 1fr auto;
-    gap: 8px;
-  }
-  .product-item > .product-period,
-  .product-item > .product-amount,
-  .product-item > .product-fee,
-  .product-item > .product-links { grid-column: span 3; justify-self: end; }
-}
+/* 舊的 900px 規則已被上方新的響應式取代 */
 </style>
 </head>
 <body>
