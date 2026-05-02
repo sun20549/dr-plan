@@ -626,6 +626,122 @@
     .retire-detail-vs .rd-other { font-size: 15px; }
   }
 
+  /* ── 可搜尋下拉 (Combobox) ── */
+  .combo {
+    position: relative;
+  }
+  .combo-input {
+    width: 100%;
+    padding: 10px 36px 10px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--navy);
+    background: #fff;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .combo-input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26,107,114,0.08);
+  }
+  .combo-input:disabled {
+    background: #f5f5f5;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+  .combo-input::placeholder {
+    color: #b0b5bd;
+  }
+  .combo-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #999;
+    font-size: 10px;
+    transition: transform 0.2s ease;
+  }
+  .combo.open .combo-arrow {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  .combo-clear {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .combo-clear:hover { background: var(--orange); }
+  .combo.has-value .combo-clear { display: flex; }
+  .combo-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 280px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(13,42,58,0.12);
+    z-index: 50;
+    display: none;
+  }
+  .combo.open .combo-list {
+    display: block;
+  }
+  .combo-item {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--navy);
+    cursor: pointer;
+    border-bottom: 1px solid #f0f2f5;
+    transition: background 0.12s ease;
+    line-height: 1.5;
+  }
+  .combo-item:last-child { border-bottom: none; }
+  .combo-item:hover,
+  .combo-item.active {
+    background: rgba(240, 90, 40, 0.08);
+    color: var(--orange);
+  }
+  .combo-item mark {
+    background: rgba(232, 160, 32, 0.35);
+    color: var(--orange);
+    font-weight: 900;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .combo-item .item-company {
+    font-size: 11px;
+    color: #999;
+    margin-right: 6px;
+  }
+  .combo-empty {
+    padding: 16px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+  }
+
   /* ── CALCULATOR ── */
   .calc-section {
     margin-top: 36px;
@@ -1327,15 +1443,21 @@
           <div class="calc-fields">
             <div class="calc-field">
               <label>保險公司</label>
-              <select id="insurerSelect" onchange="onInsurerChange()">
-                <option value="">-- 請選擇 --</option>
-              </select>
+              <div class="combo" id="insurerCombo">
+                <input type="text" class="combo-input" id="insurerInput" placeholder="輸入或點選公司名稱..." autocomplete="off">
+                <button type="button" class="combo-clear" id="insurerClear" onclick="clearInsurer(event)">✕</button>
+                <span class="combo-arrow">▼</span>
+                <div class="combo-list" id="insurerList"></div>
+              </div>
             </div>
             <div class="calc-field">
-              <label>商品</label>
-              <select id="productSelect" onchange="onProductChange()" disabled>
-                <option value="">請先選保險公司</option>
-              </select>
+              <label>商品 <span style="color:#999;font-size:11px;font-weight:400">(可直接搜尋)</span></label>
+              <div class="combo" id="productCombo">
+                <input type="text" class="combo-input" id="productInput" placeholder="輸入商品/公司關鍵字..." autocomplete="off">
+                <button type="button" class="combo-clear" id="productClear" onclick="clearProduct(event)">✕</button>
+                <span class="combo-arrow">▼</span>
+                <div class="combo-list" id="productList"></div>
+              </div>
             </div>
           </div>
           <div class="calc-fields" style="margin-top:12px">
@@ -2240,39 +2362,195 @@ function parseRate(rateStr) {
   return m ? parseFloat(m[1]) / 100 : null;
 }
 
-// ===== 初始化保險公司下拉 =====
-function initInsurerOptions() {
-  const sel = document.getElementById('insurerSelect');
-  if (!sel || typeof PRODUCTS === 'undefined') return;
-  // PRODUCTS 已由 products.js 自動排序好,直接取 keys 即可
-  const insurers = Object.keys(PRODUCTS);
-  sel.innerHTML = '<option value="">-- 請選擇 --</option>' +
-    insurers.map(i => `<option value="${i}">${i}</option>`).join('');
+// ===== 工具:轉義 HTML =====
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function onInsurerChange() {
-  calcState.insurer = document.getElementById('insurerSelect').value;
-  calcState.productIdx = -1;
-  const prodSel = document.getElementById('productSelect');
-  if (!calcState.insurer) {
-    prodSel.disabled = true;
-    prodSel.innerHTML = '<option value="">請先選保險公司</option>';
+// ===== 工具:關鍵字高亮 =====
+function highlightMatch(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(escapedQuery, 'gi'), m => `<mark>${m}</mark>`);
+}
+
+// ===== 初始化保險公司 combobox =====
+function initInsurerOptions() {
+  if (typeof PRODUCTS === 'undefined') return;
+  // 不需特別動作,combobox 在輸入時才即時渲染列表
+  setupCombo('insurer');
+  setupCombo('product');
+  renderInsurerList(''); // 預先渲染
+  renderProductList('');
+}
+
+// ===== 通用 combobox 行為設定 =====
+function setupCombo(name) {
+  const combo = document.getElementById(name + 'Combo');
+  const input = document.getElementById(name + 'Input');
+  if (!combo || !input) return;
+
+  // 點擊輸入框 → 開啟列表
+  input.addEventListener('focus', () => combo.classList.add('open'));
+  input.addEventListener('click', () => combo.classList.add('open'));
+
+  // 輸入時即時搜尋
+  input.addEventListener('input', () => {
+    combo.classList.add('open');
+    if (name === 'insurer') {
+      renderInsurerList(input.value);
+    } else {
+      renderProductList(input.value);
+    }
+  });
+
+  // 失焦時關閉(延遲一點,讓 click 事件先觸發)
+  input.addEventListener('blur', () => {
+    setTimeout(() => combo.classList.remove('open'), 150);
+  });
+
+  // 點擊外部關閉
+  document.addEventListener('click', (e) => {
+    if (!combo.contains(e.target)) combo.classList.remove('open');
+  });
+}
+
+// ===== 渲染保險公司列表 =====
+function renderInsurerList(query) {
+  const list = document.getElementById('insurerList');
+  if (!list) return;
+  const q = (query || '').toLowerCase().trim();
+  const insurers = Object.keys(PRODUCTS).filter(i =>
+    !q || i.toLowerCase().includes(q)
+  );
+  if (insurers.length === 0) {
+    list.innerHTML = '<div class="combo-empty">查無相符的公司</div>';
     return;
   }
-  const products = PRODUCTS[calcState.insurer] || [];
-  prodSel.disabled = false;
-  prodSel.innerHTML = '<option value="">-- 請選擇商品 --</option>' +
-    products.map((p, i) => {
-      const yearLabel = p.year === '躉' ? '躉繳' : p.year === '99' ? '終身' : `${p.year}年`;
-      return `<option value="${i}">${p.name} (${yearLabel})</option>`;
-    }).join('');
+  list.innerHTML = insurers.map(i => {
+    const isActive = i === calcState.insurer;
+    return `<div class="combo-item ${isActive ? 'active' : ''}" data-value="${escapeHtml(i)}">${highlightMatch(i, q)}</div>`;
+  }).join('');
+  // 綁 click
+  list.querySelectorAll('.combo-item').forEach(el => {
+    el.addEventListener('click', () => selectInsurer(el.dataset.value));
+  });
+}
+
+// ===== 渲染商品列表(支援跨公司搜尋)=====
+function renderProductList(query) {
+  const list = document.getElementById('productList');
+  if (!list) return;
+  const q = (query || '').toLowerCase().trim();
+
+  // 候選列表:若已選保險公司,顯示該公司商品;若未選且有 query,跨公司搜尋
+  let candidates = [];
+  if (calcState.insurer) {
+    candidates = (PRODUCTS[calcState.insurer] || []).map((prod, i) => ({
+      company: calcState.insurer, prod, i, sameCompany: true
+    }));
+  } else if (q) {
+    Object.keys(PRODUCTS).forEach(company => {
+      PRODUCTS[company].forEach((prod, i) => {
+        candidates.push({ company, prod, i, sameCompany: false });
+      });
+    });
+  }
+
+  // 篩選
+  const filtered = q
+    ? candidates.filter(c =>
+        c.prod.name.toLowerCase().includes(q) ||
+        c.company.toLowerCase().includes(q)
+      )
+    : candidates;
+
+  if (filtered.length === 0) {
+    if (!calcState.insurer && !q) {
+      list.innerHTML = '<div class="combo-empty">請先選擇保險公司,或直接輸入商品關鍵字搜尋</div>';
+    } else {
+      list.innerHTML = '<div class="combo-empty">查無相符的商品</div>';
+    }
+    return;
+  }
+
+  list.innerHTML = filtered.slice(0, 100).map(c => {
+    const yearLabel = c.prod.year === '躉' ? '躉繳' : c.prod.year === '99' ? '終身' : `${c.prod.year}年`;
+    const displayText = `${c.prod.name} (${yearLabel})`;
+    const isActive = c.company === calcState.insurer && c.i === calcState.productIdx;
+    const companyTag = c.sameCompany ? '' : `<span class="item-company">[${escapeHtml(c.company)}]</span>`;
+    return `<div class="combo-item ${isActive ? 'active' : ''}" data-company="${escapeHtml(c.company)}" data-idx="${c.i}">${companyTag}${highlightMatch(displayText, q)}</div>`;
+  }).join('');
+  list.querySelectorAll('.combo-item').forEach(el => {
+    el.addEventListener('click', () => {
+      selectProduct(el.dataset.company, parseInt(el.dataset.idx));
+    });
+  });
+}
+
+// ===== 選擇保險公司 =====
+function selectInsurer(name) {
+  calcState.insurer = name;
+  calcState.productIdx = -1;
+  document.getElementById('insurerInput').value = name;
+  document.getElementById('insurerCombo').classList.add('has-value');
+  document.getElementById('insurerCombo').classList.remove('open');
+
+  // 重置商品
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  renderProductList('');
+  onProductChange(); // 重置代理費率顯示等
+
   recalcAll();
 }
 
+function clearInsurer(e) {
+  e.stopPropagation();
+  calcState.insurer = '';
+  calcState.productIdx = -1;
+  document.getElementById('insurerInput').value = '';
+  document.getElementById('insurerCombo').classList.remove('has-value');
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  onProductChange();
+  renderInsurerList('');
+  renderProductList('');
+  recalcAll();
+}
+
+// ===== 選擇商品 =====
+function selectProduct(company, idx) {
+  // 若跨公司搜尋,先設公司
+  if (company !== calcState.insurer) {
+    calcState.insurer = company;
+    document.getElementById('insurerInput').value = company;
+    document.getElementById('insurerCombo').classList.add('has-value');
+  }
+  calcState.productIdx = idx;
+  const product = PRODUCTS[company][idx];
+  const yearLabel = product.year === '躉' ? '躉繳' : product.year === '99' ? '終身' : `${product.year}年`;
+  document.getElementById('productInput').value = `${product.name} (${yearLabel})`;
+  document.getElementById('productCombo').classList.add('has-value');
+  document.getElementById('productCombo').classList.remove('open');
+  onProductChange();
+}
+
+function clearProduct(e) {
+  e.stopPropagation();
+  calcState.productIdx = -1;
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  onProductChange();
+}
+
+// 舊的 onInsurerChange 廢棄(combobox 走 selectInsurer)
+function onInsurerChange() {
+  // 保留以免 HTML inline event handler 找不到
+}
+
 function onProductChange() {
-  const idx = parseInt(document.getElementById('productSelect').value);
-  calcState.productIdx = isNaN(idx) ? -1 : idx;
-  // 自動帶入代理費率顯示
   const product = (calcState.insurer && calcState.productIdx >= 0)
     ? PRODUCTS[calcState.insurer][calcState.productIdx] : null;
   const rateDisplay = document.getElementById('rateDisplay');
@@ -2291,10 +2569,8 @@ function onProductChange() {
     if (currency) {
       premCurr.textContent = `(${currency.symbol})`;
       premHint.textContent = `※ 此商品為${currency.symbol}計價,請輸入外幣金額`;
-      // 顯示匯率欄
       fxFields.style.display = '';
       fxRateLabel.textContent = currency.code;
-      // 若還沒填,帶入預設匯率
       if (!fxRateInput.value) fxRateInput.value = currency.defaultRate;
     } else {
       premCurr.textContent = '(新台幣)';
@@ -2753,8 +3029,15 @@ function toggleAdvanced() {
 // ===== 重設 =====
 function resetCalc() {
   if (!confirm('確定要重設所有試算內容嗎?')) return;
-  document.getElementById('insurerSelect').value = '';
-  onInsurerChange();
+  document.getElementById('insurerInput').value = '';
+  document.getElementById('insurerCombo').classList.remove('has-value');
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  calcState.insurer = '';
+  calcState.productIdx = -1;
+  onProductChange();
+  renderInsurerList('');
+  renderProductList('');
   document.getElementById('premiumInput').value = '';
   document.getElementById('manualFyc').value = '';
   calcState.dlRankIdx = -1;
@@ -2824,21 +3107,20 @@ function restoreFromUrl() {
     if (fyc) document.getElementById('manualFyc').value = formatNumberInput(parseFloat(fyc));
   } else {
     const insurer = params.get('insurer');
-    if (insurer) {
-      document.getElementById('insurerSelect').value = insurer;
-      onInsurerChange();
+    if (insurer && PRODUCTS[insurer]) {
+      selectInsurer(insurer);
       const pidx = params.get('pidx');
       if (pidx !== null) {
-        setTimeout(() => {
-          document.getElementById('productSelect').value = pidx;
-          onProductChange();
-          const prem = params.get('prem');
-          if (prem) {
-            document.getElementById('premiumInput').value = formatNumberInput(parseFloat(prem));
-            recalcAll();
-          }
-        }, 100);
+        const idx = parseInt(pidx);
+        if (PRODUCTS[insurer][idx]) {
+          selectProduct(insurer, idx);
+        }
       }
+      const prem = params.get('prem');
+      if (prem) {
+        document.getElementById('premiumInput').value = formatNumberInput(parseFloat(prem));
+      }
+      recalcAll();
     }
   }
 
