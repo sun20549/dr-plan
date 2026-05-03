@@ -840,6 +840,7 @@ body {
             <option value="">請選擇</option>
             <option value="2">2 年</option>
             <option value="3">3 年</option>
+            <option value="5">5 年</option>
             <option value="6">6 年</option>
             <option value="8">8 年</option>
             <option value="10">10 年</option>
@@ -1460,6 +1461,97 @@ const PRODUCTS = [
     min_sa: 10000,
     max_sa: 1000000,
     min_age: 0, max_age: 74
+  },
+  // ===== 新光人壽 5 商品(skl 系列利變型,非分紅,走 twlife_v1)=====
+  // 注意:db_pattern=stepped 商品 (P2A/WZA/P3A/JZA) 的 schedule.death_benefit Y1 << base_sa,
+  //      逐年 ramp 到 period+0~1 年才達 base_sa。引擎走 base_sa 反推保額,不受 stepped 影響。
+  {
+    plan_code: 'TBA',
+    company: '新光人壽',
+    product_name: '新光人壽美好人生外幣利率變動型終身壽險(定期給付型)',
+    period: 2,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.043,
+    predicted_rate: 0,
+    discount: 0.04,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 3000000,
+    min_age: 0, max_age: 78
+  },
+  {
+    plan_code: 'P2A',
+    company: '新光人壽',
+    product_name: '新光人壽美利多倍外幣利率變動型終身壽險(定期給付型)',
+    period: 8,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 7500000,
+    min_age: 0, max_age: 72
+  },
+  {
+    plan_code: 'WZA',
+    company: '新光人壽',
+    product_name: '新光人壽美鑽長青外幣利率變動型終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.05,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 7500000,
+    min_age: 0, max_age: 74
+  },
+  {
+    plan_code: 'P3A',
+    company: '新光人壽',
+    product_name: '新光人壽美鑽傳世外幣利率變動型終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.04,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 74
+    // 注意:premium_mode='half_year',base_premium 是年化值(半年繳 × 2)
+    // 注意:base_sa=3086444 非 unit_size(1000) 倍數,以 base_premium 投基準試算時
+    //      sumAssured 會被 applyInsuranceLimits 進位到 3087000,造成 ~0.018% 數字微偏差(實務無感)
+  },
+  {
+    plan_code: 'JZA',
+    company: '新光人壽',
+    product_name: '新光人壽美鑽傳家外幣利率變動型終身壽險(定期給付型)',
+    period: 5,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
   }
 ];
 
