@@ -1592,6 +1592,25 @@ const PRODUCTS = [
     max_sa: 3500000,
     min_age: 0, max_age: 90,
     step_up_year: 6  // 保倍型 Y6 起 DB 跳升到基本保額(Y1-Y5 為 cum_prem × 1.06 低保障期)
+  },
+  // ===== 安達人壽(Chubb)=====
+  {
+    plan_code: 'RPISWLB',
+    company: '安達人壽',
+    product_name: '安達人壽金多美美元利率變動型終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0425,
+    predicted_rate: 0,
+    discount: 0.04465,        // 複合折扣:高保額 3.5% × 銀扣 1%
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 20000,            // ⚠️ Excel 限額:15 足歲(含)以上 2萬~300萬美元
+    max_sa: 3000000,          //    0~14 歲是 2萬~35萬,如需分段請另加 min_sa_under15/max_sa_under15
+    min_age: 0,
+    max_age: 75               // ⚠️ Excel 沒給上限,75 是業界利變型常見值,正式上線前請查條款 PDF
   }
 ];
 
