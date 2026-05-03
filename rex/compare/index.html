@@ -838,6 +838,7 @@ body {
           <label>年期</label>
           <select id="period">
             <option value="">請選擇</option>
+            <option value="1">1 年(躉繳)</option>
             <option value="2">2 年</option>
             <option value="3">3 年</option>
             <option value="5">5 年</option>
@@ -1082,27 +1083,30 @@ const PRODUCTS = [
     max_sa: 100000000,
     min_age: 0, max_age: 75
   },
+  // ===== 台灣人壽 7 商品(整合至 data/twlife/ 子目錄)=====
+  // 注意:NUIW5203 / NUIW6602 從原本的 data/ 平鋪路徑遷移到 twlife/,參數有更新
   {
-    plan_code: 'NUIW5203',
+    plan_code: 'NUIW4703',
     company: '台灣人壽',
-    product_name: '超美利美元利率變動型終身壽險',
-    period: 6,
+    product_name: '台灣人壽吉美富美元利率變動型終身壽險',
+    period: 1,                        // 躉繳
     currency: 'USD',
     type: '美元利率變動型終身壽險',
-    declared_rate: 0.042,
+    declared_rate: 0.0415,
     predicted_rate: 0,
-    discount: 0.01,
+    discount: 0.011,
     discount_method: 'simple',
     engine: 'twlife_v1',
-    unit_size: 1000,         // 千元為單位（推測）
-    min_sa: 10000,
-    max_sa: 10000000,
-    min_age: 0, max_age: 75
+    unit_size: 1000,
+    min_sa: 3000,
+    max_sa: 6000000,
+    min_age: 0, max_age: 85
+    // Y1 死亡 ≈ base_premium × 1.4(躉繳保證最低身故金)
   },
   {
-    plan_code: 'NUIW6602',
+    plan_code: 'NUIW6502',
     company: '台灣人壽',
-    product_name: '美鑫美利美元利率變動型終身壽險',
+    product_name: '台灣人壽保利美美元利率變動型終身壽險',
     period: 6,
     currency: 'USD',
     type: '美元利率變動型終身壽險',
@@ -1112,9 +1116,102 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
+    min_sa: 7000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 74
+    // Y1-Y3 死亡 ≈ 累計保費 × 1.094(stepped),Y4 起跳到全額
+  },
+  {
+    plan_code: 'NUIW6602',
+    company: '台灣人壽',
+    product_name: '台灣人壽美鑫美利美元利率變動型終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 8000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 74
+    // 試算 base_age=62(其他多為 41-50)
+  },
+  {
+    plan_code: 'NUIW5203',
+    company: '台灣人壽',
+    product_name: '台灣人壽超美利美元利率變動型終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.04,                   // 高保費 3% + 自轉 1% 雙重疊加
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 6000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 74
+    // Y1-Y5 死亡 ≈ 累計保費(stepped),Y6 起跳到全額
+  },
+  {
+    plan_code: 'NUIW7302',
+    company: '台灣人壽',
+    product_name: '台灣人壽臻美滿美元利率變動型終身壽險',
+    period: 3,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0425,
+    predicted_rate: 0,
+    discount: 0.02,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 77
+    // schedule 只到 Y30(試算表結構限制)。Y1-Y6 stepped,Y7 起跳到全額
+  },
+  {
+    plan_code: 'NUPW0202',
+    company: '台灣人壽',
+    product_name: '台灣人壽美世長紅美元分紅終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.025,
+    discount_method: 'simple',
+    engine: 'prudential_v2',
+    unit_size: 1000,
     min_sa: 10000,
     max_sa: 10000000,
     min_age: 0, max_age: 75
+    // 分紅型,基本死亡給付逐年遞增(Y1=base_sa,Y6 跳到 ~1.5×base_sa)。schedule 25 筆
+    // 注意:base_sa=9999999 非 unit_size(1000) 倍數,基準試算 sumAssured 進位 ~10000000 造成 ~0.000001% 微偏差
+  },
+  {
+    plan_code: 'NUPW0102',
+    company: '台灣人壽',
+    product_name: '台灣人壽美紅旺美元分紅終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0,
+    discount_method: 'simple',
+    engine: 'prudential_v2',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 74
+    // 試算 base 是「女、3 歲、月繳」特殊範本。Y1-Y2 db=12916 < base_sa=43054
+    // 注意:base_sa=43054 非 unit_size(1000) 倍數,基準試算 sumAssured 進位 ~44000 造成 ~2.2% 微偏差
   },
   {
     plan_code: '6UBS',
@@ -1943,6 +2040,10 @@ function actuarialCalc_prudential_v2(plan, sex, age, sumAssured, period) {
     is_estimated: !isExact,
     base_age: db.meta.base_age,
     base_sex: db.meta.base_sex,
+    // 跟 actuarialCalc_twlife 一致的欄位:UI 統一處理
+    dividend_warning: db.meta.schedule_includes_dividend === false
+      ? '⚠ 顯示為純保證(預定利率)數字,實際領回會更高(含宣告利率紅利累積)'
+      : null,
   };
 }
 
