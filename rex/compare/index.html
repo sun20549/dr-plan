@@ -2397,16 +2397,30 @@ async function renderProductList() {
     return;
   }
 
-  // === Lazy-load:渲染前先預載所有符合條件商品的 DB ===
+  // === Lazy-load:渲染前先預載所有符合條件商品的 DB(容錯模式)===
+  // 用 allSettled 而非 all,單一商品 JSON 缺檔不會整個列表爛掉
+  let loadFailedCodes = new Set();
   try {
     await window.loadManifest();  // 先載 manifest 才能查 path
-    await Promise.all(state.filteredProducts.map(p => window.loadProductDB(p.plan_code)));
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="8" class="empty" style="color:var(--danger);">商品資料載入失敗:${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="empty" style="color:var(--danger);">manifest 載入失敗:${e.message}</td></tr>`;
     return;
   }
+  const loadResults = await Promise.allSettled(
+    state.filteredProducts.map(p => window.loadProductDB(p.plan_code))
+  );
+  loadResults.forEach((res, i) => {
+    if (res.status === 'rejected') {
+      loadFailedCodes.add(state.filteredProducts[i].plan_code);
+      console.warn(`[STEP2] 載入 ${state.filteredProducts[i].plan_code} 失敗:`, res.reason?.message || res.reason);
+    }
+  });
 
   tbody.innerHTML = state.filteredProducts.map(p => {
+    // 容錯:該商品 JSON 缺檔 → 顯示一行「載入失敗」訊息,其他商品照常運作
+    if (loadFailedCodes.has(p.plan_code)) {
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td><span class="code-tag">${p.plan_code}</span></td><td colspan="4" style="color:var(--danger);text-align:center;font-size:12.5px;">❌ 商品資料載入失敗(JSON 檔可能未部署)</td></tr>`;
+    }
     const r = calcProductForUser(p, state.user);
     if (!r) return `<tr><td colspan="8" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
     if (r.unsupported) {
@@ -2474,12 +2488,22 @@ async function goStep3(mode) {
   
   if (codes.length === 0) { alert('請至少選擇一個商品'); return; }
 
-  // === Lazy-load:計算前先把所有要用的商品 DB 預載到快取 ===
-  try {
-    await Promise.all(codes.map(code => window.loadProductDB(code)));
-  } catch (e) {
-    alert('商品資料載入失敗:' + e.message);
+  // === Lazy-load:計算前先把所有要用的商品 DB 預載到快取(容錯模式)===
+  const loadResults = await Promise.allSettled(codes.map(code => window.loadProductDB(code)));
+  const failedCodes = [];
+  loadResults.forEach((res, i) => {
+    if (res.status === 'rejected') {
+      failedCodes.push(codes[i]);
+      console.warn(`[STEP3] 載入 ${codes[i]} 失敗:`, res.reason?.message || res.reason);
+    }
+  });
+  if (failedCodes.length === codes.length) {
+    alert('所有選定商品都載入失敗,請檢查 GitHub data/ 目錄是否完整部署:\n' + failedCodes.join(', '));
     return;
+  }
+  if (failedCodes.length > 0) {
+    alert(`以下 ${failedCodes.length} 個商品載入失敗,將從比較中跳過:\n${failedCodes.join(', ')}\n\n其他 ${codes.length - failedCodes.length} 個商品將正常顯示。`);
+    codes = codes.filter(c => !failedCodes.includes(c));
   }
 
   state.compareList = codes.map(code => {
