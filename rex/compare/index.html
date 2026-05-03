@@ -3241,20 +3241,9 @@ function renderCompareTable() {
     maxYearsByAgeCap
   );
 
-  // === COLGROUP:用 <col> 統一控制欄寬,比逐個 td 設 width 穩 ===
-  // 結構:[col-year(108)][col-age(80)][col-value, col-pct] × N
-  // 寬度由 layoutProductColumnWidth 後續設定
-  let html = '<colgroup id="compare-colgroup">';
-  html += '<col class="col-year">';
-  html += '<col class="col-age">';
-  for (let i = 0; i < displayItems.length; i++) {
-    html += '<col class="col-value">';
-    html += '<col class="col-pct">';
-  }
-  html += '</colgroup>';
-
   // === THEAD:所有 meta 全部塞 thead,瀏覽器原生 sticky ===
-  html += '<thead>';
+  // colgroup 由 layoutProductColumnWidth() 在渲染後動態 prepend(避開 innerHTML 解析問題)
+  let html = '<thead>';
 
   // 公司名列
   html += '<tr class="head-company">';
@@ -3390,8 +3379,7 @@ function layoutProductColumnWidth() {
   const bp = _getLayoutBreakpoint(window.innerWidth);
   const labelColWidth = FIXED_LABEL_COL_WIDTH;
 
-  // 留 5px 安全 buffer
-  const SAFE_WIDTH = wrapWidth - 5;
+  const SAFE_WIDTH = wrapWidth;
   const productsTotalWidth = SAFE_WIDTH - labelColWidth;
 
   // 用 maxW 算 ideal N,但保證每商品 ≥ minW
@@ -3406,23 +3394,40 @@ function layoutProductColumnWidth() {
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
 
-  // table 寬度設成精算總寬,用 fixed layout 強制 col 寬度生效
-  const actualTableWidth = labelColWidth + N * eachProductWidth;
-  table.style.width = `${actualTableWidth}px`;
+  // v5.7.1: 把捨入剩餘的 px 補給最後一個 col,讓 table 完全貼齊 wrap
+  const totalUsed = labelColWidth + N * eachProductWidth;
+  const leftover = SAFE_WIDTH - totalUsed;  // 0~N-1 px
+
+  // table 寬度設成 wrap 寬度,讓最右邊那條細線消失
+  table.style.width = `${SAFE_WIDTH}px`;
   table.style.tableLayout = 'fixed';
 
-  // === 透過 colgroup 統一設定欄寬(比逐個 td 設穩多了)===
-  const yearCol = table.querySelector('col.col-year');
-  const ageCol = table.querySelector('col.col-age');
-  if (yearCol) yearCol.style.width = '108px';
-  if (ageCol) ageCol.style.width = '80px';
+  // === 動態建立 colgroup ===
+  const headRow = table.querySelector('thead tr.head-company');
+  if (!headRow) return;
+  const productCount = headRow.querySelectorAll('th[colspan="2"]:not(.th-label-1)').length;
 
-  table.querySelectorAll('col.col-value').forEach(c => {
-    c.style.width = `${valueWidth}px`;
-  });
-  table.querySelectorAll('col.col-pct').forEach(c => {
-    c.style.width = `${percentWidth}px`;
-  });
+  const oldCg = table.querySelector('colgroup');
+  if (oldCg) oldCg.remove();
+
+  const cg = document.createElement('colgroup');
+  const colYear = document.createElement('col');
+  colYear.style.width = '108px';
+  cg.appendChild(colYear);
+  const colAge = document.createElement('col');
+  colAge.style.width = '80px';
+  cg.appendChild(colAge);
+  for (let i = 0; i < productCount; i++) {
+    const colV = document.createElement('col');
+    // 最後一個商品的 value 欄補上捨入剩餘 px(讓 table 寬完全貼齊)
+    const isLast = (i === productCount - 1);
+    colV.style.width = `${valueWidth + (isLast ? leftover : 0)}px`;
+    cg.appendChild(colV);
+    const colP = document.createElement('col');
+    colP.style.width = `${percentWidth}px`;
+    cg.appendChild(colP);
+  }
+  table.insertBefore(cg, table.firstChild);
 }
 
 // v5.1: 視窗 resize 時重算商品欄寬度
