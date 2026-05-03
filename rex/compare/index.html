@@ -2949,6 +2949,12 @@ function printCompareTable() {
   // === 每頁的欄位標題(value / percent)===
   const valueLabel = state.currentTab === 'surrender' ? '解約金+回饋(A)' : '身故金(B)';
   const pctLabel = state.currentTab === 'surrender' ? '(A)/累積保費' : '(B)/累積保費';
+  // v5.7: 動態 rate label(全分紅 → 中分紅率;混合 → 宣告/分紅率)
+  // 列印的 label 不含 HTML,改用 / 分隔
+  const _isDividend = it => ['taishin_v1','prudential_v1','prudential_v2','kgi_rv_v1'].includes(it.product.engine);
+  const _allDividend = displayItems.every(_isDividend);
+  const _noneDividend = displayItems.every(it => !_isDividend(it));
+  const printRateLabel = _allDividend ? '中分紅率' : _noneDividend ? '宣告利率' : '宣告利率/中分紅率';
 
   // v5.5: 雙重分頁 — 商品分頁(6/頁) × 年度分頁(20/頁)
   // 例: 26 商品 × 71 年 = ceil(26/6)=5 × ceil(71/20)=4 = 20 頁
@@ -3049,10 +3055,11 @@ function printCompareTable() {
     html += emptyFill(fillCount);
     html += '</tr>';
 
-    // 8. 宣告利率(teal 底)
-    html += '<tr><th class="meta-th label" colspan="2">宣告利率</th>';
+    // 8. 宣告利率 / 中分紅率(動態 label)
+    html += `<tr><th class="meta-th label" colspan="2">${printRateLabel}</th>`;
     pageItems.forEach(it => {
-      html += `<th class="rate-cell" colspan="2">${(it.product.declared_rate*100).toFixed(2)}%</th>`;
+      const r = getProductRate(it);
+      html += `<th class="rate-cell" colspan="2" style="color:${r.color};">${r.text}</th>`;
     });
     html += emptyFill(fillCount);
     html += '</tr>';
@@ -3129,6 +3136,53 @@ function printCompareTable() {
   }, 100);
 }
 
+// v5.7: 取得商品的「率」資訊(利變商品=宣告利率;分紅商品=中分紅率)
+// 中分紅率優先讀 db.meta.mid_dividend_rate / mid_div_rate / illustrated_rate
+// 都沒有時 fallback 顯示宣告利率(declared_rate)
+function getProductRate(item) {
+  const dividendEngines = ['taishin_v1', 'prudential_v1', 'prudential_v2', 'kgi_rv_v1'];
+  const isDividend = dividendEngines.includes(item.product.engine);
+  const db = getDB(item.product.plan_code);
+  const meta = db && db.meta ? db.meta : {};
+
+  if (isDividend) {
+    // 嘗試多個常見欄位名
+    const midRate = meta.mid_dividend_rate ?? meta.mid_div_rate ?? meta.illustrated_dividend_rate ?? meta.illustrated_rate ?? meta.assumed_dividend_rate;
+    if (midRate != null) {
+      return {
+        text: `${(midRate * 100).toFixed(2)}%`,
+        color: '#a855f7',  // 紫色,跟 teal 宣告利率區分
+        tooltip: '中分紅率(分紅商品的假設投資報酬率,實際以保險公司年度宣告為準)'
+      };
+    }
+    // 沒有中分紅率資料 → 顯示「分紅型」+ 預定利率
+    const guarantRate = meta.guaranteed_rate ?? item.product.declared_rate;
+    return {
+      text: guarantRate > 0 ? `分紅型 ${(guarantRate * 100).toFixed(2)}%` : '分紅型',
+      color: '#a855f7',
+      tooltip: '分紅商品 — 中分紅率資料未提供,顯示為預定利率'
+    };
+  }
+
+  // 利變商品:顯示宣告利率
+  const declared = meta.declared_rate ?? item.product.declared_rate;
+  return {
+    text: `${(declared * 100).toFixed(2)}%`,
+    color: '#0d6e5e',  // teal
+    tooltip: '宣告利率'
+  };
+}
+
+// v5.7: 動態 label(全部分紅 → 顯示「中分紅率」;混合 → 顯示「宣告/分紅率」)
+function getRateLabel(items) {
+  const dividendEngines = ['taishin_v1', 'prudential_v1', 'prudential_v2', 'kgi_rv_v1'];
+  const allDividend = items.every(it => dividendEngines.includes(it.product.engine));
+  const noneDividend = items.every(it => !dividendEngines.includes(it.product.engine));
+  if (allDividend) return '中分紅率';
+  if (noneDividend) return '宣告利率';
+  return '宣告利率<br><span style="font-size:10px;font-weight:400;color:#a855f7;">/中分紅率</span>';
+}
+
 function renderCompareTable() {
   const table = document.getElementById('compare-table');
   const items = state.compareList;
@@ -3195,7 +3249,10 @@ function renderCompareTable() {
       const v = convert(it.calc.annual_premium_real * it.product.period, it.product.currency);
       return `<th colspan="2" class="meta-num">${fmtMoney(v)}</th>`;
     }},
-    {label:'宣告利率', getter: it => `<th colspan="2" class="meta-num">${(it.product.declared_rate*100).toFixed(2)}%</th>`}
+    {label: getRateLabel(displayItems), getter: it => {
+      const r = getProductRate(it);
+      return `<th colspan="2" class="meta-num" style="color:${r.color}; font-weight:700;" title="${r.tooltip}">${r.text}</th>`;
+    }}
   ];
   metas.forEach(m => {
     html += '<tr class="head-meta">';
