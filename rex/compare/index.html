@@ -1552,6 +1552,46 @@ const PRODUCTS = [
     min_sa: 10000,
     max_sa: 5000000,
     min_age: 0, max_age: 75
+  },
+  // ===== 友邦人壽 2 商品(twlife_v1 引擎,但 schedule 為「純保證」不含紅利)=====
+  // 注意:UED/UWHL 的 schedule.cv_total 全部 = cv_basic(沒有疊加紅利累積),
+  //      引擎已偵測 meta.schedule_includes_dividend=false 並回傳 dividend_warning,
+  //      未來 UI 在比較表那兩列加灰色註記「⚠ 純保證,實際領回會更高」即可。
+  {
+    plan_code: 'UED',
+    company: '友邦人壽',
+    product_name: '友邦人壽享福人生美元利率變動型養老保險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型養老保險',
+    declared_rate: 0.0335,
+    predicted_rate: 0,
+    discount: 0,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 5000,
+    max_sa: 4000000,
+    min_age: 0, max_age: 74,
+    protection_period: 20  // 養老險保障期 20 年(滿期領 base_sa)
+  },
+  {
+    plan_code: 'UWHL',
+    company: '友邦人壽',
+    product_name: '友邦人壽鑫柑保倍美元利率變動型終身保險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險(保倍型)',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.03,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 3500000,
+    min_age: 0, max_age: 90,
+    step_up_year: 6  // 保倍型 Y6 起 DB 跳升到基本保額(Y1-Y5 為 cum_prem × 1.06 低保障期)
   }
 ];
 
@@ -1800,6 +1840,11 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
     is_estimated: !isExact,  // 標記為估算
     base_age: db.meta.base_age,
     base_sex: db.meta.base_sex,
+    // 路徑 C:若 schedule 不含紅利累積(預設視為已含),帶 warning 給 UI
+    // 用法:result.dividend_warning 為非空字串時,UI 在比較表那一列加灰色註記
+    dividend_warning: db.meta.schedule_includes_dividend === false
+      ? '⚠ 顯示為純保證(預定利率)數字,實際領回會更高(含宣告利率紅利累積)'
+      : null,
   };
 }
 
