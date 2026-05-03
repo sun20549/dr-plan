@@ -3307,11 +3307,8 @@ function layoutProductColumnWidth() {
   const PER_PRODUCT_BORDER = 2;
   const usable = wrapWidth - labelColWidth - BORDER_OVERHEAD;
 
-  // 用 maxW 算「最少需要幾個 N 來填滿這個寬度」
-  // 例:usable=1500, maxW=420 → N=ceil(1500/420)=4 → 每個 375px ✓
-  // 例:usable=1100, maxW=420 → N=ceil(1100/420)=3 → 每個 367px ✓
+  // 用 maxW 算 ideal N,但要保證每商品至少 minW
   let N = Math.max(1, Math.ceil(usable / bp.maxW));
-  // 但要確保每個商品 ≥ minW(否則太擠看不清),不行就降 N
   while (N > 1) {
     const each = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
     if (each >= bp.minW) break;
@@ -3321,6 +3318,12 @@ function layoutProductColumnWidth() {
   const eachProductWidth = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
+
+  // v5.6: 強制 table 總寬度與 wrap 一致,並用 fixed layout 強制每 td 寬度生效
+  // 這確保畫面右邊不會留白(因為 table 預設會依內容縮放)
+  const tableWidth = labelColWidth + N * (eachProductWidth + PER_PRODUCT_BORDER);
+  table.style.width = `${tableWidth}px`;
+  table.style.tableLayout = 'fixed';
 
   // 同步 label 欄寬度
   table.querySelectorAll('th.label-col, td.label').forEach(el => {
