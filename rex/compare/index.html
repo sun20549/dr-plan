@@ -362,6 +362,72 @@ body {
   .top-header .inner { flex-direction:column; gap:16px; }
 }
 
+/* === v5.3: STEP3 比較表 RWD 自適應 === */
+
+/* 平板直式 / 大手機橫式 (600~1023px):縮 padding、字體微縮、tabs 改可換行 */
+@media (max-width: 1023px) {
+  .page-wrap.step3-active { padding:0 12px 60px; }
+  .compare-table th, .compare-table td {
+    padding:6px 7px !important; font-size:11.5px !important;
+  }
+  /* tabs 改成可換行的 chip 樣式 */
+  .tabs button { font-size:12px !important; padding:8px 12px !important; }
+  /* 跳轉按鈕縮小 */
+  .year-jump-btn { font-size:11px !important; padding:5px 8px !important; }
+  /* 比較表標籤欄變窄 */
+  .compare-table th.label-col,
+  .compare-table td.label,
+  .compare-table tbody td.year-col { font-size:10.5px !important; }
+}
+
+/* 手機橫式 (480~767px):進一步縮減 */
+@media (max-width: 767px) {
+  .page-wrap.step3-active { padding:0 8px 40px; }
+  .compare-table { font-size:11px !important; }
+  .compare-table th, .compare-table td {
+    padding:5px 6px !important;
+  }
+  /* tab 列改垂直堆疊或更小 */
+  #step-3 .tabs { flex-wrap:wrap; }
+  .tabs button { font-size:11.5px !important; padding:7px 10px !important; }
+  /* 列印按鈕跟幣別 toggle 換行 */
+  #step-3 .card > div:first-of-type { gap:8px; }
+  .print-btn { font-size:11.5px !important; padding:6px 10px !important; }
+  .currency-toggle button { font-size:11.5px !important; padding:5px 12px !important; }
+  /* 跳轉列允許換行 */
+  .year-jump-bar { flex-wrap:wrap; gap:4px !important; padding:8px 10px !important; }
+  .year-jump-btn { font-size:10.5px !important; padding:4px 7px !important; }
+  /* sticky 標籤欄字體更小 */
+  .compare-table th.label-col,
+  .compare-table td.label,
+  .compare-table tbody td.year-col,
+  .compare-table tbody td.year-col-1,
+  .compare-table tbody td.year-col-2 { font-size:10px !important; padding:4px 5px !important; }
+  /* 商品名稱可換行 */
+  .compare-table .meta-row td.product-name-cell {
+    font-size:10.5px !important; line-height:1.3 !important;
+  }
+}
+
+/* 手機直式 (≤479px):最緊湊版 */
+@media (max-width: 479px) {
+  .page-wrap.step3-active { padding:0 4px 30px; }
+  .compare-table { font-size:10.5px !important; }
+  .compare-table th, .compare-table td {
+    padding:4px 5px !important;
+  }
+  /* STEP3 card 縮 padding */
+  #step-3 .card { padding:12px !important; }
+  /* 進度條 dot 縮小 */
+  .step-indicator .dot { width:24px !important; height:24px !important; font-size:11px !important; }
+  /* 提示「水平滑動看更多商品」 */
+  .compare-table-wrap::before {
+    content:"← 滑動看更多商品 →";
+    display:block; padding:6px 10px; font-size:10px; color:var(--teal);
+    background:var(--teal-light); text-align:center; font-weight:600;
+  }
+}
+
     /* ========== v4 改進 CSS ========== */
     /* 黏性表頭與首欄 */
     .compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
@@ -3112,14 +3178,19 @@ function renderCompareTable() {
   updateSummaryFloat();
 }
 
-// v5.2: 動態設定商品欄寬度
+// v5.3: 動態設定商品欄寬度 + RWD 自適應
 // 設計理念:
-//   - 每商品最小寬度 280px(讓商品名跟金額讀得清楚)
-//   - 用視窗寬度推算「可見」的整數個商品數 N(至少 1 個)
-//   - 5 個商品塞得下 → 顯示 5 個;塞不下 → 自動降到 4 / 3 個
-//   - 每商品寬度 = (可用寬度 - safetyBuffer) / N,確保第 N 個不會被切到
-const PRODUCT_MIN_WIDTH = 280;          // 每商品至少要這麼寬才好讀
-const SAFETY_BUFFER = 20;               // 預留給 border/padding/scrollbar 的安全 margin
+//   - 桌機/平板橫式 (≥1024):每商品 280px,標籤欄 90px
+//   - 平板直式 (≥600):每商品 280px,標籤欄 75px
+//   - 手機橫式 (≥480):每商品 320px,標籤欄 65px(2 個商品塞得下)
+//   - 手機直式 (<480):每商品 260px,標籤欄 60px(1 個商品)
+function _getLayoutBreakpoint(width) {
+  if (width >= 1024) return { minW: 280, labelW: 90, buffer: 20, fontSize: null };
+  if (width >= 600)  return { minW: 280, labelW: 75, buffer: 16, fontSize: null };
+  if (width >= 480)  return { minW: 320, labelW: 65, buffer: 12, fontSize: null };
+  return                    { minW: 260, labelW: 60, buffer: 10, fontSize: null };
+}
+const SAFETY_BUFFER = 20;               // 預留給 border/padding/scrollbar 的安全 margin(舊版相容)
 function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
@@ -3132,18 +3203,26 @@ function layoutProductColumnWidth() {
     el.style.scrollSnapAlign = '';
   });
 
-  // 計算可用寬度 = 容器寬度 - 標籤欄寬度 - 安全 buffer
   const wrapWidth = wrap.clientWidth;
-  const labelColWidth = 90;
-  const usable = wrapWidth - labelColWidth - SAFETY_BUFFER;
+  // 用 viewport 寬度判斷 breakpoint(手機橫式時,wrap.clientWidth 會跟 viewport 接近)
+  const bp = _getLayoutBreakpoint(window.innerWidth);
+  const labelColWidth = bp.labelW;
+  const usable = wrapWidth - labelColWidth - bp.buffer;
 
-  // 算這個寬度最多能塞幾個 280px 寬的商品(至少 1 個)
-  const N = Math.max(1, Math.floor(usable / PRODUCT_MIN_WIDTH));
+  // 算這個寬度最多能塞幾個商品(至少 1 個)
+  const N = Math.max(1, Math.floor(usable / bp.minW));
 
   // 把可用寬度平均分配給 N 個商品
   const eachProductWidth = Math.floor(usable / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
+
+  // 同步把 label 欄寬度同步到實際 minW(讓 CSS 跟 JS 一致)
+  table.querySelectorAll('th.label-col, td.label').forEach(el => {
+    el.style.width = `${labelColWidth}px`;
+    el.style.minWidth = `${labelColWidth}px`;
+    el.style.maxWidth = `${labelColWidth}px`;
+  });
 
   // thead 公司列 + meta 列:每商品是一個 colspan=2 的 th/td
   table.querySelectorAll('thead th[colspan="2"]:not(.label-col), tbody tr.meta-row td[colspan="2"]:not(.label)').forEach(el => {
@@ -3166,9 +3245,6 @@ function layoutProductColumnWidth() {
       }
     }
   });
-
-  // Debug 輔助(可在 console 看到實際分配)
-  // console.log(`[Layout] wrapWidth=${wrapWidth}, usable=${usable}, N=${N}, eachWidth=${eachProductWidth}`);
 }
 
 // v5.1: 視窗 resize 時重算商品欄寬度
