@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+<title>複利計算機｜定期定額試算・單筆投入・年化報酬率｜鼎綸恩宇</title>
+<meta name="description" content="免費複利計算機,支援單筆投入與定期定額試算,精準計算複利效果、最終本利和、淨報酬率,並比較單利 vs 複利差異。內含逐年明細表與互動圖表。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: ''; position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .logo-area { display: flex; align-items: center; gap: 18px; }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; color: white;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 26px; font-weight: 900; letter-spacing: 2px; line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block; margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: var(--gold);
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 2px; font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+
+  .header-center { text-align: center; flex: 1; min-width: 0; }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 13px; color: rgba(255,255,255,0.65);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 6px; font-weight: 500;
+  }
+  .header-center .big-title {
+    font-size: 36px; font-weight: 900; color: white;
+    letter-spacing: 6px; text-indent: 6px; line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-center .sub-title {
+    margin-top: 6px; font-size: 12px;
+    color: rgba(255,255,255,0.55); letter-spacing: 3px;
+  }
+
+  .badge-area {
+    display: flex; flex-direction: column;
+    align-items: stretch; gap: 10px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: white; padding: 14px 18px;
+    border-radius: 14px; text-align: center; line-height: 1.3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 2px; opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 16px; font-weight: 900; letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '∞'; position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .quick-bar { display: flex; flex-direction: column; gap: 6px; }
+  .quick-bar-row { display: flex; gap: 6px; }
+  .quick-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    flex: 1; font-size: 11px; font-weight: 600;
+    padding: 7px 12px; border-radius: 20px;
+    text-decoration: none; letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px); white-space: nowrap;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff; transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal); padding: 10px 48px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+  }
+  .tagline-bar span {
+    color: white; font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ── BODY ── */
+  .body { padding: 36px 48px; }
+
+  .section-title-icon {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 700;
+    color: var(--navy); margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: ''; width: 4px; height: 18px;
+    background: var(--orange); border-radius: 2px;
+  }
+  .section-sub {
+    font-size: 12px; color: #888;
+    margin-bottom: 18px; margin-top: -10px;
+  }
+
+  /* ── INTRO ── */
+  .intro-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px; padding: 18px 22px;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+  }
+  .intro-icon {
+    width: 48px; height: 48px;
+    background: var(--orange); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0; color: #fff;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.3);
+  }
+  .intro-text {
+    font-size: 13px; color: var(--navy); line-height: 1.7;
+  }
+  .intro-text strong { color: var(--orange); font-weight: 900; }
+
+  /* ── 名言 ── */
+  .quote-card {
+    background: var(--navy); color: #fff;
+    border-radius: 14px; padding: 18px 24px;
+    margin-bottom: 28px;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .quote-card::before {
+    content: ''; position: absolute;
+    top: -30px; left: -30px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.15);
+    filter: blur(40px);
+  }
+  .quote-card-text {
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 2px; line-height: 1.6;
+    color: #fff; position: relative; z-index: 1;
+  }
+  .quote-card-text::before { content: '“'; color: var(--gold); font-size: 24px; margin-right: 4px; }
+  .quote-card-text::after { content: '”'; color: var(--gold); font-size: 24px; margin-left: 4px; }
+  .quote-card-author {
+    font-size: 11px; color: var(--gold);
+    letter-spacing: 3px; margin-top: 6px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── FORM ── */
+  .form-section { margin-bottom: 32px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .form-row { display: flex; flex-direction: column; gap: 6px; }
+  .form-row.full { grid-column: 1 / -1; }
+
+  .form-label {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; font-size: 13px; font-weight: 700; color: var(--navy);
+  }
+  .form-label .help {
+    font-size: 10px; color: #999;
+    font-weight: 400; letter-spacing: 0.3px;
+  }
+
+  .form-input-wrap { position: relative; display: flex; align-items: center; }
+  .form-input {
+    width: 100%; padding: 11px 60px 11px 14px;
+    border: 1.5px solid #ddd; border-radius: 10px;
+    background: #fff;
+    font-size: 15px;
+    font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
+    color: var(--navy); font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all .2s; text-align: right;
+  }
+  .form-input:focus {
+    outline: none; border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.12);
+  }
+  .form-input::placeholder { color: #ccc; font-weight: 400; }
+  .form-input-suffix {
+    position: absolute; right: 14px;
+    color: #999; font-size: 12px; font-weight: 600;
+    pointer-events: none;
+  }
+
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .checkbox-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border: 1.5px solid #ddd;
+    border-radius: 20px; background: #fff;
+    font-size: 12px; font-weight: 600; color: var(--navy);
+    cursor: pointer; transition: all .2s;
+  }
+  .checkbox-pill input { display: none; }
+  .checkbox-pill:hover { border-color: var(--orange); }
+  .checkbox-pill.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* ── PRESET ── */
+  .preset-section { margin-bottom: 14px; }
+  .preset-label {
+    font-size: 11px; color: #888;
+    margin-bottom: 8px; letter-spacing: 1px;
+  }
+  .preset-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .preset-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd; background: #fff;
+    border-radius: 16px;
+    font-size: 11px; color: #555;
+    cursor: pointer; transition: all .2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .preset-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: var(--orange-light);
+  }
+
+  /* ── BUTTONS ── */
+  .action-row {
+    display: flex; gap: 12px; margin-top: 18px;
+  }
+  .btn {
+    flex: 1; padding: 14px 20px;
+    border-radius: 12px; border: none;
+    font-size: 15px; font-weight: 900;
+    letter-spacing: 3px; cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(240,90,40,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,90,40,0.4); }
+  .btn-secondary {
+    background: #fff; color: var(--navy);
+    border: 1.5px solid #ddd; flex: 0 0 140px;
+  }
+  .btn-secondary:hover { border-color: var(--navy); background: #fafafa; }
+
+  /* ── RESULT HERO ── */
+  .result-section { margin-bottom: 24px; }
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-radius: 16px;
+    padding: 32px 36px;
+    color: #fff; position: relative; overflow: hidden;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .result-hero::before {
+    content: ''; position: absolute;
+    top: -50px; left: -50px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.2);
+    filter: blur(50px);
+  }
+  .result-hero::after {
+    content: ''; position: absolute;
+    bottom: -50px; right: -50px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.18);
+    filter: blur(50px);
+  }
+  .result-hero-inner { position: relative; z-index: 1; }
+  .result-fv-label {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .result-fv-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 0.9;
+    color: var(--gold);
+    margin-bottom: 6px;
+    text-shadow: 0 8px 32px rgba(232,160,32,0.4);
+  }
+  .result-fv-num small {
+    font-size: 26px;
+    margin-left: 6px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+  .result-fv-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+  }
+
+  .result-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .summary-card {
+    padding: 14px 14px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    text-align: center;
+  }
+  .summary-card.s1 { border-color: var(--teal); background: var(--teal-light); }
+  .summary-card.s2 { border-color: var(--orange); background: var(--orange-light); }
+  .summary-card.s3 { border-color: var(--gold); background: rgba(232,160,32,0.12); }
+  .summary-card.s4 { border-color: var(--navy); background: rgba(13,42,58,0.06); }
+  .summary-label {
+    font-size: 11px; font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px; letter-spacing: 0.5px;
+  }
+  .summary-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; line-height: 1;
+  }
+  .summary-num small {
+    font-size: 11px; color: #999;
+    margin-left: 3px;
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 400;
+  }
+  .summary-card.s1 .summary-num { color: var(--teal); }
+  .summary-card.s2 .summary-num { color: var(--orange); }
+  .summary-card.s3 .summary-num { color: #B47710; }
+  .summary-card.s4 .summary-num { color: var(--navy); }
+
+  /* ── 圖表區 ── */
+  .chart-section {
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 24px;
+  }
+  .chart-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--navy); margin-bottom: 14px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chart-legend {
+    display: flex; gap: 16px;
+    margin-bottom: 12px;
+    font-size: 11px; color: #666;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+  .legend-dot.principal { background: var(--teal); }
+  .legend-dot.deposit { background: var(--gold); }
+  .legend-dot.interest { background: var(--orange); }
+  .legend-dot.simple { background: #b8c5d0; }
+
+  .chart-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  #chartSvg {
+    width: 100%;
+    height: 280px;
+    display: block;
+  }
+
+  /* ── 單利對比 ── */
+  .compare-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 24px;
+  }
+  .compare-card-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--orange); margin-bottom: 14px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .compare-cell {
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+  }
+  .compare-cell.simple { background: #f4f6f8; }
+  .compare-cell.compound { background: var(--navy); color: #fff; }
+  .compare-cell-label {
+    font-size: 11px; font-weight: 700;
+    margin-bottom: 6px; letter-spacing: 1px;
+  }
+  .compare-cell.simple .compare-cell-label { color: #888; }
+  .compare-cell.compound .compare-cell-label { color: var(--gold); }
+  .compare-cell-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; line-height: 1;
+  }
+  .compare-cell.simple .compare-cell-num { color: #555; }
+  .compare-cell.compound .compare-cell-num { color: var(--gold); }
+  .compare-arrow {
+    text-align: center;
+    font-size: 28px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .compare-diff {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .compare-diff strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    margin: 0 4px;
+  }
+
+  /* ── 逐年明細表 ── */
+  .table-section { margin-bottom: 32px; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .data-table thead tr { background: var(--navy); }
+  .data-table thead th {
+    color: #fff; font-size: 12px; font-weight: 700;
+    padding: 12px 10px; text-align: center; letter-spacing: 1px;
+  }
+  .data-table tbody tr { border-bottom: 1px solid #eee; }
+  .data-table tbody tr:nth-child(even) { background: #fafafa; }
+  .data-table tbody td {
+    padding: 10px 10px;
+    font-size: 12px; color: var(--navy);
+    text-align: center;
+  }
+  .data-table tbody td.year-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; color: var(--navy);
+  }
+  .data-table tbody td.num-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+  }
+  .data-table tbody td.principal-cell { color: var(--teal); }
+  .data-table tbody td.interest-cell { color: var(--orange); }
+  .data-table tbody td.balance-cell { color: var(--navy); font-weight: 700; }
+  .data-table tbody tr.row-final {
+    background: var(--orange-light) !important;
+  }
+  .data-table tbody tr.row-final td {
+    color: var(--navy); font-weight: 700;
+  }
+
+  /* ── KEY POINTS ── */
+  .key-section { margin-bottom: 32px; }
+  .key-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .key-card {
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-top: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    transition: all .2s;
+  }
+  .key-card:hover {
+    border-top-color: var(--orange);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .key-card-icon {
+    width: 48px; height: 48px;
+    margin: 0 auto 10px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 22px;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.3);
+  }
+  .key-card-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--navy); margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .key-card-desc {
+    font-size: 11px; line-height: 1.6;
+    color: #666;
+  }
+  .key-card-desc strong { color: var(--orange); }
+
+  /* ── RATE REFERENCE ── */
+  .rate-section {
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, var(--teal-light) 0%, #fff 100%);
+    border: 2px solid var(--teal);
+    border-radius: 14px;
+    padding: 20px 24px;
+  }
+  .rate-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--teal); margin-bottom: 12px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .rate-item {
+    background: #fff;
+    border: 1px solid var(--teal-light);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+  }
+  .rate-name {
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; flex: 1;
+  }
+  .rate-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--teal);
+    flex-shrink: 0;
+  }
+  .rate-desc {
+    font-size: 10px; color: #888;
+    line-height: 1.4;
+    flex: 0 0 100%;
+    margin-top: 4px;
+  }
+
+  /* ── FAQ ── */
+  .faq-section { margin-bottom: 32px; }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .faq-item[open] {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(240,90,40,0.08);
+  }
+  .faq-item summary {
+    padding: 14px 18px;
+    cursor: pointer; list-style: none;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700;
+    color: var(--navy); background: #fafafa;
+    transition: background .2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before {
+    content: 'Q'; width: 24px; height: 24px;
+    background: var(--orange); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .faq-item summary::after {
+    content: '+'; margin-left: auto;
+    font-size: 20px; color: var(--orange);
+    transition: transform .2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item .faq-body {
+    padding: 14px 18px 16px;
+    font-size: 12px; line-height: 1.8;
+    color: #555; background: #fff;
+    border-top: 1px dashed #eee;
+  }
+  .faq-item .faq-body strong { color: var(--navy); }
+  .faq-item .faq-body a {
+    color: var(--orange);
+    text-decoration: none; font-weight: 700;
+  }
+  .faq-item .faq-body a:hover { text-decoration: underline; }
+
+  /* ── 推薦工具 ── */
+  .related-section { margin-bottom: 32px; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .related-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .related-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.1);
+    transform: translateY(-2px);
+  }
+  .related-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    flex-shrink: 0;
+  }
+  .related-card-icon.r1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .related-card-icon.r2 { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .related-card-icon.r3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .related-card-icon.r4 { background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%); }
+  .related-card-text { flex: 1; }
+  .related-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy); margin-bottom: 3px;
+  }
+  .related-card-desc {
+    font-size: 10px; color: #888; line-height: 1.5;
+  }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--navy); border-radius: 14px;
+    padding: 18px 22px;
+    color: rgba(255,255,255,0.75);
+    font-size: 11px; line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .disclaimer-title {
+    color: var(--gold);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange); padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white; color: var(--orange);
+    padding: 10px 24px; border-radius: 50px;
+    font-size: 14px; font-weight: 900; letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .hidden { display: none !important; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide-in { animation: slideDown .35s ease both; }
+
+  @media (max-width: 900px) {
+    .page { width: 100%; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; }
+    .header-center { order: -1; }
+    .body { padding: 28px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .result-summary { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: 1fr; gap: 8px; }
+    .compare-arrow { transform: rotate(90deg); padding: 4px 0; }
+    .key-grid { grid-template-columns: 1fr; }
+    .rate-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+    .result-fv-num { font-size: 52px; }
+    .result-fv-num small { font-size: 18px; }
+    #chartSvg { height: 220px; }
+    .data-table thead th, .data-table tbody td {
+      padding: 8px 4px; font-size: 11px;
+    }
+    .data-table tbody td.num-cell { font-size: 12px; }
+    .footer { padding: 16px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .action-row { flex-direction: column; }
+    .btn-secondary { flex: 1; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER)
+     ═══════════════════════════════════════════ */
+  /* 漢堡按鈕 - 強化版 */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+    font-family: inherit;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+  }
+
+  .menu-trigger-icon {
+    width: 22px; height: 16px;
+    position: relative;
+  }
+  .menu-trigger-icon span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden;
+    pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 280px;
+    background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sidebar-header-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 20px 11px 24px;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●';
+    margin-left: auto;
+    color: var(--orange);
+    font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy);
+    color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px;
+    background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 行動裝置全寬 */
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 84vw;
+      max-width: 320px;
+    }
+  }
+  /* 小螢幕漢堡按鈕微調,不影響原有 logo 排版 */
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important;
+      left: 12px !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+
+
+  
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px;
+      right: 16px;
+      padding: 12px 18px;
+      font-size: 13px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link active"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">DL</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="sub tag">複利試算</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">COMPOUND INTEREST CALCULATOR</div>
+        <div class="big-title">複利計算機</div>
+        <div class="sub-title">時間 × 報酬 × 紀律 ・ 看見複利的力量</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">利滾利</div>
+          <div class="badge-line2">看見時間的魔法</div>
+        </div>
+        </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>越早開始</span><span class="dot">◆</span>
+    <span>越能受惠</span><span class="dot">◆</span>
+    <span>複利威力</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INTRO -->
+    <div class="intro-card">
+      <div class="intro-icon">∞</div>
+      <div class="intro-text">
+        <strong>複利</strong>是利息再生利息的「利滾利」效果,世界第八大奇蹟。本工具支援<strong>單筆投入</strong>與<strong>定期定額</strong>兩種模式,精準計算到期本利和、淨報酬率,並提供<strong>單利 vs 複利對照</strong>與互動圖表。
+      </div>
+    </div>
+
+    <!-- 名言 -->
+    <div class="quote-card">
+      <div class="quote-card-text">複利是世界第八大奇蹟。理解它的人,賺取複利;不理解的人,支付複利。</div>
+      <div class="quote-card-author">— Albert Einstein 愛因斯坦</div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-section">
+      <div class="section-title-icon">輸入投資參數</div>
+
+      <div class="preset-section">
+        <div class="preset-label">範例帶入:</div>
+        <div class="preset-btns">
+          <button class="preset-btn" data-preset="p1">100 萬 / 年化 5% / 10 年</button>
+          <button class="preset-btn" data-preset="p2">本金 0 / 月存 1 萬 / 8% / 30 年退休</button>
+          <button class="preset-btn" data-preset="p3">100 萬 + 月存 1 萬 / 7% / 20 年</button>
+          <button class="preset-btn" data-preset="p4">儲蓄險年化 2% / 6 年期</button>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label" for="principal">
+            起始本金
+            <span class="help">沒有起始資金可填 0</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="principal" class="form-input" placeholder="1000000" min="0" step="10000" value="1000000">
+            <span class="form-input-suffix">元</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="rate">
+            年化報酬率
+            <span class="help">每年預期報酬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="rate" class="form-input" placeholder="5" min="-50" max="100" step="0.1" value="5">
+            <span class="form-input-suffix">% / 年</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="years">
+            投資年期
+            <span class="help">複利時間越久效果越大</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="years" class="form-input" placeholder="10" min="1" max="80" step="1" value="10">
+            <span class="form-input-suffix">年</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">
+            複利頻率
+            <span class="help">利息計算頻率</span>
+          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-pill active" data-target="freq" data-val="12">
+              <input type="radio" name="freq" value="12" checked> 月複利
+            </label>
+            <label class="checkbox-pill" data-target="freq" data-val="1">
+              <input type="radio" name="freq" value="1"> 年複利
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <label class="form-label">
+            是否定期定額
+            <span class="help">每月或每年額外投入</span>
+          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-pill active" data-target="dcaMode" data-val="none">
+              <input type="radio" name="dcaMode" value="none" checked> 不定額(僅本金)
+            </label>
+            <label class="checkbox-pill" data-target="dcaMode" data-val="monthly">
+              <input type="radio" name="dcaMode" value="monthly"> 每月定額
+            </label>
+            <label class="checkbox-pill" data-target="dcaMode" data-val="yearly">
+              <input type="radio" name="dcaMode" value="yearly"> 每年定額
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row full hidden" id="dcaAmountRow">
+          <label class="form-label" for="dcaAmount">
+            <span id="dcaLabel">每月投入金額</span>
+            <span class="help">每期額外存入金額</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="dcaAmount" class="form-input" placeholder="10000" min="0" step="1000">
+            <span class="form-input-suffix" id="dcaSuffix">元 / 月</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" id="calcBtn">立即試算</button>
+        <button class="btn btn-secondary" id="resetBtn">重置</button>
+      </div>
+    </div>
+
+    <!-- RESULT (HIDDEN INITIAL) -->
+    <div class="result-section hidden" id="resultSection">
+      <div class="section-title-icon">試算結果</div>
+
+      <div class="result-hero">
+        <div class="result-hero-inner">
+          <div class="result-fv-label">最終本利和</div>
+          <div class="result-fv-num" id="resFv">— <small>元</small></div>
+          <div class="result-fv-desc" id="resFvDesc">投資到期後的總金額</div>
+        </div>
+      </div>
+
+      <div class="result-summary">
+        <div class="summary-card s1">
+          <div class="summary-label">起始本金</div>
+          <div class="summary-num" id="sumPrincipal">— <small>元</small></div>
+        </div>
+        <div class="summary-card s2">
+          <div class="summary-label">定額累計投入</div>
+          <div class="summary-num" id="sumDeposit">— <small>元</small></div>
+        </div>
+        <div class="summary-card s3">
+          <div class="summary-label">總獲利</div>
+          <div class="summary-num" id="sumGain">— <small>元</small></div>
+        </div>
+        <div class="summary-card s4">
+          <div class="summary-label">總報酬率</div>
+          <div class="summary-num" id="sumReturn">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 圖表區 (HIDDEN INITIAL) -->
+    <div class="chart-section hidden" id="chartSection">
+      <div class="chart-title">📈 資產成長軌跡</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot principal"></div>起始本金</div>
+        <div class="legend-item"><div class="legend-dot deposit"></div>累計定額投入</div>
+        <div class="legend-item"><div class="legend-dot interest"></div>累計利息</div>
+        <div class="legend-item"><div class="legend-dot simple"></div>單利對比</div>
+      </div>
+      <div class="chart-container">
+        <svg id="chartSvg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+
+    <!-- 單利 vs 複利對比 -->
+    <div class="compare-card hidden" id="compareCard">
+      <div class="compare-card-title">💡 單利 vs 複利・差距驚人</div>
+      <div class="compare-grid">
+        <div class="compare-cell simple">
+          <div class="compare-cell-label">單利</div>
+          <div class="compare-cell-num" id="cmpSimple">— 元</div>
+        </div>
+        <div class="compare-arrow">→</div>
+        <div class="compare-cell compound">
+          <div class="compare-cell-label">複利</div>
+          <div class="compare-cell-num" id="cmpCompound">— 元</div>
+        </div>
+      </div>
+      <div class="compare-diff">
+        複利比單利多賺 <strong id="cmpDiff">—</strong> 元 ・ 多 <strong id="cmpDiffPct">—</strong>%
+      </div>
+    </div>
+
+    <!-- 逐年明細表 -->
+    <div class="table-section hidden" id="tableSection">
+      <div class="section-title-icon">逐年明細表</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:14%">年度</th>
+            <th style="width:20%">當年投入</th>
+            <th style="width:18%">當年利息</th>
+            <th style="width:24%">累計投入</th>
+            <th style="width:24%">期末本利和</th>
+          </tr>
+        </thead>
+        <tbody id="cfTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- 三大關鍵 -->
+    <div class="key-section">
+      <div class="section-title-icon">複利的三大關鍵</div>
+      <div class="key-grid">
+        <div class="key-card">
+          <div class="key-card-icon">⏰</div>
+          <div class="key-card-title">時間</div>
+          <div class="key-card-desc">複利效果隨時間<strong>指數型成長</strong>。25 歲開始 vs 40 歲開始,差距常達 3~5 倍。越早開始越有利。</div>
+        </div>
+        <div class="key-card">
+          <div class="key-card-icon">📈</div>
+          <div class="key-card-title">報酬率</div>
+          <div class="key-card-desc">利率每多 1%,長期累積金額可能<strong>翻倍</strong>。但要注意:報酬越高風險越大,需符合自身風險承受度。</div>
+        </div>
+        <div class="key-card">
+          <div class="key-card-icon">💪</div>
+          <div class="key-card-title">本金</div>
+          <div class="key-card-desc">本金大小決定起跑點。<strong>定期定額</strong>是小資族擴大本金的最佳方法,紀律比金額更重要。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 常見利率參考 -->
+    <div class="rate-section">
+      <div class="rate-title">📊 常見投資商品報酬率參考</div>
+      <div class="rate-grid">
+        <div class="rate-item">
+          <div class="rate-name">銀行 1 年定存</div>
+          <div class="rate-value">1.5 ~ 1.7%</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-name">10 年期公債</div>
+          <div class="rate-value">1.2 ~ 1.5%</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-name">新台幣儲蓄險</div>
+          <div class="rate-value">1.5 ~ 2.5%</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-name">美元儲蓄險</div>
+          <div class="rate-value">2.5 ~ 4%</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-name">高股息 ETF</div>
+          <div class="rate-value">5 ~ 8%</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-name">市值型 ETF (S&amp;P500)</div>
+          <div class="rate-value">8 ~ 10%</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#888;margin-top:12px;line-height:1.7;">
+        💡 上述為長期歷史平均參考值,實際報酬會隨市場波動。儲蓄險宣告利率不等於 IRR,建議用 <a href="irr-calculator.html" style="color:var(--orange);font-weight:700;text-decoration:none;">IRR 試算器</a> 計算真實報酬率。
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <div class="section-title-icon">複利常見問題</div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>什麼是複利?跟單利有什麼差別?</summary>
+          <div class="faq-body">
+            <strong>單利</strong>:只用本金算利息,每年利息固定。例:本金 100、利率 10%,每年都生 10 元利息。<br>
+            <strong>複利</strong>:利息再生利息,「利滾利」。例:本金 100、利率 10%,第 1 年生 10 元(總共 110),第 2 年用 110 算利息生 11 元,第 3 年用 121 算...時間越長差距越大。<br>
+            這也是<strong>愛因斯坦稱為「世界第八大奇蹟」</strong>的原因。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>72 法則是什麼?</summary>
+          <div class="faq-body">
+            <strong>72 法則</strong>是快速估算「資金翻倍所需年數」的口訣:<br>
+            <strong>翻倍年數 ≈ 72 ÷ 年化報酬率(%)</strong><br>
+            • 年化 6% → 72÷6 = 12 年翻倍<br>
+            • 年化 8% → 72÷8 = 9 年翻倍<br>
+            • 年化 10% → 72÷10 = 7.2 年翻倍<br>
+            這是評估投資長期效果最直觀的工具,也方便心算比較不同商品。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>本工具的計算公式是什麼?</summary>
+          <div class="faq-body">
+            <strong>單筆複利公式:</strong> FV = PV × (1 + r/n)<sup>n×t</sup><br>
+            • FV = 期末本利和、PV = 起始本金、r = 年化報酬率、n = 每年複利次數、t = 年數<br>
+            <br>
+            <strong>定期定額複利公式:</strong> FV = PMT × [((1 + i)<sup>k</sup> − 1) / i]<br>
+            • PMT = 每期投入、i = 每期利率(年化÷12)、k = 總期數<br>
+            <br>
+            本工具預設採<strong>月複利期末投入</strong>(業界主流),可在介面切換為「年複利」。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>儲蓄險的「宣告利率」就是複利報酬率嗎?</summary>
+          <div class="faq-body">
+            <strong>不一定!</strong>儲蓄險的「宣告利率」、「預定利率」、「累積生息利率」往往會被誤解為實際報酬率。真正反映儲蓄險真實報酬率的是<strong>「IRR 內部報酬率」</strong>。<br>
+            <br>
+            因為儲蓄險有以下費用會吃掉報酬:<br>
+            • 保險公司業務費用(預定附加費用率)<br>
+            • 保障成本(死亡保險金成分)<br>
+            • 提前解約損失<br>
+            <br>
+            建議使用 <a href="irr-calculator.html">IRR 試算器</a> 算出儲蓄險的真實報酬率,再與這裡的複利計算結果比較。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>定期定額和單筆投入哪個好?</summary>
+          <div class="faq-body">
+            兩者各有優勢:<br>
+            <strong>單筆投入</strong>:長期市場上漲機率約 70%,單筆有更長的複利時間,理論報酬較高。但需要一筆較大的資金,且需要承受短期波動風險。<br>
+            <strong>定期定額</strong>:小資族友善,自動分散時間風險,有「微笑曲線」效應,心理負擔小,容易長期堅持。<br>
+            <br>
+            <strong>實務建議</strong>:有閒錢一次投入、平時薪水持續定期定額,兩者搭配最佳。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>本金 0 元也可以靠複利累積財富嗎?</summary>
+          <div class="faq-body">
+            <strong>絕對可以!</strong>這也是定期定額的最大魅力。例如:<br>
+            • 25 歲開始,每月存 5,000 元,年化 8%,到 65 歲(40 年)累積約 <strong>1,750 萬</strong><br>
+            • 每月只多存 1,000 元(共 6,000),40 年累積約 <strong>2,100 萬</strong>,差距 350 萬<br>
+            <br>
+            關鍵是<strong>「越早開始」</strong>。年輕人最大的優勢就是時間,即使本金小也能透過複利創造可觀財富。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>實際投資與本工具計算結果為何有差異?</summary>
+          <div class="faq-body">
+            本工具假設<strong>固定年化報酬率</strong>且<strong>不考慮以下因素</strong>:<br>
+            • 市場波動(實際每年報酬率不同)<br>
+            • 通貨膨脹(平均每年 2%)<br>
+            • 稅負(股利所得稅、海外所得最低稅負等)<br>
+            • 交易成本(手續費、管理費)<br>
+            • 匯率變動(外幣商品)<br>
+            <br>
+            因此本工具僅供<strong>長期規劃參考</strong>,實際投資需考慮上述變數。建議與專業顧問討論完整資產配置。
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- 推薦工具 -->
+    <div class="related-section">
+      <div class="section-title-icon">推薦下一步:深入規劃工具</div>
+      <div class="related-grid">
+        <a href="irr-calculator.html" class="related-card">
+          <div class="related-card-icon r1">📊</div>
+          <div class="related-card-text">
+            <div class="related-card-title">IRR 內部報酬率試算</div>
+            <div class="related-card-desc">看穿儲蓄險的真實年化報酬率</div>
+          </div>
+        </a>
+        <a href="legacy-planner.html" class="related-card">
+          <div class="related-card-icon r2">💎</div>
+          <div class="related-card-text">
+            <div class="related-card-title">傳承規劃模擬器</div>
+            <div class="related-card-desc">三方案對照,看見節稅威力</div>
+          </div>
+        </a>
+        <a href="estate-tax.html" class="related-card">
+          <div class="related-card-icon r3">💼</div>
+          <div class="related-card-text">
+            <div class="related-card-title">遺產稅試算</div>
+            <div class="related-card-desc">114 年最新版,含問與答</div>
+          </div>
+        </a>
+        <a href="gift-tax.html" class="related-card">
+          <div class="related-card-icon r4">🎁</div>
+          <div class="related-card-text">
+            <div class="related-card-title">贈與稅試算</div>
+            <div class="related-card-desc">含分年贈與規劃對照</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">⚠ 重要提醒</div>
+      本試算工具<strong style="color:#fff">僅供初步規劃參考</strong>,實際投資結果會受市場波動、通膨、稅負、交易成本等因素影響。試算採固定年化報酬率假設,實際年度報酬會有正負波動。<br>
+      不同金融商品(定存、債券、基金、ETF、儲蓄險)的計息方式與費用結構各異,請在投資前詳閱商品說明書。<strong style="color:#fff">儲蓄險請以 IRR 評估真實報酬率</strong>,而非宣告利率。如需專業財務規劃諮詢,歡迎與鼎綸恩宇顧問聯繫。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">看見複利威力｜鼎綸恩宇陪您聰明累積財富</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div class="footer-right">📞 預約專業顧問</div>
+      <div style="color:white;font-size:15px;font-weight:900;letter-spacing:2px;">📱 0925-000-049</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───── 工具 ─────
+  const num = id => {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? 0 : v;
+  };
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+
+  // ───── checkbox-pill ─────
+  document.querySelectorAll('.checkbox-pill').forEach(pill => {
+    pill.addEventListener('click', e => {
+      const target = pill.dataset.target;
+      if (!target) return;
+      e.preventDefault();
+      document.querySelectorAll(`.checkbox-pill[data-target="${target}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const radio = pill.querySelector('input');
+      if (radio) radio.checked = true;
+
+      // 切換定額模式時顯示/隱藏輸入框
+      if (target === 'dcaMode') {
+        const mode = pill.dataset.val;
+        const row = document.getElementById('dcaAmountRow');
+        const label = document.getElementById('dcaLabel');
+        const suffix = document.getElementById('dcaSuffix');
+        if (mode === 'none') {
+          row.classList.add('hidden');
+        } else {
+          row.classList.remove('hidden');
+          if (mode === 'monthly') {
+            label.textContent = '每月投入金額';
+            suffix.textContent = '元 / 月';
+          } else {
+            label.textContent = '每年投入金額';
+            suffix.textContent = '元 / 年';
+          }
+        }
+      }
+    });
+  });
+
+  // ───── 計算核心 ─────
+  function calculate() {
+    const principal = num('principal');
+    const annualRate = num('rate') / 100;
+    const years = Math.max(1, Math.round(num('years')));
+    const compoundFreq = parseInt(document.querySelector('input[name="freq"]:checked').value); // 12 or 1
+    const dcaMode = document.querySelector('input[name="dcaMode"]:checked').value;
+    const dcaAmount = dcaMode === 'none' ? 0 : num('dcaAmount');
+
+    if (principal <= 0 && dcaAmount <= 0) {
+      alert('請至少輸入起始本金或每期投入金額!');
+      return;
+    }
+
+    // 逐年模擬計算
+    // 月複利模式: 用月為計算單位 (每月底結算利息,月底投入)
+    // 年複利模式: 用年為計算單位
+    // 為了與主流計算機一致,定期定額採「期末投入」模式
+    const periodsPerYear = compoundFreq;  // 12 (月複利) 或 1 (年複利)
+    const periodRate = annualRate / periodsPerYear;
+    const totalPeriods = years * periodsPerYear;
+
+    // 每期定額投入金額
+    let periodicDeposit = 0;
+    if (dcaMode === 'monthly') {
+      // 月投入,但若為年複利,則合併為年投入
+      periodicDeposit = compoundFreq === 12 ? dcaAmount : dcaAmount * 12;
+    } else if (dcaMode === 'yearly') {
+      // 年投入,若為月複利,平均到每月
+      periodicDeposit = compoundFreq === 12 ? dcaAmount / 12 : dcaAmount;
+    }
+
+    // 逐年明細
+    const yearlyData = [];
+    let balance = principal;
+    let totalDeposited = 0;
+    let totalInterest = 0;
+
+    for (let year = 1; year <= years; year++) {
+      const startBalance = balance;
+      let yearInterest = 0;
+      let yearDeposit = 0;
+
+      // 該年內所有期數
+      for (let p = 0; p < periodsPerYear; p++) {
+        const interest = balance * periodRate;
+        balance += interest;
+        yearInterest += interest;
+        if (periodicDeposit > 0) {
+          balance += periodicDeposit;
+          yearDeposit += periodicDeposit;
+        }
+      }
+
+      totalDeposited += yearDeposit;
+      totalInterest += yearInterest;
+
+      yearlyData.push({
+        year: year,
+        deposit: yearDeposit,
+        interest: yearInterest,
+        cumDeposit: totalDeposited,
+        balance: balance
+      });
+    }
+
+    const fv = balance;
+    const totalInvested = principal + totalDeposited;
+    const totalGain = fv - totalInvested;
+    const totalReturnPct = totalInvested > 0 ? (totalGain / totalInvested * 100) : 0;
+
+    // 單利對比 (僅本金算單利,定額投入也算單利)
+    // 單利 = 本金 * (1 + r*t)  + 定期定額按平均存放時間
+    let simpleInterest = principal * annualRate * years;
+    if (dcaMode !== 'none') {
+      // 定期定額平均存放時間 = (n+1)/2 年 (以年為單位的對應)
+      // 月投入: 平均存放時間 (months+1)/2 / 12 年,總投入 dcaAmount * 12 * years
+      if (dcaMode === 'monthly') {
+        const totalMonths = years * 12;
+        const totalDcaIn = dcaAmount * totalMonths;
+        const avgYears = (totalMonths + 1) / 2 / 12;
+        simpleInterest += totalDcaIn * annualRate * avgYears;
+      } else {
+        const totalDcaIn = dcaAmount * years;
+        const avgYears = (years + 1) / 2;
+        simpleInterest += totalDcaIn * annualRate * avgYears;
+      }
+    }
+    const simpleFv = totalInvested + simpleInterest;
+    const compoundExtra = fv - simpleFv;
+    const compoundExtraPct = simpleFv > 0 ? (compoundExtra / simpleFv * 100) : 0;
+
+    // ───── 渲染結果 ─────
+    document.getElementById('resFv').innerHTML = `${fmt(fv)} <small>元</small>`;
+
+    // 描述
+    let desc = '';
+    if (totalReturnPct < 0) desc = '⚠ 報酬為負,本金有損失';
+    else if (totalReturnPct < 30) desc = '穩健成長,適合保守理財';
+    else if (totalReturnPct < 100) desc = '不錯的累積,看見複利效果';
+    else if (totalReturnPct < 300) desc = '優異成長,複利威力已顯現';
+    else desc = '驚人增值,複利的長期力量';
+    document.getElementById('resFvDesc').textContent = desc;
+
+    document.getElementById('sumPrincipal').innerHTML = `${fmt(principal)} <small>元</small>`;
+    document.getElementById('sumDeposit').innerHTML = `${fmt(totalDeposited)} <small>元</small>`;
+    document.getElementById('sumGain').innerHTML = `${fmt(totalGain)} <small>元</small>`;
+    document.getElementById('sumReturn').innerHTML = `${totalReturnPct.toFixed(1)} <small>%</small>`;
+
+    // 單利對比
+    document.getElementById('cmpSimple').textContent = fmt(simpleFv) + ' 元';
+    document.getElementById('cmpCompound').textContent = fmt(fv) + ' 元';
+    document.getElementById('cmpDiff').textContent = fmt(compoundExtra);
+    document.getElementById('cmpDiffPct').textContent = compoundExtraPct.toFixed(1);
+
+    // ───── 渲染表格 ─────
+    const rows = yearlyData.map((d, i) => {
+      const isLast = i === yearlyData.length - 1;
+      return `<tr ${isLast ? 'class="row-final"' : ''}>
+        <td class="year-cell">第 ${d.year} 年</td>
+        <td class="num-cell principal-cell">${d.deposit > 0 ? fmt(d.deposit) + ' 元' : '—'}</td>
+        <td class="num-cell interest-cell">${fmt(d.interest)} 元</td>
+        <td class="num-cell">${fmt(principal + d.cumDeposit)} 元</td>
+        <td class="num-cell balance-cell">${fmt(d.balance)} 元</td>
+      </tr>`;
+    });
+    document.getElementById('cfTableBody').innerHTML = rows.join('');
+
+    // ───── 渲染 SVG 圖表 ─────
+    drawChart(yearlyData, principal, simpleFv, annualRate, years);
+
+    // 顯示
+    document.getElementById('resultSection').classList.remove('hidden');
+    document.getElementById('chartSection').classList.remove('hidden');
+    document.getElementById('compareCard').classList.remove('hidden');
+    document.getElementById('tableSection').classList.remove('hidden');
+
+    document.getElementById('resultSection').classList.add('slide-in');
+    document.getElementById('chartSection').classList.add('slide-in');
+
+    setTimeout(() => {
+      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+
+  // ───── 繪製 SVG 堆疊面積圖 ─────
+  function drawChart(yearlyData, principal, simpleFv, annualRate, years) {
+    const svg = document.getElementById('chartSvg');
+    const W = 800, H = 280;
+    const padL = 60, padR = 20, padT = 20, padB = 40;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+
+    const maxBalance = Math.max(...yearlyData.map(d => d.balance), simpleFv);
+    const minVal = 0;
+
+    // X 軸:第 0 年到第 N 年
+    const xScale = (year) => padL + (year / years) * chartW;
+    const yScale = (val) => padT + chartH - (val - minVal) / (maxBalance - minVal) * chartH;
+
+    // 計算每年三個堆疊區塊: 本金, 累計定額, 累計利息
+    // 第 0 年: 只有本金
+    // 第 N 年: 本金 + 累計定額 + 累計利息 = balance
+    const points = [{ year: 0, principal: principal, deposit: 0, interest: 0, total: principal }];
+    yearlyData.forEach(d => {
+      points.push({
+        year: d.year,
+        principal: principal,
+        deposit: d.cumDeposit,
+        interest: d.balance - principal - d.cumDeposit,
+        total: d.balance
+      });
+    });
+
+    // 1. 繪製網格線 + Y 軸標籤
+    let gridHtml = '';
+    const ySteps = 5;
+    for (let i = 0; i <= ySteps; i++) {
+      const val = minVal + (maxBalance - minVal) * i / ySteps;
+      const y = yScale(val);
+      gridHtml += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#eee" stroke-width="1"/>`;
+      const label = val >= 10000000 ? (val / 10000000).toFixed(1) + '千萬' :
+                    val >= 10000 ? (val / 10000).toFixed(0) + '萬' :
+                    val.toFixed(0);
+      gridHtml += `<text x="${padL - 8}" y="${y + 4}" font-size="10" fill="#888" text-anchor="end" font-family="Bebas Neue, sans-serif">${label}</text>`;
+    }
+
+    // 2. X 軸標籤
+    const xSteps = Math.min(years, 10);
+    for (let i = 0; i <= xSteps; i++) {
+      const yr = Math.round(i * years / xSteps);
+      const x = xScale(yr);
+      gridHtml += `<text x="${x}" y="${H - padB + 18}" font-size="10" fill="#888" text-anchor="middle" font-family="Bebas Neue, sans-serif">${yr}年</text>`;
+    }
+
+    // 3. 堆疊面積:從下到上 = 本金 + 定額 + 利息
+    // 本金區
+    const principalArea = points.map((p, i) => {
+      const x = xScale(p.year);
+      return (i === 0 ? 'M' : 'L') + x + ',' + yScale(p.principal);
+    }).join(' ') +
+      ' L ' + xScale(years) + ',' + yScale(0) +
+      ' L ' + xScale(0) + ',' + yScale(0) + ' Z';
+
+    // 定額區 (本金 + 定額)
+    const depositArea =
+      'M ' + points.map(p => xScale(p.year) + ',' + yScale(p.principal + p.deposit)).join(' L ') +
+      ' L ' + points.slice().reverse().map(p => xScale(p.year) + ',' + yScale(p.principal)).join(' L ') + ' Z';
+
+    // 利息區 (本金 + 定額 + 利息)
+    const interestArea =
+      'M ' + points.map(p => xScale(p.year) + ',' + yScale(p.total)).join(' L ') +
+      ' L ' + points.slice().reverse().map(p => xScale(p.year) + ',' + yScale(p.principal + p.deposit)).join(' L ') + ' Z';
+
+    // 4. 單利線
+    const simplePoints = [];
+    for (let yr = 0; yr <= years; yr++) {
+      let simpleVal = principal * (1 + annualRate * yr);
+      // 加上定額單利貢獻 (簡化估算)
+      const lastData = yearlyData[Math.max(0, yr - 1)];
+      const dcaIn = yr > 0 && lastData ? lastData.cumDeposit * yr / years : 0;
+      // 簡化: 線性內插
+      const t = yr / years;
+      const simpleFinal = simpleFv;
+      simpleVal = principal + (simpleFinal - principal) * t;
+      simplePoints.push({ x: xScale(yr), y: yScale(simpleVal) });
+    }
+    const simpleLine = 'M ' + simplePoints.map(p => p.x + ',' + p.y).join(' L ');
+
+    // 5. 複利線(總)
+    const compoundLine = 'M ' + points.map(p => xScale(p.year) + ',' + yScale(p.total)).join(' L ');
+
+    svg.innerHTML = `
+      ${gridHtml}
+      <path d="${principalArea}" fill="rgba(26,107,114,0.55)" stroke="none"/>
+      <path d="${depositArea}" fill="rgba(232,160,32,0.55)" stroke="none"/>
+      <path d="${interestArea}" fill="rgba(240,90,40,0.6)" stroke="none"/>
+      <path d="${simpleLine}" fill="none" stroke="#b8c5d0" stroke-width="2" stroke-dasharray="6,4"/>
+      <path d="${compoundLine}" fill="none" stroke="#0D2A3A" stroke-width="2.5"/>
+      ${points.filter((_, i) => i % Math.max(1, Math.floor(points.length / 8)) === 0 || i === points.length - 1).map(p =>
+        `<circle cx="${xScale(p.year)}" cy="${yScale(p.total)}" r="3.5" fill="#F05A28" stroke="#fff" stroke-width="2"/>`
+      ).join('')}
+    `;
+  }
+
+  // ───── 範例預設 ─────
+  const presets = {
+    p1: { principal: 1000000, rate: 5, years: 10, dcaMode: 'none', dcaAmount: 0 },
+    p2: { principal: 0, rate: 8, years: 30, dcaMode: 'monthly', dcaAmount: 10000 },
+    p3: { principal: 1000000, rate: 7, years: 20, dcaMode: 'monthly', dcaAmount: 10000 },
+    p4: { principal: 300000, rate: 2, years: 6, dcaMode: 'none', dcaAmount: 0 }
+  };
+
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = presets[btn.dataset.preset];
+      if (!p) return;
+      document.getElementById('principal').value = p.principal;
+      document.getElementById('rate').value = p.rate;
+      document.getElementById('years').value = p.years;
+      document.querySelector(`.checkbox-pill[data-target="dcaMode"][data-val="${p.dcaMode}"]`).click();
+      if (p.dcaMode !== 'none') {
+        document.getElementById('dcaAmount').value = p.dcaAmount;
+      }
+    });
+  });
+
+  // 重置
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('principal').value = 1000000;
+    document.getElementById('rate').value = 5;
+    document.getElementById('years').value = 10;
+    document.getElementById('dcaAmount').value = '';
+    document.querySelector('.checkbox-pill[data-target="freq"][data-val="12"]').click();
+    document.querySelector('.checkbox-pill[data-target="dcaMode"][data-val="none"]').click();
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('chartSection').classList.add('hidden');
+    document.getElementById('compareCard').classList.add('hidden');
+    document.getElementById('tableSection').classList.add('hidden');
+    document.getElementById('principal').focus();
+  });
+
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+
+  // Enter 鍵
+  document.querySelectorAll('.form-input').forEach(inp => {
+    inp.addEventListener('keypress', e => {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+</script>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    const sidebar = document.getElementById('sidebar');
+
+    function open() {
+      document.body.classList.add('menu-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+    function toggle() {
+      document.body.classList.contains('menu-open') ? close() : open();
+    }
+
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+</body>
+</html>

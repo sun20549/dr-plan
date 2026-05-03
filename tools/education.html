@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23F05A28"/><text x="16" y="23" text-anchor="middle" font-size="20" font-weight="900" fill="white" font-family="Noto Sans TC,sans-serif">鼎</text></svg>">
+<title>子女教育金試算 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --green: #4CA975;
+    --red: #D9405F;
+    --pink: #E89BA8;
+    --pink-light: #FCE8EC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(232,155,168,0.16) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(232,160,32,0.18) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(232,155,168,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.15);
+    filter: blur(40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    color: white;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .header-center .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 60px;
+    color: var(--orange);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+  }
+  .header-center .big-number span {
+    font-size: 22px;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .header-center .sub-title {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 6px;
+    text-indent: 6px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '🎓';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row {
+    display: flex;
+    gap: 6px;
+  }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--gold); font-size: 20px; }
+
+  /* ── BODY ── */
+  .body { padding: 32px 48px 40px; }
+
+  .section-title-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title-icon .hint {
+    margin-left: auto;
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  /* ── 開場詢問: 給媽媽的軟性問句 ── */
+  .opener {
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(232,155,168,0.1) 0%, rgba(232,160,32,0.06) 100%);
+    border: 1.5px solid rgba(232,155,168,0.25);
+  }
+  .opener-headline {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .opener-headline .heart {
+    color: var(--pink);
+    margin: 0 4px;
+  }
+  .opener-sub {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.7;
+    letter-spacing: 0.5px;
+  }
+  .opener-sub b { color: var(--orange); font-weight: 700; }
+
+  /* ── 兩欄輸入區 ── */
+  .input-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+    align-items: start;
+  }
+
+  .input-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1.5px solid #eee;
+    transition: border-color .15s;
+  }
+  .input-row:focus-within {
+    border-color: var(--orange);
+    background: #fff;
+  }
+  .input-row .ic {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: var(--orange-light);
+  }
+  .input-row .ic.teal { background: var(--teal-light); }
+  .input-row .ic.pink { background: var(--pink-light); }
+  .input-row .ic.gold { background: rgba(232,160,32,0.15); }
+  .input-row .lbl {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 0;
+  }
+  .input-row .lbl .sub {
+    font-size: 10px;
+    color: #999;
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: 0.3px;
+  }
+  .input-row input[type="number"], .input-row input[type="text"] {
+    width: 110px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    text-align: right;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s;
+    -moz-appearance: textfield;
+  }
+  .input-row input[type="text"] {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    text-align: left;
+    width: 130px;
+  }
+  .input-row input[type="number"]::-webkit-outer-spin-button,
+  .input-row input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  .input-row input:focus { border-color: var(--orange); }
+  .input-row input.wide { width: 140px; }
+  .input-row .unit {
+    font-size: 11px;
+    color: #999;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  /* 性別 / 已就讀切換 */
+  .seg-group {
+    display: flex;
+    background: #fff;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    gap: 2px;
+    width: 130px;
+  }
+  .seg-btn {
+    flex: 1;
+    padding: 6px 6px;
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .seg-btn:hover { color: var(--navy); }
+  .seg-btn.active {
+    background: var(--pink);
+    color: #fff;
+  }
+
+  /* ── 5階段選擇器 ── */
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .stage-card {
+    border-radius: 14px;
+    padding: 14px 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    transition: all .2s;
+  }
+  .stage-card.s1 { border-color: rgba(232,155,168,0.4); }
+  .stage-card.s2 { border-color: rgba(76,169,117,0.4); }
+  .stage-card.s3 { border-color: rgba(26,107,114,0.4); }
+  .stage-card.s4 { border-color: rgba(232,160,32,0.4); }
+  .stage-card.s5 { border-color: rgba(240,90,40,0.4); }
+  .stage-icon {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .stage-name {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .stage-years {
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .type-select {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .type-btn {
+    flex: 1;
+    padding: 5px 4px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #888;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .type-btn:hover { color: var(--navy); border-color: #bbb; }
+  .type-btn.active {
+    background: var(--orange);
+    color: #fff;
+    border-color: var(--orange);
+  }
+  .stage-cost {
+    text-align: center;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed #e5e5e5;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .stage-cost small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 9px;
+    color: #999;
+    margin-left: 2px;
+  }
+
+  /* ── 進階參數 ── */
+  .advanced {
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #eee;
+  }
+  .advanced-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #777;
+    letter-spacing: 1px;
+  }
+  .advanced-toggle::after {
+    content: '▾';
+    margin-left: auto;
+    font-size: 14px;
+    transition: transform .2s;
+  }
+  .advanced.open .advanced-toggle::after { transform: rotate(180deg); }
+  .advanced-content {
+    display: none;
+    margin-top: 12px;
+  }
+  .advanced.open .advanced-content { display: block; }
+  .adv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .adv-item {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .adv-item .lbl {
+    flex: 1;
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
+  }
+  .adv-item input {
+    width: 60px;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    text-align: right;
+    outline: none;
+  }
+  .adv-item .unit { font-size: 10px; color: #999; }
+
+  /* ── 結果英雄區 ── */
+  .result-hero {
+    margin: 0 0 24px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(13,42,58,0.12);
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(232,155,168,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 36px;
+    color: #fff;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-cell {
+    padding: 0 22px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-cell:first-child { padding-left: 0; }
+  .hero-cell:last-child { border-right: none; padding-right: 0; }
+  .hero-cell .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .hero-cell .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  .hero-cell .val .small {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .hero-cell .val .currency {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    margin-right: 4px;
+  }
+  .hero-cell.gap-cell .val { color: var(--orange); font-size: 56px; }
+  .hero-cell .desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .hero-cell .desc.warn { color: var(--gold); font-weight: 700; }
+  .hero-cell .desc.bad { color: #FF8B6B; font-weight: 700; }
+  .hero-cell .desc.good { color: #7FE0A1; font-weight: 700; }
+
+  /* ── 走勢圖卡片 ── */
+  .chart-card {
+    margin-bottom: 28px;
+    padding: 22px 26px 18px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  #chart-svg {
+    width: 100%;
+    height: 280px;
+    display: block;
+  }
+  .chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #555;
+    flex-wrap: wrap;
+  }
+  .chart-legend .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chart-legend .dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+  .chart-legend .dot.s1 { background: var(--pink); }
+  .chart-legend .dot.s2 { background: var(--green); }
+  .chart-legend .dot.s3 { background: var(--teal); }
+  .chart-legend .dot.s4 { background: var(--gold); }
+  .chart-legend .dot.s5 { background: var(--orange); }
+
+  /* ── 三方案比較 (公/私/國際) ── */
+  .scenario-compare {
+    margin-bottom: 28px;
+  }
+  .scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .scenario-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    border: 1.5px solid #eee;
+    background: #fff;
+    transition: transform .2s, box-shadow .2s;
+    position: relative;
+  }
+  .scenario-card.public {
+    background: linear-gradient(135deg, rgba(76,169,117,0.05) 0%, rgba(26,107,114,0.04) 100%);
+    border-color: rgba(76,169,117,0.3);
+  }
+  .scenario-card.private {
+    background: linear-gradient(135deg, rgba(232,160,32,0.06) 0%, rgba(240,90,40,0.04) 100%);
+    border-color: var(--gold);
+  }
+  .scenario-card.intl {
+    background: linear-gradient(135deg, rgba(240,90,40,0.06) 0%, rgba(217,64,95,0.05) 100%);
+    border-color: var(--orange);
+  }
+  .scenario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+  .scenario-tag {
+    position: absolute;
+    top: -10px;
+    left: 18px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  .scenario-card.public .scenario-tag { background: var(--green); }
+  .scenario-card.private .scenario-tag { background: var(--gold); }
+  .scenario-card.intl .scenario-tag { background: var(--orange); }
+  .scenario-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    margin-top: 6px;
+  }
+  .scenario-desc {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .scenario-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .scenario-card.public .scenario-amount { color: var(--green); }
+  .scenario-card.private .scenario-amount { color: var(--gold); }
+  .scenario-card.intl .scenario-amount { color: var(--orange); }
+  .scenario-amount .currency {
+    font-size: 13px;
+    color: #999;
+    margin-right: 3px;
+  }
+  .scenario-amount .unit {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .scenario-future {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .scenario-future b {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--navy);
+    font-size: 14px;
+  }
+  .scenario-monthly {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e5e5;
+    font-size: 11px;
+    color: #777;
+    text-align: center;
+  }
+  .scenario-monthly .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin: 2px 0;
+    letter-spacing: 0.5px;
+    display: block;
+  }
+  .scenario-card.public .scenario-monthly .num { color: var(--green); }
+  .scenario-card.private .scenario-monthly .num { color: var(--gold); }
+  .scenario-card.intl .scenario-monthly .num { color: var(--orange); }
+
+  /* ── 階段費用詳細表 ── */
+  .stage-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    margin-bottom: 28px;
+  }
+  .stage-table thead tr { background: var(--navy); }
+  .stage-table thead th {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 8px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .stage-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .stage-table tbody tr:nth-child(odd) { background: white; }
+  .stage-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+  }
+  .stage-table td.label {
+    text-align: left;
+    padding-left: 16px;
+    font-weight: 600;
+  }
+  .stage-table td.num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .stage-table td.fv {
+    color: var(--orange);
+  }
+  .stage-table tfoot tr { background: var(--orange-light); }
+  .stage-table tfoot td {
+    padding: 14px 8px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .stage-table tfoot td.num {
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* ── 每月儲蓄解決方案 ── */
+  .save-section {
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(232,155,168,0.08) 0%, rgba(232,160,32,0.05) 100%);
+    border: 1.5px solid rgba(232,155,168,0.2);
+  }
+  .save-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .save-subtitle {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .save-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .save-card {
+    padding: 16px 14px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    text-align: center;
+  }
+  .save-card.recommended {
+    border-color: var(--orange);
+    box-shadow: 0 4px 14px rgba(240,90,40,0.12);
+    position: relative;
+  }
+  .save-card.recommended::before {
+    content: '推薦';
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .save-rate {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .save-rate .rt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin: 0 2px;
+  }
+  .save-rate-name {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .save-monthly {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--navy);
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .save-monthly .currency {
+    font-size: 13px;
+    color: #999;
+    margin-right: 3px;
+  }
+  .save-monthly .unit {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .save-card.recommended .save-monthly { color: var(--orange); }
+  .save-coffee {
+    font-size: 10px;
+    color: #999;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .save-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 8px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--navy);
+    color: white;
+  }
+  .save-cta .text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .save-cta .text strong {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .save-cta a {
+    background: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.4);
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .save-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.5);
+  }
+
+  /* ── 媽媽特別提醒卡 ── */
+  .mom-tips {
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .tip-card {
+    padding: 18px 20px;
+    border-radius: 14px;
+    border-left: 4px solid var(--pink);
+    background: var(--pink-light);
+  }
+  .tip-card.gold {
+    border-left-color: var(--gold);
+    background: rgba(232,160,32,0.08);
+  }
+  .tip-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tip-content {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .tip-content b {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .notes {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(26,107,114,0.05);
+    border-left: 4px solid var(--teal);
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .notes strong {
+    color: var(--teal);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .notes ul { margin: 6px 0 0 18px; }
+  .notes li { margin-bottom: 3px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; }
+    .quick-bar { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER) v2
+     ═══════════════════════════════════════════ */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+  }
+  .menu-trigger-icon { width: 22px; height: 16px; position: relative; }
+  .menu-trigger-icon span {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden; pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible; pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff; flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.2;
+    color: #fff;
+  }
+  .sidebar-header-sub {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 1.5px; font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px; font-weight: 700;
+    color: #999; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px 10px 24px;
+    color: #555; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●'; margin-left: auto;
+    color: var(--orange); font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px; padding: 10px 14px;
+    border-radius: 8px; border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy); color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px; background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center; margin-top: 10px;
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 84vw; max-width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important; left: 12px !important;
+      width: 36px !important; height: 36px !important;
+    }
+  }
+
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px; right: 16px;
+      padding: 12px 18px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link active"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">🎓</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">DING LUN · ENRICH</div>
+          <div class="sub tag">教育金</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">CHILDREN EDUCATION FUND</div>
+        <div class="big-number">EDU<span>·FUND</span></div>
+        <div class="sub-title">子女教育金試算</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">媽媽必看 ・ 從現在到大學</div>
+          <div class="badge-line2">含通膨複利</div>
+        </div>
+        <div class="quick-bar">
+          <div class="quick-bar-row">
+            <a href="../index.html" class="quick-btn">← 回首頁</a>
+          </div>
+          <div class="quick-bar-row">
+            <a href="coverage.html" class="quick-btn">🛡 保額</a>
+            <button type="button" class="quick-btn" onclick="resetAll()">↻ 重設</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAGLINE BAR -->
+  <div class="tagline-bar">
+    <span>從幼兒園到大學畢業</span>
+    <span class="dot">●</span>
+    <span>逐年通膨複利</span>
+    <span class="dot">●</span>
+    <span>每月儲蓄方案</span>
+  </div>
+
+  <div class="body">
+
+    <!-- ── 開場 ── -->
+    <div class="opener">
+      <div class="opener-headline">給孩子的未來 <span class="heart">♥</span> 從預算開始</div>
+      <div class="opener-sub">
+        養大一個小孩平均要花 <b>481 萬</b>，光是教育費就佔了大半。<br>
+        這個工具幫您算出 <b>從現在到大學畢業，每個階段需要準備多少</b>，以及每個月只要存幾千元就能達成。
+      </div>
+    </div>
+
+    <!-- ── 兩欄輸入 ── -->
+    <div class="input-cols">
+      <div>
+        <div class="section-title-icon">寶貝資料</div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic pink">👶</div>
+            <div class="lbl">寶貝暱稱 <span class="sub">選填，讓報告有溫度</span></div>
+            <input type="text" id="i-name" placeholder="例: 小寶">
+          </div>
+          <div class="input-row">
+            <div class="ic">🎂</div>
+            <div class="lbl">目前年齡 <span class="sub">未出生填 0</span></div>
+            <input type="number" id="i-age" value="0" min="0" max="22">
+            <div class="unit">歲</div>
+          </div>
+          <div class="input-row">
+            <div class="ic pink">⚥</div>
+            <div class="lbl">寶貝是</div>
+            <div class="seg-group" id="gender-group">
+              <button class="seg-btn active" data-val="boy">男寶</button>
+              <button class="seg-btn" data-val="girl">女寶</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="ic gold">💰</div>
+            <div class="lbl">已準備教育金 <span class="sub">儲蓄/保險/壓歲錢</span></div>
+            <input type="number" id="i-saved" value="0" min="0" step="10000" class="wide">
+            <div class="unit">元</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title-icon">爸媽期望</div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic teal">🎯</div>
+            <div class="lbl">是否包含「研究所」 <span class="sub">+2年</span></div>
+            <div class="seg-group" id="grad-group">
+              <button class="seg-btn active" data-val="N">不需要</button>
+              <button class="seg-btn" data-val="Y">需要</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">✈️</div>
+            <div class="lbl">大學是否「出國留學」 <span class="sub">花費激增</span></div>
+            <div class="seg-group" id="abroad-group">
+              <button class="seg-btn active" data-val="N">否</button>
+              <button class="seg-btn" data-val="Y">是</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="ic">🎨</div>
+            <div class="lbl">每月才藝/補習 <span class="sub">每個階段平均</span></div>
+            <input type="number" id="i-extra" value="3000" min="0" step="500" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic">📊</div>
+            <div class="lbl">教育費通膨率 <span class="sub">教育費漲幅高於CPI</span></div>
+            <input type="number" id="i-inflation" value="3" min="0" max="10" step="0.1">
+            <div class="unit">%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5階段選擇 ── -->
+    <div class="section-title-icon">
+      五階段就學規劃
+      <span class="hint">點選每階段的就讀類型</span>
+    </div>
+    <div class="stages" id="stages-area">
+      <!-- 由 JS 渲染 -->
+    </div>
+
+    <!-- ── 進階參數 ── -->
+    <div class="advanced" id="advanced-section">
+      <div class="advanced-toggle" onclick="document.getElementById('advanced-section').classList.toggle('open')">
+        ⚙️ 自訂階段費用 / 進階設定
+      </div>
+      <div class="advanced-content">
+        <div class="adv-grid" id="adv-grid">
+          <!-- JS 渲染 -->
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#999;line-height:1.5;">
+          ※ 預設費用以 2025 年台灣市場行情為基準。「公立」含學雜費+雜支；「私立」如薇閣/康橋/復興；「國際」如雙語/全美學校；「留學」以美國中段大學估算。
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 主結果英雄區 ── -->
+    <div class="section-title-icon">教育金試算結果</div>
+    <div class="result-hero">
+      <div class="hero-grid">
+        <div class="hero-cell">
+          <div class="lbl">距大學畢業還有</div>
+          <div class="val"><span id="r-years">22</span><span class="small">年</span></div>
+          <div class="desc" id="r-years-desc">時間是您最大的盟友</div>
+        </div>
+        <div class="hero-cell">
+          <div class="lbl">教育費總需求</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-total">0</span><span class="small">萬</span></div>
+          <div class="desc">已考慮通膨複利</div>
+        </div>
+        <div class="hero-cell gap-cell">
+          <div class="lbl" id="r-monthly-lbl">每月只要存</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-monthly">0</span><span class="small">元</span></div>
+          <div class="desc warn" id="r-monthly-desc">3% 報酬定期定額</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 走勢圖 ── -->
+    <div class="section-title-icon">
+      逐年支出走勢圖
+      <span class="hint">五階段疊加，看清資金需求</span>
+    </div>
+    <div class="chart-card">
+      <svg id="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
+      <div class="chart-legend">
+        <div class="item"><div class="dot s1"></div>幼兒園</div>
+        <div class="item"><div class="dot s2"></div>國小</div>
+        <div class="item"><div class="dot s3"></div>國中</div>
+        <div class="item"><div class="dot s4"></div>高中</div>
+        <div class="item"><div class="dot s5"></div>大學</div>
+      </div>
+    </div>
+
+    <!-- ── 三方案比較 ── -->
+    <div class="scenario-compare">
+      <div class="section-title-icon">
+        三種升學路線比較
+        <span class="hint">家庭預算決定方向</span>
+      </div>
+      <div class="scenarios-grid">
+        <div class="scenario-card public">
+          <span class="scenario-tag">經濟方案</span>
+          <div class="scenario-name">🏫 全公立</div>
+          <div class="scenario-desc">幼兒園~大學 全公立，最經濟實惠</div>
+          <div class="scenario-amount"><span class="currency">NT$</span><span id="sp-public-amt">0</span><span class="unit">萬</span></div>
+          <div class="scenario-future">未來價值約 <b id="sp-public-fv">0</b> 萬<br>(含 <span id="sp-public-inf">3</span>% 通膨)</div>
+          <div class="scenario-monthly">
+            每月需存<span class="num" id="sp-public-mon">0</span>元
+          </div>
+        </div>
+
+        <div class="scenario-card private">
+          <span class="scenario-tag">折衷方案</span>
+          <div class="scenario-name">🎒 公私混合</div>
+          <div class="scenario-desc">幼兒園/高中私立、其餘公立</div>
+          <div class="scenario-amount"><span class="currency">NT$</span><span id="sp-mix-amt">0</span><span class="unit">萬</span></div>
+          <div class="scenario-future">未來價值約 <b id="sp-mix-fv">0</b> 萬<br>(含 <span id="sp-mix-inf">3</span>% 通膨)</div>
+          <div class="scenario-monthly">
+            每月需存<span class="num" id="sp-mix-mon">0</span>元
+          </div>
+        </div>
+
+        <div class="scenario-card intl">
+          <span class="scenario-tag">頂級方案</span>
+          <div class="scenario-name">🌍 全私立 + 留學</div>
+          <div class="scenario-desc">私立中小學 + 國外大學</div>
+          <div class="scenario-amount"><span class="currency">NT$</span><span id="sp-intl-amt">0</span><span class="unit">萬</span></div>
+          <div class="scenario-future">未來價值約 <b id="sp-intl-fv">0</b> 萬<br>(含 <span id="sp-intl-inf">3</span>% 通膨)</div>
+          <div class="scenario-monthly">
+            每月需存<span class="num" id="sp-intl-mon">0</span>元
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 階段費用詳細 ── -->
+    <div class="section-title-icon">
+      各階段詳細費用
+      <span class="hint">含通膨後的未來實際支出</span>
+    </div>
+    <table class="stage-table" id="stage-table">
+      <thead>
+        <tr>
+          <th>階段</th>
+          <th>就讀類型</th>
+          <th>年數</th>
+          <th>當前年費</th>
+          <th>含通膨後總計</th>
+        </tr>
+      </thead>
+      <tbody id="stage-tbody">
+        <!-- JS 渲染 -->
+      </tbody>
+      <tfoot id="stage-tfoot">
+      </tfoot>
+    </table>
+
+    <!-- ── 媽媽特別提醒 ── -->
+    <div class="mom-tips">
+      <div class="tip-card">
+        <div class="tip-title">💡 媽媽小心法</div>
+        <div class="tip-content">
+          越早開始，每月負擔越輕。<b>從寶貝 0 歲就開始存</b>，每月只需要 <b id="tip-zero">0</b> 元；
+          但等到 <b>5 歲</b>才開始，每月就要 <b id="tip-five">0</b> 元。<br>
+          <b>時間就是金錢，複利就是魔法。</b>
+        </div>
+      </div>
+      <div class="tip-card gold">
+        <div class="tip-title">🛡 風險規劃別忘了</div>
+        <div class="tip-content">
+          教育金的最大風險不是市場跌、是<b>父母的健康</b>。建議搭配<b>保費豁免功能</b>的保單，
+          萬一發生意外，保險公司會幫您繼續存到孩子大學畢業，這才是真正的「父母愛的保證」。
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 每月儲蓄方案 ── -->
+    <div class="save-section">
+      <div class="save-title">✦ 每月儲蓄方案 ✦</div>
+      <div class="save-subtitle">不同投資工具下，每月需投入金額試算</div>
+      <div class="save-grid">
+        <div class="save-card">
+          <div class="save-rate">年化 <span class="rt">2</span>%</div>
+          <div class="save-rate-name">儲蓄險 / 銀行定存</div>
+          <div class="save-monthly"><span class="currency">NT$</span><span id="save-2">0</span><span class="unit">/月</span></div>
+          <div class="save-coffee">最保守、最穩定</div>
+        </div>
+        <div class="save-card recommended">
+          <div class="save-rate">年化 <span class="rt">5</span>%</div>
+          <div class="save-rate-name">穩健型基金 / ETF</div>
+          <div class="save-monthly"><span class="currency">NT$</span><span id="save-5">0</span><span class="unit">/月</span></div>
+          <div class="save-coffee">媽媽最常選擇的方式</div>
+        </div>
+        <div class="save-card">
+          <div class="save-rate">年化 <span class="rt">8</span>%</div>
+          <div class="save-rate-name">積極型基金 / 股票</div>
+          <div class="save-monthly"><span class="currency">NT$</span><span id="save-8">0</span><span class="unit">/月</span></div>
+          <div class="save-coffee">需承擔較高波動</div>
+        </div>
+      </div>
+      <div class="save-cta">
+        <div class="text">
+          每天少喝一杯咖啡 ☕，就能幫寶貝攢下大學基金。<br>
+          <strong>越早開始，每月只要少少幾千</strong>，就能給孩子無限可能。
+        </div>
+        <a href="tel:0925000049">📱 預約規劃</a>
+      </div>
+    </div>
+
+    <!-- 注意事項 -->
+    <div class="notes">
+      <strong>📌 試算說明</strong>
+      <ul>
+        <li><b>費用基準</b>：採 2025 年台灣家庭實際支出 (含學雜費+雜支+補習+才藝)，並可在「進階設定」中自訂。</li>
+        <li><b>通膨複利</b>：採每年複利方式計算未來實際支出。教育費通膨率通常高於 CPI，建議設 2.5~4%。</li>
+        <li><b>每月儲蓄</b>：採年金未來值公式計算。實際投資報酬率因商品而異，本工具僅作試算參考。</li>
+        <li>本試算結果不構成投資建議或保險商品推薦，建議搭配鼎綸恩宇專業顧問規劃。</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+    <!-- 其他試算工具 -->
+    <div style="margin-top:28px;padding-top:24px;border-top:1px dashed #ddd;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#0D2A3A;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:3px;height:14px;background:#F05A28;border-radius:2px;"></span>
+          其他試算工具
+        </div>
+        <a href="../index.html" style="font-size:11px;color:#888;text-decoration:none;letter-spacing:0.5px;">查看全部 →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+      <a href="tax.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(240,90,40,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💰</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">綜合所得稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">114年度・夫妻三方案</div>
+      </a>
+      <a href="retirement.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🏖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">退休缺口</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">勞保+勞退+自存</div>
+      </a>
+      <a href="coverage.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(208,234,236,1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🛡</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">保額需求</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">DIME・含保費預估</div>
+      </a>
+      <a href="loan.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(13,42,58,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💵</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">貸款試算</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">房・車・信貸三合一</div>
+      </a>
+      <a href="tax-risk.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';"><div style="position:absolute;top:-7px;right:6px;background:#F05A28;color:white;padding:1px 7px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:1px;">獨家</div>
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(217,64,95,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚠</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">課稅風險</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">8大態樣自我檢測</div>
+      </a>
+      <a href="estate.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(126,91,160,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">遺產稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">含實質課稅情境</div>
+      </a>
+      </div>
+    </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">給孩子最好的・從規劃開始</div>
+    <a href="tel:0925000049" class="footer-right">📱 0925-000-049</a>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   子女教育金試算
+   - 五階段: 幼兒園/國小/國中/高中/大學
+   - 三種類型: 公立/私立/國際 (大學國際 = 留學)
+   - 通膨複利、每月儲蓄計算
+   ============================================================ */
+
+const STAGES = [
+  { key: 'pre',     name: '幼兒園', emoji: '🍼', age: [3,5],   years: 3, sclass: 's1' },
+  { key: 'elem',    name: '國小',   emoji: '🎒', age: [6,11],  years: 6, sclass: 's2' },
+  { key: 'jh',      name: '國中',   emoji: '📚', age: [12,14], years: 3, sclass: 's3' },
+  { key: 'hs',      name: '高中',   emoji: '📐', age: [15,17], years: 3, sclass: 's4' },
+  { key: 'col',     name: '大學',   emoji: '🎓', age: [18,21], years: 4, sclass: 's5' }
+];
+
+// 預設年費 (元/年, 2025 台灣市場行情)
+const DEFAULT_FEE = {
+  pre:  { public: 25000,  private: 180000, intl: 350000 },
+  elem: { public: 20000,  private: 250000, intl: 500000 },
+  jh:   { public: 30000,  private: 300000, intl: 600000 },
+  hs:   { public: 15000,  private: 180000, intl: 800000 },
+  col:  { public: 120000, private: 160000, intl: 1500000 } // 國際 = 留學
+};
+const TYPE_LABEL = {
+  public:  { name: '公立', short: '公立' },
+  private: { name: '私立', short: '私立' },
+  intl:    { name: '國際/留學', short: '國際' }
+};
+
+// 狀態
+let state = {
+  selections: { pre: 'public', elem: 'public', jh: 'public', hs: 'public', col: 'public' },
+  customFee: {},  // override DEFAULT_FEE
+  gender: 'boy',
+  needGrad: false,
+  abroad: false
+};
+
+function num(id) {
+  const v = parseFloat(document.getElementById(id)?.value);
+  return isNaN(v) ? 0 : v;
+}
+function fmt(n) {
+  return Math.round(n).toLocaleString('en-US');
+}
+function fmtMan(n) {
+  return Math.round(n / 10000).toLocaleString('en-US');
+}
+
+/* 取得階段年費(已合併自訂值) */
+function getStageFee(stageKey, type) {
+  if (state.customFee[stageKey] && state.customFee[stageKey][type] !== undefined) {
+    return state.customFee[stageKey][type];
+  }
+  return DEFAULT_FEE[stageKey][type];
+}
+
+/* 渲染五階段卡 */
+function renderStages() {
+  const container = document.getElementById('stages-area');
+  let html = '';
+  STAGES.forEach(s => {
+    const sel = state.selections[s.key];
+    const fee = getStageFee(s.key, sel);
+    html += `<div class="stage-card ${s.sclass}">
+      <div class="stage-icon">${s.emoji}</div>
+      <div class="stage-name">${s.name}</div>
+      <div class="stage-years">${s.years}年</div>
+      <div class="type-select" data-stage="${s.key}">
+        <button class="type-btn ${sel==='public'?'active':''}" data-type="public">公立</button>
+        <button class="type-btn ${sel==='private'?'active':''}" data-type="private">私立</button>
+        <button class="type-btn ${sel==='intl'?'active':''}" data-type="intl">${s.key==='col'?'留學':'國際'}</button>
+      </div>
+      <div class="stage-cost">${fmtMan(fee)}<small>萬/年</small></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  // 綁定點擊
+  container.querySelectorAll('.type-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const wrapper = btn.closest('.type-select');
+      const stage = wrapper.dataset.stage;
+      const type = btn.dataset.type;
+      state.selections[stage] = type;
+      renderStages();
+      renderAdvanced();
+      calculate();
+    });
+  });
+}
+
+/* 渲染進階 (自訂階段費用) */
+function renderAdvanced() {
+  const grid = document.getElementById('adv-grid');
+  let html = '';
+  STAGES.forEach(s => {
+    const sel = state.selections[s.key];
+    const fee = getStageFee(s.key, sel);
+    html += `<div class="adv-item">
+      <span class="lbl">${s.emoji} ${s.name} (${TYPE_LABEL[sel].short})</span>
+      <input type="number" data-stage="${s.key}" data-type="${sel}" value="${fee}" min="0" step="1000">
+      <span class="unit">元/年</span>
+    </div>`;
+  });
+  grid.innerHTML = html;
+  grid.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const stage = inp.dataset.stage;
+      const type = inp.dataset.type;
+      const v = parseFloat(inp.value);
+      if (!state.customFee[stage]) state.customFee[stage] = {};
+      state.customFee[stage][type] = isNaN(v) ? 0 : v;
+      renderStages();
+      calculate();
+    });
+  });
+}
+
+/* ── 主計算 ── */
+function calculate() {
+  const age = num('i-age');
+  const inflation = num('i-inflation') / 100;
+  const extra = num('i-extra'); // 月才藝
+  const saved = num('i-saved');
+  const needGrad = state.needGrad;
+  const abroad = state.abroad;
+
+  // 計算每階段
+  const stageResults = [];
+  let yearOffset = 0; // 從現在算起的第 N 年
+
+  // 起算年齡: 從目前年齡到 22 歲(或大學畢業)
+  // 每階段先算: 「相對於現在的年數區間」 = (start_age - 現在年齡) ~ (end_age - 現在年齡)
+  let totalCurrent = 0;
+  let totalFV = 0;
+  let yearlyExpenses = []; // 年度支出陣列
+
+  STAGES.forEach(s => {
+    let type = state.selections[s.key];
+    // 大學留學覆寫
+    if (s.key === 'col' && abroad) type = 'intl';
+    const annualFee = getStageFee(s.key, type);
+    const startAge = s.age[0];
+    const endAge = s.age[1];
+
+    // 該階段每年的支出加上才藝/補習費
+    const annualWithExtra = annualFee + extra * 12;
+
+    // 計算開始年數(相對現在)
+    let stageStartYr = startAge - age;
+    let stageEndYr = endAge - age;
+
+    if (stageEndYr < 0) {
+      // 已經過了該階段
+      stageResults.push({
+        stage: s, type, annualFee: annualWithExtra,
+        years: 0, currentTotal: 0, fvTotal: 0,
+        startYear: null, endYear: null
+      });
+      return;
+    }
+    // 已經在該階段中, 從目前年齡開始算
+    if (stageStartYr < 0) stageStartYr = 0;
+    const yearsRemaining = stageEndYr - stageStartYr + 1;
+
+    let stageCurrent = 0;
+    let stageFV = 0;
+    for (let y = stageStartYr; y <= stageEndYr; y++) {
+      const fv = annualWithExtra * Math.pow(1 + inflation, y);
+      stageCurrent += annualWithExtra;
+      stageFV += fv;
+      // 累積 yearly expenses 陣列
+      while (yearlyExpenses.length <= y) yearlyExpenses.push({ y: yearlyExpenses.length, age: age + yearlyExpenses.length, parts: {} });
+      yearlyExpenses[y].parts[s.key] = fv;
+    }
+
+    stageResults.push({
+      stage: s, type, annualFee: annualWithExtra,
+      years: yearsRemaining,
+      currentTotal: stageCurrent,
+      fvTotal: stageFV,
+      startYear: stageStartYr,
+      endYear: stageEndYr
+    });
+    totalCurrent += stageCurrent;
+    totalFV += stageFV;
+  });
+
+  // 研究所
+  if (needGrad) {
+    const gradAnnual = abroad ? 1500000 : 250000; // 國外 vs 國內研究所
+    const gradStart = 22 - age;
+    const gradEnd = gradStart + 1;
+    if (gradEnd >= 0) {
+      const start = Math.max(0, gradStart);
+      let gradFV = 0;
+      let gradCur = 0;
+      for (let y = start; y <= gradEnd; y++) {
+        const fv = gradAnnual * Math.pow(1 + inflation, y);
+        gradCur += gradAnnual;
+        gradFV += fv;
+        while (yearlyExpenses.length <= y) yearlyExpenses.push({ y: yearlyExpenses.length, age: age + yearlyExpenses.length, parts: {} });
+        yearlyExpenses[y].parts['col'] = (yearlyExpenses[y].parts['col'] || 0) + fv;
+      }
+      totalCurrent += gradCur;
+      totalFV += gradFV;
+    }
+  }
+
+  // 扣除已準備
+  const netNeed = Math.max(0, totalFV - saved);
+
+  // 距大學畢業還有幾年
+  const yearsToFinish = Math.max(1, 22 - age + (needGrad ? 2 : 0));
+
+  // 每月需存(以5%報酬率為主推薦)
+  function monthlyNeed(rate, years, target) {
+    if (years <= 0 || target <= 0) return 0;
+    const r = rate / 12;
+    const n = years * 12;
+    if (Math.abs(r) < 0.0000001) return target / n;
+    // FV = PMT × [((1+r)^n - 1)/r]
+    const factor = (Math.pow(1 + r, n) - 1) / r;
+    return target / factor;
+  }
+
+  const monthly5 = monthlyNeed(0.05, yearsToFinish, netNeed);
+  const monthly2 = monthlyNeed(0.02, yearsToFinish, netNeed);
+  const monthly8 = monthlyNeed(0.08, yearsToFinish, netNeed);
+
+  // ── 渲染主英雄區 ──
+  const nameRaw = document.getElementById('i-name').value.trim();
+  const monLbl = nameRaw ? `${nameRaw} 每月只要存` : '每月只要存';
+  document.getElementById('r-monthly-lbl').textContent = monLbl;
+
+  document.getElementById('r-years').textContent = yearsToFinish;
+  const yrsDesc = document.getElementById('r-years-desc');
+  if (age <= 3) yrsDesc.textContent = '時間是您最大的盟友 ✓';
+  else if (age <= 10) yrsDesc.textContent = '還有充裕時間，掌握複利';
+  else if (age <= 15) yrsDesc.textContent = '需加快儲蓄步調';
+  else yrsDesc.textContent = '時間緊迫，建議單筆+月存';
+
+  document.getElementById('r-total').textContent = fmtMan(totalFV);
+  document.getElementById('r-monthly').textContent = fmt(monthly5);
+  document.getElementById('r-monthly-desc').textContent = '5% 報酬率定期定額';
+
+  // 三方案
+  function computeScenarioFV(getType) {
+    let cur = 0, fv = 0;
+    STAGES.forEach(s => {
+      const type = getType(s);
+      const fee = getStageFee(s.key, type);
+      const annualWithExtra = fee + extra * 12;
+      let st = s.age[0] - age;
+      let ed = s.age[1] - age;
+      if (ed < 0) return;
+      if (st < 0) st = 0;
+      for (let y = st; y <= ed; y++) {
+        cur += annualWithExtra;
+        fv += annualWithExtra * Math.pow(1 + inflation, y);
+      }
+    });
+    return { cur, fv };
+  }
+  const scPublic = computeScenarioFV(s => 'public');
+  const scMix = computeScenarioFV(s => (s.key==='pre'||s.key==='hs') ? 'private' : 'public');
+  const scIntl = computeScenarioFV(s => s.key==='col' ? 'intl' : 'private');
+
+  function renderScenario(prefix, sc) {
+    document.getElementById(`sp-${prefix}-amt`).textContent = fmtMan(sc.cur);
+    document.getElementById(`sp-${prefix}-fv`).textContent = fmtMan(sc.fv);
+    document.getElementById(`sp-${prefix}-inf`).textContent = (inflation*100).toFixed(1);
+    const m = monthlyNeed(0.05, yearsToFinish, Math.max(0, sc.fv - saved));
+    document.getElementById(`sp-${prefix}-mon`).textContent = fmt(m);
+  }
+  renderScenario('public', scPublic);
+  renderScenario('mix', scMix);
+  renderScenario('intl', scIntl);
+
+  // 階段詳細表
+  let tHtml = '';
+  stageResults.forEach(r => {
+    if (r.years === 0) {
+      tHtml += `<tr style="opacity:0.4;">
+        <td class="label">${r.stage.emoji} ${r.stage.name}</td>
+        <td>${TYPE_LABEL[r.type].short}</td>
+        <td>0 (已過)</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>`;
+    } else {
+      tHtml += `<tr>
+        <td class="label">${r.stage.emoji} ${r.stage.name}</td>
+        <td>${TYPE_LABEL[r.type].short}</td>
+        <td>${r.years} 年</td>
+        <td class="num">${fmt(r.annualFee)}</td>
+        <td class="num fv">${fmtMan(r.fvTotal)} 萬</td>
+      </tr>`;
+    }
+  });
+  if (needGrad) {
+    const gradAnnual = abroad ? 1500000 : 250000;
+    const gradStart = Math.max(0, 22 - age);
+    let gradFVRow = 0;
+    for (let y = gradStart; y <= gradStart + 1; y++) {
+      gradFVRow += gradAnnual * Math.pow(1 + inflation, y);
+    }
+    tHtml += `<tr>
+      <td class="label">📜 研究所</td>
+      <td>${abroad ? '國外' : '國內'}</td>
+      <td>2 年</td>
+      <td class="num">${fmt(gradAnnual)}</td>
+      <td class="num fv">${fmtMan(gradFVRow)} 萬</td>
+    </tr>`;
+  }
+  document.getElementById('stage-tbody').innerHTML = tHtml;
+  document.getElementById('stage-tfoot').innerHTML = `<tr>
+    <td class="label" colspan="3">總計 (含通膨後)</td>
+    <td class="num">${fmt(totalCurrent)} 元</td>
+    <td class="num">${fmtMan(totalFV)} 萬</td>
+  </tr>`;
+
+  // 媽媽小心法 (0歲 vs 5歲對比, 同樣總額)
+  const yrZero = 22 + (needGrad ? 2 : 0);
+  const yrFive = Math.max(1, 22 - 5 + (needGrad ? 2 : 0));
+  // 同樣的 FV 反算每月
+  const monZero = monthlyNeed(0.05, yrZero, totalFV);
+  const monFive = monthlyNeed(0.05, yrFive, totalFV);
+  document.getElementById('tip-zero').textContent = fmt(monZero);
+  document.getElementById('tip-five').textContent = fmt(monFive);
+
+  // 每月儲蓄方案
+  document.getElementById('save-2').textContent = fmt(monthly2);
+  document.getElementById('save-5').textContent = fmt(monthly5);
+  document.getElementById('save-8').textContent = fmt(monthly8);
+
+  // 走勢圖
+  drawChart(yearlyExpenses, age);
+}
+
+/* ── 走勢圖: 堆疊柱狀圖 ── */
+function drawChart(yearlyExp, currentAge) {
+  const svg = document.getElementById('chart-svg');
+  const W = 800, H = 280, padL = 60, padR = 30, padT = 20, padB = 40;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  if (yearlyExp.length === 0) {
+    svg.innerHTML = '<text x="400" y="140" text-anchor="middle" fill="#aaa" font-size="14">尚無資料</text>';
+    return;
+  }
+
+  // 顏色
+  const colors = {
+    pre: '#E89BA8',   // pink
+    elem: '#4CA975',  // green
+    jh: '#1A6B72',    // teal
+    hs: '#E8A020',    // gold
+    col: '#F05A28'    // orange
+  };
+
+  // 計算每年總額
+  const totals = yearlyExp.map(y => Object.values(y.parts).reduce((a,b)=>a+b, 0));
+  const maxTotal = Math.max(...totals, 1);
+  const yMax = maxTotal * 1.1;
+
+  const xScale = i => padL + (i + 0.5) * (innerW / yearlyExp.length);
+  const yScale = v => padT + (1 - v / yMax) * innerH;
+  const zeroY = padT + innerH;
+  const bw = Math.max(8, innerW / yearlyExp.length * 0.7);
+
+  let html = '';
+
+  // Y格線
+  for (let i = 0; i <= 4; i++) {
+    const v = yMax * i / 4;
+    const y = yScale(v);
+    html += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"
+              stroke="#eee" stroke-width="1" stroke-dasharray="3,3" />`;
+    html += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end"
+              font-size="10" fill="#888" font-family="Bebas Neue">${(v/10000).toFixed(0)}萬</text>`;
+  }
+
+  // 堆疊柱狀
+  yearlyExp.forEach((y, idx) => {
+    const x = xScale(idx);
+    let cumY = zeroY;
+    ['pre','elem','jh','hs','col'].forEach(k => {
+      const v = y.parts[k] || 0;
+      if (v > 0) {
+        const h = (v / yMax) * innerH;
+        const yPos = cumY - h;
+        html += `<rect x="${x - bw/2}" y="${yPos}" width="${bw}" height="${h}"
+                  fill="${colors[k]}" rx="1" opacity="0.9" />`;
+        cumY = yPos;
+      }
+    });
+  });
+
+  // X 軸標籤 (每3~5年)
+  const labelStep = Math.max(1, Math.floor(yearlyExp.length / 8));
+  yearlyExp.forEach((y, idx) => {
+    if (idx % labelStep === 0 || idx === yearlyExp.length - 1) {
+      const x = xScale(idx);
+      html += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle"
+                font-size="10" fill="#888" font-family="Bebas Neue">${y.age}歲</text>`;
+    }
+  });
+
+  html += `<text x="${padL + innerW/2}" y="${H - 5}" text-anchor="middle"
+            font-size="10" fill="#aaa">寶貝年齡</text>`;
+
+  svg.innerHTML = html;
+}
+
+/* ── 切換綁定 ── */
+document.querySelectorAll('#gender-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#gender-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.gender = btn.dataset.val;
+    calculate();
+  });
+});
+document.querySelectorAll('#grad-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#grad-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.needGrad = btn.dataset.val === 'Y';
+    calculate();
+  });
+});
+document.querySelectorAll('#abroad-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#abroad-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.abroad = btn.dataset.val === 'Y';
+    if (state.abroad) {
+      // 自動把大學設成國際
+      state.selections.col = 'intl';
+      renderStages();
+      renderAdvanced();
+    }
+    calculate();
+  });
+});
+
+document.querySelectorAll('input[type="number"], input[type="text"]').forEach(inp => {
+  inp.addEventListener('input', calculate);
+});
+
+/* 重設 */
+function resetAll() {
+  document.getElementById('i-name').value = '';
+  document.getElementById('i-age').value = 0;
+  document.getElementById('i-saved').value = 0;
+  document.getElementById('i-extra').value = 3000;
+  document.getElementById('i-inflation').value = 3;
+
+  state = {
+    selections: { pre: 'public', elem: 'public', jh: 'public', hs: 'public', col: 'public' },
+    customFee: {},
+    gender: 'boy',
+    needGrad: false,
+    abroad: false
+  };
+  document.querySelectorAll('#gender-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#gender-group .seg-btn[data-val="boy"]').classList.add('active');
+  document.querySelectorAll('#grad-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#grad-group .seg-btn[data-val="N"]').classList.add('active');
+  document.querySelectorAll('#abroad-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#abroad-group .seg-btn[data-val="N"]').classList.add('active');
+
+  renderStages();
+  renderAdvanced();
+  calculate();
+}
+
+/* 初始化 */
+renderStages();
+renderAdvanced();
+calculate();
+</script>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    function open() { document.body.classList.add('menu-open'); document.body.style.overflow = 'hidden'; }
+    function close() { document.body.classList.remove('menu-open'); document.body.style.overflow = ''; }
+    function toggle() { document.body.classList.contains('menu-open') ? close() : open(); }
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
+</body>
+</html>

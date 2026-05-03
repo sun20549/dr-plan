@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23F05A28"/><text x="16" y="23" text-anchor="middle" font-size="20" font-weight="900" fill="white" font-family="Noto Sans TC,sans-serif">鼎</text></svg>">
+<title>實質課稅 8 大態樣自我檢查 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --green: #4CA975;
+    --red: #D9405F;
+    --purple: #7E5BA0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(217,64,95,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(232,160,32,0.18) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(217,64,95,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.15);
+    filter: blur(40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    color: white;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .header-center .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 84px;
+    color: var(--orange);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: -4px 0;
+  }
+  .header-center .big-number span {
+    font-size: 28px;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .header-center .sub-title {
+    margin-top: 4px;
+    font-size: 21px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #D9405F 0%, #B22D49 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '⚠';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row {
+    display: flex;
+    gap: 6px;
+  }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--gold); font-size: 20px; }
+
+  /* ── BODY ── */
+  .body { padding: 32px 48px 40px; }
+
+  .section-title-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title-icon .hint {
+    margin-left: auto;
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  /* ── 警示開場 ── */
+  .opener {
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(217,64,95,0.06) 0%, rgba(232,160,32,0.04) 100%);
+    border: 1.5px solid rgba(217,64,95,0.2);
+  }
+  .opener-headline {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .opener-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .opener-sub {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+  }
+  .opener-sub b { color: var(--red); font-weight: 700; }
+  .opener-sub .law {
+    display: inline-block;
+    background: rgba(13,42,58,0.06);
+    padding: 1px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    color: var(--navy);
+    margin: 0 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 基本資料區 ── */
+  .basic-info {
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: #fafafa;
+    border-radius: 14px;
+    border: 1.5px solid #eee;
+  }
+  .basic-info .info-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+  .basic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .basic-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+  }
+  .basic-item .lbl {
+    flex: 1;
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .basic-item .lbl .sub {
+    font-size: 10px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .basic-item input[type="number"] {
+    width: 100px;
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    text-align: right;
+    outline: none;
+  }
+  .basic-item input.wide { width: 130px; }
+  .basic-item input:focus { border-color: var(--orange); }
+  .basic-item .unit { font-size: 11px; color: #999; }
+
+  /* ── 8 大態樣問卷 ── */
+  .questions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .q-card {
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 2px solid #eee;
+    background: white;
+    transition: all .25s;
+    position: relative;
+  }
+  .q-card:hover {
+    border-color: #ccc;
+  }
+  .q-card.answered-yes {
+    border-color: var(--red);
+    background: linear-gradient(135deg, rgba(217,64,95,0.04) 0%, rgba(217,64,95,0.02) 100%);
+  }
+  .q-card.answered-no {
+    border-color: var(--green);
+    background: linear-gradient(135deg, rgba(76,169,117,0.04) 0%, rgba(76,169,117,0.02) 100%);
+  }
+  .q-card.answered-yes::after,
+  .q-card.answered-no::after {
+    content: '';
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    color: white;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .q-card.answered-yes::after {
+    content: '!';
+    background: var(--red);
+  }
+  .q-card.answered-no::after {
+    content: '✓';
+    background: var(--green);
+  }
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .q-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .q-card.answered-yes .q-num { background: var(--red); }
+  .q-card.answered-no .q-num { background: var(--green); }
+  .q-titles {
+    flex: 1;
+    padding-right: 30px;
+  }
+  .q-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .q-desc {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+  .q-criteria {
+    background: rgba(13,42,58,0.04);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .q-criteria .crit-label {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .q-criteria b { color: var(--navy); font-weight: 700; }
+  .q-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .q-btn {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid #ddd;
+    background: white;
+    color: #777;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 1px;
+  }
+  .q-btn:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+  .q-btn.yes.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 4px 12px rgba(217,64,95,0.25);
+  }
+  .q-btn.no.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(76,169,117,0.25);
+  }
+  .q-btn.unsure.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+    box-shadow: 0 4px 12px rgba(232,160,32,0.25);
+  }
+  .q-case {
+    background: rgba(232,160,32,0.06);
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #666;
+    line-height: 1.6;
+    border-radius: 6px;
+    display: none;
+  }
+  .q-card.answered-yes .q-case {
+    display: block;
+  }
+  .q-case b {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .q-case .verdict {
+    color: var(--red);
+    font-weight: 700;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ── 進度條 ── */
+  .progress-bar-wrap {
+    margin-bottom: 20px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .progress-info .left {
+    font-size: 12px;
+    color: #777;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .progress-info .right {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .progress-track {
+    height: 8px;
+    background: #ece9e3;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 100%);
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+
+  /* ── 風險儀表板 ── */
+  .risk-dashboard {
+    margin: 0 0 28px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(13,42,58,0.12);
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    color: white;
+    position: relative;
+  }
+  .risk-dashboard.lvl-low {
+    background:
+      radial-gradient(ellipse at top right, rgba(76,169,117,0.3) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+  }
+  .risk-dashboard.lvl-mid {
+    background:
+      radial-gradient(ellipse at top right, rgba(232,160,32,0.3) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+  }
+  .risk-dashboard.lvl-high {
+    background:
+      radial-gradient(ellipse at top right, rgba(217,64,95,0.3) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+  }
+  .risk-top {
+    padding: 30px 36px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  /* 大圓圈儀表 */
+  .risk-gauge {
+    position: relative;
+    width: 160px; height: 160px;
+  }
+  .risk-gauge svg {
+    width: 100%; height: 100%;
+    transform: rotate(-90deg);
+  }
+  .risk-gauge .gauge-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.1);
+    stroke-width: 12;
+  }
+  .risk-gauge .gauge-fg {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset .8s cubic-bezier(.4,0,.2,1);
+  }
+  .risk-gauge.lvl-low .gauge-fg { stroke: var(--green); }
+  .risk-gauge.lvl-mid .gauge-fg { stroke: var(--gold); }
+  .risk-gauge.lvl-high .gauge-fg { stroke: var(--red); }
+  .risk-gauge .gauge-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .risk-gauge .gauge-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .risk-gauge.lvl-low .gauge-num { color: #7FE0A1; }
+  .risk-gauge.lvl-mid .gauge-num { color: var(--gold); }
+  .risk-gauge.lvl-high .gauge-num { color: #FF8B6B; }
+  .risk-gauge .gauge-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .risk-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .risk-text .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .risk-text .verdict {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .risk-text.lvl-low .verdict { color: #7FE0A1; }
+  .risk-text.lvl-mid .verdict { color: var(--gold); }
+  .risk-text.lvl-high .verdict { color: #FF8B6B; }
+  .risk-text .summary {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+  .risk-text .summary b { color: white; font-weight: 700; }
+
+  /* 命中態樣顯示 */
+  .matched-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .matched-tag {
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(217,64,95,0.18);
+    color: #FFAEBA;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(217,64,95,0.3);
+  }
+  .matched-tag.unsure {
+    background: rgba(232,160,32,0.15);
+    color: #FFD580;
+    border-color: rgba(232,160,32,0.3);
+  }
+
+  /* 風險細項條 */
+  .risk-bottom {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+    padding: 18px 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .risk-stat {
+    text-align: center;
+  }
+  .risk-stat .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+  .risk-stat.danger .stat-num { color: #FF8B6B; }
+  .risk-stat.warn .stat-num { color: var(--gold); }
+  .risk-stat.safe .stat-num { color: #7FE0A1; }
+  .risk-stat .stat-num small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-left: 3px;
+    font-weight: 500;
+  }
+  .risk-stat .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ── 對應建議方案 ── */
+  .recommendations {
+    margin-bottom: 28px;
+  }
+  .rec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rec-card {
+    padding: 18px 22px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(232,160,32,0.06) 0%, rgba(240,90,40,0.04) 100%);
+    border-left: 4px solid var(--gold);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .rec-card .rec-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(232,160,32,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .rec-card .rec-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .rec-card .rec-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .rec-card .rec-desc {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+  }
+  .rec-card .rec-desc b { color: var(--orange); }
+
+  .rec-card.green {
+    background: linear-gradient(135deg, rgba(76,169,117,0.06) 0%, rgba(26,107,114,0.04) 100%);
+    border-left-color: var(--green);
+  }
+  .rec-card.green .rec-icon { background: rgba(76,169,117,0.15); }
+
+  /* ── 解決方案 CTA ── */
+  .solution-section {
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(240,90,40,0.06) 0%, rgba(232,160,32,0.04) 100%);
+    border: 1.5px solid rgba(240,90,40,0.15);
+  }
+  .solution-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .solution-subtitle {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .solution-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--navy);
+    color: white;
+  }
+  .solution-cta .text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .solution-cta .text strong {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .solution-cta a {
+    background: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.4);
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .solution-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.5);
+  }
+
+  /* 法源依據 */
+  .legal-source {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(13,42,58,0.04);
+    border-left: 4px solid var(--navy);
+  }
+  .legal-source .ls-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .legal-source .ls-content {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .legal-source .ls-content code {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    background: rgba(13,42,58,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+
+  /* 注意事項 */
+  .notes {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(26,107,114,0.05);
+    border-left: 4px solid var(--teal);
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .notes strong {
+    color: var(--teal);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .notes ul { margin: 6px 0 0 18px; }
+  .notes li { margin-bottom: 3px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+
+  /* PDF 報告書專用樣式 */
+  .pdf-cover {
+    display: none;
+  }
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 1.2cm;
+    }
+    body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { box-shadow: none; width: 100%; }
+    .quick-bar, .basic-info input, .q-actions, .opener .opener-icon { -webkit-print-color-adjust: exact; }
+    /* 隱藏不需列印的互動元素 */
+    .quick-bar, .reset-btn, .solution-cta a, #estate-link a { display: none !important; }
+    /* 讓題目卡稍微緊湊 */
+    .q-card { page-break-inside: avoid; padding: 12px 16px; }
+    .q-card .q-actions { display: none; }
+    /* 已答的題目標出選擇 */
+    .q-card.answered-yes::before {
+      content: '✗ 您勾選: 是 / 符合';
+      display: block;
+      background: var(--red);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      width: fit-content;
+      margin-top: 6px;
+    }
+    .q-card.answered-no::before {
+      content: '✓ 您勾選: 否 / 不符';
+      display: block;
+      background: var(--green);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      width: fit-content;
+      margin-top: 6px;
+    }
+    /* 風險儀表板分頁前 */
+    .risk-dashboard { page-break-before: avoid; page-break-inside: avoid; }
+    .recommendations { page-break-inside: avoid; }
+    /* 顯示 PDF 封面 */
+    .pdf-cover {
+      display: block !important;
+      page-break-after: always;
+      padding: 60px 40px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+      color: white;
+      min-height: 95vh;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .pdf-cover .cover-logo {
+      width: 100px; height: 100px;
+      background: var(--orange);
+      border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; margin-bottom: 24px;
+    }
+    .pdf-cover .cover-brand {
+      font-size: 32px; font-weight: 900; letter-spacing: 4px;
+      margin-bottom: 6px;
+    }
+    .pdf-cover .cover-subbrand {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      letter-spacing: 3px; margin-bottom: 36px;
+    }
+    .pdf-cover .cover-title {
+      font-size: 24px; font-weight: 900; letter-spacing: 8px;
+      margin-bottom: 12px; color: var(--gold);
+    }
+    .pdf-cover .cover-subtitle {
+      font-size: 14px; color: rgba(255,255,255,0.7);
+      letter-spacing: 2px; margin-bottom: 50px;
+    }
+    .pdf-cover .cover-meta {
+      background: rgba(255,255,255,0.06);
+      padding: 20px 30px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 13px; line-height: 2;
+      letter-spacing: 1px;
+      width: 80%;
+      max-width: 500px;
+    }
+    .pdf-cover .cover-meta strong {
+      color: var(--gold); font-weight: 700; min-width: 100px;
+      display: inline-block;
+    }
+    .pdf-cover .cover-footer {
+      margin-top: auto; padding-top: 40px;
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      letter-spacing: 1px;
+    }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER) v2
+     ═══════════════════════════════════════════ */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+  }
+  .menu-trigger-icon { width: 22px; height: 16px; position: relative; }
+  .menu-trigger-icon span {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden; pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible; pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff; flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.2;
+    color: #fff;
+  }
+  .sidebar-header-sub {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 1.5px; font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px; font-weight: 700;
+    color: #999; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px 10px 24px;
+    color: #555; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●'; margin-left: auto;
+    color: var(--orange); font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px; padding: 10px 14px;
+    border-radius: 8px; border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy); color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px; background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center; margin-top: 10px;
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 84vw; max-width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important; left: 12px !important;
+      width: 36px !important; height: 36px !important;
+    }
+  }
+
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px; right: 16px;
+      padding: 12px 18px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link active"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- PDF 封面 (僅列印時顯示) -->
+  <div class="pdf-cover">
+    <div class="cover-logo">⚖</div>
+    <div class="cover-brand">鼎綸恩宇</div>
+    <div class="cover-subbrand">DING LUN · ENRICH</div>
+    <div class="cover-title">保單實質課稅風險評估報告</div>
+    <div class="cover-subtitle">SUBSTANCE OVER FORM · RISK ASSESSMENT REPORT</div>
+    <div class="cover-meta">
+      <div><strong>報告日期</strong><span id="pdf-date"></span></div>
+      <div><strong>風險等級</strong><span id="pdf-level">—</span></div>
+      <div><strong>命中態樣</strong><span id="pdf-matched">—</span></div>
+      <div><strong>風險指數</strong><span id="pdf-score">—</span> / 100</div>
+    </div>
+    <div class="cover-footer">
+      本報告依財政部 109/7/1 台財稅字第 10900520520 號函揭示之 8 大態樣製作<br>
+      僅供風險評估參考 ・ 實際課稅以國稅局核定為準<br>
+      ・諮詢專線 0925-000-049・
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">⚖</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">DING LUN · ENRICH</div>
+          <div class="sub tag">課稅風險</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">SUBSTANCE OVER FORM RISK CHECK</div>
+        <div class="big-number">8<span>大態樣</span></div>
+        <div class="sub-title">實質課稅自我檢測</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">財政部 109 函示</div>
+          <div class="badge-line2">8 大態樣全解析</div>
+        </div>
+        <div class="quick-bar">
+          <div class="quick-bar-row">
+            <a href="../index.html" class="quick-btn">← 回首頁</a>
+            <button type="button" class="quick-btn" onclick="downloadReport()">📄 下載報告</button>
+          </div>
+          <div class="quick-bar-row">
+            <a href="estate.html" class="quick-btn">⚖ 遺產稅</a>
+            <button type="button" class="quick-btn" onclick="resetAll()">↻ 重設</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAGLINE BAR -->
+  <div class="tagline-bar">
+    <span>互動問卷 8 題</span>
+    <span class="dot">●</span>
+    <span>即時風險評估</span>
+    <span class="dot">●</span>
+    <span>業界唯一工具</span>
+  </div>
+
+  <div class="body">
+
+    <!-- ── 開場警示 ── -->
+    <div class="opener">
+      <div class="opener-headline">
+        <div class="opener-icon">⚠</div>
+        您買的保單，真的能節稅嗎?
+      </div>
+      <div class="opener-sub">
+        依據 <span class="law">遺贈稅法 §16-9</span>「指定受益人之人壽保險金不計入遺產總額」，本應免徵遺產稅。<br>
+        但根據 <span class="law">財政部 109/7/1 函</span> 揭示的 <b>「實質課稅原則」</b>，國稅局可審查投保動機，
+        若保單符合本工具揭露的 <b>8 大態樣</b>，<b>身故保險金恐被列入遺產總額課稅，甚至連補帶罰</b>。
+      </div>
+    </div>
+
+    <!-- ── 基本資料 ── -->
+    <div class="basic-info">
+      <div class="info-title">📋 保單基本資料 (用於精確判定態樣)</div>
+      <div class="basic-grid">
+        <div class="basic-item">
+          <div class="lbl">投保時年齡 <span class="sub">要保人/被保人</span></div>
+          <input type="number" id="i-age" value="55" min="0" max="100">
+          <div class="unit">歲</div>
+        </div>
+        <div class="basic-item">
+          <div class="lbl">保險金額 (保額)</div>
+          <input type="number" id="i-coverage" value="10000000" min="0" step="100000" class="wide">
+          <div class="unit">元</div>
+        </div>
+        <div class="basic-item">
+          <div class="lbl">總繳保費 <span class="sub">含躉繳/分期累計</span></div>
+          <input type="number" id="i-premium" value="8000000" min="0" step="100000" class="wide">
+          <div class="unit">元</div>
+        </div>
+        <div class="basic-item">
+          <div class="lbl">投保至今年數</div>
+          <input type="number" id="i-years" value="3" min="0" max="60" step="0.5">
+          <div class="unit">年</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 進度條 ── -->
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span class="left">作答進度</span>
+        <span class="right"><span id="prog-count">0</span> / 8 題</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- ── 8大態樣問卷 ── -->
+    <div class="section-title-icon">
+      實質課稅 8 大態樣自我檢測
+      <span class="hint">逐題作答，即時計算風險</span>
+    </div>
+
+    <div class="questions" id="questions-area">
+      <!-- 由 JS 渲染 -->
+    </div>
+
+    <!-- ── 風險儀表板 ── -->
+    <div class="section-title-icon">綜合風險評估</div>
+    <div class="risk-dashboard lvl-low" id="risk-dashboard">
+      <div class="risk-top">
+        <div class="risk-gauge lvl-low" id="risk-gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-bg" cx="60" cy="60" r="50" />
+            <circle class="gauge-fg" cx="60" cy="60" r="50"
+                    id="gauge-circle"
+                    stroke-dasharray="314.16"
+                    stroke-dashoffset="314.16" />
+          </svg>
+          <div class="gauge-text">
+            <div class="gauge-num"><span id="g-score">0</span></div>
+            <div class="gauge-label">風險指數 / 100</div>
+          </div>
+        </div>
+        <div class="risk-text lvl-low" id="risk-text-side">
+          <div class="lbl">您的保單實質課稅風險</div>
+          <div class="verdict" id="r-verdict">尚未檢測</div>
+          <div class="summary" id="r-summary">請完成上方 8 題自我檢測，系統會即時為您評估風險等級。</div>
+          <div class="matched-tags" id="r-tags"></div>
+        </div>
+      </div>
+      <div class="risk-bottom">
+        <div class="risk-stat danger">
+          <div class="stat-num"><span id="s-yes">0</span><small>項</small></div>
+          <div class="stat-label">命中態樣</div>
+        </div>
+        <div class="risk-stat warn">
+          <div class="stat-num"><span id="s-unsure">0</span><small>項</small></div>
+          <div class="stat-label">不確定</div>
+        </div>
+        <div class="risk-stat safe">
+          <div class="stat-num"><span id="s-no">0</span><small>項</small></div>
+          <div class="stat-label">安全項目</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 保單調整路線圖 (高風險才顯示) ── -->
+    <div id="roadmap-section" style="display:none;margin-bottom:28px;">
+      <div class="section-title-icon">
+        保單調整路線圖
+        <span class="hint">從高風險現況 → 安全規劃</span>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(13,42,58,0.04) 0%,rgba(232,160,32,0.05) 100%);border-radius:16px;padding:24px;border:1.5px solid rgba(13,42,58,0.08);">
+        <div id="roadmap-content"></div>
+      </div>
+    </div>
+
+    <!-- ── 對應建議方案 ── -->
+    <div class="recommendations" id="rec-section" style="display:none;">
+      <div class="section-title-icon">
+        針對性建議方案
+        <span class="hint">依您的命中態樣個別建議</span>
+      </div>
+      <div class="rec-list" id="rec-list">
+      </div>
+    </div>
+
+    <!-- ── 遺產稅損失試算串接 (高/中風險才顯示) ── -->
+    <div id="estate-link" style="display:none;margin-bottom:28px;padding:20px 24px;border-radius:14px;background:linear-gradient(135deg,rgba(217,64,95,0.06) 0%,rgba(232,160,32,0.05) 100%);border:1.5px solid rgba(217,64,95,0.25);">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(217,64,95,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">💰</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:900;color:var(--navy);letter-spacing:0.5px;margin-bottom:3px;">那麼，被課稅會多繳多少?</div>
+          <div style="font-size:12px;color:#666;line-height:1.5;">您可進一步試算「萬一保單被列入遺產」，依您的家庭資產狀況會多繳多少遺產稅。</div>
+        </div>
+        <a href="estate.html" style="background:var(--red);color:white;text-decoration:none;padding:10px 18px;border-radius:50px;font-size:12px;font-weight:900;letter-spacing:1px;flex-shrink:0;box-shadow:0 4px 12px rgba(217,64,95,0.3);transition:transform .2s;white-space:nowrap;">→ 試算損失</a>
+      </div>
+    </div>
+
+    <!-- ── 解決方案 CTA ── -->
+    <div class="solution-section">
+      <div class="solution-title">✦ 保單健檢 ・ 重新規劃 ✦</div>
+      <div class="solution-subtitle">14 家壽險 ・ 12 家產險 ・ 跨險種比對最齊全</div>
+      <div class="solution-cta">
+        <div class="text">
+          <strong>實質課稅判定極為複雜</strong>，需綜合保單性質、投保動機、家庭資產情況逐案判斷。<br>
+          建議由專業顧問為您進行<strong>保單健檢</strong>，及早調整、避免家人未來面臨補稅風險。
+        </div>
+        <a href="tel:0925000049">📱 預約健檢</a>
+      </div>
+    </div>
+
+    <!-- 法源依據 -->
+    <div class="legal-source">
+      <div class="ls-title">📜 法源依據</div>
+      <div class="ls-content">
+        ・<code>遺產及贈與稅法 第 16 條第 9 款</code>:約定於被繼承人死亡時，給付其所指定受益人之人壽保險金額...不計入遺產總額。<br>
+        ・<code>保險法 第 112 條</code>:保險金額約定於被保險人死亡時給付於其所指定之受益人者，其金額不得作為被保險人之遺產。<br>
+        ・<code>納稅者權利保護法 第 7 條</code>:稅捐稽徵機關認定課徵租稅之構成要件事實時，應以實質經濟事實關係及其所生實質經濟利益之歸屬與享有為依據。<br>
+        ・<code>財政部 109 年 7 月 1 日 台財稅字第 10900520520 號函</code>:揭示「實務上死亡人壽保險金依實質課稅原則核課遺產稅案例及參考特徵」，即本工具所列 8 大態樣。<br>
+        ・<code>最高行政法院 98 年判字第 1145 號</code>(77歲阿嬤舉債躉繳案)、<code>98 年判字第 1236 號</code>(急性心肌梗塞躉繳案) 等判例為實務認定標竿。
+      </div>
+    </div>
+
+    <!-- 注意事項 -->
+    <div class="notes">
+      <strong>📌 本工具說明</strong>
+      <ul>
+        <li>本工具<b>非法律意見</b>，僅以財政部 109 年函示及實務判例為依據，提供保單實質課稅風險的自我評估參考。</li>
+        <li>實質課稅之認定<b>無單一標準</b>，國稅局採綜合判斷，會審酌保單性質、投保動機、經濟狀況、時程等個案情形。</li>
+        <li>本工具計算的<b>風險指數僅為參考</b>，最終是否被課徵遺產稅以國稅局核定為準。</li>
+        <li>若您對保單規劃有疑慮，<b>建議洽請會計師、稅務律師或鼎綸恩宇專業顧問</b>進行個案分析。</li>
+        <li>金管會明確規定<b>業務員不得以節稅作為招攬訴求</b>，保險的核心目的是<b>保障家庭與分散風險</b>。</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+    <!-- 其他試算工具 -->
+    <div style="margin-top:28px;padding-top:24px;border-top:1px dashed #ddd;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#0D2A3A;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:3px;height:14px;background:#F05A28;border-radius:2px;"></span>
+          其他試算工具
+        </div>
+        <a href="../index.html" style="font-size:11px;color:#888;text-decoration:none;letter-spacing:0.5px;">查看全部 →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+      <a href="tax.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(240,90,40,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💰</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">綜合所得稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">114年度・夫妻三方案</div>
+      </a>
+      <a href="retirement.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🏖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">退休缺口</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">勞保+勞退+自存</div>
+      </a>
+      <a href="coverage.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(208,234,236,1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🛡</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">保額需求</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">DIME・含保費預估</div>
+      </a>
+      <a href="education.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,155,168,0.18);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🎓</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">教育金</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">媽媽客群必備</div>
+      </a>
+      <a href="loan.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(13,42,58,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💵</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">貸款試算</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">房・車・信貸三合一</div>
+      </a>
+      <a href="estate.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(126,91,160,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">遺產稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">含實質課稅情境</div>
+      </a>
+      </div>
+    </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">看清風險 ・ 安心傳承</div>
+    <a href="tel:0925000049" class="footer-right">📱 0925-000-049</a>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   實質課稅 8 大態樣自我檢測
+   - 依財政部 109/7/1 台財稅字第 10900520520 號函
+   ============================================================ */
+
+const QUESTIONS = [
+  {
+    id: 'q1',
+    name: '重(帶)病投保',
+    desc: '投保時被保險人已罹患重大疾病或長期慢性病，且持續用藥。',
+    criteria: '常見如：腦中風、洗腎、慢性腎衰竭、帕金森氏症、癌症晚期、肝癌、心臟病史等。國稅局會調閱健保就醫紀錄、診斷證明，比對投保時間。',
+    case: '<b>判例：最高行政法院 98 年判字第 1145 號</b><br>77 歲阿嬤於慢性腎衰竭治療期間投保，<span class="verdict">2,509 萬保險金被全額計入遺產總額。</span>',
+    hint: '是否在投保前已被診斷罹患重大疾病或長期需要藥物控制?'
+  },
+  {
+    id: 'q2',
+    name: '高齡投保',
+    desc: '投保時年齡偏高，保單保障期間相對短暫。',
+    criteria: '<b>實務上 70 歲以上即列入觀察、75~80 歲以上風險顯著</b>。雖無明確標準，但年齡越高、保單越大筆，被認定避稅機率越高。',
+    case: '<b>判例參考：</b>多起判例中，77~85 歲投保並於數年內身故案例，幾乎全數被認定為避稅而課稅。',
+    hint: '投保時年齡是否 ≥ 70 歲?'
+  },
+  {
+    id: 'q3',
+    name: '鉅額投保',
+    desc: '保險金額顯著超過家庭日常保障所需。',
+    criteria: '<b>常見金額：1,000 萬以上即被觀察、5,000 萬以上幾乎必查</b>。國稅局會比對被繼承人生前資產規模、家庭收入水準。',
+    case: '<b>判例：</b>陳董案例 — 4,800 萬躉繳保費，符合鉅額 + 高齡 + 重病 + 躉繳，被全額列入遺產。',
+    hint: '保險金額是否超過 1,000 萬元?(同被保險人多張保單需累計)'
+  },
+  {
+    id: 'q4',
+    name: '短期投保',
+    desc: '投保後短期內死亡，保險功能未實質發揮。',
+    criteria: '<b>常見：投保後 2~3 年內身故被高度懷疑、5 年內仍可能被認定</b>。投保到身故時間越短，越難主張投保動機是純粹保障。',
+    case: '<b>判例：最高行政法院 98 年判字第 1236 號</b><br>91 年 6 月投保即期年金，92 年 11 月即因急性心肌梗塞身故，1,142 萬保險金被列入遺產。',
+    hint: '投保至今未滿 3 年，且被保險人健康狀況不佳?'
+  },
+  {
+    id: 'q5',
+    name: '密集投保',
+    desc: '短期內密集購買多張保單。',
+    criteria: '<b>常見：1~2 年內購買 3 張以上大額保單</b>。國稅局視為「將即將成為遺產的現金，密集轉換為保費」的避稅行為。',
+    case: '<b>判例參考：</b>實務上常見高齡長輩於 1 年內密集購買 3~5 張保單，均被合併認定為避稅。',
+    hint: '近 2 年內是否購買多張(≥ 3 張)保單?'
+  },
+  {
+    id: 'q6',
+    name: '躉繳投保',
+    desc: '一次繳清全部保費，而非分期繳納。',
+    criteria: '躉繳本身<b>不違法</b>，但與其他態樣(高齡、鉅額、舉債、重病)結合時，被認定避稅機率極高。國稅局視為「現金資產的即時轉移」。',
+    case: '<b>判例：</b>幾乎所有實質課稅判例都包含躉繳特徵，是判定避稅的核心關鍵之一。',
+    hint: '是否採一次繳清的躉繳方式?'
+  },
+  {
+    id: 'q7',
+    name: '舉債投保',
+    desc: '透過貸款、抵押資產取得資金來繳保費。',
+    criteria: '常見：<b>以不動產抵押、解定存、賣股票、向銀行貸款</b>取得保費資金。國稅局會比對銀行金流與不動產設定資料。',
+    case: '<b>判例：最高行政法院 98 年判字第 1145 號</b><br>77 歲阿嬤以舉債躉繳 2,578 萬保費，舉債事實成為實質課稅關鍵。',
+    hint: '保費資金來源是否來自貸款、解抵押或處分資產?'
+  },
+  {
+    id: 'q8',
+    name: '保費 ≥ 保險給付',
+    desc: '已繳保費(含利息)等於或大於保險金額。',
+    criteria: '<b>例：保額 1,000 萬，但躉繳保費 1,114 萬</b>。意味著「保險功能消失」，純粹是現金轉為保單再轉為保險金，等同遺產移轉工具。',
+    case: '<b>判例：</b>保費 1,114 萬、保額 1,000 萬，被認定保險功能形骸化，全額計入遺產。',
+    hint: '已繳保費(總額)是否 ≥ 保險金額?'
+  }
+];
+
+/* 動態判定: 依基本資料給予建議答案 */
+function autoSuggest(qid) {
+  const age = parseFloat(document.getElementById('i-age').value);
+  const cov = parseFloat(document.getElementById('i-coverage').value);
+  const pre = parseFloat(document.getElementById('i-premium').value);
+  const yrs = parseFloat(document.getElementById('i-years').value);
+
+  if (qid === 'q2' && age >= 70) return 'yes';
+  if (qid === 'q3' && cov >= 10000000) return 'yes';
+  if (qid === 'q4' && yrs < 3) return 'yes';
+  if (qid === 'q8' && pre >= cov) return 'yes';
+  return null;
+}
+
+let answers = {}; // q1: 'yes' | 'no' | 'unsure'
+
+function renderQuestions() {
+  const area = document.getElementById('questions-area');
+  let html = '';
+  QUESTIONS.forEach((q, idx) => {
+    const ans = answers[q.id];
+    const cardClass = ans === 'yes' ? 'answered-yes' : (ans === 'no' ? 'answered-no' : '');
+    html += `<div class="q-card ${cardClass}" data-qid="${q.id}">
+      <div class="q-header">
+        <div class="q-num">${idx + 1}</div>
+        <div class="q-titles">
+          <div class="q-name">${q.name}</div>
+          <div class="q-desc">${q.desc}</div>
+        </div>
+      </div>
+      <div class="q-criteria">
+        <div class="crit-label">📊 認定標準</div>
+        ${q.criteria}
+      </div>
+      <div class="q-actions">
+        <button class="q-btn yes ${ans==='yes' ? 'active' : ''}" data-qid="${q.id}" data-val="yes">是 / 符合</button>
+        <button class="q-btn unsure ${ans==='unsure' ? 'active' : ''}" data-qid="${q.id}" data-val="unsure">不確定</button>
+        <button class="q-btn no ${ans==='no' ? 'active' : ''}" data-qid="${q.id}" data-val="no">否 / 不符</button>
+      </div>
+      <div class="q-case">${q.case}</div>
+    </div>`;
+  });
+  area.innerHTML = html;
+  area.querySelectorAll('.q-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      answers[btn.dataset.qid] = btn.dataset.val;
+      renderQuestions();
+      updateRisk();
+    });
+  });
+}
+
+/* 自動填入(根據基本資料) */
+function applyAutoSuggest() {
+  QUESTIONS.forEach(q => {
+    if (!answers[q.id]) {
+      const sug = autoSuggest(q.id);
+      if (sug) answers[q.id] = sug;
+    }
+  });
+  renderQuestions();
+  updateRisk();
+}
+
+/* 風險評分計算 */
+function updateRisk() {
+  let yesCount = 0, noCount = 0, unsureCount = 0;
+  let score = 0;
+  // 各題權重 (高齡/重病/鉅額/躉繳/舉債權重高)
+  const weights = {
+    q1: 18, // 重病
+    q2: 14, // 高齡
+    q3: 14, // 鉅額
+    q4: 16, // 短期
+    q5: 10, // 密集
+    q6: 12, // 躉繳
+    q7: 10, // 舉債
+    q8: 16  // 保費≥給付
+  };
+  const yesItems = [];
+  const unsureItems = [];
+  QUESTIONS.forEach(q => {
+    const a = answers[q.id];
+    if (a === 'yes') {
+      yesCount++;
+      score += weights[q.id];
+      yesItems.push(q.name);
+    } else if (a === 'no') {
+      noCount++;
+    } else if (a === 'unsure') {
+      unsureCount++;
+      score += weights[q.id] * 0.5;
+      unsureItems.push(q.name);
+    }
+  });
+  // 多項組合加成: 命中 ≥3 項時, 額外加成
+  if (yesCount >= 3) score += 5;
+  if (yesCount >= 5) score += 8;
+  score = Math.min(100, Math.round(score));
+
+  // 進度條
+  const answered = yesCount + noCount + unsureCount;
+  const progPct = (answered / 8 * 100).toFixed(0);
+  document.getElementById('prog-count').textContent = answered;
+  document.getElementById('prog-fill').style.width = progPct + '%';
+
+  // 風險等級
+  let level, verdict, summary, levelClass;
+  if (answered === 0) {
+    level = 'low';
+    verdict = '尚未檢測';
+    summary = '請完成上方 8 題自我檢測，系統會即時為您評估風險等級。';
+    levelClass = 'lvl-low';
+    score = 0;
+  } else if (score < 25) {
+    level = 'low';
+    verdict = '低風險';
+    summary = '您的保單投保動機<b>明顯偏向保障目的</b>，被實質課稅機率低。建議仍定期檢視家庭保障缺口。';
+    levelClass = 'lvl-low';
+  } else if (score < 55) {
+    level = 'mid';
+    verdict = '中風險';
+    summary = '您的保單<b>部分特徵符合避稅態樣</b>，建議盡早進行保單健檢，調整可疑要件，降低被課稅風險。';
+    levelClass = 'lvl-mid';
+  } else {
+    level = 'high';
+    verdict = '高風險';
+    summary = '您的保單<b>多項特徵符合實質課稅態樣</b>，被列入遺產總額課稅機率極高。<b>強烈建議立即諮詢專業顧問</b>規劃調整。';
+    levelClass = 'lvl-high';
+  }
+
+  // 渲染
+  document.getElementById('g-score').textContent = score;
+  const circumference = 2 * Math.PI * 50; // 314.16
+  const offset = circumference * (1 - score / 100);
+  document.getElementById('gauge-circle').setAttribute('stroke-dashoffset', offset);
+
+  // 改 class
+  const dash = document.getElementById('risk-dashboard');
+  const gauge = document.getElementById('risk-gauge');
+  const txt = document.getElementById('risk-text-side');
+  ['lvl-low','lvl-mid','lvl-high'].forEach(c => {
+    dash.classList.remove(c);
+    gauge.classList.remove(c);
+    txt.classList.remove(c);
+  });
+  dash.classList.add(levelClass);
+  gauge.classList.add(levelClass);
+  txt.classList.add(levelClass);
+
+  document.getElementById('r-verdict').textContent = verdict;
+  document.getElementById('r-summary').innerHTML = summary;
+  document.getElementById('s-yes').textContent = yesCount;
+  document.getElementById('s-unsure').textContent = unsureCount;
+  document.getElementById('s-no').textContent = noCount;
+
+  // tags
+  let tagsHtml = '';
+  yesItems.forEach(n => { tagsHtml += `<span class="matched-tag">✗ ${n}</span>`; });
+  unsureItems.forEach(n => { tagsHtml += `<span class="matched-tag unsure">? ${n}</span>`; });
+  document.getElementById('r-tags').innerHTML = tagsHtml;
+
+  // 控制遺產稅串接卡 (中/高風險才顯示)
+  document.getElementById('estate-link').style.display =
+    (level === 'mid' || level === 'high') ? 'block' : 'none';
+
+  // 儲存當前風險狀態供 PDF 報告使用
+  window._riskState = {
+    score, level, verdict, yesItems, unsureItems, yesCount, noCount, unsureCount, summary
+  };
+
+  // 建議
+  renderRecommendations(yesItems, unsureItems, level);
+}
+
+/* 渲染建議方案 */
+function renderRecommendations(yes, unsure, level) {
+  const recSection = document.getElementById('rec-section');
+  const recList = document.getElementById('rec-list');
+
+  if (level === 'low' || (yes.length === 0 && unsure.length === 0)) {
+    recSection.style.display = 'block';
+    recList.innerHTML = `
+      <div class="rec-card green">
+        <div class="rec-icon">✓</div>
+        <div class="rec-content">
+          <div class="rec-title">保單規劃健康，建議定期保單健檢</div>
+          <div class="rec-desc">您的投保符合保障目的，建議每 <b>1~2 年</b>檢視一次保單，確認家庭保障缺口、受益人安排、要保人/被保險人關係，因應人生階段調整。</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  recSection.style.display = 'block';
+  let html = '';
+
+  // 對應每個態樣的建議
+  const advice = {
+    '重(帶)病投保': {
+      icon: '🏥',
+      title: '盡早規劃保障，趁健康時投保',
+      desc: '確診後投保的保單幾乎必被列入遺產。建議 <b>趁年輕健康時規劃</b>，可考慮免體檢的長年期保單；或為其他健康家人投保，分散風險。'
+    },
+    '高齡投保': {
+      icon: '👴',
+      title: '高齡投保改採傳承險種',
+      desc: '高齡投保節稅效果大幅降低，建議改用 <b>「附帶要保人變更」的長年期保單</b>，或結合<b>家族信託、贈與規劃</b>，分階段移轉資產。'
+    },
+    '鉅額投保': {
+      icon: '💰',
+      title: '分散保單金額與時間',
+      desc: '建議將大額保單拆分成多張中等保單，並 <b>分數年逐步投保</b>，搭配每年贈與免稅額 244 萬，自然降低鉅額特徵。'
+    },
+    '短期投保': {
+      icon: '⏱',
+      title: '保單持有時間越長越好',
+      desc: '短期身故是無法事先規避的，但可以 <b>越早規劃越好</b>。建議搭配長期照護險、終身險，讓保單能長期持有，降低短期特徵。'
+    },
+    '密集投保': {
+      icon: '📅',
+      title: '分散投保時間軸',
+      desc: '建議將保單規劃 <b>分散在 3~5 年內逐年購買</b>，避免短期內密集投保。可結合教育金、退休金等不同目的，呈現多元規劃。'
+    },
+    '躉繳投保': {
+      icon: '💵',
+      title: '改用分期繳費，降低躉繳特徵',
+      desc: '建議改採 <b>6 年期、10 年期、20 年期分期繳費</b>，雖總保費略高，但能大幅降低躉繳避稅嫌疑，同時保障期間更長。'
+    },
+    '舉債投保': {
+      icon: '🏦',
+      title: '避免以貸款、抵押資產繳保費',
+      desc: '保費資金來源應為 <b>合理可支配所得或既有現金</b>，避免動用不動產抵押、解定存、賣股票等留下金流痕跡的方式。'
+    },
+    '保費 ≥ 保險給付': {
+      icon: '⚖',
+      title: '提高保額，降低保費佔比',
+      desc: '建議調整保單結構，<b>讓保險金額顯著大於已繳保費</b>(至少 1.5 倍以上)，呈現實質保障功能。可考慮終身壽險或定期壽險。'
+    }
+  };
+
+  yes.forEach(name => {
+    const a = advice[name];
+    if (a) {
+      html += `<div class="rec-card">
+        <div class="rec-icon">${a.icon}</div>
+        <div class="rec-content">
+          <div class="rec-title">針對 ${name}：${a.title}</div>
+          <div class="rec-desc">${a.desc}</div>
+        </div>
+      </div>`;
+    }
+  });
+
+  // 若有 3+ 命中,加上「整體規劃」建議
+  if (yes.length >= 3) {
+    html += `<div class="rec-card">
+      <div class="rec-icon">⚖</div>
+      <div class="rec-content">
+        <div class="rec-title">整體傳承規劃：保險 + 信託 + 贈與多管齊下</div>
+        <div class="rec-desc">您命中 <b>${yes.length} 項態樣</b>，單靠保險已難達節稅效果。建議搭配 <b>家族信託、不動產規劃、夫妻財產制、分年贈與(每年 244 萬免稅額)</b> 等工具，並洽請會計師、稅務律師整體規劃。</div>
+      </div>
+    </div>`;
+  }
+
+  // 若高風險,加 CTA 級建議
+  if (level === 'high') {
+    html += `<div class="rec-card green">
+      <div class="rec-icon">📞</div>
+      <div class="rec-content">
+        <div class="rec-title">立即進行保單健檢</div>
+        <div class="rec-desc">您的保單已處於 <b>高度被課稅風險</b>，建議立即聯繫鼎綸恩宇專業顧問，由我們 14 家壽險公司全方位比對，協助您調整保單結構，降低未來繼承人風險。</div>
+      </div>
+    </div>`;
+  }
+
+  recList.innerHTML = html;
+
+  // 渲染保單調整路線圖
+  renderRoadmap(yes, level);
+}
+
+/* ── 保單調整路線圖 ── */
+function renderRoadmap(yesItems, level) {
+  const section = document.getElementById('roadmap-section');
+  const content = document.getElementById('roadmap-content');
+
+  // 只在中/高風險顯示
+  if (level === 'low' || yesItems.length < 2) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+
+  // 從基本資料推算「現況」
+  const age = parseFloat(document.getElementById('i-age').value) || 0;
+  const cov = parseFloat(document.getElementById('i-coverage').value) || 0;
+  const pre = parseFloat(document.getElementById('i-premium').value) || 0;
+  const yrs = parseFloat(document.getElementById('i-years').value) || 0;
+
+  // 規劃「目標」 — 移除高風險特徵
+  const targetAge = Math.max(age - 10, 50);  // 假想提早 10 年規劃
+  // 將躉繳分散成 6 年期: 每年 = 保費 / 6
+  const annualPremium = Math.round(pre / 6 / 10000) * 10000;
+  // 將大額分散成 2~3 張
+  const splitCov = Math.round(cov / 3 / 10000) * 10000;
+  const splitPre = Math.round(annualPremium / 3 / 10000) * 10000;
+
+  // 命中態樣的轉換建議
+  const transformations = [];
+  if (yesItems.includes('躉繳投保')) {
+    transformations.push({
+      icon: '💵',
+      from: '躉繳一次繳清 ' + Math.round(pre/10000) + ' 萬',
+      to: '改採 6 年分期繳費，每年約 ' + Math.round(annualPremium/10000) + ' 萬',
+      reason: '消除躉繳特徵，呈現長期保障規劃'
+    });
+  }
+  if (yesItems.includes('鉅額投保')) {
+    transformations.push({
+      icon: '📊',
+      from: '單張鉅額 ' + Math.round(cov/10000) + ' 萬保單',
+      to: '拆成 3 張中額保單，每張約 ' + Math.round(splitCov/10000) + ' 萬',
+      reason: '分散保額避免單張過大引人注目'
+    });
+  }
+  if (yesItems.includes('密集投保')) {
+    transformations.push({
+      icon: '📅',
+      from: '近 2 年內密集購買多張保單',
+      to: '分散在 5 年內逐年規劃 (每年 1~2 張)',
+      reason: '呈現多元化、長期化的保險規劃'
+    });
+  }
+  if (yesItems.includes('高齡投保')) {
+    transformations.push({
+      icon: '👴',
+      from: age + ' 歲投保，保障期短',
+      to: '結合 <b>家族信託</b> + <b>分年贈與</b> (每年 244 萬免稅) 多管齊下',
+      reason: '高齡情境下需綜合工具規劃'
+    });
+  }
+  if (yesItems.includes('重(帶)病投保')) {
+    transformations.push({
+      icon: '🏥',
+      from: '帶病投保，幾乎必被列入遺產',
+      to: '為其他健康家人投保，並啟動<b>不動產分割贈與</b>規劃',
+      reason: '此態樣已難挽救保單本身，需轉向其他傳承工具'
+    });
+  }
+  if (yesItems.includes('短期投保')) {
+    transformations.push({
+      icon: '⏱',
+      from: '投保未滿 3 年',
+      to: '建議盡早搭配長期照護險、終身險，<b>讓保單能持有 10 年以上</b>',
+      reason: '時間是降低短期特徵的關鍵'
+    });
+  }
+  if (yesItems.includes('舉債投保')) {
+    transformations.push({
+      icon: '🏦',
+      from: '以貸款/抵押取得保費資金',
+      to: '改用既有可支配所得逐年繳費，<b>避免留下舉債金流痕跡</b>',
+      reason: '銀行貸款記錄是國稅局重點查核項目'
+    });
+  }
+  if (yesItems.includes('保費 ≥ 保險給付')) {
+    transformations.push({
+      icon: '⚖',
+      from: '保費 ' + Math.round(pre/10000) + ' 萬 ≥ 保額 ' + Math.round(cov/10000) + ' 萬',
+      to: '提高保額至 ' + Math.round(cov/10000 * 1.5) + ' 萬以上 (保費的 1.5 倍)',
+      reason: '呈現實質保障功能而非單純資產轉移'
+    });
+  }
+
+  // 渲染
+  let html = `<div style="display:grid;grid-template-columns:1fr;gap:14px;">`;
+  transformations.forEach((t, idx) => {
+    html += `<div style="background:white;border-radius:12px;padding:14px 18px;border:1px solid rgba(13,42,58,0.08);box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${t.icon}</div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;">
+          <div style="padding:10px 14px;background:rgba(217,64,95,0.06);border-left:3px solid var(--red);border-radius:8px;">
+            <div style="font-size:10px;color:var(--red);font-weight:700;letter-spacing:1px;margin-bottom:2px;">現況 (高風險)</div>
+            <div style="font-size:12px;color:#444;line-height:1.4;">${t.from}</div>
+          </div>
+          <div style="font-size:24px;color:var(--gold);font-weight:900;">→</div>
+          <div style="padding:10px 14px;background:rgba(76,169,117,0.06);border-left:3px solid var(--green);border-radius:8px;">
+            <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:1px;margin-bottom:2px;">建議 (安全)</div>
+            <div style="font-size:12px;color:#444;line-height:1.4;">${t.to}</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;margin-left:48px;font-size:11px;color:#888;line-height:1.5;">💡 ${t.reason}</div>
+    </div>`;
+  });
+
+  // 結尾總結
+  if (transformations.length >= 3) {
+    html += `<div style="background:var(--navy);color:white;border-radius:12px;padding:14px 20px;text-align:center;margin-top:6px;">
+      <div style="font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:4px;color:var(--gold);">💎 整合策略建議</div>
+      <div style="font-size:11px;line-height:1.6;color:rgba(255,255,255,0.85);">您的保單命中 ${transformations.length} 項態樣，<b style="color:white;">單靠保單調整恐難根本解決</b>。建議洽請鼎綸恩宇進行整合規劃：保險 + 信託 + 分年贈與 + 不動產規劃，多管齊下達成傳承目標。</div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  content.innerHTML = html;
+}
+
+/* 重設 */
+function resetAll() {
+  answers = {};
+  document.getElementById('i-age').value = 55;
+  document.getElementById('i-coverage').value = 10000000;
+  document.getElementById('i-premium').value = 8000000;
+  document.getElementById('i-years').value = 3;
+  renderQuestions();
+  updateRisk();
+}
+
+/* 下載 PDF 報告書 */
+function downloadReport() {
+  // 確認是否已作答
+  const r = window._riskState;
+  if (!r || (r.yesCount + r.noCount + r.unsureCount === 0)) {
+    alert('請先完成至少一題自我檢測，才能產生報告');
+    return;
+  }
+  // 填入封面資料
+  const today = new Date();
+  const dateStr = today.getFullYear() + ' 年 ' + (today.getMonth()+1) + ' 月 ' + today.getDate() + ' 日';
+  document.getElementById('pdf-date').textContent = ' ' + dateStr;
+  const lvlMap = { low: '低風險', mid: '中風險', high: '高風險' };
+  document.getElementById('pdf-level').textContent = ' ' + (lvlMap[r.level] || r.verdict);
+  document.getElementById('pdf-matched').textContent = ' ' + r.yesCount + ' / 8 項態樣' +
+    (r.unsureCount > 0 ? ' (另 ' + r.unsureCount + ' 項不確定)' : '');
+  document.getElementById('pdf-score').textContent = ' ' + r.score;
+
+  // 觸發列印
+  setTimeout(() => window.print(), 100);
+}
+
+/* 基本資料變動: 不自動更新答案,但可以提示 */
+document.querySelectorAll('.basic-item input').forEach(inp => {
+  inp.addEventListener('input', () => {
+    // 自動套用建議答案 (如果使用者沒答過)
+    applyAutoSuggest();
+  });
+});
+
+/* 初始化 */
+renderQuestions();
+applyAutoSuggest();
+updateRisk();
+</script>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    function open() { document.body.classList.add('menu-open'); document.body.style.overflow = 'hidden'; }
+    function close() { document.body.classList.remove('menu-open'); document.body.style.overflow = ''; }
+    function toggle() { document.body.classList.contains('menu-open') ? close() : open(); }
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23F05A28"/><text x="16" y="23" text-anchor="middle" font-size="20" font-weight="900" fill="white" font-family="Noto Sans TC,sans-serif">鼎</text></svg>">
+<title>保額需求分析 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --green: #4CA975;
+    --red: #D9405F;
+    --purple: #7E5BA0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: white;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .header-center .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 60px;
+    color: var(--orange);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+  }
+  .header-center .big-number span {
+    font-size: 22px;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .header-center .sub-title {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 6px;
+    text-indent: 6px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '🛡';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row {
+    display: flex;
+    gap: 6px;
+  }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 20px; }
+
+  /* ── BODY ── */
+  .body { padding: 36px 48px 40px; }
+
+  .section-title-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title-icon .hint {
+    margin-left: auto;
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  /* ── 方法切換器 ── */
+  .method-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .method-card {
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+  }
+  .method-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+  .method-card.active {
+    background: linear-gradient(135deg, var(--orange-light) 0%, rgba(232,160,32,0.08) 100%);
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(240,90,40,0.15);
+  }
+  .method-card.active::after {
+    content: '✓';
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+  }
+  .method-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .method-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--teal);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-left: 4px;
+  }
+  .method-card.active .method-tag { background: var(--orange); }
+  .method-desc {
+    font-size: 11px;
+    color: #777;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── 兩欄 ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 32px;
+    align-items: start;
+  }
+
+  /* ── 輸入區 ── */
+  .input-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1.5px solid #eee;
+    transition: border-color .15s;
+  }
+  .input-row:focus-within {
+    border-color: var(--orange);
+    background: #fff;
+  }
+  .input-row .ic {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: var(--orange-light);
+  }
+  .input-row .ic.teal { background: var(--teal-light); }
+  .input-row .ic.gold { background: rgba(232,160,32,0.15); }
+  .input-row .ic.purple { background: rgba(126,91,160,0.12); }
+  .input-row .lbl {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 0;
+  }
+  .input-row .lbl .sub {
+    font-size: 10px;
+    color: #999;
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: 0.3px;
+  }
+  .input-row input[type="number"] {
+    width: 110px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    text-align: right;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s;
+    -moz-appearance: textfield;
+  }
+  .input-row input[type="number"]::-webkit-outer-spin-button,
+  .input-row input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  .input-row input[type="number"]:focus { border-color: var(--orange); }
+  .input-row input.wide { width: 140px; }
+  .input-row .unit {
+    font-size: 11px;
+    color: #999;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  /* 性別/吸菸 切換 */
+  .seg-group {
+    display: flex;
+    background: #fff;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    gap: 2px;
+    width: 130px;
+  }
+  .seg-btn {
+    flex: 1;
+    padding: 6px 6px;
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .seg-btn:hover { color: var(--navy); }
+  .seg-btn.active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  /* 步進器 */
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2px;
+  }
+  .stepper button {
+    width: 26px; height: 26px;
+    border: none;
+    background: var(--orange-light);
+    color: var(--orange);
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    line-height: 1;
+    transition: all .15s;
+  }
+  .stepper button:hover { background: var(--orange); color: #fff; }
+  .stepper .v {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    width: 28px;
+    text-align: center;
+  }
+
+  /* DIME 公式視覺化 */
+  .dime-formula {
+    margin-bottom: 28px;
+    padding: 22px 24px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(13,42,58,0.03) 0%, rgba(240,90,40,0.04) 100%);
+    border: 1.5px solid rgba(13,42,58,0.08);
+  }
+  .dime-eq {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .dime-block {
+    text-align: center;
+    padding: 14px 10px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1.5px solid #eee;
+    position: relative;
+  }
+  .dime-block .letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+  .dime-block .label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .dime-block .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .dime-block .val small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    color: #999;
+    margin-left: 2px;
+    font-weight: 500;
+  }
+  .dime-plus {
+    font-size: 22px;
+    color: #ccc;
+    text-align: center;
+  }
+  .dime-result {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    border: none;
+    color: white;
+    padding: 18px 12px;
+  }
+  .dime-result .letter, .dime-result .label { color: rgba(255,255,255,0.8); }
+  .dime-result .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 4px; }
+  .dime-result .val { color: white; font-size: 28px; }
+  .dime-result .val small { color: rgba(255,255,255,0.7); }
+
+  /* 雙十法則公式 */
+  .double10-formula {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .d10-card {
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    text-align: center;
+  }
+  .d10-card.gold { border-color: var(--gold); background: rgba(232,160,32,0.05); }
+  .d10-card.teal { border-color: var(--teal); background: rgba(26,107,114,0.05); }
+  .d10-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .d10-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .d10-card.gold .d10-num { color: var(--gold); }
+  .d10-card.teal .d10-num { color: var(--teal); }
+  .d10-num small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .d10-eq {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* ── 結果英雄區 ── */
+  .result-hero {
+    margin: 0 0 28px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(13,42,58,0.12);
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 36px;
+    color: #fff;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-cell {
+    padding: 0 22px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-cell:first-child { padding-left: 0; }
+  .hero-cell:last-child { border-right: none; padding-right: 0; }
+  .hero-cell .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .hero-cell .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  .hero-cell .val .small {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .hero-cell .val .currency {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    margin-right: 4px;
+  }
+  .hero-cell.gap-cell .val { color: var(--orange); font-size: 56px; }
+  .hero-cell .desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .hero-cell .desc.warn { color: var(--gold); font-weight: 700; }
+  .hero-cell .desc.bad { color: #FF8B6B; font-weight: 700; }
+  .hero-cell .desc.good { color: #7FE0A1; font-weight: 700; }
+
+  /* ── 四險種拆解卡 ── */
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .breakdown-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    border: 1.5px solid #eee;
+    background: #fff;
+    position: relative;
+    transition: transform .2s, box-shadow .2s;
+    overflow: hidden;
+  }
+  .breakdown-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+  }
+  .breakdown-card.bk-life {
+    border-top: 4px solid var(--orange);
+  }
+  .breakdown-card.bk-medical {
+    border-top: 4px solid var(--teal);
+  }
+  .breakdown-card.bk-accident {
+    border-top: 4px solid var(--gold);
+  }
+  .breakdown-card.bk-critical {
+    border-top: 4px solid var(--purple);
+  }
+  .bk-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .bk-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .bk-life .bk-icon { background: var(--orange-light); }
+  .bk-medical .bk-icon { background: var(--teal-light); }
+  .bk-accident .bk-icon { background: rgba(232,160,32,0.15); }
+  .bk-critical .bk-icon { background: rgba(126,91,160,0.12); }
+  .bk-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .bk-subtitle {
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .bk-amount-block {
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .bk-amount-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .bk-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .bk-life .bk-amount { color: var(--orange); }
+  .bk-medical .bk-amount { color: var(--teal); }
+  .bk-accident .bk-amount { color: var(--gold); }
+  .bk-critical .bk-amount { color: var(--purple); }
+  .bk-amount .currency {
+    font-size: 14px;
+    color: #999;
+    margin-right: 3px;
+  }
+  .bk-amount .unit {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .bk-amount-desc {
+    font-size: 11px;
+    color: #888;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* 保費區間條 */
+  .premium-block {
+    border-top: 1px dashed #e5e5e5;
+    padding-top: 12px;
+  }
+  .premium-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .premium-label .ann-tag {
+    background: #f0ede8;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 9px;
+    color: #777;
+    letter-spacing: 0.5px;
+  }
+  .premium-range {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .premium-low, .premium-high {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .premium-low { color: var(--green); }
+  .premium-high { color: var(--orange); }
+  .premium-tilde {
+    flex: 1;
+    height: 6px;
+    background: linear-gradient(90deg, var(--green), var(--gold), var(--orange));
+    border-radius: 3px;
+    margin: 0 6px;
+    align-self: center;
+    position: relative;
+  }
+  .premium-monthly {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .premium-monthly b {
+    color: var(--navy);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .premium-feature {
+    font-size: 10px;
+    color: #aaa;
+    margin-top: 4px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* ── 總保費預估 ── */
+  .total-premium {
+    margin-bottom: 28px;
+    padding: 22px 26px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(232,160,32,0.08) 0%, rgba(240,90,40,0.06) 100%);
+    border: 1.5px solid rgba(240,90,40,0.2);
+  }
+  .total-premium-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .total-premium-cell {
+    text-align: center;
+    padding: 0 16px;
+    position: relative;
+  }
+  .total-premium-cell:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 20%;
+    height: 60%;
+    width: 1px;
+    background: rgba(0,0,0,0.1);
+  }
+  .tp-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .tp-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .tp-value small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+    margin-left: 3px;
+  }
+  .tp-value.highlight { color: var(--orange); font-size: 40px; }
+  .tp-ratio {
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .tp-ratio b {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    margin: 0 2px;
+  }
+  .tp-ratio .badge-ok {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 6px;
+    background: var(--green);
+    color: white;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .tp-ratio .badge-warn {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 6px;
+    background: var(--orange);
+    color: white;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 雷達圖 ── */
+  .radar-card {
+    margin-bottom: 28px;
+    padding: 22px 24px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .radar-content {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  #radar-svg {
+    width: 280px;
+    height: 280px;
+    display: block;
+  }
+  .radar-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .radar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fafafa;
+    border-left: 4px solid #ccc;
+  }
+  .radar-item.ri-life { border-left-color: var(--orange); }
+  .radar-item.ri-medical { border-left-color: var(--teal); }
+  .radar-item.ri-accident { border-left-color: var(--gold); }
+  .radar-item.ri-critical { border-left-color: var(--purple); }
+  .radar-item .ri-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+  }
+  .radar-item .ri-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .radar-item .ri-score small {
+    font-size: 11px;
+    color: #999;
+  }
+  .radar-item .ri-bar {
+    width: 80px;
+    height: 6px;
+    background: #e5e5e5;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .radar-item .ri-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .6s ease;
+  }
+  .ri-life .ri-bar .fill { background: var(--orange); }
+  .ri-medical .ri-bar .fill { background: var(--teal); }
+  .ri-accident .ri-bar .fill { background: var(--gold); }
+  .ri-critical .ri-bar .fill { background: var(--purple); }
+
+  /* ── 解決方案區 ── */
+  .solution-section {
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(240,90,40,0.06) 0%, rgba(232,160,32,0.04) 100%);
+    border: 1.5px solid rgba(240,90,40,0.15);
+  }
+  .solution-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .solution-subtitle {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .solution-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--navy);
+    color: white;
+  }
+  .solution-cta .text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .solution-cta .text strong {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .solution-cta a {
+    background: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.4);
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .solution-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.5);
+  }
+
+  .notes {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(26,107,114,0.05);
+    border-left: 4px solid var(--teal);
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .notes strong {
+    color: var(--teal);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .notes ul { margin: 6px 0 0 18px; }
+  .notes li { margin-bottom: 3px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; }
+    .quick-bar { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER) v2
+     ═══════════════════════════════════════════ */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+  }
+  .menu-trigger-icon { width: 22px; height: 16px; position: relative; }
+  .menu-trigger-icon span {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden; pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible; pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff; flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.2;
+    color: #fff;
+  }
+  .sidebar-header-sub {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 1.5px; font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px; font-weight: 700;
+    color: #999; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px 10px 24px;
+    color: #555; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●'; margin-left: auto;
+    color: var(--orange); font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px; padding: 10px 14px;
+    border-radius: 8px; border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy); color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px; background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center; margin-top: 10px;
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 84vw; max-width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important; left: 12px !important;
+      width: 36px !important; height: 36px !important;
+    }
+  }
+
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px; right: 16px;
+      padding: 12px 18px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link active"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">🛡</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">DING LUN · ENRICH</div>
+          <div class="sub tag">保額需求</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">COVERAGE NEEDS ANALYSIS</div>
+        <div class="big-number">DIME<span>·10/10</span></div>
+        <div class="sub-title">保額需求分析</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">DIME 法則 + 雙十法則</div>
+          <div class="badge-line2">含保費預估</div>
+        </div>
+        <div class="quick-bar">
+          <div class="quick-bar-row">
+            <a href="../index.html" class="quick-btn">← 回首頁</a>
+          </div>
+          <div class="quick-bar-row">
+            <a href="retirement.html" class="quick-btn">🏖 退休</a>
+            <button type="button" class="quick-btn" onclick="resetAll()">↻ 重設</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAGLINE BAR -->
+  <div class="tagline-bar">
+    <span>應有保額計算</span>
+    <span class="dot">●</span>
+    <span>四大險種拆解</span>
+    <span class="dot">●</span>
+    <span>保費區間預估</span>
+  </div>
+
+  <div class="body">
+
+    <!-- ── 方法切換 ── -->
+    <div class="section-title-icon">
+      壽險保額計算方式
+      <span class="hint">兩種方法並列比對</span>
+    </div>
+    <div class="method-switch">
+      <div class="method-card active" data-method="dime">
+        <div class="method-name">📐 DIME 法則 <span class="method-tag">精準</span></div>
+        <div class="method-desc">Debt 債務 + Income 收入替代 + Mortgage 房貸 + Education 教育金，逐項計算每筆責任金額。</div>
+      </div>
+      <div class="method-card" data-method="double10">
+        <div class="method-name">⚡ 雙十法則 <span class="method-tag">快速</span></div>
+        <div class="method-desc">保額 = 年收入 × 10 倍；保費 = 年收入 × 10%。簡單但不一定精準，常用於快速估算。</div>
+      </div>
+    </div>
+
+    <!-- ── 兩欄輸入 ── -->
+    <div class="two-col">
+      <!-- 左欄: 個人/家庭資料 -->
+      <div>
+        <div class="section-title-icon">
+          個人資料
+          <span class="hint">影響費率</span>
+        </div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">👤</div>
+            <div class="lbl">年齡</div>
+            <input type="number" id="i-age" value="35" min="18" max="80">
+            <div class="unit">歲</div>
+          </div>
+          <div class="input-row">
+            <div class="ic">⚥</div>
+            <div class="lbl">性別</div>
+            <div class="seg-group" id="gender-group">
+              <button class="seg-btn active" data-val="M">男</button>
+              <button class="seg-btn" data-val="F">女</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="ic">🚭</div>
+            <div class="lbl">吸菸狀態 <span class="sub">影響定壽 30~40%</span></div>
+            <div class="seg-group" id="smoke-group">
+              <button class="seg-btn active" data-val="N">不吸</button>
+              <button class="seg-btn" data-val="Y">吸菸</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title-icon" style="margin-top:24px;">
+          家庭責任
+          <span class="hint">DIME 計算依據</span>
+        </div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">💼</div>
+            <div class="lbl">本人年收入 <span class="sub">含獎金、年終</span></div>
+            <input type="number" id="i-income" value="800000" min="0" step="10000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic">👨‍👩‍👧</div>
+            <div class="lbl">家庭年支出 <span class="sub">本人離世後家人需替代</span></div>
+            <input type="number" id="i-expense" value="600000" min="0" step="10000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic">👶</div>
+            <div class="lbl">最小子女目前年齡 <span class="sub">無子女填 18</span></div>
+            <input type="number" id="i-childAge" value="3" min="0" max="30">
+            <div class="unit">歲</div>
+          </div>
+          <div class="input-row">
+            <div class="ic gold">🏠</div>
+            <div class="lbl">房貸餘額 <span class="sub">本人應分擔部分</span></div>
+            <input type="number" id="i-mortgage" value="5000000" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic gold">💳</div>
+            <div class="lbl">其他債務 <span class="sub">車貸/信貸/卡債</span></div>
+            <input type="number" id="i-debt" value="200000" min="0" step="10000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">🎓</div>
+            <div class="lbl">每位子女教育金 <span class="sub">本地大學約200萬</span></div>
+            <input type="number" id="i-eduPer" value="2000000" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">👶👦</div>
+            <div class="lbl">子女人數</div>
+            <div class="stepper">
+              <button type="button" data-target="i-childCount" data-step="-1">−</button>
+              <div class="v" id="v-i-childCount">1</div>
+              <button type="button" data-target="i-childCount" data-step="1">+</button>
+              <input type="hidden" id="i-childCount" value="1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右欄: 收入替代年數 / 已有保障 -->
+      <div>
+        <div class="section-title-icon">
+          收入替代假設
+          <span class="hint">DIME 中的 I</span>
+        </div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">📅</div>
+            <div class="lbl">收入替代年數 <span class="sub">至最小子女成年較合理</span></div>
+            <input type="number" id="i-replaceYears" value="15" min="0" max="40">
+            <div class="unit">年</div>
+          </div>
+          <div class="input-row">
+            <div class="ic">📊</div>
+            <div class="lbl">通膨折現 <span class="sub">通膨 - 投資報酬</span></div>
+            <input type="number" id="i-discount" value="2" min="0" max="10" step="0.1">
+            <div class="unit">%</div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">🏥</div>
+            <div class="lbl">每日病房費目標 <span class="sub">單人房約 4,000~6,000</span></div>
+            <input type="number" id="i-roomFee" value="5000" min="0" step="500" class="wide">
+            <div class="unit">元</div>
+          </div>
+        </div>
+
+        <div class="section-title-icon" style="margin-top:24px;">
+          已有保障 (扣除)
+          <span class="hint">已投保金額</span>
+        </div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">📜</div>
+            <div class="lbl">現有壽險保額 <span class="sub">含團保/勞保身故</span></div>
+            <input type="number" id="i-haveLife" value="0" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">🏥</div>
+            <div class="lbl">現有住院日額 <span class="sub">所有醫療險加總</span></div>
+            <input type="number" id="i-haveMedical" value="0" min="0" step="500" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic gold">⚠️</div>
+            <div class="lbl">現有意外險保額</div>
+            <input type="number" id="i-haveAccident" value="0" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic purple">🎗️</div>
+            <div class="lbl">現有重大傷病保額 <span class="sub">含重疾、特定傷病</span></div>
+            <input type="number" id="i-haveCritical" value="0" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+        </div>
+
+        <div class="section-title-icon" style="margin-top:24px;">
+          現況保費
+          <span class="hint">用於檢核負擔</span>
+        </div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">💰</div>
+            <div class="lbl">目前年繳保費總計 <span class="sub">所有保單加總</span></div>
+            <input type="number" id="i-currentPremium" value="0" min="0" step="1000" class="wide">
+            <div class="unit">元</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DIME 公式視覺化 ── -->
+    <div id="dime-section">
+      <div class="section-title-icon">
+        DIME 計算明細
+        <span class="hint">逐項加總</span>
+      </div>
+      <div class="dime-formula">
+        <div class="dime-eq">
+          <div class="dime-block">
+            <div class="letter">D</div>
+            <div class="label">Debt 債務</div>
+            <div class="val"><span id="dime-d">0</span><small>萬</small></div>
+          </div>
+          <div class="dime-block">
+            <div class="letter">I</div>
+            <div class="label">Income 收入替代</div>
+            <div class="val"><span id="dime-i">0</span><small>萬</small></div>
+          </div>
+          <div class="dime-block">
+            <div class="letter">M</div>
+            <div class="label">Mortgage 房貸</div>
+            <div class="val"><span id="dime-m">0</span><small>萬</small></div>
+          </div>
+          <div class="dime-block">
+            <div class="letter">E</div>
+            <div class="label">Education 教育金</div>
+            <div class="val"><span id="dime-e">0</span><small>萬</small></div>
+          </div>
+          <div class="dime-plus">=</div>
+          <div class="dime-block dime-result">
+            <div class="letter">∑</div>
+            <div class="label">應有壽險</div>
+            <div class="val"><span id="dime-total">0</span><small>萬</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 雙十法則公式視覺化 ── -->
+    <div id="double10-section" style="display:none;">
+      <div class="section-title-icon">
+        雙十法則檢核
+        <span class="hint">10 倍年收入 / 10% 年保費</span>
+      </div>
+      <div class="double10-formula">
+        <div class="d10-card gold">
+          <div class="d10-label">應有壽險保額</div>
+          <div class="d10-num"><span id="d10-coverage">0</span><small>萬</small></div>
+          <div class="d10-eq">年收入 × 10</div>
+        </div>
+        <div class="d10-card teal">
+          <div class="d10-label">合理年保費上限</div>
+          <div class="d10-num"><span id="d10-premium">0</span><small>萬</small></div>
+          <div class="d10-eq">年收入 × 10%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 主結果英雄區 ── -->
+    <div class="section-title-icon" style="margin-top:24px;">綜合試算結果</div>
+    <div class="result-hero">
+      <div class="hero-grid">
+        <div class="hero-cell">
+          <div class="lbl">應有壽險保額</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-need">0</span><span class="small">萬</span></div>
+          <div class="desc" id="r-need-desc">DIME 法則計算</div>
+        </div>
+        <div class="hero-cell">
+          <div class="lbl">已有保障</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-have">0</span><span class="small">萬</span></div>
+          <div class="desc">含團保/勞保等</div>
+        </div>
+        <div class="hero-cell gap-cell">
+          <div class="lbl">壽險缺口</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-gap">0</span><span class="small">萬</span></div>
+          <div class="desc bad" id="r-gap-desc">需補足保障</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 四險種拆解 ── -->
+    <div class="section-title-icon">
+      四大險種建議保額 + 保費預估
+      <span class="hint">市場行情參考</span>
+    </div>
+    <div class="breakdown-grid">
+
+      <!-- 壽險 -->
+      <div class="breakdown-card bk-life">
+        <div class="bk-header">
+          <div class="bk-icon">🛡️</div>
+          <div>
+            <div class="bk-title">定期壽險</div>
+            <div class="bk-subtitle">DEATH PROTECTION</div>
+          </div>
+        </div>
+        <div class="bk-amount-block">
+          <div class="bk-amount-label">建議保額</div>
+          <div class="bk-amount"><span class="currency">NT$</span><span id="bk-life-amt">0</span><span class="unit">萬</span></div>
+          <div class="bk-amount-desc">填補壽險缺口，建議規劃 20 年期定期壽險,保障家中經濟責任</div>
+        </div>
+        <div class="premium-block">
+          <div class="premium-label">年保費預估 <span class="ann-tag">20年期定期</span></div>
+          <div class="premium-range">
+            <span class="premium-low" id="bk-life-low">0</span>
+            <span class="premium-tilde"></span>
+            <span class="premium-high" id="bk-life-high">0</span>
+          </div>
+          <div class="premium-monthly">月繳約 <b id="bk-life-mon">0</b> 元</div>
+          <div class="premium-feature">含優體/標準體區間，最終以核保結果為準</div>
+        </div>
+      </div>
+
+      <!-- 醫療 -->
+      <div class="breakdown-card bk-medical">
+        <div class="bk-header">
+          <div class="bk-icon">🏥</div>
+          <div>
+            <div class="bk-title">實支實付 + 日額</div>
+            <div class="bk-subtitle">MEDICAL EXPENSE</div>
+          </div>
+        </div>
+        <div class="bk-amount-block">
+          <div class="bk-amount-label">建議住院日額</div>
+          <div class="bk-amount"><span class="currency">NT$</span><span id="bk-medical-amt">0</span><span class="unit">元/日</span></div>
+          <div class="bk-amount-desc">雜費實支限額建議 <b id="bk-medical-limit" style="color:var(--teal)">0</b> 萬，新型療法理賠加倍</div>
+        </div>
+        <div class="premium-block">
+          <div class="premium-label">年保費預估 <span class="ann-tag">附約定期</span></div>
+          <div class="premium-range">
+            <span class="premium-low" id="bk-medical-low">0</span>
+            <span class="premium-tilde"></span>
+            <span class="premium-high" id="bk-medical-high">0</span>
+          </div>
+          <div class="premium-monthly">月繳約 <b id="bk-medical-mon">0</b> 元</div>
+          <div class="premium-feature">含實支實付雙倍給付、一年期住院日額</div>
+        </div>
+      </div>
+
+      <!-- 意外 -->
+      <div class="breakdown-card bk-accident">
+        <div class="bk-header">
+          <div class="bk-icon">⚠️</div>
+          <div>
+            <div class="bk-title">意外險 + 失能險</div>
+            <div class="bk-subtitle">ACCIDENT & DISABILITY</div>
+          </div>
+        </div>
+        <div class="bk-amount-block">
+          <div class="bk-amount-label">建議意外保額</div>
+          <div class="bk-amount"><span class="currency">NT$</span><span id="bk-accident-amt">0</span><span class="unit">萬</span></div>
+          <div class="bk-amount-desc">含意外實支限額 <b id="bk-accident-medical" style="color:var(--gold)">0</b> 萬，並建議搭配失能扶助月給付</div>
+        </div>
+        <div class="premium-block">
+          <div class="premium-label">年保費預估 <span class="ann-tag">職業1~2級</span></div>
+          <div class="premium-range">
+            <span class="premium-low" id="bk-accident-low">0</span>
+            <span class="premium-tilde"></span>
+            <span class="premium-high" id="bk-accident-high">0</span>
+          </div>
+          <div class="premium-monthly">月繳約 <b id="bk-accident-mon">0</b> 元</div>
+          <div class="premium-feature">職業類別越高保費越高，4~6級適用加費規則</div>
+        </div>
+      </div>
+
+      <!-- 重大傷病 -->
+      <div class="breakdown-card bk-critical">
+        <div class="bk-header">
+          <div class="bk-icon">🎗️</div>
+          <div>
+            <div class="bk-title">重大傷病一次金</div>
+            <div class="bk-subtitle">CRITICAL ILLNESS</div>
+          </div>
+        </div>
+        <div class="bk-amount-block">
+          <div class="bk-amount-label">建議一次金</div>
+          <div class="bk-amount"><span class="currency">NT$</span><span id="bk-critical-amt">0</span><span class="unit">萬</span></div>
+          <div class="bk-amount-desc">癌症/重疾治療期約需 2~3 年收入支應，建議覆蓋療養期生活費</div>
+        </div>
+        <div class="premium-block">
+          <div class="premium-label">年保費預估 <span class="ann-tag">20年期重疾</span></div>
+          <div class="premium-range">
+            <span class="premium-low" id="bk-critical-low">0</span>
+            <span class="premium-tilde"></span>
+            <span class="premium-high" id="bk-critical-high">0</span>
+          </div>
+          <div class="premium-monthly">月繳約 <b id="bk-critical-mon">0</b> 元</div>
+          <div class="premium-feature">罹病後保障即啟動，免除後續繳費</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── 總保費與雙十檢核 ── -->
+    <div class="section-title-icon">總保費評估</div>
+    <div class="total-premium">
+      <div class="total-premium-grid">
+        <div class="total-premium-cell">
+          <div class="tp-label">建議年保費下限</div>
+          <div class="tp-value"><span id="tp-low">0</span><small>元</small></div>
+          <div class="tp-ratio">月繳 <b id="tp-low-m">0</b> 元</div>
+        </div>
+        <div class="total-premium-cell">
+          <div class="tp-label">建議年保費上限</div>
+          <div class="tp-value highlight"><span id="tp-high">0</span><small>元</small></div>
+          <div class="tp-ratio">月繳 <b id="tp-high-m">0</b> 元</div>
+        </div>
+        <div class="total-premium-cell">
+          <div class="tp-label">佔年收入比</div>
+          <div class="tp-value"><span id="tp-ratio">0</span><small>%</small></div>
+          <div class="tp-ratio">雙十法則 <b>10</b>% <span id="tp-ratio-badge"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 保障完整度雷達圖 ── -->
+    <div class="section-title-icon">
+      保障完整度評估
+      <span class="hint">視覺化現況 vs 建議</span>
+    </div>
+    <div class="radar-card">
+      <div class="radar-content">
+        <svg id="radar-svg" viewBox="0 0 280 280"></svg>
+        <div class="radar-legend">
+          <div class="radar-item ri-life">
+            <div class="ri-name">壽險</div>
+            <div class="ri-bar"><div class="fill" id="rl-life" style="width:0%"></div></div>
+            <div class="ri-score"><span id="rs-life">0</span><small>%</small></div>
+          </div>
+          <div class="radar-item ri-medical">
+            <div class="ri-name">醫療</div>
+            <div class="ri-bar"><div class="fill" id="rl-medical" style="width:0%"></div></div>
+            <div class="ri-score"><span id="rs-medical">0</span><small>%</small></div>
+          </div>
+          <div class="radar-item ri-accident">
+            <div class="ri-name">意外</div>
+            <div class="ri-bar"><div class="fill" id="rl-accident" style="width:0%"></div></div>
+            <div class="ri-score"><span id="rs-accident">0</span><small>%</small></div>
+          </div>
+          <div class="radar-item ri-critical">
+            <div class="ri-name">重大傷病</div>
+            <div class="ri-bar"><div class="fill" id="rl-critical" style="width:0%"></div></div>
+            <div class="ri-score"><span id="rs-critical">0</span><small>%</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 解決方案區 ── -->
+    <div class="solution-section">
+      <div class="solution-title">✦ 量身打造您的保障組合 ✦</div>
+      <div class="solution-subtitle">14 家壽險 ・ 12 家產險 ・ 業界最齊全選擇</div>
+      <div class="solution-cta">
+        <div class="text">
+          每個人的責任不同、保費承受度不同，<strong>「最便宜」不一定最適合您</strong>。<br>
+          我們提供市場上 26 家保險公司的對比分析，找出最佳 CP 值組合。
+        </div>
+        <a href="tel:0925000049">📱 立即諮詢</a>
+      </div>
+    </div>
+
+    <!-- 注意事項 -->
+    <div class="notes">
+      <strong>📌 計算說明</strong>
+      <ul>
+        <li><b>DIME 法則</b>：D (Debt 債務) + I (Income 收入替代,至最小子女成年) + M (Mortgage 房貸) + E (Education 教育金/子女)。逐項精算每筆責任。</li>
+        <li><b>雙十法則</b>：壽險保額應為年收入 10 倍、年保費佔年收入 10%。簡單但對高所得族群可能高估。</li>
+        <li><b>保費預估</b>：基於 2025/2026 台灣定期壽險、實支實付、意外、重疾市場行情(年齡/性別/吸菸體) 推估的區間，實際保費依各家公司核保結果為準。</li>
+        <li><b>住院日額</b>：建議覆蓋每日病房升等差額，雜費實支限額建議 = 日額 × 30 倍以上。</li>
+        <li><b>意外保額</b>：建議為年收入 5~10 倍，醫療實支建議 5~10 萬。</li>
+        <li><b>重大傷病</b>：建議覆蓋 2~3 年家庭年支出，含療養期間收入損失。</li>
+        <li>本工具為簡易估算，最終保障規劃請洽鼎綸恩宇專業顧問。</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+    <!-- 其他試算工具 -->
+    <div style="margin-top:28px;padding-top:24px;border-top:1px dashed #ddd;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#0D2A3A;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:3px;height:14px;background:#F05A28;border-radius:2px;"></span>
+          其他試算工具
+        </div>
+        <a href="../index.html" style="font-size:11px;color:#888;text-decoration:none;letter-spacing:0.5px;">查看全部 →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+      <a href="tax.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(240,90,40,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💰</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">綜合所得稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">114年度・夫妻三方案</div>
+      </a>
+      <a href="retirement.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🏖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">退休缺口</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">勞保+勞退+自存</div>
+      </a>
+      <a href="education.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,155,168,0.18);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🎓</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">教育金</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">媽媽客群必備</div>
+      </a>
+      <a href="loan.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(13,42,58,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💵</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">貸款試算</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">房・車・信貸三合一</div>
+      </a>
+      <a href="tax-risk.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';"><div style="position:absolute;top:-7px;right:6px;background:#F05A28;color:white;padding:1px 7px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:1px;">獨家</div>
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(217,64,95,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚠</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">課稅風險</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">8大態樣自我檢測</div>
+      </a>
+      <a href="estate.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(126,91,160,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">遺產稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">含實質課稅情境</div>
+      </a>
+      </div>
+    </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">用對的保額・保護對的人</div>
+    <a href="tel:0925000049" class="footer-right">📱 0925-000-049</a>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   保額需求分析 - 計算邏輯
+   - DIME 法則: D + I + M + E
+   - 雙十法則: 保額=年收入×10, 保費=年收入×10%
+   - 保費估算: 基於 2025/2026 台灣保險市場行情
+   ============================================================ */
+
+let method = 'dime';
+let gender = 'M';
+let smoke = 'N';
+
+function num(id) {
+  const v = parseFloat(document.getElementById(id)?.value);
+  return isNaN(v) ? 0 : v;
+}
+function fmt(n) {
+  return Math.round(n).toLocaleString('en-US');
+}
+function fmtMan(n) {
+  return Math.round(n / 10000).toLocaleString('en-US');
+}
+
+/* ── 定期壽險費率 (元/萬保額/年) ──
+   基於 30歲女性 100萬 ≈ 1400 / 200萬 ≈ 2880 → 14 元/萬
+        45歲男性 500萬 (非吸菸) ≈ 34500 → 69 元/萬
+        45歲女性 500萬 (非吸菸) ≈ 19900 → 40 元/萬
+        45歲男性 1000萬 (非吸菸) ≈ 69000 → 69 元/萬
+   推估費率曲線 (年齡指數型)
+*/
+function lifeRate(age, g, smk) {
+  // 基礎費率(元/萬保額/年, 30歲非吸菸)
+  let base = (g === 'M') ? 20 : 13;
+  // 年齡係數: 35歲後加倍, 45歲再加倍
+  const ageMul = Math.pow(1.08, Math.max(0, age - 30));
+  let rate = base * ageMul;
+  // 吸菸 + 30~45%
+  if (smk === 'Y') rate *= (g === 'M' ? 1.4 : 1.35);
+  return rate;
+}
+
+/* ── 醫療險費率 (含實支+日額+附約)  
+   參考: 30歲男性 雙實支 + 1000日額 ≈ 8000~12000/年
+        男性比女性貴約 10~20%
+        年齡係數類似壽險但較緩
+*/
+function medicalRate(age, g, dailyAmount) {
+  const baseRate = (g === 'M') ? 0.85 : 0.75; // 元/日額/年
+  const ageMul = Math.pow(1.045, Math.max(0, age - 30));
+  // 加上實支實付(限額3萬基本)
+  const expenseAdd = (g === 'M' ? 3500 : 3000) * Math.pow(1.04, Math.max(0, age - 30));
+  return dailyAmount * baseRate * ageMul + expenseAdd;
+}
+
+/* ── 意外險費率(職業1~2級, 元/萬保額/年) 
+   參考: 30歲 100萬意外+10萬實支 ≈ 1500~2500
+*/
+function accidentRate(age) {
+  // 職業1~2級, 普通上班族
+  const baseRate = 1.5; // 元/萬/年
+  // 30歲後微幅調整
+  const ageMul = (age >= 60) ? 1.5 : (age >= 50 ? 1.2 : 1);
+  return baseRate * ageMul;
+}
+
+/* ── 重大傷病費率 (元/萬/年) 
+   參考: 30歲男 100萬20年期 ≈ 約 5,000~8,000
+        30歲女 100萬20年期 ≈ 約 4,000~6,500
+*/
+function criticalRate(age, g, smk) {
+  let base = (g === 'M') ? 55 : 45;
+  const ageMul = Math.pow(1.06, Math.max(0, age - 30));
+  let rate = base * ageMul;
+  if (smk === 'Y') rate *= 1.3;
+  return rate;
+}
+
+/* ── DIME 計算 ── */
+function calcDIME(d) {
+  const debt = d.debt;  // D
+  const mortgage = d.mortgage;  // M
+  const eduPer = d.eduPer;
+  const childCount = d.childCount;
+  const E = eduPer * childCount;  // E
+
+  // I: 家庭年支出 × 替代年數,以折現率計算現值
+  // PV = annual × [1 - (1+r)^(-n)] / r
+  const annual = d.expense;
+  const r = d.discount / 100;
+  const n = d.replaceYears;
+  let I;
+  if (Math.abs(r) < 0.0001) {
+    I = annual * n;
+  } else {
+    I = annual * (1 - Math.pow(1 + r, -n)) / r;
+  }
+  return { D: debt, I, M: mortgage, E, total: debt + I + mortgage + E };
+}
+
+/* ── 主計算 ── */
+function calculate() {
+  const data = {
+    age: num('i-age'),
+    income: num('i-income'),
+    expense: num('i-expense'),
+    childAge: num('i-childAge'),
+    mortgage: num('i-mortgage'),
+    debt: num('i-debt'),
+    eduPer: num('i-eduPer'),
+    childCount: num('i-childCount'),
+    replaceYears: num('i-replaceYears'),
+    discount: num('i-discount'),
+    roomFee: num('i-roomFee'),
+    haveLife: num('i-haveLife'),
+    haveMedical: num('i-haveMedical'),
+    haveAccident: num('i-haveAccident'),
+    haveCritical: num('i-haveCritical'),
+    currentPremium: num('i-currentPremium')
+  };
+
+  // ── 應有壽險 ──
+  const dimeResult = calcDIME(data);
+  const double10Coverage = data.income * 10;
+  const double10Premium = data.income * 0.1;
+
+  let needLife;
+  if (method === 'dime') {
+    needLife = dimeResult.total;
+  } else {
+    needLife = double10Coverage;
+  }
+
+  const gapLife = Math.max(0, needLife - data.haveLife);
+
+  // ── 渲染 DIME 公式 ──
+  document.getElementById('dime-d').textContent = fmtMan(dimeResult.D);
+  document.getElementById('dime-i').textContent = fmtMan(dimeResult.I);
+  document.getElementById('dime-m').textContent = fmtMan(dimeResult.M);
+  document.getElementById('dime-e').textContent = fmtMan(dimeResult.E);
+  document.getElementById('dime-total').textContent = fmtMan(dimeResult.total);
+
+  // ── 渲染雙十 ──
+  document.getElementById('d10-coverage').textContent = fmtMan(double10Coverage);
+  document.getElementById('d10-premium').textContent = fmtMan(double10Premium);
+
+  // ── 主結果區 ──
+  document.getElementById('r-need').textContent = fmtMan(needLife);
+  document.getElementById('r-have').textContent = fmtMan(data.haveLife);
+  document.getElementById('r-gap').textContent = fmtMan(gapLife);
+  document.getElementById('r-need-desc').textContent = method === 'dime' ? 'DIME 法則計算' : '雙十法則計算';
+  const gapDesc = document.getElementById('r-gap-desc');
+  if (gapLife <= 0) {
+    gapDesc.textContent = '✓ 保障已充足';
+    gapDesc.className = 'desc good';
+  } else if (gapLife < needLife * 0.3) {
+    gapDesc.textContent = '⚠ 接近完整 微缺口';
+    gapDesc.className = 'desc warn';
+  } else {
+    gapDesc.textContent = '⚠ 缺口較大 需補足';
+    gapDesc.className = 'desc bad';
+  }
+
+  // ── 各險種建議保額 ──
+  // 1. 壽險保額 = 缺口
+  const lifeAmount = gapLife;
+
+  // 2. 醫療日額 = 病房費目標
+  const medicalDaily = Math.max(0, data.roomFee - data.haveMedical);
+  const medicalDailySuggest = Math.max(medicalDaily, data.haveMedical === 0 ? data.roomFee : 0);
+  // 雜費實支建議 = 日額 × 30 倍 (一次住院花費)
+  const medicalExpenseLimit = data.roomFee * 60; // 6萬至12萬
+
+  // 3. 意外保額 = 年收入 × 7 倍 (落在5~10倍中位)
+  const accidentSuggest = Math.max(0, data.income * 7 - data.haveAccident);
+  const accidentMedical = Math.min(100000, data.income * 0.1); // 意外實支建議
+
+  // 4. 重大傷病 = 年支出 × 2.5 倍 (落在 2~3 年中位)
+  const criticalSuggest = Math.max(0, data.expense * 2.5 - data.haveCritical);
+
+  // ── 計算保費 ──
+  // 壽險保費 (區間 = 優體~標準體)
+  const lifeR = lifeRate(data.age, gender, smoke);
+  const lifeUnit = lifeAmount / 10000; // 萬
+  const lifePremiumLow = lifeUnit * lifeR * 0.85;  // 優體
+  const lifePremiumHigh = lifeUnit * lifeR * 1.15; // 標準體
+
+  // 醫療保費
+  const medicalPremium = medicalRate(data.age, gender, data.roomFee);
+  const medicalPremiumLow = medicalPremium * 0.85;
+  const medicalPremiumHigh = medicalPremium * 1.2;
+
+  // 意外保費
+  const accUnit = accidentSuggest / 10000;
+  const accR = accidentRate(data.age);
+  const accidentBase = accUnit * accR + 1500; // 加實支固定費
+  const accidentLow = accidentBase * 0.9;
+  const accidentHigh = accidentBase * 1.25;
+
+  // 重大傷病
+  const critUnit = criticalSuggest / 10000;
+  const critR = criticalRate(data.age, gender, smoke);
+  const criticalLow = critUnit * critR * 0.85;
+  const criticalHigh = critUnit * critR * 1.2;
+
+  // ── 渲染各險種卡 ──
+  function setRange(prefix, low, high) {
+    document.getElementById(`bk-${prefix}-low`).textContent = fmt(low) + ' 元';
+    document.getElementById(`bk-${prefix}-high`).textContent = fmt(high) + ' 元';
+    const mon = (low + high) / 2 / 12;
+    document.getElementById(`bk-${prefix}-mon`).textContent = fmt(mon);
+  }
+  document.getElementById('bk-life-amt').textContent = fmtMan(lifeAmount);
+  setRange('life', lifePremiumLow, lifePremiumHigh);
+
+  document.getElementById('bk-medical-amt').textContent = fmt(data.roomFee);
+  document.getElementById('bk-medical-limit').textContent = (medicalExpenseLimit / 10000).toFixed(0);
+  setRange('medical', medicalPremiumLow, medicalPremiumHigh);
+
+  document.getElementById('bk-accident-amt').textContent = fmtMan(accidentSuggest);
+  document.getElementById('bk-accident-medical').textContent = (accidentMedical / 10000).toFixed(0);
+  setRange('accident', accidentLow, accidentHigh);
+
+  document.getElementById('bk-critical-amt').textContent = fmtMan(criticalSuggest);
+  setRange('critical', criticalLow, criticalHigh);
+
+  // ── 總保費 ──
+  const totalLow = lifePremiumLow + medicalPremiumLow + accidentLow + criticalLow;
+  const totalHigh = lifePremiumHigh + medicalPremiumHigh + accidentHigh + criticalHigh;
+  document.getElementById('tp-low').textContent = fmt(totalLow);
+  document.getElementById('tp-high').textContent = fmt(totalHigh);
+  document.getElementById('tp-low-m').textContent = fmt(totalLow / 12);
+  document.getElementById('tp-high-m').textContent = fmt(totalHigh / 12);
+
+  // 雙十比例
+  const ratio = data.income > 0 ? (totalHigh / data.income * 100) : 0;
+  document.getElementById('tp-ratio').textContent = ratio.toFixed(1);
+  const badge = document.getElementById('tp-ratio-badge');
+  if (ratio <= 10) {
+    badge.innerHTML = '<span class="badge-ok">合理</span>';
+  } else if (ratio <= 15) {
+    badge.innerHTML = '<span class="badge-warn">偏高</span>';
+  } else {
+    badge.innerHTML = '<span class="badge-warn">過高</span>';
+  }
+
+  // ── 保障完整度 (現有 / 建議) × 100% ──
+  // 壽險: 已有壽險 / 應有壽險
+  const lifeRatio = needLife > 0 ? Math.min(100, data.haveLife / needLife * 100) : 100;
+  const medicalRatio = data.roomFee > 0 ? Math.min(100, data.haveMedical / data.roomFee * 100) : 100;
+  const accidentNeed = data.income * 7;
+  const accidentRatio = accidentNeed > 0 ? Math.min(100, data.haveAccident / accidentNeed * 100) : 100;
+  const criticalNeed = data.expense * 2.5;
+  const criticalRatio = criticalNeed > 0 ? Math.min(100, data.haveCritical / criticalNeed * 100) : 100;
+
+  ['life', 'medical', 'accident', 'critical'].forEach(k => {
+    const ratios = { life: lifeRatio, medical: medicalRatio, accident: accidentRatio, critical: criticalRatio };
+    document.getElementById('rs-' + k).textContent = ratios[k].toFixed(0);
+    document.getElementById('rl-' + k).style.width = ratios[k] + '%';
+  });
+
+  // 雷達圖
+  drawRadar([lifeRatio, medicalRatio, accidentRatio, criticalRatio]);
+}
+
+/* ── 雷達圖 ── */
+function drawRadar(values) {
+  // 4 軸: 壽險、醫療、意外、重大傷病 (12, 3, 6, 9 點鐘方向)
+  const svg = document.getElementById('radar-svg');
+  const cx = 140, cy = 140, R = 100;
+  const labels = ['壽險', '醫療', '意外', '重大傷病'];
+  const colors = ['var(--orange)', 'var(--teal)', 'var(--gold)', 'var(--purple)'];
+  const angles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+
+  let html = '';
+  // 背景同心圓
+  for (let i = 1; i <= 4; i++) {
+    const r = R * i / 4;
+    let pts = '';
+    for (let j = 0; j < 4; j++) {
+      const x = cx + r * Math.cos(angles[j]);
+      const y = cy + r * Math.sin(angles[j]);
+      pts += (j === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+    }
+    pts += 'Z';
+    html += `<path d="${pts}" fill="${i === 4 ? '#fafafa' : 'none'}"
+              stroke="#e5e5e5" stroke-width="1" />`;
+  }
+  // 軸線
+  for (let i = 0; i < 4; i++) {
+    const x = cx + R * Math.cos(angles[i]);
+    const y = cy + R * Math.sin(angles[i]);
+    html += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"
+              stroke="#e5e5e5" stroke-width="1" />`;
+  }
+
+  // 100% 標準參考多邊形(虛線)
+  let pts100 = '';
+  for (let i = 0; i < 4; i++) {
+    const x = cx + R * Math.cos(angles[i]);
+    const y = cy + R * Math.sin(angles[i]);
+    pts100 += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+  }
+  pts100 += 'Z';
+  html += `<path d="${pts100}" fill="rgba(76,169,117,0.06)"
+            stroke="rgba(76,169,117,0.45)" stroke-width="1.5"
+            stroke-dasharray="3,3" />`;
+
+  // 實際數值多邊形
+  let ptsActual = '';
+  for (let i = 0; i < 4; i++) {
+    const v = Math.min(100, values[i]) / 100;
+    const r = R * v;
+    const x = cx + r * Math.cos(angles[i]);
+    const y = cy + r * Math.sin(angles[i]);
+    ptsActual += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+  }
+  ptsActual += 'Z';
+  html += `<path d="${ptsActual}" fill="rgba(240,90,40,0.2)"
+            stroke="var(--orange)" stroke-width="2.5"
+            stroke-linejoin="round" />`;
+
+  // 端點 + 標籤
+  for (let i = 0; i < 4; i++) {
+    const v = Math.min(100, values[i]) / 100;
+    const r = R * v;
+    const x = cx + r * Math.cos(angles[i]);
+    const y = cy + r * Math.sin(angles[i]);
+    html += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4"
+              fill="${colors[i]}" stroke="white" stroke-width="2" />`;
+
+    // 標籤
+    const lblX = cx + (R + 22) * Math.cos(angles[i]);
+    const lblY = cy + (R + 22) * Math.sin(angles[i]);
+    html += `<text x="${lblX.toFixed(1)}" y="${lblY.toFixed(1)}"
+              text-anchor="middle" dominant-baseline="middle"
+              font-size="12" fill="${colors[i]}" font-weight="700">${labels[i]}</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+/* ── 方法切換 ── */
+document.querySelectorAll('.method-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    method = card.dataset.method;
+    document.getElementById('dime-section').style.display = method === 'dime' ? 'block' : 'none';
+    document.getElementById('double10-section').style.display = method === 'double10' ? 'block' : 'none';
+    calculate();
+  });
+});
+
+/* ── 性別/吸菸切換 ── */
+document.querySelectorAll('#gender-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#gender-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    gender = btn.dataset.val;
+    calculate();
+  });
+});
+document.querySelectorAll('#smoke-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#smoke-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    smoke = btn.dataset.val;
+    calculate();
+  });
+});
+
+/* ── 步進器 ── */
+document.querySelectorAll('.stepper button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.dataset.target;
+    const step = parseInt(btn.dataset.step);
+    const input = document.getElementById(targetId);
+    let v = parseInt(input.value || '0') + step;
+    if (v < 0) v = 0;
+    if (v > 10) v = 10;
+    input.value = v;
+    document.getElementById('v-' + targetId).textContent = v;
+    calculate();
+  });
+});
+
+/* ── 即時計算 ── */
+document.querySelectorAll('input[type="number"]').forEach(inp => {
+  inp.addEventListener('input', calculate);
+});
+
+/* ── 重設 ── */
+function resetAll() {
+  document.getElementById('i-age').value = 35;
+  document.getElementById('i-income').value = 800000;
+  document.getElementById('i-expense').value = 600000;
+  document.getElementById('i-childAge').value = 3;
+  document.getElementById('i-mortgage').value = 5000000;
+  document.getElementById('i-debt').value = 200000;
+  document.getElementById('i-eduPer').value = 2000000;
+  document.getElementById('i-childCount').value = 1;
+  document.getElementById('v-i-childCount').textContent = 1;
+  document.getElementById('i-replaceYears').value = 15;
+  document.getElementById('i-discount').value = 2;
+  document.getElementById('i-roomFee').value = 5000;
+  document.getElementById('i-haveLife').value = 0;
+  document.getElementById('i-haveMedical').value = 0;
+  document.getElementById('i-haveAccident').value = 0;
+  document.getElementById('i-haveCritical').value = 0;
+  document.getElementById('i-currentPremium').value = 0;
+  document.querySelectorAll('#gender-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#gender-group .seg-btn[data-val="M"]').classList.add('active');
+  gender = 'M';
+  document.querySelectorAll('#smoke-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#smoke-group .seg-btn[data-val="N"]').classList.add('active');
+  smoke = 'N';
+  document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.method-card[data-method="dime"]').classList.add('active');
+  method = 'dime';
+  document.getElementById('dime-section').style.display = 'block';
+  document.getElementById('double10-section').style.display = 'none';
+  calculate();
+}
+
+/* 初次計算 */
+calculate();
+</script>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    function open() { document.body.classList.add('menu-open'); document.body.style.overflow = 'hidden'; }
+    function close() { document.body.classList.remove('menu-open'); document.body.style.overflow = ''; }
+    function toggle() { document.body.classList.contains('menu-open') ? close() : open(); }
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
+</body>
+</html>

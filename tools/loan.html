@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23F05A28"/><text x="16" y="23" text-anchor="middle" font-size="20" font-weight="900" fill="white" font-family="Noto Sans TC,sans-serif">鼎</text></svg>">
+<title>貸款試算 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --green: #4CA975;
+    --red: #D9405F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    color: white;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .header-center .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 60px;
+    color: var(--orange);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+  }
+  .header-center .big-number span {
+    font-size: 22px;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .header-center .sub-title {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 6px;
+    text-indent: 6px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '$';
+    font-family: 'Bebas Neue', sans-serif;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row {
+    display: flex;
+    gap: 6px;
+  }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 20px; }
+
+  /* ── BODY ── */
+  .body { padding: 32px 48px 40px; }
+
+  .section-title-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title-icon .hint {
+    margin-left: auto;
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  /* ── 貸款類型大切換器 ── */
+  .loan-type-switch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .ltype-card {
+    padding: 18px 18px;
+    border-radius: 16px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    position: relative;
+  }
+  .ltype-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+  }
+  .ltype-card.active {
+    background: linear-gradient(135deg, var(--orange-light) 0%, rgba(232,160,32,0.08) 100%);
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.18);
+  }
+  .ltype-card.active::after {
+    content: '✓';
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+  }
+  .ltype-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+  .ltype-name {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .ltype-rate {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+  .ltype-rate b {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    margin: 0 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 兩欄輸入 ── */
+  .input-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+    align-items: start;
+  }
+
+  .input-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1.5px solid #eee;
+    transition: border-color .15s;
+  }
+  .input-row:focus-within {
+    border-color: var(--orange);
+    background: #fff;
+  }
+  .input-row .ic {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: var(--orange-light);
+  }
+  .input-row .ic.teal { background: var(--teal-light); }
+  .input-row .ic.gold { background: rgba(232,160,32,0.15); }
+  .input-row .lbl {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 0;
+  }
+  .input-row .lbl .sub {
+    font-size: 10px;
+    color: #999;
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: 0.3px;
+  }
+  .input-row input[type="number"] {
+    width: 110px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    text-align: right;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s;
+    -moz-appearance: textfield;
+  }
+  .input-row input[type="number"]::-webkit-outer-spin-button,
+  .input-row input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  .input-row input:focus { border-color: var(--orange); }
+  .input-row input.wide { width: 140px; }
+  .input-row .unit {
+    font-size: 11px;
+    color: #999;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  /* 攤還方式切換 */
+  .seg-group {
+    display: flex;
+    background: #fff;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    gap: 2px;
+    width: 180px;
+  }
+  .seg-btn {
+    flex: 1;
+    padding: 6px 6px;
+    border: none;
+    background: transparent;
+    color: #777;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .seg-btn:hover { color: var(--navy); }
+  .seg-btn.active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  /* ── 利率快速選 ── */
+  .rate-presets {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .rate-preset {
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 11px;
+    color: #666;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 600;
+  }
+  .rate-preset:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .rate-preset b {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--navy);
+    margin: 0 2px;
+  }
+
+  /* ── 結果英雄區 ── */
+  .result-hero {
+    margin: 0 0 28px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(13,42,58,0.12);
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 36px;
+    color: #fff;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-cell {
+    padding: 0 22px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-cell:first-child { padding-left: 0; }
+  .hero-cell:last-child { border-right: none; padding-right: 0; }
+  .hero-cell .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .hero-cell .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  .hero-cell .val .small {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .hero-cell .val .currency {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    margin-right: 4px;
+  }
+  .hero-cell.main-cell .val { color: var(--orange); font-size: 50px; }
+  .hero-cell .desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .hero-cell .desc.warn { color: var(--gold); font-weight: 700; }
+  .hero-cell .desc.bad { color: #FF8B6B; font-weight: 700; }
+
+  /* ── 寬限期前後對照 ── */
+  .grace-compare {
+    margin-bottom: 28px;
+    padding: 18px 22px;
+    border-radius: 14px;
+    background: rgba(232,160,32,0.06);
+    border: 1.5px solid rgba(232,160,32,0.25);
+    display: none;
+  }
+  .grace-compare.active { display: block; }
+  .grace-compare-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .grace-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .grace-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid rgba(232,160,32,0.2);
+  }
+  .grace-card .label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .grace-card .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .grace-card .val small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    color: #999;
+    margin-left: 3px;
+    font-weight: 500;
+  }
+  .grace-card.after .val { color: var(--orange); }
+  .grace-card .desc {
+    font-size: 10px;
+    color: #999;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── 走勢圖卡 ── */
+  .chart-card {
+    margin-bottom: 28px;
+    padding: 22px 26px 18px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  #chart-svg {
+    width: 100%;
+    height: 280px;
+    display: block;
+  }
+  .chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #555;
+    flex-wrap: wrap;
+  }
+  .chart-legend .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chart-legend .dot {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+  }
+  .chart-legend .dot.principal { background: var(--teal); }
+  .chart-legend .dot.interest { background: var(--orange); }
+  .chart-legend .dot.balance { background: var(--gold); border-radius: 50%; width: 10px; height: 10px; }
+
+  /* ── 期間摘要 (前/中/後) ── */
+  .period-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .period-card {
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1.5px solid #eee;
+    background: #fafafa;
+  }
+  .period-card.p1 { border-color: rgba(217,64,95,0.3); background: rgba(217,64,95,0.04); }
+  .period-card.p2 { border-color: rgba(232,160,32,0.3); background: rgba(232,160,32,0.05); }
+  .period-card.p3 { border-color: rgba(76,169,117,0.3); background: rgba(76,169,117,0.05); }
+  .period-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .period-card.p1 .period-title { color: var(--red); }
+  .period-card.p2 .period-title { color: var(--gold); }
+  .period-card.p3 .period-title { color: var(--green); }
+  .period-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 11px;
+    color: #777;
+  }
+  .period-row .v {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .period-row.highlight {
+    border-top: 1px dashed #ddd;
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .period-row.highlight .v {
+    font-size: 18px;
+  }
+  .period-card.p1 .period-row.highlight .v { color: var(--red); }
+  .period-card.p2 .period-row.highlight .v { color: var(--gold); }
+  .period-card.p3 .period-row.highlight .v { color: var(--green); }
+
+  /* ── 月付對照表 (不同方案) ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    margin-bottom: 28px;
+  }
+  .compare-table thead tr { background: var(--navy); }
+  .compare-table thead th {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 8px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .compare-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .compare-table tbody tr:nth-child(odd) { background: white; }
+  .compare-table tbody tr.recommended {
+    background: var(--orange-light) !important;
+  }
+  .compare-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+  }
+  .compare-table td.label {
+    text-align: left;
+    padding-left: 16px;
+    font-weight: 600;
+  }
+  .compare-table td.num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .compare-table td.highlight {
+    color: var(--orange);
+    font-weight: 700;
+  }
+  .compare-table .badge-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
+  }
+  .compare-table .badge-tag.green { background: var(--green); color: white; }
+  .compare-table .badge-tag.gold { background: var(--gold); color: white; }
+  .compare-table .badge-tag.orange { background: var(--orange); color: white; }
+
+  /* ── 還款明細表 (前12期 + 末12期) ── */
+  .schedule-card {
+    margin-bottom: 28px;
+    padding: 22px 24px 18px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .schedule-toggle {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .sch-tab {
+    padding: 6px 14px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #777;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all .15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .sch-tab.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+  .sched-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .sched-table thead {
+    background: #f5f5f5;
+  }
+  .sched-table th {
+    padding: 8px 6px;
+    color: #777;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .sched-table td {
+    padding: 7px 6px;
+    text-align: center;
+    border-bottom: 1px solid #f5f5f5;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .sched-table td.principal { color: var(--teal); }
+  .sched-table td.interest { color: var(--orange); }
+  .sched-table td.bal { color: var(--navy); font-weight: 600; }
+
+  /* ── 收支比檢核 ── */
+  .ratio-section {
+    margin-bottom: 28px;
+    padding: 22px 26px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(13,42,58,0.04) 0%, rgba(232,160,32,0.05) 100%);
+    border: 1.5px solid rgba(13,42,58,0.08);
+  }
+  .ratio-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ratio-bar-wrap {
+    margin-top: 8px;
+  }
+  .ratio-bar-track {
+    height: 14px;
+    background: #ece9e3;
+    border-radius: 8px;
+    position: relative;
+    overflow: visible;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .ratio-bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    border-radius: 8px;
+    transition: width .6s ease;
+  }
+  .ratio-bar-fill.calm { background: linear-gradient(90deg, var(--green) 0%, #6ABE94 100%); }
+  .ratio-bar-fill.warn { background: linear-gradient(90deg, var(--gold) 0%, #F0C260 100%); }
+  .ratio-bar-fill.danger { background: linear-gradient(90deg, var(--red) 0%, #E76A85 100%); }
+  .ratio-marks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 10px;
+    color: #999;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.5px;
+  }
+  .ratio-marks span:nth-child(1) { color: var(--green); }
+  .ratio-marks span:nth-child(2) { color: var(--gold); }
+  .ratio-marks span:nth-child(3) { color: var(--red); }
+  .ratio-summary {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ratio-summary .left {
+    font-size: 12px;
+    color: #555;
+  }
+  .ratio-summary .left b {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin: 0 4px;
+  }
+  .ratio-summary .right {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: white;
+    letter-spacing: 1px;
+  }
+  .ratio-summary .right.calm { background: var(--green); }
+  .ratio-summary .right.warn { background: var(--gold); }
+  .ratio-summary .right.danger { background: var(--red); }
+
+  /* ── 解決方案區 ── */
+  .solution-section {
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(240,90,40,0.06) 0%, rgba(232,160,32,0.04) 100%);
+    border: 1.5px solid rgba(240,90,40,0.15);
+  }
+  .solution-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .solution-subtitle {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .solution-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--navy);
+    color: white;
+  }
+  .solution-cta .text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .solution-cta .text strong {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .solution-cta a {
+    background: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.4);
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .solution-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.5);
+  }
+
+  /* 注意事項 */
+  .notes {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(26,107,114,0.05);
+    border-left: 4px solid var(--teal);
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .notes strong {
+    color: var(--teal);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .notes ul { margin: 6px 0 0 18px; }
+  .notes li { margin-bottom: 3px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; }
+    .quick-bar { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER) v2
+     ═══════════════════════════════════════════ */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+  }
+  .menu-trigger-icon { width: 22px; height: 16px; position: relative; }
+  .menu-trigger-icon span {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden; pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible; pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff; flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.2;
+    color: #fff;
+  }
+  .sidebar-header-sub {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 1.5px; font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px; font-weight: 700;
+    color: #999; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px 10px 24px;
+    color: #555; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●'; margin-left: auto;
+    color: var(--orange); font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px; padding: 10px 14px;
+    border-radius: 8px; border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy); color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px; background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center; margin-top: 10px;
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 84vw; max-width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important; left: 12px !important;
+      width: 36px !important; height: 36px !important;
+    }
+  }
+
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px; right: 16px;
+      padding: 12px 18px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link active"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">💵</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">DING LUN · ENRICH</div>
+          <div class="sub tag">貸款試算</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">LOAN CALCULATOR</div>
+        <div class="big-number">LOAN<span>·CALC</span></div>
+        <div class="sub-title">貸款試算工具</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">房貸 ・ 車貸 ・ 信貸</div>
+          <div class="badge-line2">三合一試算</div>
+        </div>
+        <div class="quick-bar">
+          <div class="quick-bar-row">
+            <a href="../index.html" class="quick-btn">← 回首頁</a>
+          </div>
+          <div class="quick-bar-row">
+            <a href="education.html" class="quick-btn">🎓 教育金</a>
+            <button type="button" class="quick-btn" onclick="resetAll()">↻ 重設</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAGLINE BAR -->
+  <div class="tagline-bar">
+    <span>本利 / 本金 / 寬限</span>
+    <span class="dot">●</span>
+    <span>逐期攤提走勢</span>
+    <span class="dot">●</span>
+    <span>2026 銀行行情</span>
+  </div>
+
+  <div class="body">
+
+    <!-- ── 貸款類型大切換器 ── -->
+    <div class="section-title-icon">
+      選擇貸款類型
+      <span class="hint">三種貸款利率/條件不同</span>
+    </div>
+    <div class="loan-type-switch">
+      <div class="ltype-card active" data-type="house">
+        <div class="ltype-icon">🏠</div>
+        <div class="ltype-name">房屋貸款</div>
+        <div class="ltype-rate">利率約 <b>1.78~2.5</b>%・年期最長 40 年</div>
+      </div>
+      <div class="ltype-card" data-type="car">
+        <div class="ltype-icon">🚗</div>
+        <div class="ltype-name">汽車貸款</div>
+        <div class="ltype-rate">利率約 <b>2.7~6</b>%・年期 5~7 年</div>
+      </div>
+      <div class="ltype-card" data-type="credit">
+        <div class="ltype-icon">💳</div>
+        <div class="ltype-name">信用貸款</div>
+        <div class="ltype-rate">利率約 <b>2~16</b>%・年期 1~7 年</div>
+      </div>
+    </div>
+
+    <!-- ── 兩欄輸入 ── -->
+    <div class="input-cols">
+      <div>
+        <div class="section-title-icon" id="loan-input-title">房貸基本資料</div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">💰</div>
+            <div class="lbl" id="amt-label">貸款金額 <span class="sub">房屋總價 × 貸款成數</span></div>
+            <input type="number" id="i-amount" value="10000000" min="0" step="100000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic gold">📊</div>
+            <div class="lbl">年利率 <span class="sub" id="rate-hint">2026 行情約 2.19~2.5%</span></div>
+            <input type="number" id="i-rate" value="2.3" min="0" max="20" step="0.01">
+            <div class="unit">%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:-4px;margin-left:50px;flex-wrap:wrap;" id="rate-presets-area">
+            <!-- 由 JS 渲染 -->
+          </div>
+          <div class="input-row" style="margin-top:6px;">
+            <div class="ic teal">📅</div>
+            <div class="lbl" id="years-label">貸款年期 <span class="sub">通常 20~30 年</span></div>
+            <input type="number" id="i-years" value="30" min="1" max="40">
+            <div class="unit">年</div>
+          </div>
+          <div class="input-row" id="grace-row">
+            <div class="ic gold">⏱</div>
+            <div class="lbl">寬限期 <span class="sub">只繳息不還本</span></div>
+            <input type="number" id="i-grace" value="0" min="0" max="5">
+            <div class="unit">年</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title-icon">還款方式 / 收支檢核</div>
+        <div class="input-rows">
+          <div class="input-row">
+            <div class="ic">💼</div>
+            <div class="lbl">還款方式</div>
+            <div class="seg-group" id="method-group">
+              <button class="seg-btn active" data-val="ami">本利平均攤還</button>
+              <button class="seg-btn" data-val="prn">本金平均攤還</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">💼</div>
+            <div class="lbl">您的月收入 <span class="sub">用於收支比檢核</span></div>
+            <input type="number" id="i-income" value="60000" min="0" step="1000" class="wide">
+            <div class="unit">元</div>
+          </div>
+          <div class="input-row">
+            <div class="ic teal">💸</div>
+            <div class="lbl">其他每月固定支出 <span class="sub">其他貸款/卡費等</span></div>
+            <input type="number" id="i-other" value="0" min="0" step="500" class="wide">
+            <div class="unit">元</div>
+          </div>
+        </div>
+
+        <div class="section-title-icon" style="margin-top:24px;" id="extra-section-title">房貸附加資訊</div>
+        <div class="input-rows" id="extra-fields">
+          <!-- 房貸專屬: 房屋總價/成數, 車貸: 車價/頭期, 信貸: 開辦費 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 主結果英雄區 ── -->
+    <div class="section-title-icon">試算結果</div>
+    <div class="result-hero">
+      <div class="hero-grid">
+        <div class="hero-cell main-cell">
+          <div class="lbl" id="r-monthly-lbl">每月還款金額</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-monthly">0</span><span class="small">元</span></div>
+          <div class="desc" id="r-monthly-desc">本利平均攤還</div>
+        </div>
+        <div class="hero-cell">
+          <div class="lbl">總利息支出</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-interest">0</span><span class="small">萬</span></div>
+          <div class="desc bad" id="r-interest-desc">這就是給銀行的成本</div>
+        </div>
+        <div class="hero-cell">
+          <div class="lbl">總還款金額</div>
+          <div class="val"><span class="currency">NT$</span><span id="r-total">0</span><span class="small">萬</span></div>
+          <div class="desc" id="r-total-desc">本金 + 利息合計</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 寬限期前後對比 (僅寬限期 > 0 時顯示) ── -->
+    <div class="grace-compare" id="grace-compare">
+      <div class="grace-compare-title">⚠️ 寬限期內 vs 寬限期後 月付差異</div>
+      <div class="grace-grid">
+        <div class="grace-card">
+          <div class="label">寬限期內 (只繳息)</div>
+          <div class="val">NT$ <span id="g-during">0</span><small>元/月</small></div>
+          <div class="desc" id="g-during-yrs">前 0 年</div>
+        </div>
+        <div class="grace-card after">
+          <div class="label">寬限期後 (本利攤還)</div>
+          <div class="val">NT$ <span id="g-after">0</span><small>元/月</small></div>
+          <div class="desc" id="g-after-yrs">後 0 年將激增</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 走勢圖 ── -->
+    <div class="section-title-icon">
+      逐期還款走勢圖
+      <span class="hint">本金/利息的比例變化</span>
+    </div>
+    <div class="chart-card">
+      <svg id="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
+      <div class="chart-legend">
+        <div class="item"><div class="dot principal"></div>本金</div>
+        <div class="item"><div class="dot interest"></div>利息</div>
+        <div class="item"><div class="dot balance"></div>剩餘本金</div>
+      </div>
+    </div>
+
+    <!-- ── 三段期間摘要 ── -->
+    <div class="section-title-icon">
+      還款期間摘要
+      <span class="hint">前 / 中 / 後三段對照</span>
+    </div>
+    <div class="period-summary">
+      <div class="period-card p1">
+        <div class="period-title">⚠️ 前期 (利息為主)</div>
+        <div class="period-row"><span>期間</span><span class="v" id="pp1-period">第 1~10 期</span></div>
+        <div class="period-row"><span>本金佔比</span><span class="v" id="pp1-prin">0%</span></div>
+        <div class="period-row"><span>利息佔比</span><span class="v" id="pp1-int">0%</span></div>
+        <div class="period-row highlight"><span>累積利息</span><span class="v" id="pp1-acc">0</span></div>
+      </div>
+      <div class="period-card p2">
+        <div class="period-title">⚖️ 中期 (本利各半)</div>
+        <div class="period-row"><span>期間</span><span class="v" id="pp2-period">第 中段</span></div>
+        <div class="period-row"><span>本金佔比</span><span class="v" id="pp2-prin">0%</span></div>
+        <div class="period-row"><span>利息佔比</span><span class="v" id="pp2-int">0%</span></div>
+        <div class="period-row highlight"><span>累積利息</span><span class="v" id="pp2-acc">0</span></div>
+      </div>
+      <div class="period-card p3">
+        <div class="period-title">✓ 後期 (本金為主)</div>
+        <div class="period-row"><span>期間</span><span class="v" id="pp3-period">最後 10 期</span></div>
+        <div class="period-row"><span>本金佔比</span><span class="v" id="pp3-prin">0%</span></div>
+        <div class="period-row"><span>利息佔比</span><span class="v" id="pp3-int">0%</span></div>
+        <div class="period-row highlight"><span>累積利息</span><span class="v" id="pp3-acc">0</span></div>
+      </div>
+    </div>
+
+    <!-- ── 收支比檢核 ── -->
+    <div class="ratio-section">
+      <div class="ratio-title">💳 收支比檢核 <span style="margin-left:auto;font-size:11px;color:#888;font-weight:500;">銀行核貸關鍵指標</span></div>
+      <div class="ratio-bar-wrap">
+        <div class="ratio-bar-track">
+          <div class="ratio-bar-fill" id="ratio-fill" style="width:30%;"></div>
+        </div>
+        <div class="ratio-marks">
+          <span>0% 健康</span>
+          <span>40% 警戒</span>
+          <span>70%+ 過高</span>
+        </div>
+      </div>
+      <div class="ratio-summary">
+        <div class="left">
+          您的收支比為 <b id="ratio-pct">0</b>%
+          <span style="color:#999;font-size:11px;margin-left:8px;">(月付 ÷ 月收入)</span>
+        </div>
+        <div class="right" id="ratio-tag">合理</div>
+      </div>
+    </div>
+
+    <!-- ── 不同年期方案比較 ── -->
+    <div class="section-title-icon">
+      不同年期 / 利率方案比較
+      <span class="hint">同樣金額 多種選擇</span>
+    </div>
+    <table class="compare-table" id="period-compare-table">
+      <thead>
+        <tr>
+          <th style="width:18%;">年期</th>
+          <th>利率</th>
+          <th>每月還款</th>
+          <th>總利息</th>
+          <th>總還款</th>
+        </tr>
+      </thead>
+      <tbody id="compare-tbody">
+      </tbody>
+    </table>
+
+    <!-- ── 還款明細表 ── -->
+    <div class="section-title-icon">
+      還款明細表
+      <span class="hint">看清每期本利分配</span>
+    </div>
+    <div class="schedule-card">
+      <div class="schedule-toggle">
+        <button class="sch-tab active" data-period="head">前 12 期</button>
+        <button class="sch-tab" data-period="mid">中段 12 期</button>
+        <button class="sch-tab" data-period="tail">最後 12 期</button>
+      </div>
+      <table class="sched-table">
+        <thead>
+          <tr>
+            <th>期數</th>
+            <th>本期月付</th>
+            <th>本金</th>
+            <th>利息</th>
+            <th>剩餘本金</th>
+          </tr>
+        </thead>
+        <tbody id="sched-tbody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── 解決方案區 ── -->
+    <div class="solution-section">
+      <div class="solution-title">✦ 貸款的最佳搭擋:風險規劃 ✦</div>
+      <div class="solution-subtitle">房貸壽險 ・ 失能險 ・ 重大傷病險</div>
+      <div class="solution-cta">
+        <div class="text">
+          <strong id="cta-line1">您的月付 0 元、總利息 0 萬</strong>。<br>
+          萬一貸款人發生意外或重病，家人是否還能持續繳款？建議搭配<strong>房貸壽險或失能險</strong>，讓家人不必扛債。
+        </div>
+        <a href="tel:0925000049">📱 立即諮詢</a>
+      </div>
+    </div>
+
+    <!-- 注意事項 -->
+    <div class="notes">
+      <strong>📌 試算說明</strong>
+      <ul>
+        <li><b>本利平均攤還</b>:每月還款金額固定。前期還的多是利息，後期才是本金，總利息較高。最常見方式。</li>
+        <li><b>本金平均攤還</b>:每月本金固定，加上當期剩餘本金的利息。<b>初期月付高、後期月付低</b>，總利息較低。</li>
+        <li><b>寬限期</b>:寬限期內<b>只繳息不還本</b>，月付較低，但寬限期結束後需用較短年期攤還剩餘本金，月付會大幅增加。</li>
+        <li><b>本試算</b>採固定利率假設，實際銀行多採浮動利率，央行升降息會影響後續月付。</li>
+        <li>2026 利率行情:房貸 1.78~2.5%(新青安最低)、車貸新車 2.7~6%、信貸 2~16%。實際以銀行核貸為準。</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+    <!-- 其他試算工具 -->
+    <div style="margin-top:28px;padding-top:24px;border-top:1px dashed #ddd;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#0D2A3A;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:3px;height:14px;background:#F05A28;border-radius:2px;"></span>
+          其他試算工具
+        </div>
+        <a href="../index.html" style="font-size:11px;color:#888;text-decoration:none;letter-spacing:0.5px;">查看全部 →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+      <a href="tax.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(240,90,40,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">💰</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">綜合所得稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">114年度・夫妻三方案</div>
+      </a>
+      <a href="retirement.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,160,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🏖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">退休缺口</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">勞保+勞退+自存</div>
+      </a>
+      <a href="coverage.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(208,234,236,1);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🛡</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">保額需求</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">DIME・含保費預估</div>
+      </a>
+      <a href="education.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(232,155,168,0.18);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">🎓</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">教育金</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">媽媽客群必備</div>
+      </a>
+      <a href="tax-risk.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';"><div style="position:absolute;top:-7px;right:6px;background:#F05A28;color:white;padding:1px 7px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:1px;">獨家</div>
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(217,64,95,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚠</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">課稅風險</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">8大態樣自我檢測</div>
+      </a>
+      <a href="estate.html" style="text-decoration:none;background:white;border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid #eee;transition:all .2s;display:block;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='#F05A28';this.style.boxShadow='0 6px 16px rgba(240,90,40,0.15)';" onmouseout="this.style.transform='';this.style.borderColor='#eee';this.style.boxShadow='';">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(126,91,160,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 6px;">⚖</div>
+        <div style="font-size:12px;font-weight:900;color:#0D2A3A;letter-spacing:0.3px;margin-bottom:2px;">遺產稅</div>
+        <div style="font-size:9px;color:#999;letter-spacing:0.2px;line-height:1.3;">含實質課稅情境</div>
+      </a>
+      </div>
+    </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">借得明白 ・ 還得安心</div>
+    <a href="tel:0925000049" class="footer-right">📱 0925-000-049</a>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   貸款試算 - 計算邏輯
+   - 三種貸款類型: 房貸/車貸/信貸
+   - 三種還款方式: 本利平均/本金平均/含寬限期
+   - 月利率 = 年利率/12
+   - 本利攤還 PMT = P × r × (1+r)^n / ((1+r)^n - 1)
+   ============================================================ */
+
+const LOAN_PRESETS = {
+  house: {
+    title: '房貸基本資料',
+    amtLabel: '貸款金額',
+    amtSub: '房屋總價 × 貸款成數',
+    rateHint: '2026 行情約 2.19~2.5%',
+    yearsLabel: '貸款年期',
+    yearsSub: '通常 20~30 年',
+    defaultAmt: 10000000,
+    defaultRate: 2.3,
+    defaultYears: 30,
+    maxYears: 40,
+    showGrace: true,
+    ratePresets: [
+      { name: '新青安', rate: 1.78 },
+      { name: '一般優', rate: 2.19 },
+      { name: '一般', rate: 2.5 }
+    ],
+    extraTitle: '房屋附加資訊',
+    extraFields: [
+      { id: 'i-housePrice', icon: '🏠', iconClass: '', label: '房屋總價', sub: '用於計算成數', value: 12500000, step: 100000, unit: '元' },
+      { id: 'i-loanRatio', icon: '📐', iconClass: 'teal', label: '貸款成數', sub: '一般 7~8 成', value: 80, step: 1, unit: '%', max: 100 }
+    ],
+    compareYears: [20, 25, 30, 40]
+  },
+  car: {
+    title: '車貸基本資料',
+    amtLabel: '貸款金額',
+    amtSub: '車價 - 頭期款',
+    rateHint: '2026 行情約 2.7~6%',
+    yearsLabel: '貸款年期',
+    yearsSub: '通常 5~7 年',
+    defaultAmt: 600000,
+    defaultRate: 4.5,
+    defaultYears: 5,
+    maxYears: 7,
+    showGrace: false,
+    ratePresets: [
+      { name: '新車優', rate: 2.7 },
+      { name: '新車一般', rate: 4.5 },
+      { name: '中古車', rate: 6.5 },
+      { name: '原車融資', rate: 9.0 }
+    ],
+    extraTitle: '車輛附加資訊',
+    extraFields: [
+      { id: 'i-carPrice', icon: '🚗', iconClass: '', label: '車輛總價', sub: '含領牌費', value: 800000, step: 10000, unit: '元' },
+      { id: 'i-downPay', icon: '💵', iconClass: 'gold', label: '頭期款', sub: '一般 20~30%', value: 200000, step: 10000, unit: '元' }
+    ],
+    compareYears: [3, 5, 7]
+  },
+  credit: {
+    title: '信貸基本資料',
+    amtLabel: '貸款金額',
+    amtSub: '上限約月薪 ×22 倍',
+    rateHint: '2026 行情約 2~16%',
+    yearsLabel: '貸款年期',
+    yearsSub: '通常 3~7 年',
+    defaultAmt: 500000,
+    defaultRate: 5.5,
+    defaultYears: 5,
+    maxYears: 7,
+    showGrace: false,
+    ratePresets: [
+      { name: '優質客戶', rate: 2.5 },
+      { name: '一般', rate: 5.5 },
+      { name: '小白', rate: 9.0 },
+      { name: '次級', rate: 14.0 }
+    ],
+    extraTitle: '信貸附加資訊',
+    extraFields: [
+      { id: 'i-fee', icon: '💸', iconClass: 'gold', label: '開辦費', sub: '一般 3,000~9,000 元', value: 5000, step: 500, unit: '元' }
+    ],
+    compareYears: [3, 5, 7]
+  }
+};
+
+let loanType = 'house';
+let method = 'ami'; // ami: 本利攤還, prn: 本金攤還
+let scheduleTab = 'head';
+
+function num(id) {
+  const v = parseFloat(document.getElementById(id)?.value);
+  return isNaN(v) ? 0 : v;
+}
+function fmt(n) {
+  return Math.round(n).toLocaleString('en-US');
+}
+function fmtMan(n) {
+  return Math.round(n / 10000).toLocaleString('en-US');
+}
+
+/* ── 本利平均攤還: 計算每月還款 ── */
+function calcAMI(P, annualRate, n) {
+  const r = annualRate / 100 / 12;
+  if (Math.abs(r) < 0.0000001) return P / n;
+  return P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+}
+
+/* ── 計算還款明細表 ── */
+function buildSchedule(P, annualRate, totalYears, graceYears) {
+  const schedule = [];
+  const r = annualRate / 100 / 12;
+  const totalMonths = totalYears * 12;
+  const graceMonths = graceYears * 12;
+  const repayMonths = totalMonths - graceMonths;
+
+  let balance = P;
+
+  // 寬限期: 只繳息
+  for (let m = 1; m <= graceMonths; m++) {
+    const interest = balance * r;
+    const principal = 0;
+    const payment = interest;
+    schedule.push({ m, payment, principal, interest, balance, grace: true });
+  }
+
+  // 寬限期後攤還
+  if (method === 'ami') {
+    // 本利平均攤還(以剩餘本金為基礎重新計算 PMT)
+    const pmt = calcAMI(balance, annualRate, repayMonths);
+    for (let m = graceMonths + 1; m <= totalMonths; m++) {
+      const interest = balance * r;
+      const principal = pmt - interest;
+      balance -= principal;
+      if (balance < 0.5) balance = 0;
+      schedule.push({ m, payment: pmt, principal, interest, balance, grace: false });
+    }
+  } else {
+    // 本金平均攤還
+    const principalPerMonth = balance / repayMonths;
+    for (let m = graceMonths + 1; m <= totalMonths; m++) {
+      const interest = balance * r;
+      const principal = principalPerMonth;
+      const payment = principal + interest;
+      balance -= principal;
+      if (balance < 0.5) balance = 0;
+      schedule.push({ m, payment, principal, interest, balance, grace: false });
+    }
+  }
+  return schedule;
+}
+
+/* ── 主計算 ── */
+function calculate() {
+  const cfg = LOAN_PRESETS[loanType];
+  const P = num('i-amount');
+  const rate = num('i-rate');
+  const years = num('i-years');
+  const grace = cfg.showGrace ? num('i-grace') : 0;
+  const income = num('i-income');
+  const other = num('i-other');
+
+  const schedule = buildSchedule(P, rate, years, grace);
+  const totalPayment = schedule.reduce((s, x) => s + x.payment, 0);
+  const totalInterest = schedule.reduce((s, x) => s + x.interest, 0);
+
+  // 第一個非寬限月的月付
+  const firstPayment = schedule.find(x => !x.grace)?.payment || schedule[0].payment;
+  const lastPayment = schedule[schedule.length - 1].payment;
+
+  // ── 主結果區 ──
+  let monthlyDisplay;
+  let methodLabel;
+  if (method === 'ami') {
+    monthlyDisplay = firstPayment;
+    methodLabel = grace > 0 ? '寬限後本利平均攤還' : '本利平均攤還';
+  } else {
+    monthlyDisplay = firstPayment;
+    methodLabel = grace > 0 ? '寬限後本金平均攤還' : '本金平均攤還(首期)';
+  }
+
+  document.getElementById('r-monthly').textContent = fmt(monthlyDisplay);
+  document.getElementById('r-monthly-desc').textContent = methodLabel + (method==='prn' ? ' (逐期遞減)' : '');
+  document.getElementById('r-interest').textContent = fmtMan(totalInterest);
+  document.getElementById('r-total').textContent = fmtMan(totalPayment);
+
+  // 月付動態 label
+  if (method === 'prn') {
+    document.getElementById('r-monthly-lbl').textContent = '首期月付 (本金平均)';
+  } else if (grace > 0) {
+    document.getElementById('r-monthly-lbl').textContent = '寬限後月付';
+  } else {
+    document.getElementById('r-monthly-lbl').textContent = '每月還款金額';
+  }
+
+  // ── 寬限期對照 ──
+  const graceCmp = document.getElementById('grace-compare');
+  if (grace > 0) {
+    graceCmp.classList.add('active');
+    const graceMonthly = schedule.find(x => x.grace)?.payment || 0;
+    document.getElementById('g-during').textContent = fmt(graceMonthly);
+    document.getElementById('g-after').textContent = fmt(firstPayment);
+    document.getElementById('g-during-yrs').textContent = `前 ${grace} 年只繳息`;
+    document.getElementById('g-after-yrs').textContent = `後 ${years - grace} 年將激增 ${Math.round((firstPayment/graceMonthly - 1) * 100)}%`;
+  } else {
+    graceCmp.classList.remove('active');
+  }
+
+  // ── 三段期間摘要 ──
+  const totalMonths = schedule.length;
+  const segLen = Math.floor(totalMonths / 3);
+  const segs = [
+    schedule.slice(0, segLen),
+    schedule.slice(segLen, segLen * 2),
+    schedule.slice(segLen * 2)
+  ];
+  const segLabels = [
+    `第 1~${segLen} 期`,
+    `第 ${segLen+1}~${segLen*2} 期`,
+    `第 ${segLen*2+1}~${totalMonths} 期`
+  ];
+  let cumInterest = 0;
+  segs.forEach((seg, idx) => {
+    const segP = seg.reduce((s,x)=>s+x.principal, 0);
+    const segI = seg.reduce((s,x)=>s+x.interest, 0);
+    const segTotal = segP + segI;
+    cumInterest += segI;
+    const prinPct = segTotal > 0 ? (segP/segTotal*100).toFixed(0) : 0;
+    const intPct = segTotal > 0 ? (segI/segTotal*100).toFixed(0) : 0;
+    document.getElementById(`pp${idx+1}-period`).textContent = segLabels[idx];
+    document.getElementById(`pp${idx+1}-prin`).textContent = prinPct + '%';
+    document.getElementById(`pp${idx+1}-int`).textContent = intPct + '%';
+    document.getElementById(`pp${idx+1}-acc`).textContent = fmt(cumInterest) + ' 元';
+  });
+
+  // ── 收支比 ──
+  const totalMonthlyExpense = monthlyDisplay + other;
+  const ratio = income > 0 ? (totalMonthlyExpense / income * 100) : 0;
+  const ratioFill = document.getElementById('ratio-fill');
+  const ratioPct = document.getElementById('ratio-pct');
+  const ratioTag = document.getElementById('ratio-tag');
+  ratioPct.textContent = ratio.toFixed(1);
+  // bar 寬度 (capped 100%)
+  const barW = Math.min(100, ratio);
+  ratioFill.style.width = barW + '%';
+  if (ratio < 40) {
+    ratioFill.className = 'ratio-bar-fill calm';
+    ratioTag.className = 'right calm';
+    ratioTag.textContent = '健康';
+  } else if (ratio < 70) {
+    ratioFill.className = 'ratio-bar-fill warn';
+    ratioTag.className = 'right warn';
+    ratioTag.textContent = '警戒';
+  } else {
+    ratioFill.className = 'ratio-bar-fill danger';
+    ratioTag.className = 'right danger';
+    ratioTag.textContent = '過高';
+  }
+
+  // ── 不同年期方案比較 ──
+  const compareTbody = document.getElementById('compare-tbody');
+  let compareHtml = '';
+  cfg.compareYears.forEach((yr, idx) => {
+    const isCurrent = yr === Math.round(years);
+    const sched = buildSchedule(P, rate, yr, 0);
+    const m = sched[0].payment;
+    const totI = sched.reduce((s,x)=>s+x.interest, 0);
+    const totP = sched.reduce((s,x)=>s+x.payment, 0);
+    let badge = '';
+    if (idx === 0) badge = '<span class="badge-tag green">總利息最低</span>';
+    if (idx === cfg.compareYears.length - 1) badge = '<span class="badge-tag orange">月付最低</span>';
+    compareHtml += `<tr ${isCurrent ? 'class="recommended"' : ''}>
+      <td class="label">${yr} 年 ${isCurrent ? '<span class="badge-tag gold">您選擇</span>' : ''}</td>
+      <td class="num">${rate.toFixed(2)}%</td>
+      <td class="num highlight">${fmt(m)}</td>
+      <td class="num">${fmtMan(totI)} 萬</td>
+      <td class="num">${fmtMan(totP)} 萬 ${badge}</td>
+    </tr>`;
+  });
+  compareTbody.innerHTML = compareHtml;
+
+  // ── 還款明細表 ──
+  renderSchedule(schedule);
+
+  // ── CTA ──
+  document.getElementById('cta-line1').textContent =
+    `您的月付 ${fmt(monthlyDisplay)} 元、總利息 ${fmtMan(totalInterest)} 萬`;
+
+  // ── 走勢圖 ──
+  drawChart(schedule);
+}
+
+/* ── 渲染還款明細 ── */
+function renderSchedule(schedule) {
+  const tbody = document.getElementById('sched-tbody');
+  let rows = [];
+  if (scheduleTab === 'head') {
+    rows = schedule.slice(0, 12);
+  } else if (scheduleTab === 'mid') {
+    const mid = Math.floor(schedule.length / 2);
+    rows = schedule.slice(Math.max(0, mid - 6), mid + 6);
+  } else {
+    rows = schedule.slice(-12);
+  }
+  let html = '';
+  rows.forEach(r => {
+    html += `<tr>
+      <td>${r.m}</td>
+      <td>${fmt(r.payment)}</td>
+      <td class="principal">${fmt(r.principal)}</td>
+      <td class="interest">${fmt(r.interest)}</td>
+      <td class="bal">${fmt(r.balance)}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+/* ── 走勢圖 ── */
+function drawChart(schedule) {
+  const svg = document.getElementById('chart-svg');
+  const W = 800, H = 280, padL = 60, padR = 60, padT = 20, padB = 40;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  // 為了避免月度太多, 採年度匯總
+  const yearlyData = [];
+  let curYear = { year: 1, principal: 0, interest: 0, payment: 0, balance: schedule[0]?.balance || 0 };
+  schedule.forEach((r, idx) => {
+    curYear.principal += r.principal;
+    curYear.interest += r.interest;
+    curYear.payment += r.payment;
+    curYear.balance = r.balance;
+    if ((idx + 1) % 12 === 0) {
+      yearlyData.push({ ...curYear });
+      curYear = { year: yearlyData.length + 1, principal: 0, interest: 0, payment: 0, balance: r.balance };
+    }
+  });
+  if (curYear.payment > 0) yearlyData.push({ ...curYear });
+
+  // 兩個獨立 Y 軸: 左邊 = 年度本金+利息合計, 右邊 = 剩餘本金
+  const maxYearly = Math.max(...yearlyData.map(d => d.payment)) * 1.15;
+  const maxBalance = Math.max(...yearlyData.map(d => d.balance), schedule[0]?.balance || 0) * 1.05;
+
+  const xScale = i => padL + (i + 0.5) * (innerW / yearlyData.length);
+  const yScaleL = v => padT + (1 - v / maxYearly) * innerH;
+  const yScaleR = v => padT + (1 - v / maxBalance) * innerH;
+  const zeroY = padT + innerH;
+  const bw = Math.max(6, innerW / yearlyData.length * 0.7);
+
+  let html = '';
+
+  // Y 格線(以左軸為主)
+  for (let i = 0; i <= 4; i++) {
+    const v = maxYearly * i / 4;
+    const y = yScaleL(v);
+    html += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"
+              stroke="#eee" stroke-width="1" stroke-dasharray="3,3" />`;
+    let lblL = (v/10000).toFixed(0) + '萬';
+    html += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end"
+              font-size="10" fill="#1A6B72" font-family="Bebas Neue">${lblL}</text>`;
+    // 右軸標籤(剩餘本金)
+    const vR = maxBalance * (1 - i / 4);
+    let lblR = (vR/10000).toFixed(0) + '萬';
+    if (vR >= 100000000) lblR = (vR/100000000).toFixed(1) + '億';
+    html += `<text x="${W - padR + 8}" y="${y + 4}" text-anchor="start"
+              font-size="10" fill="#E8A020" font-family="Bebas Neue">${lblR}</text>`;
+  }
+
+  // 軸標題
+  html += `<text x="${padL - 8}" y="${padT - 6}" text-anchor="end"
+            font-size="9" fill="#1A6B72" font-weight="700">年付額</text>`;
+  html += `<text x="${W - padR + 8}" y="${padT - 6}" text-anchor="start"
+            font-size="9" fill="#E8A020" font-weight="700">剩餘本金</text>`;
+
+  // 堆疊柱狀: 本金(青綠) + 利息(橘) — 用左軸
+  yearlyData.forEach((d, idx) => {
+    const x = xScale(idx);
+    const prinH = (d.principal / maxYearly) * innerH;
+    const prinY = zeroY - prinH;
+    if (prinH > 0) {
+      html += `<rect x="${x - bw/2}" y="${prinY}" width="${bw}" height="${prinH}"
+                fill="${d.principal > 0 ? '#1A6B72' : '#cccccc'}"
+                rx="1" opacity="0.85" />`;
+    }
+    const intH = (d.interest / maxYearly) * innerH;
+    const intY = prinY - intH;
+    if (intH > 0) {
+      html += `<rect x="${x - bw/2}" y="${intY}" width="${bw}" height="${intH}"
+                fill="#F05A28" rx="1" opacity="0.9" />`;
+    }
+  });
+
+  // 剩餘本金折線(右軸)
+  let pathD = '';
+  yearlyData.forEach((d, idx) => {
+    const x = xScale(idx);
+    const y = yScaleR(d.balance);
+    pathD += (idx === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+  });
+  html += `<path d="${pathD}" fill="none" stroke="#E8A020"
+            stroke-width="3" stroke-linejoin="round" />`;
+
+  // 端點圓
+  yearlyData.forEach((d, idx) => {
+    if (idx % Math.max(1, Math.floor(yearlyData.length / 6)) === 0 || idx === yearlyData.length - 1) {
+      const x = xScale(idx);
+      const y = yScaleR(d.balance);
+      html += `<circle cx="${x}" cy="${y}" r="3.5" fill="#E8A020" stroke="white" stroke-width="1.5" />`;
+    }
+  });
+
+  // X軸標籤
+  const labelStep = Math.max(1, Math.floor(yearlyData.length / 8));
+  yearlyData.forEach((d, idx) => {
+    if (idx % labelStep === 0 || idx === yearlyData.length - 1) {
+      const x = xScale(idx);
+      html += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle"
+                font-size="10" fill="#888" font-family="Bebas Neue">第${d.year}年</text>`;
+    }
+  });
+
+  svg.innerHTML = html;
+}
+
+/* ── 切換貸款類型 ── */
+function applyLoanType(type) {
+  loanType = type;
+  const cfg = LOAN_PRESETS[type];
+
+  // 更新 UI 文字
+  document.getElementById('loan-input-title').textContent = cfg.title;
+  document.getElementById('amt-label').innerHTML = `${cfg.amtLabel} <span class="sub">${cfg.amtSub}</span>`;
+  document.getElementById('rate-hint').textContent = cfg.rateHint;
+  document.getElementById('years-label').innerHTML = `${cfg.yearsLabel} <span class="sub">${cfg.yearsSub}</span>`;
+
+  // 更新預設值
+  document.getElementById('i-amount').value = cfg.defaultAmt;
+  document.getElementById('i-rate').value = cfg.defaultRate;
+  document.getElementById('i-years').value = cfg.defaultYears;
+  document.getElementById('i-years').max = cfg.maxYears;
+  document.getElementById('i-grace').value = 0;
+
+  // 顯示/隱藏寬限期
+  document.getElementById('grace-row').style.display = cfg.showGrace ? 'flex' : 'none';
+
+  // 利率快選
+  const presetsDiv = document.getElementById('rate-presets-area');
+  let presetHtml = '<span style="font-size:10px;color:#aaa;letter-spacing:0.5px;margin-right:2px;">快速:</span>';
+  cfg.ratePresets.forEach(p => {
+    presetHtml += `<button class="rate-preset" data-rate="${p.rate}">${p.name} <b>${p.rate}</b>%</button>`;
+  });
+  presetsDiv.innerHTML = presetHtml;
+  presetsDiv.querySelectorAll('.rate-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('i-rate').value = btn.dataset.rate;
+      calculate();
+    });
+  });
+
+  // 更新附加欄位
+  document.getElementById('extra-section-title').textContent = cfg.extraTitle;
+  const extraDiv = document.getElementById('extra-fields');
+  let exHtml = '';
+  cfg.extraFields.forEach(f => {
+    exHtml += `<div class="input-row">
+      <div class="ic ${f.iconClass||''}">${f.icon}</div>
+      <div class="lbl">${f.label} <span class="sub">${f.sub}</span></div>
+      <input type="number" id="${f.id}" value="${f.value}" min="0" step="${f.step||1}" ${f.max?`max="${f.max}"`:''} class="wide">
+      <div class="unit">${f.unit}</div>
+    </div>`;
+  });
+  extraDiv.innerHTML = exHtml;
+  // 房貸: 房屋總價×成數 -> 自動帶入貸款金額
+  if (type === 'house') {
+    const updateAmt = () => {
+      const price = num('i-housePrice');
+      const ratio = num('i-loanRatio');
+      const amt = Math.round(price * ratio / 100);
+      document.getElementById('i-amount').value = amt;
+      calculate();
+    };
+    document.getElementById('i-housePrice').addEventListener('input', updateAmt);
+    document.getElementById('i-loanRatio').addEventListener('input', updateAmt);
+  } else if (type === 'car') {
+    const updateAmt = () => {
+      const price = num('i-carPrice');
+      const down = num('i-downPay');
+      document.getElementById('i-amount').value = Math.max(0, price - down);
+      calculate();
+    };
+    document.getElementById('i-carPrice').addEventListener('input', updateAmt);
+    document.getElementById('i-downPay').addEventListener('input', updateAmt);
+  }
+
+  calculate();
+}
+
+/* ── 還款方式切換 ── */
+document.querySelectorAll('#method-group .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#method-group .seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    method = btn.dataset.val;
+    calculate();
+  });
+});
+
+/* ── 還款明細 tab 切換 ── */
+document.querySelectorAll('.sch-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.sch-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    scheduleTab = t.dataset.period;
+    calculate();
+  });
+});
+
+/* ── 貸款類型切換 ── */
+document.querySelectorAll('.ltype-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.ltype-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    applyLoanType(card.dataset.type);
+  });
+});
+
+/* ── 即時計算 ── */
+document.addEventListener('input', e => {
+  if (e.target.matches('input[type="number"]') && !e.target.closest('#extra-fields')) {
+    calculate();
+  }
+});
+
+/* ── 重設 ── */
+function resetAll() {
+  document.querySelectorAll('.ltype-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.ltype-card[data-type="house"]').classList.add('active');
+  document.querySelectorAll('#method-group .seg-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#method-group .seg-btn[data-val="ami"]').classList.add('active');
+  method = 'ami';
+  document.getElementById('i-income').value = 60000;
+  document.getElementById('i-other').value = 0;
+  applyLoanType('house');
+}
+
+/* 初始化 */
+applyLoanType('house');
+</script>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    function open() { document.body.classList.add('menu-open'); document.body.style.overflow = 'hidden'; }
+    function close() { document.body.classList.remove('menu-open'); document.body.style.overflow = ''; }
+    function toggle() { document.body.classList.contains('menu-open') ? close() : open(); }
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
+</body>
+</html>

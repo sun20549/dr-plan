@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+<title>遺產稅試算｜鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: white;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .header-center .big-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 8px;
+    text-indent: 8px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-center .sub-title {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 3px;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row { display: flex; gap: 6px; }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ── BODY ── */
+  .body { padding: 36px 48px; }
+
+  .section-title-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 18px;
+    margin-top: -10px;
+  }
+
+  /* ── INTRO ── */
+  .intro-section { margin-bottom: 28px; }
+  .intro-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .intro-icon {
+    width: 48px; height: 48px;
+    background: var(--orange);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.3);
+  }
+  .intro-text {
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.7;
+  }
+  .intro-text strong { color: var(--orange); font-weight: 900; }
+
+  /* ── INPUT FORM ── */
+  .form-section { margin-bottom: 32px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-row.full { grid-column: 1 / -1; }
+
+  .form-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .form-label .help {
+    font-size: 10px;
+    color: #999;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .form-label .tag-amt {
+    font-size: 10px;
+    color: var(--orange);
+    background: var(--orange-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  .form-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .form-input {
+    width: 100%;
+    padding: 11px 50px 11px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 15px;
+    font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all .2s;
+    text-align: right;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.12);
+  }
+  .form-input::placeholder { color: #ccc; font-weight: 400; }
+  .form-input-suffix {
+    position: absolute;
+    right: 14px;
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .checkbox-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .checkbox-pill input { display: none; }
+  .checkbox-pill:hover { border-color: var(--orange); }
+  .checkbox-pill.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* ── BUTTONS ── */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(240,90,40,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,90,40,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: #fff;
+    color: var(--navy);
+    border: 1.5px solid #ddd;
+    flex: 0 0 140px;
+  }
+  .btn-secondary:hover { border-color: var(--navy); background: #fafafa; }
+
+  /* ── RESULT ── */
+  .result-section { margin-bottom: 32px; }
+
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-radius: 16px;
+    padding: 28px 32px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.15);
+    filter: blur(40px);
+  }
+  .result-hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .result-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .result-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .result-stat-num small {
+    font-size: 14px;
+    margin-left: 4px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+  .result-arrow {
+    font-size: 24px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .result-stat.tax { text-align: right; }
+  .result-stat.tax .result-stat-num {
+    font-size: 56px;
+    color: var(--orange);
+    text-shadow: 0 4px 16px rgba(240,90,40,0.4);
+  }
+  .result-stat.tax .result-stat-label { color: var(--gold); }
+
+  .result-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .summary-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    text-align: center;
+  }
+  .summary-card.s1 { border-color: var(--teal); background: var(--teal-light); }
+  .summary-card.s2 { border-color: var(--orange); background: var(--orange-light); }
+  .summary-card.s3 { border-color: var(--navy); background: rgba(13,42,58,0.06); }
+  .summary-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .summary-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .summary-num small { font-size: 12px; color: #999; margin-left: 3px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; }
+  .summary-card.s1 .summary-num { color: var(--teal); }
+  .summary-card.s2 .summary-num { color: var(--orange); }
+  .summary-card.s3 .summary-num { color: var(--navy); }
+
+  /* ── BREAKDOWN ── */
+  .breakdown-section { margin-bottom: 32px; }
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .breakdown-table thead tr { background: var(--navy); }
+  .breakdown-table thead th {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 14px;
+    text-align: left;
+    letter-spacing: 1px;
+  }
+  .breakdown-table thead th:last-child { text-align: right; }
+  .breakdown-table tbody tr { border-bottom: 1px solid #eee; }
+  .breakdown-table tbody tr:last-child { border-bottom: none; }
+  .breakdown-table tbody tr:nth-child(even) { background: #fafafa; }
+  .breakdown-table tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+  .breakdown-table tbody td:last-child {
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .breakdown-table tbody tr.subtotal {
+    background: var(--orange-light) !important;
+    font-weight: 700;
+  }
+  .breakdown-table tbody tr.subtotal td { color: var(--navy); font-weight: 700; }
+  .breakdown-table tbody tr.subtotal td:last-child { color: var(--orange); }
+  .breakdown-table tbody tr.final {
+    background: var(--navy) !important;
+  }
+  .breakdown-table tbody tr.final td { color: #fff; font-weight: 900; font-size: 15px; }
+  .breakdown-table tbody tr.final td:last-child {
+    color: var(--gold);
+    font-size: 26px;
+  }
+  .breakdown-formula {
+    color: #999;
+    font-size: 11px;
+    font-style: italic;
+    margin-left: 6px;
+  }
+
+  /* ── REFERENCE TABLE ── */
+  .ref-section { margin-bottom: 32px; }
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  .ref-table thead tr { background: var(--teal); }
+  .ref-table thead th {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 10px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .ref-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .ref-table tbody td {
+    padding: 12px 10px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+  }
+  .ref-table tbody td.range {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .ref-table tbody td.rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .ref-table tbody td.diff {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--teal);
+  }
+
+  .ref-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .ref-card {
+    padding: 14px 14px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .ref-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .ref-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .ref-card-amt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .ref-card-amt small { font-size: 12px; color: #999; margin-left: 3px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; }
+  .ref-card-desc { font-size: 10px; color: #888; margin-top: 6px; line-height: 1.5; }
+
+  /* ── FAQ ── */
+  .faq-section { margin-bottom: 32px; }
+  .faq-source-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--teal-light);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--teal);
+  }
+  .faq-source-bar a {
+    color: var(--teal);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .faq-cat-group {
+    margin-bottom: 18px;
+    border: 1.5px solid #eee;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .faq-cat-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+  }
+  .faq-cat-num {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(240,90,40,0.4);
+  }
+  .faq-cat-title {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    flex: 1;
+  }
+  .faq-cat-link {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .faq-cat-link:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+  }
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-cat-group .faq-list { padding: 8px; }
+  .faq-cat-group .faq-list .faq-item { margin-bottom: 6px; }
+  .faq-cat-group .faq-list .faq-item:last-child { margin-bottom: 0; }
+  .faq-item {
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .faq-item[open] {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(240,90,40,0.08);
+  }
+  .faq-item summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    background: #fafafa;
+    transition: background .2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before {
+    content: 'Q';
+    width: 24px; height: 24px;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .faq-item summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 20px;
+    color: var(--orange);
+    transition: transform .2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item .faq-body {
+    padding: 14px 18px 16px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #555;
+    background: #fff;
+    border-top: 1px dashed #eee;
+  }
+  .faq-item .faq-body strong { color: var(--navy); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 18px 22px;
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .disclaimer-title {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .disclaimer a { color: var(--orange); text-decoration: none; }
+  .disclaimer a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── HIDDEN ── */
+  .hidden { display: none !important; }
+
+  /* ── ANIMATION ── */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide-in { animation: slideDown .35s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .page { width: 100%; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; }
+    .header-center { order: -1; }
+    .body { padding: 28px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .result-hero-inner { grid-template-columns: 1fr; gap: 14px; }
+    .result-arrow { display: none; }
+    .result-stat.tax { text-align: left; }
+    .result-stat.tax .result-stat-num { font-size: 44px; }
+    .result-summary { grid-template-columns: 1fr; }
+    .ref-cards { grid-template-columns: 1fr 1fr; }
+    .footer { padding: 16px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .action-row { flex-direction: column; }
+    .btn-secondary { flex: 1; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER)
+     ═══════════════════════════════════════════ */
+  /* 漢堡按鈕 - 強化版 */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+    font-family: inherit;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+  }
+
+  .menu-trigger-icon {
+    width: 22px; height: 16px;
+    position: relative;
+  }
+  .menu-trigger-icon span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden;
+    pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 280px;
+    background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sidebar-header-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 20px 11px 24px;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●';
+    margin-left: auto;
+    color: var(--orange);
+    font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy);
+    color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px;
+    background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 行動裝置全寬 */
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 84vw;
+      max-width: 320px;
+    }
+  }
+  /* 小螢幕漢堡按鈕微調,不影響原有 logo 排版 */
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important;
+      left: 12px !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+
+
+  
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px;
+      right: 16px;
+      padding: 12px 18px;
+      font-size: 13px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  
+  /* === 整合自 estate.html 的視覺化區塊 === */
+  --green: #2E7D32;
+  --red: #D9405F;
+
+  .tier-vis {
+    margin: 28px 0;
+    padding: 22px 26px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+  }
+  .tier-vis .section-title-icon { margin-bottom: 10px; }
+  .tier-bar-wrap {
+    margin-top: 14px;
+    height: 44px;
+    border-radius: 22px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    background: #f0ede8;
+    position: relative;
+  }
+  .tier-segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .tier-segment.s1 { background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%); }
+  .tier-segment.s2 { background: linear-gradient(135deg, #FFB74D 0%, #FB8C00 100%); }
+  .tier-segment.s3 { background: linear-gradient(135deg, #E57373 0%, #C62828 100%); }
+  .tier-pointer {
+    position: absolute;
+    top: -6px;
+    transform: translateX(-50%);
+    transition: left 0.6s ease-out;
+    z-index: 5;
+  }
+  .tier-pointer-arrow {
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid var(--navy);
+    margin-bottom: -2px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  .tier-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .tinfo {
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    font-size: 11px;
+    color: #666;
+  }
+  .tinfo.t1 { border-color: #66BB6A; }
+  .tinfo.t2 { border-color: #FFB74D; }
+  .tinfo.t3 { border-color: #E57373; }
+  .tinfo .rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .tinfo.t1 .rate { color: #43A047; }
+  .tinfo.t2 .rate { color: #FB8C00; }
+  .tinfo.t3 .rate { color: #C62828; }
+  .tinfo .range {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  /* === 實質課稅情境模擬(業務轉換神器)=== */
+  .scenario-section {
+    margin: 28px 0;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(217,64,95,0.06) 0%, rgba(232,160,32,0.04) 100%);
+    border: 2px solid rgba(217,64,95,0.4);
+    position: relative;
+  }
+  .scenario-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .scenario-title::before {
+    content: '⚠';
+    background: #D9405F;
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .scenario-subtitle {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+  .scenario-subtitle b { color: #D9405F; font-weight: 700; }
+  .scenario-subtitle a {
+    color: var(--orange);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--orange);
+  }
+  .scenario-subtitle a:hover { color: #D04618; }
+
+  .scenario-input {
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-input-label {
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .scenario-input-label small {
+    color: #999;
+    font-weight: 400;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .scenario-input input {
+    flex: 1;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .scenario-input input:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+  .scenario-input-unit {
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .scenario-card {
+    padding: 18px 20px;
+    border-radius: 12px;
+    background: #fff;
+    border: 2px solid #eee;
+    text-align: center;
+  }
+  .scenario-card.before { border-color: #66BB6A; background: linear-gradient(135deg, rgba(102,187,106,0.08) 0%, #fff 100%); }
+  .scenario-card.after { border-color: #D9405F; background: linear-gradient(135deg, rgba(217,64,95,0.08) 0%, #fff 100%); }
+  .scenario-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .scenario-card.before .scenario-label { color: #43A047; }
+  .scenario-card.after .scenario-label { color: #D9405F; }
+  .scenario-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .scenario-card.before .scenario-num { color: #43A047; }
+  .scenario-card.after .scenario-num { color: #D9405F; }
+  .scenario-num small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .scenario-formula {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .scenario-impact {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #D9405F 0%, #B73354 100%);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(217,64,95,0.3);
+  }
+  .scenario-impact .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .scenario-impact .num small {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-left: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+  }
+  .scenario-impact .desc {
+    font-size: 12px;
+    margin-top: 6px;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 700px) {
+    .tier-info { grid-template-columns: 1fr; gap: 6px; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .scenario-input { flex-direction: column; align-items: stretch; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link active"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">DL</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="sub tag">遺產稅試算</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">ESTATE TAX CALCULATOR</div>
+        <div class="big-title">遺產稅試算</div>
+        <div class="sub-title">114年度・依現行遺贈稅法計算</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">免稅額</div>
+          <div class="badge-line2">1,333 萬元</div>
+        </div>
+        </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>傳承無憂</span><span class="dot">◆</span>
+    <span>節稅有道</span><span class="dot">◆</span>
+    <span>提前規劃</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INTRO -->
+    <div class="intro-section">
+      <div class="intro-card">
+        <div class="intro-icon">💡</div>
+        <div class="intro-text">
+          本試算工具依據<strong>遺產及贈與稅法</strong>114 年度規定試算。<br>
+          公式：<strong>應納遺產稅額 = (遺產總額 − 免稅額 − 各項扣除額) × 稅率 − 累進差額</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM: 遺產總額 -->
+    <div class="form-section">
+      <div class="section-title-icon">第一步：填入遺產總額</div>
+      <div class="form-grid full">
+        <div class="form-row">
+          <label class="form-label" for="totalEstate">
+            遺產總額（含死亡前2年內贈與配偶及繼承人之財產）
+            <span class="help">單位：新臺幣萬元</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="totalEstate" class="form-input" placeholder="例如：5000" min="0" step="1">
+            <span class="form-input-suffix">萬元</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM: 扣除額資訊 -->
+    <div class="form-section">
+      <div class="section-title-icon">第二步：填入家庭與扣除資訊</div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label" for="hasSpouse">
+            配偶是否在世
+            <span class="tag-amt">扣除 553 萬</span>
+          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-pill" data-target="hasSpouse" data-val="1">
+              <input type="radio" name="hasSpouse" value="1"> 是
+            </label>
+            <label class="checkbox-pill active" data-target="hasSpouse" data-val="0">
+              <input type="radio" name="hasSpouse" value="0" checked> 否
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="parents">
+            父母人數
+            <span class="tag-amt">每人 138 萬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="parents" class="form-input" value="0" min="0" max="2" step="1">
+            <span class="form-input-suffix">人</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="adultChildren">
+            成年子女（含直系血親卑親屬）
+            <span class="tag-amt">每人 56 萬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="adultChildren" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">人</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="minorYears">
+            未成年子女合計剩餘年數
+            <span class="help">每人 56 萬+加扣 56 萬/年</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="minorYears" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">年</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="minorChildren">
+            未成年子女人數
+            <span class="tag-amt">每人 56 萬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="minorChildren" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">人</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="siblings">
+            受扶養兄弟姊妹／祖父母
+            <span class="tag-amt">每人 56 萬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="siblings" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">人</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="disabled">
+            重度以上身心障礙者
+            <span class="tag-amt">每人 693 萬</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="disabled" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">人</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="funeral">
+            喪葬費扣除
+            <span class="help">最高 138 萬元</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="funeral" class="form-input" value="138" min="0" max="138" step="1">
+            <span class="form-input-suffix">萬元</span>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <label class="form-label" for="otherDeduct">
+            其他扣除（公共設施保留地、農地、應納稅捐、債務等）
+            <span class="help">依實際情形填寫</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="otherDeduct" class="form-input" value="0" min="0" step="1">
+            <span class="form-input-suffix">萬元</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" id="calcBtn">立即試算</button>
+        <button class="btn btn-secondary" id="resetBtn">重置</button>
+      </div>
+    </div>
+
+    <!-- RESULT (HIDDEN INITIAL) -->
+    <div class="result-section hidden" id="resultSection">
+      <div class="section-title-icon">試算結果</div>
+
+      <div class="result-hero">
+        <div class="result-hero-inner">
+          <div class="result-stat">
+            <div class="result-stat-label">課稅遺產淨額</div>
+            <div class="result-stat-num" id="resNetEstate">0 <small>萬元</small></div>
+          </div>
+          <div class="result-arrow">→</div>
+          <div class="result-stat tax">
+            <div class="result-stat-label">應納遺產稅額</div>
+            <div class="result-stat-num" id="resTaxAmt">0 <small>元</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-summary">
+        <div class="summary-card s1">
+          <div class="summary-label">遺產總額</div>
+          <div class="summary-num" id="sumTotal">0 <small>萬</small></div>
+        </div>
+        <div class="summary-card s2">
+          <div class="summary-label">扣除額合計</div>
+          <div class="summary-num" id="sumDeduct">0 <small>萬</small></div>
+        </div>
+        <div class="summary-card s3">
+          <div class="summary-label">適用稅率</div>
+          <div class="summary-num" id="sumRate">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAKDOWN (HIDDEN INITIAL) -->
+    <div class="breakdown-section hidden" id="breakdownSection">
+      <div class="section-title-icon">計算明細</div>
+      <table class="breakdown-table">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>金額</th>
+          </tr>
+        </thead>
+        <tbody id="breakdownBody">
+          <!-- dynamic -->
+        </tbody>
+      </table>
+    </div>
+
+    
+    <!-- 課稅級距視覺化 (NEW) -->
+    <div class="tier-vis hidden" id="tier-vis-section">
+      <div class="section-title-icon">您的應稅淨額落在哪個級距?</div>
+      <div style="position:relative; padding-top:14px;">
+        <div class="tier-pointer" id="tier-pointer" style="left:50%">
+          <div class="tier-pointer-arrow"></div>
+        </div>
+        <div class="tier-bar-wrap">
+          <div class="tier-segment s1">10%</div>
+          <div class="tier-segment s2">15%</div>
+          <div class="tier-segment s3">20%</div>
+        </div>
+      </div>
+      <div class="tier-info">
+        <div class="tinfo t1">
+          <div class="rate">10%</div>
+          <div class="range">5,621 萬<br>以下</div>
+        </div>
+        <div class="tinfo t2">
+          <div class="rate">15%</div>
+          <div class="range">5,621 ~<br>11,242 萬</div>
+        </div>
+        <div class="tinfo t3">
+          <div class="rate">20%</div>
+          <div class="range">11,242 萬<br>以上</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 實質課稅情境模擬 (NEW - 業務轉換!) -->
+    <div class="scenario-section hidden" id="scenario-section">
+      <div class="scenario-title">實質課稅情境模擬</div>
+      <div class="scenario-subtitle">
+        若您持有的人壽保單因符合 <b>實質課稅 8 大態樣</b> 而被列入遺產總額,將會增加多少遺產稅?
+        <a href="tax-risk.html">→ 進行 8 大態樣自我檢測</a>
+      </div>
+
+      <div class="scenario-input">
+        <div class="scenario-input-label">
+          被列入遺產的保單金額 <small>(假設情境)</small>
+        </div>
+        <input type="number" id="scenarioInsAmt" value="20000000" min="0" step="1000000">
+        <div class="scenario-input-unit">元</div>
+      </div>
+
+      <div class="scenario-grid">
+        <div class="scenario-card before">
+          <div class="scenario-label">✓ 保單未被列入遺產</div>
+          <div class="scenario-num"><span id="scBefore">0</span><small>萬</small></div>
+          <div class="scenario-formula">原本遺產稅</div>
+        </div>
+        <div class="scenario-card after">
+          <div class="scenario-label">⚠ 保單被實質課稅</div>
+          <div class="scenario-num"><span id="scAfter">0</span><small>萬</small></div>
+          <div class="scenario-formula">含保單後遺產稅</div>
+        </div>
+      </div>
+
+      <div class="scenario-impact">
+        <div class="num">多繳 NT$ <span id="scDiff">0</span><small>萬</small></div>
+        <div class="desc">若家人未事先規劃,這就是實質課稅造成的損失</div>
+      </div>
+    </div>
+
+    <!-- REFERENCE: 稅率表 -->
+    <div class="ref-section">
+      <div class="section-title-icon">114 年度遺產稅率表</div>
+      <div class="section-sub">繼承發生日（死亡日）於 114/01/01 之後適用</div>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th style="width:48%">遺產淨額（萬元）</th>
+            <th style="width:22%">稅率</th>
+            <th style="width:30%">累進差額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="range">5,621 萬以下</td>
+            <td class="rate">10%</td>
+            <td class="diff">—</td>
+          </tr>
+          <tr>
+            <td class="range">5,621 萬 ~ 11,242 萬</td>
+            <td class="rate">15%</td>
+            <td class="diff">281 萬</td>
+          </tr>
+          <tr>
+            <td class="range">超過 11,242 萬</td>
+            <td class="rate">20%</td>
+            <td class="diff">1,403.25 萬</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- REFERENCE: 免稅額與扣除額 -->
+    <div class="ref-section">
+      <div class="section-title-icon">114 年度免稅額與主要扣除額</div>
+      <div class="ref-cards">
+        <div class="ref-card">
+          <div class="ref-card-title">免稅額</div>
+          <div class="ref-card-amt">1,333 <small>萬元</small></div>
+          <div class="ref-card-desc">軍警公教因公死亡者加倍計算</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">配偶扣除額</div>
+          <div class="ref-card-amt">553 <small>萬元</small></div>
+          <div class="ref-card-desc">遺有配偶者適用</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">直系血親卑親屬</div>
+          <div class="ref-card-amt">56 <small>萬／人</small></div>
+          <div class="ref-card-desc">未成年者按距成年年數每年加扣 56 萬</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">父母扣除額</div>
+          <div class="ref-card-amt">138 <small>萬／人</small></div>
+          <div class="ref-card-desc">遺有父母者適用</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">重度身障特別扣除</div>
+          <div class="ref-card-amt">693 <small>萬／人</small></div>
+          <div class="ref-card-desc">重度以上身障或精神衛生法之嚴重病人</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">喪葬費扣除</div>
+          <div class="ref-card-amt">138 <small>萬元</small></div>
+          <div class="ref-card-desc">採定額扣除，無須檢附憑證</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section" id="faq">
+      <div class="section-title-icon">遺產稅 問與答</div>
+      <div class="section-sub">依財政部稅務入口網官方分類整理</div>
+
+      <div class="faq-source-bar">
+        📚 完整內容請參閱：<a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax" target="_blank" rel="noopener noreferrer">財政部稅務入口網・遺產稅問與答</a>
+      </div>
+
+      <!-- 1. 如何辦理遺產稅申報 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">1</div>
+          <div class="faq-cat-title">如何辦理遺產稅申報？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/filing" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>誰是遺產稅納稅義務人？</summary>
+            <div class="faq-body">
+              遺產稅之納稅義務人依序為：<br>
+              <strong>1. 有遺囑執行人者</strong>，為遺囑執行人。<br>
+              <strong>2. 無遺囑執行人者</strong>，為繼承人及受遺贈人。<br>
+              <strong>3. 無遺囑執行人及繼承人者</strong>，為依法選定之遺產管理人。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>何時申報？要向哪個單位申報？</summary>
+            <div class="faq-body">
+              被繼承人死亡遺有財產者（包括動產、不動產及一切有財產價值之權利），納稅義務人應於<strong>被繼承人死亡日起 6 個月內</strong>，向被繼承人死亡時戶籍所在地之國稅局或所屬分局、稽徵所申報。<br>
+              被繼承人為經常居住中華民國境外之中華民國國民，或非中華民國國民死亡時，在中華民國境內遺有財產者，應向<strong>臺北國稅局</strong>申報。<br>
+              符合「遺產稅跨局臨櫃申辦作業要點」規定之案件，繼承人可不受戶籍所在地限制，就近至國稅局任一分局、稽徵所或服務處辦理申報。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>申報遺產稅應檢附那些文件？</summary>
+            <div class="faq-body">
+              一般應檢附：<strong>遺產稅申報書、被繼承人除戶謄本、繼承人現戶戶籍謄本、繼承人國民身分證影本、遺產項目相關證明文件</strong>（如不動產登記謄本、存款餘額證明、股票證明、保單明細等）。<br>
+              如有扣除項目，須另檢附相關證明（如喪葬費收據、身障證明、死亡前未償債務證明等）。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 2. 那些財產應申報遺產稅 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">2</div>
+          <div class="faq-cat-title">那些財產應申報遺產稅？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/which-property" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>什麼財產應計入遺產總額？</summary>
+            <div class="faq-body">
+              依《遺產及贈與稅法》規定，<strong>被繼承人死亡時遺有的全部財產</strong>都應計入遺產總額，包括動產、不動產及一切有財產價值之權利。<br>
+              此外，被繼承人<strong>死亡前 2 年內</strong>贈與下列對象之財產，視為遺產：<br>
+              <strong>1.</strong> 被繼承人之配偶。<br>
+              <strong>2.</strong> 民法第 1138 條及第 1140 條規定之各順序繼承人。<br>
+              <strong>3.</strong> 前述各順序繼承人之配偶。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>有哪些財產不計入遺產總額？</summary>
+            <div class="faq-body">
+              常見之不計入遺產總額項目：<br>
+              <strong>1.</strong> 遺贈各級政府及公立教育、文化、公益、慈善機關之財產。<br>
+              <strong>2.</strong> 遺贈公有事業機構或全部公股之公營事業之財產。<br>
+              <strong>3.</strong> 遺贈合於規定之財團法人組織。<br>
+              <strong>4.</strong> 被繼承人日常生活必需之器具及用具（89 萬元以下）。<br>
+              <strong>5.</strong> 被繼承人職業上之工具（50 萬元以下）。<br>
+              <strong>6.</strong> <strong>約定於被繼承人死亡時，給付其所指定受益人之人壽保險金額、軍公教人員、勞工或農民保險之保險金額及互助金</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>人壽保險金一定不計入遺產總額嗎？</summary>
+            <div class="faq-body">
+              依遺贈稅法規定，<strong>約定於被繼承人死亡時給付指定受益人之人壽保險金額</strong>，不計入遺產總額。但實務上若有以下情形，可能被國稅局以實質課稅原則認定為遺產：<br>
+              <strong>1.</strong> 重病投保、高齡投保、躉繳投保<br>
+              <strong>2.</strong> 短期投保、密集投保、舉債投保<br>
+              <strong>3.</strong> 投保金額異常巨額、保費接近保額<br>
+              建議規劃保險時應留意「實質課稅 8 大態樣」，並提早安排以發揮節稅效益。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 3. 農業用地與公共設施保留地 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">3</div>
+          <div class="faq-cat-title">農業用地、公共設施保留地，應如何申報遺產稅？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/agricultural-land-and-land-reserved-for-public-facilities" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>農業用地遺贈給繼承人，可以扣除嗎？</summary>
+            <div class="faq-body">
+              遺產中作農業使用之農業用地及其地上農作物，由繼承人或受遺贈人承受者，<strong>其土地及地上農作物之價值全數扣除</strong>。<br>
+              <strong>但須注意</strong>：承受人自承受之日起 <strong>5 年內</strong>，未將該土地繼續作農業使用且未在有關機關所令期限內恢復作農業使用，或雖在所令期限內已恢復農業使用而再有未作農業使用情事者，<strong>應追繳應納遺產稅</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>公共設施保留地可以扣除嗎？</summary>
+            <div class="faq-body">
+              依《都市計畫法》第 50-1 條，<strong>公共設施保留地因繼承移轉者，免徵遺產稅</strong>。<br>
+              申報時應檢附直轄市、縣（市）政府或鄉（鎮、市、區）公所核發之「公共設施保留地證明書」，並列為扣除額。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 4. 遺產價值之計算 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">4</div>
+          <div class="faq-cat-title">遺產價值之計算？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/calculation" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>遺產中的不動產如何計算價值？</summary>
+            <div class="faq-body">
+              <strong>土地</strong>：以被繼承人死亡時公告土地現值為準。<br>
+              <strong>房屋</strong>：以被繼承人死亡時房屋評定標準價格為準。<br>
+              因公告現值與評定標準價格通常遠低於市價，故不動產持有對遺產稅影響相對較低。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>股票及有價證券如何認定價值？</summary>
+            <div class="faq-body">
+              <strong>上市櫃股票</strong>：以死亡日該股票之收盤價計算；如該日無交易者，以死亡日前最近一日收盤價為準。<br>
+              <strong>未上市櫃公司股票</strong>：以死亡日該公司資產淨值計算（按被繼承人持股比例）。<br>
+              <strong>共同基金</strong>：以死亡日基金淨值計算。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 5. 免稅額與扣除額 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">5</div>
+          <div class="faq-cat-title">可自遺產總額中減除的項目（免稅額、扣除額）有那些？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/exemption" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>114 年度遺產稅免稅額及扣除額為何？</summary>
+            <div class="faq-body">
+              <strong>免稅額：1,333 萬元</strong>（軍警公教人員因執行職務死亡者加倍計算）<br>
+              <strong>扣除額：</strong><br>
+              1. 配偶扣除額：<strong>553 萬元</strong>。<br>
+              2. 直系血親卑親屬：<strong>每人 56 萬元</strong>，未成年者按距成年年數每年加扣 56 萬。<br>
+              3. 父母扣除額：<strong>每人 138 萬元</strong>。<br>
+              4. 重度以上身心障礙特別扣除：<strong>每人 693 萬元</strong>。<br>
+              5. 受扶養兄弟姊妹、祖父母：<strong>每人 56 萬元</strong>。<br>
+              6. 喪葬費扣除：<strong>138 萬元</strong>（採定額扣除）。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>還有哪些金額可從遺產中扣除？</summary>
+            <div class="faq-body">
+              除上述固定金額之扣除額外，下列項目亦可扣除：<br>
+              <strong>1.</strong> 被繼承人死亡前依法應納之各項稅捐、罰鍰及罰金。<br>
+              <strong>2.</strong> 被繼承人死亡前未償之債務（具有確實證明者）。<br>
+              <strong>3.</strong> 公共設施保留地及作農業使用之農業用地價值。<br>
+              <strong>4.</strong> <strong>夫妻剩餘財產差額分配請求權</strong>（生存配偶得主張）。<br>
+              <strong>5.</strong> 被繼承人之喪葬費用（已採定額扣除 138 萬，無須再檢附憑證）。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 6. 應納稅額之計算 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">6</div>
+          <div class="faq-cat-title">遺產稅應納稅額之計算？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/payable" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>應納遺產稅額如何計算？</summary>
+            <div class="faq-body">
+              <strong>(一) 遺產總額</strong>：被繼承人死亡時，全部遺產加上死亡前 2 年內贈與配偶、依民法第 1138 條及第 1140 條規定之各順序繼承人及上述各順序繼承人之配偶之財產後之金額。<br>
+              <strong>(二) 課稅遺產淨額</strong> = 遺產總額 − 免稅額 − 扣除額。<br>
+              <strong>(三) 應納遺產稅額</strong> = 課稅遺產淨額 × 稅率 − 累進差額 − 扣抵稅額及利息。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>114 年起遺產稅率與級距為何？</summary>
+            <div class="faq-body">
+              繼承發生日於 114/01/01 之後，適用三級累進稅率：<br>
+              <strong>1.</strong> 遺產淨額 5,621 萬以下：稅率 10%。<br>
+              <strong>2.</strong> 遺產淨額 5,621 萬 ~ 11,242 萬：稅率 15%（累進差額 281 萬）。<br>
+              <strong>3.</strong> 遺產淨額超過 11,242 萬：稅率 20%（累進差額 1,403.25 萬）。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 7. 繳納及證明書 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">7</div>
+          <div class="faq-cat-title">遺產稅繳納及證明書之核發？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/certification" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>遺產稅可以分期繳納嗎？</summary>
+            <div class="faq-body">
+              遺產稅應納稅額在 <strong>30 萬元以上</strong>，納稅義務人確有困難不能一次繳納現金時，得於納稅期限內，向稽徵機關申請<strong>分期繳納，最多 18 期</strong>，每期間隔以不超過 2 個月為限。<br>
+              亦可<strong>以實物（如不動產、有價證券）抵繳</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>遺產稅證明書何時核發？如何辦理財產移轉？</summary>
+            <div class="faq-body">
+              繳清遺產稅後，由稽徵機關核發<strong>「遺產稅繳清證明書」</strong>。<br>
+              如該案件免稅，則核發<strong>「遺產稅免稅證明書」</strong>。<br>
+              繼承人辦理不動產繼承登記、存款提領、股票過戶等財產移轉時，<strong>須檢附該證明書</strong>。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 8. 處罰 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">8</div>
+          <div class="faq-cat-title">未依規定申報、繳納遺產稅之處罰？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/penalty" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>逾期申報或漏報會有什麼處罰？</summary>
+            <div class="faq-body">
+              <strong>逾期申報</strong>：按核定應納稅額加徵 <strong>1 倍以下</strong>之罰鍰。<br>
+              <strong>已申報但漏報或短報</strong>：按所漏稅額處 <strong>2 倍以下</strong>之罰鍰。<br>
+              <strong>故意以詐欺或其他不正當方法逃漏稅捐</strong>：除依法追繳稅款外，並按所漏稅額處 <strong>1 倍至 3 倍</strong>之罰鍰。<br>
+              建議於期限內主動申報，必要時可申請延長申報期限（最長 3 個月）。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 9. 核課期間、徵收期間、申訴 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">9</div>
+          <div class="faq-cat-title">遺產稅核課期間、徵收期間、申訴方式？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/estate-tax/period" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>遺產稅之核課期間多久？</summary>
+            <div class="faq-body">
+              <strong>已依規定申報者</strong>：核課期間為 <strong>5 年</strong>，自申報日起算。<br>
+              <strong>未依規定申報者</strong>：核課期間為 <strong>7 年</strong>，自規定申報期間屆滿之翌日起算。<br>
+              核課期間內，稽徵機關得發現新事實、新證據而為補徵或退稅之核定。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>對遺產稅核定不服時，如何申訴？</summary>
+            <div class="faq-body">
+              納稅義務人對於核定稅捐之處分如有不服，應於繳款書送達後，於繳納期間屆滿翌日起 <strong>30 日內</strong>，依規定格式，敘明理由，連同證明文件，<strong>向原處分稽徵機關申請復查</strong>。<br>
+              對復查決定仍不服者，得於收到復查決定書之次日起 <strong>30 日內</strong>，依法提起<strong>訴願</strong>及行政訴訟。
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">⚠ 重要提醒</div>
+      本試算結果僅供參考，<strong style="color:#fff">實際應納稅額仍以國稅局核定為準</strong>。試算未含「死亡前 2 年內贈與財產併入遺產總額」、「不計入遺產總額之人壽保險金」、「夫妻剩餘財產差額分配請求權」、「公共設施保留地或農地扣除」、「國外已納遺產稅扣抵」等特殊情形。<br>
+      正式申報請至 <a href="https://www.etax.nat.gov.tw/etwmain/etw158w/83" target="_blank" rel="noopener noreferrer">財政部稅務入口網・遺產稅試算專區</a>，或洽詢戶籍所在地國稅局。如需傳承規劃諮詢，歡迎與鼎綸恩宇專業顧問聯繫。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">傳承智慧 × 守護家業｜鼎綸恩宇陪您完整規劃</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div class="footer-right">📞 預約專業顧問</div>
+      <div style="color:white;font-size:15px;font-weight:900;letter-spacing:2px;">📱 0925-000-049</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───── 114 年度遺產稅參數 ─────
+  const TAX_PARAMS = {
+    exemption: 1333,        // 免稅額（萬）
+    spouse: 553,            // 配偶扣除（萬）
+    descendant: 56,         // 直系血親卑親屬（萬）
+    parent: 138,            // 父母（萬）
+    disabled: 693,          // 重度身障（萬）
+    sibling: 56,            // 兄弟姊妹/祖父母（萬）
+    funeralMax: 138,        // 喪葬費上限（萬）
+    // 級距（單位：萬元）
+    bracket1: 5621,
+    bracket2: 11242,
+    diff1: 281,             // 15% 累進差額
+    diff2: 1403.25          // 20% 累進差額
+  };
+
+  // ───── checkbox-pill 切換 ─────
+  document.querySelectorAll('.checkbox-pill').forEach(pill => {
+    pill.addEventListener('click', e => {
+      const target = pill.dataset.target;
+      if (!target) return;
+      e.preventDefault();
+      document.querySelectorAll(`.checkbox-pill[data-target="${target}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const radio = pill.querySelector('input');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  // ───── 取值工具 ─────
+  const num = id => {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) || v < 0 ? 0 : v;
+  };
+  const fmt = n => {
+    const rounded = Math.round(n);
+    return rounded.toLocaleString('en-US');
+  };
+  const fmtWan = n => {
+    // 萬元，保留小數
+    if (Number.isInteger(n)) return n.toLocaleString('en-US');
+    return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  };
+
+  // ───── 計算稅額 ─────
+  function calcTax(netEstateWan) {
+    if (netEstateWan <= 0) return { tax: 0, rate: '—', diff: 0 };
+    if (netEstateWan <= TAX_PARAMS.bracket1) {
+      return { tax: netEstateWan * 0.10, rate: '10%', diff: 0 };
+    } else if (netEstateWan <= TAX_PARAMS.bracket2) {
+      return { tax: netEstateWan * 0.15 - TAX_PARAMS.diff1, rate: '15%', diff: TAX_PARAMS.diff1 };
+    } else {
+      return { tax: netEstateWan * 0.20 - TAX_PARAMS.diff2, rate: '20%', diff: TAX_PARAMS.diff2 };
+    }
+  }
+
+  // ───── 主流程 ─────
+  function calculate() {
+    const total = num('totalEstate');
+    if (total <= 0) {
+      alert('請輸入遺產總額！');
+      document.getElementById('totalEstate').focus();
+      return;
+    }
+
+    const hasSpouse = document.querySelector('input[name="hasSpouse"]:checked').value === '1';
+    const parents = num('parents');
+    const adultChildren = num('adultChildren');
+    const minorChildren = num('minorChildren');
+    const minorYears = num('minorYears');
+    const siblings = num('siblings');
+    const disabled = num('disabled');
+    const funeral = Math.min(num('funeral'), TAX_PARAMS.funeralMax);
+    const otherDeduct = num('otherDeduct');
+
+    // 計算各扣除額
+    const dSpouse = hasSpouse ? TAX_PARAMS.spouse : 0;
+    const dParents = parents * TAX_PARAMS.parent;
+    const dAdultChild = adultChildren * TAX_PARAMS.descendant;
+    const dMinorChild = minorChildren * TAX_PARAMS.descendant + minorYears * TAX_PARAMS.descendant;
+    const dSiblings = siblings * TAX_PARAMS.sibling;
+    const dDisabled = disabled * TAX_PARAMS.disabled;
+
+    const totalDeduct = dSpouse + dParents + dAdultChild + dMinorChild + dSiblings + dDisabled + funeral + otherDeduct;
+    const netEstate = Math.max(0, total - TAX_PARAMS.exemption - totalDeduct);
+
+    const { tax: taxWan, rate, diff } = calcTax(netEstate);
+    const taxYuan = Math.max(0, Math.round(taxWan * 10000));
+
+    // ───── 渲染結果 ─────
+    document.getElementById('resNetEstate').innerHTML = `${fmtWan(netEstate)} <small>萬元</small>`;
+    document.getElementById('resTaxAmt').innerHTML = `${fmt(taxYuan)} <small>元</small>`;
+    document.getElementById('sumTotal').innerHTML = `${fmtWan(total)} <small>萬</small>`;
+    document.getElementById('sumDeduct').innerHTML = `${fmtWan(totalDeduct)} <small>萬</small>`;
+    document.getElementById('sumRate').textContent = rate;
+
+    // ───── 渲染明細 ─────
+    const rows = [];
+    rows.push(`<tr><td>遺產總額</td><td>${fmtWan(total)} 萬元</td></tr>`);
+    rows.push(`<tr><td>− 免稅額</td><td>${fmtWan(TAX_PARAMS.exemption)} 萬元</td></tr>`);
+
+    if (dSpouse) rows.push(`<tr><td>− 配偶扣除額</td><td>${fmtWan(dSpouse)} 萬元</td></tr>`);
+    if (dParents) rows.push(`<tr><td>− 父母扣除額 <span class="breakdown-formula">(${parents} 人 × 138 萬)</span></td><td>${fmtWan(dParents)} 萬元</td></tr>`);
+    if (dAdultChild) rows.push(`<tr><td>− 成年子女扣除 <span class="breakdown-formula">(${adultChildren} 人 × 56 萬)</span></td><td>${fmtWan(dAdultChild)} 萬元</td></tr>`);
+    if (dMinorChild) rows.push(`<tr><td>− 未成年子女扣除 <span class="breakdown-formula">(${minorChildren} 人 × 56 萬 + ${minorYears} 年加扣)</span></td><td>${fmtWan(dMinorChild)} 萬元</td></tr>`);
+    if (dSiblings) rows.push(`<tr><td>− 兄弟姊妹／祖父母扣除 <span class="breakdown-formula">(${siblings} 人 × 56 萬)</span></td><td>${fmtWan(dSiblings)} 萬元</td></tr>`);
+    if (dDisabled) rows.push(`<tr><td>− 重度身障特別扣除 <span class="breakdown-formula">(${disabled} 人 × 693 萬)</span></td><td>${fmtWan(dDisabled)} 萬元</td></tr>`);
+    if (funeral) rows.push(`<tr><td>− 喪葬費扣除</td><td>${fmtWan(funeral)} 萬元</td></tr>`);
+    if (otherDeduct) rows.push(`<tr><td>− 其他扣除</td><td>${fmtWan(otherDeduct)} 萬元</td></tr>`);
+
+    rows.push(`<tr class="subtotal"><td>＝ 課稅遺產淨額</td><td>${fmtWan(netEstate)} 萬元</td></tr>`);
+
+    if (netEstate > 0) {
+      rows.push(`<tr><td>× 適用稅率</td><td>${rate}</td></tr>`);
+      if (diff > 0) {
+        rows.push(`<tr><td>− 累進差額</td><td>${fmtWan(diff)} 萬元</td></tr>`);
+      }
+    }
+    rows.push(`<tr class="final"><td>＝ 應納遺產稅額</td><td>${fmt(taxYuan)} 元</td></tr>`);
+
+    document.getElementById('breakdownBody').innerHTML = rows.join('');
+
+    // 顯示結果區
+    const r = document.getElementById('resultSection');
+    const b = document.getElementById('breakdownSection');
+    r.classList.remove('hidden');
+    b.classList.remove('hidden');
+    r.classList.add('slide-in');
+    b.classList.add('slide-in');
+
+    // === 更新整合區塊 (課稅級距視覺化 + 實質課稅情境模擬) ===
+    window._lastTaxableAmount = netEstate;
+    window._lastTax = taxYuan;
+    if (typeof updateTierVis === 'function') updateTierVis(netEstate);
+    if (typeof updateScenario === 'function') updateScenario(netEstate, taxYuan);
+
+    // 滾動到結果
+    setTimeout(() => r.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  // ───── 重置 ─────
+  function resetForm() {
+    document.getElementById('totalEstate').value = '';
+    ['parents','adultChildren','minorChildren','minorYears','siblings','disabled','otherDeduct'].forEach(id => {
+      document.getElementById(id).value = 0;
+    });
+    document.getElementById('funeral').value = 138;
+    // reset radio
+    document.querySelector('.checkbox-pill[data-target="hasSpouse"][data-val="0"]').click();
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('breakdownSection').classList.add('hidden');
+    document.getElementById('totalEstate').focus();
+  }
+
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+  document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+  // Enter 鍵試算
+  document.querySelectorAll('.form-input').forEach(inp => {
+    inp.addEventListener('keypress', e => {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+</script>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    const sidebar = document.getElementById('sidebar');
+
+    function open() {
+      document.body.classList.add('menu-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+    function toggle() {
+      document.body.classList.contains('menu-open') ? close() : open();
+    }
+
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+
+// ─── 整合區塊邏輯 ───
+function updateTierVis(taxableAmount) {
+  const section = document.getElementById('tier-vis-section');
+  const pointer = document.getElementById('tier-pointer');
+  if (!section || !pointer) return;
+
+  if (taxableAmount <= 0) {
+    section.classList.add('hidden');
+    return;
+  }
+  section.classList.remove('hidden');
+
+  // 計算指針位置
+  // 5621萬 = 56,210,000, 11242萬 = 112,420,000
+  // 假設範圍 0 ~ 200,000,000 對應 0% ~ 100%
+  const T1 = 56210000;
+  const T2 = 112420000;
+  const MAX = 200000000;
+  let pct = 50;
+  if (taxableAmount <= T1) {
+    pct = (taxableAmount / T1) * 33.33;
+  } else if (taxableAmount <= T2) {
+    pct = 33.33 + ((taxableAmount - T1) / (T2 - T1)) * 33.33;
+  } else {
+    const over = Math.min(taxableAmount, MAX);
+    pct = 66.67 + ((over - T2) / (MAX - T2)) * 33.33;
+  }
+  pct = Math.max(2, Math.min(98, pct));
+  pointer.style.left = pct + '%';
+}
+
+function updateScenario(currentTaxable, currentTax) {
+  const section = document.getElementById('scenario-section');
+  if (!section) return;
+
+  if (currentTaxable < 0) {
+    section.classList.add('hidden');
+    return;
+  }
+  section.classList.remove('hidden');
+
+  const insAmt = parseFloat(document.getElementById('scenarioInsAmt').value) || 0;
+  // 計算加入保單後的稅額
+  const newTaxable = Math.max(0, currentTaxable + insAmt);
+  // 三段稅率
+  function calcTax(amt) {
+    if (amt <= 0) return 0;
+    if (amt <= 56210000) return amt * 0.10;
+    if (amt <= 112420000) return amt * 0.15 - 2810000;
+    return amt * 0.20 - 14032500;
+  }
+  const newTax = calcTax(newTaxable);
+  const diff = newTax - currentTax;
+
+  document.getElementById('scBefore').textContent = (currentTax / 10000).toFixed(0);
+  document.getElementById('scAfter').textContent = (newTax / 10000).toFixed(0);
+  document.getElementById('scDiff').textContent = (diff / 10000).toFixed(0);
+}
+
+// 監聽保單金額變化(在 DOMContentLoaded 後綁定)
+document.addEventListener('DOMContentLoaded', function() {
+  const insInput = document.getElementById('scenarioInsAmt');
+  if (insInput) {
+    insInput.addEventListener('input', function() {
+      // 重新計算情境(從現有 result 拿數值)
+      if (window._lastTaxableAmount !== undefined && window._lastTax !== undefined) {
+        updateScenario(window._lastTaxableAmount, window._lastTax);
+      }
+    });
+  }
+});
+
+</script>
+
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+</body>
+</html>

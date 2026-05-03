@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+<title>贈與稅試算｜鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: white;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .header-center .big-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 8px;
+    text-indent: 8px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-center .sub-title {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 3px;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .quick-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quick-bar-row { display: flex; gap: 6px; }
+  .quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ── BODY ── */
+  .body { padding: 36px 48px; }
+
+  .section-title-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 18px;
+    margin-top: -10px;
+  }
+
+  /* ── INTRO ── */
+  .intro-section { margin-bottom: 28px; }
+  .intro-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .intro-icon {
+    width: 48px; height: 48px;
+    background: var(--orange);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.3);
+  }
+  .intro-text {
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.7;
+  }
+  .intro-text strong { color: var(--orange); font-weight: 900; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+  }
+  .tab {
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #999;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all .2s;
+    letter-spacing: 1px;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab:hover { color: var(--navy); }
+  .tab.active {
+    color: var(--orange);
+    border-bottom-color: var(--orange);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: slideDown .3s ease both; }
+
+  /* ── FORM ── */
+  .form-section { margin-bottom: 32px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-row.full { grid-column: 1 / -1; }
+
+  .form-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .form-label .help {
+    font-size: 10px;
+    color: #999;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .form-label .tag-amt {
+    font-size: 10px;
+    color: var(--orange);
+    background: var(--orange-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  .form-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .form-input {
+    width: 100%;
+    padding: 11px 50px 11px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 15px;
+    font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all .2s;
+    text-align: right;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.12);
+  }
+  .form-input::placeholder { color: #ccc; font-weight: 400; }
+  .form-input-suffix {
+    position: absolute;
+    right: 14px;
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .checkbox-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .checkbox-pill input { display: none; }
+  .checkbox-pill:hover { border-color: var(--orange); }
+  .checkbox-pill.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* ── BUTTONS ── */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(240,90,40,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,90,40,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: #fff;
+    color: var(--navy);
+    border: 1.5px solid #ddd;
+    flex: 0 0 140px;
+  }
+  .btn-secondary:hover { border-color: var(--navy); background: #fafafa; }
+
+  /* ── RESULT ── */
+  .result-section { margin-bottom: 32px; }
+
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-radius: 16px;
+    padding: 28px 32px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.15);
+    filter: blur(40px);
+  }
+  .result-hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .result-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .result-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .result-stat-num small {
+    font-size: 14px;
+    margin-left: 4px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+  .result-arrow {
+    font-size: 24px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .result-stat.tax { text-align: right; }
+  .result-stat.tax .result-stat-num {
+    font-size: 56px;
+    color: var(--orange);
+    text-shadow: 0 4px 16px rgba(240,90,40,0.4);
+  }
+  .result-stat.tax .result-stat-label { color: var(--gold); }
+
+  .result-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .summary-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    text-align: center;
+  }
+  .summary-card.s1 { border-color: var(--teal); background: var(--teal-light); }
+  .summary-card.s2 { border-color: var(--orange); background: var(--orange-light); }
+  .summary-card.s3 { border-color: var(--navy); background: rgba(13,42,58,0.06); }
+  .summary-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .summary-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .summary-num small { font-size: 12px; color: #999; margin-left: 3px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; }
+  .summary-card.s1 .summary-num { color: var(--teal); }
+  .summary-card.s2 .summary-num { color: var(--orange); }
+  .summary-card.s3 .summary-num { color: var(--navy); }
+
+  /* ── BREAKDOWN ── */
+  .breakdown-section { margin-bottom: 32px; }
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .breakdown-table thead tr { background: var(--navy); }
+  .breakdown-table thead th {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 14px;
+    text-align: left;
+    letter-spacing: 1px;
+  }
+  .breakdown-table thead th:last-child { text-align: right; }
+  .breakdown-table tbody tr { border-bottom: 1px solid #eee; }
+  .breakdown-table tbody tr:last-child { border-bottom: none; }
+  .breakdown-table tbody tr:nth-child(even) { background: #fafafa; }
+  .breakdown-table tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+  .breakdown-table tbody td:last-child {
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .breakdown-table tbody tr.subtotal {
+    background: var(--orange-light) !important;
+    font-weight: 700;
+  }
+  .breakdown-table tbody tr.subtotal td { color: var(--navy); font-weight: 700; }
+  .breakdown-table tbody tr.subtotal td:last-child { color: var(--orange); }
+  .breakdown-table tbody tr.final {
+    background: var(--navy) !important;
+  }
+  .breakdown-table tbody tr.final td { color: #fff; font-weight: 900; font-size: 15px; }
+  .breakdown-table tbody tr.final td:last-child {
+    color: var(--gold);
+    font-size: 26px;
+  }
+  .breakdown-formula {
+    color: #999;
+    font-size: 11px;
+    font-style: italic;
+    margin-left: 6px;
+  }
+
+  /* ── COMPARE TABLE ── */
+  .compare-section { margin-bottom: 32px; }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .compare-card {
+    border-radius: 14px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .compare-card.bad {
+    background: linear-gradient(135deg, #fff 0%, #fef0eb 100%);
+    border: 2px solid #f5b8a3;
+  }
+  .compare-card.good {
+    background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%);
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(26,107,114,0.3);
+  }
+  .compare-card-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .compare-card.bad .compare-card-tag {
+    background: #f5b8a3;
+    color: #8a3a18;
+  }
+  .compare-card.good .compare-card-tag {
+    background: var(--gold);
+    color: #fff;
+  }
+  .compare-card-title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .compare-card.bad .compare-card-title { color: var(--navy); }
+  .compare-card-desc {
+    font-size: 11px;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  .compare-card.bad .compare-card-desc { color: #888; }
+  .compare-card.good .compare-card-desc { color: rgba(255,255,255,0.7); }
+
+  .compare-amt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.08);
+    font-size: 12px;
+  }
+  .compare-card.good .compare-amt-row { border-bottom-color: rgba(255,255,255,0.15); }
+  .compare-amt-row:last-of-type { border-bottom: none; }
+  .compare-amt-label { font-weight: 600; }
+  .compare-card.bad .compare-amt-label { color: #555; }
+  .compare-card.good .compare-amt-label { color: rgba(255,255,255,0.85); }
+  .compare-amt-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+  }
+  .compare-card.bad .compare-amt-val { color: var(--navy); }
+  .compare-card.good .compare-amt-val { color: #fff; }
+
+  .compare-total {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 2px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .compare-card.good .compare-total { border-top-color: rgba(255,255,255,0.25); }
+  .compare-total-label {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .compare-card.good .compare-total-label { color: var(--gold); }
+  .compare-total-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+  }
+  .compare-card.bad .compare-total-num { color: var(--orange); }
+  .compare-card.good .compare-total-num { color: #fff; text-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+
+  .compare-saved {
+    margin-top: 16px;
+    text-align: center;
+    background: var(--gold);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(232,160,32,0.3);
+  }
+  .compare-saved-label {
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .compare-saved-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+  }
+
+  /* ── REFERENCE TABLE ── */
+  .ref-section { margin-bottom: 32px; }
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  .ref-table thead tr { background: var(--teal); }
+  .ref-table thead th {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 10px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .ref-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .ref-table tbody td {
+    padding: 12px 10px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+  }
+  .ref-table tbody td.range {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .ref-table tbody td.rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .ref-table tbody td.diff {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--teal);
+  }
+
+  .ref-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .ref-card {
+    padding: 14px 14px;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .ref-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .ref-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .ref-card-amt {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .ref-card-amt small { font-size: 12px; color: #999; margin-left: 3px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; }
+  .ref-card-desc { font-size: 10px; color: #888; margin-top: 6px; line-height: 1.5; }
+
+  /* ── TIPS ── */
+  .tips-section { margin-bottom: 32px; }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .tip-card {
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-left: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: all .2s;
+  }
+  .tip-card:hover {
+    border-left-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transform: translateX(2px);
+  }
+  .tip-card-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tip-card-title .num {
+    width: 22px; height: 22px;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 50%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .tip-card-desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.7;
+  }
+  .tip-card-desc strong { color: var(--orange); }
+
+  /* ── FAQ ── */
+  .faq-section { margin-bottom: 32px; }
+  .faq-source-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--teal-light);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--teal);
+  }
+  .faq-source-bar a {
+    color: var(--teal);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .faq-cat-group {
+    margin-bottom: 18px;
+    border: 1.5px solid #eee;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .faq-cat-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+  }
+  .faq-cat-num {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(240,90,40,0.4);
+  }
+  .faq-cat-title {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    flex: 1;
+  }
+  .faq-cat-link {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .faq-cat-link:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+  }
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-cat-group .faq-list { padding: 8px; }
+  .faq-cat-group .faq-list .faq-item { margin-bottom: 6px; }
+  .faq-cat-group .faq-list .faq-item:last-child { margin-bottom: 0; }
+  .faq-item {
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .faq-item[open] {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(240,90,40,0.08);
+  }
+  .faq-item summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    background: #fafafa;
+    transition: background .2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before {
+    content: 'Q';
+    width: 24px; height: 24px;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .faq-item summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 20px;
+    color: var(--orange);
+    transition: transform .2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item .faq-body {
+    padding: 14px 18px 16px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #555;
+    background: #fff;
+    border-top: 1px dashed #eee;
+  }
+  .faq-item .faq-body strong { color: var(--navy); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 18px 22px;
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .disclaimer-title {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .disclaimer a { color: var(--orange); text-decoration: none; }
+  .disclaimer a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white;
+    color: var(--orange);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── HIDDEN ── */
+  .hidden { display: none !important; }
+
+  /* ── ANIMATION ── */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide-in { animation: slideDown .35s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .page { width: 100%; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; }
+    .header-center { order: -1; }
+    .body { padding: 28px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .result-hero-inner { grid-template-columns: 1fr; gap: 14px; }
+    .result-arrow { display: none; }
+    .result-stat.tax { text-align: left; }
+    .result-stat.tax .result-stat-num { font-size: 44px; }
+    .result-summary { grid-template-columns: 1fr; }
+    .ref-cards { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .footer { padding: 16px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .action-row { flex-direction: column; }
+    .btn-secondary { flex: 1; }
+    .tabs { overflow-x: auto; }
+    .tab { white-space: nowrap; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER)
+     ═══════════════════════════════════════════ */
+  /* 漢堡按鈕 - 強化版 */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+    font-family: inherit;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+  }
+
+  .menu-trigger-icon {
+    width: 22px; height: 16px;
+    position: relative;
+  }
+  .menu-trigger-icon span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden;
+    pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 280px;
+    background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sidebar-header-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 20px 11px 24px;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●';
+    margin-left: auto;
+    color: var(--orange);
+    font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy);
+    color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px;
+    background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 行動裝置全寬 */
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 84vw;
+      max-width: 320px;
+    }
+  }
+  /* 小螢幕漢堡按鈕微調,不影響原有 logo 排版 */
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important;
+      left: 12px !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+
+
+  
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px;
+      right: 16px;
+      padding: 12px 18px;
+      font-size: 13px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link active"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">DL</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="sub tag">贈與稅試算</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">GIFT TAX CALCULATOR</div>
+        <div class="big-title">贈與稅試算</div>
+        <div class="sub-title">114年度・依現行遺贈稅法計算</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">每年免稅額</div>
+          <div class="badge-line2">244 萬元</div>
+        </div>
+        </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>分年贈與</span><span class="dot">◆</span>
+    <span>夫妻互贈</span><span class="dot">◆</span>
+    <span>聰明節稅</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INTRO -->
+    <div class="intro-section">
+      <div class="intro-card">
+        <div class="intro-icon">🎁</div>
+        <div class="intro-text">
+          本試算工具依據<strong>遺產及贈與稅法</strong>114 年度規定試算。<br>
+          公式：<strong>應納贈與稅 =（贈與總額 − 免稅額 − 扣除額）× 稅率 − 累進差額</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" data-tab="single">📋 單筆試算</button>
+      <button class="tab" data-tab="compare">⚖️ 分年 vs 一次贈與比較</button>
+    </div>
+
+    <!-- TAB: SINGLE -->
+    <div class="tab-panel active" id="tab-single">
+
+      <!-- FORM -->
+      <div class="form-section">
+        <div class="section-title-icon">第一步：填入贈與資訊</div>
+        <div class="form-grid">
+          <div class="form-row full">
+            <label class="form-label" for="giftAmount">
+              贈與總額（贈與人本年度累計贈與金額）
+              <span class="help">單位：新臺幣萬元</span>
+            </label>
+            <div class="form-input-wrap">
+              <input type="number" id="giftAmount" class="form-input" placeholder="例如：500" min="0" step="1">
+              <span class="form-input-suffix">萬元</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">
+              贈與人身分
+              <span class="help">影響婚嫁優惠額度</span>
+            </label>
+            <div class="checkbox-group">
+              <label class="checkbox-pill active" data-target="donorType" data-val="parent">
+                <input type="radio" name="donorType" value="parent" checked> 父或母
+              </label>
+              <label class="checkbox-pill" data-target="donorType" data-val="other">
+                <input type="radio" name="donorType" value="other"> 其他
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">
+              是否為子女婚嫁年度
+              <span class="tag-amt">父母各 100 萬</span>
+            </label>
+            <div class="checkbox-group">
+              <label class="checkbox-pill" data-target="isWedding" data-val="1">
+                <input type="radio" name="isWedding" value="1"> 是
+              </label>
+              <label class="checkbox-pill active" data-target="isWedding" data-val="0">
+                <input type="radio" name="isWedding" value="0" checked> 否
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <label class="form-label" for="otherDeduct">
+              其他不計入贈與總額金額
+              <span class="help">配偶相互贈與、扶養生活/教育/醫藥費、農地贈與繼承人、附負擔贈與之債務等</span>
+            </label>
+            <div class="form-input-wrap">
+              <input type="number" id="otherDeduct" class="form-input" value="0" min="0" step="1">
+              <span class="form-input-suffix">萬元</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-primary" id="calcBtn">立即試算</button>
+          <button class="btn btn-secondary" id="resetBtn">重置</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result-section hidden" id="resultSection">
+        <div class="section-title-icon">試算結果</div>
+
+        <div class="result-hero">
+          <div class="result-hero-inner">
+            <div class="result-stat">
+              <div class="result-stat-label">課稅贈與淨額</div>
+              <div class="result-stat-num" id="resNetGift">0 <small>萬元</small></div>
+            </div>
+            <div class="result-arrow">→</div>
+            <div class="result-stat tax">
+              <div class="result-stat-label">應納贈與稅</div>
+              <div class="result-stat-num" id="resTaxAmt">0 <small>元</small></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-summary">
+          <div class="summary-card s1">
+            <div class="summary-label">贈與總額</div>
+            <div class="summary-num" id="sumTotal">0 <small>萬</small></div>
+          </div>
+          <div class="summary-card s2">
+            <div class="summary-label">扣除合計</div>
+            <div class="summary-num" id="sumDeduct">0 <small>萬</small></div>
+          </div>
+          <div class="summary-card s3">
+            <div class="summary-label">適用稅率</div>
+            <div class="summary-num" id="sumRate">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BREAKDOWN -->
+      <div class="breakdown-section hidden" id="breakdownSection">
+        <div class="section-title-icon">計算明細</div>
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>金額</th>
+            </tr>
+          </thead>
+          <tbody id="breakdownBody"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /tab-single -->
+
+    <!-- TAB: COMPARE -->
+    <div class="tab-panel" id="tab-compare">
+
+      <div class="form-section">
+        <div class="section-title-icon">分年贈與 vs 一次贈與</div>
+        <div class="section-sub">看看分年規劃可以省多少稅</div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label" for="cmpTotal">
+              預計贈與總額
+              <span class="help">完成傳承的總目標</span>
+            </label>
+            <div class="form-input-wrap">
+              <input type="number" id="cmpTotal" class="form-input" placeholder="例如：3000" min="0" step="1">
+              <span class="form-input-suffix">萬元</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="cmpYears">
+              分年規劃年數
+              <span class="help">每年於免稅額內贈與</span>
+            </label>
+            <div class="form-input-wrap">
+              <input type="number" id="cmpYears" class="form-input" value="10" min="1" max="50" step="1">
+              <span class="form-input-suffix">年</span>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <label class="form-label">
+              贈與人組合
+              <span class="help">夫妻雙方贈與各享 244 萬免稅額</span>
+            </label>
+            <div class="checkbox-group">
+              <label class="checkbox-pill active" data-target="cmpDonors" data-val="1">
+                <input type="radio" name="cmpDonors" value="1" checked> 單一贈與人（每年 244 萬）
+              </label>
+              <label class="checkbox-pill" data-target="cmpDonors" data-val="2">
+                <input type="radio" name="cmpDonors" value="2"> 夫妻雙方（每年 488 萬）
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-primary" id="cmpCalcBtn">比較看看</button>
+          <button class="btn btn-secondary" id="cmpResetBtn">重置</button>
+        </div>
+      </div>
+
+      <!-- COMPARE RESULT -->
+      <div class="compare-section hidden" id="compareResult">
+        <div class="section-title-icon">節稅對照結果</div>
+
+        <div class="compare-grid">
+          <!-- BAD -->
+          <div class="compare-card bad">
+            <div class="compare-card-tag">⚠ 一次贈與</div>
+            <div class="compare-card-title">未規劃方案</div>
+            <div class="compare-card-desc">一次性將全額贈與，課徵高累進稅率</div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">贈與總額</span>
+              <span class="compare-amt-val" id="badTotal">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">免稅額</span>
+              <span class="compare-amt-val" id="badExempt">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">課稅淨額</span>
+              <span class="compare-amt-val" id="badNet">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">適用稅率</span>
+              <span class="compare-amt-val" id="badRate">—</span>
+            </div>
+            <div class="compare-total">
+              <span class="compare-total-label">應納稅額</span>
+              <span class="compare-total-num" id="badTax">—</span>
+            </div>
+          </div>
+
+          <!-- GOOD -->
+          <div class="compare-card good">
+            <div class="compare-card-tag">⭐ 分年規劃</div>
+            <div class="compare-card-title">最佳方案</div>
+            <div class="compare-card-desc">運用每年免稅額拆分贈與，稅負大幅降低</div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">分年規劃年數</span>
+              <span class="compare-amt-val" id="goodYears">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">每年免稅總額</span>
+              <span class="compare-amt-val" id="goodAnnualExempt">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">免稅額累計</span>
+              <span class="compare-amt-val" id="goodExemptTotal">—</span>
+            </div>
+            <div class="compare-amt-row">
+              <span class="compare-amt-label">仍需課稅金額</span>
+              <span class="compare-amt-val" id="goodTaxableTotal">—</span>
+            </div>
+            <div class="compare-total">
+              <span class="compare-total-label">應納稅額</span>
+              <span class="compare-total-num" id="goodTax">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare-saved" id="comparedSaved">
+          <div class="compare-saved-label">💰 節省稅金</div>
+          <div class="compare-saved-num" id="savedAmt">—</div>
+        </div>
+      </div>
+
+    </div><!-- /tab-compare -->
+
+    <!-- REFERENCE: 稅率表 -->
+    <div class="ref-section">
+      <div class="section-title-icon">114 年度贈與稅率表</div>
+      <div class="section-sub">贈與行為發生於 114/01/01 之後適用</div>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th style="width:48%">贈與淨額（萬元）</th>
+            <th style="width:22%">稅率</th>
+            <th style="width:30%">累進差額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="range">2,811 萬以下</td>
+            <td class="rate">10%</td>
+            <td class="diff">—</td>
+          </tr>
+          <tr>
+            <td class="range">2,811 萬 ~ 5,621 萬</td>
+            <td class="rate">15%</td>
+            <td class="diff">140.55 萬</td>
+          </tr>
+          <tr>
+            <td class="range">超過 5,621 萬</td>
+            <td class="rate">20%</td>
+            <td class="diff">421.6 萬</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- REFERENCE: 免稅額與不計入 -->
+    <div class="ref-section">
+      <div class="section-title-icon">免稅額與不計入贈與總額</div>
+      <div class="ref-cards">
+        <div class="ref-card">
+          <div class="ref-card-title">每年免稅額</div>
+          <div class="ref-card-amt">244 <small>萬／人／年</small></div>
+          <div class="ref-card-desc">每位贈與人每年累計贈與 244 萬以內免稅</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">夫妻互贈</div>
+          <div class="ref-card-amt">免稅 <small>不限金額</small></div>
+          <div class="ref-card-desc">配偶間相互贈與財產，完全不計入贈與</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">子女婚嫁</div>
+          <div class="ref-card-amt">100 <small>萬／父或母</small></div>
+          <div class="ref-card-desc">子女結婚當年，父或母各享 100 萬不計入</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">扶養費用</div>
+          <div class="ref-card-amt">免稅</div>
+          <div class="ref-card-desc">扶養義務人支付之生活費、教育費、醫藥費</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">農地贈與</div>
+          <div class="ref-card-amt">免稅</div>
+          <div class="ref-card-desc">作農業使用之農地贈與民法第 1138 條繼承人，須農用 5 年</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-card-title">公益捐贈</div>
+          <div class="ref-card-amt">免稅</div>
+          <div class="ref-card-desc">捐贈政府、公立機關、合格財團法人或公益信託</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="tips-section">
+      <div class="section-title-icon">節稅 6 大技巧</div>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">1</span>分年贈與</div>
+          <div class="tip-card-desc">每年贈與控制在 <strong>244 萬以內</strong>，提早規劃逐年轉移，可完全免稅。</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">2</span>夫妻雙方贈與</div>
+          <div class="tip-card-desc">夫妻各自運用免稅額，<strong>每年合計 488 萬</strong> 額度可贈與子女。</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">3</span>善用婚嫁優惠</div>
+          <div class="tip-card-desc">子女結婚當年，<strong>父母各享 100 萬不計入</strong>，加上免稅額一次最多 688 萬。</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">4</span>夫妻互贈再贈與</div>
+          <div class="tip-card-desc">夫妻互贈不限金額，可先<strong>調整資產配置</strong>後再分年贈與子女。但須間隔合理時間，避免實質課稅。</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">5</span>低點贈與股票房產</div>
+          <div class="tip-card-desc">不動產以<strong>公告現值</strong>計算、股票以<strong>贈與日時價</strong>計算。低點贈與可壓縮稅基。</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title"><span class="num">6</span>附負擔贈與</div>
+          <div class="tip-card-desc">受贈人承擔的<strong>貸款或債務可作扣除</strong>，常見於不動產傳承規劃。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section" id="faq">
+      <div class="section-title-icon">贈與稅 問與答</div>
+      <div class="section-sub">依財政部稅務入口網官方分類整理</div>
+
+      <div class="faq-source-bar">
+        📚 完整內容請參閱：<a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax" target="_blank" rel="noopener noreferrer">財政部稅務入口網・贈與稅問與答</a>
+      </div>
+
+      <!-- 1. 如何辦理贈與稅申報 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">1</div>
+          <div class="faq-cat-title">如何辦理贈與稅申報？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/filing" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>誰是贈與稅納稅義務人？</summary>
+            <div class="faq-body">
+              <strong>贈與稅之納稅義務人為贈與人</strong>。但贈與人有以下情形之一者，以受贈人為納稅義務人：<br>
+              <strong>1.</strong> 行蹤不明者。<br>
+              <strong>2.</strong> 逾本法規定繳納期限尚未繳納，且在中華民國境內無財產可供執行者。<br>
+              <strong>3.</strong> 死亡時贈與稅尚未核課者。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與稅應於什麼時候辦理申報？</summary>
+            <div class="faq-body">
+              贈與人在 1 年內贈與他人之財產總值<strong>超過免稅額（244 萬元）時</strong>，應於超過免稅額之贈與行為發生後 <strong>30 日內</strong>，向戶籍所在地主管稽徵機關辦理贈與稅申報。<br>
+              如有正當理由不能如期申報，應於規定期限內以書面申請延期，<strong>延長期限以 3 個月為限</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與稅應向什麼地方申報？</summary>
+            <div class="faq-body">
+              贈與稅應向<strong>贈與人戶籍所在地之主管稽徵機關</strong>申報。<br>
+              贈與人為經常居住中華民國境外之中華民國國民，或非中華民國國民，就其在中華民國境內之財產為贈與者，應向<strong>臺北國稅局</strong>申報。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>法人之贈與是否要課徵贈與稅？</summary>
+            <div class="faq-body">
+              依《遺產及贈與稅法》第 3 條規定，<strong>贈與稅僅針對「自然人」之贈與行為課稅</strong>，法人間之贈與不課徵贈與稅。但法人贈與財產給自然人時，受贈人應計入所得申報所得稅。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 2. 那些財產應申報贈與稅 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">2</div>
+          <div class="faq-cat-title">那些財產應申報贈與稅？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/which-property" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>什麼是「贈與」？哪些行為視同贈與？</summary>
+            <div class="faq-body">
+              <strong>贈與</strong>，指財產所有人以自己之財產無償給予他人，經他人允受而生效力之行為。<br>
+              此外，依《遺產及贈與稅法》第 5 條，下列<strong>情形以贈與論</strong>：<br>
+              <strong>1.</strong> 在請求權時效內無償免除或承擔債務。<br>
+              <strong>2.</strong> 以顯著不相當之代價，讓與財產、免除或承擔債務。<br>
+              <strong>3.</strong> 以自己之資金，無償為他人購置財產。<br>
+              <strong>4.</strong> 因顯著不相當之代價，出資為他人購置財產。<br>
+              <strong>5.</strong> 限制行為能力人或無行為能力人所購置之財產，視為法定代理人或監護人之贈與。<br>
+              <strong>6.</strong> 二親等以內親屬間財產之買賣（除能提出已支付價款之確實證明外）。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>哪些財產不計入贈與總額？</summary>
+            <div class="faq-body">
+              依《遺產及贈與稅法》第 20 條，下列各款不計入贈與總額：<br>
+              <strong>1.</strong> 捐贈各級政府及公立教育、文化、公益、慈善機關之財產。<br>
+              <strong>2.</strong> 捐贈公有事業機構或全部公股之公營事業之財產。<br>
+              <strong>3.</strong> 捐贈合於規定之財團法人組織。<br>
+              <strong>4.</strong> 扶養義務人為受扶養人支付之生活費、教育費及醫藥費。<br>
+              <strong>5.</strong> 作農業使用之農業用地及其地上農作物，贈與民法第 1138 條所定繼承人，須農用 5 年。<br>
+              <strong>6.</strong> 配偶相互贈與之財產（不限金額）。<br>
+              <strong>7.</strong> 父母於子女婚嫁時所贈與之財物，總金額不超過 100 萬元。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>替子女繳保險費也算贈與嗎？</summary>
+            <div class="faq-body">
+              <strong>是的</strong>。依保險法及實務見解，要保人具有保單財產價值權利，<strong>替他人繳納保險費視同贈與</strong>。<br>
+              常見贈與態樣包括：<strong>要保人變更（如父變子）、代繳保費、躉繳保單變更要保人</strong>等。<br>
+              規劃保單傳承時，建議事先諮詢專業顧問，並注意實質課稅原則的 8 大態樣。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 3. 農業用地與公共設施保留地 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">3</div>
+          <div class="faq-cat-title">農業用地、公共設施保留地，應如何申報贈與稅？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/agricultural-land-and-land-reserved-for-public-facilities" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>贈與農業用地給繼承人，可以免稅嗎？</summary>
+            <div class="faq-body">
+              作農業使用之農業用地及其地上農作物，<strong>贈與民法第 1138 條所定繼承人</strong>者，其土地及地上農作物之價值，全數不計入贈與總額。<br>
+              <strong>但須注意</strong>：受贈人自受贈之日起 <strong>5 年內</strong>，未將該土地繼續作農業使用且未在有關機關所令期限內恢復作農業使用，或雖在有關機關所令期限內已恢復作農業使用而再有未作農業使用情事者，<strong>應追繳應納贈與稅</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與公共設施保留地，需要繳贈與稅嗎？</summary>
+            <div class="faq-body">
+              依《都市計畫法》第 50-1 條，<strong>因配偶、直系血親間之贈與而移轉之公共設施保留地，免徵贈與稅</strong>。<br>
+              其他情況之公共設施保留地贈與，仍應依法申報贈與稅，但其價值得自贈與總額中扣除。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 4. 贈與財產價值之計算 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">4</div>
+          <div class="faq-cat-title">贈與財產價值之計算？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/calculation" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>贈與不動產，如何計算贈與價值？</summary>
+            <div class="faq-body">
+              <strong>土地</strong>：以贈與時公告土地現值為準。<br>
+              <strong>房屋</strong>：以贈與時房屋評定標準價格為準。<br>
+              因公告現值與評定標準價格通常遠低於市價，故贈與不動產可<strong>有效壓縮贈與稅基</strong>，是常見的傳承規劃方式。但須評估後續若出售之房地合一稅 2.0 影響。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與股票如何認定價值？</summary>
+            <div class="faq-body">
+              <strong>上市櫃股票</strong>：以贈與日該股票之收盤價計算。<br>
+              <strong>未上市櫃公司股票</strong>：以贈與日該公司資產淨值估算（按持股比例計算）。<br>
+              因此於股市低點贈與股票，可有效壓低稅基。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與外幣或國外財產，如何計算？</summary>
+            <div class="faq-body">
+              贈與標的為外幣現金、存款、有價證券或國外財產時，<strong>應按贈與日臺灣銀行買進匯率折算新臺幣</strong>計入贈與總額。如為國外不動產，應依當地公告現值或評估價值換算。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 5. 免稅額、扣除額、應納稅額之計算 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">5</div>
+          <div class="faq-cat-title">贈與稅免稅額、扣除額、應納稅額之計算？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/exemption-calculation" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>114 年贈與稅免稅額及稅率為何？</summary>
+            <div class="faq-body">
+              <strong>免稅額</strong>：每年 244 萬元（每位贈與人計）。<br>
+              <strong>稅率（114 年起適用三級累進）</strong>：<br>
+              <strong>1.</strong> 贈與淨額 2,811 萬以下：稅率 10%。<br>
+              <strong>2.</strong> 贈與淨額 2,811 萬 ~ 5,621 萬：稅率 15%（累進差額 140.55 萬）。<br>
+              <strong>3.</strong> 贈與淨額超過 5,621 萬：稅率 20%（累進差額 421.6 萬）。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>同一年贈與超過一次怎麼辦？</summary>
+            <div class="faq-body">
+              <strong>同一年</strong>指每年的 1 月 1 日至 12 月 31 日。若一年內贈與不只一次，不論送給誰都要<strong>合併計算</strong>。<br>
+              最後一次申報時，必須將當年度前面幾次贈與紀錄合併申報。<br>
+              同一年度內以前各次贈與所繳納的贈與稅，<strong>在計算後一次贈與應納稅額時可以扣抵</strong>。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>附負擔贈與如何計算稅額？</summary>
+            <div class="faq-body">
+              <strong>附有負擔之贈與</strong>，受贈人因贈與所負擔之債務，<strong>可自贈與額中扣除</strong>。<br>
+              例如父親將設定有 800 萬抵押貸款的不動產（公告現值 1,200 萬）贈與子女，並由子女承擔該筆貸款，則贈與總額為 1,200 萬 − 800 萬 = 400 萬。<br>
+              這是高資產家庭常用的不動產傳承規劃方式。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 6. 繳納及證明書 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">6</div>
+          <div class="faq-cat-title">贈與稅繳納及證明書之核發？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/payment-certificate" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>贈與稅可以分期繳納嗎？</summary>
+            <div class="faq-body">
+              贈與稅應納稅額在 <strong>30 萬元以上</strong>，納稅義務人確有困難不能一次繳納現金時，得於納稅期限內，向稽徵機關申請<strong>分 18 期內繳納</strong>，每期間隔以不超過 2 個月為限。<br>
+              亦可<strong>就現金不足部分，申請以課徵標的物或易於變價保管之實物抵繳</strong>。<br>
+              <strong>提醒</strong>：贈與稅未繳清前，不得辦理贈與移轉登記。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>贈與稅證明書何時核發？</summary>
+            <div class="faq-body">
+              贈與人辦理贈與稅申報，經稽徵機關審核確定應納稅額並繳清稅款後，由稽徵機關核發<strong>「贈與稅繳清證明書」</strong>。<br>
+              如該贈與行為為不計入贈與總額或屬免稅，則核發<strong>「不計入贈與總額證明書」</strong>或<strong>「免稅證明書」</strong>。<br>
+              辦理財產移轉登記時，須檢附該證明書。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>離婚財產分配要繳贈與稅嗎？</summary>
+            <div class="faq-body">
+              夫妻雙方同意離婚，並在<strong>離婚協議書中完整註明財產分配</strong>者，這種財產轉移不屬贈與行為，不會被課贈與稅。<br>
+              但若有些財產並未寫在離婚協議書上，事後再贈與而無法證明是當初離婚協議好的，則會被當成贈與課稅。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 7. 處罰 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">7</div>
+          <div class="faq-cat-title">未依規定申報、繳納贈與稅之處罰？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/penalty" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>逾期申報或未申報會被處罰多少？</summary>
+            <div class="faq-body">
+              <strong>逾期申報</strong>：按核定應納稅額加徵 <strong>1 倍以下</strong>之罰鍰。<br>
+              <strong>未依規定申報</strong>：按核定應納稅額加徵 1 倍以下之罰鍰；同時依《稅捐稽徵法》規定加徵滯納金及利息。
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>漏報、短報或故意逃漏會怎樣？</summary>
+            <div class="faq-body">
+              <strong>已申報但漏報或短報</strong>：按所漏稅額處 <strong>2 倍以下</strong>之罰鍰。<br>
+              <strong>故意以詐欺或其他不正當方法逃漏稅捐</strong>：除依贈與發生年度稅率重行核計補徵外，另處所漏稅額 <strong>1 倍至 3 倍</strong>之罰鍰。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 8. 申訴 -->
+      <div class="faq-cat-group">
+        <div class="faq-cat-header">
+          <div class="faq-cat-num">8</div>
+          <div class="faq-cat-title">納稅人對贈與稅核定案件不服時，如何申訴？</div>
+          <a class="faq-cat-link" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/gift-tax/complaint" target="_blank" rel="noopener noreferrer">查看完整 →</a>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>對核定不服時應如何申請複查？</summary>
+            <div class="faq-body">
+              納稅義務人對於核定稅捐之處分如有不服，應於繳款書送達後，於繳納期間屆滿翌日起 <strong>30 日內</strong>，依規定格式，敘明理由，連同證明文件，<strong>向原處分稽徵機關申請復查</strong>。<br>
+              對復查決定仍不服者，得於收到復查決定書之次日起 <strong>30 日內</strong>，依法提起<strong>訴願</strong>及行政訴訟。
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">⚠ 重要提醒</div>
+      本試算結果僅供參考，<strong style="color:#fff">實際應納稅額仍以國稅局核定為準</strong>。試算未含特定附負擔贈與、實物贈與時價認定差異、國外財產已納贈與稅扣抵、農地贈與限制等特殊情形。「分年贈與比較」假設未來 N 年免稅額及級距均不變，實際適用以贈與當年度為準。<br>
+      正式申報請至 <a href="https://www.etax.nat.gov.tw/etwmain/etw158w/84" target="_blank" rel="noopener noreferrer">財政部稅務入口網・贈與稅試算專區</a>，或洽詢戶籍所在地國稅局。如需傳承規劃諮詢，歡迎與鼎綸恩宇專業顧問聯繫。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">傳承智慧 × 守護家業｜鼎綸恩宇陪您完整規劃</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div class="footer-right">📞 預約專業顧問</div>
+      <div style="color:white;font-size:15px;font-weight:900;letter-spacing:2px;">📱 0925-000-049</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───── 114 年贈與稅參數 ─────
+  const TAX = {
+    exemption: 244,           // 每年免稅額（萬）
+    weddingPerParent: 100,    // 婚嫁每位父母不計入（萬）
+    bracket1: 2811,           // 級距 1 上限
+    bracket2: 5621,           // 級距 2 上限
+    diff1: 140.55,            // 15% 累進差額
+    diff2: 421.6              // 20% 累進差額
+  };
+
+  // ───── checkbox-pill 切換 ─────
+  document.querySelectorAll('.checkbox-pill').forEach(pill => {
+    pill.addEventListener('click', e => {
+      const target = pill.dataset.target;
+      if (!target) return;
+      e.preventDefault();
+      document.querySelectorAll(`.checkbox-pill[data-target="${target}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const radio = pill.querySelector('input');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  // ───── tab 切換 ─────
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ───── 工具 ─────
+  const num = id => {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) || v < 0 ? 0 : v;
+  };
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const fmtWan = n => {
+    if (Number.isInteger(n)) return n.toLocaleString('en-US');
+    return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  };
+
+  // ───── 計算稅額 ─────
+  function calcTax(netWan) {
+    if (netWan <= 0) return { tax: 0, rate: '—', diff: 0 };
+    if (netWan <= TAX.bracket1) return { tax: netWan * 0.10, rate: '10%', diff: 0 };
+    if (netWan <= TAX.bracket2) return { tax: netWan * 0.15 - TAX.diff1, rate: '15%', diff: TAX.diff1 };
+    return { tax: netWan * 0.20 - TAX.diff2, rate: '20%', diff: TAX.diff2 };
+  }
+
+  // ───── 單筆試算 ─────
+  function calculate() {
+    const total = num('giftAmount');
+    if (total <= 0) {
+      alert('請輸入贈與總額！');
+      document.getElementById('giftAmount').focus();
+      return;
+    }
+
+    const donorType = document.querySelector('input[name="donorType"]:checked').value;
+    const isWedding = document.querySelector('input[name="isWedding"]:checked').value === '1';
+    const otherDeduct = num('otherDeduct');
+
+    // 婚嫁優惠（限父母）
+    const weddingDeduct = (isWedding && donorType === 'parent') ? TAX.weddingPerParent : 0;
+
+    const totalDeduct = TAX.exemption + weddingDeduct + otherDeduct;
+    const netGift = Math.max(0, total - totalDeduct);
+    const { tax: taxWan, rate, diff } = calcTax(netGift);
+    const taxYuan = Math.max(0, Math.round(taxWan * 10000));
+
+    // 渲染結果
+    document.getElementById('resNetGift').innerHTML = `${fmtWan(netGift)} <small>萬元</small>`;
+    document.getElementById('resTaxAmt').innerHTML = `${fmt(taxYuan)} <small>元</small>`;
+    document.getElementById('sumTotal').innerHTML = `${fmtWan(total)} <small>萬</small>`;
+    document.getElementById('sumDeduct').innerHTML = `${fmtWan(totalDeduct)} <small>萬</small>`;
+    document.getElementById('sumRate').textContent = rate;
+
+    // 渲染明細
+    const rows = [];
+    rows.push(`<tr><td>贈與總額</td><td>${fmtWan(total)} 萬元</td></tr>`);
+    rows.push(`<tr><td>− 每年免稅額</td><td>${fmtWan(TAX.exemption)} 萬元</td></tr>`);
+    if (weddingDeduct > 0) {
+      rows.push(`<tr><td>− 子女婚嫁優惠 <span class="breakdown-formula">(父或母 100 萬不計入)</span></td><td>${fmtWan(weddingDeduct)} 萬元</td></tr>`);
+    }
+    if (otherDeduct > 0) {
+      rows.push(`<tr><td>− 其他不計入金額</td><td>${fmtWan(otherDeduct)} 萬元</td></tr>`);
+    }
+    rows.push(`<tr class="subtotal"><td>＝ 課稅贈與淨額</td><td>${fmtWan(netGift)} 萬元</td></tr>`);
+    if (netGift > 0) {
+      rows.push(`<tr><td>× 適用稅率</td><td>${rate}</td></tr>`);
+      if (diff > 0) {
+        rows.push(`<tr><td>− 累進差額</td><td>${fmtWan(diff)} 萬元</td></tr>`);
+      }
+    }
+    rows.push(`<tr class="final"><td>＝ 應納贈與稅</td><td>${fmt(taxYuan)} 元</td></tr>`);
+    document.getElementById('breakdownBody').innerHTML = rows.join('');
+
+    // 顯示
+    const r = document.getElementById('resultSection');
+    const b = document.getElementById('breakdownSection');
+    r.classList.remove('hidden');
+    b.classList.remove('hidden');
+    r.classList.add('slide-in');
+    b.classList.add('slide-in');
+    setTimeout(() => r.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  function resetForm() {
+    document.getElementById('giftAmount').value = '';
+    document.getElementById('otherDeduct').value = 0;
+    document.querySelector('.checkbox-pill[data-target="donorType"][data-val="parent"]').click();
+    document.querySelector('.checkbox-pill[data-target="isWedding"][data-val="0"]').click();
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('breakdownSection').classList.add('hidden');
+    document.getElementById('giftAmount').focus();
+  }
+
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+  document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+  // ───── 比較試算 ─────
+  function compare() {
+    const total = num('cmpTotal');
+    const years = Math.max(1, num('cmpYears') || 1);
+    const donors = parseInt(document.querySelector('input[name="cmpDonors"]:checked').value);
+
+    if (total <= 0) {
+      alert('請輸入贈與總額！');
+      document.getElementById('cmpTotal').focus();
+      return;
+    }
+
+    // 一次贈與（單一贈與人）
+    const badNet = Math.max(0, total - TAX.exemption);
+    const badResult = calcTax(badNet);
+    const badTaxYuan = Math.max(0, Math.round(badResult.tax * 10000));
+
+    // 分年贈與
+    const annualExempt = TAX.exemption * donors;            // 每年合計免稅額
+    const totalExempt = annualExempt * years;               // 總免稅額
+    const remainingTaxable = Math.max(0, total - totalExempt); // 仍需課稅金額
+
+    // 分年贈與計稅：將剩餘金額平均分配到 N 年，每年再扣免稅後計稅
+    // 為簡化:假設將剩餘金額分散每年贈與（每年贈與超過免稅額部分）
+    let goodTaxYuan = 0;
+    if (remainingTaxable > 0) {
+      const annualExtraPerDonor = remainingTaxable / years / donors;
+      const annualNetPerDonor = annualExtraPerDonor; // 已扣免稅後的淨額
+      const oneYearTax = calcTax(annualNetPerDonor).tax;
+      const totalTaxWan = oneYearTax * years * donors;
+      goodTaxYuan = Math.max(0, Math.round(totalTaxWan * 10000));
+    }
+
+    const saved = badTaxYuan - goodTaxYuan;
+
+    // 渲染
+    document.getElementById('badTotal').textContent = fmtWan(total) + ' 萬';
+    document.getElementById('badExempt').textContent = fmtWan(TAX.exemption) + ' 萬';
+    document.getElementById('badNet').textContent = fmtWan(badNet) + ' 萬';
+    document.getElementById('badRate').textContent = badResult.rate;
+    document.getElementById('badTax').textContent = fmt(badTaxYuan) + ' 元';
+
+    document.getElementById('goodYears').textContent = years + ' 年';
+    document.getElementById('goodAnnualExempt').textContent = fmtWan(annualExempt) + ' 萬';
+    document.getElementById('goodExemptTotal').textContent = fmtWan(totalExempt) + ' 萬';
+    document.getElementById('goodTaxableTotal').textContent = fmtWan(remainingTaxable) + ' 萬';
+    document.getElementById('goodTax').textContent = fmt(goodTaxYuan) + ' 元';
+
+    if (saved > 0) {
+      document.getElementById('savedAmt').textContent = fmt(saved) + ' 元';
+      document.getElementById('comparedSaved').style.display = 'block';
+    } else {
+      document.getElementById('savedAmt').textContent = '0 元';
+      document.getElementById('comparedSaved').style.display = 'block';
+    }
+
+    const r = document.getElementById('compareResult');
+    r.classList.remove('hidden');
+    r.classList.add('slide-in');
+    setTimeout(() => r.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  function cmpReset() {
+    document.getElementById('cmpTotal').value = '';
+    document.getElementById('cmpYears').value = 10;
+    document.querySelector('.checkbox-pill[data-target="cmpDonors"][data-val="1"]').click();
+    document.getElementById('compareResult').classList.add('hidden');
+    document.getElementById('cmpTotal').focus();
+  }
+
+  document.getElementById('cmpCalcBtn').addEventListener('click', compare);
+  document.getElementById('cmpResetBtn').addEventListener('click', cmpReset);
+
+  // Enter 鍵
+  document.querySelectorAll('.form-input').forEach(inp => {
+    inp.addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        const isInCompare = inp.closest('#tab-compare');
+        if (isInCompare) compare();
+        else calculate();
+      }
+    });
+  });
+</script>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    const sidebar = document.getElementById('sidebar');
+
+    function open() {
+      document.body.classList.add('menu-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+    function toggle() {
+      document.body.classList.contains('menu-open') ? close() : open();
+    }
+
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+</body>
+</html>

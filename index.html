@@ -1014,9 +1014,442 @@
   }
   .logo-card--empty { border: none; background: transparent; }
 
-</style>
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER) v2
+     ═══════════════════════════════════════════ */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+  }
+  .menu-trigger-icon { width: 22px; height: 16px; position: relative; }
+  .menu-trigger-icon span {
+    position: absolute; left: 0; right: 0;
+    height: 2px; background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden; pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible; pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar { transform: translateX(0); }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff; flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.2;
+    color: #fff;
+  }
+  .sidebar-header-sub {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block; margin-top: 8px;
+    font-size: 10px; color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 1.5px; font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px; font-weight: 700;
+    color: #999; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 20px 10px 24px;
+    color: #555; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●'; margin-left: auto;
+    color: var(--orange); font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px; padding: 10px 14px;
+    border-radius: 8px; border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy); color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px; background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center; margin-top: 10px;
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 84vw; max-width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important; left: 12px !important;
+      width: 36px !important; height: 36px !important;
+    }
+  }
+
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px; right: 16px;
+      padding: 12px 18px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  
+  /* ═══════════════════════════════════════════
+     全工具導航 (TOOLS NAVIGATION GRID)
+     ═══════════════════════════════════════════ */
+  .tools-section {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(13,42,58,0.08);
+  }
+  .tools-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .tools-tagline {
+    display: inline-block;
+    background: var(--orange-light);
+    color: var(--orange);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .tools-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .tools-title .accent { color: var(--orange); }
+  .tools-subtitle {
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 1px;
+  }
+
+  .tools-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .tools-category {
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .tools-cat-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(240,90,40,0.15);
+  }
+  .tools-cat-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .tools-cat-icon.cat-base { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .tools-cat-icon.cat-tax { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .tools-cat-icon.cat-plan { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .tools-cat-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 2px;
+  }
+  .tools-cat-desc {
+    font-size: 11px;
+    color: #888;
+    margin-left: auto;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-decoration: none;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-card::after {
+    content: '→';
+    position: absolute;
+    top: 14px; right: 14px;
+    color: #ddd;
+    font-size: 16px;
+    transition: all .25s ease;
+  }
+  .tool-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(240,90,40,0.15);
+  }
+  .tool-card:hover::after {
+    color: var(--orange);
+    transform: translateX(4px);
+  }
+  .tool-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+    background: var(--orange-light);
+    color: var(--orange);
+  }
+  .tool-card.t-teal .tool-icon { background: var(--teal-light); color: var(--teal); }
+  .tool-card.t-gold .tool-icon { background: rgba(232,160,32,0.12); color: #B47710; }
+  .tool-name {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .tool-desc {
+    font-size: 11px;
+    color: #777;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .tool-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--orange);
+    background: var(--orange-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+  }
+  .tool-card.t-teal .tool-tag { color: var(--teal); background: var(--teal-light); }
+  .tool-card.t-gold .tool-tag { color: #B47710; background: rgba(232,160,32,0.12); }
+
+  @media (max-width: 700px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .tools-title { font-size: 22px; letter-spacing: 2px; }
+    .tools-cat-desc { display: none; }
+  }
+
+  </style>
 </head>
 <body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="./" class="sidebar-link home active"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
 <div class="page">
 
   <!-- HEADER -->
@@ -1612,6 +2045,129 @@
       </div>
     </div>
 
+  
+    <!-- 全工具導航 (13 個工具) -->
+    <div class="tools-section">
+      <div class="tools-header">
+        <div class="tools-tagline">FINANCIAL TOOLS</div>
+        <div class="tools-title">完整<span class="accent">財務規劃工具站</span></div>
+        <div class="tools-subtitle">13 大專業試算工具 ・ 從健康到傳承一站式服務</div>
+      </div>
+
+      <div class="tools-categories">
+        <!-- 基礎工具 -->
+        <div class="tools-category">
+          <div class="tools-cat-head">
+            <div class="tools-cat-icon cat-base">📊</div>
+            <div class="tools-cat-name">基礎工具</div>
+            <div class="tools-cat-desc">日常理財健檢</div>
+          </div>
+          <div class="tools-grid">
+            <a href="tools/compound-interest.html" class="tool-card t-teal">
+              <div class="tool-icon">∞</div>
+              <div class="tool-name">複利計算機</div>
+              <div class="tool-desc">看見時間的魔法 ・ 定期定額試算 ・ 單利 vs 複利對比</div>
+              <span class="tool-tag">人氣</span>
+            </a>
+            <a href="tools/bmi-calculator.html" class="tool-card t-teal">
+              <div class="tool-icon">⚖️</div>
+              <div class="tool-name">BMI 計算器</div>
+              <div class="tool-desc">國健署標準 ・ 理想體重 ・ 健康評估</div>
+              <span class="tool-tag">免費</span>
+            </a>
+            <a href="tools/labor-pension.html" class="tool-card t-teal">
+              <div class="tool-icon">👴</div>
+              <div class="tool-name">勞保勞退試算</div>
+              <div class="tool-desc">2026 最新版 ・ 退休後月領多少 ・ 退休缺口分析</div>
+              <span class="tool-tag">熱門</span>
+            </a>
+            <a href="tools/loan.html" class="tool-card t-teal">
+              <div class="tool-icon">🏦</div>
+              <div class="tool-name">貸款試算</div>
+              <div class="tool-desc">本息攤還 ・ 各式貸款利率比較</div>
+              <span class="tool-tag">實用</span>
+            </a>
+            <a href="tools/education.html" class="tool-card t-teal">
+              <div class="tool-icon">🎓</div>
+              <div class="tool-name">子女教育金試算</div>
+              <div class="tool-desc">大學至研究所學費 ・ 累積規劃</div>
+              <span class="tool-tag">家長必看</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 稅務試算 -->
+        <div class="tools-category">
+          <div class="tools-cat-head">
+            <div class="tools-cat-icon cat-tax">💼</div>
+            <div class="tools-cat-name">稅務試算</div>
+            <div class="tools-cat-desc">114 年最新版本</div>
+          </div>
+          <div class="tools-grid">
+            <a href="tools/estate-tax.html" class="tool-card">
+              <div class="tool-icon">💼</div>
+              <div class="tool-name">遺產稅試算</div>
+              <div class="tool-desc">含 9 大主題問與答 ・ 課稅級距視覺化 ・ 實質課稅情境模擬</div>
+              <span class="tool-tag">完整版</span>
+            </a>
+            <a href="tools/gift-tax.html" class="tool-card">
+              <div class="tool-icon">🎁</div>
+              <div class="tool-name">贈與稅試算</div>
+              <div class="tool-desc">分年贈與規劃 ・ 一次贈與對照</div>
+              <span class="tool-tag">114 年</span>
+            </a>
+            <a href="tools/tax.html" class="tool-card">
+              <div class="tool-icon">📋</div>
+              <div class="tool-name">綜合所得稅試算</div>
+              <div class="tool-desc">5 大級距 ・ 扣除額完整計算</div>
+              <span class="tool-tag">114 年</span>
+            </a>
+            <a href="tools/tax-risk.html" class="tool-card">
+              <div class="tool-icon">⚠️</div>
+              <div class="tool-name">實質課稅風險檢查</div>
+              <div class="tool-desc">8 大態樣自我檢測 ・ 保單核定風險評估</div>
+              <span class="tool-tag">必看</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 財務規劃 -->
+        <div class="tools-category">
+          <div class="tools-cat-head">
+            <div class="tools-cat-icon cat-plan">💎</div>
+            <div class="tools-cat-name">財務規劃</div>
+            <div class="tools-cat-desc">進階保險與傳承</div>
+          </div>
+          <div class="tools-grid">
+            <a href="tools/irr-calculator.html" class="tool-card t-gold">
+              <div class="tool-icon">📊</div>
+              <div class="tool-name">IRR 試算器</div>
+              <div class="tool-desc">看穿儲蓄險真實報酬率 ・ 三模式試算</div>
+              <span class="tool-tag">專業</span>
+            </a>
+            <a href="tools/coverage.html" class="tool-card t-gold">
+              <div class="tool-icon">🛡️</div>
+              <div class="tool-name">DIME 保額分析</div>
+              <div class="tool-desc">您應該擁有多少壽險保額 ・ 缺口計算</div>
+              <span class="tool-tag">推薦</span>
+            </a>
+            <a href="tools/retirement.html" class="tool-card t-gold">
+              <div class="tool-icon">🏖️</div>
+              <div class="tool-name">退休金缺口試算</div>
+              <div class="tool-desc">逐年現金流 ・ 三種優化方案比較</div>
+              <span class="tool-tag">必算</span>
+            </a>
+            <a href="tools/legacy-planner.html" class="tool-card t-gold">
+              <div class="tool-icon">💎</div>
+              <div class="tool-name">傳承規劃模擬器</div>
+              <div class="tool-desc">三方案稅負對照 ・ 完整節稅威力</div>
+              <span class="tool-tag">明星</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /body -->
 
   <!-- FOOTER -->
@@ -1624,5 +2180,25 @@
   </div>
 
 </div>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    function open() { document.body.classList.add('menu-open'); document.body.style.overflow = 'hidden'; }
+    function close() { document.body.classList.remove('menu-open'); document.body.style.overflow = ''; }
+    function toggle() { document.body.classList.contains('menu-open') ? close() : open(); }
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
 </body>
 </html>

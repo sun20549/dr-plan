@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+<title>BMI 計算器｜身體質量指數試算・理想體重・健康評估｜鼎綸恩宇</title>
+<meta name="description" content="免費 BMI 計算器,依國民健康署標準評估身體質量指數。試算過輕/標準/過重/肥胖,並計算理想體重區間、腰圍標準與健康風險。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+
+    /* BMI 分類顏色 */
+    --bmi-under: #4FC3F7;       /* 過輕 - 淺藍 */
+    --bmi-normal: #66BB6A;      /* 健康 - 綠色 */
+    --bmi-over: #FFB74D;        /* 過重 - 橘黃 */
+    --bmi-obese1: #FF8A65;      /* 輕度肥胖 - 橘紅 */
+    --bmi-obese2: #E57373;      /* 中度肥胖 - 紅色 */
+    --bmi-obese3: #B71C1C;      /* 重度肥胖 - 深紅 */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: ''; position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .logo-area { display: flex; align-items: center; gap: 18px; }
+  .logo-icon {
+    width: 72px; height: 72px;
+    background: var(--orange); border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; color: white; letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 26px; font-weight: 900; letter-spacing: 2px; line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block; margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: var(--gold);
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 2px; font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+
+  .header-center { text-align: center; flex: 1; min-width: 0; }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 13px; color: rgba(255,255,255,0.65);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 6px; font-weight: 500;
+  }
+  .header-center .big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; color: white;
+    line-height: 0.95; letter-spacing: 6px;
+    margin-bottom: 4px;
+  }
+  .header-center .big-title .small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 22px; font-weight: 900; letter-spacing: 6px;
+    margin-left: 8px;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-center .sub-title {
+    margin-top: 6px; font-size: 12px;
+    color: rgba(255,255,255,0.55); letter-spacing: 3px;
+  }
+
+  .badge-area {
+    display: flex; flex-direction: column;
+    align-items: stretch; gap: 10px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+    color: white; padding: 14px 18px;
+    border-radius: 14px; text-align: center; line-height: 1.3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge-line1 {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 2px; opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 16px; font-weight: 900; letter-spacing: 1.5px;
+  }
+  .badge::before {
+    content: '♥'; position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .quick-bar { display: flex; flex-direction: column; gap: 6px; }
+  .quick-bar-row { display: flex; gap: 6px; }
+  .quick-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    flex: 1; font-size: 11px; font-weight: 600;
+    padding: 7px 12px; border-radius: 20px;
+    text-decoration: none; letter-spacing: 1px;
+    transition: all .25s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.75);
+    backdrop-filter: blur(4px); white-space: nowrap;
+  }
+  .quick-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff; transform: translateY(-1px);
+  }
+
+  .tagline-bar {
+    background: var(--teal); padding: 10px 48px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+  }
+  .tagline-bar span {
+    color: white; font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ── BODY ── */
+  .body { padding: 36px 48px; }
+
+  .section-title-icon {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 700;
+    color: var(--navy); margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: ''; width: 4px; height: 18px;
+    background: var(--orange); border-radius: 2px;
+  }
+  .section-sub {
+    font-size: 12px; color: #888;
+    margin-bottom: 18px; margin-top: -10px;
+  }
+
+  /* ── INTRO ── */
+  .intro-card {
+    background: linear-gradient(135deg, var(--teal-light) 0%, #fff 100%);
+    border: 2px solid var(--teal);
+    border-radius: 14px; padding: 18px 22px;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+  }
+  .intro-icon {
+    width: 48px; height: 48px;
+    background: var(--teal); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0; color: #fff;
+    box-shadow: 0 4px 12px rgba(26,107,114,0.3);
+  }
+  .intro-text {
+    font-size: 13px; color: var(--navy); line-height: 1.7;
+  }
+  .intro-text strong { color: var(--teal); font-weight: 900; }
+
+  /* ── FORM ── */
+  .form-section { margin-bottom: 32px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-row { display: flex; flex-direction: column; gap: 6px; }
+  .form-row.full { grid-column: 1 / -1; }
+
+  .form-label {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; font-size: 13px; font-weight: 700; color: var(--navy);
+  }
+  .form-label .help {
+    font-size: 10px; color: #999;
+    font-weight: 400; letter-spacing: 0.3px;
+  }
+
+  .form-input-wrap { position: relative; display: flex; align-items: center; }
+  .form-input {
+    width: 100%; padding: 11px 50px 11px 14px;
+    border: 1.5px solid #ddd; border-radius: 10px;
+    background: #fff;
+    font-size: 16px;
+    font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
+    color: var(--navy); font-weight: 600; letter-spacing: 0.5px;
+    transition: all .2s; text-align: right;
+  }
+  .form-input:focus {
+    outline: none; border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.12);
+  }
+  .form-input::placeholder { color: #ccc; font-weight: 400; }
+  .form-input-suffix {
+    position: absolute; right: 14px;
+    color: #999; font-size: 12px; font-weight: 600;
+    pointer-events: none;
+  }
+
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .checkbox-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px; border: 1.5px solid #ddd;
+    border-radius: 20px; background: #fff;
+    font-size: 12px; font-weight: 600; color: var(--navy);
+    cursor: pointer; transition: all .2s;
+  }
+  .checkbox-pill input { display: none; }
+  .checkbox-pill:hover { border-color: var(--orange); }
+  .checkbox-pill.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* ── BUTTONS ── */
+  .action-row {
+    display: flex; gap: 12px; margin-top: 18px;
+  }
+  .btn {
+    flex: 1; padding: 14px 20px;
+    border-radius: 12px; border: none;
+    font-size: 15px; font-weight: 900;
+    letter-spacing: 3px; cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(240,90,40,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,90,40,0.4); }
+  .btn-secondary {
+    background: #fff; color: var(--navy);
+    border: 1.5px solid #ddd; flex: 0 0 140px;
+  }
+  .btn-secondary:hover { border-color: var(--navy); background: #fafafa; }
+
+  /* ── RESULT HERO ── */
+  .result-section { margin-bottom: 24px; }
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-radius: 16px;
+    padding: 32px 36px;
+    color: #fff; position: relative; overflow: hidden;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .result-hero::before {
+    content: ''; position: absolute;
+    top: -50px; left: -50px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.2);
+    filter: blur(50px);
+  }
+  .result-hero::after {
+    content: ''; position: absolute;
+    bottom: -50px; right: -50px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.18);
+    filter: blur(50px);
+  }
+  .result-hero-inner { position: relative; z-index: 1; }
+  .result-bmi-label {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .result-bmi-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    line-height: 0.9;
+    color: #fff;
+    margin-bottom: 14px;
+    text-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: color 0.4s;
+  }
+  .result-bmi-cat {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: var(--gold);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+
+  /* ── BMI METER ── */
+  .meter-section {
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .meter-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--navy); margin-bottom: 14px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .meter-bar {
+    position: relative;
+    height: 36px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 6px;
+  }
+  .meter-segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .meter-segment.under { background: var(--bmi-under); }
+  .meter-segment.normal { background: var(--bmi-normal); }
+  .meter-segment.over { background: var(--bmi-over); }
+  .meter-segment.obese1 { background: var(--bmi-obese1); }
+  .meter-segment.obese2 { background: var(--bmi-obese2); }
+  .meter-segment.obese3 { background: var(--bmi-obese3); }
+
+  .meter-pointer {
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+    transition: left 0.6s ease-out;
+    z-index: 5;
+  }
+  .meter-pointer-inner {
+    width: 0; height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 14px solid var(--navy);
+    margin-bottom: -2px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .meter-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #888;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.5px;
+    padding: 0 0 4px;
+  }
+
+  /* ── ANALYSIS ── */
+  .analysis-section { margin-bottom: 24px; }
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .analysis-card {
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    background: #fff;
+  }
+  .analysis-card.ideal {
+    background: linear-gradient(135deg, rgba(102,187,106,0.1) 0%, #fff 100%);
+    border-color: var(--bmi-normal);
+  }
+  .analysis-card.gap {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border-color: var(--orange);
+  }
+  .analysis-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .analysis-card-content {
+    font-size: 13px; line-height: 1.8;
+    color: var(--navy);
+  }
+  .analysis-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+    border-bottom: 1px dashed #eee;
+  }
+  .analysis-row:last-child { border-bottom: none; }
+  .analysis-row-label {
+    font-size: 12px; color: #666;
+  }
+  .analysis-row-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--bmi-normal);
+  }
+  .analysis-card.gap .analysis-row-val { color: var(--orange); }
+
+  .gap-message {
+    background: var(--gold);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .gap-message strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    margin: 0 4px;
+  }
+  .gap-message.healthy {
+    background: var(--bmi-normal);
+  }
+
+  /* ── HEALTH ADVICE ── */
+  .advice-section {
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 32px;
+  }
+  .advice-card-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--navy); margin-bottom: 14px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .advice-content {
+    font-size: 13px; line-height: 1.8;
+    color: #444;
+  }
+  .advice-content strong { color: var(--orange); }
+  .advice-list {
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+  }
+  .advice-list li {
+    padding: 6px 0 6px 24px;
+    font-size: 12px;
+    line-height: 1.7;
+    position: relative;
+    color: #555;
+  }
+  .advice-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--bmi-normal);
+    font-weight: 900;
+    font-size: 14px;
+  }
+
+  /* ── BMI 標準表 ── */
+  .standard-section { margin-bottom: 32px; }
+  .standard-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .standard-table thead tr { background: var(--navy); }
+  .standard-table thead th {
+    color: #fff; font-size: 13px; font-weight: 700;
+    padding: 12px 14px; text-align: center; letter-spacing: 1px;
+  }
+  .standard-table tbody tr { border-bottom: 1px solid #eee; }
+  .standard-table tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--navy);
+    text-align: center;
+  }
+  .standard-table tbody td.cat-cell {
+    font-weight: 900;
+    text-align: left;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .standard-table tbody td.bmi-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+  }
+  .cat-dot {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .cat-dot.under { background: var(--bmi-under); }
+  .cat-dot.normal { background: var(--bmi-normal); }
+  .cat-dot.over { background: var(--bmi-over); }
+  .cat-dot.obese1 { background: var(--bmi-obese1); }
+  .cat-dot.obese2 { background: var(--bmi-obese2); }
+  .cat-dot.obese3 { background: var(--bmi-obese3); }
+
+  /* ── 腰圍標準 ── */
+  .waist-section {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .waist-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--orange); margin-bottom: 12px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .waist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .waist-item {
+    background: #fff;
+    border: 1px solid var(--orange-light);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .waist-name {
+    font-size: 12px; color: var(--navy);
+    font-weight: 700; margin-bottom: 4px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .waist-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .waist-value small {
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+  .waist-warn {
+    font-size: 11px;
+    color: #888;
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  /* ── INSURANCE TIE-IN ── */
+  .ins-section {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ins-section::before {
+    content: ''; position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.18);
+    filter: blur(40px);
+  }
+  .ins-title {
+    font-size: 14px; font-weight: 900;
+    color: var(--gold); margin-bottom: 12px;
+    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+    position: relative; z-index: 1;
+  }
+  .ins-text {
+    font-size: 13px; line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    position: relative; z-index: 1;
+  }
+  .ins-text strong { color: var(--gold); }
+  .ins-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+    position: relative; z-index: 1;
+  }
+  .ins-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+  }
+  .ins-item-head {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ── FAQ ── */
+  .faq-section { margin-bottom: 32px; }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .faq-item[open] {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(240,90,40,0.08);
+  }
+  .faq-item summary {
+    padding: 14px 18px;
+    cursor: pointer; list-style: none;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700;
+    color: var(--navy); background: #fafafa;
+    transition: background .2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before {
+    content: 'Q'; width: 24px; height: 24px;
+    background: var(--orange); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .faq-item summary::after {
+    content: '+'; margin-left: auto;
+    font-size: 20px; color: var(--orange);
+    transition: transform .2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item .faq-body {
+    padding: 14px 18px 16px;
+    font-size: 12px; line-height: 1.8;
+    color: #555; background: #fff;
+    border-top: 1px dashed #eee;
+  }
+  .faq-item .faq-body strong { color: var(--navy); }
+  .faq-item .faq-body a {
+    color: var(--orange); text-decoration: none; font-weight: 700;
+  }
+  .faq-item .faq-body a:hover { text-decoration: underline; }
+
+  /* ── 推薦工具 ── */
+  .related-section { margin-bottom: 32px; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .related-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .related-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.1);
+    transform: translateY(-2px);
+  }
+  .related-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    flex-shrink: 0;
+  }
+  .related-card-icon.r1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .related-card-icon.r2 { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .related-card-icon.r3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .related-card-icon.r4 { background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%); }
+  .related-card-text { flex: 1; }
+  .related-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy); margin-bottom: 3px;
+  }
+  .related-card-desc {
+    font-size: 10px; color: #888; line-height: 1.5;
+  }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--navy); border-radius: 14px;
+    padding: 18px 22px;
+    color: rgba(255,255,255,0.75);
+    font-size: 11px; line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .disclaimer-title {
+    color: var(--gold);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .disclaimer a { color: var(--orange); text-decoration: none; }
+  .disclaimer a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--orange); padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { color: white; font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .footer-right {
+    background: white; color: var(--orange);
+    padding: 10px 24px; border-radius: 50px;
+    font-size: 14px; font-weight: 900; letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .hidden { display: none !important; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide-in { animation: slideDown .35s ease both; }
+
+  @media (max-width: 900px) {
+    .page { width: 100%; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; }
+    .header-center { order: -1; }
+    .header-center .big-title { font-size: 38px; }
+    .body { padding: 28px 24px; }
+    .form-grid, .form-grid.three { grid-template-columns: 1fr; }
+    .result-bmi-num { font-size: 64px; }
+    .analysis-grid { grid-template-columns: 1fr; }
+    .waist-grid { grid-template-columns: 1fr; }
+    .ins-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+    .meter-segment { font-size: 9px; }
+    .standard-table thead th, .standard-table tbody td {
+      padding: 8px 6px; font-size: 11px;
+    }
+    .footer { padding: 16px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .action-row { flex-direction: column; }
+    .btn-secondary { flex: 1; }
+  }
+
+  /* ═══════════════════════════════════════════
+     側邊選單 (SIDEBAR DRAWER)
+     ═══════════════════════════════════════════ */
+  /* 漢堡按鈕 - 強化版 */
+  .menu-trigger {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 9999 !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(13, 42, 58, 0.85) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .25s ease !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25) !important;
+    padding: 0 !important;
+    font-family: inherit;
+  }
+  .menu-trigger:hover {
+    background: var(--orange) !important;
+    border-color: var(--orange) !important;
+    transform: scale(1.05);
+  }
+  body.menu-open .menu-trigger {
+    background: rgba(13, 42, 58, 0.95) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+  }
+
+  .menu-trigger-icon {
+    width: 22px; height: 16px;
+    position: relative;
+  }
+  .menu-trigger-icon span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all .3s;
+  }
+  .menu-trigger-icon span:nth-child(1) { top: 0; }
+  .menu-trigger-icon span:nth-child(2) { top: 7px; }
+  .menu-trigger-icon span:nth-child(3) { top: 14px; }
+  body.menu-open .menu-trigger-icon span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  body.menu-open .menu-trigger-icon span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-trigger-icon span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .menu-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13, 42, 58, 0);
+    z-index: 98;
+    visibility: hidden;
+    pointer-events: none;
+    transition: background .3s ease, visibility .3s;
+  }
+  body.menu-open .menu-overlay {
+    background: rgba(13, 42, 58, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 280px;
+    background: #fff;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  body.menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 24px 20px 20px 70px;
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sidebar-header-brand {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sidebar-header-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .sidebar-header-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0 16px;
+  }
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+  .sidebar-section-title {
+    padding: 12px 20px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 20px 11px 24px;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    position: relative;
+  }
+  .sidebar-link:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+  }
+  .sidebar-link.active {
+    background: var(--orange-light);
+    color: var(--orange);
+    border-left-color: var(--orange);
+    font-weight: 900;
+  }
+  .sidebar-link.active::after {
+    content: '●';
+    margin-left: auto;
+    color: var(--orange);
+    font-size: 8px;
+  }
+  .sidebar-link-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .sidebar-link.home {
+    margin: 0 12px 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: none;
+    background: rgba(13,42,58,0.05);
+    color: var(--navy);
+  }
+  .sidebar-link.home:hover {
+    background: var(--navy);
+    color: #fff;
+    border-left: none;
+  }
+  .sidebar-divider {
+    height: 1px;
+    background: #eee;
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .sidebar-cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.3);
+    transition: all .2s;
+  }
+  .sidebar-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.4);
+  }
+  .sidebar-phone {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 行動裝置全寬 */
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 84vw;
+      max-width: 320px;
+    }
+  }
+  /* 小螢幕漢堡按鈕微調,不影響原有 logo 排版 */
+  @media (max-width: 700px) {
+    .menu-trigger {
+      top: 12px !important;
+      left: 12px !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+
+
+  
+  /* 浮動諮詢按鈕 */
+  .float-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+  @media (max-width: 700px) {
+    .float-cta {
+      bottom: 16px;
+      right: 16px;
+      padding: 12px 18px;
+      font-size: 13px;
+    }
+    .float-cta-text { display: none; }
+    .float-cta-icon { font-size: 22px; }
+  }
+
+  </style>
+</head>
+<body>
+<!-- 漢堡按鈕 -->
+<button class="menu-trigger" id="menuTrigger" aria-label="開啟選單">
+  <span class="menu-trigger-icon">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+
+<!-- 遮罩 -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 側邊選單 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-brand">鼎綸恩宇</div>
+    <div class="sidebar-header-sub">Insurance Brokers ®</div>
+    <div class="sidebar-header-tag">財務規劃工具</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-link home"><span class="sidebar-link-icon">🏠</span>首頁</a>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">基礎工具</div>
+      <a href="compound-interest.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span>複利計算機</a>
+      <a href="bmi-calculator.html" class="sidebar-link active"><span class="sidebar-link-icon">⚖️</span>BMI 計算器</a>
+      <a href="labor-pension.html" class="sidebar-link"><span class="sidebar-link-icon">👴</span>勞保勞退試算</a>
+      <a href="loan.html" class="sidebar-link"><span class="sidebar-link-icon">🏦</span>貸款試算</a>
+      <a href="education.html" class="sidebar-link"><span class="sidebar-link-icon">🎓</span>子女教育金</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">稅務試算</div>
+      <a href="estate-tax.html" class="sidebar-link"><span class="sidebar-link-icon">💼</span>遺產稅試算</a>
+      <a href="gift-tax.html" class="sidebar-link"><span class="sidebar-link-icon">🎁</span>贈與稅試算</a>
+      <a href="tax.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span>綜合所得稅</a>
+      <a href="tax-risk.html" class="sidebar-link"><span class="sidebar-link-icon">⚠️</span>實質課稅檢查</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">財務規劃</div>
+      <a href="irr-calculator.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span>IRR 試算器</a>
+      <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
+      <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
+      <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="tel:0925000049" class="sidebar-cta">📞 預約專業顧問</a>
+    <div class="sidebar-phone">📱 0925-000-049</div>
+  </div>
+</aside>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">DL</div>
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="sub tag">BMI 試算</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">BODY MASS INDEX CALCULATOR</div>
+        <div class="big-title">BMI<span class="small">身體質量指數</span></div>
+        <div class="sub-title">依國民健康署標準・1 秒得知體位</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">健康標準</div>
+          <div class="badge-line2">BMI 18.5 ~ 24</div>
+        </div>
+        </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>身心健康</span><span class="dot">◆</span>
+    <span>財富累積</span><span class="dot">◆</span>
+    <span>保障無虞</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INTRO -->
+    <div class="intro-card">
+      <div class="intro-icon">⚖️</div>
+      <div class="intro-text">
+        BMI(<strong>Body Mass Index 身體質量指數</strong>)是 WHO 推薦的肥胖評估指標,公式為「<strong>體重(公斤) ÷ 身高(公尺)²</strong>」。本計算機依台灣<strong>國民健康署</strong>標準分類,提供 BMI 數值、體位等級、理想體重區間與健康建議。
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-section">
+      <div class="section-title-icon">輸入您的資料</div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label" for="height">
+            身高
+            <span class="help">公分(cm)</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="height" class="form-input" placeholder="170" min="50" max="250" step="0.1" value="170">
+            <span class="form-input-suffix">cm</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="weight">
+            體重
+            <span class="help">公斤(kg)</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="weight" class="form-input" placeholder="65" min="20" max="300" step="0.1" value="65">
+            <span class="form-input-suffix">kg</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">
+            性別
+            <span class="help">用於腰圍標準參考</span>
+          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-pill active" data-target="gender" data-val="male">
+              <input type="radio" name="gender" value="male" checked> 男性
+            </label>
+            <label class="checkbox-pill" data-target="gender" data-val="female">
+              <input type="radio" name="gender" value="female"> 女性
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label" for="age">
+            年齡 <span style="color:#999;font-weight:400">(選填)</span>
+            <span class="help">建議成人(18 歲以上)使用</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="age" class="form-input" placeholder="30" min="2" max="120" step="1">
+            <span class="form-input-suffix">歲</span>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <label class="form-label" for="waist">
+            腰圍 <span style="color:#999;font-weight:400">(選填,加贈中央肥胖評估)</span>
+            <span class="help">公分(cm)・男性 ≥ 90 / 女性 ≥ 80 為中央肥胖</span>
+          </label>
+          <div class="form-input-wrap">
+            <input type="number" id="waist" class="form-input" placeholder="80" min="40" max="200" step="0.1">
+            <span class="form-input-suffix">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" id="calcBtn">立即計算</button>
+        <button class="btn btn-secondary" id="resetBtn">重置</button>
+      </div>
+    </div>
+
+    <!-- RESULT (HIDDEN INITIAL) -->
+    <div class="result-section hidden" id="resultSection">
+      <div class="section-title-icon">您的 BMI 結果</div>
+
+      <div class="result-hero">
+        <div class="result-hero-inner">
+          <div class="result-bmi-label">BMI 身體質量指數</div>
+          <div class="result-bmi-num" id="resBmi">—</div>
+          <div class="result-bmi-cat" id="resCat" style="background: var(--gold);">—</div>
+        </div>
+      </div>
+
+      <!-- BMI METER -->
+      <div class="meter-section">
+        <div class="meter-title">📊 您在哪個區間?</div>
+        <div style="position:relative;padding-top:14px;">
+          <div class="meter-pointer" id="meterPointer" style="left:50%">
+            <div class="meter-pointer-inner"></div>
+          </div>
+          <div class="meter-bar">
+            <div class="meter-segment under">過輕</div>
+            <div class="meter-segment normal">健康</div>
+            <div class="meter-segment over">過重</div>
+            <div class="meter-segment obese1">輕度</div>
+            <div class="meter-segment obese2">中度</div>
+            <div class="meter-segment obese3">重度</div>
+          </div>
+        </div>
+        <div class="meter-scale">
+          <span>16</span>
+          <span>18.5</span>
+          <span>24</span>
+          <span>27</span>
+          <span>30</span>
+          <span>35</span>
+          <span>40+</span>
+        </div>
+      </div>
+
+      <!-- 雙卡分析 -->
+      <div class="analysis-section">
+        <div class="analysis-grid">
+          <div class="analysis-card ideal">
+            <div class="analysis-card-title">✨ 理想體重區間</div>
+            <div class="analysis-card-content">
+              <div class="analysis-row">
+                <span class="analysis-row-label">最低(BMI 18.5)</span>
+                <span class="analysis-row-val" id="idealMin">— kg</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-row-label">最高(BMI 24)</span>
+                <span class="analysis-row-val" id="idealMax">— kg</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-row-label">中位(BMI 21)</span>
+                <span class="analysis-row-val" id="idealMid">— kg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="analysis-card gap" id="gapCard">
+            <div class="analysis-card-title">🎯 體重目標差距</div>
+            <div class="analysis-card-content">
+              <div class="analysis-row">
+                <span class="analysis-row-label">目前體重</span>
+                <span class="analysis-row-val" id="currentWeight">— kg</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-row-label">理想中位</span>
+                <span class="analysis-row-val" id="targetWeight">— kg</span>
+              </div>
+              <div class="gap-message" id="gapMessage">建議調整 — 公斤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 健康建議 -->
+      <div class="advice-section" id="adviceSection">
+        <div class="advice-card-title" id="adviceTitle">💡 給您的健康建議</div>
+        <div class="advice-content" id="adviceContent">—</div>
+      </div>
+
+      <!-- 腰圍評估(若有填) -->
+      <div class="advice-section hidden" id="waistResult">
+        <div class="advice-card-title" id="waistResultTitle">📏 腰圍評估</div>
+        <div class="advice-content" id="waistResultContent">—</div>
+      </div>
+    </div>
+
+    <!-- BMI 標準表 -->
+    <div class="standard-section">
+      <div class="section-title-icon">國民健康署 BMI 分類標準</div>
+      <div class="section-sub">適用 18 歲以上成人</div>
+      <table class="standard-table">
+        <thead>
+          <tr>
+            <th style="width:40%">體位等級</th>
+            <th style="width:30%">BMI 範圍</th>
+            <th style="width:30%">健康風險</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot under"></span>體重過輕</td>
+            <td class="bmi-cell">BMI &lt; 18.5</td>
+            <td>營養不良 / 骨質疏鬆</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot normal"></span>健康體重</td>
+            <td class="bmi-cell">18.5 ≤ BMI &lt; 24</td>
+            <td>✅ 標準</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot over"></span>體重過重</td>
+            <td class="bmi-cell">24 ≤ BMI &lt; 27</td>
+            <td>慢性病風險上升</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot obese1"></span>輕度肥胖</td>
+            <td class="bmi-cell">27 ≤ BMI &lt; 30</td>
+            <td>三高 / 心血管疾病</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot obese2"></span>中度肥胖</td>
+            <td class="bmi-cell">30 ≤ BMI &lt; 35</td>
+            <td>糖尿病 / 代謝症候群</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="cat-dot obese3"></span>重度肥胖</td>
+            <td class="bmi-cell">BMI ≥ 35</td>
+            <td>⚠ 高度健康風險</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 腰圍標準 -->
+    <div class="waist-section">
+      <div class="waist-title">📏 中央型肥胖判定標準(腰圍)</div>
+      <div class="waist-grid">
+        <div class="waist-item">
+          <div class="waist-name">👨 男性腰圍標準</div>
+          <div class="waist-value">&lt; 90 <small>公分</small></div>
+        </div>
+        <div class="waist-item">
+          <div class="waist-name">👩 女性腰圍標準</div>
+          <div class="waist-value">&lt; 80 <small>公分</small></div>
+        </div>
+      </div>
+      <div class="waist-warn">
+        💡 即使 BMI 正常,若腰圍超標(男 ≥ 90 cm、女 ≥ 80 cm),代表腹部囤積過多脂肪,屬<strong>中央型肥胖</strong>。會影響身體代謝,顯著增加<strong>三高、糖尿病、心血管疾病</strong>風險。國健署建議每周至少 150 分鐘有氧運動。
+      </div>
+    </div>
+
+    <!-- 保險業務連結卡 -->
+    <div class="ins-section">
+      <div class="ins-title">⚠ 您知道嗎?BMI 會影響保險投保與保費</div>
+      <div class="ins-text">
+        體位異常(過重、肥胖、過輕)在<strong>壽險、醫療險、重大傷病險、長照險</strong>核保時,常會被列為<strong>體位加費</strong>對象,甚至延後或拒保。
+      </div>
+      <div class="ins-grid">
+        <div class="ins-item">
+          <div class="ins-item-head">📌 BMI ≥ 30</div>
+          壽險常加費 25%~50%,醫療險可能<strong style="color:var(--gold)">附條款除外</strong>(如膝關節、糖尿病相關)。
+        </div>
+        <div class="ins-item">
+          <div class="ins-item-head">📌 BMI ≥ 35</div>
+          可能<strong style="color:var(--gold)">直接拒保</strong>或要求先減重複檢,部分保單會延後 6 個月再評估。
+        </div>
+        <div class="ins-item">
+          <div class="ins-item-head">📌 BMI &lt; 17</div>
+          過瘦也被視為健康風險,可能<strong style="color:var(--gold)">加費或要求體檢</strong>確認無潛在疾病。
+        </div>
+        <div class="ins-item">
+          <div class="ins-item-head">📌 健康投保時機</div>
+          趁年輕、體位標準時投保,可享<strong style="color:var(--gold)">標準費率</strong>且不易被除外,終身受益。
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <div class="section-title-icon">BMI 常見問題</div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>BMI 計算公式是什麼?</summary>
+          <div class="faq-body">
+            <strong>BMI = 體重(kg) ÷ 身高(m) ÷ 身高(m)</strong><br>
+            • 範例:身高 170 cm、體重 65 kg<br>
+            • BMI = 65 ÷ 1.70 ÷ 1.70 = <strong>22.49</strong><br>
+            • 結果落在 18.5~24 區間,屬於健康體重。<br>
+            <br>
+            注意:身高需轉換為「公尺」(170 cm = 1.70 m)。本計算機已自動處理單位換算。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>BMI 標準男女有差別嗎?</summary>
+          <div class="faq-body">
+            <strong>沒有差別</strong>。國民健康署的 BMI 分類標準對男女都是同一套(過輕 &lt; 18.5、健康 18.5~24、過重 24~27、肥胖 ≥ 27)。<br>
+            <br>
+            但要注意:<br>
+            • 男女<strong>腰圍標準不同</strong>(男 90 cm、女 80 cm)<br>
+            • 男女<strong>體脂肪標準不同</strong>(男 &lt; 25%、女 &lt; 30% 為標準)<br>
+            • 男性肌肉量通常較高,單看 BMI 容易誤判,建議搭配體脂肪參考。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>兒童青少年也適用這個 BMI 標準嗎?</summary>
+          <div class="faq-body">
+            <strong>不適用</strong>。本計算機以 18 歲以上成人標準為基準。<br>
+            <br>
+            兒童及青少年因身高體重持續發育,需參考衛福部公布的<strong>「兒童及青少年生長身體質量指數(BMI)建議值」</strong>,以該年齡層 BMI 百分位為切點:<br>
+            • 超過 85 百分位:過重<br>
+            • 超過 95 百分位:肥胖<br>
+            <br>
+            建議家長帶孩子至小兒科醫師或營養師處進行專業評估。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>BMI 標準但體脂高怎麼辦?(泡芙族)</summary>
+          <div class="faq-body">
+            這就是俗稱的「<strong>泡芙族</strong>」 — 看起來瘦,但體脂率高、肌肉量少。BMI 看不出體脂與肌肉比例。<br>
+            <br>
+            <strong>建議補充以下指標</strong>:<br>
+            • <strong>體脂率</strong>:男 &lt; 25%、女 &lt; 30% 為標準(可用體組成計或健身房量測)<br>
+            • <strong>腰圍</strong>:男 &lt; 90 cm、女 &lt; 80 cm<br>
+            • <strong>腰臀比</strong>:男 &lt; 0.9、女 &lt; 0.85<br>
+            <br>
+            泡芙族建議透過<strong>重訓增加肌肉量</strong>+ 適度有氧改善,而非單純節食減重。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>BMI 過高就一定不健康嗎?</summary>
+          <div class="faq-body">
+            <strong>不一定</strong>。BMI 是「<strong>輔助參考</strong>」指標,有以下例外:<br>
+            <br>
+            <strong>BMI 高但健康的情況</strong>:<br>
+            • 健身重訓族:肌肉量大,BMI 雖超標但體脂低<br>
+            • 運動員(如橄欖球員、健美選手)<br>
+            <br>
+            <strong>BMI 標準但有風險的情況</strong>:<br>
+            • 泡芙族:BMI 正常但體脂與腰圍超標<br>
+            • 高齡者肌少症:看似標準但肌肉量不足<br>
+            <br>
+            建議搭配<strong>體脂率、腰圍、健康檢查</strong>綜合判斷,必要時諮詢醫師。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>BMI 會影響保險投保嗎?</summary>
+          <div class="faq-body">
+            <strong>會</strong>。BMI 是壽險、醫療險核保時的重要指標之一。<br>
+            <br>
+            <strong>常見規則(各家保險公司略有差異)</strong>:<br>
+            • BMI 18.5 ~ 27:標準費率<br>
+            • BMI 27 ~ 30:可能加費 10%~25%<br>
+            • BMI 30 ~ 35:加費 25%~50%,部分疾病可能除外不保<br>
+            • BMI ≥ 35:可能延後或拒保<br>
+            • BMI &lt; 17:過瘦亦可能加費或要求體檢<br>
+            <br>
+            因此,<strong>趁年輕、體位標準時投保</strong>,可享標準費率且終身受益。如需了解自身體位下的最佳保單規劃,歡迎諮詢鼎綸恩宇專業顧問。
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>如何健康減重?</summary>
+          <div class="faq-body">
+            國民健康署的<strong>「聰明吃、快樂動、天天量體重」</strong>三原則:<br>
+            <br>
+            <strong>1. 飲食控制</strong>:<br>
+            • 每日減少 500~1000 大卡,1 周可減 0.5~1 公斤<br>
+            • 多蔬菜、適量蛋白質、減少精緻澱粉與糖<br>
+            <br>
+            <strong>2. 規律運動</strong>:<br>
+            • 每周至少 150 分鐘中強度有氧(快走、慢跑、騎車)<br>
+            • 搭配每周 2~3 次重訓增加肌肉量<br>
+            <br>
+            <strong>3. 持續追蹤</strong>:<br>
+            • 每天固定時間量體重<br>
+            • 每月量腰圍與拍照記錄<br>
+            <br>
+            目標:<strong>每月減 2~4 公斤</strong>較健康,過快減重容易反彈。
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- 推薦工具 -->
+    <div class="related-section">
+      <div class="section-title-icon">推薦下一步:財務健檢工具</div>
+      <div class="related-grid">
+        <a href="compound-interest.html" class="related-card">
+          <div class="related-card-icon r1">∞</div>
+          <div class="related-card-text">
+            <div class="related-card-title">複利計算機</div>
+            <div class="related-card-desc">看見時間的魔法,規劃未來財富</div>
+          </div>
+        </a>
+        <a href="irr-calculator.html" class="related-card">
+          <div class="related-card-icon r2">📊</div>
+          <div class="related-card-text">
+            <div class="related-card-title">IRR 內部報酬率試算</div>
+            <div class="related-card-desc">看穿儲蓄險的真實年化報酬率</div>
+          </div>
+        </a>
+        <a href="legacy-planner.html" class="related-card">
+          <div class="related-card-icon r3">💎</div>
+          <div class="related-card-text">
+            <div class="related-card-title">傳承規劃模擬器</div>
+            <div class="related-card-desc">三方案對照,看見節稅威力</div>
+          </div>
+        </a>
+        <a href="estate-tax.html" class="related-card">
+          <div class="related-card-icon r4">💼</div>
+          <div class="related-card-text">
+            <div class="related-card-title">遺產稅試算</div>
+            <div class="related-card-desc">114 年最新版,含問與答</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">⚠ 重要提醒</div>
+      本計算機<strong style="color:#fff">僅供健康參考</strong>,不能取代專業醫療診斷。BMI 是衡量肥胖的<strong style="color:#fff">輔助指標</strong>之一,建議搭配體脂率、腰圍、體檢數據綜合判斷。<br>
+      標準依據台灣<a href="https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=542&pid=9737" target="_blank" rel="noopener noreferrer">國民健康署</a>公告,僅適用於 18 歲以上成人。兒童青少年、運動員、孕婦、高齡長者等族群不適用,建議諮詢專業醫師或營養師。如需保單核保相關諮詢,歡迎與鼎綸恩宇專業顧問聯繫。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">健康無價・保障無虞｜鼎綸恩宇陪您守護人生</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div class="footer-right">📞 預約專業顧問</div>
+      <div style="color:white;font-size:15px;font-weight:900;letter-spacing:2px;">📱 0925-000-049</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───── 工具 ─────
+  const num = id => {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? 0 : v;
+  };
+
+  // ───── checkbox-pill ─────
+  document.querySelectorAll('.checkbox-pill').forEach(pill => {
+    pill.addEventListener('click', e => {
+      const target = pill.dataset.target;
+      if (!target) return;
+      e.preventDefault();
+      document.querySelectorAll(`.checkbox-pill[data-target="${target}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const radio = pill.querySelector('input');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  // ───── BMI 分類 ─────
+  function classifyBmi(bmi) {
+    if (bmi < 18.5)  return { name: '體重過輕', color: 'var(--bmi-under)',  key: 'under',  desc: '營養不良 / 骨質疏鬆風險' };
+    if (bmi < 24)    return { name: '健康體重', color: 'var(--bmi-normal)', key: 'normal', desc: '✅ 標準體位' };
+    if (bmi < 27)    return { name: '體重過重', color: 'var(--bmi-over)',   key: 'over',   desc: '慢性病風險上升' };
+    if (bmi < 30)    return { name: '輕度肥胖', color: 'var(--bmi-obese1)', key: 'obese1', desc: '三高 / 心血管疾病風險' };
+    if (bmi < 35)    return { name: '中度肥胖', color: 'var(--bmi-obese2)', key: 'obese2', desc: '糖尿病 / 代謝症候群高風險' };
+    return             { name: '重度肥胖', color: 'var(--bmi-obese3)', key: 'obese3', desc: '⚠ 高度健康風險,建議就醫' };
+  }
+
+  // ───── 健康建議 ─────
+  function getAdvice(cat) {
+    const advice = {
+      under: {
+        title: '💡 體重過輕健康建議',
+        content: `您的 BMI 偏低,可能存在<strong>營養不良、免疫力下降、骨質疏鬆</strong>等風險。建議:`,
+        list: [
+          '每天攝取足夠熱量,以高蛋白、高營養密度食物為主',
+          '增加優質蛋白質(雞蛋、魚、瘦肉、豆類)',
+          '搭配重量訓練增加肌肉量,而非單純增脂',
+          '若長期過瘦,建議至醫院檢查甲狀腺、腸胃道吸收等',
+          '女性過瘦可能影響生育功能,需留意'
+        ]
+      },
+      normal: {
+        title: '🎉 健康體位・恭喜您!',
+        content: `您的 BMI 落在<strong>健康體重範圍</strong>,代表體位狀態良好。建議:`,
+        list: [
+          '維持現有飲食習慣與運動頻率',
+          '每日蔬果 5+ 份、減少加工食品',
+          '每周至少 150 分鐘中強度有氧運動',
+          '每月量腰圍,監測中央型肥胖風險',
+          '把握年輕健康時投保,享標準費率'
+        ]
+      },
+      over: {
+        title: '⚠ 體重過重健康建議',
+        content: `您的 BMI 偏高,慢性病風險開始上升。建議:`,
+        list: [
+          '每日減少 300~500 大卡熱量,目標每月減 1~2 kg',
+          '減少精緻澱粉、含糖飲料、油炸食物',
+          '每周 150 分鐘有氧 + 2~3 次重訓',
+          '量腰圍評估中央型肥胖(男 &lt; 90, 女 &lt; 80)',
+          '定期健檢追蹤血壓、血糖、血脂'
+        ]
+      },
+      obese1: {
+        title: '⚠ 輕度肥胖健康建議',
+        content: `您屬於<strong>輕度肥胖</strong>,三高與心血管疾病風險顯著增加。建議:`,
+        list: [
+          '優先減重 5~10%,可顯著改善代謝指標',
+          '每日減少 500 大卡,搭配規律運動',
+          '建議至減重門診或諮詢營養師',
+          '檢查血壓、血糖、血脂、肝功能',
+          '投保壽險/醫療險可能會被加費,建議規劃前先減重'
+        ]
+      },
+      obese2: {
+        title: '⚠ 中度肥胖健康建議',
+        content: `您屬於<strong>中度肥胖</strong>,糖尿病、心血管疾病、代謝症候群高風險。建議:`,
+        list: [
+          '<strong>強烈建議至減重門診就醫</strong>',
+          '需綜合飲食、運動、行為治療,必要時藥物輔助',
+          '完整健康檢查(三高、肝腎功能、心電圖)',
+          '篩檢睡眠呼吸中止症與脂肪肝',
+          '保險投保時可能被加費或除外條款,建議先減重'
+        ]
+      },
+      obese3: {
+        title: '🚨 重度肥胖健康建議',
+        content: `您屬於<strong style="color:#B71C1C">重度肥胖</strong>,健康風險極高。建議:`,
+        list: [
+          '<strong style="color:#B71C1C">立即就醫減重門診評估</strong>',
+          '可能需要藥物治療或減重手術評估',
+          '完整心血管、代謝、睡眠、骨關節評估',
+          '保險可能被拒保或大幅加費,優先以健康為重',
+          '透過專業醫療團隊長期管理'
+        ]
+      }
+    };
+    return advice[cat.key];
+  }
+
+  // ───── 主計算 ─────
+  function calculate() {
+    const heightCm = num('height');
+    const weight = num('weight');
+    const gender = document.querySelector('input[name="gender"]:checked').value;
+    const waist = num('waist');
+
+    if (heightCm <= 0 || weight <= 0) {
+      alert('請輸入有效的身高與體重!');
+      return;
+    }
+    if (heightCm < 50 || heightCm > 250) {
+      alert('身高請輸入 50~250 cm 區間');
+      return;
+    }
+    if (weight < 20 || weight > 300) {
+      alert('體重請輸入 20~300 kg 區間');
+      return;
+    }
+
+    const heightM = heightCm / 100;
+    const bmi = weight / (heightM * heightM);
+    const cat = classifyBmi(bmi);
+
+    // ───── 渲染 BMI 主結果 ─────
+    document.getElementById('resBmi').textContent = bmi.toFixed(2);
+    document.getElementById('resBmi').style.color = cat.color;
+    const catEl = document.getElementById('resCat');
+    catEl.textContent = cat.name;
+    catEl.style.background = cat.color;
+
+    // ───── BMI 計量表指針位置 ─────
+    // 範圍 16~40+, 對應 0~100%
+    // 區間: 16~18.5 (過輕,1段) | 18.5~24 (健康,2段) | 24~27 (過重,3段) | 27~30 (輕肥,4段) | 30~35 (中肥,5段) | 35~40 (重肥,6段)
+    const segments = [
+      { min: 16,    max: 18.5, start: 0,     end: 16.67 },
+      { min: 18.5,  max: 24,   start: 16.67, end: 33.33 },
+      { min: 24,    max: 27,   start: 33.33, end: 50    },
+      { min: 27,    max: 30,   start: 50,    end: 66.67 },
+      { min: 30,    max: 35,   start: 66.67, end: 83.33 },
+      { min: 35,    max: 40,   start: 83.33, end: 100   }
+    ];
+    let pointerPct = 50;
+    if (bmi <= 16) pointerPct = 2;
+    else if (bmi >= 40) pointerPct = 98;
+    else {
+      for (const seg of segments) {
+        if (bmi >= seg.min && bmi <= seg.max) {
+          const ratio = (bmi - seg.min) / (seg.max - seg.min);
+          pointerPct = seg.start + ratio * (seg.end - seg.start);
+          break;
+        }
+      }
+    }
+    document.getElementById('meterPointer').style.left = pointerPct + '%';
+
+    // ───── 理想體重計算 ─────
+    const idealMin = 18.5 * heightM * heightM;
+    const idealMax = 24 * heightM * heightM;
+    const idealMid = 21 * heightM * heightM;
+
+    document.getElementById('idealMin').textContent = idealMin.toFixed(1) + ' kg';
+    document.getElementById('idealMax').textContent = idealMax.toFixed(1) + ' kg';
+    document.getElementById('idealMid').textContent = idealMid.toFixed(1) + ' kg';
+    document.getElementById('currentWeight').textContent = weight.toFixed(1) + ' kg';
+    document.getElementById('targetWeight').textContent = idealMid.toFixed(1) + ' kg';
+
+    // 體重差距
+    const gap = weight - idealMid;
+    const gapEl = document.getElementById('gapMessage');
+    if (Math.abs(gap) < 0.5) {
+      gapEl.innerHTML = '🎉 您已接近理想體重,繼續維持!';
+      gapEl.classList.add('healthy');
+    } else if (gap > 0) {
+      gapEl.classList.remove('healthy');
+      gapEl.innerHTML = `建議減重 <strong>${gap.toFixed(1)}</strong> 公斤達理想中位`;
+    } else {
+      gapEl.classList.remove('healthy');
+      gapEl.innerHTML = `建議增重 <strong>${Math.abs(gap).toFixed(1)}</strong> 公斤達理想中位`;
+    }
+
+    // ───── 健康建議 ─────
+    const advice = getAdvice(cat);
+    document.getElementById('adviceTitle').innerHTML = advice.title;
+    let listHtml = advice.list.map(item => `<li>${item}</li>`).join('');
+    document.getElementById('adviceContent').innerHTML = `${advice.content}<ul class="advice-list">${listHtml}</ul>`;
+
+    // ───── 腰圍評估 ─────
+    const waistResult = document.getElementById('waistResult');
+    if (waist > 0) {
+      const limit = gender === 'male' ? 90 : 80;
+      const isCentralObese = waist >= limit;
+      const titleEl = document.getElementById('waistResultTitle');
+      const contentEl = document.getElementById('waistResultContent');
+
+      if (isCentralObese) {
+        titleEl.innerHTML = `⚠ 腰圍超標 — 中央型肥胖`;
+        contentEl.innerHTML = `您的腰圍 <strong>${waist} cm</strong> 已超過${gender === 'male' ? '男性' : '女性'}標準(${limit} cm)。
+          <ul class="advice-list">
+            <li>腹部脂肪堆積會影響身體代謝</li>
+            <li>顯著增加<strong>三高、糖尿病、心血管疾病</strong>風險</li>
+            <li>建議每周至少 150 分鐘有氧運動</li>
+            <li>增加核心肌群訓練,如平板支撐、卷腹</li>
+            <li>減少精緻碳水化合物與含糖飲料</li>
+          </ul>`;
+      } else {
+        titleEl.innerHTML = `✅ 腰圍標準`;
+        contentEl.innerHTML = `您的腰圍 <strong>${waist} cm</strong> 在${gender === 'male' ? '男性' : '女性'}標準(&lt; ${limit} cm)範圍內,代謝指標良好。
+          <ul class="advice-list">
+            <li>持續維持規律運動與均衡飲食</li>
+            <li>每月固定量腰圍追蹤</li>
+            <li>留意 BMI 與體脂率配合判讀</li>
+          </ul>`;
+      }
+      waistResult.classList.remove('hidden');
+    } else {
+      waistResult.classList.add('hidden');
+    }
+
+    // 顯示
+    document.getElementById('resultSection').classList.remove('hidden');
+    document.getElementById('resultSection').classList.add('slide-in');
+
+    setTimeout(() => {
+      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+
+  // 重置
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('height').value = 170;
+    document.getElementById('weight').value = 65;
+    document.getElementById('age').value = '';
+    document.getElementById('waist').value = '';
+    document.querySelector('.checkbox-pill[data-target="gender"][data-val="male"]').click();
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('height').focus();
+  });
+
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+
+  // Enter 觸發
+  document.querySelectorAll('.form-input').forEach(inp => {
+    inp.addEventListener('keypress', e => {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+</script>
+
+<script>
+  (function() {
+    const trigger = document.getElementById('menuTrigger');
+    const overlay = document.getElementById('menuOverlay');
+    const sidebar = document.getElementById('sidebar');
+
+    function open() {
+      document.body.classList.add('menu-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+    function toggle() {
+      document.body.classList.contains('menu-open') ? close() : open();
+    }
+
+    if (trigger) trigger.addEventListener('click', toggle);
+    if (overlay) overlay.addEventListener('click', close);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0925000049" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">預約諮詢</span>
+</a>
+
+</body>
+</html>
