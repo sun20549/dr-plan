@@ -1008,12 +1008,12 @@ body {
         </div>
         <div class="field" id="birthday-field">
           <label>生日 <span style="color:var(--gray-500);font-weight:400;font-size:12px;">(西元 1985 或民國 74)</span></label>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <input type="text" id="bday-y" placeholder="年" maxlength="4" style="width:78px;text-align:center;" inputmode="numeric">
-            <span style="color:var(--gray-400);">/</span>
-            <input type="text" id="bday-m" placeholder="月" maxlength="2" style="width:52px;text-align:center;" inputmode="numeric">
-            <span style="color:var(--gray-400);">/</span>
-            <input type="text" id="bday-d" placeholder="日" maxlength="2" style="width:52px;text-align:center;" inputmode="numeric">
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="text" id="bday-y" placeholder="年" maxlength="4" style="flex:1; min-width:0; text-align:center;" inputmode="numeric">
+            <span style="color:var(--gray-400); flex:0 0 auto;">/</span>
+            <input type="text" id="bday-m" placeholder="月" maxlength="2" style="flex:1; min-width:0; text-align:center;" inputmode="numeric">
+            <span style="color:var(--gray-400); flex:0 0 auto;">/</span>
+            <input type="text" id="bday-d" placeholder="日" maxlength="2" style="flex:1; min-width:0; text-align:center;" inputmode="numeric">
             <input type="hidden" id="birthday">
           </div>
         </div>
@@ -1047,9 +1047,9 @@ body {
           </select>
         </div>
         <div class="field">
-          <label>每年預算 (幣別：<span id="currency-label">台幣</span>)</label>
+          <label>每年預算 (幣別:<span id="currency-label">台幣</span>)</label>
           <div class="input-with-suffix">
-            <input type="number" id="budget" placeholder="請輸入">
+            <input type="text" id="budget" placeholder="請輸入" inputmode="numeric" autocomplete="off">
             <span class="suffix" id="budget-unit">元</span>
           </div>
         </div>
@@ -2536,6 +2536,22 @@ function onAgeDirectInput() {
 });
 document.getElementById('age-direct').addEventListener('input', onAgeDirectInput);
 
+// v5.4: 預算欄即時加千分位逗號
+function formatBudgetInput(e) {
+  const el = e.target;
+  // 只保留數字跟小數點(萬一有貼上)
+  let raw = el.value.replace(/[^\d.]/g, '');
+  // 防止多個小數點
+  const parts = raw.split('.');
+  if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+  if (raw === '') { el.value = ''; return; }
+  // 整數部分加千分位
+  const [intPart, decPart] = raw.split('.');
+  const intFormatted = parseInt(intPart, 10).toLocaleString('en-US');
+  el.value = decPart !== undefined ? `${intFormatted}.${decPart}` : intFormatted;
+}
+document.getElementById('budget').addEventListener('input', formatBudgetInput);
+
 document.getElementById('product-type').addEventListener('change', e => {
   const val = e.target.value;
   const isUSD = val.includes('美元');
@@ -2566,7 +2582,8 @@ async function goStep2() {
   }
   const type = document.getElementById('product-type').value;
   const period = parseInt(document.getElementById('period').value);
-  const budget = parseFloat(document.getElementById('budget').value);
+  // v5.4: budget 欄含千分位逗號,parseFloat 前先去掉
+  const budget = parseFloat(document.getElementById('budget').value.replace(/,/g, ''));
   const rate = parseFloat(document.getElementById('exchange-rate').value) || 32;
   const isUSD = type.includes('美元');
 
