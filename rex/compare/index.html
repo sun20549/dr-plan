@@ -440,6 +440,7 @@ body {
       border-bottom:1px solid var(--gray-100);
       white-space:nowrap; font-variant-numeric:tabular-nums;
       background:#fff;
+      box-sizing: border-box;  /* v5.4: 讓 width 包含 padding,避免商品欄因 padding 累積而超出 wrap */
     }
     /* v5.1: scroll-snap 讓水平滑動對齊整個商品,不會卡半個 */
     .compare-table-wrap {
@@ -3198,16 +3199,16 @@ function renderCompareTable() {
 // v5.3: 動態設定商品欄寬度 + RWD 自適應
 // 設計理念:
 //   - 桌機/平板橫式 (≥1024):每商品 280px,標籤欄 90px
-//   - 平板直式 (≥600):每商品 280px,標籤欄 75px
-//   - 手機橫式 (≥480):每商品 320px,標籤欄 65px(2 個商品塞得下)
-//   - 手機直式 (<480):每商品 260px,標籤欄 60px(1 個商品)
+//   - 平板直式 / 大手機橫式 (≥600):每商品 280px,標籤欄 75px
+//   - 手機橫式 (≥480):每商品 320px,標籤欄 65px
+//   - 手機直式 (<480):每商品 260px,標籤欄 60px
 function _getLayoutBreakpoint(width) {
-  if (width >= 1024) return { minW: 280, labelW: 90, buffer: 20, fontSize: null };
-  if (width >= 600)  return { minW: 280, labelW: 75, buffer: 16, fontSize: null };
-  if (width >= 480)  return { minW: 320, labelW: 65, buffer: 12, fontSize: null };
-  return                    { minW: 260, labelW: 60, buffer: 10, fontSize: null };
+  if (width >= 1024) return { minW: 280, labelW: 90 };
+  if (width >= 600)  return { minW: 280, labelW: 75 };
+  if (width >= 480)  return { minW: 320, labelW: 65 };
+  return                    { minW: 260, labelW: 60 };
 }
-const SAFETY_BUFFER = 20;               // 預留給 border/padding/scrollbar 的安全 margin(舊版相容)
+const SAFETY_BUFFER = 20;
 function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
@@ -3221,44 +3222,52 @@ function layoutProductColumnWidth() {
   });
 
   const wrapWidth = wrap.clientWidth;
-  // 用 viewport 寬度判斷 breakpoint(手機橫式時,wrap.clientWidth 會跟 viewport 接近)
   const bp = _getLayoutBreakpoint(window.innerWidth);
   const labelColWidth = bp.labelW;
-  const usable = wrapWidth - labelColWidth - bp.buffer;
 
-  // 算這個寬度最多能塞幾個商品(至少 1 個)
-  const N = Math.max(1, Math.floor(usable / bp.minW));
+  // v5.4: 修正寬度計算
+  // 每個商品實際佔用 = eachWidth + 2px(value 跟 percent 的 border-right 各 1px)
+  // labelW 也佔 1px border,加 wrap 兩側各 1px = 4px 額外開銷
+  // 用較大的安全 buffer 確保不會剛好超出
+  const BORDER_OVERHEAD = 4;  // wrap border + scroll buffer
+  const PER_PRODUCT_BORDER = 2;  // 每商品 2 個 td,各 1px border
+  const usable = wrapWidth - labelColWidth - BORDER_OVERHEAD;
 
-  // 把可用寬度平均分配給 N 個商品
-  const eachProductWidth = Math.floor(usable / N);
+  // 算最多能塞幾個商品(N) — 解 N × (minW + PER_PRODUCT_BORDER) ≤ usable
+  let N = Math.max(1, Math.floor(usable / (bp.minW + PER_PRODUCT_BORDER)));
+
+  // 把可用寬度平均分配給 N 個商品(扣掉 N 倍 border)
+  const eachProductWidth = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
 
-  // 同步把 label 欄寬度同步到實際 minW(讓 CSS 跟 JS 一致)
+  // 同步 label 欄寬度
   table.querySelectorAll('th.label-col, td.label').forEach(el => {
     el.style.width = `${labelColWidth}px`;
     el.style.minWidth = `${labelColWidth}px`;
     el.style.maxWidth = `${labelColWidth}px`;
   });
 
-  // thead 公司列 + meta 列:每商品是一個 colspan=2 的 th/td
+  // thead 公司列 + meta 列
   table.querySelectorAll('thead th[colspan="2"]:not(.label-col), tbody tr.meta-row td[colspan="2"]:not(.label)').forEach(el => {
     el.style.width = `${eachProductWidth}px`;
     el.style.minWidth = `${eachProductWidth}px`;
     el.style.maxWidth = `${eachProductWidth}px`;
     el.style.scrollSnapAlign = 'start';
   });
-  // tbody 的 value / percent 對:每商品 2 個 td
+  // tbody 的 value / percent
   table.querySelectorAll('tbody tr.year-row').forEach(tr => {
     const tds = tr.querySelectorAll('td:not(.year-col):not(.label)');
     for (let i = 0; i < tds.length; i++) {
       if (i % 2 === 0) {
         tds[i].style.width = `${valueWidth}px`;
         tds[i].style.minWidth = `${valueWidth}px`;
+        tds[i].style.maxWidth = `${valueWidth}px`;
         tds[i].style.scrollSnapAlign = 'start';
       } else {
         tds[i].style.width = `${percentWidth}px`;
         tds[i].style.minWidth = `${percentWidth}px`;
+        tds[i].style.maxWidth = `${percentWidth}px`;
       }
     }
   });
