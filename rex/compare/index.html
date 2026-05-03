@@ -3241,8 +3241,20 @@ function renderCompareTable() {
     maxYearsByAgeCap
   );
 
-  // === THEAD：所有 meta 全部塞 thead，瀏覽器原生 sticky ===
-  let html = '<thead>';
+  // === COLGROUP:用 <col> 統一控制欄寬,比逐個 td 設 width 穩 ===
+  // 結構:[col-year(108)][col-age(80)][col-value, col-pct] × N
+  // 寬度由 layoutProductColumnWidth 後續設定
+  let html = '<colgroup id="compare-colgroup">';
+  html += '<col class="col-year">';
+  html += '<col class="col-age">';
+  for (let i = 0; i < displayItems.length; i++) {
+    html += '<col class="col-value">';
+    html += '<col class="col-pct">';
+  }
+  html += '</colgroup>';
+
+  // === THEAD:所有 meta 全部塞 thead,瀏覽器原生 sticky ===
+  html += '<thead>';
 
   // 公司名列
   html += '<tr class="head-company">';
@@ -3365,25 +3377,13 @@ function _getLayoutBreakpoint(width) {
 }
 const SAFETY_BUFFER = 20;
 // v5.7: 左側固定欄寬度由 CSS 控制(td.year-col-1 + td.year-col-2 = 108 + 80 = 188px)
-// JS 只負責計算商品欄寬度,不再覆蓋左欄
+// 用 <colgroup> 統一控制欄寬,比逐個 td 設 width 穩
 const FIXED_LABEL_COL_WIDTH = 188;
 
 function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
   if (!wrap || !table) return;
-
-  // 清掉所有舊 inline style(完全重置)
-  table.querySelectorAll('th, td').forEach(el => {
-    el.style.width = '';
-    el.style.minWidth = '';
-    el.style.maxWidth = '';
-    el.style.boxSizing = '';
-    el.style.scrollSnapAlign = '';
-  });
-  table.style.width = '';
-  table.style.tableLayout = '';
-  table.style.boxSizing = '';
 
   // 用實際渲染後的寬度
   const wrapWidth = Math.floor(wrap.getBoundingClientRect().width);
@@ -3406,38 +3406,22 @@ function layoutProductColumnWidth() {
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
 
-  // table 寬度設成精算總寬,用 fixed layout 強制 td 寬度生效
+  // table 寬度設成精算總寬,用 fixed layout 強制 col 寬度生效
   const actualTableWidth = labelColWidth + N * eachProductWidth;
   table.style.width = `${actualTableWidth}px`;
   table.style.tableLayout = 'fixed';
 
-  // === thead 商品欄(colspan=2)===
-  // 排除左側 sticky label(.th-label-1 公司列、.th-label meta 列、.th-label-merged 欄名列)
-  table.querySelectorAll('thead th[colspan="2"]:not(.th-label-1):not(.th-label):not(.th-label-merged)').forEach(el => {
-    el.style.width = `${eachProductWidth}px`;
-    el.style.boxSizing = 'border-box';
-    el.style.scrollSnapAlign = 'start';
-  });
+  // === 透過 colgroup 統一設定欄寬(比逐個 td 設穩多了)===
+  const yearCol = table.querySelector('col.col-year');
+  const ageCol = table.querySelector('col.col-age');
+  if (yearCol) yearCol.style.width = '108px';
+  if (ageCol) ageCol.style.width = '80px';
 
-  // === thead 欄名列(value/pct)===
-  table.querySelectorAll('thead th.col-name-value').forEach(el => {
-    el.style.width = `${valueWidth}px`;
-    el.style.boxSizing = 'border-box';
+  table.querySelectorAll('col.col-value').forEach(c => {
+    c.style.width = `${valueWidth}px`;
   });
-  table.querySelectorAll('thead th.col-name-pct').forEach(el => {
-    el.style.width = `${percentWidth}px`;
-    el.style.boxSizing = 'border-box';
-  });
-
-  // === tbody 商品欄(year-row 的非 sticky td)===
-  // 兩兩配對:value, pct, value, pct, ...
-  table.querySelectorAll('tbody tr.year-row').forEach(tr => {
-    const tds = tr.querySelectorAll('td:not(.year-col-1):not(.year-col-2)');
-    for (let i = 0; i < tds.length; i++) {
-      tds[i].style.width = (i % 2 === 0) ? `${valueWidth}px` : `${percentWidth}px`;
-      tds[i].style.boxSizing = 'border-box';
-      if (i % 2 === 0) tds[i].style.scrollSnapAlign = 'start';
-    }
+  table.querySelectorAll('col.col-pct').forEach(c => {
+    c.style.width = `${percentWidth}px`;
   });
 }
 
