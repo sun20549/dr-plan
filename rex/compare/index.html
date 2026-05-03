@@ -256,7 +256,7 @@ body {
   }
   .print-table th, .print-table td {
     border:1px solid #cbd5e1;
-    padding:4px 5px;
+    padding:3px 4px;  /* v5.5: 縮 padding 確保 thead 9 列 + tbody 20 列塞進 A4 橫式 */
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -2891,7 +2891,6 @@ function printCompareTable() {
   for (let i = 0; i < displayItems.length; i += PRINT_PRODUCTS_PER_PAGE) {
     pages.push(displayItems.slice(i, i + PRINT_PRODUCTS_PER_PAGE));
   }
-  const totalPages = pages.length;
 
   // === 算最大年數(取所有商品 schedule 最長,但不超過 110 歲)===
   const AGE_CAP = 110;
@@ -2905,32 +2904,39 @@ function printCompareTable() {
   const valueLabel = state.currentTab === 'surrender' ? '解約金+回饋(A)' : '身故金(B)';
   const pctLabel = state.currentTab === 'surrender' ? '(A)/累積保費' : '(B)/累積保費';
 
-  // === 生成每頁 HTML ===
-  let allHtml = '';
-  pages.forEach((pageItems, pageIdx) => {
-    const pageNum = pageIdx + 1;
+  // v5.5: 雙重分頁 — 商品分頁(6/頁) × 年度分頁(20/頁)
+  // 例: 26 商品 × 71 年 = ceil(26/6)=5 × ceil(71/20)=4 = 20 頁
+  const YEARS_PER_PAGE = 20;
+  const yearChunks = [];
+  for (let y = 0; y < maxYears; y += YEARS_PER_PAGE) {
+    yearChunks.push({ start: y, end: Math.min(y + YEARS_PER_PAGE, maxYears) });
+  }
+  const totalPages = pages.length * yearChunks.length;
+
+  // === 共用函式:生成一頁的完整 HTML(包含 thead + 該年度區段的 tbody) ===
+  function buildPageHtml(pageItems, yearChunk, pageNum) {
     let html = `<div class="print-page">`;
+    // 頁首:標題 + 客戶資訊 + 頁碼
     html += `<div class="print-page-header">`;
     html += `<span class="page-num">第 ${pageNum} / ${totalPages} 頁</span>`;
-    html += `<h1>儲蓄險商品比較分析表</h1>`;
+    html += `<h1>儲蓄險分析系統 — 精算版</h1>`;
     html += `<div class="meta">${metaLine}</div>`;
     html += `</div>`;
 
     html += `<table class="print-table">`;
-    // === thead 開始 ===
     html += '<thead>';
-    // 公司列
+
+    // 1. 公司列
     html += '<tr><th class="meta-th label" style="width:50px;">保險公司</th><th class="meta-th label" style="width:50px;"></th>';
     pageItems.forEach(it => {
       html += `<th class="company-cell" colspan="2">${it.product.company}</th>`;
     });
-    // 補空欄(如果該頁不滿 6 個)
     for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
       html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
     }
     html += '</tr>';
 
-    // 商品名稱列
+    // 2. 商品名稱列
     html += '<tr><th class="meta-th label">商品名稱</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       html += `<th class="product-name-cell" colspan="2">${it.product.product_name}</th>`;
@@ -2940,7 +2946,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 代號列
+    // 3. 代號列
     html += '<tr><th class="meta-th label">代號</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       html += `<th class="meta-th" colspan="2" style="text-align:center;">${it.product.plan_code}</th>`;
@@ -2950,7 +2956,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 年期列
+    // 4. 年期列
     html += '<tr><th class="meta-th label">年期</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       html += `<th class="meta-th" colspan="2" style="text-align:center;">${it.product.period} 年</th>`;
@@ -2960,7 +2966,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 保額列
+    // 5. 保額列
     html += `<tr><th class="meta-th label">保額(${cur})</th><th class="meta-th label"></th>`;
     pageItems.forEach(it => {
       const v = convert(it.calc.sum_assured, it.product.currency);
@@ -2971,7 +2977,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 首期實繳保費
+    // 6. 首期實繳保費
     html += '<tr><th class="meta-th label">首期實繳保費</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       const v = convert(it.calc.annual_premium_real, it.product.currency);
@@ -2982,7 +2988,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 滿期實繳保費
+    // 7. 滿期實繳保費
     html += '<tr><th class="meta-th label">滿期實繳保費</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       const v = convert(it.calc.annual_premium_real * it.product.period, it.product.currency);
@@ -2993,7 +2999,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 宣告利率
+    // 8. 宣告利率
     html += '<tr><th class="meta-th label">宣告利率</th><th class="meta-th label"></th>';
     pageItems.forEach(it => {
       html += `<th class="meta-th" colspan="2" style="text-align:center;">${(it.product.declared_rate*100).toFixed(2)}%</th>`;
@@ -3003,7 +3009,7 @@ function printCompareTable() {
     }
     html += '</tr>';
 
-    // 欄位 label 列(年度 / 歲 / 解約金 / 回本率)
+    // 9. 欄位 label 列(年度 / 歲 / 解約金 / 回本率)
     html += '<tr><th class="col-header" style="width:40px;">年度</th><th class="col-header" style="width:40px;">年齡</th>';
     pageItems.forEach(() => {
       html += `<th class="col-header">${valueLabel}</th><th class="col-header">${pctLabel}</th>`;
@@ -3014,9 +3020,9 @@ function printCompareTable() {
     html += '</tr>';
     html += '</thead>';
 
-    // === tbody 數字資料 ===
+    // === tbody:該頁年度區段的數字 ===
     html += '<tbody>';
-    for (let yIdx = 0; yIdx < maxYears; yIdx++) {
+    for (let yIdx = yearChunk.start; yIdx < yearChunk.end; yIdx++) {
       const policyYear = yIdx + 1;
       const insAge = u.age + yIdx;
       html += `<tr>`;
@@ -3033,21 +3039,39 @@ function printCompareTable() {
         const pctVal = r.cum_prem ? (value / r.cum_prem) : null;
         html += `<td>${fmtMoney(v)}</td><td class="percent">${fmtPct(pctVal)}</td>`;
       });
-      // 補空格
       for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
         html += `<td colspan="2" style="background:#fff;border:none;"></td>`;
       }
       html += `</tr>`;
     }
     html += '</tbody></table></div>';
+    return html;
+  }
 
-    allHtml += html;
+  // === 雙重迴圈:每個商品分頁 × 每個年度分頁 ===
+  let allHtml = '';
+  let pageCounter = 0;
+  pages.forEach(pageItems => {
+    yearChunks.forEach(yearChunk => {
+      pageCounter++;
+      allHtml += buildPageHtml(pageItems, yearChunk, pageCounter);
+    });
   });
 
   document.getElementById('print-pages').innerHTML = allHtml;
+
+  // v5.5: 設定 PDF 預設檔名 = 儲蓄險分析系統 - 精算版 - 被保險人姓名 - YYYYMMDD
+  const filenameDate = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}`;
+  const insuredName = (u.name || '被保險人').trim();
+  const docTitle = `儲蓄險分析系統 - 精算版 - ${insuredName} - ${filenameDate}`;
+  const originalTitle = document.title;
+  document.title = docTitle;
+
   // 給瀏覽器一點時間 layout 完才印
   setTimeout(() => {
     window.print();
+    // 列印對話框關閉後還原 title(不影響網站)
+    setTimeout(() => { document.title = originalTitle; }, 1000);
   }, 100);
 }
 
@@ -3196,24 +3220,26 @@ function renderCompareTable() {
   updateSummaryFloat();
 }
 
-// v5.3: 動態設定商品欄寬度 + RWD 自適應
-// 設計理念:
-//   - 桌機/平板橫式 (≥1024):每商品 280px,標籤欄 90px
-//   - 平板直式 / 大手機橫式 (≥600):每商品 280px,標籤欄 75px
-//   - 手機橫式 (≥480):每商品 320px,標籤欄 65px
-//   - 手機直式 (<480):每商品 260px,標籤欄 60px
+// v5.5: Google 相簿式彈性縮放
+// 設計概念:
+//   - 每商品「想要」maxW(380~430px),寬鬆好讀
+//   - 視窗變寬 → 商品在當前 N 內慢慢放大(直到 maxW)
+//   - 視窗再變寬 → 跳到 N+1,每個重新分配(會比剛剛小)
+//   - 視窗變窄 → 商品慢慢縮小
+//   - 縮到 minW(260px) → 跳到 N-1,每個重新分配(會比剛剛大)
+// 結果:鋸齒狀曲線,每商品永遠在 [minW, maxW] 之間,絕不被切到
 function _getLayoutBreakpoint(width) {
-  if (width >= 1024) return { minW: 280, labelW: 90 };
-  if (width >= 600)  return { minW: 280, labelW: 75 };
-  if (width >= 480)  return { minW: 320, labelW: 65 };
-  return                    { minW: 260, labelW: 60 };
+  // labelW 隨裝置寬度調整
+  if (width >= 1024) return { minW: 260, maxW: 420, labelW: 90 };
+  if (width >= 600)  return { minW: 260, maxW: 400, labelW: 75 };
+  if (width >= 480)  return { minW: 280, maxW: 400, labelW: 65 };
+  return                    { minW: 240, maxW: 380, labelW: 60 };
 }
 const SAFETY_BUFFER = 20;
 function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
   if (!wrap || !table) return;
-  // 移除舊的 inline style
   table.querySelectorAll('th, td').forEach(el => {
     el.style.width = '';
     el.style.minWidth = '';
@@ -3225,18 +3251,21 @@ function layoutProductColumnWidth() {
   const bp = _getLayoutBreakpoint(window.innerWidth);
   const labelColWidth = bp.labelW;
 
-  // v5.4: 修正寬度計算
-  // 每個商品實際佔用 = eachWidth + 2px(value 跟 percent 的 border-right 各 1px)
-  // labelW 也佔 1px border,加 wrap 兩側各 1px = 4px 額外開銷
-  // 用較大的安全 buffer 確保不會剛好超出
-  const BORDER_OVERHEAD = 4;  // wrap border + scroll buffer
-  const PER_PRODUCT_BORDER = 2;  // 每商品 2 個 td,各 1px border
+  const BORDER_OVERHEAD = 4;
+  const PER_PRODUCT_BORDER = 2;
   const usable = wrapWidth - labelColWidth - BORDER_OVERHEAD;
 
-  // 算最多能塞幾個商品(N) — 解 N × (minW + PER_PRODUCT_BORDER) ≤ usable
-  let N = Math.max(1, Math.floor(usable / (bp.minW + PER_PRODUCT_BORDER)));
+  // 用 maxW 算「最少需要幾個 N 來填滿這個寬度」
+  // 例:usable=1500, maxW=420 → N=ceil(1500/420)=4 → 每個 375px ✓
+  // 例:usable=1100, maxW=420 → N=ceil(1100/420)=3 → 每個 367px ✓
+  let N = Math.max(1, Math.ceil(usable / bp.maxW));
+  // 但要確保每個商品 ≥ minW(否則太擠看不清),不行就降 N
+  while (N > 1) {
+    const each = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
+    if (each >= bp.minW) break;
+    N -= 1;
+  }
 
-  // 把可用寬度平均分配給 N 個商品(扣掉 N 倍 border)
   const eachProductWidth = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
@@ -3248,14 +3277,14 @@ function layoutProductColumnWidth() {
     el.style.maxWidth = `${labelColWidth}px`;
   });
 
-  // thead 公司列 + meta 列
+  // thead/meta 的 colspan=2 商品欄
   table.querySelectorAll('thead th[colspan="2"]:not(.label-col), tbody tr.meta-row td[colspan="2"]:not(.label)').forEach(el => {
     el.style.width = `${eachProductWidth}px`;
     el.style.minWidth = `${eachProductWidth}px`;
     el.style.maxWidth = `${eachProductWidth}px`;
     el.style.scrollSnapAlign = 'start';
   });
-  // tbody 的 value / percent
+  // tbody value/percent
   table.querySelectorAll('tbody tr.year-row').forEach(tr => {
     const tds = tr.querySelectorAll('td:not(.year-col):not(.label)');
     for (let i = 0; i < tds.length; i++) {
