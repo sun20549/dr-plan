@@ -297,19 +297,23 @@ body {
     /* 黏性表頭與首欄 */
     .compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
       border:1px solid var(--gray-200); position:relative; }
-    .compare-table { border-collapse:separate; border-spacing:0; font-size:12px; min-width:100%;
-      width:100%; table-layout:fixed; /* v5: 等寬均分,商品多時自動縮短 */ }
+    .compare-table { border-collapse:separate; border-spacing:0; font-size:12px;
+      /* v5.1: 取消 fixed,改用 JS 動態設定每商品欄寬度,搭配 scroll-snap 滑動對齊 */ }
     .compare-table th, .compare-table td {
       padding:8px 10px;
       border-right:1px solid var(--gray-100);
       border-bottom:1px solid var(--gray-100);
       white-space:nowrap; font-variant-numeric:tabular-nums;
       background:#fff;
-      overflow:hidden; text-overflow:ellipsis; /* 過長內容用 ... 截斷 */
     }
-    /* v5: 標籤欄(保險公司、商品名稱等)固定 90px,讓商品欄等分剩餘寬度 */
+    /* v5.1: scroll-snap 讓水平滑動對齊整個商品,不會卡半個 */
+    .compare-table-wrap {
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: 90px;  /* 標籤欄寬度,讓 snap 對齊到商品起點 */
+    }
+    /* v5.1: 標籤欄(保險公司、商品名稱等)固定 90px */
     .compare-table th.label-col,
-    .compare-table td.label { width:90px; min-width:90px; }
+    .compare-table td.label { width:90px; min-width:90px; max-width:90px; }
     /* 商品名稱列允許換行,避免被截斷不可讀 */
     .compare-table .meta-row td.product-name-cell { white-space:normal !important; }
     /* sticky 表頭（公司名）：top:0 */
@@ -2656,6 +2660,9 @@ async function goStep3(mode) {
 
   renderCompareTable();
   showStep(3);
+  // v5.1: STEP3 從 display:none 變 active 後,wrap 才有真實寬度,要重算商品欄寬
+  setTimeout(layoutProductColumnWidth, 50);
+  setTimeout(layoutProductColumnWidth, 300);
 }
 
 function switchTab(tab) {
@@ -2836,14 +2843,71 @@ function renderCompareTable() {
   // 渲染後立即排版 thead sticky tops（核心修復）
   requestAnimationFrame(() => {
     layoutStickyHead();
+    layoutProductColumnWidth();  // v5.1: 動態設商品欄寬度,5 個商品平分視窗寬度
     // 字體載入後再重算一次（雙保險）
-    setTimeout(layoutStickyHead, 100);
-    setTimeout(layoutStickyHead, 400);
+    setTimeout(() => { layoutStickyHead(); layoutProductColumnWidth(); }, 100);
+    setTimeout(() => { layoutStickyHead(); layoutProductColumnWidth(); }, 400);
   });
 
   updateSortStatus();
   updateSummaryFloat();
 }
+
+// v5.1: 動態設定商品欄寬度,讓 5 個商品剛好填滿視窗
+// 一個商品佔 2 個 td (value 解約金 + percent 百分比),所以實際是 5 個商品 × 2 = 10 個 td
+const PRODUCTS_PER_PAGE = 5;
+function layoutProductColumnWidth() {
+  const wrap = document.getElementById('compare-table-wrap');
+  const table = document.getElementById('compare-table');
+  if (!wrap || !table) return;
+  // 移除舊的 inline style
+  table.querySelectorAll('th, td').forEach(el => {
+    if (el.classList.contains('product-col')) el.style.width = '';
+    if (el.dataset.productCol) el.style.width = '';
+  });
+  // 計算每個商品的 col 寬度
+  const wrapWidth = wrap.clientWidth;
+  const labelColWidth = 90;  // 跟 CSS 的 .label width 一致
+  const productColTotal = wrapWidth - labelColWidth;
+  const eachProductWidth = Math.floor(productColTotal / PRODUCTS_PER_PAGE);  // 每商品的總寬(value + percent)
+  // 商品內 value 跟 percent 的分配:value 60%,percent 40%
+  const valueWidth = Math.floor(eachProductWidth * 0.6);
+  const percentWidth = eachProductWidth - valueWidth;
+
+  // thead 公司列 + meta 列:每商品是一個 colspan=2 的 th/td
+  table.querySelectorAll('thead th[colspan="2"]:not(.label-col), tbody tr.meta-row td[colspan="2"]:not(.label)').forEach(el => {
+    el.style.width = `${eachProductWidth}px`;
+    el.style.minWidth = `${eachProductWidth}px`;
+    el.style.maxWidth = `${eachProductWidth}px`;
+    el.style.scrollSnapAlign = 'start';
+  });
+  // tbody 的 value / percent 對:每商品 2 個 td
+  table.querySelectorAll('tbody tr.year-row').forEach(tr => {
+    const tds = tr.querySelectorAll('td:not(.year-col):not(.label)');
+    for (let i = 0; i < tds.length; i++) {
+      // 偶數 index 是 value,奇數是 percent(配對成一個商品)
+      if (i % 2 === 0) {
+        tds[i].style.width = `${valueWidth}px`;
+        tds[i].style.minWidth = `${valueWidth}px`;
+        tds[i].style.scrollSnapAlign = 'start';  // value 對齊起點
+      } else {
+        tds[i].style.width = `${percentWidth}px`;
+        tds[i].style.minWidth = `${percentWidth}px`;
+      }
+    }
+  });
+}
+
+// v5.1: 視窗 resize 時重算商品欄寬度
+let _resizeTimer = null;
+window.addEventListener('resize', () => {
+  if (_resizeTimer) clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => {
+    if (document.getElementById('step-3').classList.contains('active')) {
+      layoutProductColumnWidth();
+    }
+  }, 150);
+});
 
 /**
  * 量測每個 thead row 的實際高度，依序累加設成 top
