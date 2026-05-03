@@ -381,11 +381,11 @@ body {
     }
     /* 排序當下被點的年度，整列 highlight */
     .compare-table tbody tr.year-row.sorted-row td:not(.year-col) {
-      background:#fff8e7;
+      background:#d6f1ec;  /* v5: 從米白改成明顯的淺 teal */
     }
     .compare-table tbody tr.year-row.sorted-row td.value,
     .compare-table tbody tr.year-row.sorted-row td.percent {
-      background:#fff8e7;
+      background:#d6f1ec;  /* v5 */
     }
 
     /* 關鍵年度跳轉按鈕列 */
@@ -622,9 +622,11 @@ body {
     }
     .compare-table tbody td.year-col-1.sorted {
       background:var(--teal); color:#fff;
+      box-shadow: inset 4px 0 0 var(--teal-mid);  /* 左側深色條更明顯 */
     }
     .compare-table tbody td.year-col-2.sorted {
-      background:var(--teal-bg); color:var(--teal-mid);
+      background:var(--teal); color:#fff;  /* v5: 改成實心 teal,跟年度欄同色 */
+      font-weight:700;
     }
 
     /* TBODY 數字格 */
@@ -676,7 +678,7 @@ body {
     }
     .compare-table tbody tr.year-row.sorted-row td.value:not(.best),
     .compare-table tbody tr.year-row.sorted-row td.percent:not(.best) {
-      background:#fffbed !important;
+      background:#d6f1ec !important;  /* v5: 從米白(#fffbed)改成明顯的淺 teal,排序中的列一眼可見 */
     }
 
     /* tabs / 幣別 / 跳轉 / 預算標記 */
@@ -2642,27 +2644,8 @@ async function goStep3(mode) {
     (state.user.isUSD ? ` &nbsp;|&nbsp; 匯率 <b>${state.user.rate}</b>` : '');
 
   // 驗證資訊
-  const exactCount = state.compareList.filter(c => c.calc.is_exact).length;
-  const calcCount = state.compareList.length - exactCount;
-  let verifyHtml = '';
-  if (exactCount > 0 && calcCount === 0) {
-    verifyHtml = `<div class="verify-banner">
-      <div class="v-icon">✅</div>
-      <div class="v-text">
-        所有商品都使用 <b>原廠 Excel 試算數據</b> ── 100% 精準,可直接用於專業比較。
-      </div>
-      <button class="v-btn" onclick="showVerifyDetail()">查看驗證</button>
-    </div>`;
-  } else if (calcCount > 0) {
-    verifyHtml = `<div class="verify-banner warn">
-      <div class="v-icon">📐</div>
-      <div class="v-text">
-        ${exactCount} 個商品使用 <b>原廠數據</b>,${calcCount} 個商品使用 <b>精算試算</b>(GP費率表 + UV解約表 + Corridor規則 + DIV紅利表完整推算)
-      </div>
-      <button class="v-btn" onclick="showVerifyDetail()">查看驗證</button>
-    </div>`;
-  }
-  document.getElementById('verify-area').innerHTML = verifyHtml;
+  // v5: 移除上方 verify-banner(精算狀態已經在 STEP2 列表獨立成欄,這裡不再重複展示)
+  document.getElementById('verify-area').innerHTML = '';
 
   state.currentTab = 'surrender';
   state.sortYear = null;     // v4: 重置排序年度
