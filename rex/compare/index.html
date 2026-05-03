@@ -2990,7 +2990,7 @@ function printCompareTable() {
     const fillCount = PRINT_PRODUCTS_PER_PAGE - pageItems.length;
 
     // 1. 公司列(深藍底)
-    html += '<tr><th class="meta-th label" style="width:55px;">保險公司</th><th class="meta-th label" style="width:50px;"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">保險公司</th>';
     pageItems.forEach(it => {
       html += `<th class="company-cell" colspan="2">${it.product.company}</th>`;
     });
@@ -2998,7 +2998,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 2. 商品名稱列
-    html += '<tr><th class="meta-th label">商品名稱</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">商品名稱</th>';
     pageItems.forEach(it => {
       html += `<th class="product-name-cell" colspan="2">${it.product.product_name}</th>`;
     });
@@ -3006,7 +3006,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 3. 代號列
-    html += '<tr><th class="meta-th label">代號</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">代號</th>';
     pageItems.forEach(it => {
       html += `<th class="code-cell" colspan="2">${it.product.plan_code}</th>`;
     });
@@ -3014,7 +3014,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 4. 年期列
-    html += '<tr><th class="meta-th label">年期</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">年期</th>';
     pageItems.forEach(it => {
       html += `<th class="period-cell" colspan="2">${it.product.period} 年</th>`;
     });
@@ -3022,7 +3022,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 5. 保額列
-    html += `<tr><th class="meta-th label">保額(${cur})</th><th class="meta-th label"></th>`;
+    html += `<tr><th class="meta-th label" colspan="2">保額(${cur})</th>`;
     pageItems.forEach(it => {
       const v = convert(it.calc.sum_assured, it.product.currency);
       html += `<th class="meta-num-cell" colspan="2">${fmtMoney(v)}</th>`;
@@ -3031,7 +3031,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 6. 首期實繳保費
-    html += '<tr><th class="meta-th label">首期實繳保費</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">首期實繳保費</th>';
     pageItems.forEach(it => {
       const v = convert(it.calc.annual_premium_real, it.product.currency);
       html += `<th class="meta-num-cell" colspan="2">${fmtMoney(v)}</th>`;
@@ -3040,7 +3040,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 7. 滿期實繳保費
-    html += '<tr><th class="meta-th label">滿期實繳保費</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">滿期實繳保費</th>';
     pageItems.forEach(it => {
       const v = convert(it.calc.annual_premium_real * it.product.period, it.product.currency);
       html += `<th class="meta-num-cell" colspan="2">${fmtMoney(v)}</th>`;
@@ -3049,7 +3049,7 @@ function printCompareTable() {
     html += '</tr>';
 
     // 8. 宣告利率(teal 底)
-    html += '<tr><th class="meta-th label">宣告利率</th><th class="meta-th label"></th>';
+    html += '<tr><th class="meta-th label" colspan="2">宣告利率</th>';
     pageItems.forEach(it => {
       html += `<th class="rate-cell" colspan="2">${(it.product.declared_rate*100).toFixed(2)}%</th>`;
     });
