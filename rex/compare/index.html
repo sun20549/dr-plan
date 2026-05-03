@@ -1126,7 +1126,7 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
+    min_sa: 10000,
     max_sa: 5000000,
     min_age: 0, max_age: 75
   },
@@ -1143,8 +1143,8 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
-    max_sa: 5000000,
+    min_sa: 3000,
+    max_sa: 3000000,
     min_age: 0, max_age: 75
   },
   {
@@ -1160,7 +1160,7 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
+    min_sa: 10000,
     max_sa: 5000000,
     min_age: 0, max_age: 75
   },
@@ -1177,7 +1177,7 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
+    min_sa: 10000,
     max_sa: 5000000,
     min_age: 0, max_age: 75
   },
@@ -1194,9 +1194,9 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
-    max_sa: 5000000,
-    min_age: 0, max_age: 75
+    min_sa: 6000,
+    max_sa: 6000000,
+    min_age: 0, max_age: 74
   },
   {
     plan_code: '6UC4',
@@ -1211,7 +1211,7 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 50000,
+    min_sa: 10000,
     max_sa: 5000000,
     min_age: 0, max_age: 75
   },
@@ -1228,9 +1228,9 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'prudential_v2',
     unit_size: 1000,
-    min_sa: 50000,
-    max_sa: 5000000,
-    min_age: 0, max_age: 75
+    min_sa: 3000,
+    max_sa: 1000000,
+    min_age: 0, max_age: 70
   },
   {
     plan_code: 'ARLPLU57',
@@ -1245,8 +1245,8 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'prudential_v2',
     unit_size: 1000,
-    min_sa: 50000,
-    max_sa: 5000000,
+    min_sa: 10000,
+    max_sa: 2500000,
     min_age: 0, max_age: 75
   },
   {
@@ -1262,9 +1262,9 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'prudential_v2',
     unit_size: 1000,
-    min_sa: 50000,
-    max_sa: 5000000,
-    min_age: 0, max_age: 75
+    min_sa: 10000,
+    max_sa: 3000000,
+    min_age: 0, max_age: 74
   }
 ];
 
@@ -1988,8 +1988,9 @@ function renderCompareTable() {
     displayItems.sort((a, b) => {
       const ra = a.calc.schedule[sy - 1];
       const rb = b.calc.schedule[sy - 1];
-      const va = ra ? (state.currentTab === 'surrender' ? ra.surr_total : ra.death_total) : -1;
-      const vb = rb ? (state.currentTab === 'surrender' ? rb.surr_total : rb.death_total) : -1;
+      // 排序以 % (value / cum_prem) 為準
+      const va = ra ? ((state.currentTab === 'surrender' ? ra.surr_total : ra.death_total) / (ra.cum_prem || 1)) : -1;
+      const vb = rb ? ((state.currentTab === 'surrender' ? rb.surr_total : rb.death_total) / (rb.cum_prem || 1)) : -1;
       return vb - va;
     });
   }
@@ -2059,18 +2060,20 @@ function renderCompareTable() {
     const insAge = state.user.age + yIdx;
     const isSorted = state.sortYear === policyYear;
 
-    let maxVal = -Infinity;
+    let maxVal = -Infinity;  // 改以 % 為準:value / cum_prem
     let maxCodes = new Set();
     displayItems.forEach(it => {
       const r = it.calc.schedule[yIdx];
       if (!r) return;
       const v = state.currentTab === 'surrender' ? r.surr_total : r.death_total;
-      if (v > maxVal) { maxVal = v; maxCodes = new Set([it.product.plan_code]); }
-      else if (v === maxVal) { maxCodes.add(it.product.plan_code); }
+      const cum = r.cum_prem;
+      const pct = cum > 0 ? (v / cum) : 0;
+      if (pct > maxVal) { maxVal = pct; maxCodes = new Set([it.product.plan_code]); }
+      else if (pct === maxVal) { maxCodes.add(it.product.plan_code); }
     });
 
     html += `<tr class="year-row${isSorted?' sorted-row':''}" data-year="${policyYear}">`;
-    html += `<td class="year-col-1${isSorted?' sorted':''}" data-year="${policyYear}" onclick="sortByYear(${policyYear})" title="點擊依此年度排序">${policyYear}</td>`;
+    html += `<td class="year-col-1${isSorted?' sorted':''}" data-year="${policyYear}" onclick="sortByYear(${policyYear})" title="點擊依此年度回本率排序">${policyYear}</td>`;
     html += `<td class="year-col-2${isSorted?' sorted':''}">${insAge}歲</td>`;
 
     displayItems.forEach(it => {
@@ -2163,7 +2166,7 @@ function updateSortStatus() {
     const insAge = state.user.age + state.sortYear - 1;
     const tabName = state.currentTab === 'surrender' ? '解約金+增值回饋' : '身故保險金';
     wrap.innerHTML = `<span class="sort-status">
-      🔄 已依 Y${state.sortYear}（${insAge}歲）${tabName} 由大到小排序
+      🔄 已依 Y${state.sortYear}（${insAge}歲）${tabName}回本率 由高到低排序
       <span class="clear-btn" onclick="clearSort()">✕ 取消</span>
     </span>`;
   } else {
