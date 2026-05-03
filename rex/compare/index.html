@@ -226,6 +226,37 @@ body {
 .compare-table tbody tr:nth-child(even) td.value, .compare-table tbody tr:nth-child(even) td.percent { background:#fafbfc; }
 .compare-table tbody td.percent.highlight { background:var(--highlight)!important; color:var(--navy); font-weight:700; }
 
+/* === v5: 列印優化 === */
+@media print {
+  /* 隱藏不需列印的 UI */
+  .top-header, .summary-bar, .step-indicator, .tabs, .currency-toggle,
+  .year-jump-bar, .back-btn, .print-btn, #verify-area,
+  .step-page:not(#step-3) { display:none !important; }
+  /* 移除 sticky,讓表格自然展開 */
+  .compare-table thead th, .compare-table .meta-row td.label,
+  .compare-table tbody td.label, .compare-table thead th.label-col {
+    position:static !important; }
+  .compare-table-wrap { overflow:visible !important; border:none !important; }
+  .compare-table { font-size:9px !important; }
+  .compare-table th, .compare-table td {
+    padding:3px 4px !important; white-space:nowrap !important; }
+  .compare-table .meta-row td.product-name-cell { font-size:9px !important; line-height:1.2 !important; max-width:none !important; }
+  .page-wrap { max-width:none !important; padding:0 !important; }
+  .card { box-shadow:none !important; border:none !important; padding:0 !important; }
+  body { background:#fff !important; }
+  .print-only { display:block !important; }
+  /* A4 橫式 */
+  @page { size:A4 landscape; margin:8mm; }
+}
+/* 螢幕上隱藏列印標題 */
+.print-only { display:none; }
+
+/* v5: 比較表自動均分欄寬,避免商品多時被切到 */
+.compare-table { table-layout:auto; }
+.compare-table.auto-fit th, .compare-table.auto-fit td {
+  /* 讓欄位等寬均分,商品多時自動縮短 */
+}
+
 .currency-toggle { display:inline-flex; background:var(--gray-100); border-radius:20px; padding:4px; gap:2px; }
 .currency-toggle button { padding:6px 16px; border:none; background:transparent; border-radius:16px;
   font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-500); font-family:inherit; transition:all .2s; }
@@ -266,14 +297,21 @@ body {
     /* 黏性表頭與首欄 */
     .compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
       border:1px solid var(--gray-200); position:relative; }
-    .compare-table { border-collapse:separate; border-spacing:0; font-size:12px; min-width:100%; }
+    .compare-table { border-collapse:separate; border-spacing:0; font-size:12px; min-width:100%;
+      width:100%; table-layout:fixed; /* v5: 等寬均分,商品多時自動縮短 */ }
     .compare-table th, .compare-table td {
       padding:8px 10px;
       border-right:1px solid var(--gray-100);
       border-bottom:1px solid var(--gray-100);
       white-space:nowrap; font-variant-numeric:tabular-nums;
       background:#fff;
+      overflow:hidden; text-overflow:ellipsis; /* 過長內容用 ... 截斷 */
     }
+    /* v5: 標籤欄(保險公司、商品名稱等)固定 90px,讓商品欄等分剩餘寬度 */
+    .compare-table th.label-col,
+    .compare-table td.label { width:90px; min-width:90px; }
+    /* 商品名稱列允許換行,避免被截斷不可讀 */
+    .compare-table .meta-row td.product-name-cell { white-space:normal !important; }
     /* sticky 表頭（公司名）：top:0 */
     .compare-table thead th {
       position:sticky; top:0; z-index:6;
@@ -957,14 +995,27 @@ body {
     </div>
 
     <div class="card" style="padding:24px;">
+      <!-- 列印模式才顯示的標題 -->
+      <div class="print-only" id="print-header" style="margin-bottom:16px;">
+        <div style="font-size:18px; font-weight:700; color:#0c2740; margin-bottom:6px;">儲蓄險商品比較分析表</div>
+        <div id="print-meta" style="font-size:11px; color:#666;">--</div>
+      </div>
+
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div class="tabs">
           <button class="tab active" data-tab="surrender" onclick="switchTab('surrender')">解約金 + 增值回饋分享金比較</button>
           <button class="tab" data-tab="death" onclick="switchTab('death')">身故保險金比較</button>
         </div>
-        <div class="currency-toggle" id="currency-toggle">
-          <button class="active" data-cur="USD" onclick="switchCurrency('USD')">USD</button>
-          <button data-cur="TWD" onclick="switchCurrency('TWD')">TWD</button>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <button class="print-btn" onclick="printCompareTable()" title="列印或另存 PDF" style="
+            padding:7px 14px; background:var(--navy); color:#fff; border:none; border-radius:18px;
+            font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">
+            🖨️ 列印 / 存 PDF
+          </button>
+          <div class="currency-toggle" id="currency-toggle">
+            <button class="active" data-cur="USD" onclick="switchCurrency('USD')">USD</button>
+            <button data-cur="TWD" onclick="switchCurrency('TWD')">TWD</button>
+          </div>
         </div>
       </div>
 
@@ -2639,6 +2690,32 @@ function switchCurrency(cur) {
     b.classList.toggle('active', b.dataset.cur === cur);
   });
   renderCompareTable();
+}
+
+// v5: 列印 / 另存 PDF
+function printCompareTable() {
+  // 更新「列印標題」內容(客戶資訊 + 列印日期 + 排序狀態)
+  const u = state.user;
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}/${String(today.getMonth()+1).padStart(2,'0')}/${String(today.getDate()).padStart(2,'0')}`;
+  const tabName = state.currentTab === 'surrender' ? '解約金 + 增值回饋分享金' : '身故保險金';
+  const cur = state.currentCurrency;
+  let metaParts = [
+    `客戶:${u.name||'--'}`,
+    `${u.gender==='M'?'男':'女'}性 ${u.age} 歲`,
+    `年期:${u.period} 年`,
+    `類型:${u.type}`,
+    `每年預算:${cur} ${u.budget?.toLocaleString()||'--'}`,
+    `比較項目:${tabName}`,
+    `列印日期:${dateStr}`,
+  ];
+  if (state.sortYear) {
+    const sortBasisName = state.sortBasis === 'death' ? '身故金' : '解約金';
+    metaParts.push(`排序:依 Y${state.sortYear} ${sortBasisName} 回本率高至低`);
+  }
+  document.getElementById('print-meta').textContent = metaParts.join('  |  ');
+  // 觸發瀏覽器列印對話框,使用者可選印表機或另存為 PDF
+  window.print();
 }
 
 function renderCompareTable() {
