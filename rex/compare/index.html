@@ -1995,7 +1995,13 @@ function renderCompareTable() {
     });
   }
 
-  const maxYears = Math.max(...items.map(it => it.calc.schedule.length));
+  // 年齡上限 110 歲(超過保險合約已終止)
+  const AGE_CAP = 110;
+  const maxYearsByAgeCap = AGE_CAP - state.user.age + 1;
+  const maxYears = Math.min(
+    Math.max(...items.map(it => it.calc.schedule.length)),
+    maxYearsByAgeCap
+  );
 
   // === THEAD：所有 meta 全部塞 thead，瀏覽器原生 sticky ===
   let html = '<thead>';
