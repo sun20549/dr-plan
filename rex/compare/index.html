@@ -690,6 +690,7 @@ body {
       vertical-align:middle;
       line-height:1.4;
       font-weight:normal;
+      box-sizing: border-box;  /* v5.7: 讓 width 包含 padding,確保各欄加總不超出 table */
     }
 
     /* === THEAD：每列獨立 sticky，top 由 JS 動態量測後寫入 inline === */
@@ -3298,38 +3299,46 @@ function layoutProductColumnWidth() {
     el.style.maxWidth = '';
     el.style.scrollSnapAlign = '';
   });
+  // 移除舊的 table 寬度設定,讓它先回到自然狀態才能取得正確 wrap.clientWidth
+  table.style.width = '';
 
-  const wrapWidth = wrap.clientWidth;
+  // v5.7: 用 getBoundingClientRect 取得精準寬度
+  const wrapWidth = Math.floor(wrap.getBoundingClientRect().width);
   const bp = _getLayoutBreakpoint(window.innerWidth);
   const labelColWidth = bp.labelW;
 
-  const BORDER_OVERHEAD = 4;
-  const PER_PRODUCT_BORDER = 2;
-  const usable = wrapWidth - labelColWidth - BORDER_OVERHEAD;
+  // 留 5px 安全 buffer 給 scrollbar / wrap border
+  const SAFE_WIDTH = wrapWidth - 5;
 
-  // 用 maxW 算 ideal N,但要保證每商品至少 minW
-  let N = Math.max(1, Math.ceil(usable / bp.maxW));
+  // 商品總共可用寬度
+  const productsTotalWidth = SAFE_WIDTH - labelColWidth;
+
+  // 用 maxW 算 ideal N,但保證每商品 ≥ minW
+  let N = Math.max(1, Math.ceil(productsTotalWidth / bp.maxW));
   while (N > 1) {
-    const each = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
+    const each = Math.floor(productsTotalWidth / N);
     if (each >= bp.minW) break;
     N -= 1;
   }
 
-  const eachProductWidth = Math.floor((usable - N * PER_PRODUCT_BORDER) / N);
+  // 每商品總寬度(含內部 2 個 td)
+  const eachProductWidth = Math.floor(productsTotalWidth / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
 
-  // v5.6: 強制 table 總寬度與 wrap 一致,並用 fixed layout 強制每 td 寬度生效
-  // 這確保畫面右邊不會留白(因為 table 預設會依內容縮放)
-  const tableWidth = labelColWidth + N * (eachProductWidth + PER_PRODUCT_BORDER);
-  table.style.width = `${tableWidth}px`;
+  // table 總寬度 = label + N 個商品(每商品由內部 2 個 td 加總)
+  // 用 box-sizing:border-box 讓 width 包含 padding,不會被 padding 撐開
+  const actualTableWidth = labelColWidth + N * eachProductWidth;
+  table.style.width = `${actualTableWidth}px`;
   table.style.tableLayout = 'fixed';
+  table.style.boxSizing = 'border-box';
 
   // 同步 label 欄寬度
   table.querySelectorAll('th.label-col, td.label').forEach(el => {
     el.style.width = `${labelColWidth}px`;
     el.style.minWidth = `${labelColWidth}px`;
     el.style.maxWidth = `${labelColWidth}px`;
+    el.style.boxSizing = 'border-box';
   });
 
   // thead/meta 的 colspan=2 商品欄
@@ -3337,6 +3346,7 @@ function layoutProductColumnWidth() {
     el.style.width = `${eachProductWidth}px`;
     el.style.minWidth = `${eachProductWidth}px`;
     el.style.maxWidth = `${eachProductWidth}px`;
+    el.style.boxSizing = 'border-box';
     el.style.scrollSnapAlign = 'start';
   });
   // tbody value/percent
@@ -3347,11 +3357,13 @@ function layoutProductColumnWidth() {
         tds[i].style.width = `${valueWidth}px`;
         tds[i].style.minWidth = `${valueWidth}px`;
         tds[i].style.maxWidth = `${valueWidth}px`;
+        tds[i].style.boxSizing = 'border-box';
         tds[i].style.scrollSnapAlign = 'start';
       } else {
         tds[i].style.width = `${percentWidth}px`;
         tds[i].style.minWidth = `${percentWidth}px`;
         tds[i].style.maxWidth = `${percentWidth}px`;
+        tds[i].style.boxSizing = 'border-box';
       }
     }
   });
