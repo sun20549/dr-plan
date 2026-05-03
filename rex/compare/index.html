@@ -231,25 +231,94 @@ body {
   /* 隱藏不需列印的 UI */
   .top-header, .summary-bar, .step-indicator, .tabs, .currency-toggle,
   .year-jump-bar, .back-btn, .print-btn, #verify-area,
+  #summary-float, .summary-float,
   .step-page:not(#step-3) { display:none !important; }
-  /* 移除 sticky,讓表格自然展開 */
-  .compare-table thead th, .compare-table .meta-row td.label,
-  .compare-table tbody td.label, .compare-table thead th.label-col {
-    position:static !important; }
-  .compare-table-wrap { overflow:visible !important; border:none !important; }
-  .compare-table { font-size:9px !important; }
-  .compare-table th, .compare-table td {
-    padding:3px 4px !important; white-space:nowrap !important; }
-  .compare-table .meta-row td.product-name-cell { font-size:9px !important; line-height:1.2 !important; max-width:none !important; }
+  /* 螢幕版的比較表(會被 print-pages 取代)在列印時隱藏 */
+  #compare-table-wrap { display:none !important; }
   .page-wrap { max-width:none !important; padding:0 !important; }
   .card { box-shadow:none !important; border:none !important; padding:0 !important; }
   body { background:#fff !important; }
   .print-only { display:block !important; }
+  /* 列印分頁容器 */
+  .print-pages { display:block !important; }
+  .print-page {
+    page-break-after:always;
+    page-break-inside:avoid;
+    padding:0;
+    margin-bottom:8mm;
+  }
+  .print-page:last-child { page-break-after:auto; }
+  /* 列印用表格樣式 */
+  .print-table {
+    width:100%; border-collapse:collapse;
+    font-size:9px; font-family:inherit;
+    table-layout:fixed;
+  }
+  .print-table th, .print-table td {
+    border:1px solid #cbd5e1;
+    padding:4px 5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .print-table thead th {
+    background:#0c2740; color:#fff;
+    font-weight:600; text-align:center;
+    font-size:9px;
+  }
+  .print-table thead .meta-th {
+    background:#f1f5f9; color:#334155;
+    font-weight:500; text-align:right;
+    white-space:normal; line-height:1.3;
+  }
+  .print-table thead .meta-th.label {
+    background:#0c2740; color:#fff; text-align:left; font-weight:600;
+  }
+  .print-table thead .product-name-cell {
+    white-space:normal !important; line-height:1.25;
+    font-weight:600; color:#0c2740;
+    background:#fff;
+  }
+  .print-table thead .company-cell {
+    background:#0c2740; color:#fff; font-weight:700;
+  }
+  .print-table thead .col-header {
+    background:#e2e8f0; color:#334155; font-weight:600;
+    text-align:center; line-height:1.25;
+  }
+  .print-table tbody td {
+    text-align:right; font-variant-numeric:tabular-nums;
+  }
+  .print-table tbody td.year-col {
+    background:#f8fafc; text-align:center;
+    font-weight:600; color:#0c2740;
+  }
+  .print-table tbody td.age-col {
+    background:#f8fafc; text-align:center; color:#475569;
+  }
+  .print-table tbody td.percent { color:#64748b; font-size:8.5px; }
+  .print-table tbody tr:nth-child(even) td:not(.year-col):not(.age-col) {
+    background:#fafbfc;
+  }
+  /* 列印頁標題 */
+  .print-page-header {
+    margin-bottom:6mm;
+  }
+  .print-page-header h1 {
+    font-size:14px; font-weight:700; color:#0c2740;
+    margin:0 0 4px 0;
+  }
+  .print-page-header .meta {
+    font-size:9.5px; color:#475569; line-height:1.5;
+  }
+  .print-page-header .page-num {
+    float:right; font-size:9px; color:#94a3b8;
+  }
   /* A4 橫式 */
   @page { size:A4 landscape; margin:8mm; }
 }
-/* 螢幕上隱藏列印標題 */
-.print-only { display:none; }
+/* 螢幕上隱藏列印標題與分頁容器 */
+.print-only, .print-pages { display:none; }
 
 /* v5: 比較表自動均分欄寬,避免商品多時被切到 */
 .compare-table { table-layout:auto; }
@@ -1001,12 +1070,6 @@ body {
     </div>
 
     <div class="card" style="padding:24px;">
-      <!-- 列印模式才顯示的標題 -->
-      <div class="print-only" id="print-header" style="margin-bottom:16px;">
-        <div style="font-size:18px; font-weight:700; color:#0c2740; margin-bottom:6px;">儲蓄險商品比較分析表</div>
-        <div id="print-meta" style="font-size:11px; color:#666;">--</div>
-      </div>
-
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div class="tabs">
           <button class="tab active" data-tab="surrender" onclick="switchTab('surrender')">解約金 + 增值回饋分享金比較</button>
@@ -1039,6 +1102,9 @@ body {
       <div style="margin-top:12px;" class="compare-table-wrap" id="compare-table-wrap">
         <table class="compare-table" id="compare-table"></table>
       </div>
+
+      <!-- v5.2: 列印專用分頁容器(螢幕上隱藏,點列印按鈕才會生成內容) -->
+      <div class="print-pages" id="print-pages"></div>
     </div>
 
     <!-- 右下重點摘要浮窗 -->
@@ -2683,13 +2749,30 @@ function switchCurrency(cur) {
 }
 
 // v5: 列印 / 另存 PDF
+// v5.2: 列印 / 另存 PDF
+// 設計:每頁固定 6 個商品 + 完整 thead(公司、商品名、代號、年期、保額、首期、滿期、宣告利率)
+//      每頁獨立一張表(含表頭),不依賴瀏覽器自然分頁,避免「第 2 頁沒表頭」的問題
+const PRINT_PRODUCTS_PER_PAGE = 6;
 function printCompareTable() {
-  // 更新「列印標題」內容(客戶資訊 + 列印日期 + 排序狀態)
   const u = state.user;
+  const items = state.compareList;
+  if (items.length === 0) { alert('沒有可列印的商品'); return; }
+
+  // === 共用資訊 ===
   const today = new Date();
   const dateStr = `${today.getFullYear()}/${String(today.getMonth()+1).padStart(2,'0')}/${String(today.getDate()).padStart(2,'0')}`;
   const tabName = state.currentTab === 'surrender' ? '解約金 + 增值回饋分享金' : '身故保險金';
   const cur = state.currentCurrency;
+  const rate = u.rate;
+  const isShowTWD = cur === 'TWD';
+  const convert = (val, productCurrency) => {
+    if (productCurrency === cur) return val;
+    return cur === 'USD' ? val / rate : val * rate;
+  };
+  const fmtMoney = v => v == null ? '-' : Math.round(v).toLocaleString();
+  const fmtPct = v => v == null ? '-' : (v * 100).toFixed(1) + '%';
+
+  // 客戶資訊摘要(每頁標題用)
   let metaParts = [
     `客戶:${u.name||'--'}`,
     `${u.gender==='M'?'男':'女'}性 ${u.age} 歲`,
@@ -2703,9 +2786,185 @@ function printCompareTable() {
     const sortBasisName = state.sortBasis === 'death' ? '身故金' : '解約金';
     metaParts.push(`排序:依 Y${state.sortYear} ${sortBasisName} 回本率高至低`);
   }
-  document.getElementById('print-meta').textContent = metaParts.join('  |  ');
-  // 觸發瀏覽器列印對話框,使用者可選印表機或另存為 PDF
-  window.print();
+  const metaLine = metaParts.join('  |  ');
+
+  // === 取得排序後的商品順序(跟螢幕版一致) ===
+  let displayItems = [...items];
+  if (state.sortYear) {
+    const sy = state.sortYear;
+    const basis = state.sortBasis || state.currentTab;
+    displayItems.sort((a, b) => {
+      const ra = a.calc.schedule[sy - 1];
+      const rb = b.calc.schedule[sy - 1];
+      const va = ra ? ((basis === 'surrender' ? ra.surr_total : ra.death_total) / (ra.cum_prem || 1)) : -1;
+      const vb = rb ? ((basis === 'surrender' ? rb.surr_total : rb.death_total) / (rb.cum_prem || 1)) : -1;
+      return vb - va;
+    });
+  }
+
+  // === 切分頁(每頁最多 6 個商品) ===
+  const pages = [];
+  for (let i = 0; i < displayItems.length; i += PRINT_PRODUCTS_PER_PAGE) {
+    pages.push(displayItems.slice(i, i + PRINT_PRODUCTS_PER_PAGE));
+  }
+  const totalPages = pages.length;
+
+  // === 算最大年數(取所有商品 schedule 最長,但不超過 110 歲)===
+  const AGE_CAP = 110;
+  const maxYearsByAgeCap = AGE_CAP - u.age + 1;
+  const maxYears = Math.min(
+    Math.max(...items.map(it => it.calc.schedule.length)),
+    maxYearsByAgeCap
+  );
+
+  // === 每頁的欄位標題(value / percent)===
+  const valueLabel = state.currentTab === 'surrender' ? '解約金+回饋(A)' : '身故金(B)';
+  const pctLabel = state.currentTab === 'surrender' ? '(A)/累積保費' : '(B)/累積保費';
+
+  // === 生成每頁 HTML ===
+  let allHtml = '';
+  pages.forEach((pageItems, pageIdx) => {
+    const pageNum = pageIdx + 1;
+    let html = `<div class="print-page">`;
+    html += `<div class="print-page-header">`;
+    html += `<span class="page-num">第 ${pageNum} / ${totalPages} 頁</span>`;
+    html += `<h1>儲蓄險商品比較分析表</h1>`;
+    html += `<div class="meta">${metaLine}</div>`;
+    html += `</div>`;
+
+    html += `<table class="print-table">`;
+    // === thead 開始 ===
+    html += '<thead>';
+    // 公司列
+    html += '<tr><th class="meta-th label" style="width:50px;">保險公司</th><th class="meta-th label" style="width:50px;"></th>';
+    pageItems.forEach(it => {
+      html += `<th class="company-cell" colspan="2">${it.product.company}</th>`;
+    });
+    // 補空欄(如果該頁不滿 6 個)
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 商品名稱列
+    html += '<tr><th class="meta-th label">商品名稱</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      html += `<th class="product-name-cell" colspan="2">${it.product.product_name}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 代號列
+    html += '<tr><th class="meta-th label">代號</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      html += `<th class="meta-th" colspan="2" style="text-align:center;">${it.product.plan_code}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 年期列
+    html += '<tr><th class="meta-th label">年期</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      html += `<th class="meta-th" colspan="2" style="text-align:center;">${it.product.period} 年</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 保額列
+    html += `<tr><th class="meta-th label">保額(${cur})</th><th class="meta-th label"></th>`;
+    pageItems.forEach(it => {
+      const v = convert(it.calc.sum_assured, it.product.currency);
+      html += `<th class="meta-th" colspan="2">${fmtMoney(v)}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 首期實繳保費
+    html += '<tr><th class="meta-th label">首期實繳保費</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      const v = convert(it.calc.annual_premium_real, it.product.currency);
+      html += `<th class="meta-th" colspan="2">${fmtMoney(v)}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 滿期實繳保費
+    html += '<tr><th class="meta-th label">滿期實繳保費</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      const v = convert(it.calc.annual_premium_real * it.product.period, it.product.currency);
+      html += `<th class="meta-th" colspan="2">${fmtMoney(v)}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 宣告利率
+    html += '<tr><th class="meta-th label">宣告利率</th><th class="meta-th label"></th>';
+    pageItems.forEach(it => {
+      html += `<th class="meta-th" colspan="2" style="text-align:center;">${(it.product.declared_rate*100).toFixed(2)}%</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+
+    // 欄位 label 列(年度 / 歲 / 解約金 / 回本率)
+    html += '<tr><th class="col-header" style="width:40px;">年度</th><th class="col-header" style="width:40px;">年齡</th>';
+    pageItems.forEach(() => {
+      html += `<th class="col-header">${valueLabel}</th><th class="col-header">${pctLabel}</th>`;
+    });
+    for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+      html += `<th colspan="2" style="background:#fff;border:none;"></th>`;
+    }
+    html += '</tr>';
+    html += '</thead>';
+
+    // === tbody 數字資料 ===
+    html += '<tbody>';
+    for (let yIdx = 0; yIdx < maxYears; yIdx++) {
+      const policyYear = yIdx + 1;
+      const insAge = u.age + yIdx;
+      html += `<tr>`;
+      html += `<td class="year-col">${policyYear}</td>`;
+      html += `<td class="age-col">${insAge}歲</td>`;
+      pageItems.forEach(it => {
+        const r = it.calc.schedule[yIdx];
+        if (!r) {
+          html += `<td>-</td><td class="percent">-</td>`;
+          return;
+        }
+        const value = state.currentTab === 'surrender' ? r.surr_total : r.death_total;
+        const v = convert(value, it.product.currency);
+        const pctVal = r.cum_prem ? (value / r.cum_prem) : null;
+        html += `<td>${fmtMoney(v)}</td><td class="percent">${fmtPct(pctVal)}</td>`;
+      });
+      // 補空格
+      for (let i = pageItems.length; i < PRINT_PRODUCTS_PER_PAGE; i++) {
+        html += `<td colspan="2" style="background:#fff;border:none;"></td>`;
+      }
+      html += `</tr>`;
+    }
+    html += '</tbody></table></div>';
+
+    allHtml += html;
+  });
+
+  document.getElementById('print-pages').innerHTML = allHtml;
+  // 給瀏覽器一點時間 layout 完才印
+  setTimeout(() => {
+    window.print();
+  }, 100);
 }
 
 function renderCompareTable() {
@@ -2853,24 +3112,36 @@ function renderCompareTable() {
   updateSummaryFloat();
 }
 
-// v5.1: 動態設定商品欄寬度,讓 5 個商品剛好填滿視窗
-// 一個商品佔 2 個 td (value 解約金 + percent 百分比),所以實際是 5 個商品 × 2 = 10 個 td
-const PRODUCTS_PER_PAGE = 5;
+// v5.2: 動態設定商品欄寬度
+// 設計理念:
+//   - 每商品最小寬度 280px(讓商品名跟金額讀得清楚)
+//   - 用視窗寬度推算「可見」的整數個商品數 N(至少 1 個)
+//   - 5 個商品塞得下 → 顯示 5 個;塞不下 → 自動降到 4 / 3 個
+//   - 每商品寬度 = (可用寬度 - safetyBuffer) / N,確保第 N 個不會被切到
+const PRODUCT_MIN_WIDTH = 280;          // 每商品至少要這麼寬才好讀
+const SAFETY_BUFFER = 20;               // 預留給 border/padding/scrollbar 的安全 margin
 function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
   if (!wrap || !table) return;
   // 移除舊的 inline style
   table.querySelectorAll('th, td').forEach(el => {
-    if (el.classList.contains('product-col')) el.style.width = '';
-    if (el.dataset.productCol) el.style.width = '';
+    el.style.width = '';
+    el.style.minWidth = '';
+    el.style.maxWidth = '';
+    el.style.scrollSnapAlign = '';
   });
-  // 計算每個商品的 col 寬度
+
+  // 計算可用寬度 = 容器寬度 - 標籤欄寬度 - 安全 buffer
   const wrapWidth = wrap.clientWidth;
-  const labelColWidth = 90;  // 跟 CSS 的 .label width 一致
-  const productColTotal = wrapWidth - labelColWidth;
-  const eachProductWidth = Math.floor(productColTotal / PRODUCTS_PER_PAGE);  // 每商品的總寬(value + percent)
-  // 商品內 value 跟 percent 的分配:value 60%,percent 40%
+  const labelColWidth = 90;
+  const usable = wrapWidth - labelColWidth - SAFETY_BUFFER;
+
+  // 算這個寬度最多能塞幾個 280px 寬的商品(至少 1 個)
+  const N = Math.max(1, Math.floor(usable / PRODUCT_MIN_WIDTH));
+
+  // 把可用寬度平均分配給 N 個商品
+  const eachProductWidth = Math.floor(usable / N);
   const valueWidth = Math.floor(eachProductWidth * 0.6);
   const percentWidth = eachProductWidth - valueWidth;
 
@@ -2885,17 +3156,19 @@ function layoutProductColumnWidth() {
   table.querySelectorAll('tbody tr.year-row').forEach(tr => {
     const tds = tr.querySelectorAll('td:not(.year-col):not(.label)');
     for (let i = 0; i < tds.length; i++) {
-      // 偶數 index 是 value,奇數是 percent(配對成一個商品)
       if (i % 2 === 0) {
         tds[i].style.width = `${valueWidth}px`;
         tds[i].style.minWidth = `${valueWidth}px`;
-        tds[i].style.scrollSnapAlign = 'start';  // value 對齊起點
+        tds[i].style.scrollSnapAlign = 'start';
       } else {
         tds[i].style.width = `${percentWidth}px`;
         tds[i].style.minWidth = `${percentWidth}px`;
       }
     }
   });
+
+  // Debug 輔助(可在 console 看到實際分配)
+  // console.log(`[Layout] wrapWidth=${wrapWidth}, usable=${usable}, N=${N}, eachWidth=${eachProductWidth}`);
 }
 
 // v5.1: 視窗 resize 時重算商品欄寬度
