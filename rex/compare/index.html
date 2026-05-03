@@ -3372,19 +3372,22 @@ function layoutProductColumnWidth() {
   const wrap = document.getElementById('compare-table-wrap');
   const table = document.getElementById('compare-table');
   if (!wrap || !table) return;
-  // 清掉所有商品欄的舊 inline style(但保留左欄的 CSS 寬度)
-  table.querySelectorAll('thead th:not(.th-label-1):not(.th-label):not(.th-label-merged), tbody td:not(.year-col-1):not(.year-col-2)').forEach(el => {
+
+  // 清掉所有舊 inline style(完全重置)
+  table.querySelectorAll('th, td').forEach(el => {
     el.style.width = '';
     el.style.minWidth = '';
     el.style.maxWidth = '';
+    el.style.boxSizing = '';
     el.style.scrollSnapAlign = '';
   });
   table.style.width = '';
+  table.style.tableLayout = '';
+  table.style.boxSizing = '';
 
   // 用實際渲染後的寬度
   const wrapWidth = Math.floor(wrap.getBoundingClientRect().width);
   const bp = _getLayoutBreakpoint(window.innerWidth);
-  // 不用 bp.labelW(那是錯的),用實際 CSS 寫死的左欄寬度
   const labelColWidth = FIXED_LABEL_COL_WIDTH;
 
   // 留 5px 安全 buffer
@@ -3407,32 +3410,33 @@ function layoutProductColumnWidth() {
   const actualTableWidth = labelColWidth + N * eachProductWidth;
   table.style.width = `${actualTableWidth}px`;
   table.style.tableLayout = 'fixed';
-  table.style.boxSizing = 'border-box';
 
-  // thead 的商品欄(colspan=2)
+  // === thead 商品欄(colspan=2)===
+  // 排除左側 sticky label(.th-label-1 公司列、.th-label meta 列、.th-label-merged 欄名列)
   table.querySelectorAll('thead th[colspan="2"]:not(.th-label-1):not(.th-label):not(.th-label-merged)').forEach(el => {
     el.style.width = `${eachProductWidth}px`;
-    el.style.minWidth = `${eachProductWidth}px`;
-    el.style.maxWidth = `${eachProductWidth}px`;
     el.style.boxSizing = 'border-box';
     el.style.scrollSnapAlign = 'start';
   });
-  // tbody value/percent 商品欄(排除左側 sticky 兩欄)
+
+  // === thead 欄名列(value/pct)===
+  table.querySelectorAll('thead th.col-name-value').forEach(el => {
+    el.style.width = `${valueWidth}px`;
+    el.style.boxSizing = 'border-box';
+  });
+  table.querySelectorAll('thead th.col-name-pct').forEach(el => {
+    el.style.width = `${percentWidth}px`;
+    el.style.boxSizing = 'border-box';
+  });
+
+  // === tbody 商品欄(year-row 的非 sticky td)===
+  // 兩兩配對:value, pct, value, pct, ...
   table.querySelectorAll('tbody tr.year-row').forEach(tr => {
     const tds = tr.querySelectorAll('td:not(.year-col-1):not(.year-col-2)');
     for (let i = 0; i < tds.length; i++) {
-      if (i % 2 === 0) {
-        tds[i].style.width = `${valueWidth}px`;
-        tds[i].style.minWidth = `${valueWidth}px`;
-        tds[i].style.maxWidth = `${valueWidth}px`;
-        tds[i].style.boxSizing = 'border-box';
-        tds[i].style.scrollSnapAlign = 'start';
-      } else {
-        tds[i].style.width = `${percentWidth}px`;
-        tds[i].style.minWidth = `${percentWidth}px`;
-        tds[i].style.maxWidth = `${percentWidth}px`;
-        tds[i].style.boxSizing = 'border-box';
-      }
+      tds[i].style.width = (i % 2 === 0) ? `${valueWidth}px` : `${percentWidth}px`;
+      tds[i].style.boxSizing = 'border-box';
+      if (i % 2 === 0) tds[i].style.scrollSnapAlign = 'start';
     }
   });
 }
