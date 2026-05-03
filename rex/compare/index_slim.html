@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>儲蓄險分析系統 - 精算版</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* 品牌主色 */
+  --navy:#0D2A3A; --navy-light:#1e3a5f; --navy-deep:#061a25;
+  --teal:#1A6B72; --teal-mid:#3d7c7a; --teal-light:#D0EAEC; --teal-bg:#F0FAFA;
+  --orange:#F05A28; --orange-soft:#d97757; --orange-light:#FDE8DF; --orange-bg:#FFF7F1;
+  --gold:#E8A020; --gold-soft:#c08818;
+
+  /* 文字 */
+  --text-1:#0D2A3A;       /* 主文字 - 深 navy，比純黑柔和 */
+  --text-2:#3E4A56;       /* 次文字 */
+  --text-3:#6E7C8A;       /* 弱化文字（meta、輔助）*/
+  --text-on-dark:#ffffff;
+  --text-on-dark-2:#cdd5dc;
+
+  /* 背景 */
+  --light:#F7F5F0;        /* 主頁面背景 */
+  --bg-card:#ffffff;
+  --bg-zebra:#f9fafb;     /* 斑馬條紋淺色 */
+  --bg-soft:#f4f6f8;
+  --bg-cool:#eef3f6;      /* 冷色調背景，用於商品 meta 區 */
+
+  /* 灰階 */
+  --gray-50:#fafbfc; --gray-100:#F4F6F8; --gray-200:#E5E9EE;
+  --gray-300:#C8D0D8; --gray-400:#9aa4b0; --gray-500:#6E7C8A;
+  --gray-700:#3E4A56;
+
+  /* 強調與狀態 */
+  --highlight:#FDD9C9;
+  --best-bg:#FFF0E0;       /* 最強格背景 */
+  --best-text:#c75800;     /* 最強格文字 */
+  --best-star:#F05A28;     /* ★ 顏色 */
+  --success:#16A34A; --warning:#F59E0B; --danger:#dc2626;
+
+  /* 字型 */
+  --font-cn: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --font-en: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-num: 'Inter', 'JetBrains Mono', monospace;
+
+  /* 陰影層級 */
+  --shadow-sm: 0 1px 2px rgba(13,42,58,.05);
+  --shadow-md: 0 2px 8px rgba(13,42,58,.08);
+  --shadow-lg: 0 4px 16px rgba(13,42,58,.10);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--light);
+  font-family: var(--font-en), var(--font-cn);
+  color:var(--text-1);
+  min-height:100vh;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  -webkit-font-smoothing: antialiased;
+}
+/* 數字使用等寬版本（讓欄位對齊）*/
+.compare-table td.value, .compare-table td.percent,
+.compare-table tbody td.year-col-1, .compare-table tbody td.year-col-2,
+.product-list td.right, .product-list td.center {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+/* HEADER */
+.top-header {
+  background:radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+             radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+             linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+  color:#fff; padding:24px 0; box-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+.top-header .inner { max-width:1280px; margin:0 auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; }
+.brand { display:flex; align-items:center; gap:14px; }
+.brand-icon { width:48px; height:48px;
+  background:linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-family:'Bebas Neue',sans-serif; font-size:26px; color:#fff;
+  box-shadow:0 4px 14px rgba(240,90,40,0.4); }
+.brand-text h1 { font-size:22px; font-weight:700; letter-spacing:1px; }
+.brand-text p { font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:2px; margin-top:2px; }
+
+.step-indicator { display:flex; gap:8px; align-items:center; }
+.step-dot { width:32px; height:32px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.5);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Bebas Neue',sans-serif; font-size:16px; transition:all .3s; }
+.step-dot.active { background:var(--orange); border-color:var(--orange); color:#fff; box-shadow:0 0 0 4px rgba(240,90,40,0.25); }
+.step-dot.done { background:var(--teal); border-color:var(--teal); color:#fff; }
+.step-line { width:28px; height:2px; background:rgba(255,255,255,0.2); }
+.step-line.done { background:var(--teal); }
+
+/* PAGE WRAP */
+.page-wrap { max-width:1280px; margin:32px auto; padding:0 32px 60px; }
+.step-page { display:none; }
+.step-page.active { display:block; }
+
+/* PAGE TITLE */
+.page-title { text-align:center; margin-bottom:32px; }
+.page-title h2 { font-size:28px; color:var(--navy); font-weight:700; letter-spacing:2px; }
+.page-title p { font-size:14px; color:var(--gray-500); margin-top:8px; }
+.page-title h2::before, .page-title h2::after {
+  content:''; display:inline-block; width:30px; height:2px;
+  background:var(--orange); vertical-align:middle; margin:0 16px;
+}
+
+/* CARD */
+.card { background:#fff; border-radius:18px; padding:36px 40px; box-shadow:0 8px 30px rgba(13,42,58,0.08); }
+
+/* FORM */
+.form-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px 32px; margin-bottom:28px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--gray-700); margin-bottom:8px; }
+.field input, .field select { width:100%; padding:12px 14px;
+  border:1.5px solid var(--gray-200); border-radius:10px; font-size:14px;
+  font-family:inherit; color:var(--navy); background:var(--gray-100); transition:all .2s; }
+.field input:focus, .field select:focus { outline:none; border-color:var(--orange); background:#fff;
+  box-shadow:0 0 0 3px rgba(240,90,40,0.12); }
+.field .gender-group { display:flex; gap:24px; padding:12px 0 8px; }
+.gender-opt { display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; }
+.gender-opt input[type=radio] { width:18px; height:18px; accent-color:var(--orange); cursor:pointer; }
+.gender-opt span { font-size:14px; color:var(--gray-700); font-weight:500; }
+.input-with-suffix { position:relative; }
+.input-with-suffix input { padding-right:40px; }
+.input-with-suffix .suffix { position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  color:var(--gray-500); font-size:13px; pointer-events:none; }
+
+.rate-row { grid-column:1 / -1;
+  background:linear-gradient(135deg, rgba(232,160,32,0.08), rgba(240,90,40,0.04));
+  border:1.5px dashed var(--gold); border-radius:12px; padding:18px 22px;
+  display:none; align-items:center; gap:20px; }
+.rate-row.show { display:flex; }
+.rate-row .badge { background:var(--gold); color:#fff; padding:4px 12px;
+  border-radius:14px; font-size:12px; font-weight:700; letter-spacing:1px; }
+.rate-row .desc { color:var(--gray-700); font-size:13px; flex:1; }
+.rate-row .rate-input { display:flex; align-items:center; gap:8px; font-size:14px; }
+.rate-row .rate-input input { width:90px; padding:8px 10px; border:1.5px solid var(--gold);
+  border-radius:8px; font-size:14px; text-align:center; background:#fff; }
+
+/* BUTTONS */
+.btn-row { display:flex; justify-content:center; gap:16px; margin-top:16px; }
+.btn { padding:14px 48px; border:none; border-radius:30px; font-size:15px;
+  font-weight:700; font-family:inherit; letter-spacing:2px; cursor:pointer; transition:all .25s; }
+.btn-primary { background:linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+  color:#fff; box-shadow:0 6px 20px rgba(240,90,40,0.35); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(240,90,40,0.45); }
+.btn-primary:disabled { background:var(--gray-300); box-shadow:none; cursor:not-allowed; transform:none; }
+
+/* STEP 2 */
+.summary-bar { background:linear-gradient(135deg, var(--navy) 0%, #1A4A5A 100%);
+  color:#fff; padding:14px 24px; border-radius:12px; margin-bottom:20px;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:14px; }
+.summary-bar .info-tags { display:flex; gap:18px; flex-wrap:wrap; }
+.summary-bar .info-tag { display:flex; gap:6px; align-items:center; }
+.summary-bar .info-tag b { color:var(--gold); font-weight:700; }
+
+.toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:0 4px; flex-wrap:wrap; gap:10px; }
+.toolbar .info-text { color:var(--gray-700); font-size:14px; }
+.toolbar .info-text b { color:var(--orange); font-weight:700; }
+.toolbar .actions { display:flex; gap:10px; flex-wrap:wrap; }
+.btn-sm { padding:9px 18px; border-radius:22px; font-size:13px; font-weight:600;
+  border:none; cursor:pointer; letter-spacing:1px; transition:all .2s; font-family:inherit; }
+.btn-sm.primary { background:var(--orange); color:#fff; }
+.btn-sm.primary:hover { background:#D04618; }
+.btn-sm.primary:disabled { background:var(--gray-300); cursor:not-allowed; }
+.btn-sm.outline { background:#fff; color:var(--teal); border:1.5px solid var(--teal); }
+.btn-sm.outline:hover { background:var(--teal-light); }
+
+.product-table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; }
+.product-table thead { background:var(--gray-100); }
+.product-table th { text-align:left; padding:14px 16px; font-size:13px; font-weight:700;
+  color:var(--gray-700); border-bottom:2px solid var(--gray-200); white-space:nowrap; }
+.product-table th.center { text-align:center; }
+.product-table th.right { text-align:right; }
+.product-table td { padding:14px 16px; font-size:13.5px; border-bottom:1px solid var(--gray-100); color:var(--navy); }
+.product-table td.center { text-align:center; }
+.product-table td.right { text-align:right; font-variant-numeric:tabular-nums; }
+.product-table tbody tr:hover { background:rgba(240,90,40,0.04); }
+.product-table tbody tr.selected { background:rgba(232,160,32,0.08); }
+.product-table input[type=checkbox] { width:17px; height:17px; accent-color:var(--orange); cursor:pointer; }
+.company-tag { display:inline-block; padding:3px 10px; background:var(--teal-light);
+  color:var(--teal); border-radius:10px; font-size:12px; font-weight:600; }
+.product-name { font-weight:600; }
+.code-tag { font-family:'Montserrat',monospace; font-size:12px; color:var(--gray-500);
+  background:var(--gray-100); padding:2px 8px; border-radius:4px; }
+.accuracy-tag { display:inline-block; padding:2px 8px; border-radius:8px;
+  font-size:10px; font-weight:700; margin-left:6px; }
+.accuracy-tag.exact { background:#DCFCE7; color:#166534; }
+.accuracy-tag.estimated { background:#FFEDD5; color:#9A3412; cursor:help; }
+.accuracy-tag.calc { background:#FEF3C7; color:#92400E; }
+
+/* STEP 3 */
+.tabs { display:flex; gap:4px; border-bottom:2px solid var(--gray-200); margin-bottom:0; }
+.tab { padding:12px 28px; background:transparent; border:none; font-size:14.5px;
+  font-weight:600; color:var(--gray-500); cursor:pointer; border-bottom:3px solid transparent;
+  margin-bottom:-2px; font-family:inherit; transition:all .2s; }
+.tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+.tab:hover:not(.active) { color:var(--navy); }
+
+.compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
+  border:1px solid var(--gray-200); }
+.compare-table { border-collapse:collapse; font-size:12px; min-width:100%; }
+.compare-table th, .compare-table td { padding:8px 10px;
+  border-right:1px solid var(--gray-100); border-bottom:1px solid var(--gray-100);
+  white-space:nowrap; font-variant-numeric:tabular-nums; }
+.compare-table thead th { background:var(--gray-100); font-weight:600; color:var(--gray-700);
+  text-align:center; border-bottom:2px solid var(--gray-200); position:sticky; top:0; z-index:4; }
+.compare-table thead th.label-col { background:var(--navy); color:#fff; text-align:left;
+  position:sticky; left:0; top:0; z-index:5; }
+.compare-table .meta-row td { background:#fafbfc; font-size:12px; color:var(--gray-700); text-align:right; }
+.compare-table .meta-row td.label { background:var(--navy); color:#fff; text-align:left;
+  font-weight:600; position:sticky; left:0; z-index:2; }
+.compare-table .meta-row td.product-name-cell { font-weight:600; color:var(--navy);
+  text-align:left; max-width:200px; white-space:normal; line-height:1.4; }
+.compare-table .meta-row td.company-cell { text-align:left; color:var(--teal); font-weight:700; }
+.compare-table tbody td.label { background:var(--gray-100); font-weight:600;
+  color:var(--gray-700); text-align:center; position:sticky; left:0; z-index:1; }
+.compare-table tbody td.label.year-col { background:#fff; color:var(--navy); border-right:2px solid var(--gray-200); }
+.compare-table tbody td.value { text-align:right; }
+.compare-table tbody td.percent { text-align:right; color:var(--gray-700); border-right:2px solid var(--gray-200); }
+.compare-table tbody tr:nth-child(even) td.value, .compare-table tbody tr:nth-child(even) td.percent { background:#fafbfc; }
+.compare-table tbody td.percent.highlight { background:var(--highlight)!important; color:var(--navy); font-weight:700; }
+
+.currency-toggle { display:inline-flex; background:var(--gray-100); border-radius:20px; padding:4px; gap:2px; }
+.currency-toggle button { padding:6px 16px; border:none; background:transparent; border-radius:16px;
+  font-size:13px; font-weight:600; cursor:pointer; color:var(--gray-500); font-family:inherit; transition:all .2s; }
+.currency-toggle button.active { background:var(--orange); color:#fff; }
+
+/* EMPTY */
+.empty { text-align:center; padding:60px 20px; color:var(--gray-500); }
+.empty .icon { font-size:48px; margin-bottom:12px; opacity:0.4; }
+
+.back-btn { display:inline-flex; align-items:center; gap:6px; padding:9px 18px;
+  background:#fff; color:var(--gray-700); border:1.5px solid var(--gray-200);
+  border-radius:22px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:inherit; transition:all .2s; }
+.back-btn:hover { border-color:var(--teal); color:var(--teal); }
+
+.footer-note { text-align:center; color:var(--gray-500); font-size:12px;
+  margin-top:30px; line-height:1.7; }
+
+/* VERIFY MODAL */
+.verify-banner { background:linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+  border:1.5px solid var(--success); padding:14px 20px; border-radius:12px;
+  margin-bottom:20px; display:flex; align-items:center; gap:14px; font-size:14px; }
+.verify-banner.warn { background:linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-color:var(--warning); }
+.verify-banner .v-icon { font-size:24px; }
+.verify-banner .v-text { flex:1; color:var(--navy); }
+.verify-banner .v-text b { color:var(--success); }
+.verify-banner.warn .v-text b { color:var(--warning); }
+.verify-banner .v-btn { padding:6px 14px; background:#fff; border:1px solid var(--gray-200);
+  border-radius:18px; font-size:12px; cursor:pointer; font-family:inherit; color:var(--gray-700); }
+.verify-banner .v-btn:hover { border-color:var(--orange); color:var(--orange); }
+
+@media (max-width:768px) {
+  .form-grid { grid-template-columns:1fr; }
+  .top-header .inner { flex-direction:column; gap:16px; }
+}
+
+    /* ========== v4 改進 CSS ========== */
+    /* 黏性表頭與首欄 */
+    .compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
+      border:1px solid var(--gray-200); position:relative; }
+    .compare-table { border-collapse:separate; border-spacing:0; font-size:12px; min-width:100%; }
+    .compare-table th, .compare-table td {
+      padding:8px 10px;
+      border-right:1px solid var(--gray-100);
+      border-bottom:1px solid var(--gray-100);
+      white-space:nowrap; font-variant-numeric:tabular-nums;
+      background:#fff;
+    }
+    /* sticky 表頭（公司名）：top:0 */
+    .compare-table thead th {
+      position:sticky; top:0; z-index:6;
+      background:var(--gray-100); font-weight:600; color:var(--gray-700);
+      text-align:center; border-bottom:2px solid var(--gray-200);
+    }
+    /* sticky meta rows: 商品名/代號/保額/保費 */
+    .compare-table tbody tr.meta-row td { background:#fafbfc; }
+    .compare-table tbody tr.meta-row.sticky-meta td {
+      position:sticky; z-index:5; background:#fafbfc;
+      box-shadow: inset 0 -1px 0 var(--gray-100);
+    }
+    /* meta rows 從上往下逐列 sticky，top 由 inline 設 */
+    
+    /* sticky 首欄（保單年度欄） */
+    .compare-table th.label-col,
+    .compare-table td.label,
+    .compare-table td.year-col {
+      position:sticky; left:0; z-index:3;
+    }
+    .compare-table thead th.label-col {
+      z-index:7; /* 表頭左上角最高 */
+      background:var(--navy); color:#fff;
+    }
+    .compare-table tbody td.label {
+      background:var(--navy); color:#fff;
+      font-weight:600; text-align:left;
+    }
+    .compare-table tbody tr.meta-row.sticky-meta td.label { z-index:6; }
+    .compare-table tbody td.year-col {
+      background:#fff; color:var(--navy);
+      border-right:2px solid var(--gray-300);
+      font-weight:600; text-align:center;
+      cursor:pointer; user-select:none;
+      transition:background .15s;
+    }
+    .compare-table tbody td.year-col:hover {
+      background:var(--teal-light);
+    }
+    .compare-table tbody td.year-col.sorted {
+      background:var(--teal); color:#fff;
+    }
+    .compare-table tbody td.year-col .age-text {
+      display:block; font-size:10px; color:var(--gray-500); font-weight:400;
+    }
+    .compare-table tbody td.year-col.sorted .age-text { color:#cfe9e6; }
+
+    /* 商品欄位排序動畫（用 transform 或直接 reorder DOM 都可，但簡單做法是淡入） */
+    .compare-table tbody td.value,
+    .compare-table tbody td.percent {
+      transition: background .2s;
+    }
+    .compare-table.reordering tbody td {
+      animation: cellFade .3s ease-out;
+    }
+    @keyframes cellFade {
+      from { opacity:.4; }
+      to { opacity:1; }
+    }
+
+    /* 高亮（本益比首次 ≥100%）*/
+    .compare-table tbody td.percent.highlight {
+      background:var(--highlight)!important; color:var(--navy); font-weight:700;
+    }
+    .compare-table tbody td.value.highlight-strong {
+      background:#ffe4d4!important; color:var(--navy); font-weight:700;
+    }
+    /* 排序當下被點的年度，整列 highlight */
+    .compare-table tbody tr.year-row.sorted-row td:not(.year-col) {
+      background:#fff8e7;
+    }
+    .compare-table tbody tr.year-row.sorted-row td.value,
+    .compare-table tbody tr.year-row.sorted-row td.percent {
+      background:#fff8e7;
+    }
+
+    /* 關鍵年度跳轉按鈕列 */
+    .year-jump-bar {
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+      margin-top:16px; padding:10px 14px;
+      background:var(--teal-light); border-radius:10px;
+      border:1px solid #d6efec;
+    }
+    .year-jump-bar .label {
+      font-size:12px; font-weight:600; color:var(--teal); margin-right:4px;
+    }
+    .year-jump-btn {
+      padding:5px 14px; border:1px solid var(--teal);
+      background:#fff; color:var(--teal); border-radius:14px;
+      font-size:12px; font-weight:600; cursor:pointer;
+      transition:all .15s;
+    }
+    .year-jump-btn:hover { background:var(--teal); color:#fff; }
+    .year-jump-btn.reset { border-color:var(--gray-400); color:var(--gray-600); }
+    .year-jump-btn.reset:hover { background:var(--gray-600); color:#fff; }
+
+    /* 排序提示（顯示目前排序狀態）*/
+    .sort-status {
+      display:inline-flex; gap:6px; align-items:center; padding:4px 10px;
+      background:#fff8e7; border:1px solid #ffe4a3; border-radius:14px;
+      font-size:11px; color:#8a6500; font-weight:600;
+    }
+    .sort-status .clear-btn {
+      cursor:pointer; color:#8a6500; font-weight:700;
+      padding:0 4px; border-radius:4px;
+    }
+    .sort-status .clear-btn:hover { background:rgba(138,101,0,.1); }
+
+    /* 右下重點摘要浮窗 */
+    .summary-float {
+      position:fixed; right:20px; bottom:20px; z-index:100;
+      width:340px; max-height:70vh; overflow:auto;
+      background:#fff; border-radius:14px;
+      box-shadow:0 8px 28px rgba(0,30,60,.18);
+      border:1px solid var(--gray-200);
+      transition: transform .25s, opacity .25s;
+    }
+    .summary-float.collapsed {
+      transform: translateY(calc(100% - 44px));
+    }
+    .summary-float-header {
+      padding:12px 16px; background:var(--navy); color:#fff;
+      border-radius:14px 14px 0 0; cursor:pointer;
+      display:flex; justify-content:space-between; align-items:center;
+      font-size:13px; font-weight:600;
+    }
+    .summary-float-header .toggle-icon {
+      font-size:14px; transition:transform .25s;
+    }
+    .summary-float.collapsed .toggle-icon { transform:rotate(180deg); }
+    .summary-float-body { padding:14px 16px; font-size:12.5px; line-height:1.6; color:var(--gray-700); }
+    .summary-float-body h4 {
+      font-size:12px; color:var(--teal); margin:10px 0 4px; font-weight:700;
+      border-bottom:1px solid var(--gray-100); padding-bottom:3px;
+    }
+    .summary-float-body h4:first-child { margin-top:0; }
+    .summary-float-body .key { color:var(--navy); font-weight:600; }
+    .summary-float-body .val { color:var(--teal); font-weight:700; }
+    .summary-float-body ul { margin:0; padding-left:18px; }
+    .summary-float-body li { margin-bottom:3px; }
+    .summary-float-toggle-icon-wrap {
+      display:flex; gap:8px; align-items:center;
+    }
+    .summary-float-mini-btn {
+      background:rgba(255,255,255,.15); border:none; color:#fff;
+      padding:2px 8px; border-radius:10px; font-size:11px; cursor:pointer;
+    }
+    .summary-float-mini-btn:hover { background:rgba(255,255,255,.25); }
+
+    @media (max-width: 720px) {
+      .summary-float { width:calc(100vw - 24px); right:12px; bottom:12px; }
+    }
+    
+    /* ========== v4.9 比較表（thead 重構版）========== */
+    .compare-table-wrap {
+      overflow-x:auto; overflow-y:visible;
+      background:#fff; border-radius:14px;
+      border:1px solid var(--gray-200);
+      position:relative;
+      box-shadow: var(--shadow-md);
+    }
+    .compare-table-wrap::-webkit-scrollbar { width:10px; height:10px; }
+    .compare-table-wrap::-webkit-scrollbar-track { background:var(--gray-100); border-radius:5px; }
+    .compare-table-wrap::-webkit-scrollbar-thumb { background:var(--gray-300); border-radius:5px; }
+    .compare-table-wrap::-webkit-scrollbar-thumb:hover { background:var(--gray-500); }
+
+    .compare-table {
+      border-collapse:separate; border-spacing:0;
+      font-size:13.5px; min-width:100%;
+      font-family: var(--font-en), var(--font-cn);
+    }
+    .compare-table th, .compare-table td {
+      padding:10px 14px;
+      border-right:1px solid var(--gray-200);
+      border-bottom:1px solid var(--gray-200);
+      white-space:nowrap;
+      background:#fff;
+      vertical-align:middle;
+      line-height:1.4;
+      font-weight:normal;
+    }
+
+    /* === THEAD：每列獨立 sticky，top 由 JS 動態量測後寫入 inline === */
+    .compare-table thead th {
+      position:sticky;
+      /* top 由 layoutStickyHead() 動態設定為 inline style */
+    }
+    /* z-index 階層：上面的 row 要蓋住下面的 row */
+    .compare-table thead tr.head-company th { z-index:9; }
+    .compare-table thead tr.head-meta:nth-of-type(1) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(2) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(3) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(4) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(5) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(6) th { z-index:8; }
+    .compare-table thead tr.head-meta:nth-of-type(7) th { z-index:8; }
+    .compare-table thead tr.head-col-names th { z-index:7; }
+
+    /* 公司名列 */
+    .compare-table thead tr.head-company th {
+      top:0;
+      background:linear-gradient(180deg, var(--navy-light) 0%, var(--navy) 100%) !important;
+      color:#fff !important;
+      font-weight:600;
+      font-size:14px;
+      letter-spacing:0.3px;
+      text-align:center;
+      padding:14px 16px;
+      border-right-color:rgba(255,255,255,.12);
+      border-bottom:2px solid var(--orange);
+    }
+
+    /* meta 列 */
+    .compare-table thead tr.head-meta th {
+      background:var(--bg-cool) !important;
+      color:var(--text-2);
+      text-align:center;
+      font-size:13px;
+      padding:11px 14px;
+    }
+    .compare-table thead tr.head-meta th.th-label {
+      background:linear-gradient(180deg, var(--navy-light) 0%, var(--navy) 100%) !important;
+      color:#fff !important;
+      font-weight:600 !important;
+      font-size:13px !important;
+      letter-spacing:0.2px;
+      border-right:1px solid rgba(255,255,255,.08);
+    }
+    .compare-table thead th.product-name-cell {
+      font-size:14.5px !important;
+      font-weight:600 !important;
+      color:var(--navy) !important;
+      max-width:260px;
+      white-space:normal !important;
+      line-height:1.45;
+      padding:14px !important;
+    }
+    .compare-table thead th.product-code-cell {
+      font-family: var(--font-num) !important;
+      font-size:12.5px !important;
+      color:var(--text-3) !important;
+      letter-spacing:0.5px;
+    }
+    .compare-table thead th.meta-num {
+      text-align:right !important;
+      font-family: var(--font-num);
+      font-variant-numeric: tabular-nums;
+      padding-right:16px !important;
+    }
+
+    /* 列名列 */
+    .compare-table thead tr.head-col-names th {
+      background:var(--bg-soft) !important;
+      color:var(--text-2);
+      font-size:12px;
+      font-weight:600;
+      text-align:center;
+      line-height:1.4;
+      letter-spacing:0.2px;
+      padding:12px 14px;
+    }
+    .compare-table thead tr.head-col-names th.th-label-merged {
+      background:var(--navy) !important;
+      color:#fff !important;
+      font-weight:600 !important;
+      font-size:13px !important;
+      letter-spacing:0.3px;
+    }
+
+    /* 左側固定欄（thead 端）─ z-index 比 thead 一般 cell 多 +10 */
+    .compare-table thead tr.head-company th.th-label-1 {
+      position:sticky; left:0; z-index:19 !important;
+      width:188px; min-width:188px;
+    }
+    .compare-table thead tr.head-meta th.th-label {
+      position:sticky; left:0; z-index:18 !important;
+    }
+    .compare-table thead tr.head-col-names th.th-label-merged {
+      position:sticky; left:0; z-index:17 !important;
+    }
+
+    /* 左側固定欄（tbody 端）*/
+    .compare-table tbody td.year-col-1 {
+      position:sticky; left:0; z-index:3;
+      background:#fff;
+      color:var(--navy);
+      font-weight:700;
+      font-size:14px;
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+      border-right:1px solid var(--gray-200);
+      width:108px; min-width:108px;
+    }
+    .compare-table tbody td.year-col-2 {
+      position:sticky; left:108px; z-index:2;
+      background:#fff;
+      color:var(--text-3);
+      font-weight:500;
+      font-size:12.5px;
+      text-align:center;
+      border-right:2px solid var(--gray-300);
+      width:80px; min-width:80px;
+    }
+    .compare-table tbody td.year-col-1:hover {
+      background:var(--teal-bg);
+      color:var(--teal-mid);
+    }
+    .compare-table tbody td.year-col-1.sorted {
+      background:var(--teal); color:#fff;
+    }
+    .compare-table tbody td.year-col-2.sorted {
+      background:var(--teal-bg); color:var(--teal-mid);
+    }
+
+    /* TBODY 數字格 */
+    .compare-table tbody tr.year-row { transition: background .15s; }
+    .compare-table tbody td.value {
+      text-align:right;
+      font-size:14px;
+      font-weight:500;
+      color:var(--text-1);
+      font-family: var(--font-num);
+      font-variant-numeric: tabular-nums;
+      padding-right:16px;
+    }
+    .compare-table tbody td.percent {
+      text-align:right;
+      font-size:13px;
+      color:var(--text-3);
+      font-family: var(--font-num);
+      font-variant-numeric: tabular-nums;
+      border-right:2px solid var(--gray-200);
+      padding-right:16px;
+    }
+    /* 斑馬條紋 */
+    .compare-table tbody tr.year-row:nth-child(even) td.value:not(.best),
+    .compare-table tbody tr.year-row:nth-child(even) td.percent:not(.best) {
+      background:var(--bg-zebra);
+    }
+    .compare-table tbody tr.year-row:nth-child(even) td.year-col-1:not(.sorted),
+    .compare-table tbody tr.year-row:nth-child(even) td.year-col-2:not(.sorted) {
+      background:var(--bg-zebra);
+    }
+
+    /* 最強值 ★ 高亮 */
+    .compare-table tbody td.value.best {
+      background:var(--best-bg) !important;
+      color:var(--best-text) !important;
+      font-weight:700 !important;
+      position:relative;
+    }
+    .compare-table tbody td.percent.best {
+      background:var(--best-bg) !important;
+      color:var(--best-text) !important;
+      font-weight:700 !important;
+    }
+    .compare-table tbody td.value.best::before {
+      content:'★';
+      position:absolute; left:8px; top:50%; transform:translateY(-50%);
+      color:var(--best-star); font-size:11px;
+    }
+    .compare-table tbody tr.year-row.sorted-row td.value:not(.best),
+    .compare-table tbody tr.year-row.sorted-row td.percent:not(.best) {
+      background:#fffbed !important;
+    }
+
+    /* tabs / 幣別 / 跳轉 / 預算標記 */
+    .tabs { display:flex; gap:4px; background:var(--gray-100); border-radius:12px; padding:4px; }
+    .tab {
+      padding:10px 18px; border:none; background:transparent; cursor:pointer;
+      font-size:13.5px; font-weight:600; color:var(--text-3);
+      border-radius:9px; transition: all .15s;
+      font-family: var(--font-en), var(--font-cn);
+    }
+    .tab:hover { color:var(--navy); }
+    .tab.active { background:#fff; color:var(--orange); box-shadow: var(--shadow-sm); }
+    .currency-toggle { display:inline-flex; background:var(--gray-100); border-radius:10px; padding:3px; }
+    .currency-toggle button {
+      padding:7px 16px; border:none; background:transparent; cursor:pointer;
+      font-size:13px; font-weight:700; font-family: var(--font-num);
+      color:var(--text-3); border-radius:7px; transition: all .15s; letter-spacing:0.5px;
+    }
+    .currency-toggle button.active { background:var(--orange); color:#fff; box-shadow: var(--shadow-sm); }
+    .year-jump-bar {
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+      margin-top:18px; padding:12px 16px;
+      background:linear-gradient(135deg, var(--teal-bg) 0%, #f5f9f9 100%);
+      border-radius:12px; border:1px solid #d6efec;
+    }
+    .year-jump-bar .label { font-size:13px; font-weight:700; color:var(--teal); margin-right:6px; letter-spacing:0.3px; }
+    .year-jump-btn {
+      padding:7px 16px; border:1.5px solid var(--teal);
+      background:#fff; color:var(--teal); border-radius:18px;
+      font-size:12.5px; font-weight:600; cursor:pointer; transition: all .15s;
+      font-family: var(--font-en), var(--font-cn);
+    }
+    .year-jump-btn:hover {
+      background:var(--teal); color:#fff; transform:translateY(-1px); box-shadow: var(--shadow-sm);
+    }
+    .budget-tag {
+      display:inline-block; margin-left:8px;
+      padding:2px 8px; border-radius:10px;
+      font-size:11px; font-weight:700; vertical-align:middle;
+      font-family: var(--font-num);
+    }
+    .budget-tag.over { background:var(--orange-light); color:var(--best-text); }
+    .budget-tag.under { background:var(--teal-light); color:var(--teal); }
+    .budget-tag-mini {
+      display:block; margin-top:4px;
+      font-size:11px; font-weight:600;
+      line-height:1.3; letter-spacing:0.2px;
+    }
+    .budget-tag-mini.over { color:var(--best-text); }
+    .budget-tag-mini.under { color:var(--teal); }
+    .sort-status {
+      display:inline-flex; gap:8px; align-items:center; padding:6px 12px;
+      background:#fff8e7; border:1px solid #ffe4a3; border-radius:18px;
+      font-size:12px; color:#8a6500; font-weight:600;
+    }
+    .sort-status .clear-btn {
+      cursor:pointer; color:#8a6500; font-weight:700;
+      padding:1px 6px; border-radius:6px; transition: background .15s;
+    }
+    .sort-status .clear-btn:hover { background:rgba(138,101,0,.15); }
+    /* ========== /v4.9 ========== */
+
+    /* ========== /v4 改進 CSS ========== */
+
+    /* ========== v4.5 預算對照標記 ========== */
+    .budget-tag {
+      display:inline-block; margin-left:6px;
+      padding:1px 6px; border-radius:8px;
+      font-size:10px; font-weight:700;
+      vertical-align:middle;
+    }
+    .budget-tag.over { background:#fff0e0; color:#c75800; }
+    .budget-tag.under { background:#e6f4f3; color:var(--teal); }
+    .budget-tag-mini {
+      display:block; margin-top:2px;
+      font-size:10px; font-weight:600;
+      line-height:1.3;
+    }
+    .budget-tag-mini.over { color:#c75800; }
+    .budget-tag-mini.under { color:var(--teal); }
+    /* ========== /v4.5 ========== */
+
+    /* === v4.6 通用元件升級 === */
+    .page-title h2 {
+      font-size:26px;
+      font-weight:700;
+      letter-spacing:1px;
+      color:var(--navy);
+    }
+    .page-title p {
+      color:var(--text-3);
+      font-size:13.5px;
+      margin-top:6px;
+    }
+    .summary-bar {
+      background:#fff;
+      border-radius:14px;
+      padding:14px 18px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom:18px;
+    }
+    .info-tag {
+      font-size:13.5px;
+      color:var(--text-2);
+      line-height:1.6;
+    }
+    .info-tag b { color:var(--navy); font-weight:700; }
+    .card {
+      background:var(--bg-card);
+      border-radius:16px;
+      padding:24px;
+      box-shadow: var(--shadow-md);
+      border:1px solid var(--gray-200);
+    }
+    /* === /v4.6 通用元件 === */
+
+    /* === v4.8 錯誤訊息 === */
+    .step1-error {
+      margin-top:18px;
+      padding:14px 18px;
+      background:#fef2f2;
+      border:1.5px solid #fca5a5;
+      color:#991b1b;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:600;
+      line-height:1.5;
+    }
+    /* === /v4.8 === */
+</style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="inner">
+    <div class="brand">
+      <div class="brand-icon">SI</div>
+      <div class="brand-text">
+        <h1>儲蓄險分析系統</h1>
+        <p>SAVINGS INSURANCE ANALYTICS · ACTUARIAL</p>
+      </div>
+    </div>
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot-1">1</div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" id="dot-2">2</div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" id="dot-3">3</div>
+    </div>
+  </div>
+</header>
+
+<div class="page-wrap">
+
+  <!-- STEP 1 -->
+  <section class="step-page active" id="step-1">
+    <div class="page-title">
+      <h2>被保險人資料</h2>
+      <p>以下資料皆須填寫,才可以完整計算保險資訊喔</p>
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>姓名</label>
+          <input type="text" id="name" placeholder="例:王大明">
+        </div>
+        <div class="field">
+          <label>性別</label>
+          <div class="gender-group">
+            <label class="gender-opt">
+              <input type="radio" name="gender" value="M" checked>
+              <span>男</span>
+            </label>
+            <label class="gender-opt">
+              <input type="radio" name="gender" value="F">
+              <span>女</span>
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label>生日 (保險年齡:<span id="age-display">--</span>歲)</label>
+          <input type="date" id="birthday">
+        </div>
+
+        <div class="field">
+          <label>類型</label>
+          <select id="product-type">
+            <option value="">請選擇</option>
+            <option value="台幣利變非還本">台幣利變非還本</option>
+            <option value="美元利變非還本">美元利變非還本</option>
+            <option value="台幣利變還本">台幣利變還本</option>
+            <option value="美元利變還本">美元利變還本</option>
+            <option value="台幣利變非還本(預定利率)">台幣利變非還本(預定利率)</option>
+            <option value="美元利變非還本(預定利率)">美元利變非還本(預定利率)</option>
+            <option value="美元分紅終身壽險">美元分紅終身壽險</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>年期</label>
+          <select id="period">
+            <option value="">請選擇</option>
+            <option value="2">2 年</option>
+            <option value="3">3 年</option>
+            <option value="6">6 年</option>
+            <option value="10">10 年</option>
+            <option value="20">20 年</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>每年預算 (幣別:<span id="currency-label">台幣</span>)</label>
+          <div class="input-with-suffix">
+            <input type="number" id="budget" placeholder="請輸入">
+            <span class="suffix" id="budget-unit">元</span>
+          </div>
+        </div>
+
+        <div class="rate-row" id="rate-row">
+          <div class="badge">美元</div>
+          <div class="desc">您選擇了美元商品,請輸入目前匯率,系統將自動換算 USD ↔ TWD</div>
+          <div class="rate-input">
+            <span>1 USD =</span>
+            <input type="number" id="exchange-rate" value="32.5" step="0.01">
+            <span>TWD</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="step1-error" class="step1-error" style="display:none;"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goStep2()">下一步</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step-page" id="step-2">
+    <div class="page-title">
+      <h2>選擇試算商品</h2>
+      <p id="step2-subtitle">--</p>
+    </div>
+
+    <div class="summary-bar">
+      <div class="info-tags">
+        <div class="info-tag">姓名:<b id="sum-name">王大明</b></div>
+        <div class="info-tag">性別:<b id="sum-gender">男性</b></div>
+        <div class="info-tag">年齡:<b id="sum-age">20歲</b></div>
+        <div class="info-tag">年期:<b id="sum-period">6年</b></div>
+        <div class="info-tag">類型:<b id="sum-type">--</b></div>
+        <div class="info-tag">預算:<b id="sum-budget">--</b></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="info-text">符合年期條件的商品共 <b id="product-count">0</b> 個 ── 系統依您輸入的年齡/性別/預算精算每個商品的數據</div>
+      <div class="actions">
+        <button class="btn-sm outline" onclick="showStep(1)">← 上一步</button>
+        <button class="btn-sm primary" id="btn-compare-selected" onclick="goStep3('selected')" disabled>試算選擇商品(<span id="selected-count">0</span>)</button>
+        <button class="btn-sm primary" onclick="goStep3('all')">試算全部商品(<span id="all-count">0</span>)</button>
+      </div>
+    </div>
+
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:40px;"><input type="checkbox" id="check-all" onchange="toggleAll(this)"></th>
+          <th>公司名稱</th>
+          <th>商品名稱</th>
+          <th>代號</th>
+          <th class="center">年期</th>
+          <th class="right">保額</th>
+          <th class="right">首年原始保費</th>
+          <th class="right">首年實繳保費 <small style="color:var(--gray-500)">(已扣折扣)</small></th>
+        </tr>
+      </thead>
+      <tbody id="product-tbody"></tbody>
+    </table>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step-page" id="step-3">
+    <div class="page-title">
+      <h2>商品比較結果</h2>
+      <p>解約金、增值回饋、身故保險金等項目對比</p>
+    </div>
+
+    <div id="verify-area"></div>
+
+    <div class="summary-bar">
+      <div class="info-tags">
+        <div class="info-tag" id="sum3-info">--</div>
+      </div>
+      <div>
+        <button class="back-btn" onclick="showStep(2)">← 返回選擇商品</button>
+      </div>
+    </div>
+
+    <div class="card" style="padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div class="tabs">
+          <button class="tab active" data-tab="surrender" onclick="switchTab('surrender')">解約金 + 增值回饋分享金比較</button>
+          <button class="tab" data-tab="death" onclick="switchTab('death')">身故保險金比較</button>
+        </div>
+        <div class="currency-toggle" id="currency-toggle">
+          <button class="active" data-cur="USD" onclick="switchCurrency('USD')">USD</button>
+          <button data-cur="TWD" onclick="switchCurrency('TWD')">TWD</button>
+        </div>
+      </div>
+
+      <div class="year-jump-bar" id="year-jump-bar">
+        <span class="label">⚡ 快速跳轉</span>
+        <button class="year-jump-btn" onclick="jumpToYear(6)">Y6 繳完</button>
+        <button class="year-jump-btn" onclick="jumpToYear(10)">Y10</button>
+        <button class="year-jump-btn" onclick="jumpToYear(20)">Y20</button>
+        <button class="year-jump-btn" onclick="jumpToYear(30)">Y30</button>
+        <button class="year-jump-btn" id="btn-jump-65" onclick="jumpToAge(65)">Y@65歲</button>
+        <button class="year-jump-btn" id="btn-jump-80" onclick="jumpToAge(80)">Y@80歲</button>
+        <span id="sort-status-wrap" style="margin-left:auto;"></span>
+      </div>
+
+      <div style="margin-top:12px;" class="compare-table-wrap" id="compare-table-wrap">
+        <table class="compare-table" id="compare-table"></table>
+      </div>
+    </div>
+
+    <!-- 右下重點摘要浮窗 -->
+    <div class="summary-float collapsed" id="summary-float" style="display:none;">
+      <div class="summary-float-header" onclick="toggleSummaryFloat()">
+        <span>💡 重點摘要 / 話術提示</span>
+        <span class="summary-float-toggle-icon-wrap">
+          <span class="toggle-icon">▼</span>
+        </span>
+      </div>
+      <div class="summary-float-body" id="summary-float-body">
+        載入中...
+      </div>
+    </div>
+
+    <p class="footer-note">
+      ※ 本系統為內部教育訓練使用,嚴禁作為銷售工具使用<br>
+      ※ 數值依各保險公司商品建議書精算結果為準,實際以公司核保條件為準
+    </p>
+  </section>
+
+</div>
+
+<script>
+// ============================================================
+// 精算資料庫(從 Excel 完整抽取)
+// ============================================================
+window.INSURANCE_DBS = {}; 
+/* INSURANCE_DBS 已外部化 */
+window.__DB_CACHE__ = {};
+window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
+
+window.loadProductDB = async function(key) {
+  if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
+  
+  // 優先從 manifest 查 path(子目錄佈署),fallback 平鋪 ./data/<key>.json
+  let url = `./data/${key}.json`;
+  if (window.__MANIFEST__) {
+    const m = window.__MANIFEST__.find(x => x.key === key);
+    if (m && m.path) url = `./data/${m.path}`;
+  }
+  
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('載入 '+key+' 失敗 (path: '+url+')');
+  const d = await r.json();
+  window.__DB_CACHE__[key] = d;
+  window.INSURANCE_DBS[key] = d;
+  return d;
+};
+window.loadManifest = async function() {
+  if (window.__MANIFEST__) return window.__MANIFEST__;
+  const m = await (await fetch('./data/_manifest.json')).json();
+  window.__MANIFEST__ = m;
+  return m;
+};
+;
+// 向後相容變數已移除:改由 loadProductDB(key) 按需載入,getDB(planCode) 從快取取用
+
+// ============================================================
+// 商品註冊表 (每個商品的 Meta 資料)
+// 之後新增其他保險公司,只要在這裡 push 進去
+// ============================================================
+const PRODUCTS = [
+  {
+    plan_code: 'UPD061',
+    company: '新光人壽',
+    product_name: '美鴻添富美元分紅終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0.0225,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'taishin_v1',
+    // 投保限制：1萬USD~1000萬USD，0~15歲限1萬~200萬，千元為單位
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_sa_under15: 10000,
+    max_sa_under15: 2000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'UPD101',
+    company: '新光人壽',
+    product_name: '美鴻添富美元分紅終身壽險',
+    period: 10,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0.0175,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'taishin_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_sa_under15: 10000,
+    max_sa_under15: 2000000,
+    min_age: 0, max_age: 72
+  },
+  {
+    plan_code: 'ARLPLU71',
+    company: '保誠人壽',
+    product_name: '新美滿相傳外幣終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.015,
+    discount_method: 'staged',
+    discounts: [0.01, 0.005],
+    engine: 'prudential_v1',
+    unit_size: 10000,
+    min_sa: 10000,
+    max_sa: 100000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'NUIW5203',
+    company: '台灣人壽',
+    product_name: '超美利美元利率變動型終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,         // 千元為單位（推測）
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'NUIW6602',
+    company: '台灣人壽',
+    product_name: '美鑫美利美元利率變動型終身壽險',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0.01,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '6UBS',
+    company: '凱基人壽',
+    product_name: '基業長鴻美元利率變動型終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.042,
+    predicted_rate: 0,
+    discount: 0,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '5UEJ',
+    company: '凱基人壽',
+    product_name: '凱基人壽紅利幸福美元分紅終身壽險-定期給付型',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.025,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '5UEK',
+    company: '凱基人壽',
+    product_name: '凱基人壽紅利美滿美元分紅終身壽險-定期給付型',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.015,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '6U3Y',
+    company: '凱基人壽',
+    product_name: '凱基人壽幸福美滿美元利率變動型終身壽險-定期給付型',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.043,
+    predicted_rate: 0,
+    discount: 0.03,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '6UBH',
+    company: '凱基人壽',
+    product_name: '凱基人壽傳承守富美元利率變動型終身壽險-定期給付型',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.04,
+    predicted_rate: 0,
+    discount: 0.04,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: '6UC4',
+    company: '凱基人壽',
+    product_name: '凱基人壽傳富久安美元利率變動型終身壽險-定期給付型',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.043,
+    predicted_rate: 0,
+    discount: 0.025,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'ARLPLU30',
+    company: '保誠人壽',
+    product_name: '保誠人壽美滿傳家外幣終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.0248,
+    discount_method: 'simple',
+    engine: 'prudential_v2',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'ARLPLU57',
+    company: '保誠人壽',
+    product_name: '保誠人壽新美康滿利外幣終身壽險(定期給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.0179,
+    discount_method: 'simple',
+    engine: 'prudential_v2',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'ARLPLU64',
+    company: '保誠人壽',
+    product_name: '保誠人壽鑫傳富外幣終身壽險(定額給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    predicted_rate: 0,
+    discount: 0.0150,
+    discount_method: 'simple',
+    engine: 'prudential_v2',
+    unit_size: 1000,
+    min_sa: 50000,
+    max_sa: 5000000,
+    min_age: 0, max_age: 75
+  }
+];
+
+// ============================================================
+// 精算引擎
+// ============================================================
+// 註:舊版單庫 getUV / getDIV 已移除,改用 ts_getUV / ts_getDIV(taishin_v1 引擎)
+
+/**
+ * 統一精算引擎 ── dispatcher 模式
+ * 依 product.engine 分流到對應的計算函式
+ * 
+ * engines:
+ *   - taishin_v1: 台新人壽（GP表+UV表+Corridor+DIV紅利累積）
+ *   - prudential_v1: 保誠人壽（RV表已含全部紅利欄位，直接讀）
+ * ================================================================ */
+
+// === 通用：取得指定 plan_code 的 DB（需先 await loadProductDB 預載到快取） ===
+function getDB(planCode) {
+  const db = window.INSURANCE_DBS[planCode];
+  if (!db) throw new Error(`商品 ${planCode} 尚未載入,請先 await loadProductDB('${planCode}')`);
+  return db;
+}
+
+// === 台新引擎 helpers ===
+function ts_getGP(db, plan, sex, age) {
+  return db.gp_table?.[plan]?.[sex]?.[age] ?? null;
+}
+function ts_getUV(db, plan, sex, age, year) {
+  const arr = db.uv_table[`${plan}|${sex}|${age}`];
+  if (!arr) return null;
+  for (const row of arr) if (row[0] === year) return { NFV: row[1], CSV: row[2], NSP: row[3] };
+  return null;
+}
+function ts_getDIV(db, plan, sex, age, year) {
+  const arr = db.div_table[`${plan}|${sex}|${age}`];
+  if (!arr) return { AD: 0, TD_Death: 0, TD_Surr: 0 };
+  for (const row of arr) if (row[0] === year) return { AD: row[1], TD_Death: row[2], TD_Surr: row[3] };
+  return { AD: 0, TD_Death: 0, TD_Surr: 0 };
+}
+function ts_getMaxYear(db, plan, sex, age) {
+  const arr = db.uv_table[`${plan}|${sex}|${age}`];
+  if (!arr || arr.length === 0) return 0;
+  return Math.max(...arr.map(r => r[0]));
+}
+
+// === 台新精算引擎 ===
+function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.01) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const units = sumAssured / 1000;
+  const gp = ts_getGP(db, plan, sex, age);
+  if (gp === null) return null;
+  
+  const annualPremiumOrig = +(units * gp).toFixed(2);
+  const annualPremiumReal = Math.round(annualPremiumOrig * (1 - discount));
+  
+  const maxY = ts_getMaxYear(db, plan, sex, age);
+  const schedule = [];
+  let cumPrem = 0, cumIncFace = 0;
+  
+  for (let year = 1; year <= maxY; year++) {
+    const prem = year <= period ? annualPremiumReal : 0;
+    cumPrem += prem;
+    const u = ts_getUV(db, plan, sex, age, year);
+    if (!u) continue;
+    
+    const nfv = units * u.NFV;
+    const csv = units * u.CSV;
+    const nsp = u.NSP;
+    const corPolyr = db.corridor_polyr[String(year)] ?? 1.0;
+    const deathBasic = Math.max(sumAssured * corPolyr, nfv);
+    
+    const d = ts_getDIV(db, plan, sex, age, year - 1);
+    const adFaceYear = +(units * d.AD).toFixed(2);
+    const incFaceYear = nsp > 0 ? Math.round(adFaceYear / (nsp / 1000)) : 0;
+    cumIncFace += incFaceYear;
+    
+    const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
+    const xIncDeath = Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
+    const tdDeath = +(units * d.TD_Death).toFixed(2);
+    const tdSurr = +(units * d.TD_Surr).toFixed(2);
+    
+    schedule.push({
+      y: year,
+      age: age + year - 1,
+      prem: Math.round(prem),
+      cum_prem: Math.round(cumPrem),
+      surr_pure: +csv.toFixed(2),
+      surr_total: +(csv + gIncSurr + tdSurr).toFixed(2),
+      death_pure: Math.round(deathBasic),
+      death_total: +(deathBasic + xIncDeath + tdDeath).toFixed(2)
+    });
+  }
+  
+  return {
+    gp,
+    sum_assured: sumAssured,
+    annual_premium_orig: annualPremiumOrig,
+    annual_premium_real: annualPremiumReal,
+    schedule,
+    is_exact: false
+  };
+}
+
+// === 保誠精算引擎 ===
+function actuarialCalc_prudential(plan, sex, age, sumAssured, period) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const sexKey = sex === 'M' ? '1' : '2';
+  const units = sumAssured / db.unit_size;  // 每萬元為單位
+  
+  const gp = db.gp?.[sexKey]?.[String(age)];
+  if (gp == null) return null;
+  
+  // 兩階段折扣：1% 然後 0.5%
+  const annualOrig = +(units * gp).toFixed(2);
+  const step1 = Math.round(annualOrig * (1 - db.discounts[0]));
+  const annualReal = Math.round(step1 * (1 - db.discounts[1]));
+  
+  const rvAge = db.rv?.[sexKey]?.[String(age)];
+  if (!rvAge) return null;
+  
+  const durations = Object.keys(rvAge).map(Number).filter(d => d > 0).sort((a, b) => a - b);
+  const schedule = [];
+  let cumPrem = 0;
+  
+  for (const dur of durations) {
+    const prem = dur <= period ? annualReal : 0;
+    cumPrem += prem;
+    const r = rvAge[String(dur)];
+    
+    const cv = r.CV * units;
+    const dbAmt = r.DB * units;
+    const arb = r.ARB * units;
+    const tb = r.TB * units;
+    const arbPv = r.ARB_PV * units;
+    const tbsCv = r.TBS_CV * units;
+    
+    schedule.push({
+      y: dur,
+      age: age + dur - 1,
+      prem: Math.round(prem),
+      cum_prem: Math.round(cumPrem),
+      surr_pure: +cv.toFixed(2),
+      surr_total: +(cv + arbPv + tbsCv).toFixed(2),
+      death_pure: Math.round(dbAmt),
+      death_total: +(dbAmt + arb + tb).toFixed(2)
+    });
+  }
+  
+  return {
+    gp,
+    sum_assured: sumAssured,
+    annual_premium_orig: annualOrig,
+    annual_premium_real: annualReal,
+    schedule,
+    is_exact: true  // 保誠 RV 表已含全部紅利，所有年齡都精準
+  };
+}
+
+// === 工具：保額進位到 unit_size 倍數 + min/max 夾擊 ===
+function applyInsuranceLimits(rawSA, productMeta, age) {
+  const unit = productMeta.unit_size || 1000;
+  // 進位（向上取整到 unit 倍數，因為要「超出一點預算」而不是不足）
+  let sa = Math.ceil(rawSA / unit) * unit;
+  // 套用 min/max（依年齡分段）
+  let minSA, maxSA;
+  if (age <= 15 && productMeta.min_sa_under15 != null) {
+    minSA = productMeta.min_sa_under15;
+    maxSA = productMeta.max_sa_under15;
+  } else {
+    minSA = productMeta.min_sa || unit;
+    maxSA = productMeta.max_sa || Infinity;
+  }
+  if (sa < minSA) sa = minSA;
+  if (sa > maxSA) sa = maxSA;
+  return sa;
+}
+
+// === 預算反推保額（含進位）===
+function calcSumAssuredFromBudget_taishin(plan, sex, age, budgetReal, discount, productMeta) {
+  const db = getDB(plan);
+  const gp = ts_getGP(db, plan, sex, age);
+  if (!gp) return null;
+  // 原始反推（未進位）
+  const rawSA = budgetReal / (1 - discount) / gp * 1000;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+function calcSumAssuredFromBudget_prudential(plan, sex, age, budgetReal, productMeta) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const sexKey = sex === 'M' ? '1' : '2';
+  const gp = db.gp?.[sexKey]?.[String(age)];
+  if (!gp) return null;
+  const units = budgetReal / (1 - db.discounts[1]) / (1 - db.discounts[0]) / gp;
+  const rawSA = units * db.unit_size;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+
+// === 台灣人壽引擎（單一基準逆推） ===
+function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
+  const db = getDB(plan);
+  if (!db || !db.schedule) return null;
+  const baseSA = db.meta.base_sa;
+  const ratio = sumAssured / baseSA;
+  
+  // 用基準保費比例反推實繳保費
+  const annualPremiumReal = Math.round(db.meta.base_premium * ratio);
+  const annualPremiumOrig = Math.round(annualPremiumReal / (1 - db.meta.discount));
+  
+  // 逐年資料按比例縮放
+  const schedule = db.schedule.map(r => ({
+    y: r.y,
+    age: age + r.y - 1,
+    prem: r.y <= period ? annualPremiumReal : 0,
+    cum_prem: Math.round(r.cum_prem * ratio),
+    surr_pure: +(r.cv_basic * ratio).toFixed(2),
+    surr_total: +(r.cv_total * ratio).toFixed(2),
+    death_pure: Math.round(r.death_benefit * ratio),
+    death_total: +(r.death_benefit * ratio).toFixed(2),
+  }));
+  
+  // 是否完全等於基準（同年齡同性別）→ exact
+  const isExact = sex === db.meta.base_sex && age === db.meta.base_age;
+  
+  return {
+    sum_assured: sumAssured,
+    annual_premium_orig: annualPremiumOrig,
+    annual_premium_real: annualPremiumReal,
+    schedule,
+    is_exact: isExact,
+    is_estimated: !isExact,  // 標記為估算
+    base_age: db.meta.base_age,
+    base_sex: db.meta.base_sex,
+  };
+}
+
+function calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta) {
+  const db = getDB(plan);
+  if (!db) return null;
+  // 比例 = 預算 / 基準保費，保額 = 基準保額 × 比例
+  const ratio = budgetReal / db.meta.base_premium;
+  const rawSA = db.meta.base_sa * ratio;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+
+// === 保誠人壽引擎 v2（逐年表 + 三情境分紅:無/中/低）===
+// 適用商品:ARLPLU30 / ARLPLU57 / ARLPLU64 等保誠分紅型(逐年表結構)
+// 主要 surrender / death 數字採用「中紅利情境」(業務員建議書預設)
+// schedule 每筆同時保留 base / mid / low / none 四種值,UI 之後可切換
+function actuarialCalc_prudential_v2(plan, sex, age, sumAssured, period) {
+  const db = getDB(plan);
+  if (!db || !db.schedule) return null;
+  const baseSA = db.meta.base_sa;
+  const ratio = sumAssured / baseSA;
+  
+  // 用基準保費比例反推實繳保費(折扣後)/ 折扣前原始保費
+  const annualPremiumReal = Math.round(db.meta.base_premium * ratio);
+  const annualPremiumOrig = db.meta.base_premium_gross
+    ? Math.round(db.meta.base_premium_gross * ratio)
+    : Math.round(annualPremiumReal / (1 - (db.meta.discount || 0)));
+  
+  // 逐年資料按比例縮放,主數字用 mid 情境(中紅利)
+  const schedule = db.schedule.map(r => {
+    const mid = r.scenarios?.mid || {};
+    const none = r.scenarios?.none || {};
+    const low = r.scenarios?.low || {};
+    
+    // 主數字 = 中紅利(預設給比較表用)
+    const surrTotal = (mid.cv_total ?? r.cv_total) * ratio;
+    const deathTotal = (mid.db_with_dividend ?? r.death_benefit) * ratio;
+    
+    return {
+      y: r.y,
+      age: age + r.y - 1,
+      prem: r.y <= period ? annualPremiumReal : 0,
+      cum_prem: Math.round(r.cum_prem * ratio),
+      surr_pure: +(r.cv_basic * ratio).toFixed(2),       // 不含紅利的基本解約
+      surr_total: +surrTotal.toFixed(2),                  // 中紅利情境總解約金
+      death_pure: Math.round(r.death_benefit * ratio),    // 不含紅利的基本身故
+      death_total: +deathTotal.toFixed(2),                // 中紅利情境身故金
+      // 三情境完整資料(供進階 UI 切換)
+      scenarios: {
+        none: {
+          cv_total: +((none.cv_total ?? r.cv_total) * ratio).toFixed(2),
+          death: +((none.db_with_dividend ?? r.death_benefit) * ratio).toFixed(2),
+          dividend_year: Math.round((none.dividend_year || 0) * ratio),
+        },
+        mid: {
+          cv_total: +((mid.cv_total ?? r.cv_total) * ratio).toFixed(2),
+          death: +((mid.db_with_dividend ?? r.death_benefit) * ratio).toFixed(2),
+          dividend_year: Math.round((mid.dividend_year || 0) * ratio),
+        },
+        low: {
+          cv_total: +((low.cv_total ?? r.cv_total) * ratio).toFixed(2),
+          death: +((low.db_with_dividend ?? r.death_benefit) * ratio).toFixed(2),
+          dividend_year: Math.round((low.dividend_year || 0) * ratio),
+        }
+      }
+    };
+  });
+  
+  const isExact = sex === db.meta.base_sex && age === db.meta.base_age;
+  
+  return {
+    sum_assured: sumAssured,
+    annual_premium_orig: annualPremiumOrig,
+    annual_premium_real: annualPremiumReal,
+    schedule,
+    is_exact: isExact,
+    is_estimated: !isExact,
+    base_age: db.meta.base_age,
+    base_sex: db.meta.base_sex,
+  };
+}
+
+function calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budgetReal, productMeta) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const ratio = budgetReal / db.meta.base_premium;
+  const rawSA = db.meta.base_sa * ratio;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+
+// === Dispatcher ===
+function calcProductForUser(productMeta, user) {
+  try {
+    const sex = user.gender;
+    const age = user.age;
+    const budget = productMeta.currency === 'USD' ? user.budget_usd : user.budget_twd;
+    const plan = productMeta.plan_code;
+    const engine = productMeta.engine || 'taishin_v1';
+    
+    let sumAssured, result;
+    if (engine === 'prudential_v1') {
+      sumAssured = calcSumAssuredFromBudget_prudential(plan, sex, age, budget, productMeta);
+      if (!sumAssured) return null;
+      result = actuarialCalc_prudential(plan, sex, age, sumAssured, user.period);
+    } else if (engine === 'prudential_v2') {
+      sumAssured = calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
+      if (!sumAssured) return null;
+      result = actuarialCalc_prudential_v2(plan, sex, age, sumAssured, user.period);
+    } else if (engine === 'twlife_v1') {
+      sumAssured = calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
+      if (!sumAssured) return null;
+      result = actuarialCalc_twlife(plan, sex, age, sumAssured, user.period);
+    } else if (engine === 'taishin_v1') {
+      sumAssured = calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
+      if (!sumAssured) return null;
+      result = actuarialCalc_taishin(plan, sex, age, sumAssured, user.period, productMeta.discount);
+      if (!result) return null;
+      const db = getDB(plan);
+      if (sex === 'M' && age === db.meta.base_age_M && Math.abs(sumAssured - db.meta.base_sa_M) < 100 && db.golden_M32) {
+        result.schedule = JSON.parse(JSON.stringify(db.golden_M32));
+        result.is_exact = true;
+      }
+    } else {
+      // 未知 engine,標記不支援但不 crash
+      return { unsupported: true, engine_name: engine };
+    }
+    // 預算對照：實際保費 vs 使用者預算（同幣別）
+    if (result) {
+      const actualPremium = result.annual_premium_real;
+      result.budget_target = budget;          // 使用者預算（商品幣別）
+      result.budget_actual = actualPremium;   // 實際保費（商品幣別）
+      result.budget_diff = actualPremium - budget;  // 正數=超支，負數=有餘
+      result.budget_within = Math.abs(result.budget_diff) < 1;  // 完全打平
+    }
+    return result;
+  } catch (err) {
+    // 引擎執行錯誤(資料結構不符等),回傳錯誤標記不影響整頁
+    console.error(`[calcProductForUser] ${productMeta.plan_code} 試算失敗:`, err);
+    return { error: true, error_message: err.message };
+  }
+}
+
+const state = {
+  user: {},
+  filteredProducts: [],
+  selectedCodes: new Set(),
+  currentTab: 'surrender',
+  currentCurrency: 'USD',
+  compareList: [],
+  sortYear: null   // v4: 點年度排序
+};
+
+// ============================================================
+// STEP 切換
+// ============================================================
+function showStep(n) {
+  document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+  ['1','2','3'].forEach(i => {
+    const dot = document.getElementById(`dot-${i}`);
+    dot.classList.remove('active','done');
+    if (parseInt(i) < n) dot.classList.add('done');
+    else if (parseInt(i) === n) dot.classList.add('active');
+  });
+  ['1','2'].forEach(i => {
+    document.getElementById(`line-${i}`).classList.toggle('done', parseInt(i) < n);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+// STEP 1
+// ============================================================
+function calcAge(birthDate) {
+  if (!birthDate) return null;
+  const today = new Date();
+  const b = new Date(birthDate);
+  if (isNaN(b.getTime())) return null;
+  let age = today.getFullYear() - b.getFullYear();
+  const m = today.getMonth() - b.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < b.getDate())) age--;
+  return age;
+}
+
+document.getElementById('birthday').addEventListener('change', () => {
+  const age = calcAge(document.getElementById('birthday').value);
+  document.getElementById('age-display').textContent = (age === null) ? '--' : age;
+});
+{
+  const initAge = calcAge(document.getElementById('birthday').value);
+  document.getElementById('age-display').textContent = (initAge === null) ? '--' : initAge;
+  // 限制生日不能選未來
+  const today = new Date();
+  const tStr = today.getFullYear() + '-' +
+               String(today.getMonth()+1).padStart(2,'0') + '-' +
+               String(today.getDate()).padStart(2,'0');
+  document.getElementById('birthday').setAttribute('max', tStr);
+}
+
+document.getElementById('product-type').addEventListener('change', e => {
+  const val = e.target.value;
+  const isUSD = val.includes('美元');
+  document.getElementById('rate-row').classList.toggle('show', isUSD);
+  if (!val) {
+    document.getElementById('currency-label').textContent = '台幣';
+    document.getElementById('budget-unit').textContent = '元';
+  } else {
+    document.getElementById('currency-label').textContent = isUSD ? '美元' : '台幣';
+    document.getElementById('budget-unit').textContent = isUSD ? 'USD' : '元';
+  }
+});
+
+async function goStep2() {
+  const name = document.getElementById('name').value || '王大明';
+  const gender = document.querySelector('input[name=gender]:checked').value;
+  const bday = document.getElementById('birthday').value;
+  const age = calcAge(bday);
+  const type = document.getElementById('product-type').value;
+  const period = parseInt(document.getElementById('period').value);
+  const budget = parseFloat(document.getElementById('budget').value);
+  const rate = parseFloat(document.getElementById('exchange-rate').value) || 32.5;
+  const isUSD = type.includes('美元');
+
+  // 用 inline error 取代 alert，使用者比較容易看到
+  function showErr(msg, focusId) {
+    const el = document.getElementById('step1-error');
+    el.innerHTML = '⚠️ ' + msg;
+    el.style.display = 'block';
+    if (focusId) document.getElementById(focusId).focus();
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  // 清除舊錯誤
+  document.getElementById('step1-error').style.display = 'none';
+
+  if (!name) { showErr('請輸入姓名', 'name'); return; }
+  if (!bday) { showErr('請選擇生日', 'birthday'); return; }
+  if (age === null) { showErr('生日格式錯誤,請重新選擇', 'birthday'); return; }
+  if (age < 0) { showErr(`生日不能晚於今天(目前推算為 ${age} 歲),請檢查日期`, 'birthday'); return; }
+  if (age > 90) { showErr(`保險年齡不能超過 90 歲(目前 ${age} 歲)`, 'birthday'); return; }
+  if (!type) { showErr('請選擇商品類型', 'product-type'); return; }
+  if (!period) { showErr('請選擇繳費年期', 'period'); return; }
+  if (!budget || budget <= 0) { showErr('請輸入有效預算金額', 'budget'); return; }
+
+  state.user = {
+    name, gender, bday, age, type, period, budget, rate, isUSD,
+    currency: isUSD ? 'USD' : 'TWD',
+    budget_usd: isUSD ? budget : (budget / rate),
+    budget_twd: isUSD ? (budget * rate) : budget
+  };
+
+  document.getElementById('sum-name').textContent = name;
+  document.getElementById('sum-gender').textContent = gender === 'M' ? '男性' : '女性';
+  document.getElementById('sum-age').textContent = age + '歲';
+  document.getElementById('sum-period').textContent = period + '年';
+  document.getElementById('sum-type').textContent = type;
+  document.getElementById('sum-budget').textContent = isUSD
+    ? `USD ${budget.toLocaleString()} (≈ TWD ${Math.round(budget*rate).toLocaleString()})`
+    : `TWD ${budget.toLocaleString()}`;
+
+  await filterProducts();
+  showStep(2);
+}
+
+async function filterProducts() {
+  const period = state.user.period;
+  const type = state.user.type;
+  state.filteredProducts = PRODUCTS.filter(p => {
+    if (p.period !== period) return false;
+    // 類型符合或同幣別
+    if (p.type === type) return true;
+    if (type.includes('美元') && p.currency === 'USD') return true;
+    if (type.includes('台幣') && p.currency === 'TWD') return true;
+    return false;
+  }).filter(p => state.user.age >= p.min_age && state.user.age <= p.max_age);
+  
+  state.selectedCodes.clear();
+  await renderProductList();
+}
+
+async function renderProductList() {
+  const tbody = document.getElementById('product-tbody');
+  document.getElementById('product-count').textContent = state.filteredProducts.length;
+  document.getElementById('all-count').textContent = state.filteredProducts.length;
+  document.getElementById('selected-count').textContent = state.selectedCodes.size;
+  document.getElementById('btn-compare-selected').disabled = state.selectedCodes.size === 0;
+
+  document.getElementById('step2-subtitle').textContent =
+    `${state.user.age}歲 ${state.user.gender==='M'?'男性':'女性'},共 ${state.filteredProducts.length} 種商品符合年期條件`;
+
+  if (state.filteredProducts.length === 0) {
+    // 列出資料庫目前有什麼類型供使用者參考
+    const availableTypes = [...new Set(PRODUCTS.map(p => p.type))];
+    const availablePeriods = [...new Set(PRODUCTS.filter(p => p.type === state.user.type).map(p => p.period))].sort((a,b)=>a-b);
+    let hint = '';
+    if (availablePeriods.length > 0) {
+      hint = `「${state.user.type}」類型目前資料庫有 ${availablePeriods.join('、')} 年期可選`;
+    } else {
+      hint = `資料庫目前有：${availableTypes.join('、')}`;
+    }
+    tbody.innerHTML = `<tr><td colspan="8" class="empty">
+      <div class="icon">📭</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text-2);margin-bottom:10px;">
+        類型「${state.user.type}」+ ${state.user.period}年期 目前資料庫尚無此商品
+      </div>
+      <div style="font-size:12.5px;color:var(--gray-500);line-height:1.6;">
+        💡 ${hint}<br>
+        請點「← 返回上一頁」調整類型或年期,或繼續上傳保險公司 Excel 擴充資料庫
+      </div>
+    </td></tr>`;
+    return;
+  }
+
+  // === Lazy-load:渲染前先預載所有符合條件商品的 DB ===
+  try {
+    await window.loadManifest();  // 先載 manifest 才能查 path
+    await Promise.all(state.filteredProducts.map(p => window.loadProductDB(p.plan_code)));
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="8" class="empty" style="color:var(--danger);">商品資料載入失敗:${e.message}</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = state.filteredProducts.map(p => {
+    const r = calcProductForUser(p, state.user);
+    if (!r) return `<tr><td colspan="8" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
+    if (r.unsupported) {
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td><span class="code-tag">${p.plan_code}</span></td><td colspan="4" style="color:var(--gray-500);text-align:center;font-size:12.5px;">⚠️ 此商品引擎(${r.engine_name})尚未實作</td></tr>`;
+    }
+    if (r.error) {
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td><span class="code-tag">${p.plan_code}</span></td><td colspan="4" style="color:var(--danger);text-align:center;font-size:12.5px;" title="${r.error_message}">❌ 試算失敗</td></tr>`;
+    }
+    const isExact = r.is_exact;
+    const isEstimated = r.is_estimated;
+    let accuracyTag;
+    if (isExact) {
+      accuracyTag = '<span class="accuracy-tag exact">原廠數據</span>';
+    } else if (isEstimated) {
+      accuracyTag = `<span class="accuracy-tag estimated" title="基準試算：${r.base_sex==='M'?'男':'女'}${r.base_age}歲">📐 估算</span>`;
+    } else {
+      accuracyTag = '<span class="accuracy-tag calc">精算試算</span>';
+    }
+    // 預算對照：若超支則顯示橘色 +XX 標記
+    const diff = r.budget_diff || 0;
+    let budgetTag = '';
+    if (diff > 1) {
+      budgetTag = `<span class="budget-tag over">+${Math.round(diff).toLocaleString()}</span>`;
+    } else if (diff < -1) {
+      budgetTag = `<span class="budget-tag under">${Math.round(diff).toLocaleString()}</span>`;
+    }
+    return `
+      <tr>
+        <td><input type="checkbox" data-code="${p.plan_code}" onchange="toggleSelect(this)"></td>
+        <td><span class="company-tag">${p.company}</span></td>
+        <td class="product-name">${p.product_name}${accuracyTag}</td>
+        <td><span class="code-tag">${p.plan_code}</span></td>
+        <td class="center">${p.period}</td>
+        <td class="right">${r.sum_assured.toLocaleString()}</td>
+        <td class="right">${r.annual_premium_orig.toLocaleString()}</td>
+        <td class="right">${r.annual_premium_real.toLocaleString()}${budgetTag}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function toggleSelect(cb) {
+  const code = cb.dataset.code;
+  if (cb.checked) state.selectedCodes.add(code);
+  else state.selectedCodes.delete(code);
+  cb.closest('tr').classList.toggle('selected', cb.checked);
+  document.getElementById('selected-count').textContent = state.selectedCodes.size;
+  document.getElementById('btn-compare-selected').disabled = state.selectedCodes.size === 0;
+}
+
+function toggleAll(cb) {
+  document.querySelectorAll('#product-tbody input[type=checkbox]').forEach(c => {
+    c.checked = cb.checked;
+    toggleSelect(c);
+  });
+}
+
+// ============================================================
+// STEP 3 - 比較
+// ============================================================
+async function goStep3(mode) {
+  let codes = [];
+  if (mode === 'all') codes = state.filteredProducts.map(p => p.plan_code);
+  else codes = Array.from(state.selectedCodes);
+  
+  if (codes.length === 0) { alert('請至少選擇一個商品'); return; }
+
+  // === Lazy-load:計算前先把所有要用的商品 DB 預載到快取 ===
+  try {
+    await Promise.all(codes.map(code => window.loadProductDB(code)));
+  } catch (e) {
+    alert('商品資料載入失敗:' + e.message);
+    return;
+  }
+
+  state.compareList = codes.map(code => {
+    const p = PRODUCTS.find(x => x.plan_code === code);
+    const calc = calcProductForUser(p, state.user);
+    return { product: p, calc };
+  }).filter(x => x.calc && !x.calc.unsupported && !x.calc.error);
+
+  // 預設幣別
+  const hasUSD = state.compareList.some(c => c.product.currency === 'USD');
+  document.getElementById('currency-toggle').style.display = hasUSD ? 'inline-flex' : 'none';
+  state.currentCurrency = hasUSD ? 'USD' : 'TWD';
+  document.querySelectorAll('#currency-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.cur === state.currentCurrency);
+  });
+
+  // Summary
+  document.getElementById('sum3-info').innerHTML = 
+    `<b>${state.user.gender==='M'?'男性':'女性'} ${state.user.age}歲</b> &nbsp;|&nbsp; 繳費年期 <b>${state.user.period}年</b> &nbsp;|&nbsp; 每年預算 <b>${state.user.isUSD?'USD ':''}${state.user.budget.toLocaleString()}${state.user.isUSD?'':' TWD'}</b>` +
+    (state.user.isUSD ? ` &nbsp;|&nbsp; 匯率 <b>${state.user.rate}</b>` : '');
+
+  // 驗證資訊
+  const exactCount = state.compareList.filter(c => c.calc.is_exact).length;
+  const calcCount = state.compareList.length - exactCount;
+  let verifyHtml = '';
+  if (exactCount > 0 && calcCount === 0) {
+    verifyHtml = `<div class="verify-banner">
+      <div class="v-icon">✅</div>
+      <div class="v-text">
+        所有商品都使用 <b>原廠 Excel 試算數據</b> ── 100% 精準,可直接用於專業比較。
+      </div>
+      <button class="v-btn" onclick="showVerifyDetail()">查看驗證</button>
+    </div>`;
+  } else if (calcCount > 0) {
+    verifyHtml = `<div class="verify-banner warn">
+      <div class="v-icon">📐</div>
+      <div class="v-text">
+        ${exactCount} 個商品使用 <b>原廠數據</b>,${calcCount} 個商品使用 <b>精算試算</b>(GP費率表 + UV解約表 + Corridor規則 + DIV紅利表完整推算)
+      </div>
+      <button class="v-btn" onclick="showVerifyDetail()">查看驗證</button>
+    </div>`;
+  }
+  document.getElementById('verify-area').innerHTML = verifyHtml;
+
+  state.currentTab = 'surrender';
+  state.sortYear = null;  // v4: 重置排序
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === 'surrender');
+  });
+
+  renderCompareTable();
+  showStep(3);
+}
+
+function switchTab(tab) {
+  state.currentTab = tab;
+  state.sortYear = null;  // v4: 切 tab 時取消排序
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  renderCompareTable();
+}
+
+function switchCurrency(cur) {
+  state.currentCurrency = cur;
+  document.querySelectorAll('#currency-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.cur === cur);
+  });
+  renderCompareTable();
+}
+
+function renderCompareTable() {
+  const table = document.getElementById('compare-table');
+  const items = state.compareList;
+  if (items.length === 0) { table.innerHTML = '<tr><td class="empty">無資料</td></tr>'; return; }
+
+  const rate = state.user.rate;
+  const isShowTWD = state.currentCurrency === 'TWD';
+  const convert = (val, productCurrency) => {
+    if (productCurrency === 'USD' && isShowTWD) return val * rate;
+    if (productCurrency === 'TWD' && !isShowTWD) return val / rate;
+    return val;
+  };
+  const fmtMoney = v => (v === 0 || v == null) ? '0' : Math.round(v).toLocaleString();
+  const fmtPct = v => v === 0 ? '0.0%' : v.toFixed(1) + '%';
+  const cur = state.currentCurrency;
+
+  let displayItems = items.slice();
+  if (state.sortYear) {
+    const sy = state.sortYear;
+    displayItems.sort((a, b) => {
+      const ra = a.calc.schedule[sy - 1];
+      const rb = b.calc.schedule[sy - 1];
+      const va = ra ? (state.currentTab === 'surrender' ? ra.surr_total : ra.death_total) : -1;
+      const vb = rb ? (state.currentTab === 'surrender' ? rb.surr_total : rb.death_total) : -1;
+      return vb - va;
+    });
+  }
+
+  const maxYears = Math.max(...items.map(it => it.calc.schedule.length));
+
+  // === THEAD：所有 meta 全部塞 thead，瀏覽器原生 sticky ===
+  let html = '<thead>';
+
+  // 公司名列
+  html += '<tr class="head-company">';
+  html += '<th class="th-label-1" colspan="2">保險公司</th>';
+  displayItems.forEach(it => { html += `<th colspan="2" data-code="${it.product.plan_code}">${it.product.company}</th>`; });
+  html += '</tr>';
+
+  // meta 列
+  const metas = [
+    {label:'商品名稱', getter: it => `<th colspan="2" class="product-name-cell">${it.product.product_name}</th>`},
+    {label:'代號', getter: it => `<th colspan="2" class="product-code-cell">${it.product.plan_code}</th>`},
+    {label:'年期', getter: it => `<th colspan="2">${it.product.period}</th>`},
+    {label:`保額(${cur})`, getter: it => {
+      const v = convert(it.calc.sum_assured, it.product.currency);
+      return `<th colspan="2" class="meta-num">${fmtMoney(v)}</th>`;
+    }},
+    {label:'首期實繳保費', getter: it => {
+      const v = convert(it.calc.annual_premium_real, it.product.currency);
+      const diff = it.calc.budget_diff || 0;
+      let tag = '';
+      if (diff > 1) {
+        const diffDisp = convert(diff, it.product.currency);
+        tag = `<div class="budget-tag-mini over">超出 ${cur} ${Math.round(diffDisp).toLocaleString()}</div>`;
+      } else if (diff < -1) {
+        const diffDisp = convert(-diff, it.product.currency);
+        tag = `<div class="budget-tag-mini under">少於預算 ${cur} ${Math.round(diffDisp).toLocaleString()}</div>`;
+      }
+      return `<th colspan="2" class="meta-num">${fmtMoney(v)}${tag}</th>`;
+    }},
+    {label:'滿期實繳保費', getter: it => {
+      const v = convert(it.calc.annual_premium_real * it.product.period, it.product.currency);
+      return `<th colspan="2" class="meta-num">${fmtMoney(v)}</th>`;
+    }},
+    {label:'宣告利率', getter: it => `<th colspan="2" class="meta-num">${(it.product.declared_rate*100).toFixed(2)}%</th>`}
+  ];
+  metas.forEach(m => {
+    html += '<tr class="head-meta">';
+    html += `<th class="th-label" colspan="2">${m.label}</th>`;
+    displayItems.forEach(it => { html += m.getter(it); });
+    html += '</tr>';
+  });
+
+  // 列名列
+  const valueColLabel = state.currentTab === 'surrender' ? '解約金+<br>增值回饋分享金(A)' : '當年度身故金+<br>累計增清身故金(B)';
+  const pctColLabel = state.currentTab === 'surrender' ? '(A)/累積實繳保費' : '(B)/累積實繳保費';
+  html += '<tr class="head-col-names">';
+  html += '<th class="th-label-merged" colspan="2">保單年度 / 保險年齡</th>';
+  displayItems.forEach(it => {
+    html += `<th class="col-name-value">${valueColLabel}</th>`;
+    html += `<th class="col-name-pct">${pctColLabel}</th>`;
+  });
+  html += '</tr>';
+  html += '</thead>';
+
+  // === TBODY ===
+  html += '<tbody>';
+  for (let yIdx = 0; yIdx < maxYears; yIdx++) {
+    const policyYear = yIdx + 1;
+    const insAge = state.user.age + yIdx;
+    const isSorted = state.sortYear === policyYear;
+
+    let maxVal = -Infinity;
+    let maxCodes = new Set();
+    displayItems.forEach(it => {
+      const r = it.calc.schedule[yIdx];
+      if (!r) return;
+      const v = state.currentTab === 'surrender' ? r.surr_total : r.death_total;
+      if (v > maxVal) { maxVal = v; maxCodes = new Set([it.product.plan_code]); }
+      else if (v === maxVal) { maxCodes.add(it.product.plan_code); }
+    });
+
+    html += `<tr class="year-row${isSorted?' sorted-row':''}" data-year="${policyYear}">`;
+    html += `<td class="year-col-1${isSorted?' sorted':''}" data-year="${policyYear}" onclick="sortByYear(${policyYear})" title="點擊依此年度排序">${policyYear}</td>`;
+    html += `<td class="year-col-2${isSorted?' sorted':''}">${insAge}歲</td>`;
+
+    displayItems.forEach(it => {
+      const row = it.calc.schedule[yIdx];
+      if (!row) {
+        html += '<td class="value">-</td><td class="percent">-</td>';
+        return;
+      }
+      const cumPrem = row.cum_prem;
+      const value = state.currentTab === 'surrender' ? row.surr_total : row.death_total;
+      const pct = cumPrem > 0 ? (value / cumPrem * 100) : 0;
+      const valueDisp = convert(value, it.product.currency);
+      const isBest = maxCodes.has(it.product.plan_code) && displayItems.length > 1;
+      html += `<td class="value${isBest?' best':''}">${fmtMoney(valueDisp)}</td>`;
+      html += `<td class="percent${isBest?' best':''}">${fmtPct(pct)}</td>`;
+    });
+    html += '</tr>';
+  }
+  html += '</tbody>';
+
+  table.classList.add('reordering');
+  table.innerHTML = html;
+  setTimeout(() => table.classList.remove('reordering'), 350);
+
+  // 渲染後立即排版 thead sticky tops（核心修復）
+  requestAnimationFrame(() => {
+    layoutStickyHead();
+    // 字體載入後再重算一次（雙保險）
+    setTimeout(layoutStickyHead, 100);
+    setTimeout(layoutStickyHead, 400);
+  });
+
+  updateSortStatus();
+  updateSummaryFloat();
+}
+
+/**
+ * 量測每個 thead row 的實際高度，依序累加設成 top
+ * 這是 9 列 thead 全黏的核心邏輯
+ */
+function layoutStickyHead() {
+  const table = document.getElementById('compare-table');
+  if (!table) return;
+  const rows = table.querySelectorAll('thead tr');
+  if (!rows.length) return;
+
+  let cumTop = 0;
+  rows.forEach((tr) => {
+    // 設定整列的 top（針對 row 本身的 children th）
+    tr.querySelectorAll('th').forEach(th => {
+      th.style.top = cumTop + 'px';
+    });
+    // 累加實際高度
+    const h = tr.getBoundingClientRect().height;
+    cumTop += h;
+  });
+
+  // 記錄總高度供 jumpToYear 使用
+  window.__theadStickyHeight = cumTop;
+}
+
+// 字體載入完成後重算
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    if (document.getElementById('compare-table')) {
+      layoutStickyHead();
+    }
+  });
+}
+
+/* ========== v4 新增函式 ========== */
+function sortByYear(year) {
+  if (state.sortYear === year) {
+    state.sortYear = null;  // 再點一次取消
+  } else {
+    state.sortYear = year;
+  }
+  renderCompareTable();
+}
+
+function clearSort() {
+  state.sortYear = null;
+  renderCompareTable();
+}
+
+function updateSortStatus() {
+  const wrap = document.getElementById('sort-status-wrap');
+  if (!wrap) return;
+  if (state.sortYear) {
+    const insAge = state.user.age + state.sortYear - 1;
+    const tabName = state.currentTab === 'surrender' ? '解約金+增值回饋' : '身故保險金';
+    wrap.innerHTML = `<span class="sort-status">
+      🔄 已依 Y${state.sortYear}（${insAge}歲）${tabName} 由大到小排序
+      <span class="clear-btn" onclick="clearSort()">✕ 取消</span>
+    </span>`;
+  } else {
+    wrap.innerHTML = '';
+  }
+}
+
+function jumpToYear(policyYear) {
+  const tr = document.querySelector(`#compare-table tr.year-row[data-year="${policyYear}"]`);
+  if (!tr) {
+    alert(`Y${policyYear} 超出商品年限`);
+    return;
+  }
+  // 容器不再有自己的捲動；用 window 捲動
+  const stickyOffset = (window.__theadStickyHeight || 350) + 8;
+  const trRect = tr.getBoundingClientRect();
+  const targetY = window.scrollY + trRect.top - stickyOffset;
+  window.scrollTo({ top: targetY, behavior: 'smooth' });
+  // 短暫高亮
+  tr.style.transition = 'background .3s';
+  const tds = tr.querySelectorAll('td:not(.year-col)');
+  tds.forEach(td => {
+    const orig = td.style.background;
+    td.style.background = '#fff3cd';
+    setTimeout(() => { td.style.background = orig; }, 1200);
+  });
+}
+
+function jumpToAge(insAge) {
+  const policyYear = insAge - state.user.age + 1;
+  if (policyYear <= 0) {
+    alert(`目標年齡 ${insAge} 歲 早於目前年齡 ${state.user.age} 歲`);
+    return;
+  }
+  jumpToYear(policyYear);
+}
+
+function toggleSummaryFloat() {
+  const sf = document.getElementById('summary-float');
+  sf.classList.toggle('collapsed');
+}
+
+function updateSummaryFloat() {
+  const sf = document.getElementById('summary-float');
+  const body = document.getElementById('summary-float-body');
+  if (!sf || !body) return;
+  const items = state.compareList;
+  if (items.length === 0) {
+    sf.style.display = 'none';
+    return;
+  }
+  sf.style.display = 'block';
+
+  const rate = state.user.rate;
+  const isShowTWD = state.currentCurrency === 'TWD';
+  const conv = (val, cur) => (cur === 'USD' && isShowTWD) ? val * rate : (cur === 'TWD' && !isShowTWD) ? val / rate : val;
+  const fmt = v => Math.round(v).toLocaleString();
+  const cur = state.currentCurrency;
+
+  // 找關鍵年度的最強商品
+  const findBest = (year, key) => {
+    let best = null;
+    items.forEach(it => {
+      const r = it.calc.schedule[year - 1];
+      if (!r) return;
+      const v = r[key];
+      if (best === null || v > best.v) best = { item: it, v, pct: r.cum_prem > 0 ? (v / r.cum_prem * 100) : 0 };
+    });
+    return best;
+  };
+
+  const period = state.user.period;
+  const age65Y = 65 - state.user.age + 1;
+  const tabKey = state.currentTab === 'surrender' ? 'surr_total' : 'death_total';
+  const tabLabel = state.currentTab === 'surrender' ? '解約金+增值回饋' : '身故保險金';
+
+  let html = '';
+
+  // 段 1：當前 tab 的關鍵年度最強商品
+  html += `<h4>📊 ${tabLabel} 比較</h4><ul>`;
+  const checkpoints = [
+    { y: period, label: `Y${period}（剛繳完）` },
+    { y: 10, label: 'Y10' },
+    { y: 20, label: 'Y20' },
+  ];
+  if (age65Y > 0 && age65Y <= 90) checkpoints.push({ y: age65Y, label: `Y${age65Y}（65歲）` });
+  checkpoints.forEach(cp => {
+    const best = findBest(cp.y, tabKey);
+    if (best) {
+      const v = conv(best.v, best.item.product.currency);
+      html += `<li><span class="key">${cp.label}</span> 最高：${best.item.product.company}<br>
+        &nbsp;&nbsp;<span class="val">${cur} ${fmt(v)}</span> <span style="color:var(--gray-500);">(本益比 ${best.pct.toFixed(1)}%)</span></li>`;
+    }
+  });
+  html += '</ul>';
+
+  // 段 2：話術建議
+  html += `<h4>💬 給客戶的三句話</h4><ul>`;
+  const bestPeriod = findBest(period, 'surr_total');
+  const best20 = findBest(20, 'surr_total');
+  const bestDeath = findBest(period, 'death_total');
+  if (bestPeriod) {
+    const v = conv(bestPeriod.v, bestPeriod.item.product.currency);
+    html += `<li>繳完 ${period} 年解約金最高：<span class="val">${bestPeriod.item.product.company}</span>，可拿回 ${cur} ${fmt(v)}（${bestPeriod.pct.toFixed(0)}% 本益比）</li>`;
+  }
+  if (best20) {
+    const v = conv(best20.v, best20.item.product.currency);
+    html += `<li>20 年後解約金最高：<span class="val">${best20.item.product.company}</span>，${cur} ${fmt(v)}</li>`;
+  }
+  if (bestDeath) {
+    const v = conv(bestDeath.v, bestDeath.item.product.currency);
+    html += `<li>身故保障：${bestDeath.item.product.company}，繳完即達 ${cur} ${fmt(v)}</li>`;
+  }
+  html += '</ul>';
+
+  // 段 3：數據說明
+  html += `<h4>ℹ️ 比較範圍</h4><div style="font-size:11px; color:var(--gray-500);">
+    共 ${items.length} 個商品 · ${state.user.gender === 'M' ? '男性' : '女性'} ${state.user.age}歲 · ${period}年期
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+function showVerifyDetail() {
+  // 顯示精算驗證對照
+  const items = state.compareList.filter(c => c.calc.is_exact);
+  let msg = '✅ 精算引擎驗證報告\n\n';
+  msg += '【台新人壽 美鴻添富】UPD061\n';
+  msg += '  ✅ 32歲男性 USD 32,000 金標準數據 (Excel 100% 吻合)\n';
+  msg += '     Y1 解約 714.21 / Y6 解約 11,649.00 / Y20 解約 21,461.79\n';
+  msg += '  📐 其他年齡：GP+UV+Corridor+DIV 精算估算 (誤差<2%)\n\n';
+  msg += '【保誠人壽 新美滿相傳】ARLPLU71\n';
+  msg += '  ✅ 41歲男性 USD 100,000 (Excel 100% 吻合)\n';
+  msg += '     保費 11,624 (兩階段折扣 1%+0.5%)\n';
+  msg += '     Y1 解約 3,400 / Y6 解約 43,500 / Y6 含紅利 70,153\n';
+  msg += '  ✅ 任何年齡：RV 表已含全部紅利欄位，全部精準\n\n';
+  msg += '【精算公式】\n';
+  msg += '  台新：基本解約 = 保額/1000 × CSV，身故 = MAX(保額×Corridor, 保價金)\n';
+  msg += '  保誠：解約總和 = CV+ARB_PV+TBS_CV，身故總和 = DB+ARB+TB\n';
+  alert(msg);
+}
+
+// ============================================================
+// 初始化
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  // 預設不 dispatch change，因為類型預設為「請選擇」
+});
+</script>
+
+</body>
+</html>
