@@ -841,7 +841,9 @@ body {
             <option value="2">2 年</option>
             <option value="3">3 年</option>
             <option value="6">6 年</option>
+            <option value="8">8 年</option>
             <option value="10">10 年</option>
+            <option value="12">12 年</option>
             <option value="20">20 年</option>
           </select>
         </div>
@@ -1136,13 +1138,14 @@ const PRODUCTS = [
     product_name: '凱基人壽紅利幸福美元分紅終身壽險-定期給付型',
     period: 6,
     currency: 'USD',
-    type: '美元利率變動型終身壽險',
-    declared_rate: 0,
+    type: '美元分紅終身壽險',
+    declared_rate: 0.025,    // 預定利率(分紅型用 declared_rate 欄位儲存)
     predicted_rate: 0,
     discount: 0.025,
     discount_method: 'simple',
-    engine: 'twlife_v1',
-    unit_size: 1000,
+    engine: 'kgi_rv_v1',
+    unit_size: 10000,        // 凱基分紅型每萬美元保額為一單位
+    sa_step: 1000,
     min_sa: 3000,
     max_sa: 3000000,
     min_age: 0, max_age: 75
@@ -1153,15 +1156,16 @@ const PRODUCTS = [
     product_name: '凱基人壽紅利美滿美元分紅終身壽險-定期給付型',
     period: 6,
     currency: 'USD',
-    type: '美元利率變動型終身壽險',
-    declared_rate: 0,
+    type: '美元分紅終身壽險',
+    declared_rate: 0.0185,   // 預定利率
     predicted_rate: 0,
     discount: 0.015,
     discount_method: 'simple',
-    engine: 'twlife_v1',
-    unit_size: 1000,
-    min_sa: 10000,
-    max_sa: 5000000,
+    engine: 'kgi_rv_v1',
+    unit_size: 10000,        // 凱基分紅型每萬美元保額為一單位
+    sa_step: 1000,
+    min_sa: 3000,
+    max_sa: 3000000,
     min_age: 0, max_age: 75
   },
   {
@@ -1265,6 +1269,109 @@ const PRODUCTS = [
     min_sa: 10000,
     max_sa: 3000000,
     min_age: 0, max_age: 74
+  },
+  // ===== 全球人壽 6 商品(twlife_v1 引擎,逐年 schedule + cum_prem 增量法) =====
+  {
+    plan_code: 'FYW',
+    company: '全球人壽',
+    product_name: '全球人壽美富88利率變動型美元終身壽險(定額給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0425,
+    predicted_rate: 0,
+    discount: 0.044639,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FVW',
+    company: '全球人壽',
+    product_name: '全球人壽豪美368利率變動型美元終身壽險(定額給付型)',
+    period: 8,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0425,
+    predicted_rate: 0,
+    discount: 0.044536,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FKD',
+    company: '全球人壽',
+    product_name: '全球人壽豪美樂利利率變動型美元終身壽險(定額給付型)',
+    period: 12,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.043,
+    predicted_rate: 0,
+    discount: 0.038513,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FDW',
+    company: '全球人壽',
+    product_name: '全球人壽88美傳承利率變動型美元終身壽險(定額給付型)',
+    period: 20,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.025,
+    predicted_rate: 0,
+    discount: 0.054276,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FBW',
+    company: '全球人壽',
+    product_name: '全球人壽豪神六六利率變動型美元終身壽險(定額給付型)',
+    period: 6,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0405,
+    predicted_rate: 0,
+    discount: 0.04447,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'F8W',
+    company: '全球人壽',
+    product_name: '全球人壽鑫億68利率變動型美元終身壽險(定額給付型)',
+    period: 8,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0435,
+    predicted_rate: 0,
+    discount: 0.054418,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
   }
 ];
 
@@ -1279,7 +1386,10 @@ const PRODUCTS = [
  * 
  * engines:
  *   - taishin_v1: 台新人壽（GP表+UV表+Corridor+DIV紅利累積）
- *   - prudential_v1: 保誠人壽（RV表已含全部紅利欄位，直接讀）
+ *   - prudential_v1: 保誠人壽舊版(RV表已含全部紅利欄位，直接讀)
+ *   - prudential_v2: 保誠人壽新版分紅(逐年表 + 三情境分紅)
+ *   - twlife_v1: 台壽 / 凱基利變 / 全球(逐年 schedule + cum_prem 增量法)
+ *   - kgi_rv_v1: 凱基分紅型(rv_table:gp + db + cv + 8 張紅利情境表;unit_size=10000)
  * ================================================================ */
 
 // === 通用：取得指定 plan_code 的 DB（需先 await loadProductDB 預載到快取） ===
@@ -1472,21 +1582,31 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   const baseSA = db.meta.base_sa;
   const ratio = sumAssured / baseSA;
   
-  // 用基準保費比例反推實繳保費
-  const annualPremiumReal = Math.round(db.meta.base_premium * ratio);
-  const annualPremiumOrig = Math.round(annualPremiumReal / (1 - db.meta.discount));
+  // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio
+  // 改動原因:全球人壽 FYW/FVW/FKD/FBW 在 period 內每年保費隨年齡遞減(高保費級距折扣)
+  //          對台壽 / 凱基 / 全球 FDW/F8W (cum_prem 線性遞增) 結果不變
+  let prevCum = 0;
+  const schedule = db.schedule.map(r => {
+    const cumScaled = Math.round(r.cum_prem * ratio);
+    const yearlyPrem = cumScaled - prevCum;
+    prevCum = cumScaled;
+    return {
+      y: r.y,
+      age: age + r.y - 1,
+      prem: r.y <= period ? yearlyPrem : 0,
+      cum_prem: cumScaled,
+      surr_pure: +(r.cv_basic * ratio).toFixed(2),
+      surr_total: +(r.cv_total * ratio).toFixed(2),
+      death_pure: Math.round(r.death_benefit * ratio),
+      death_total: +(r.death_benefit * ratio).toFixed(2),
+    };
+  });
   
-  // 逐年資料按比例縮放
-  const schedule = db.schedule.map(r => ({
-    y: r.y,
-    age: age + r.y - 1,
-    prem: r.y <= period ? annualPremiumReal : 0,
-    cum_prem: Math.round(r.cum_prem * ratio),
-    surr_pure: +(r.cv_basic * ratio).toFixed(2),
-    surr_total: +(r.cv_total * ratio).toFixed(2),
-    death_pure: Math.round(r.death_benefit * ratio),
-    death_total: +(r.death_benefit * ratio).toFixed(2),
-  }));
+  // annual_premium_real 改用 Y1 實繳(對齊 STEP3 比較表 Y1 數字)
+  const annualPremiumReal = schedule[0]?.prem ?? Math.round(db.meta.base_premium * ratio);
+  const annualPremiumOrig = db.meta.discount
+    ? Math.round(annualPremiumReal / (1 - db.meta.discount))
+    : annualPremiumReal;
   
   // 是否完全等於基準（同年齡同性別）→ exact
   const isExact = sex === db.meta.base_sex && age === db.meta.base_age;
@@ -1590,6 +1710,122 @@ function calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budgetReal, prod
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
 
+// === 凱基分紅型引擎 v1 (rv_table 結構,unit_size = 10000) ===
+// 適用商品:5UEJ / 5UEK 等凱基分紅型(rv_table 內含 gp/db/cv + 8 張紅利情境表)
+// 紅利規則:
+//   surr_total  = (cv[sex][age][dur]  + div_m_3[sex][age][dur-1]) × (sa / 10000)
+//   death_total = (db[sex][age][dur]  + div_m_4[sex][age][dur-1]) × (sa / 10000)
+// 注意:
+//   - cv/db 長度 112 對應 dur 0~111;div_*_* 長度 111 對應 dur 1~111(沒有 dur=0)
+//   - 引擎讀 div_m_*[dur-1] 取對應年度的紅利
+//   - Y1-Y3 div_m_* 通常 = 0(分紅未生效),屬正確值
+//   - 5UEJ Y2 起 100% 死亡保額;5UEK 前低後高(Y1=0/Y2-Y4=1%/2%/3%/Y5+=100%),照 db 表如實呈現
+//   - 預設用「中等情境」(div_m_3 / div_m_4),低紅利欄位 (div_l_*) 保留供 UI 切換
+function actuarialCalc_kgi_rv_v1(plan, sex, age, sumAssured, period) {
+  const db = getDB(plan);
+  if (!db || !db.rv_table) return null;
+  const unitSize = db.meta.unit_size || 10000;
+  const units = sumAssured / unitSize;
+  const ageStr = String(age);
+  
+  const gp = db.rv_table.gp?.[sex]?.[ageStr];
+  if (gp == null) return null;
+  
+  // 折扣前 / 折扣後 年保費
+  const discount = db.meta.discount || 0;
+  const annualPremiumOrig = +(units * gp).toFixed(2);
+  const annualPremiumReal = Math.round(annualPremiumOrig * (1 - discount));
+  
+  const dbArr = db.rv_table.db?.[sex]?.[ageStr];     // 長度 112,idx = dur (0~111)
+  const cvArr = db.rv_table.cv?.[sex]?.[ageStr];     // 長度 112
+  const dm3Arr = db.rv_table.div_m_3?.[sex]?.[ageStr] || [];  // 長度 111,idx = dur-1
+  const dm4Arr = db.rv_table.div_m_4?.[sex]?.[ageStr] || [];
+  const dl3Arr = db.rv_table.div_l_3?.[sex]?.[ageStr] || [];
+  const dl4Arr = db.rv_table.div_l_4?.[sex]?.[ageStr] || [];
+  if (!dbArr || !cvArr) return null;
+  
+  // 找出最大 duration:cv 末尾通常會降到 0 表示保單終止,取最後一個非零 idx
+  let maxDur = 0;
+  for (let i = cvArr.length - 1; i >= 0; i--) {
+    if (cvArr[i] > 0 || dbArr[i] > 0) { maxDur = i; break; }
+  }
+  if (maxDur < 1) maxDur = Math.min(cvArr.length, 111) - 1;
+  
+  const schedule = [];
+  let cumPrem = 0;
+  for (let dur = 1; dur <= maxDur; dur++) {
+    const prem = dur <= period ? annualPremiumReal : 0;
+    cumPrem += prem;
+    
+    const cvBase = cvArr[dur] ?? 0;
+    const dbBase = dbArr[dur] ?? 0;
+    const dm3 = dm3Arr[dur-1] ?? 0;
+    const dm4 = dm4Arr[dur-1] ?? 0;
+    const dl3 = dl3Arr[dur-1] ?? 0;
+    const dl4 = dl4Arr[dur-1] ?? 0;
+    
+    // 主數字 = 中等情境 (div_m_3 / div_m_4)
+    const surrPure = +(cvBase * units).toFixed(2);
+    const surrTotal = +((cvBase + dm3) * units).toFixed(2);
+    const deathPure = +(dbBase * units).toFixed(2);
+    const deathTotal = +((dbBase + dm4) * units).toFixed(2);
+    
+    schedule.push({
+      y: dur,
+      age: age + dur - 1,
+      prem: Math.round(prem),
+      cum_prem: Math.round(cumPrem),
+      surr_pure: surrPure,         // 不含紅利的基本解約金
+      surr_total: surrTotal,       // 中等情境總解約金
+      death_pure: Math.round(deathPure),  // 不含紅利的基本身故金(誠實照表呈現,5UEK Y1-Y4 會是 0/100/200/300)
+      death_total: +deathTotal.toFixed(2),
+      // 三情境完整資料(供進階 UI 切換)
+      scenarios: {
+        none: {
+          cv_total: surrPure,
+          death: +deathPure.toFixed(2),
+          dividend_year: 0,
+        },
+        mid: {
+          cv_total: surrTotal,
+          death: +deathTotal.toFixed(2),
+          dividend_year: Math.round(dm3 * units),
+        },
+        low: {
+          cv_total: +((cvBase + dl3) * units).toFixed(2),
+          death: +((dbBase + dl4) * units).toFixed(2),
+          dividend_year: Math.round(dl3 * units),
+        }
+      }
+    });
+  }
+  
+  return {
+    gp,
+    sum_assured: sumAssured,
+    annual_premium_orig: annualPremiumOrig,
+    annual_premium_real: annualPremiumReal,
+    schedule,
+    is_exact: false,  // kgi_rv_v1 是逐年齡查表,任何年齡都是「精算」非估算;但保留欄位給 UI 一致性
+    base_age: age,
+    base_sex: sex,
+  };
+}
+
+function calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budgetReal, productMeta) {
+  const db = getDB(plan);
+  if (!db || !db.rv_table) return null;
+  const unitSize = db.meta.unit_size || 10000;
+  const ageStr = String(age);
+  const gp = db.rv_table.gp?.[sex]?.[ageStr];
+  if (gp == null) return null;
+  // budgetReal = units × gp × (1 - discount)  →  units = budgetReal / gp / (1-d)
+  const discount = db.meta.discount || 0;
+  const units = budgetReal / gp / (1 - discount);
+  const rawSA = units * unitSize;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+
 // === Dispatcher ===
 function calcProductForUser(productMeta, user) {
   try {
@@ -1608,6 +1844,10 @@ function calcProductForUser(productMeta, user) {
       sumAssured = calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;
       result = actuarialCalc_prudential_v2(plan, sex, age, sumAssured, user.period);
+    } else if (engine === 'kgi_rv_v1') {
+      sumAssured = calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budget, productMeta);
+      if (!sumAssured) return null;
+      result = actuarialCalc_kgi_rv_v1(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'twlife_v1') {
       sumAssured = calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;

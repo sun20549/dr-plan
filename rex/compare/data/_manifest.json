@@ -85,9 +85,12 @@
     "product_name": "凱基人壽紅利幸福美元分紅終身壽險-定期給付型",
     "currency": "USD",
     "period": 6,
-    "engine": "twlife_v1",
+    "engine": "kgi_rv_v1",
     "product_code": "5UEJ",
-    "path": "KGI/5UEJ.json"
+    "path": "KGI/5UEJ.json",
+    "unit_size": 10000,
+    "declared_rate": 0.025,
+    "dividend_option": "以繳清保險方式增加保險金額"
   },
   {
     "key": "5UEK",
@@ -96,9 +99,12 @@
     "product_name": "凱基人壽紅利美滿美元分紅終身壽險-定期給付型",
     "currency": "USD",
     "period": 6,
-    "engine": "twlife_v1",
+    "engine": "kgi_rv_v1",
     "product_code": "5UEK",
-    "path": "KGI/5UEK.json"
+    "path": "KGI/5UEK.json",
+    "unit_size": 10000,
+    "declared_rate": 0.0185,
+    "dividend_option": "以繳清保險方式增加保險金額"
   },
   {
     "key": "6U3Y",
@@ -168,5 +174,89 @@
     "engine": "prudential_v2",
     "product_code": "ARLPLU64",
     "path": "prudential/ARLPLU64.json"
+  },
+  {
+    "key": "FYW",
+    "company": "全球人壽",
+    "plan_code": "FYW",
+    "product_name": "全球人壽美富88利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 6,
+    "engine": "twlife_v1",
+    "declared_rate": 0.0425,
+    "product_code": "FYW",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/FYW.json"
+  },
+  {
+    "key": "FVW",
+    "company": "全球人壽",
+    "plan_code": "FVW",
+    "product_name": "全球人壽豪美368利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 8,
+    "engine": "twlife_v1",
+    "declared_rate": 0.0425,
+    "product_code": "FVW",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/FVW.json"
+  },
+  {
+    "key": "FKD",
+    "company": "全球人壽",
+    "plan_code": "FKD",
+    "product_name": "全球人壽豪美樂利利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 12,
+    "engine": "twlife_v1",
+    "declared_rate": 0.043,
+    "product_code": "FKD",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/FKD.json"
+  },
+  {
+    "key": "FDW",
+    "company": "全球人壽",
+    "plan_code": "FDW",
+    "product_name": "全球人壽88美傳承利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 20,
+    "engine": "twlife_v1",
+    "declared_rate": 0.025,
+    "product_code": "FDW",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/FDW.json"
+  },
+  {
+    "key": "FBW",
+    "company": "全球人壽",
+    "plan_code": "FBW",
+    "product_name": "全球人壽豪神六六利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 6,
+    "engine": "twlife_v1",
+    "declared_rate": 0.0405,
+    "product_code": "FBW",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/FBW.json"
+  },
+  {
+    "key": "F8W",
+    "company": "全球人壽",
+    "plan_code": "F8W",
+    "product_name": "全球人壽鑫億68利率變動型美元終身壽險(定額給付型)",
+    "currency": "USD",
+    "period": 8,
+    "engine": "twlife_v1",
+    "declared_rate": 0.0435,
+    "product_code": "F8W",
+    "min_age": 0,
+    "max_age": 75,
+    "path": "transglobe/F8W.json"
   }
 ]
