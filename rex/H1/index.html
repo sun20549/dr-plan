@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元大人壽 新終身醫療還本保險｜建議書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --gold-light: #FBF0D8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+  }
+
+  /* ────── HEADER ────── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-icon {
+    width: 86px; height: 86px;
+    background: linear-gradient(145deg, #ffffff, #e8eef2);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      inset 0 1px 2px rgba(255,255,255,0.8);
+  }
+  .logo-icon-text {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.15;
+  }
+  .logo-icon-text .yt {
+    display: block;
+    font-size: 20px;
+    color: var(--orange);
+    margin-bottom: 2px;
+  }
+
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1.5px;
+    font-style: italic;
+  }
+  .logo-text .tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    background: rgba(232,160,32,0.08);
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .header-center .pre-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .header-center .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 110px;
+    color: var(--orange);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: -4px 0 -4px;
+  }
+  .header-center .big-number span {
+    font-size: 48px;
+    color: white;
+    font-weight: 400;
+  }
+  .header-center .sub-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 5px;
+    text-indent: 5px;
+    background: linear-gradient(90deg, #ffffff 0%, #f0f4f8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 200px;
+  }
+  .badge {
+    background: linear-gradient(135deg, #F05A28 0%, #D04618 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 14px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .badge::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #E8A020;
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .badge-line1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  .badge-line2 {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .badge-teal {
+    background: linear-gradient(135deg, var(--teal) 0%, #155057 100%);
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .badge-teal strong {
+    display: block;
+    font-size: 16px;
+    margin-top: 2px;
+    letter-spacing: 1.5px;
+  }
+
+  /* ────── TAGLINE BAR ────── */
+  .tagline-bar {
+    background: var(--teal);
+    padding: 12px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .tagline-bar span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ────── BODY ────── */
+  .body { padding: 40px 48px; }
+
+  .section-title-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .section-title-icon::before {
+    content: '';
+    width: 5px;
+    height: 22px;
+    background: var(--orange);
+    border-radius: 3px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 18px;
+    margin-left: 15px;
+  }
+
+  /* ────── 3 大特色 ────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .feature-card {
+    border-radius: 16px;
+    padding: 22px 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid;
+    background: #fafafa;
+    transition: transform .25s ease;
+  }
+  .feature-card:hover { transform: translateY(-3px); }
+  .feature-card.fc1 { border-color: var(--orange); background: linear-gradient(160deg, #fff 50%, var(--orange-light) 100%); }
+  .feature-card.fc2 { border-color: var(--teal); background: linear-gradient(160deg, #fff 50%, var(--teal-light) 100%); }
+  .feature-card.fc3 { border-color: var(--gold); background: linear-gradient(160deg, #fff 50%, var(--gold-light) 100%); }
+
+  .feature-icon-wrap {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 28px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  }
+  .feature-card.fc1 .feature-icon-wrap { background: var(--orange); color: white; }
+  .feature-card.fc2 .feature-icon-wrap { background: var(--teal); color: white; }
+  .feature-card.fc3 .feature-icon-wrap { background: var(--gold); color: white; }
+
+  .feature-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .feature-desc {
+    font-size: 12.5px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .feature-desc strong {
+    color: var(--orange);
+    font-weight: 900;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .feature-card.fc2 .feature-desc strong { color: var(--teal); }
+  .feature-card.fc3 .feature-desc strong { color: var(--gold); }
+
+  /* ────── 投保範例 ────── */
+  .case-section {
+    margin-bottom: 36px;
+    padding: 28px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fff 0%, #faf6ee 100%);
+    border: 2px solid #f0e8d2;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-section::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .case-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .case-tag {
+    background: var(--gold);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .case-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+  }
+  .case-content {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 24px;
+    position: relative;
+    align-items: center;
+  }
+  .case-info {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1.5px solid #eee;
+  }
+  .case-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 13px;
+  }
+  .case-info-row:last-child { border-bottom: none; }
+  .case-info-label { color: #888; font-weight: 600; }
+  .case-info-value { color: var(--navy); font-weight: 700; }
+  .case-info-value.hl {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+  }
+
+  .case-highlight {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(13,42,58,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .case-highlight::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(240,90,40,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .case-highlight-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .case-highlight-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .case-highlight-amount span {
+    font-size: 22px;
+    color: white;
+    margin-left: 4px;
+  }
+  .case-highlight-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 1px;
+    position: relative;
+  }
+
+  /* ────── 給付項目表 ────── */
+  .table-section { margin-bottom: 36px; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  .data-table thead tr { background: var(--navy); }
+  .data-table thead th {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 10px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.3;
+  }
+  .data-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .data-table tbody tr:nth-child(odd) { background: white; }
+  .data-table tbody tr.hl-row td { background: var(--orange-light); }
+  .data-table tbody tr.hl-row td:first-child { color: var(--orange); font-weight: 900; }
+
+  .data-table td {
+    padding: 14px 10px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .data-table td:first-child {
+    text-align: left;
+    padding-left: 18px;
+    font-weight: 700;
+  }
+  .data-table td.num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .data-table td.teal-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--teal);
+  }
+  .data-table .item-desc {
+    font-size: 11px;
+    color: #888;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  /* ────── 保障時間軸 ────── */
+  .timeline-section {
+    margin-bottom: 36px;
+    padding: 30px 28px;
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+    border-radius: 18px;
+    border: 2px solid #eee;
+  }
+  .timeline {
+    position: relative;
+    padding: 30px 0 20px;
+    margin-top: 20px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 44px;
+    left: 8%;
+    right: 8%;
+    height: 4px;
+    background: linear-gradient(to right, var(--orange) 0%, var(--gold) 50%, var(--teal) 100%);
+    border-radius: 2px;
+  }
+  .timeline-points {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+  .timeline-point {
+    text-align: center;
+    width: 22%;
+    position: relative;
+  }
+  .tp-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid var(--orange);
+    margin: 0 auto 12px;
+    box-shadow: 0 4px 10px rgba(240,90,40,0.3);
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-point:nth-child(2) .tp-dot { border-color: var(--gold); box-shadow: 0 4px 10px rgba(232,160,32,0.3); }
+  .timeline-point:nth-child(3) .tp-dot { border-color: var(--gold); box-shadow: 0 4px 10px rgba(232,160,32,0.3); }
+  .timeline-point:nth-child(4) .tp-dot { border-color: var(--teal); box-shadow: 0 4px 10px rgba(26,107,114,0.3); }
+
+  .tp-age {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .tp-age .unit { font-size: 14px; color: #888; }
+  .tp-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .tp-event {
+    margin-top: 8px;
+    padding: 4px 10px;
+    background: var(--orange-light);
+    color: var(--orange);
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+  }
+  .timeline-point:nth-child(2) .tp-event,
+  .timeline-point:nth-child(3) .tp-event { background: var(--gold-light); color: #b87a14; }
+  .timeline-point:nth-child(4) .tp-event { background: var(--teal-light); color: var(--teal); }
+
+  /* ────── 投保規則 + 折扣 ────── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .rule-card {
+    padding: 22px;
+    border-radius: 16px;
+    background: #fafafa;
+    border: 2px solid #eee;
+  }
+  .rule-card-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed rgba(240,90,40,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rule-card-title-icon {
+    width: 26px; height: 26px;
+    background: var(--orange);
+    color: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .rule-card.r2 .rule-card-title-icon { background: var(--teal); }
+
+  .rule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: white;
+    border-radius: 10px;
+    font-size: 13px;
+    border: 1px solid #eee;
+  }
+  .rule-item-label { color: #555; font-weight: 600; }
+  .rule-item-value { color: var(--navy); font-weight: 800; }
+  .rule-item-value.hl {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* ═══════════════════════════════════════════
+     互動試算系統
+     ═══════════════════════════════════════════ */
+  .calc-section {
+    margin-bottom: 36px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(13,42,58,0.12);
+    border: 2px solid var(--orange);
+    background: white;
+  }
+  .calc-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    padding: 22px 28px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .calc-header::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(240,90,40,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .calc-header-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 6px 16px rgba(240,90,40,0.4);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .calc-header-text { position: relative; }
+  .calc-header-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .calc-header-title {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  .calc-header-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  /* 輸入區 */
+  .calc-form {
+    padding: 24px 28px;
+    background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+    border-bottom: 2px dashed rgba(240,90,40,0.2);
+  }
+  .calc-form-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .calc-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .calc-label .req { color: var(--orange); }
+
+  .calc-input,
+  .calc-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .calc-input:focus,
+  .calc-select:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.12);
+  }
+  .calc-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23F05A28' d='M5 6L0 0h10z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 30px;
+  }
+  .calc-input[type="date"] {
+    cursor: text;
+  }
+
+  /* 性別 segmented */
+  .calc-gender {
+    display: flex;
+    gap: 0;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+  }
+  .calc-gender label {
+    flex: 1;
+    cursor: pointer;
+  }
+  .calc-gender input { display: none; }
+  .calc-gender span {
+    display: block;
+    padding: 9px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #888;
+    transition: all .2s;
+  }
+  .calc-gender input:checked + span {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .calc-gender label:not(:last-child) {
+    border-right: 1.5px solid #ddd;
+  }
+
+  /* 年期 segmented (同性別) */
+  .calc-term { 
+    display: flex;
+    gap: 0;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+  }
+  .calc-term label { flex: 1; cursor: pointer; }
+  .calc-term input { display: none; }
+  .calc-term span {
+    display: block;
+    padding: 9px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #888;
+    transition: all .2s;
+  }
+  .calc-term input:checked + span {
+    background: linear-gradient(135deg, var(--teal) 0%, #155057 100%);
+    color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .calc-term label:not(:last-child) {
+    border-right: 1.5px solid #ddd;
+  }
+
+  /* 折扣選項 */
+  .calc-discount-row {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #ddd;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .calc-discount-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1.5px;
+  }
+  .calc-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    user-select: none;
+  }
+  .calc-checkbox input { display: none; }
+  .calc-checkbox .box {
+    width: 20px; height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+  .calc-checkbox .box::after {
+    content: '✓';
+    color: white;
+    font-weight: 900;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .calc-checkbox input:checked + .box {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+  .calc-checkbox input:checked + .box::after { opacity: 1; }
+  .calc-checkbox .pct {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    margin-left: 2px;
+  }
+
+  /* 計算結果區 */
+  .calc-result {
+    padding: 24px 28px;
+  }
+  .calc-result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .calc-result-card {
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    background: #fafafa;
+    text-align: center;
+  }
+  .calc-result-card.standard { background: #f5f5f5; }
+  .calc-result-card.discounted {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-color: var(--navy);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .calc-result-card.discounted::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(240,90,40,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .calc-result-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .calc-result-card.discounted .calc-result-label {
+    color: rgba(255,255,255,0.65);
+  }
+  .calc-result-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: #999;
+    line-height: 1;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .calc-result-card.discounted .calc-result-amount {
+    color: var(--orange);
+    font-size: 46px;
+  }
+  .calc-result-amount .unit {
+    font-size: 16px;
+    color: #999;
+    margin-left: 2px;
+  }
+  .calc-result-card.discounted .calc-result-amount .unit {
+    color: rgba(255,255,255,0.7);
+  }
+  .calc-result-suffix {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1px;
+    position: relative;
+  }
+  .calc-result-card.discounted .calc-result-suffix {
+    color: rgba(255,255,255,0.7);
+  }
+  .calc-savings {
+    margin-top: 6px;
+    display: inline-block;
+    background: rgba(240,90,40,0.15);
+    color: var(--orange);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    position: relative;
+  }
+  .calc-result-card.discounted .calc-savings {
+    background: rgba(240,90,40,0.25);
+  }
+
+  /* 試算總覽 */
+  .calc-summary {
+    padding: 18px 22px;
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff5ee 100%);
+    border-radius: 14px;
+    border: 1.5px solid rgba(240,90,40,0.3);
+    margin-bottom: 22px;
+  }
+  .calc-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .calc-summary-item {
+    text-align: center;
+    padding: 6px 4px;
+    border-right: 1px dashed rgba(240,90,40,0.25);
+  }
+  .calc-summary-item:last-child { border-right: none; }
+  .calc-summary-label {
+    font-size: 10px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .calc-summary-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .calc-summary-value .small {
+    font-size: 12px;
+    color: #888;
+    margin-left: 2px;
+  }
+  .calc-summary-value.hl { color: var(--orange); }
+
+  /* 保障內容 × 保障金額 */
+  .benefits-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  .benefits-table thead tr { background: var(--navy); }
+  .benefits-table thead th {
+    color: white;
+    padding: 12px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .benefits-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .benefits-table tbody tr.satisfy td { background: var(--orange-light); }
+  .benefits-table tbody tr.satisfy td:first-child { color: var(--orange); font-weight: 900; }
+  .benefits-table tbody tr.limit-row td {
+    background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+    font-style: normal;
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed #ddd;
+  }
+  .benefits-table tbody tr.limit-row td:first-child {
+    color: #777;
+    font-weight: 700;
+  }
+  .benefits-table tbody tr.limit-row td:first-child::before {
+    content: '🔝 ';
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
+  .benefits-table td {
+    padding: 13px 10px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.4;
+    vertical-align: middle;
+  }
+  .benefits-table td:first-child {
+    text-align: left;
+    padding-left: 18px;
+    font-weight: 700;
+  }
+  .benefits-table .b-desc {
+    font-size: 11px;
+    color: #888;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .benefits-table .b-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .benefits-table .b-amount .b-unit {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    color: #888;
+    font-weight: 400;
+    margin-left: 2px;
+  }
+  .benefits-table .b-amount.teal { color: var(--teal); }
+  .benefits-table .b-amount-small {
+    font-size: 16px;
+  }
+
+  /* 提醒文字 */
+  .calc-tip {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(232,160,32,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    font-size: 11px;
+    color: #777;
+    line-height: 1.6;
+  }
+  .calc-tip strong { color: #b87a14; font-weight: 900; }
+
+  /* ────── 注意事項 ────── */
+  .notice-section {
+    margin-bottom: 24px;
+    padding: 22px 26px;
+    background: rgba(232,160,32,0.06);
+    border: 1.5px dashed var(--gold);
+    border-radius: 14px;
+  }
+  .notice-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: #b87a14;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 1px;
+  }
+  .notice-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .notice-list li {
+    list-style: none;
+    padding-left: 16px;
+    position: relative;
+  }
+  .notice-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 8px;
+    top: 5px;
+  }
+
+  /* ────── FOOTER ────── */
+  .footer {
+    background: linear-gradient(180deg, #0a2334 0%, #061826 100%);
+    color: white;
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-left {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.4;
+  }
+  .footer-left .sub {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 3px;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .footer-cta {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(240,90,40,0.4);
+    transition: all .25s;
+  }
+  .footer-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(240,90,40,0.55);
+  }
+  .footer-phone {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2px;
+  }
+
+  /* ────── 浮動諮詢按鈕 ────── */
+  .float-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: #fff; text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.45);
+    transition: all .3s ease;
+    animation: float-pulse 3s ease-in-out infinite;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 36px rgba(240,90,40,0.6);
+  }
+  .float-cta-icon { font-size: 18px; }
+  @keyframes float-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(240,90,40,0.45); }
+    50% { box-shadow: 0 8px 36px rgba(240,90,40,0.7), 0 0 0 8px rgba(240,90,40,0.08); }
+  }
+
+  /* ────── 文末免責聲明 ────── */
+  .disclaimer {
+    padding: 20px 48px;
+    background: #f5f3ee;
+    font-size: 10.5px;
+    color: #888;
+    line-height: 1.7;
+    text-align: center;
+    border-top: 1px solid #e8e3d6;
+  }
+  .disclaimer strong { color: #555; }
+
+  /* ────── RWD ────── */
+  @media (max-width: 760px) {
+    .page { width: 100%; }
+    .header { padding: 22px 18px; }
+    .header-inner {
+      flex-direction: column;
+      gap: 18px;
+      text-align: center;
+    }
+    .logo-area { gap: 14px; }
+    .logo-icon { width: 72px; height: 72px; }
+    .logo-text .brand { font-size: 22px; }
+    .header-center { width: 100%; order: 2; }
+    .header-center .pre-title { font-size: 11px; letter-spacing: 3px; }
+    .header-center .big-number { font-size: 88px; }
+    .header-center .big-number span { font-size: 38px; }
+    .header-center .sub-title { font-size: 17px; letter-spacing: 3px; }
+    .badge-area {
+      flex-direction: row;
+      width: 100%;
+      min-width: auto;
+      gap: 10px;
+      order: 3;
+    }
+    .badge, .badge-teal { flex: 1; padding: 12px 14px; }
+    .badge-line2 { font-size: 17px; }
+    .badge-teal strong { font-size: 14px; }
+    .body { padding: 26px 16px; }
+    .features-grid { grid-template-columns: 1fr; gap: 12px; }
+    .case-content { grid-template-columns: 1fr; gap: 16px; }
+    .case-section { padding: 20px; }
+    .case-title { font-size: 14px; line-height: 1.4; }
+    .case-header { flex-wrap: wrap; gap: 8px; }
+    .rules-grid { grid-template-columns: 1fr; gap: 16px; }
+    .rule-card { padding: 18px; }
+    .notice-list { grid-template-columns: 1fr; gap: 6px; }
+    .footer {
+      flex-direction: column;
+      text-align: center;
+      padding: 22px 18px;
+      gap: 14px;
+    }
+    .footer-left { font-size: 14px; letter-spacing: 1.5px; }
+    .footer-right { align-items: center; }
+    .data-table { font-size: 12px; }
+    .data-table thead th { font-size: 12px; padding: 10px 6px; letter-spacing: 0; }
+    .data-table td { padding: 10px 6px; font-size: 12px; }
+    .data-table td:first-child { padding-left: 12px; }
+    .data-table td.num, .data-table td.teal-num { font-size: 16px; }
+    .data-table .item-desc { font-size: 10px; }
+    .timeline-points { flex-wrap: wrap; gap: 18px 0; }
+    .timeline-point { width: 50%; }
+    .timeline::before { display: none; }
+    .timeline-section { padding: 22px 18px; }
+    .float-cta-text { display: none; }
+    .float-cta { padding: 14px 16px; bottom: 18px; right: 18px; }
+    .tagline-bar { padding: 10px 14px; gap: 10px; flex-wrap: wrap; }
+    .tagline-bar span { font-size: 12px; letter-spacing: 2px; }
+    .disclaimer { padding: 18px 18px; font-size: 10px; line-height: 1.8; }
+    .section-title-icon { font-size: 16px; }
+  }
+
+  /* ────── 業界唯一徽章 ────── */
+  .unique-banner {
+    margin: 0 0 28px;
+    padding: 22px 28px;
+    background: linear-gradient(135deg, #fff8f3 0%, #ffeadd 100%);
+    border: 2px solid var(--orange);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .unique-banner::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(240,90,40,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .unique-icon {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 8px 20px rgba(240,90,40,0.35);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .unique-content { flex: 1; position: relative; }
+  .unique-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .unique-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    line-height: 1.3;
+  }
+  .unique-title .hl-orange { color: var(--orange); }
+  .unique-desc {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ────── 業務話術區（兩種談法） ────── */
+  .pitch-section {
+    margin-bottom: 36px;
+  }
+  .pitch-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+  }
+  .pitch-card {
+    padding: 24px;
+    border-radius: 16px;
+    background: white;
+    border: 2px solid #eee;
+    position: relative;
+    overflow: hidden;
+  }
+  .pitch-card.pc-main {
+    background: linear-gradient(160deg, var(--navy) 0%, #0a2334 100%);
+    border-color: var(--navy);
+    color: white;
+  }
+  .pitch-card.pc-main::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(240,90,40,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .pitch-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .pc-main .pitch-tag { background: var(--orange); }
+  .pitch-title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    position: relative;
+    line-height: 1.3;
+  }
+  .pc-main .pitch-title { color: white; }
+  .pitch-title .hl { color: var(--orange); }
+
+  .pitch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 16px 0;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .pitch-flow-item {
+    text-align: center;
+    flex: 1;
+    min-width: 60px;
+  }
+  .pitch-flow-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .pc-main .pitch-flow-num { color: var(--orange); }
+  .pitch-flow-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .pitch-card:not(.pc-main) .pitch-flow-label { color: #888; }
+  .pitch-flow-arrow {
+    color: rgba(255,255,255,0.4);
+    font-size: 16px;
+  }
+  .pitch-card:not(.pc-main) .pitch-flow-arrow { color: #ccc; }
+
+  .pitch-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .pc-main .pitch-desc { color: rgba(255,255,255,0.85); }
+  .pitch-card:not(.pc-main) .pitch-desc { color: #555; }
+  .pitch-desc strong { color: var(--orange); font-weight: 900; }
+  .pc-main .pitch-desc strong { color: var(--orange); }
+
+  /* 利息錢說明 */
+  .interest-card {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: rgba(240,90,40,0.08);
+    border-left: 3px solid var(--orange);
+    border-radius: 8px;
+    position: relative;
+  }
+  .interest-card .label {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--orange);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .interest-card .text {
+    font-size: 12.5px;
+    color: #444;
+    line-height: 1.65;
+  }
+  .interest-card .text strong { color: var(--orange); font-weight: 900; }
+
+  /* ────── 折扣加總卡 ────── */
+  .discount-stack {
+    background: linear-gradient(135deg, #fff 0%, #fff5ee 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .ds-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .ds-formula {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+  .ds-pill {
+    background: white;
+    border: 1.5px solid var(--orange);
+    color: var(--orange);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 900;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+  }
+  .ds-plus {
+    color: var(--orange);
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .ds-equals {
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 14px;
+    margin: 0 4px;
+  }
+  .ds-result {
+    background: var(--orange);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: 900;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.35);
+  }
+
+  /* ────── 客群與配置 ────── */
+  .audience-section {
+    margin-bottom: 36px;
+    padding: 28px;
+    background: linear-gradient(135deg, var(--teal-light) 0%, #e8f3f4 100%);
+    border-radius: 18px;
+    border: 1.5px solid rgba(26,107,114,0.2);
+  }
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 16px;
+  }
+  .audience-card {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(26,107,114,0.15);
+  }
+  .audience-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .audience-icon {
+    width: 38px; height: 38px;
+    background: var(--teal);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .audience-name {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .audience-desc {
+    font-size: 12.5px;
+    color: #555;
+    line-height: 1.65;
+  }
+  .audience-desc strong { color: var(--teal); font-weight: 900; }
+
+  /* ────── 商品優勢 vs 一般終身醫療 ────── */
+  .compare-section { margin-bottom: 36px; }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  .compare-table thead tr { background: var(--navy); }
+  .compare-table thead th {
+    color: white;
+    padding: 14px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .compare-table thead th.hl-th {
+    background: var(--orange);
+    position: relative;
+  }
+  .compare-table thead th.hl-th::before {
+    content: '★';
+    position: absolute;
+    top: 4px; right: 8px;
+    color: var(--gold);
+    font-size: 12px;
+  }
+  .compare-table tbody tr:nth-child(even) { background: #f9f9f9; }
+  .compare-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .compare-table tbody td:first-child {
+    text-align: left;
+    padding-left: 18px;
+    font-weight: 700;
+  }
+  .compare-table .yes { color: #2c8a37; font-weight: 900; font-size: 16px; }
+  .compare-table .no { color: #c44; font-weight: 900; font-size: 16px; }
+  .compare-table .hl-col {
+    background: rgba(240,90,40,0.06) !important;
+  }
+
+  /* ────── 行動版 RWD 補充 ────── */
+  @media (max-width: 760px) {
+    .unique-banner { flex-direction: column; text-align: center; padding: 22px 20px; }
+    .pitch-grid { grid-template-columns: 1fr; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .audience-section { padding: 22px 18px; }
+    .discount-stack { padding: 16px; gap: 10px; }
+    .ds-formula { justify-content: center; }
+    .compare-table { font-size: 11px; }
+    .compare-table thead th { font-size: 10.5px; padding: 10px 4px; letter-spacing: 0; line-height: 1.3; }
+    .compare-table tbody td { padding: 10px 6px; font-size: 11px; }
+    .compare-table tbody td:first-child { padding-left: 10px; font-size: 12px; }
+    .compare-table .yes, .compare-table .no { font-size: 14px; }
+
+    /* 試算系統 RWD */
+    .calc-header { padding: 18px 18px; gap: 12px; }
+    .calc-header-icon { width: 38px; height: 38px; font-size: 18px; }
+    .calc-header-title { font-size: 15px; letter-spacing: 1px; }
+    .calc-header-sub { font-size: 10px; }
+    .calc-form { padding: 18px 18px; }
+    .calc-form-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .calc-discount-row { gap: 14px; }
+    .calc-result { padding: 18px 18px; }
+    .calc-result-grid { grid-template-columns: 1fr; gap: 10px; }
+    .calc-result-amount { font-size: 32px; }
+    .calc-result-card.discounted .calc-result-amount { font-size: 38px; }
+    .calc-summary-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .calc-summary-item { border-right: none; border-bottom: 1px dashed rgba(240,90,40,0.25); padding-bottom: 10px; }
+    .calc-summary-item:nth-child(3),
+    .calc-summary-item:nth-child(4) { border-bottom: none; }
+    .calc-summary-item:nth-child(2n) { border-right: none; }
+    .calc-summary-value { font-size: 20px; }
+    .benefits-table { font-size: 11px; }
+    .benefits-table thead th { font-size: 11px; padding: 10px 6px; letter-spacing: 0; }
+    .benefits-table td { padding: 10px 6px; font-size: 11.5px; }
+    .benefits-table td:first-child { padding-left: 12px; }
+    .benefits-table .b-amount { font-size: 17px; }
+    .benefits-table .b-amount-small { font-size: 14px; }
+    .benefits-table .b-desc { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <div class="logo-icon-text">
+            <span class="yt">元大</span>
+            人壽
+          </div>
+        </div>
+        <div class="logo-text">
+          <div class="brand">元大人壽</div>
+          <div class="sub">Yuanta Life Insurance</div>
+          <div class="tag">商品建議書</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="pre-title">YUANTA LIFE H1</div>
+        <div class="big-number">106<span>%</span></div>
+        <div class="sub-title">新終身醫療還本保險</div>
+      </div>
+
+      <div class="badge-area">
+        <div class="badge">
+          <div class="badge-line1">滿期還本</div>
+          <div class="badge-line2">超值回饋</div>
+        </div>
+        <div class="badge-teal">
+          保障到
+          <strong>111 歲</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tagline-bar">
+    <span>醫療終身</span><span class="dot">◆</span>
+    <span>還本超值</span><span class="dot">◆</span>
+    <span>幼童加值</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- ───── 業界唯一徽章 ───── -->
+    <div class="unique-banner">
+      <div class="unique-icon">👑</div>
+      <div class="unique-content">
+        <span class="unique-tag">業界唯一</span>
+        <div class="unique-title">
+          唯一一張<span class="hl-orange">「身故會還本」</span>的終身醫療
+        </div>
+        <div class="unique-desc">
+          ✔ 完全 <strong>不內扣</strong>　✔ 保價金可借款　✔ 沒有 227 條款限制　✔ 醫療理賠等於是「利息錢」
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 三大特色 ───── -->
+    <div class="section-title-icon">三大商品特色</div>
+    <div class="section-sub">醫療保障 × 還本回饋 × 幼童加值，三重安心</div>
+
+    <div class="features-grid">
+      <div class="feature-card fc1">
+        <div class="feature-icon-wrap">💝</div>
+        <div class="feature-name">醫療＋還本</div>
+        <div class="feature-desc">
+          專屬醫療帳戶<br>
+          保障持續到 <strong>111 歲</strong><br>
+          繳費期滿 10 年後<br>
+          領回 <strong>106%</strong> 超值還本
+        </div>
+      </div>
+      <div class="feature-card fc2">
+        <div class="feature-icon-wrap">🏥</div>
+        <div class="feature-name">多樣醫療</div>
+        <div class="feature-desc">
+          意外或疾病<br>
+          一手包辦<br>
+          住院、手術、加護病房<br>
+          暨 <strong>燒燙傷病房</strong> 全方位給付
+        </div>
+      </div>
+      <div class="feature-card fc3">
+        <div class="feature-icon-wrap">👶</div>
+        <div class="feature-name">幼童加值</div>
+        <div class="feature-desc">
+          未滿 14 足歲兒童<br>
+          專屬「特定傷病金」<br>
+          ＋「食物中毒金」<br>
+          累積最高 <strong>100 倍</strong> 日額
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 互動試算系統 ───── -->
+    <div class="calc-section" id="calc">
+      <div class="calc-header">
+        <div class="calc-header-icon">🧮</div>
+        <div class="calc-header-text">
+          <span class="calc-header-tag">即時試算</span>
+          <div class="calc-header-title">建議書試算系統</div>
+          <div class="calc-header-sub">輸入生日、性別、保額，立即產出您的專屬建議書</div>
+        </div>
+      </div>
+
+      <!-- 輸入區 -->
+      <div class="calc-form">
+        <div class="calc-form-grid">
+          <div class="calc-field">
+            <label class="calc-label">📅 生日 <span class="req">*</span></label>
+            <input type="date" class="calc-input" id="f-birth" max="2025-12-31" min="1965-01-01" value="2021-01-04">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">👤 性別</label>
+            <div class="calc-gender">
+              <label><input type="radio" name="gender" value="m" id="g-m"><span>♂ 男</span></label>
+              <label><input type="radio" name="gender" value="f" id="g-f" checked><span>♀ 女</span></label>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">⏱ 繳費年期</label>
+            <div class="calc-term">
+              <label><input type="radio" name="term" value="15" id="t-15"><span>15 年</span></label>
+              <label><input type="radio" name="term" value="20" id="t-20" checked><span>20 年</span></label>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">💎 投保金額</label>
+            <select class="calc-select" id="f-amount">
+              <option value="50000">5 萬元</option>
+              <option value="100000" selected>10 萬元</option>
+              <option value="150000">15 萬元</option>
+              <option value="200000">20 萬元</option>
+              <option value="250000">25 萬元</option>
+              <option value="300000">30 萬元（上限）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="calc-discount-row">
+          <span class="calc-discount-label">💰 折扣選項</span>
+          <label class="calc-checkbox">
+            <input type="checkbox" id="d-auto" checked>
+            <span class="box"></span>
+            首期自動轉帳 <span class="pct">-1%</span>
+          </label>
+          <label class="calc-checkbox" id="d-high-wrap" title="達門檻自動套用">
+            <input type="checkbox" id="d-high" checked>
+            <span class="box"></span>
+            高保費折扣 <span class="pct" id="d-high-pct">-2%</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 結果區 -->
+      <div class="calc-result">
+        <!-- 保費結果（標準 vs 折扣後） -->
+        <div class="calc-result-grid">
+          <div class="calc-result-card standard">
+            <div class="calc-result-label">原始年繳保費</div>
+            <div class="calc-result-amount">
+              <span id="r-standard">53,400</span><span class="unit">元</span>
+            </div>
+            <div class="calc-result-suffix">未折扣標準保費</div>
+          </div>
+          <div class="calc-result-card discounted">
+            <div class="calc-result-label">折扣後年繳</div>
+            <div class="calc-result-amount">
+              <span id="r-discounted">51,798</span><span class="unit">元</span>
+            </div>
+            <div class="calc-result-suffix">
+              <span id="r-savings-text">已折抵 1,602 元 / 年</span>
+              <div class="calc-savings" id="r-pct">折扣 3%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 試算總覽（4 項關鍵數字） -->
+        <div class="calc-summary">
+          <div class="calc-summary-grid">
+            <div class="calc-summary-item">
+              <div class="calc-summary-label">投保年齡</div>
+              <div class="calc-summary-value"><span id="r-age">5</span><span class="small">歲</span></div>
+            </div>
+            <div class="calc-summary-item">
+              <div class="calc-summary-label">滿期年齡</div>
+              <div class="calc-summary-value"><span id="r-mature-age">34</span><span class="small">歲</span></div>
+            </div>
+            <div class="calc-summary-item">
+              <div class="calc-summary-label">總繳保費</div>
+              <div class="calc-summary-value hl"><span id="r-total">103.6</span><span class="small">萬</span></div>
+            </div>
+            <div class="calc-summary-item">
+              <div class="calc-summary-label">滿期領回</div>
+              <div class="calc-summary-value hl"><span id="r-mature">113.2</span><span class="small">萬</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 保障內容 × 保障金額 -->
+        <table class="benefits-table">
+          <colgroup>
+            <col style="width:40%">
+            <col style="width:32%">
+            <col style="width:28%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th style="text-align:left;padding-left:18px;">保障內容</th>
+              <th>給付方式</th>
+              <th>保障金額</th>
+            </tr>
+          </thead>
+          <tbody id="benefits-body">
+            <!-- JS 動態產生 -->
+          </tbody>
+        </table>
+
+        <div class="calc-tip">
+          <strong>※ 計算說明：</strong>「住院給付日額」＝ 投保金額 × 1%。高保費折扣於年繳達 3 萬享 1%、達 4 萬享 2%。本試算結果僅供參考，正式保費以本公司核保結果為準。
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 折扣加總卡 ───── -->
+    <div class="discount-stack">
+      <div class="ds-label">💡 折扣疊加實算</div>
+      <div class="ds-formula">
+        <span class="ds-pill">+6%</span>
+        <span class="ds-plus">+</span>
+        <span class="ds-pill">高保費 2%</span>
+        <span class="ds-plus">+</span>
+        <span class="ds-pill">轉帳 1%</span>
+        <span class="ds-equals">≈</span>
+        <span class="ds-result">10% 還本</span>
+      </div>
+    </div>
+
+    <!-- ───── 兩種銷售談法 ───── -->
+    <div class="section-title-icon">兩種規劃思維</div>
+    <div class="section-sub">同樣一筆錢，這樣規劃更划算</div>
+
+    <div class="pitch-section">
+      <div class="pitch-grid">
+
+        <!-- 主力：退休金角度 -->
+        <div class="pitch-card pc-main">
+          <span class="pitch-tag">★ 主力談法</span>
+          <div class="pitch-title">
+            <span class="hl">退休金 parking</span>　送孩子終身醫療
+          </div>
+
+          <div class="pitch-flow">
+            <div class="pitch-flow-item">
+              <div class="pitch-flow-num">40<span style="font-size:14px;">歲</span></div>
+              <div class="pitch-flow-label">投保</div>
+            </div>
+            <span class="pitch-flow-arrow">→</span>
+            <div class="pitch-flow-item">
+              <div class="pitch-flow-num">55<span style="font-size:14px;">歲</span></div>
+              <div class="pitch-flow-label">繳費期滿</div>
+            </div>
+            <span class="pitch-flow-arrow">→</span>
+            <div class="pitch-flow-item">
+              <div class="pitch-flow-num">65<span style="font-size:14px;">歲</span></div>
+              <div class="pitch-flow-label">領回退休</div>
+            </div>
+          </div>
+
+          <div class="pitch-desc">
+            退休金本來就要存，<strong>差別只在存哪裡</strong>。<br>
+            放這邊 → 自己 65 歲拿回 + 多 10%，孩子<strong>終身保障</strong>免費附贈。
+          </div>
+
+          <div class="interest-card" style="background: rgba(255,255,255,0.08); border-left-color: var(--orange);">
+            <div class="label" style="color: var(--orange);">💰 理賠 = 利息錢</div>
+            <div class="text" style="color: rgba(255,255,255,0.8);">
+              年繳 15 萬，孩子住院 6 天理賠 <strong>1.8 萬</strong>。<br>
+              本金最後都會還回來 → 這 1.8 萬就是「利息」。
+            </div>
+          </div>
+        </div>
+
+        <!-- 副選：傳統終身醫療對比 -->
+        <div class="pitch-card">
+          <span class="pitch-tag">替代談法</span>
+          <div class="pitch-title">
+            升級版終身醫療　不再「繳完就沒了」
+          </div>
+
+          <div class="pitch-flow">
+            <div class="pitch-flow-item">
+              <div class="pitch-flow-num" style="color: #999;">一般版</div>
+              <div class="pitch-flow-label">繳完歸零</div>
+            </div>
+            <span class="pitch-flow-arrow">vs</span>
+            <div class="pitch-flow-item">
+              <div class="pitch-flow-num">本商品</div>
+              <div class="pitch-flow-label">繳完拿回</div>
+            </div>
+          </div>
+
+          <div class="pitch-desc">
+            喜歡買終身醫療的客戶都知道<strong>它本來就貴</strong>。<br>
+            既然都要花這筆錢，為什麼不選「<strong>會還本＋不內扣</strong>」的？
+          </div>
+
+          <div class="interest-card">
+            <div class="label">📊 同樣繳 30 萬，差很大</div>
+            <div class="text">
+              一般終身醫療：繳完 = 0，給付還會內扣<br>
+              <strong>本商品</strong>：繳完拿回 30 萬+利息，給付不內扣
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ───── 保障時間軸 ───── -->
+    <div class="section-title-icon">保障時間軸</div>
+    <div class="section-sub">從 5 歲投保到 111 歲，保障一路相伴</div>
+
+    <div class="timeline-section">
+      <div class="timeline">
+        <div class="timeline-points">
+          <div class="timeline-point">
+            <div class="tp-dot"></div>
+            <div class="tp-age">5<span class="unit">歲</span></div>
+            <div class="tp-label">投保</div>
+            <div class="tp-event">開始繳費</div>
+          </div>
+          <div class="timeline-point">
+            <div class="tp-dot"></div>
+            <div class="tp-age">14<span class="unit">歲</span></div>
+            <div class="tp-label">幼童期</div>
+            <div class="tp-event">幼童專屬給付</div>
+          </div>
+          <div class="timeline-point">
+            <div class="tp-dot"></div>
+            <div class="tp-age">34<span class="unit">歲</span></div>
+            <div class="tp-label">滿期</div>
+            <div class="tp-event">領回 113.2 萬</div>
+          </div>
+          <div class="timeline-point">
+            <div class="tp-dot"></div>
+            <div class="tp-age">111<span class="unit">歲</span></div>
+            <div class="tp-label">終身</div>
+            <div class="tp-event">醫療保障持續</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── vs 一般終身醫療 ───── -->
+    <div class="section-title-icon">和一般終身醫療比一比</div>
+    <div class="section-sub">看完這張表，客戶就懂為什麼要選這張</div>
+
+    <div class="compare-section">
+      <table class="compare-table">
+        <colgroup>
+          <col style="width:34%">
+          <col style="width:33%">
+          <col style="width:33%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:18px;">比較項目</th>
+            <th>一般終身醫療</th>
+            <th class="hl-th">元大新終身醫療還本</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>繳完保費後</td>
+            <td>歸零，沒了</td>
+            <td class="hl-col"><span class="yes">✓</span> 還本 106%+</td>
+          </tr>
+          <tr>
+            <td>身故是否還本</td>
+            <td><span class="no">✗</span></td>
+            <td class="hl-col"><span class="yes">✓</span> 業界唯一</td>
+          </tr>
+          <tr>
+            <td>給付是否內扣</td>
+            <td>內扣，理賠少領</td>
+            <td class="hl-col"><span class="yes">✓</span> 完全不內扣</td>
+          </tr>
+          <tr>
+            <td>保價金可否借款</td>
+            <td>多數無</td>
+            <td class="hl-col"><span class="yes">✓</span> 可借款</td>
+          </tr>
+          <tr>
+            <td>是否受 227 限制</td>
+            <td>多數有</td>
+            <td class="hl-col"><span class="yes">✓</span> 無 227 條款</td>
+          </tr>
+          <tr>
+            <td>幼童專屬給付</td>
+            <td>多數無</td>
+            <td class="hl-col"><span class="yes">✓</span> 特傷+食物中毒</td>
+          </tr>
+          <tr>
+            <td>保障期間</td>
+            <td>多數至 99~105 歲</td>
+            <td class="hl-col"><span class="yes">✓</span> 保障到 111 歲</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ───── 給付項目 ───── -->
+    <div class="section-title-icon">給付項目一覽</div>
+    <div class="section-sub">以投保範例（保額 10 萬／日額 1,000 元）為例</div>
+
+    <div class="table-section">
+      <table class="data-table">
+        <colgroup>
+          <col style="width:35%">
+          <col style="width:35%">
+          <col style="width:30%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:18px;">保障項目</th>
+            <th>給付內容</th>
+            <th>每次給付</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>住院醫療保險金<div class="item-desc">同次最高 365 天</div></td>
+            <td>日額 × 住院天數</td>
+            <td class="num">1,000<span style="font-size:12px;color:#888;">／日</span></td>
+          </tr>
+          <tr>
+            <td>加護病房暨燒燙傷病房<div class="item-desc">合併同次最高 365 天</div></td>
+            <td>額外加倍給付</td>
+            <td class="num">1,000<span style="font-size:12px;color:#888;">／日</span></td>
+          </tr>
+          <tr>
+            <td>手術醫療保險金<div class="item-desc">依手術等級表 1~30 倍</div></td>
+            <td>日額 × 1~30 倍</td>
+            <td class="num" style="font-size:18px;">1,000<br><span style="font-size:14px;color:#888;">~ 30,000</span></td>
+          </tr>
+          <tr>
+            <td>幼童特定傷病保險金<div class="item-desc">10 大特定傷病・住院 4 天以上</div></td>
+            <td>日額 × 15 倍</td>
+            <td class="teal-num">15,000</td>
+          </tr>
+          <tr>
+            <td>幼童食物中毒保險金<div class="item-desc">2 人以上同食中毒</div></td>
+            <td>日額 × 3 倍</td>
+            <td class="teal-num">3,000</td>
+          </tr>
+          <tr class="hl-row">
+            <td>滿期保險金<div class="item-desc">繳費期滿後第 10 保單週年日</div></td>
+            <td>1.06 倍年繳保費總額</td>
+            <td class="num">1,132,000</td>
+          </tr>
+          <tr>
+            <td>身故 / 完全失能保險金<div class="item-desc">當年度保額或保價金擇優</div></td>
+            <td>1.06 倍年繳保費 或 保價金</td>
+            <td class="num">擇優</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ───── 投保規則 + 折扣 ───── -->
+    <div class="rules-grid">
+      <!-- 投保規則 -->
+      <div class="rule-card">
+        <div class="rule-card-title">
+          <span class="rule-card-title-icon">📋</span>
+          投保規則
+        </div>
+        <div class="rule-list">
+          <div class="rule-item">
+            <span class="rule-item-label">承保年齡</span>
+            <span class="rule-item-value">0 ~ 60 歲</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">繳費年期</span>
+            <span class="rule-item-value">15 / 20 年</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">最低投保金額</span>
+            <span class="rule-item-value">5 萬元</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">最高投保金額</span>
+            <span class="rule-item-value">30 萬元</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">繳費方式</span>
+            <span class="rule-item-value">年/半年/季/月繳</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">疾病等待期</span>
+            <span class="rule-item-value">30 日</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 折扣方案 -->
+      <div class="rule-card r2">
+        <div class="rule-card-title">
+          <span class="rule-card-title-icon">💰</span>
+          折扣方案
+        </div>
+        <div class="rule-list">
+          <div class="rule-item">
+            <span class="rule-item-label">年繳 ≧ 3 萬元</span>
+            <span class="rule-item-value hl">- 1%</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">年繳 ≧ 4 萬元</span>
+            <span class="rule-item-value hl">- 2%</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">首期自動轉帳</span>
+            <span class="rule-item-value hl">- 1%</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">半年繳費率</span>
+            <span class="rule-item-value">年繳 × 0.52</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">季繳費率</span>
+            <span class="rule-item-value">年繳 × 0.262</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-item-label">月繳費率</span>
+            <span class="rule-item-value">年繳 × 0.088</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 適合客群 ───── -->
+    <div class="section-title-icon">最適合的客群</div>
+    <div class="section-sub">這些人聽完，幾乎都直接買滿</div>
+
+    <div class="audience-section">
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="audience-card-head">
+            <div class="audience-icon">👨‍👩‍👧</div>
+            <div class="audience-name">20~50 歲有小孩的家長</div>
+          </div>
+          <div class="audience-desc">
+            <strong>核心客群</strong>。買下去 = 送孩子一輩子終身醫療，自己 65 歲剛好退休拿回，<strong>超完美</strong>。
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-card-head">
+            <div class="audience-icon">💰</div>
+            <div class="audience-name">想存退休金的人</div>
+          </div>
+          <div class="audience-desc">
+            退休金本來就要存。<strong>差別只在「存銀行」還是「存這邊」</strong>，存這邊還能多 10%。
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-card-head">
+            <div class="audience-icon">🏥</div>
+            <div class="audience-name">堅持要終身醫療的客戶</div>
+          </div>
+          <div class="audience-desc">
+            既然都要花這筆錢，當然要選<strong>會還本＋不內扣</strong>的版本。客戶聽完幾乎都會升級。
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-card-head">
+            <div class="audience-icon">👶</div>
+            <div class="audience-name">新生兒爸媽</div>
+          </div>
+          <div class="audience-desc">
+            新生兒費率最低、保障最久。<strong>不少客戶直接買滿 3 萬保額</strong>（年繳 15 萬左右）一張就到位。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 配置建議 ───── -->
+    <div class="unique-banner" style="border-color: var(--teal); background: linear-gradient(135deg, #fff 0%, var(--teal-light) 100%);">
+      <div class="unique-icon" style="background: linear-gradient(135deg, var(--teal) 0%, #155057 100%); box-shadow: 0 8px 20px rgba(26,107,114,0.35);">🧩</div>
+      <div class="unique-content">
+        <span class="unique-tag" style="background: var(--teal);">建議搭配</span>
+        <div class="unique-title">
+          本商品<span style="color: var(--teal);">無實支實付</span>，建議再加一張實支補強
+        </div>
+        <div class="unique-desc">
+          預算有限的客戶可從<strong>最低 5 萬保額（日額 500）</strong>起跳，當「儲蓄＋保障」雙效規劃也很彈性。
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 注意事項 ───── -->
+    <div class="notice-section">
+      <div class="notice-title">⚠️ 重要注意事項</div>
+      <ul class="notice-list">
+        <li>本保險為不分紅保險單，不參加紅利分配</li>
+        <li>投保後解約或不繼續繳費可能不利消費者</li>
+        <li>健康險部分無解約金，提早解約有顯著損失</li>
+        <li>身故/完全失能後無解約金，亦無退還未滿期保費</li>
+        <li>累計給付上限為「住院給付日額」之 1,800 倍</li>
+        <li>幼童特傷+食物中毒累計上限為日額 100 倍</li>
+        <li>請求權消滅時效為 2 年</li>
+        <li>契約撤銷時效：收到保單翌日起 10 日內</li>
+      </ul>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      元大人壽 新終身醫療還本保險
+      <span class="sub">YUANTA LIFE H1 ・ 文宣字第 P114186 號 115.01.01 版</span>
+    </div>
+    <div class="footer-right">
+      <a href="tel:0800088008" class="footer-cta">📞 立即諮詢</a>
+      <div class="footer-phone">免費專線 0800-088-008</div>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="disclaimer">
+    <strong>※ 本網頁僅供參考，詳細內容以保單條款約定為準。</strong>　|　
+    商品文號：101.01.19 紐精算字第 101011903 號函備查、114.01.01 修正　|　
+    元大人壽保險股份有限公司　|　台北市松山區民生東路三段 156 號 17 樓　|　
+    www.yuantalife.com.tw
+  </div>
+
+</div>
+
+<!-- 浮動諮詢按鈕 -->
+<a href="tel:0800088008" class="float-cta">
+  <span class="float-cta-icon">📞</span>
+  <span class="float-cta-text">免費諮詢</span>
+</a>
+
+<!-- 試算系統 JS -->
+<script>
+(function() {
+  'use strict';
+
+  // 費率表（每 10,000 元保額之年繳保費，索引 = 保險年齡 0~60）
+  const RATES = {
+    m15: [5759,5737,5764,5762,5725,5659,5691,5689,5656,5625,5582,5530,5476,5417,5358,5312,5264,5220,5177,5142,5110,5105,5093,5076,5062,5056,5034,5017,5021,5014,5019,5105,5189,5289,5376,5474,5563,5658,5760,5857,5966,6061,6164,6280,6395,6530,6707,6903,7126,7366,7641,8049,8506,9024,9633,10334,11159,12174,13390,14859,16818],
+    m20: [4871,4845,4836,4805,4792,4807,4839,4846,4810,4770,4733,4683,4634,4576,4524,4479,4436,4390,4348,4316,4280,4276,4269,4243,4225,4207,4182,4167,4160,4157,4160,4223,4293,4364,4441,4521,4593,4666,4746,4828,4924,4993,5067,5153,5254,5364,5491,5632,5798,5983,6197,6498,6846,7256,7721,8260,9084,10096,11333,12879,14911],
+    f15: [6455,6483,6449,6416,6343,6203,6233,6239,6197,6159,6106,6046,5973,5904,5839,5791,5728,5670,5617,5561,5510,5474,5440,5406,5370,5333,5304,5275,5247,5222,5200,5223,5239,5258,5276,5301,5341,5385,5438,5493,5552,5619,5688,5766,5848,5933,6071,6219,6383,6558,6742,6985,7249,7535,7862,8226,8639,9115,9652,10288,11010],
+    f20: [5158,5198,5222,5229,5289,5340,5365,5356,5313,5265,5217,5158,5095,5023,4956,4900,4839,4779,4723,4672,4625,4582,4537,4497,4461,4428,4411,4389,4366,4343,4325,4335,4346,4352,4366,4383,4413,4447,4490,4533,4587,4628,4681,4737,4803,4871,4932,5007,5087,5182,5288,5415,5553,5716,5899,6115,6508,6960,7479,8092,8832]
+  };
+
+  // 計算保險年齡（足歲，未滿一歲的零數超過六個月者加算一歲）
+  function calcInsuranceAge(birthStr) {
+    if (!birthStr) return null;
+    const birth = new Date(birthStr);
+    const today = new Date();
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+    if (days < 0) {
+      months -= 1;
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    // 條款：「未滿一歲的零數超過六個月者，加算一歲」
+    // 即：剩餘月數 >= 7 個月才加一歲（5歲6月仍為5歲，5歲7月為6歲）
+    if (months >= 7) years += 1;
+    return years;
+  }
+
+  // 千分位
+  function fmt(n) {
+    return Math.round(n).toLocaleString('en-US');
+  }
+  // 萬元（一位小數）
+  function toWan(n) {
+    return (n / 10000).toFixed(1);
+  }
+
+  // DOM 取得
+  const $ = id => document.getElementById(id);
+  const elBirth = $('f-birth');
+  const elAmount = $('f-amount');
+  const elDAuto = $('d-auto');
+  const elDHigh = $('d-high');
+  const elDHighPct = $('d-high-pct');
+  const elDHighWrap = $('d-high-wrap');
+
+  // 給付項目定義（係數以「住院給付日額」=保額×1% 為基礎）
+  const BENEFITS = [
+    { name: '住院醫療保險金', desc: '同次最高 365 天', method: '日額 × 住院天數', amountFn: (D) => `${fmt(D)}<span class="b-unit">／日</span>`, type: 'orange' },
+    { name: '加護病房暨燒燙傷病房', desc: '合併同次最高 365 天', method: '額外加倍給付', amountFn: (D) => `${fmt(D)}<span class="b-unit">／日</span>`, type: 'orange' },
+    { name: '手術醫療保險金', desc: '依手術等級表 1~30 倍', method: '日額 × 1~30 倍', amountFn: (D) => `<span class="b-amount-small">${fmt(D)}~${fmt(D*30)}</span>`, type: 'orange' },
+    { name: '幼童特定傷病保險金', desc: '事故當日未滿 14 歲・住院 4 天以上', method: '日額 × 15 倍', amountFn: (D) => fmt(D*15), type: 'teal', kid: true },
+    { name: '幼童食物中毒保險金', desc: '事故當日未滿 14 歲・住院', method: '日額 × 3 倍', amountFn: (D) => fmt(D*3), type: 'teal', kid: true },
+    { name: '滿期保險金', desc: '繳費期滿後第 10 保單週年日', method: '1.06 倍年繳保費總額', amountFn: (D, ctx) => `<span class="b-amount-small">${fmt(ctx.matureAmt)}</span>`, type: 'orange', highlight: true },
+    { name: '身故 / 完全失能保險金', desc: '當年度保額或保價金擇優', method: '1.06 倍年繳保費 或 保價金', amountFn: () => '擇優給付', type: 'orange' },
+    { name: '醫療給付累計上限', desc: '住院+加護+手術 終身累計', method: '日額 × 1,800 倍', amountFn: (D) => `<span class="b-amount-small">${fmt(D*1800)}</span>`, type: 'orange', isLimit: true },
+    { name: '幼童加值累計上限', desc: '幼童特傷+食物中毒 累計', method: '日額 × 100 倍', amountFn: (D) => fmt(D*100), type: 'teal', isLimit: true }
+  ];
+
+  function render() {
+    const birth = elBirth.value;
+    const gender = document.querySelector('input[name="gender"]:checked').value;
+    const term = parseInt(document.querySelector('input[name="term"]:checked').value);
+    const amount = parseInt(elAmount.value);
+
+    let age = calcInsuranceAge(birth);
+    if (age == null || isNaN(age)) age = 0;
+    if (age < 0) age = 0;
+    if (age > 60) age = 60;
+
+    // 取費率
+    const key = gender + term;
+    const ratePer10K = RATES[key][age];
+    const standardYearly = (amount / 10000) * ratePer10K;
+
+    // 高保費折扣判定 (年繳 ≧ 3 萬：1%；≧ 4 萬：2%)
+    let highEligibleRate = 0;
+    if (standardYearly >= 40000) highEligibleRate = 0.02;
+    else if (standardYearly >= 30000) highEligibleRate = 0.01;
+    elDHighPct.textContent = highEligibleRate > 0 ? `-${(highEligibleRate*100).toFixed(0)}%` : '不適用';
+
+    // 若不符合條件，自動取消勾選並反灰；符合條件則自動勾選回來（避免使用者切換金額時忘記重勾）
+    if (highEligibleRate === 0) {
+      elDHigh.checked = false;
+      elDHigh.disabled = true;
+      elDHighWrap.style.opacity = '0.4';
+      elDHighWrap.style.cursor = 'not-allowed';
+    } else {
+      if (elDHigh.disabled) {
+        // 從不可用變可用：自動勾選
+        elDHigh.checked = true;
+      }
+      elDHigh.disabled = false;
+      elDHighWrap.style.opacity = '1';
+      elDHighWrap.style.cursor = 'pointer';
+    }
+
+    // 應用折扣
+    let totalDiscount = 0;
+    if (elDAuto.checked) totalDiscount += 0.01;
+    if (elDHigh.checked && highEligibleRate > 0) totalDiscount += highEligibleRate;
+
+    const discounted = standardYearly * (1 - totalDiscount);
+    const savings = standardYearly - discounted;
+
+    // 標準保費總繳（折扣前）→ 因為滿期金是「1.06 × 標準年繳保費總額」
+    const totalPaidStandard = standardYearly * term;
+    const matureAmount = totalPaidStandard * 1.06;
+    const totalPaidActual = discounted * term;
+
+    // 滿期年齡 = 投保年齡 + 繳費年期 + 10
+    const matureAge = age + term + 10;
+
+    // 寫回 UI
+    $('r-standard').textContent = fmt(standardYearly);
+    $('r-discounted').textContent = fmt(discounted);
+    $('r-savings-text').textContent = `已折抵 ${fmt(savings)} 元 / 年`;
+    $('r-pct').textContent = totalDiscount > 0 ? `折扣 ${(totalDiscount*100).toFixed(0)}%` : '無折扣';
+    $('r-age').textContent = age;
+    $('r-mature-age').textContent = matureAge;
+    $('r-total').textContent = toWan(totalPaidActual);
+    $('r-mature').textContent = toWan(matureAmount);
+
+    // 渲染保障內容表
+    const D = amount * 0.01;  // 住院給付日額
+    const ctx = { matureAmt: matureAmount };
+    const tbody = $('benefits-body');
+    tbody.innerHTML = BENEFITS.map((b, idx) => {
+      const cls = b.type === 'teal' ? 'b-amount teal' : 'b-amount';
+      const amountHtml = b.amountFn(D, ctx);
+      const isAlreadySmall = amountHtml.includes('b-amount-small') || amountHtml === '擇優給付';
+      const wrappedAmount = isAlreadySmall && amountHtml === '擇優給付'
+        ? `<span class="${cls}">${amountHtml}</span>`
+        : isAlreadySmall
+          ? amountHtml.replace('class="b-amount-small"', `class="${cls} b-amount-small"`)
+          : `<span class="${cls}">${amountHtml}</span>`;
+      let rowClass = '';
+      if (b.highlight) rowClass = 'satisfy';
+      else if (b.isLimit) rowClass = 'limit-row';
+      return `<tr class="${rowClass}">
+        <td>${b.name}<div class="b-desc">${b.desc}</div></td>
+        <td>${b.method}</td>
+        <td>${wrappedAmount}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // 綁定事件
+  ['change', 'input'].forEach(evt => {
+    elBirth.addEventListener(evt, render);
+    elAmount.addEventListener(evt, render);
+    document.querySelectorAll('input[name="gender"], input[name="term"]').forEach(el => el.addEventListener(evt, render));
+    elDAuto.addEventListener(evt, render);
+    elDHigh.addEventListener(evt, render);
+  });
+
+  // 初始計算
+  render();
+})();
+</script>
+
+</body>
+</html>
