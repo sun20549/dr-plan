@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>購車優惠方案 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* Hero 區 */
+  .car-hero {
+    background:
+      radial-gradient(ellipse at right, rgba(232,160,32,0.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    color: #fff;
+    padding: 36px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .car-hero::before {
+    content: '🚗';
+    position: absolute;
+    top: 50%; right: 60px;
+    transform: translateY(-50%);
+    font-size: 200px;
+    opacity: 0.05;
+    line-height: 1;
+  }
+
+  /* 品牌卡片 */
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .brand-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .brand-card.toyota::before { background: linear-gradient(90deg, #C8203A 0%, #962C0D 100%); }
+  .brand-card.honda::before { background: linear-gradient(90deg, #E60012 0%, #A00010 100%); }
+  .brand-card.nissan::before { background: linear-gradient(90deg, #C3002F 0%, #800020 100%); }
+  .brand-card.bmw::before { background: linear-gradient(90deg, #1C69D3 0%, #0E3A75 100%); }
+  .brand-card.mb::before { background: linear-gradient(90deg, #999 0%, #555 100%); }
+  .brand-card.tesla::before { background: linear-gradient(90deg, #CC0000 0%, #800000 100%); }
+  .brand-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  }
+  .brand-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: 2px;
+  }
+  .brand-zh {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+  .brand-discount {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .brand-features {
+    list-style: none;
+    padding: 0;
+  }
+  .brand-features li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+    border-bottom: 1px dashed rgba(0,0,0,0.06);
+  }
+  .brand-features li:last-child { border-bottom: none; }
+  .brand-features li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 900;
+  }
+
+  /* 折扣對比表 */
+  .discount-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .discount-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .discount-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px;
+    letter-spacing: 1.5px;
+    text-align: left;
+  }
+  .discount-table thead th.center { text-align: center; }
+  .discount-table thead th.right { text-align: right; }
+  .discount-table tbody td {
+    padding: 14px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+  }
+  .discount-table tbody td.center { text-align: center; }
+  .discount-table tbody td.right { text-align: right; }
+  .discount-table tbody tr:nth-child(even) { background: var(--bg-cream); }
+  .discount-table tbody tr:hover { background: var(--orange-light); }
+  .discount-table .brand-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-right: 8px;
+  }
+  .discount-table .pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+  }
+  .discount-table .save {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--green);
+    letter-spacing: 0.5px;
+  }
+
+  /* 申請流程 */
+  .car-process {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .car-process::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: var(--border);
+  }
+  .car-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .car-step-num {
+    width: 64px; height: 64px;
+    background: #fff;
+    border: 3px solid var(--orange);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--orange);
+  }
+  .car-step-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .car-step-desc {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  /* 注意事項 */
+  .qualify-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .qualify-card {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .qualify-card.req { border-left: 4px solid var(--green); }
+  .qualify-card.note { border-left: 4px solid var(--gold); }
+  .qualify-card h4 {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .qualify-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .qualify-card li {
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .qualify-card.req li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 900;
+  }
+  .qualify-card.note li::before {
+    content: '!';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 900;
+    background: rgba(232,160,32,0.15);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 14px;
+    font-size: 10px;
+  }
+
+  @media (max-width: 900px) {
+    .brand-grid { grid-template-columns: 1fr; }
+    .qualify-grid { grid-template-columns: 1fr; }
+    .car-process { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .car-process::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="car-hero">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#resources">工具資源</a>
+      <span class="sep">/</span>
+      <span class="current">購車方案</span>
+    </nav>
+    <div class="subpage-eyebrow">EXCLUSIVE OFFER ・ 業務員專屬</div>
+    <h1 class="subpage-title">購車<span class="accent">優惠方案</span></h1>
+    <p class="subpage-desc">鼎綸恩宇夥伴專屬合作 ・ 業界最優惠的購車折扣與配套服務</p>
+  </header>
+
+  <div class="content">
+
+    <!-- 方案總覽 -->
+    <div class="section-block">
+      <h2 class="block-title">業務員專屬購車優惠</h2>
+      <p class="block-subtitle">鼎綸恩宇與多家汽車經銷商合作，為夥伴爭取業界最優惠的購車條件</p>
+
+      <div class="info-card-highlight">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 8px;">
+          <div style="text-align: center;">
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--orange); line-height: 1;">6<span style="font-size: 16px;">大</span></div>
+            <div style="font-size: 11px; color: #888; letter-spacing: 1px; margin-top: 4px;">合作品牌</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--teal); line-height: 1;">15<span style="font-size: 16px;">%</span></div>
+            <div style="font-size: 11px; color: #888; letter-spacing: 1px; margin-top: 4px;">最高折扣</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); line-height: 1;">36<span style="font-size: 16px;">期</span></div>
+            <div style="font-size: 11px; color: #888; letter-spacing: 1px; margin-top: 4px;">0 利率分期</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--orange-deep); line-height: 1;">VIP</div>
+            <div style="font-size: 11px; color: #888; letter-spacing: 1px; margin-top: 4px;">售後服務</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 合作品牌 -->
+    <div class="section-block">
+      <h2 class="block-title">合作品牌與折扣</h2>
+      <p class="block-subtitle">六大主流品牌全方位涵蓋，從國產到進口、從燃油到電動車</p>
+
+      <div class="brand-grid">
+        <div class="brand-card toyota">
+          <div class="brand-name">TOYOTA</div>
+          <div class="brand-zh">豐田 ・ 日系國產</div>
+          <span class="brand-discount">最高折 12%</span>
+          <ul class="brand-features">
+            <li>全車系適用，含 RAV4、Corolla、Camry</li>
+            <li>免費首次保養</li>
+            <li>道路救援 5 年免費</li>
+            <li>配件折扣 15%</li>
+          </ul>
+        </div>
+
+        <div class="brand-card honda">
+          <div class="brand-name">HONDA</div>
+          <div class="brand-zh">本田 ・ 日系國產</div>
+          <span class="brand-discount">最高折 10%</span>
+          <ul class="brand-features">
+            <li>適用 CR-V、HR-V、CIVIC</li>
+            <li>3 年內免費基本保養</li>
+            <li>業務員身分專屬贈品</li>
+            <li>配件折扣 12%</li>
+          </ul>
+        </div>
+
+        <div class="brand-card nissan">
+          <div class="brand-name">NISSAN</div>
+          <div class="brand-zh">日產 ・ 日系國產</div>
+          <span class="brand-discount">最高折 11%</span>
+          <ul class="brand-features">
+            <li>X-Trail、KICKS 專屬優惠</li>
+            <li>頭期款最低 10%</li>
+            <li>36 期 0 利率分期</li>
+            <li>免費 GPS 導航升級</li>
+          </ul>
+        </div>
+
+        <div class="brand-card bmw">
+          <div class="brand-name">BMW</div>
+          <div class="brand-zh">寶馬 ・ 德系進口</div>
+          <span class="brand-discount">最高折 8%</span>
+          <ul class="brand-features">
+            <li>全車系含 X1、X3、3 系列</li>
+            <li>豪華配備升級優惠</li>
+            <li>5 年原廠保固</li>
+            <li>VIP 客戶專屬服務</li>
+          </ul>
+        </div>
+
+        <div class="brand-card mb">
+          <div class="brand-name">MERCEDES-BENZ</div>
+          <div class="brand-zh">賓士 ・ 德系進口</div>
+          <span class="brand-discount">最高折 7%</span>
+          <ul class="brand-features">
+            <li>適用 GLA、GLC、C-Class</li>
+            <li>專屬鑑賞會體驗</li>
+            <li>原廠認證二手車優惠</li>
+            <li>豪華貴賓室禮遇</li>
+          </ul>
+        </div>
+
+        <div class="brand-card tesla">
+          <div class="brand-name">TESLA</div>
+          <div class="brand-zh">特斯拉 ・ 美系電動車</div>
+          <span class="brand-discount">最高折 6%</span>
+          <ul class="brand-features">
+            <li>Model 3、Model Y 適用</li>
+            <li>免費充電額度 5,000 公里</li>
+            <li>家用充電樁安裝補助</li>
+            <li>FSD 自動駕駛優惠價</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 折扣對比 -->
+    <div class="section-block">
+      <h2 class="block-title">折扣明細對比</h2>
+      <p class="block-subtitle">以一般市場價格為基準，對比鼎綸恩宇夥伴專屬優惠後的實質節省金額</p>
+
+      <table class="discount-table">
+        <thead>
+          <tr>
+            <th>品牌 ・ 車款</th>
+            <th class="center">市場參考價</th>
+            <th class="center">鼎綸專屬價</th>
+            <th class="center">折扣比例</th>
+            <th class="right">節省金額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TOYOTA RAV4 旗艦版</strong></td>
+            <td class="center">125 萬</td>
+            <td class="center">110 萬</td>
+            <td class="center"><span class="pct">12%</span></td>
+            <td class="right"><span class="save">15 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>TOYOTA Corolla Cross</strong></td>
+            <td class="center">85 萬</td>
+            <td class="center">76 萬</td>
+            <td class="center"><span class="pct">10.5%</span></td>
+            <td class="right"><span class="save">9 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>HONDA CR-V S 型</strong></td>
+            <td class="center">128 萬</td>
+            <td class="center">115 萬</td>
+            <td class="center"><span class="pct">10%</span></td>
+            <td class="right"><span class="save">13 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>NISSAN X-Trail 豪華版</strong></td>
+            <td class="center">115 萬</td>
+            <td class="center">102 萬</td>
+            <td class="center"><span class="pct">11%</span></td>
+            <td class="right"><span class="save">13 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>BMW X1 sDrive 20i</strong></td>
+            <td class="center">198 萬</td>
+            <td class="center">182 萬</td>
+            <td class="center"><span class="pct">8%</span></td>
+            <td class="right"><span class="save">16 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>BMW 320i M Sport</strong></td>
+            <td class="center">235 萬</td>
+            <td class="center">218 萬</td>
+            <td class="center"><span class="pct">7%</span></td>
+            <td class="right"><span class="save">17 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>賓士 GLA 200</strong></td>
+            <td class="center">195 萬</td>
+            <td class="center">182 萬</td>
+            <td class="center"><span class="pct">6.5%</span></td>
+            <td class="right"><span class="save">13 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>賓士 GLC 200</strong></td>
+            <td class="center">285 萬</td>
+            <td class="center">265 萬</td>
+            <td class="center"><span class="pct">7%</span></td>
+            <td class="right"><span class="save">20 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>TESLA Model 3 標準版</strong></td>
+            <td class="center">169 萬</td>
+            <td class="center">159 萬</td>
+            <td class="center"><span class="pct">6%</span></td>
+            <td class="right"><span class="save">10 萬</span></td>
+          </tr>
+          <tr>
+            <td><strong>TESLA Model Y 長續航</strong></td>
+            <td class="center">209 萬</td>
+            <td class="center">198 萬</td>
+            <td class="center"><span class="pct">5.3%</span></td>
+            <td class="right"><span class="save">11 萬</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>💡 實際節省案例</strong>　以 BMW 320i M Sport 為例，鼎綸恩宇夥伴專屬價格較市場一般價節省 17 萬元，相當於 <strong>3-4 個月的房貸還款金額</strong>，是一筆相當可觀的福利。
+      </div>
+    </div>
+
+    <!-- 申請流程 -->
+    <div class="section-block">
+      <h2 class="block-title">申請流程</h2>
+      <p class="block-subtitle">四步驟輕鬆完成購車優惠申請</p>
+
+      <div class="car-process">
+        <div class="car-step">
+          <div class="car-step-num">01</div>
+          <div class="car-step-title">提出申請</div>
+          <div class="car-step-desc">向鼎綸恩宇窗口表達購車意願與目標車款</div>
+        </div>
+        <div class="car-step">
+          <div class="car-step-num">02</div>
+          <div class="car-step-title">資格確認</div>
+          <div class="car-step-desc">公司核對業績資格並開立優惠證明文件</div>
+        </div>
+        <div class="car-step">
+          <div class="car-step-num">03</div>
+          <div class="car-step-title">展間賞車</div>
+          <div class="car-step-desc">親至合作經銷商賞車試駕並洽談條件</div>
+        </div>
+        <div class="car-step">
+          <div class="car-step-num">04</div>
+          <div class="car-step-title">完成交車</div>
+          <div class="car-step-desc">簽約付款與領車，享受 VIP 售後服務</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 申請資格與注意事項 -->
+    <div class="section-block">
+      <h2 class="block-title">申請資格與注意事項</h2>
+      <p class="block-subtitle">在申請前請先確認您符合以下條件</p>
+
+      <div class="qualify-grid">
+        <div class="qualify-card req">
+          <h4>✓ 申請資格</h4>
+          <ul>
+            <li>正式登錄之鼎綸恩宇體系夥伴</li>
+            <li>近 12 個月有效業績達 FYC 30 萬以上</li>
+            <li>無重大不良紀律或違規紀錄</li>
+            <li>持續率符合公司基本規定</li>
+            <li>須以本人名義購車</li>
+          </ul>
+        </div>
+
+        <div class="qualify-card note">
+          <h4>! 注意事項</h4>
+          <ul>
+            <li>本優惠不可與其他經銷商促銷活動合併使用</li>
+            <li>每年同一夥伴限申請一台車</li>
+            <li>實際成交價需以經銷商公告為準</li>
+            <li>離職或轉至其他體系後優惠權利取消</li>
+            <li>分期方案以合作銀行核貸為準</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4 style="font-size: 14px; font-weight: 900; color: var(--navy); margin-bottom: 10px; letter-spacing: 0.5px;">📋 申請文件</h4>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 13px; color: #555;">
+            <span style="position: absolute; left: 0; color: var(--orange);">▸</span>身分證正反面影本
+          </li>
+          <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 13px; color: #555;">
+            <span style="position: absolute; left: 0; color: var(--orange);">▸</span>駕照影本
+          </li>
+          <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 13px; color: #555;">
+            <span style="position: absolute; left: 0; color: var(--orange);">▸</span>近一年業績證明（公司提供）
+          </li>
+          <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 13px; color: #555;">
+            <span style="position: absolute; left: 0; color: var(--orange);">▸</span>鼎綸恩宇優惠申請書（窗口提供）
+          </li>
+          <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 13px; color: #555;">
+            <span style="position: absolute; left: 0; color: var(--orange);">▸</span>分期付款者另需財力證明
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="info-card-dark" style="text-align: center; padding: 36px;">
+      <h3 style="font-size: 24px; font-weight: 900; color: #fff; letter-spacing: 2px; margin-bottom: 10px;">準備好<span style="color: var(--gold);">入手新車</span>了嗎？</h3>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 20px; letter-spacing: 0.5px;">立即聯繫窗口確認資格並啟動申請流程</p>
+      <a href="tel:0925000049" class="btn btn-primary">📞 立即諮詢購車</a>
+      <a href="../index.html" class="btn btn-ghost" style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); color: #fff; margin-left: 8px;">返回主頁</a>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 重要說明</strong>　本頁所示車款價格與折扣比例均為示意參考數據，實際優惠以鼎綸恩宇與合作經銷商當期公告為準。優惠條件可能因車款、年式、市場狀況有所調整。本方案為內部夥伴福利，請勿對外宣傳。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 業務員購車方案</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

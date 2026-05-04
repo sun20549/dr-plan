@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>常見問題 FAQ ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* FAQ 分類列 */
+  .cat-bar {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .cat-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .cat-tab {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+  }
+  .cat-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .cat-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .cat-tab .count {
+    margin-left: 6px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--orange);
+  }
+  .cat-tab.active .count { color: var(--gold); }
+
+  /* 類別區塊 */
+  .faq-cat-section {
+    margin-bottom: 36px;
+  }
+  .faq-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--navy) 0%, transparent 100%);
+    color: #fff;
+    border-radius: 0 8px 8px 0;
+    border-left: 4px solid var(--orange);
+  }
+  .faq-cat-icon {
+    font-size: 24px;
+  }
+  .faq-cat-title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #fff;
+    flex: 1;
+  }
+  .faq-cat-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* FAQ 項目 */
+  .faq-item {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .faq-item:hover {
+    border-color: var(--orange);
+    box-shadow: 0 4px 12px rgba(240,90,40,0.06);
+  }
+  .faq-question {
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+    transition: background .2s;
+  }
+  .faq-question:hover { background: var(--bg-cream); }
+  .faq-q-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--orange-light);
+    color: var(--orange-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .faq-q-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+  }
+  .faq-q-arrow {
+    font-size: 18px;
+    color: var(--orange);
+    transition: transform .25s;
+  }
+  .faq-item.open .faq-q-arrow {
+    transform: rotate(180deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease-out;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 800px;
+  }
+  .faq-a-content {
+    padding: 0 24px 20px 76px;
+    border-top: 1px dashed var(--border);
+    margin-top: -1px;
+    padding-top: 18px;
+    margin-left: 0;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.9;
+  }
+  .faq-a-content p { margin-bottom: 8px; }
+  .faq-a-content strong { color: var(--orange-deep); }
+  .faq-a-content ul {
+    margin: 8px 0;
+    padding-left: 20px;
+  }
+  .faq-a-content li {
+    padding: 3px 0;
+    font-size: 12px;
+  }
+
+  .hide { display: none !important; }
+
+  @media (max-width: 900px) {
+    .faq-question { padding: 14px 16px; gap: 10px; }
+    .faq-q-icon { width: 28px; height: 28px; font-size: 14px; }
+    .faq-q-text { font-size: 13px; }
+    .faq-a-content { padding-left: 56px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="subpage-header">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <span class="current">常見問題</span>
+    </nav>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+      <div>
+        <div class="subpage-eyebrow">FAQ ・ 完整版</div>
+        <h1 class="subpage-title">常見<span class="accent">問題集</span></h1>
+        <p class="subpage-desc">投資型保單 ・ 佣獎 ・ 申請流程 ・ 配息稅務 一次解答</p>
+      </div>
+      <a href="../index.html" class="back-link">← 返回主頁</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 分類篩選 -->
+    <div class="cat-bar">
+      <span class="cat-label">▸ 分類</span>
+      <button class="cat-tab active" data-cat="all">全部 <span class="count">28</span></button>
+      <button class="cat-tab" data-cat="basic">基礎觀念 <span class="count">7</span></button>
+      <button class="cat-tab" data-cat="product">商品 / 條款 <span class="count">7</span></button>
+      <button class="cat-tab" data-cat="commission">佣獎制度 <span class="count">5</span></button>
+      <button class="cat-tab" data-cat="apply">申請流程 <span class="count">5</span></button>
+      <button class="cat-tab" data-cat="dividend">配息與稅務 <span class="count">4</span></button>
+    </div>
+
+    <!-- 類別 1: 基礎觀念 -->
+    <div class="faq-cat-section" data-cat="basic">
+      <div class="faq-cat-header">
+        <span class="faq-cat-icon">📚</span>
+        <span class="faq-cat-title">基礎觀念</span>
+        <span class="faq-cat-count">7 題</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">什麼是投資型保險？跟一般壽險有何不同？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>投資型保險是一種<strong>結合「保險保障」與「投資功能」</strong>的金融商品。它的最大特色是保戶可以自己選擇投資標的（如基金、代操帳戶），保單價值會隨投資績效而變動。</p>
+            <p>與一般傳統壽險的主要差異：</p>
+            <ul>
+              <li>傳統壽險：保額固定、預定利率固定、由保險公司承擔投資風險</li>
+              <li>投資型保險：保單價值隨投資績效波動、保戶自選投資標的、由保戶承擔投資風險</li>
+            </ul>
+            <p>因此投資型保險適合<strong>能承擔市場波動、追求長期成長</strong>的客戶。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">變額萬能壽險 (VUL) 與變額年金有什麼差別？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>變額萬能壽險 (VUL)</strong>主要功能是「壽險保障 + 投資累積」，當被保險人身故時提供身故保險金，平時可享有投資成長。</p>
+            <p><strong>變額年金</strong>則以「退休金累積與給付」為主要設計，重點在於累積期結束後可選擇月領、年領的年金化機制，壽險保障相對較低。</p>
+            <p>選擇上的考量：</p>
+            <ul>
+              <li>需要較高壽險保障 → 變額萬能壽險</li>
+              <li>專注退休金累積與給付 → 變額年金</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單的「目標保費」與「超額保費」是什麼意思？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>目標保費</strong>是投保時約定的基本保費，這部分會扣除前置費用後進入投資帳戶。費用率較高（通常前 5 年合計 100-150%）。</p>
+            <p><strong>超額保費</strong>是超過目標保費部分的額外投入，前置費用率較低（通常 2-5%），絕大部分能直接進入投資帳戶。</p>
+            <p>實務上的運用：客戶可以將大部分資金以「超額保費」方式投入，享受較低費用率，加速資金成長。建議搭配專業顧問進行最適化的保費結構設計。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">類全委帳戶 vs 自選基金 ・ 哪個比較好？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>沒有絕對的好壞，看客戶屬性決定：</p>
+            <p><strong>類全委帳戶（代操）</strong>適合：</p>
+            <ul>
+              <li>沒有時間或專業看盤者</li>
+              <li>信任專業團隊代操</li>
+              <li>偏好穩定月撥回機制</li>
+            </ul>
+            <p><strong>自選基金</strong>適合：</p>
+            <ul>
+              <li>有自己的投資見解</li>
+              <li>希望主動掌握資產配置</li>
+              <li>能定期檢視與調整</li>
+            </ul>
+            <p>實務上，許多保戶會混合使用 — 用一部分資金配置全委帳戶當核心、另一部分自選熱門基金當衛星。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單可以保本嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>不行 — 投資型保單不保本</strong>。保戶承擔投資風險，最高可能損失全部投資本金。這是投資型保單與傳統壽險最大的差異之一。</p>
+            <p>但有些設計可以「相對降低風險」：</p>
+            <ul>
+              <li>選擇較為保守的標的（如投資級債、平衡型基金）</li>
+              <li>長期持有並採定期定額方式分散市場風險</li>
+              <li>投保具有「最低身故保證」機制的商品</li>
+              <li>分散配置不要集中單一標的</li>
+            </ul>
+            <p>如果您完全無法承受任何虧損可能，建議考慮傳統型或利變型壽險商品。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單適合什麼樣的人？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>適合的客戶輪廓包括：</p>
+            <ul>
+              <li><strong>30-55 歲累積資產期</strong>：有充足時間享受複利效應</li>
+              <li><strong>有長期投資視野</strong>：能持有 15 年以上不受短期波動影響</li>
+              <li><strong>需要穩定現金流</strong>：退休族追求月配息</li>
+              <li><strong>已有基本保障</strong>：醫療、意外、定期壽險等</li>
+              <li><strong>能承受市場波動</strong>：理解投資涉及風險</li>
+            </ul>
+            <p><strong>不適合的情境</strong>：5 年內需動用全部資金、無任何儲蓄習慣、追求保本者、即將屆齡退休但完全沒有投資經驗者。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">為什麼很多人說投資型保單「不划算」？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>主要的批評來自三個方向：</p>
+            <p><strong>1. 前置費用率高</strong>：傳統設計下，前 5 年費用合計可能達 100-150% 目標保費，讓初期投資金額大幅縮水。</p>
+            <p><strong>2. 提前解約損失大</strong>：3-5 年內解約幾乎拿不回本金。</p>
+            <p><strong>3. 銷售過程不夠透明</strong>：部分業務員未充分揭露費用結構與風險。</p>
+            <p>但近年來：</p>
+            <ul>
+              <li>費用結構透明化規範增加</li>
+              <li>「超額保費」設計大幅降低費用率</li>
+              <li>專業顧問更注重客戶適配性</li>
+            </ul>
+            <p>關鍵在於 — <strong>是否找到對的商品 + 對的顧問 + 對的繳費結構</strong>。投資型保單本身是中性的工具，運用得當可以非常划算。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 類別 2: 商品 / 條款 -->
+    <div class="faq-cat-section" data-cat="product">
+      <div class="faq-cat-header">
+        <span class="faq-cat-icon">📋</span>
+        <span class="faq-cat-title">商品 / 條款</span>
+        <span class="faq-cat-count">7 題</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單最低投保金額是多少？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>各家商品略有不同，主流商品最低保費門檻如下：</p>
+            <ul>
+              <li><strong>凱基招財進保</strong>：30 萬元</li>
+              <li><strong>元大元元豐收</strong>：20 萬元</li>
+              <li><strong>法巴金采年華</strong>：50 萬元</li>
+              <li><strong>安達新幸福成雙</strong>：30 萬元</li>
+              <li><strong>安達富貴大贏家</strong>：100 萬元</li>
+              <li><strong>安達美利紅 (USD)</strong>：USD 30,000</li>
+            </ul>
+            <p>另需注意「目標保費」與「超額保費」的設計差異，實際規劃以顧問建議為準。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">基金轉換需要費用嗎？多久可以轉一次？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>大多數投資型保單提供保戶<strong>每年 4-12 次免費基金轉換</strong>機會，超過次數需收取轉換費用（通常每次 500-1,000 元）。</p>
+            <p>關於轉換時機：</p>
+            <ul>
+              <li>建議至少持有 6 個月以上再考慮轉換</li>
+              <li>頻繁轉換不利於長期累積</li>
+              <li>應依市場狀況或個人需求變化進行轉換</li>
+              <li>轉換期間市場波動仍會影響淨值</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">繳費期間沒辦法繼續繳怎麼辦？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>投資型保單通常提供<strong>「保費假期」機制</strong>—若保單帳戶價值足以支付危險保費與行政費用，保戶可暫停繳費。</p>
+            <p>若資金狀況改變的處理方式：</p>
+            <ul>
+              <li><strong>暫時困難</strong>：申請保費假期或減額繳費</li>
+              <li><strong>長期困難</strong>：申請部分提領或減少保額</li>
+              <li><strong>完全無法</strong>：考慮減額繳清或解約</li>
+            </ul>
+            <p>建議在做決定前先與專業顧問討論，不同處理方式對保單的影響差異很大。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單可以借款嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>大部分投資型保單<strong>不提供保單貸款功能</strong>，這是與傳統壽險最大的差異之一。</p>
+            <p>替代方案：</p>
+            <ul>
+              <li><strong>部分提領</strong>：保單帳戶有累積金額後可申請部分提領</li>
+              <li><strong>解約金</strong>：必要時可全部解約取回剩餘價值</li>
+              <li><strong>外部融資</strong>：以保單價值作為信用憑證向銀行借款</li>
+            </ul>
+            <p>如果您預期可能會有借款需求，可考慮搭配傳統型壽險商品。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">外幣保單和台幣保單該怎麼選？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>選擇關鍵在於資金來源與用途：</p>
+            <p><strong>選台幣保單</strong>適合：</p>
+            <ul>
+              <li>資金來自台幣薪資或存款</li>
+              <li>退休後計畫在台灣生活</li>
+              <li>不希望承擔匯率風險</li>
+            </ul>
+            <p><strong>選外幣保單（USD）</strong>適合：</p>
+            <ul>
+              <li>有海外資產或子女需求</li>
+              <li>已有美元收入或存款</li>
+              <li>希望分散資產幣別風險</li>
+              <li>追求美元計價基金的投資機會</li>
+            </ul>
+            <p>實務上建議資產配置中美元比重控制在 20-50% 區間，過度集中或完全沒有都不理想。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">受益人可以更改嗎？怎麼指定？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>是的，<strong>要保人可以隨時更改受益人</strong>，只需向保險公司提出書面申請即可。</p>
+            <p>受益人指定原則：</p>
+            <ul>
+              <li>可指定 1 位或多位受益人並設定比例</li>
+              <li>建議指定為配偶、子女或法定繼承人</li>
+              <li>受益人需具有完整法律行為能力（未成年需法定代理人同意）</li>
+              <li>可指定順位（第一順位、第二順位）</li>
+            </ul>
+            <p><strong>稅務考量</strong>：適當的受益人指定有助於遺產稅規劃，建議與顧問或會計師討論最佳安排。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">猶豫期是什麼？解約能拿回多少？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>猶豫期 (Free Look Period)</strong>是金管會規定的保戶權益保護機制，讓保戶在投保後有冷靜思考的機會。</p>
+            <p>關鍵規則：</p>
+            <ul>
+              <li>投資型保單猶豫期通常為 <strong>10 天</strong>（自收到保單翌日起算）</li>
+              <li>猶豫期內解約：可全額退費（不扣除任何費用）</li>
+              <li>猶豫期後解約：依保單帳戶價值扣除解約費用</li>
+            </ul>
+            <p><strong>解約費用率（示意）</strong>：</p>
+            <ul>
+              <li>第 1 年：8-10%</li>
+              <li>第 2-3 年：5-7%</li>
+              <li>第 4-5 年：2-4%</li>
+              <li>第 6 年以後：通常為 0%</li>
+            </ul>
+            <p>因此<strong>不建議在繳費期前 5 年解約</strong>，會有明顯本金損失。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 類別 3: 佣獎制度 -->
+    <div class="faq-cat-section" data-cat="commission">
+      <div class="faq-cat-header">
+        <span class="faq-cat-icon">💰</span>
+        <span class="faq-cat-title">佣獎制度（夥伴專區）</span>
+        <span class="faq-cat-count">5 題</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">FYC、RYC、OPC 是什麼意思？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>這是業務員佣金制度的三大專有名詞：</p>
+            <ul>
+              <li><strong>FYC (First Year Commission)</strong>：首年度佣金，保單成立第一年依目標保費計算的佣金</li>
+              <li><strong>RYC (Renewal Year Commission)</strong>：續年度佣金，第 2 年起每年依續期保費計算</li>
+              <li><strong>OPC (Over-Premium Commission)</strong>：超額保費佣金，超過目標保費部分另計</li>
+            </ul>
+            <p><strong>典型結構</strong>：FYC 70-90%、RYC 每年 3-5%、OPC 2-3%</p>
+            <p>實際比率視商品、職級、通路而異，請參考公司最新公告。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">不同公司商品的佣率差異很大嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>是的，不同保險公司、不同商品的佣率有明顯差異。一般來說：</p>
+            <ul>
+              <li>新上市商品佣率較高（推廣期）</li>
+              <li>主力商品佣率較高（鼓勵銷售）</li>
+              <li>外幣商品通常較台幣商品佣率略高</li>
+              <li>變額萬能壽險佣率高於變額年金</li>
+            </ul>
+            <p><strong>但選商品不應只看佣率</strong> — 客戶適配性、商品競爭力、長期持續率獎勵等綜合考量更重要。短期高佣率搭配低持續率可能反而吃虧。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">持續率獎金是什麼？怎麼計算？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>持續率 (Persistency Rate)</strong>是保戶按時繳費未解約的比率，通常觀察 13M (13 個月) 與 25M (25 個月) 兩個關鍵時點。</p>
+            <p>典型獎金結構：</p>
+            <ul>
+              <li>13M 持續率達 90% 以上 → 加發 2-3% 獎金</li>
+              <li>25M 持續率達 85% 以上 → 加發 3-5% 獎金</li>
+              <li>未達標準者可能被扣回部分 FYC</li>
+            </ul>
+            <p>這個機制鼓勵業務員<strong>真正為客戶量身規劃</strong>而非只追求短期成交，是業界正向發展的重要指標。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">育成津貼如何申請？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>育成津貼</strong>是業務主管帶動下屬出單的獎勵機制，由公司直接核算撥付，無需另行申請。</p>
+            <p>主要規則：</p>
+            <ul>
+              <li>育成主管須符合職級資格（通常為主任以上）</li>
+              <li>津貼比率：下屬 FYC 的 5-15%（依職級而定）</li>
+              <li>連續 3 個月無業績的下屬可能不計入</li>
+              <li>跨體系育成原則上不適用</li>
+            </ul>
+            <p>育成津貼是組織發展的重要動能，鼓勵主管積極帶人、共同成長。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">晉升職級的條件是什麼？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>各保經代體系略有不同，鼎綸恩宇典型晉升路徑：</p>
+            <ul>
+              <li><strong>業務員 → 主任</strong>：累積 FYC 100 萬 + 持續率達標</li>
+              <li><strong>主任 → 經理</strong>：年度 FYC 300 萬 + 育成 3 位下屬</li>
+              <li><strong>經理 → 總監</strong>：年度團隊 FYC 1,000 萬 + 育成 10 位下屬</li>
+              <li><strong>總監 → 執行長</strong>：年度團隊 FYC 5,000 萬 + 多層次組織</li>
+            </ul>
+            <p>每階段除了業績要求，還會考核<strong>持續率、合規、團隊管理能力</strong>等綜合指標。詳細條件請參考公司最新公告。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 類別 4: 申請流程 -->
+    <div class="faq-cat-section" data-cat="apply">
+      <div class="faq-cat-header">
+        <span class="faq-cat-icon">📝</span>
+        <span class="faq-cat-title">申請流程</span>
+        <span class="faq-cat-count">5 題</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投保需要準備哪些文件？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>標準投保需要的文件：</p>
+            <ul>
+              <li><strong>身分證明</strong>：身分證正反面影本 + 第二身分證件（健保卡、駕照）</li>
+              <li><strong>金融帳戶</strong>：扣繳保費用的銀行存簿首頁影本</li>
+              <li><strong>適合度問卷 (KYC)</strong>：投資型保單必填，了解風險屬性</li>
+              <li><strong>要保書</strong>：填寫個人資料、被保險人資料、受益人指定等</li>
+              <li><strong>體檢報告</strong>：高保額或年齡較長者可能需要</li>
+            </ul>
+            <p>實際所需文件依各公司規定略有差異，專業顧問會在投保前清楚說明。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">從申請到保單生效需要多久？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>標準流程約需 7-14 個工作天：</p>
+            <ul>
+              <li><strong>送件當天</strong>：完成要保書與相關文件</li>
+              <li><strong>送件 + 1-3 天</strong>：保險公司核保流程</li>
+              <li><strong>送件 + 3-7 天</strong>：核保通過、扣款生效</li>
+              <li><strong>送件 + 7-14 天</strong>：保單寄達</li>
+            </ul>
+            <p>影響時程的因素：</p>
+            <ul>
+              <li>是否需要安排體檢（+3-5 天）</li>
+              <li>核保時是否要求補件（+2-7 天）</li>
+              <li>高保額額外複核流程（+3-5 天）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">什麼情況需要體檢？費用誰負擔？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>需要體檢的常見情況：</p>
+            <ul>
+              <li>保額超過免體檢額度（通常 500 萬 - 1,000 萬以上）</li>
+              <li>被保險人年齡較大（通常 50 歲以上）</li>
+              <li>申報有特定疾病史需進一步確認</li>
+              <li>核保員依個案判斷需要</li>
+            </ul>
+            <p><strong>費用負擔</strong>：</p>
+            <ul>
+              <li>多數公司由保險公司全額負擔</li>
+              <li>部分高階商品才需要客戶部分負擔</li>
+              <li>核保未通過時體檢費仍由保險公司支付</li>
+            </ul>
+            <p>體檢項目通常包含基本健檢、血液生化、心電圖等，由特約醫療院所執行。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">核保被婉拒怎麼辦？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>核保未通過的常見原因：</p>
+            <ul>
+              <li>健康狀況不符標準（高血壓、糖尿病等慢性病）</li>
+              <li>職業屬高風險類別（軍警、特定運動員等）</li>
+              <li>財務或道德風險疑慮</li>
+              <li>近期重大手術或住院紀錄</li>
+            </ul>
+            <p>應對方式：</p>
+            <ul>
+              <li><strong>批註承保</strong>：限制特定條件後仍可投保</li>
+              <li><strong>加費承保</strong>：針對額外風險加收保費</li>
+              <li><strong>降額承保</strong>：降低保額後通過</li>
+              <li><strong>更換商品</strong>：選擇核保條件較寬鬆的商品</li>
+              <li><strong>等待期投保</strong>：健康狀況穩定後再投保</li>
+            </ul>
+            <p>專業顧問會協助評估最佳處理方案。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投保後如何查詢保單狀況？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>多種便利查詢管道：</p>
+            <ul>
+              <li><strong>網路會員專區</strong>：保戶 24 小時可查詢保單狀況、淨值、配息紀錄</li>
+              <li><strong>APP 行動服務</strong>：各家保險公司均提供官方 APP</li>
+              <li><strong>客服專線</strong>：透過身分驗證後查詢</li>
+              <li><strong>電子報表</strong>：每月、每季自動寄送投資報告</li>
+              <li><strong>顧問服務</strong>：聯繫專屬顧問索取詳細解析</li>
+            </ul>
+            <p>建議客戶<strong>定期至少每季檢視一次</strong>保單狀況，必要時與顧問討論調整策略。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 類別 5: 配息與稅務 -->
+    <div class="faq-cat-section" data-cat="dividend">
+      <div class="faq-cat-header">
+        <span class="faq-cat-icon">💵</span>
+        <span class="faq-cat-title">配息與稅務</span>
+        <span class="faq-cat-count">4 題</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">配息率與報酬率有什麼不同？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p><strong>配息率</strong>是基金每月配發給投資人的金額占淨值的比率（年化），但配息可能來自基金本金。</p>
+            <p><strong>報酬率</strong>是基金實際的賺賠表現，包含淨值漲跌與配息再投資的綜合結果，才是真正的投資收益。</p>
+            <p>舉例：某基金年化配息率 8%，但同期淨值下跌 5%，實際報酬率僅 3%。</p>
+            <p><strong>關鍵觀念</strong>：選擇月配息基金時，應同時觀察「配息率 + 淨值變化」，避免落入「高配息、低報酬」的陷阱。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">基金配息需要繳稅嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>分為兩種情況：</p>
+            <p><strong>境內基金配息</strong>：</p>
+            <ul>
+              <li>配息屬於股利所得，併入綜合所得稅課徵</li>
+              <li>可選擇分離課稅 (28%) 或合併申報</li>
+              <li>每年享有 8.5 萬扣抵額度</li>
+            </ul>
+            <p><strong>境外基金配息（含投資型保單常見的境外基金）</strong>：</p>
+            <ul>
+              <li>屬於海外所得，併入「最低稅負制」計算</li>
+              <li>每戶每年免稅額 670 萬以下不需繳稅</li>
+              <li>超過部分以 20% 稅率課徵</li>
+            </ul>
+            <p>具體稅務規劃建議諮詢會計師或稅務顧問。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">投資型保單身故金有遺產稅嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>關鍵在於是否符合<strong>「實質課稅」</strong>原則：</p>
+            <p><strong>不會課徵遺產稅的情況</strong>：</p>
+            <ul>
+              <li>受益人指定為配偶、子女或法定繼承人</li>
+              <li>投保時被保險人健康狀況良好</li>
+              <li>有明確投保動機（如保障家人）</li>
+              <li>保額與所得相當合理</li>
+            </ul>
+            <p><strong>可能被認定實質課稅</strong>的情況：</p>
+            <ul>
+              <li>重病或高齡時投保（避稅意圖明顯）</li>
+              <li>躉繳大筆保費（與一般投保慣例不符）</li>
+              <li>身故金額遠超合理保障需求</li>
+              <li>受益人非具有保險利益關係</li>
+            </ul>
+            <p>建議在規劃高保額保單時，務必諮詢專業稅務顧問，確保符合常規且具有合理保障目的。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">部分提領需要繳稅嗎？</div>
+          <div class="faq-q-arrow">▾</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-a-content">
+            <p>視提領金額與獲利狀況而定：</p>
+            <p><strong>提領本金部分</strong>：不需課稅</p>
+            <p><strong>提領獲利部分</strong>：</p>
+            <ul>
+              <li>境內基金獲利：併入綜合所得稅</li>
+              <li>境外基金獲利：併入最低稅負制（每戶 670 萬以下免稅）</li>
+            </ul>
+            <p><strong>實務操作建議</strong>：</p>
+            <ul>
+              <li>分批提領以分散稅負</li>
+              <li>於年度所得較低時提領</li>
+              <li>搭配其他稅務規劃（醫療費、捐贈等）</li>
+              <li>境外資金每人每年 500 萬以下免申報</li>
+            </ul>
+            <p>具體稅務影響因人而異，建議與會計師或專業顧問討論。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="info-card-dark" style="text-align: center; padding: 36px; margin-top: 32px;">
+      <h3 style="font-size: 22px; font-weight: 900; color: #fff; letter-spacing: 1.5px; margin-bottom: 10px;">沒有找到您想問的問題？</h3>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 20px; letter-spacing: 0.5px;">直接聯繫專業顧問獲得最詳盡的解答</p>
+      <a href="tel:0925000049" class="btn btn-primary">📞 立即預約諮詢</a>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 法律提醒</strong>　本頁所提供之解答僅為觀念說明，實際商品條款、佣率、稅務影響以各保險公司、政府機關最新公告為準。投資型保單之投資標的價值將隨市場波動，可能造成本金損失。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 完整 FAQ</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+<script>
+  // FAQ 展開/收合
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', function() {
+      this.parentElement.classList.toggle('open');
+    });
+  });
+
+  // 分類篩選
+  document.querySelectorAll('.cat-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      const cat = this.dataset.cat;
+      document.querySelectorAll('.faq-cat-section').forEach(section => {
+        if (cat === 'all' || section.dataset.cat === cat) {
+          section.classList.remove('hide');
+        } else {
+          section.classList.add('hide');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

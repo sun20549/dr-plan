@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>近五日重要指數與安聯收益成長比較 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  .article-hero {
+    background: linear-gradient(135deg, #1a4a5a 0%, var(--navy-deep) 100%);
+    color: #fff;
+    padding: 36px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .article-hero::before {
+    content: '📊';
+    position: absolute;
+    top: 50%; right: 60px;
+    transform: translateY(-50%);
+    font-size: 200px;
+    opacity: 0.05;
+    line-height: 1;
+  }
+  .article-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,160,32,0.15);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .article-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1.5px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    position: relative; z-index: 2;
+  }
+  .article-title .accent { color: var(--gold); }
+  .article-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1.5px;
+    position: relative; z-index: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .article-meta .sep { color: rgba(255,255,255,0.2); }
+
+  /* 指數比較總覽 */
+  .index-overview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .idx-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 18px;
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .idx-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .idx-card.spx::before { background: linear-gradient(90deg, #C45A1F 0%, #962C0D 100%); }
+  .idx-card.ndx::before { background: linear-gradient(90deg, #4A6FA5 0%, #1F3D6E 100%); }
+  .idx-card.dji::before { background: linear-gradient(90deg, #7FB069 0%, #2E8B57 100%); }
+  .idx-card.twii::before { background: linear-gradient(90deg, var(--orange) 0%, var(--orange-deep) 100%); }
+  .idx-card.aigf::before { background: linear-gradient(90deg, var(--gold) 0%, #c08a15 100%); }
+  .idx-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  }
+  .idx-name {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .idx-fullname {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .idx-current {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .idx-change {
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .idx-change.up { color: var(--green); }
+  .idx-change.down { color: var(--red); }
+  .idx-change .small {
+    font-size: 11px;
+    margin-left: 4px;
+    opacity: 0.7;
+  }
+
+  /* 5日比較表 */
+  .compare-section { margin-bottom: 36px; }
+  .perf-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .perf-compare-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .perf-compare-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px 12px;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+  .perf-compare-table thead th:first-child {
+    text-align: left;
+    width: 200px;
+  }
+  .perf-compare-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .perf-compare-table tbody td:first-child {
+    text-align: left;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+  }
+  .perf-compare-table tbody tr:hover { background: var(--bg-cream); }
+  .perf-compare-table .pos { color: var(--green); }
+  .perf-compare-table .neg { color: var(--red); }
+  .perf-compare-table .neutral { color: #888; }
+
+  /* 趨勢視覺化 */
+  .trend-viz {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    border-radius: 18px;
+    padding: 32px;
+    color: #fff;
+    margin-bottom: 28px;
+  }
+  .trend-viz h3 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .trend-viz p.sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .trend-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+  .trend-label {
+    width: 130px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  .trend-bar-bg {
+    flex: 1;
+    height: 24px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .trend-bar-bg::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.3);
+  }
+  .trend-bar {
+    height: 100%;
+    border-radius: 12px;
+    position: absolute;
+    top: 0;
+    transition: all .4s;
+  }
+  .trend-bar.pos {
+    background: linear-gradient(90deg, var(--green) 0%, #5DA853 100%);
+    left: 50%;
+  }
+  .trend-bar.neg {
+    background: linear-gradient(90deg, var(--red) 0%, #A6112A 100%);
+    right: 50%;
+  }
+  .trend-value {
+    width: 60px;
+    text-align: right;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .trend-value.pos { color: #7FB069; }
+  .trend-value.neg { color: #E55A6E; }
+
+  /* 觀察重點 */
+  .observation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .obs-card {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .obs-card.highlight {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border-color: var(--orange);
+  }
+  .obs-card-num {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .obs-card h4 {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .obs-card p {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  /* 文章內容 */
+  .article-content { max-width: 760px; margin: 0 auto; }
+  .article-h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--orange);
+    display: inline-block;
+  }
+  .article-section { margin-bottom: 36px; }
+  .article-p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.95;
+    margin-bottom: 16px;
+  }
+  .article-p strong { color: var(--orange-deep); }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .related-item {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .25s;
+  }
+  .related-item:hover {
+    border-color: var(--orange);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+  .related-tag {
+    display: inline-block;
+    font-size: 10px;
+    background: var(--orange-light);
+    color: var(--orange-deep);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .related-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+  }
+
+  @media (max-width: 900px) {
+    .article-hero { padding: 28px 24px 36px; }
+    .article-title { font-size: 22px; }
+    .index-overview { grid-template-columns: 1fr 1fr; }
+    .observation-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="article-hero">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#knowledge">財商增益</a>
+      <span class="sep">/</span>
+      <span class="current">指數比較</span>
+    </nav>
+
+    <span class="article-cat">★ MARKET ANALYSIS ・ 市場分析</span>
+    <h1 class="article-title">近五日<span class="accent">重要指數</span><br>與安聯收益成長比較</h1>
+    <div class="article-meta">
+      <span>📅 2026/03/06 - 03/10</span>
+      <span class="sep">|</span>
+      <span>📖 約 6 分鐘閱讀</span>
+      <span class="sep">|</span>
+      <span>👤 鼎綸恩宇 市場觀察</span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 指數總覽 -->
+    <div class="section-block">
+      <h2 class="block-title">五大指數即時概況</h2>
+      <p class="block-subtitle">資料截至 2026/03/10 美股收盤 / 台股收盤</p>
+
+      <div class="index-overview">
+        <div class="idx-card spx">
+          <div class="idx-name">S&P 500</div>
+          <div class="idx-fullname">標準普爾 500 指數</div>
+          <div class="idx-current">5,342.18</div>
+          <div class="idx-change up">+1.85% <span class="small">+97.2</span></div>
+        </div>
+        <div class="idx-card ndx">
+          <div class="idx-name">NASDAQ 100</div>
+          <div class="idx-fullname">那斯達克 100 指數</div>
+          <div class="idx-current">18,456.72</div>
+          <div class="idx-change up">+2.34% <span class="small">+421.6</span></div>
+        </div>
+        <div class="idx-card dji">
+          <div class="idx-name">DJIA</div>
+          <div class="idx-fullname">道瓊工業平均指數</div>
+          <div class="idx-current">38,917.55</div>
+          <div class="idx-change up">+0.92% <span class="small">+355.4</span></div>
+        </div>
+        <div class="idx-card twii">
+          <div class="idx-name">TWII</div>
+          <div class="idx-fullname">台灣加權指數</div>
+          <div class="idx-current">22,381.05</div>
+          <div class="idx-change up">+1.42% <span class="small">+313.5</span></div>
+        </div>
+        <div class="idx-card aigf">
+          <div class="idx-name">AIGF AM</div>
+          <div class="idx-fullname">安聯收益成長 月配</div>
+          <div class="idx-current">11.83</div>
+          <div class="idx-change up">+0.85% <span class="small">+0.10</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 五日表現比較 -->
+    <div class="section-block">
+      <h2 class="block-title">近五日報酬率比較</h2>
+      <p class="block-subtitle">日報酬率（%）・ 紅色為下跌、綠色為上漲</p>
+
+      <table class="perf-compare-table">
+        <thead>
+          <tr>
+            <th>指數 / 基金</th>
+            <th>03/06 (週四)</th>
+            <th>03/07 (週五)</th>
+            <th>03/08 (週一)</th>
+            <th>03/09 (週二)</th>
+            <th>03/10 (週三)</th>
+            <th>5日累積</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S&P 500</td>
+            <td><span class="pos">+0.45%</span></td>
+            <td><span class="neg">-0.32%</span></td>
+            <td><span class="pos">+0.78%</span></td>
+            <td><span class="pos">+0.61%</span></td>
+            <td><span class="pos">+0.33%</span></td>
+            <td><span class="pos">+1.85%</span></td>
+          </tr>
+          <tr>
+            <td>NASDAQ 100</td>
+            <td><span class="pos">+0.62%</span></td>
+            <td><span class="neg">-0.18%</span></td>
+            <td><span class="pos">+1.05%</span></td>
+            <td><span class="pos">+0.47%</span></td>
+            <td><span class="pos">+0.38%</span></td>
+            <td><span class="pos">+2.34%</span></td>
+          </tr>
+          <tr>
+            <td>道瓊工業指數</td>
+            <td><span class="pos">+0.18%</span></td>
+            <td><span class="neg">-0.45%</span></td>
+            <td><span class="pos">+0.55%</span></td>
+            <td><span class="pos">+0.42%</span></td>
+            <td><span class="pos">+0.22%</span></td>
+            <td><span class="pos">+0.92%</span></td>
+          </tr>
+          <tr>
+            <td>台灣加權指數</td>
+            <td><span class="pos">+0.51%</span></td>
+            <td><span class="neg">-0.28%</span></td>
+            <td><span class="pos">+0.62%</span></td>
+            <td><span class="pos">+0.35%</span></td>
+            <td><span class="pos">+0.22%</span></td>
+            <td><span class="pos">+1.42%</span></td>
+          </tr>
+          <tr style="background: rgba(232,160,32,0.05);">
+            <td><strong style="color:var(--gold);">★ 安聯收益成長 AM</strong></td>
+            <td><span class="pos">+0.21%</span></td>
+            <td><span class="neg">-0.15%</span></td>
+            <td><span class="pos">+0.38%</span></td>
+            <td><span class="pos">+0.28%</span></td>
+            <td><span class="pos">+0.13%</span></td>
+            <td><span class="pos">+0.85%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 視覺化比較 -->
+    <div class="trend-viz">
+      <h3>5 日累積報酬率視覺化比較</h3>
+      <p class="sub">直觀比較各市場波動幅度與方向</p>
+
+      <div class="trend-row">
+        <div class="trend-label">NASDAQ 100</div>
+        <div class="trend-bar-bg">
+          <div class="trend-bar pos" style="width: 47%;"></div>
+        </div>
+        <div class="trend-value pos">+2.34%</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-label">S&P 500</div>
+        <div class="trend-bar-bg">
+          <div class="trend-bar pos" style="width: 37%;"></div>
+        </div>
+        <div class="trend-value pos">+1.85%</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-label">台灣加權</div>
+        <div class="trend-bar-bg">
+          <div class="trend-bar pos" style="width: 28%;"></div>
+        </div>
+        <div class="trend-value pos">+1.42%</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-label">道瓊指數</div>
+        <div class="trend-bar-bg">
+          <div class="trend-bar pos" style="width: 18%;"></div>
+        </div>
+        <div class="trend-value pos">+0.92%</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-label">★ 安聯收益成長</div>
+        <div class="trend-bar-bg">
+          <div class="trend-bar pos" style="width: 17%;"></div>
+        </div>
+        <div class="trend-value pos">+0.85%</div>
+      </div>
+
+      <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 18px; letter-spacing: 0.5px; text-align: center;">
+        ※ 中線為基準線，向右為正報酬，向左為負報酬。橫軸範圍：±5%
+      </p>
+    </div>
+
+    <!-- 文章內容 -->
+    <div class="article-content">
+
+      <div class="article-section">
+        <h2 class="article-h2">觀察重點</h2>
+        <p class="article-p">
+          觀察本週各指數表現，可以歸納出幾個重要結論：
+        </p>
+
+        <div class="observation-grid">
+          <div class="obs-card highlight">
+            <div class="obs-card-num">1</div>
+            <h4>安聯波動度最低</h4>
+            <p>5 日內最大單日漲跌幅僅 ±0.38%，相較於股票指數的 ±1% 以上波動，明顯展現股債混合的緩衝特性。</p>
+          </div>
+          <div class="obs-card">
+            <div class="obs-card-num">2</div>
+            <h4>累積報酬適中</h4>
+            <p>+0.85% 的 5 日累積報酬，落在純股票指數（+1.42% ~ +2.34%）與保守型債券之間，符合預期。</p>
+          </div>
+          <div class="obs-card">
+            <div class="obs-card-num">3</div>
+            <h4>下跌時抗跌</h4>
+            <p>03/07 美股下跌時，安聯僅跌 -0.15%，明顯優於 S&P 的 -0.32% 與道瓊的 -0.45%。</p>
+          </div>
+          <div class="obs-card">
+            <div class="obs-card-num">4</div>
+            <h4>上漲時亦能參與</h4>
+            <p>03/08 美股反彈時，安聯也跟著上漲 +0.38%，雖不及純股票指數但仍展現正向參與度。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">為什麼安聯表現相對「平穩」？</h2>
+        <p class="article-p">
+          安聯收益成長基金的<strong>三平衡結構</strong>是關鍵 — 美國高股息、可轉換債券、高收益債券各約 33% 的均衡配置，讓單一市場的波動不會直接全面反映在淨值上：
+        </p>
+        <p class="article-p">
+          <strong>股市上漲時：</strong>股票部位（含可轉債）能參與上漲；債券部位提供穩定基礎。<br>
+          <strong>股市下跌時：</strong>債券部位通常表現較穩定，能抵銷部分股票跌幅；可轉債因債性保護下檔有限。
+        </p>
+
+        <div class="note-box">
+          <strong>💡 顧問觀點</strong>　從這 5 個交易日的觀察可以清楚看到 — 安聯收益成長並非<strong>追求極致報酬</strong>的工具，而是 <strong>「穩健參與市場 + 月月配息」</strong>的中庸之道。如果您追求高彈性的高報酬，純股票 ETF 會是更直接的選擇；但如果您需要穩定現金流並控制波動，安聯這類三平衡型商品就是核心配置首選。
+        </div>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">不同需求 ・ 不同選擇</h2>
+        <p class="article-p">
+          投資沒有絕對的「最好」，只有「最適合自己」。從近期觀察延伸：
+        </p>
+        <ul style="list-style: none; padding-left: 0; font-size: 14px; line-height: 1.95; color: var(--navy);">
+          <li style="padding: 10px 0; padding-left: 24px; position: relative; border-bottom: 1px dashed var(--border);">
+            <span style="position:absolute; left:0; color: var(--orange);">▸</span>
+            <strong style="color: var(--orange-deep);">追求穩定現金流</strong> → 安聯收益成長、月配息基金等
+          </li>
+          <li style="padding: 10px 0; padding-left: 24px; position: relative; border-bottom: 1px dashed var(--border);">
+            <span style="position:absolute; left:0; color: var(--orange);">▸</span>
+            <strong style="color: var(--orange-deep);">追求成長性</strong> → QQQ、S&P 500 ETF 等指數型商品
+          </li>
+          <li style="padding: 10px 0; padding-left: 24px; position: relative; border-bottom: 1px dashed var(--border);">
+            <span style="position:absolute; left:0; color: var(--orange);">▸</span>
+            <strong style="color: var(--orange-deep);">追求保本</strong> → 短天期投資級債、定存等
+          </li>
+          <li style="padding: 10px 0; padding-left: 24px; position: relative;">
+            <span style="position:absolute; left:0; color: var(--orange);">▸</span>
+            <strong style="color: var(--orange-deep);">綜合配置</strong> → 投資型保單將以上組合納入單一帳戶管理
+          </li>
+        </ul>
+      </div>
+
+      <!-- 相關文章 -->
+      <div class="article-section">
+        <h2 class="article-h2" style="margin-top: 40px;">延伸閱讀</h2>
+        <div class="related-grid">
+          <a href="currency-buffer.html" class="related-item">
+            <span class="related-tag">投資觀念</span>
+            <div class="related-title">匯率緩衝 × 股債混合 ・ 打造抗波動投資組合</div>
+          </a>
+          <a href="qqq.html" class="related-item">
+            <span class="related-tag">投資解析</span>
+            <div class="related-title">QQQ 投資解析 ・ 科技股 ETF 王者的長期觀察</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 數據說明</strong>　本頁所示指數收盤價與基金淨值為示意數據，實際資料請參考各官方公告管道。投資報酬率歷史不代表未來表現，過往績效僅供參考。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 市場分析</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

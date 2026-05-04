@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例 C2847 ・ 450萬 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 案例詳細頁專屬樣式 */
+  .hero-case {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    padding: 32px 56px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-case::before {
+    content: '◆';
+    position: absolute;
+    top: -30px; right: 40px;
+    font-size: 220px;
+    color: rgba(232,160,32,0.06);
+    line-height: 1;
+  }
+  .hero-case-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-case-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--gold) 0%, #d68b15 100%);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .hero-case-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .hero-case-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .hero-case-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 90px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .hero-case-amount .unit {
+    font-size: 30px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 6px;
+  }
+  .hero-case-id-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-case-id-row .meta {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 18px;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-case-id-row .meta-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .hero-case-id-row .meta-value {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .hero-case-id-row .meta-value.lg {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+
+  /* 客戶輪廓 */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .profile-card {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .profile-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--orange-light);
+    margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .profile-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .profile-value {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+
+  /* 規劃方案 */
+  .plan-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 18px;
+    padding: 28px 32px;
+  }
+  .plan-product-name {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .plan-product-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .plan-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .plan-detail {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(240,90,40,0.2);
+  }
+  .plan-detail-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .plan-detail-value {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+  }
+  .plan-detail-value.big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  /* 規劃流程 */
+  .flow-list {
+    list-style: none;
+    counter-reset: flow;
+  }
+  .flow-list li {
+    counter-increment: flow;
+    padding: 18px 24px 18px 70px;
+    position: relative;
+    background: var(--bg-cream);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--orange);
+  }
+  .flow-list li::before {
+    content: counter(flow, decimal-leading-zero);
+    position: absolute;
+    left: 24px;
+    top: 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--orange);
+    letter-spacing: 1px;
+  }
+  .flow-list li strong {
+    display: block;
+    font-size: 14px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .flow-list li span {
+    font-size: 13px;
+    color: #6b7680;
+    line-height: 1.7;
+  }
+
+  /* 預期效益 */
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .benefit-card {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .benefit-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 100%);
+  }
+  .benefit-card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .benefit-card-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .benefit-card-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+
+  /* 鄰近案例 */
+  .nav-cases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .nav-case {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .25s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-case:hover {
+    border-color: var(--orange);
+    background: #fff;
+  }
+  .nav-case .arrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--orange);
+  }
+  .nav-case .label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1.5px;
+  }
+  .nav-case .info {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .nav-case.right { flex-direction: row-reverse; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 案例 HERO -->
+  <header class="hero-case">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="index.html">客戶案例</a>
+      <span class="sep">/</span>
+      <span class="current">C2847</span>
+    </nav>
+
+    <div class="hero-case-grid">
+      <div>
+        <span class="hero-case-tag">★ GOLD TIER</span>
+        <h1 class="hero-case-title">醫師 ・ 已婚有子女</h1>
+        <p class="hero-case-subtitle">規劃目標：退休+教育</p>
+        <div class="hero-case-id-row">
+          <div class="meta">
+            <div class="meta-label">案例編號</div>
+            <div class="meta-value lg">C2847</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">成交日期</div>
+            <div class="meta-value">2024/01/26</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">客戶年齡</div>
+            <div class="meta-value">49 歲</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-bottom:6px;">總保費規模</div>
+        <div class="hero-case-amount">450<span class="unit">萬</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 客戶輪廓 -->
+    <div class="section-block">
+      <h2 class="block-title">客戶輪廓</h2>
+      <p class="block-subtitle">本案例之客戶基本資料（已去識別化處理）</p>
+      <div class="profile-grid">
+        <div class="profile-card">
+          <div class="profile-icon">👤</div>
+          <div class="profile-label">職業</div>
+          <div class="profile-value">醫師</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">🎂</div>
+          <div class="profile-label">年齡</div>
+          <div class="profile-value">49 歲</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">👨‍👩‍👧</div>
+          <div class="profile-label">家庭狀況</div>
+          <div class="profile-value">已婚有子女</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-icon">🎯</div>
+          <div class="profile-label">主要目標</div>
+          <div class="profile-value">退休+教育</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 客戶需求 -->
+    <div class="section-block">
+      <h2 class="block-title">需求分析</h2>
+      <p class="block-subtitle">透過完整需求訪談，了解客戶實際財務狀況與規劃方向</p>
+      <div class="info-card">
+        <p style="font-size:14px; line-height:1.9; color:var(--navy);">
+          客戶有規劃明確的雙重需求：3-5 年內子女即將升學需要教育金，同時自身希望在 15-20 年後達到財務自由的退休目標。
+        </p>
+      </div>
+    </div>
+
+    <!-- 規劃方案 -->
+    <div class="section-block">
+      <h2 class="block-title">規劃方案</h2>
+      <p class="block-subtitle">依客戶需求量身打造的投資型保單配置</p>
+      <div class="plan-card">
+        <span class="plan-product-tag">★ 主推商品</span>
+        <h3 class="plan-product-name">安聯收益成長</h3>
+        <p style="font-size:13px; color:#6b7680; line-height:1.8; margin-top:6px;">
+          安聯收益成長基金為三平衡型基金，結合美國高股息、可轉債、高收益債三大收益來源，是國內最熱門的投資型保單配置標的之一。
+        </p>
+        <div class="plan-detail-grid">
+          <div class="plan-detail">
+            <div class="plan-detail-label">總保費</div>
+            <div class="plan-detail-value big">450萬</div>
+          </div>
+          <div class="plan-detail">
+            <div class="plan-detail-label">繳費方式</div>
+            <div class="plan-detail-value">6年期</div>
+          </div>
+          <div class="plan-detail">
+            <div class="plan-detail-label">投入頻率</div>
+            <div class="plan-detail-value">7.5萬/月</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 服務流程 -->
+    <div class="section-block">
+      <h2 class="block-title">服務流程</h2>
+      <p class="block-subtitle">從接觸到成交，完整的專業服務歷程</p>
+      <ol class="flow-list">
+        <li>
+          <strong>需求訪談</strong>
+          <span>透過完整的財務健檢問卷，深度了解客戶現況、家庭責任、退休目標與風險屬性。</span>
+        </li>
+        <li>
+          <strong>方案規劃</strong>
+          <span>依客戶風險承受度與資金特性，量身設計最合適的保額、繳費方式與投資組合配置。</span>
+        </li>
+        <li>
+          <strong>簡報說明</strong>
+          <span>一對一詳細說明保單條款、費用結構、投資標的與預期收益情境，確保客戶充分理解。</span>
+        </li>
+        <li>
+          <strong>送件核保</strong>
+          <span>協助完成投保流程、體檢安排（如需）與相關文件處理，確保核保順利通過。</span>
+        </li>
+        <li>
+          <strong>後續服務</strong>
+          <span>定期績效檢視、市場資訊提供、保單轉換建議，建立長期信任關係。</span>
+        </li>
+      </ol>
+    </div>
+
+    <!-- 預期效益 -->
+    <div class="section-block">
+      <h2 class="block-title">預期效益</h2>
+      <p class="block-subtitle">本規劃為客戶帶來的核心價值</p>
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-card-icon">💎</div>
+          <div class="benefit-card-title">資產配置</div>
+          <p class="benefit-card-text">透過全球分散投資，降低單一市場風險，追求長期穩健成長。</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">🛡️</div>
+          <div class="benefit-card-title">保障兼備</div>
+          <p class="benefit-card-text">投資成長同時享有壽險保障，為家人建立堅實的財務後盾。</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">📈</div>
+          <div class="benefit-card-title">彈性運用</div>
+          <p class="benefit-card-text">提供基金轉換、部分提領機制，依市場變化彈性調整資金配置。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 法律警語</strong>　本案例僅為服務歷程之去識別化展示，不代表所有客戶皆能獲得相同效益。投資型保險商品連結之投資標的價值將隨市場波動，最高可能損失全部本金，購買前應審慎評估自身需求與風險承受度。
+    </div>
+
+    <!-- 上下案例導覽 -->
+    <div class="nav-cases">
+      <a href="index.html" class="nav-case">
+        <span class="arrow">←</span>
+        <div>
+          <div class="label">返回</div>
+          <div class="info">案例完整列表</div>
+        </div>
+      </a>
+      <a href="index.html" class="nav-case right">
+        <span class="arrow">→</span>
+        <div>
+          <div class="label">查看其他</div>
+          <div class="info">73 筆完整成交</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 案例 C2847</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

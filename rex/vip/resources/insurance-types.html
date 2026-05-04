@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>壽險型別解析 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 三大類型卡片 */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .type-card {
+    border-radius: 18px;
+    padding: 28px 26px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s;
+  }
+  .type-card:hover {
+    transform: translateY(-4px);
+  }
+  .type-card.traditional {
+    background: linear-gradient(135deg, var(--teal) 0%, #0a3a3e 100%);
+  }
+  .type-card.flexible {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+  }
+  .type-card.investment {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .type-card::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .type-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .type-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .type-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .type-en {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 16px;
+    position: relative; z-index: 1;
+    letter-spacing: 0.5px;
+  }
+  .type-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+
+  /* 對比表格 */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .compare-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .compare-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px 14px;
+    letter-spacing: 1.5px;
+    text-align: left;
+  }
+  .compare-table thead th.center { text-align: center; }
+  .compare-table tbody td {
+    padding: 14px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+    line-height: 1.7;
+    vertical-align: top;
+  }
+  .compare-table tbody td.center { text-align: center; }
+  .compare-table tbody td:first-child {
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--bg-cream);
+    width: 130px;
+  }
+  .compare-table tbody tr:hover { background: var(--orange-light); }
+  .compare-table .icon-yes { color: var(--green); font-size: 20px; }
+  .compare-table .icon-no { color: var(--red); font-size: 20px; }
+  .compare-table .icon-partial { color: var(--gold); font-size: 20px; }
+
+  /* 適合與不適合 */
+  .recommend-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .rec-card {
+    background: var(--bg-cream);
+    border-radius: 14px;
+    padding: 20px;
+    border-top: 4px solid;
+  }
+  .rec-card.traditional { border-top-color: var(--teal); }
+  .rec-card.flexible { border-top-color: var(--orange); }
+  .rec-card.investment { border-top-color: var(--navy); }
+  .rec-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .rec-list {
+    list-style: none;
+    padding: 0;
+  }
+  .rec-list li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .rec-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 900;
+  }
+
+  /* 決策樹 */
+  .decision-tree {
+    background: linear-gradient(135deg, var(--bg-cream) 0%, #fff 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+  }
+  .tree-node {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .tree-question {
+    display: inline-block;
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .tree-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .tree-option {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    transition: all .25s;
+  }
+  .tree-option:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+  }
+  .tree-option-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .tree-option.t .tree-option-tag { background: var(--teal-light); color: var(--teal-deep); }
+  .tree-option.f .tree-option-tag { background: var(--orange-light); color: var(--orange-deep); }
+  .tree-option.i .tree-option-tag { background: rgba(13,42,58,0.1); color: var(--navy); }
+  .tree-option-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .tree-option-text {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .types-grid { grid-template-columns: 1fr; }
+    .recommend-row { grid-template-columns: 1fr; }
+    .tree-options { grid-template-columns: 1fr; }
+    .compare-table { font-size: 11px; }
+    .compare-table thead th, .compare-table tbody td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="subpage-header">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#resources">工具資源</a>
+      <span class="sep">/</span>
+      <span class="current">壽險型別解析</span>
+    </nav>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+      <div>
+        <div class="subpage-eyebrow">Insurance Types ・ 壽險完整指南</div>
+        <h1 class="subpage-title">壽險<span class="accent">型別解析</span></h1>
+        <p class="subpage-desc">傳統型 ・ 利變型 ・ 投資型 ・ 三大主流壽險完整比較</p>
+      </div>
+      <a href="../index.html" class="back-link">← 返回主頁</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 三大類型介紹 -->
+    <div class="section-block">
+      <h2 class="block-title">三大壽險類型</h2>
+      <p class="block-subtitle">了解差異後再選擇，才能找到最適合自己的保障規劃</p>
+
+      <div class="types-grid">
+        <div class="type-card traditional">
+          <div class="type-icon">🛡️</div>
+          <div class="type-tag">TRADITIONAL</div>
+          <div class="type-name">傳統型</div>
+          <div class="type-en">Whole Life Insurance</div>
+          <div class="type-desc">
+            最古老也最單純的壽險型態。保額與保費固定，預定利率不變動，著重「保障」而非「投資」。常見於儲蓄險、終身壽險。
+          </div>
+        </div>
+        <div class="type-card flexible">
+          <div class="type-icon">📊</div>
+          <div class="type-tag">FLEXIBLE</div>
+          <div class="type-name">利變型</div>
+          <div class="type-en">Universal Life Insurance</div>
+          <div class="type-desc">
+            預定利率會跟著市場利率調整（宣告利率）。在低利率時代風險較低，但無法享受高利率上漲帶來的增值機會。
+          </div>
+        </div>
+        <div class="type-card investment">
+          <div class="type-icon">📈</div>
+          <div class="type-tag">INVESTMENT</div>
+          <div class="type-name">投資型</div>
+          <div class="type-en">Variable Universal Life</div>
+          <div class="type-desc">
+            保戶自選投資標的（基金 / 帳戶），保單價值隨市場波動。風險與收益由保戶承擔，但最具成長潛力。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 詳細對比 -->
+    <div class="section-block">
+      <h2 class="block-title">三大型別 ・ 詳細對比</h2>
+      <p class="block-subtitle">從多個面向看清三者的差異與適用情境</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>對比項目</th>
+            <th class="center">傳統型</th>
+            <th class="center">利變型</th>
+            <th class="center">投資型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>保費結構</td>
+            <td class="center">固定保費</td>
+            <td class="center">固定 / 彈性繳費</td>
+            <td class="center">彈性繳費為主</td>
+          </tr>
+          <tr>
+            <td>保額變動</td>
+            <td class="center">固定不變</td>
+            <td class="center">可隨增值調整</td>
+            <td class="center">隨投資績效變動</td>
+          </tr>
+          <tr>
+            <td>利率機制</td>
+            <td class="center">預定利率固定</td>
+            <td class="center">宣告利率每月調整</td>
+            <td class="center">無預定利率<br>由市場績效決定</td>
+          </tr>
+          <tr>
+            <td>投資選擇</td>
+            <td class="center"><span class="icon-no">✗</span><br>由保險公司操作</td>
+            <td class="center"><span class="icon-no">✗</span><br>由保險公司操作</td>
+            <td class="center"><span class="icon-yes">✓</span><br>保戶自選或全委</td>
+          </tr>
+          <tr>
+            <td>風險承擔者</td>
+            <td class="center">保險公司</td>
+            <td class="center">保險公司（部分）</td>
+            <td class="center">保戶</td>
+          </tr>
+          <tr>
+            <td>提前解約</td>
+            <td class="center">解約金較低</td>
+            <td class="center">解約金中等</td>
+            <td class="center">部分提領彈性高</td>
+          </tr>
+          <tr>
+            <td>透明度</td>
+            <td class="center"><span class="icon-partial">○</span><br>條款明確</td>
+            <td class="center"><span class="icon-partial">○</span><br>宣告利率公開</td>
+            <td class="center"><span class="icon-yes">✓</span><br>每日淨值揭露</td>
+          </tr>
+          <tr>
+            <td>長期報酬潛力</td>
+            <td class="center">★★ 較低<br>(2-3% 預定利率)</td>
+            <td class="center">★★★ 中等<br>(隨市場調整)</td>
+            <td class="center">★★★★★ 較高<br>(視標的而定)</td>
+          </tr>
+          <tr>
+            <td>適合期間</td>
+            <td class="center">10-20 年以上</td>
+            <td class="center">10-20 年</td>
+            <td class="center">15-30 年</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size: 11px; color: #888; margin-top: 12px; text-align: center; letter-spacing: 0.5px;">
+        ✓ 完全支援 ・ ○ 部分支援 ・ ✗ 不支援
+      </p>
+    </div>
+
+    <!-- 各類型適合誰 -->
+    <div class="section-block">
+      <h2 class="block-title">各類型最適合誰？</h2>
+      <p class="block-subtitle">依個人需求、風險偏好、財務狀況選擇</p>
+
+      <div class="recommend-row">
+        <div class="rec-card traditional">
+          <div class="rec-title">🛡️ 傳統型壽險適合</div>
+          <ul class="rec-list">
+            <li>追求百分百保證，無法承受任何投資波動</li>
+            <li>計畫透過儲蓄險強迫存錢，不需要高報酬</li>
+            <li>偏好保單條款明確、所有給付都可預期</li>
+            <li>已有其他投資管道，壽險專注於保障功能</li>
+            <li>退休族希望保留簡單的純保障</li>
+          </ul>
+        </div>
+        <div class="rec-card flexible">
+          <div class="rec-title">📊 利變型壽險適合</div>
+          <ul class="rec-list">
+            <li>對投資不熟悉，但希望略勝定存</li>
+            <li>能接受報酬會跟著市場利率變動</li>
+            <li>希望保費繳費期間有些彈性</li>
+            <li>看重保險公司的宣告利率歷史紀錄</li>
+            <li>30-50 歲的中產上班族</li>
+          </ul>
+        </div>
+        <div class="rec-card investment">
+          <div class="rec-title">📈 投資型壽險適合</div>
+          <ul class="rec-list">
+            <li>能承擔市場波動風險，追求長期成長</li>
+            <li>有 15 年以上投資視野</li>
+            <li>希望投資標的有較多選擇權</li>
+            <li>需要穩定月配息或退休現金流</li>
+            <li>30-55 歲累積資產期</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 決策樹 -->
+    <div class="section-block">
+      <h2 class="block-title">該選哪一型？決策參考</h2>
+      <p class="block-subtitle">透過幾個關鍵問題快速找到方向</p>
+
+      <div class="decision-tree">
+        <div class="tree-node">
+          <div class="tree-question">您能接受投資虧損的可能嗎？</div>
+
+          <div class="tree-options">
+            <div class="tree-option t">
+              <span class="tree-option-tag">完全不能</span>
+              <div class="tree-option-title">傳統型</div>
+              <div class="tree-option-text">選擇純保障型壽險，所有給付都有保證。</div>
+            </div>
+            <div class="tree-option f">
+              <span class="tree-option-tag">輕微可以</span>
+              <div class="tree-option-title">利變型</div>
+              <div class="tree-option-text">享受隨市場波動的宣告利率，下檔有保證最低利率。</div>
+            </div>
+            <div class="tree-option i">
+              <span class="tree-option-tag">完全可以</span>
+              <div class="tree-option-title">投資型</div>
+              <div class="tree-option-text">追求長期成長，享受市場上漲的完整報酬。</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin: 32px 0; color: #aaa; font-size: 11px; letter-spacing: 2px;">
+          ▼ ▼ ▼ 進階考量 ▼ ▼ ▼
+        </div>
+
+        <div class="tree-node">
+          <div class="tree-question">您主要的需求是？</div>
+
+          <div class="tree-options">
+            <div class="tree-option t">
+              <span class="tree-option-tag">純保障</span>
+              <div class="tree-option-title">傳統型壽險</div>
+              <div class="tree-option-text">保費固定、保額固定，給家人最確定的保障。</div>
+            </div>
+            <div class="tree-option f">
+              <span class="tree-option-tag">穩健儲蓄</span>
+              <div class="tree-option-title">利變型增額壽險</div>
+              <div class="tree-option-text">保額隨利率增值，類似儲蓄但有壽險效果。</div>
+            </div>
+            <div class="tree-option i">
+              <span class="tree-option-tag">投資累積</span>
+              <div class="tree-option-title">投資型保單</div>
+              <div class="tree-option-text">基金平台 + 壽險保障，雙重功能合一。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>💡 顧問建議</strong>　壽險型別沒有絕對的優劣，只有適不適合。許多客戶會<strong>同時擁有不同型別的保單</strong> — 例如用傳統型做純保障打底、用投資型做長期累積。最重要的是依據自己的風險屬性與生命階段做配置。
+      </div>
+    </div>
+
+    <!-- 為什麼投資型逐漸主流 -->
+    <div class="section-block">
+      <h2 class="block-title">為什麼投資型保單逐漸主流？</h2>
+      <p class="block-subtitle">從市場數據看趨勢變化</p>
+
+      <ul class="feature-list">
+        <li>
+          <div class="feat-icon">📉</div>
+          <div class="feat-text">
+            <strong>低利率時代來臨</strong>
+            傳統型預定利率自 1990 年代的 8% 一路下降至目前約 2.5%，預期未來不會回到高利率時代。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">🌍</div>
+          <div class="feat-text">
+            <strong>全球化投資選擇</strong>
+            投資型保單能連結全球頂級基金，過去這些選擇只開放給有錢人，現在一般人也能使用。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">📱</div>
+          <div class="feat-text">
+            <strong>透明度與彈性</strong>
+            每日淨值公開、可彈性提領與轉換，符合現代人對金融商品的期待。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">💰</div>
+          <div class="feat-text">
+            <strong>退休現金流需求</strong>
+            高齡化社會對退休現金流需求增加，月配息型的投資型保單成為主流選擇。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 重要提醒</strong>　無論選擇哪種壽險型別，都應充分了解商品條款與風險。投資型保單之投資標的價值將隨市場波動，可能造成本金損失。傳統型與利變型壽險亦有提前解約的損失風險。建議與專業顧問完整討論後再做決定。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 壽險型別解析</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安達架上基金報酬率與配息率 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 篩選器 */
+  .filter-bar {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .filter-tab {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .filter-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .filter-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  /* 基金績效表格 */
+  .fund-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .fund-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .fund-table thead th {
+    color: #fff;
+    font-size: 11px;
+    padding: 14px 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .fund-table thead th:first-child {
+    text-align: left;
+    padding-left: 18px;
+  }
+  .fund-table tbody td {
+    padding: 14px 10px;
+    font-size: 12px;
+    border-bottom: 1px solid #F0EBDD;
+    text-align: center;
+  }
+  .fund-table tbody td:first-child {
+    text-align: left;
+    padding-left: 18px;
+  }
+  .fund-table tbody tr:nth-child(even) { background: var(--bg-cream); }
+  .fund-table tbody tr:hover { background: var(--orange-light); cursor: pointer; }
+  .fund-table .fund-name {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 13px;
+  }
+  .fund-table .fund-id {
+    display: inline-block;
+    background: var(--bg-cream);
+    color: #888;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    margin-right: 8px;
+    letter-spacing: 1px;
+  }
+  .fund-table .fund-cat {
+    font-size: 10px;
+    color: #888;
+    margin-top: 3px;
+    display: block;
+  }
+  .fund-table .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+  }
+  .fund-table .pos { color: var(--green); }
+  .fund-table .neg { color: var(--red); }
+  .fund-table .neutral { color: #888; }
+  .fund-table .rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+  }
+  .fund-table .currency {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .fund-table .currency.usd { background: rgba(46,139,87,0.15); color: var(--green); }
+  .fund-table .currency.twd { background: var(--orange-light); color: var(--orange-deep); }
+  .fund-table .currency.eur { background: rgba(74,111,165,0.15); color: #4A6FA5; }
+
+  /* 圖例 */
+  .legend-bar {
+    background: var(--bg-cream);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: #6b7680;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .legend-dot.green { background: var(--green); }
+  .legend-dot.red { background: var(--red); }
+  .legend-dot.orange { background: var(--orange); }
+
+  @media (max-width: 900px) {
+    .fund-table { font-size: 10px; }
+    .fund-table thead th, .fund-table tbody td { padding: 8px 6px; }
+    .fund-table .num { font-size: 13px; }
+    .fund-table .rate { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="subpage-header">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#resources">工具資源</a>
+      <span class="sep">/</span>
+      <span class="current">基金報酬與配息率</span>
+    </nav>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+      <div>
+        <div class="subpage-eyebrow">Fund Performance ・ 基金績效</div>
+        <h1 class="subpage-title">安達架上<span class="accent">基金績效</span></h1>
+        <p class="subpage-desc">投資型保單連結基金報酬率 / 配息率一覽 ・ 資料截至 2026/03</p>
+      </div>
+      <a href="../index.html" class="back-link">← 返回主頁</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 篩選 -->
+    <div class="filter-bar">
+      <span class="filter-label">▸ 類別</span>
+      <button class="filter-tab active">全部</button>
+      <button class="filter-tab">股票型</button>
+      <button class="filter-tab">債券型</button>
+      <button class="filter-tab">平衡型</button>
+      <button class="filter-tab">區域型</button>
+      <button class="filter-tab">主題型</button>
+    </div>
+
+    <!-- 圖例 -->
+    <div class="legend-bar">
+      <div class="legend-item"><span class="legend-dot green"></span>正報酬</div>
+      <div class="legend-item"><span class="legend-dot red"></span>負報酬</div>
+      <div class="legend-item"><span class="legend-dot orange"></span>配息率（年化）</div>
+      <div class="legend-item">★ = 近 1 年最佳前 5 名</div>
+    </div>
+
+    <!-- 基金總覽表 -->
+    <div class="section-block">
+      <h2 class="block-title">基金績效一覽</h2>
+      <p class="block-subtitle">含累積報酬率（近 3M / 6M / 1Y / 3Y / 5Y）與年化配息率</p>
+
+      <table class="fund-table">
+        <thead>
+          <tr>
+            <th>基金名稱</th>
+            <th>幣別</th>
+            <th>近 3M</th>
+            <th>近 6M</th>
+            <th>近 1Y</th>
+            <th>近 3Y</th>
+            <th>近 5Y</th>
+            <th>配息率</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- 股票型 -->
+          <tr>
+            <td>
+              <span class="fund-id">A001</span>
+              <span class="fund-name">★ 摩根美國科技基金</span>
+              <span class="fund-cat">股票型 ・ 美國科技</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+8.5%</span></td>
+            <td><span class="num pos">+15.2%</span></td>
+            <td><span class="num pos">+24.8%</span></td>
+            <td><span class="num pos">+62.5%</span></td>
+            <td><span class="num pos">+95.3%</span></td>
+            <td><span class="rate">7.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">A002</span>
+              <span class="fund-name">摩根美國成長基金</span>
+              <span class="fund-cat">股票型 ・ 美國成長</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+7.2%</span></td>
+            <td><span class="num pos">+13.5%</span></td>
+            <td><span class="num pos">+22.1%</span></td>
+            <td><span class="num pos">+58.4%</span></td>
+            <td><span class="num pos">+88.7%</span></td>
+            <td><span class="rate">2.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">A003</span>
+              <span class="fund-name">★ 富蘭克林坦伯頓全球科技</span>
+              <span class="fund-cat">股票型 ・ 全球科技</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+9.1%</span></td>
+            <td><span class="num pos">+16.8%</span></td>
+            <td><span class="num pos">+26.5%</span></td>
+            <td><span class="num pos">+65.2%</span></td>
+            <td><span class="num pos">+98.1%</span></td>
+            <td><span class="rate">3.2%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">A004</span>
+              <span class="fund-name">貝萊德世界礦業基金</span>
+              <span class="fund-cat">股票型 ・ 礦業 / 原物料</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+5.8%</span></td>
+            <td><span class="num pos">+11.2%</span></td>
+            <td><span class="num pos">+18.7%</span></td>
+            <td><span class="num pos">+45.3%</span></td>
+            <td><span class="num pos">+72.4%</span></td>
+            <td><span class="rate">5.8%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">A005</span>
+              <span class="fund-name">安聯神州 A 股基金</span>
+              <span class="fund-cat">股票型 ・ 中國 A 股</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num neg">-2.5%</span></td>
+            <td><span class="num pos">+3.8%</span></td>
+            <td><span class="num pos">+8.2%</span></td>
+            <td><span class="num pos">+15.5%</span></td>
+            <td><span class="num pos">+22.1%</span></td>
+            <td><span class="rate">3.5%</span></td>
+          </tr>
+
+          <!-- 平衡型 -->
+          <tr>
+            <td>
+              <span class="fund-id">B001</span>
+              <span class="fund-name">★ 安聯收益成長 (AM 月配)</span>
+              <span class="fund-cat">平衡型 ・ 美國股債</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+4.6%</span></td>
+            <td><span class="num pos">+7.9%</span></td>
+            <td><span class="num pos">+12.5%</span></td>
+            <td><span class="num pos">+28.5%</span></td>
+            <td><span class="num pos">+45.3%</span></td>
+            <td><span class="rate">8.7%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">B002</span>
+              <span class="fund-name">摩根多重收益基金</span>
+              <span class="fund-cat">平衡型 ・ 全球資產</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+3.8%</span></td>
+            <td><span class="num pos">+6.5%</span></td>
+            <td><span class="num pos">+10.2%</span></td>
+            <td><span class="num pos">+22.5%</span></td>
+            <td><span class="num pos">+38.1%</span></td>
+            <td><span class="rate">5.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">B003</span>
+              <span class="fund-name">凱基平衡型代操帳戶</span>
+              <span class="fund-cat">平衡型 ・ 多元資產</span>
+            </td>
+            <td><span class="currency twd">TWD</span></td>
+            <td><span class="num pos">+3.5%</span></td>
+            <td><span class="num pos">+5.8%</span></td>
+            <td><span class="num pos">+9.1%</span></td>
+            <td><span class="num pos">+18.5%</span></td>
+            <td><span class="num pos">+32.5%</span></td>
+            <td><span class="rate">7.2%</span></td>
+          </tr>
+
+          <!-- 債券型 -->
+          <tr>
+            <td>
+              <span class="fund-id">C001</span>
+              <span class="fund-name">★ PIMCO 多元收益債券</span>
+              <span class="fund-cat">債券型 ・ 全球債券</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+2.8%</span></td>
+            <td><span class="num pos">+5.2%</span></td>
+            <td><span class="num pos">+8.5%</span></td>
+            <td><span class="num pos">+15.8%</span></td>
+            <td><span class="num pos">+22.5%</span></td>
+            <td><span class="rate">6.2%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">C002</span>
+              <span class="fund-name">★ 聯博全球高收益債券</span>
+              <span class="fund-cat">債券型 ・ 高收益債</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+3.2%</span></td>
+            <td><span class="num pos">+6.1%</span></td>
+            <td><span class="num pos">+9.8%</span></td>
+            <td><span class="num pos">+18.5%</span></td>
+            <td><span class="num pos">+28.3%</span></td>
+            <td><span class="rate">6.8%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">C003</span>
+              <span class="fund-name">富蘭克林坦伯頓全球債</span>
+              <span class="fund-cat">債券型 ・ 全球公債</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+2.1%</span></td>
+            <td><span class="num pos">+4.5%</span></td>
+            <td><span class="num pos">+7.2%</span></td>
+            <td><span class="num pos">+13.5%</span></td>
+            <td><span class="num pos">+18.8%</span></td>
+            <td><span class="rate">5.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">C004</span>
+              <span class="fund-name">摩根新興市場債券</span>
+              <span class="fund-cat">債券型 ・ 新興市場債</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+2.5%</span></td>
+            <td><span class="num pos">+5.8%</span></td>
+            <td><span class="num pos">+10.2%</span></td>
+            <td><span class="num pos">+19.5%</span></td>
+            <td><span class="num pos">+25.8%</span></td>
+            <td><span class="rate">7.1%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">C005</span>
+              <span class="fund-name">貝萊德全球非投資級債券</span>
+              <span class="fund-cat">債券型 ・ 非投資級債</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+3.0%</span></td>
+            <td><span class="num pos">+5.6%</span></td>
+            <td><span class="num pos">+9.5%</span></td>
+            <td><span class="num pos">+17.2%</span></td>
+            <td><span class="num pos">+25.4%</span></td>
+            <td><span class="rate">6.5%</span></td>
+          </tr>
+
+          <!-- 區域型 -->
+          <tr>
+            <td>
+              <span class="fund-id">D001</span>
+              <span class="fund-name">摩根日本基金</span>
+              <span class="fund-cat">區域型 ・ 日本股票</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+5.5%</span></td>
+            <td><span class="num pos">+8.8%</span></td>
+            <td><span class="num pos">+15.2%</span></td>
+            <td><span class="num pos">+38.5%</span></td>
+            <td><span class="num pos">+58.7%</span></td>
+            <td><span class="rate">2.8%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">D002</span>
+              <span class="fund-name">富達歐洲基金</span>
+              <span class="fund-cat">區域型 ・ 歐洲股票</span>
+            </td>
+            <td><span class="currency eur">EUR</span></td>
+            <td><span class="num pos">+4.2%</span></td>
+            <td><span class="num pos">+6.8%</span></td>
+            <td><span class="num pos">+11.5%</span></td>
+            <td><span class="num pos">+25.5%</span></td>
+            <td><span class="num pos">+38.2%</span></td>
+            <td><span class="rate">3.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">D003</span>
+              <span class="fund-name">摩根東協基金</span>
+              <span class="fund-cat">區域型 ・ 東協股票</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+3.8%</span></td>
+            <td><span class="num pos">+7.2%</span></td>
+            <td><span class="num pos">+12.8%</span></td>
+            <td><span class="num pos">+22.5%</span></td>
+            <td><span class="num pos">+35.4%</span></td>
+            <td><span class="rate">4.2%</span></td>
+          </tr>
+
+          <!-- 主題型 -->
+          <tr>
+            <td>
+              <span class="fund-id">E001</span>
+              <span class="fund-name">★ 富蘭克林 AI 主題基金</span>
+              <span class="fund-cat">主題型 ・ AI 人工智慧</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+11.5%</span></td>
+            <td><span class="num pos">+22.3%</span></td>
+            <td><span class="num pos">+35.8%</span></td>
+            <td><span class="num pos">+85.5%</span></td>
+            <td><span class="num neutral">N/A</span></td>
+            <td><span class="rate">1.5%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">E002</span>
+              <span class="fund-name">摩根 ESG 永續基金</span>
+              <span class="fund-cat">主題型 ・ ESG / 永續</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+5.2%</span></td>
+            <td><span class="num pos">+8.5%</span></td>
+            <td><span class="num pos">+13.8%</span></td>
+            <td><span class="num pos">+28.5%</span></td>
+            <td><span class="num pos">+42.3%</span></td>
+            <td><span class="rate">2.8%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="fund-id">E003</span>
+              <span class="fund-name">貝萊德世界醫療保健</span>
+              <span class="fund-cat">主題型 ・ 生技醫療</span>
+            </td>
+            <td><span class="currency usd">USD</span></td>
+            <td><span class="num pos">+4.5%</span></td>
+            <td><span class="num pos">+7.8%</span></td>
+            <td><span class="num pos">+12.5%</span></td>
+            <td><span class="num pos">+25.2%</span></td>
+            <td><span class="num pos">+38.5%</span></td>
+            <td><span class="rate">3.5%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>💡 觀察重點</strong>　近一年表現最佳的前 5 名基金均屬於<strong>美國股票型 / 主題型 ETF</strong>，反映美股科技與 AI 主題持續強勢；債券型基金以<strong>穩定配息率</strong>為主要訴求。投資人應依個人需求選擇合適的基金組合。
+      </div>
+    </div>
+
+    <!-- 配息率排行 -->
+    <div class="section-block">
+      <h2 class="block-title">配息率 TOP 5</h2>
+      <p class="block-subtitle">追求穩定現金流者重點關注</p>
+
+      <ul class="feature-list cols-1">
+        <li>
+          <div class="feat-icon" style="background: rgba(232,160,32,0.2); color: var(--gold);">①</div>
+          <div class="feat-text">
+            <strong>安聯收益成長 (AM 月配 USD) ・ 8.7%</strong>
+            三平衡型結構（股票 + 可轉債 + 高收益債），是國內投資型保單最熱門配置標的之一。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--orange);">②</div>
+          <div class="feat-text">
+            <strong>摩根新興市場債券 ・ 7.1%</strong>
+            布局新興國家政府債與企業債，享受高於成熟市場的利息收益。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--orange);">③</div>
+          <div class="feat-text">
+            <strong>聯博全球高收益債券 ・ 6.8%</strong>
+            投資全球非投資級債券，提供穩定且高於投資級債的利息收益。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon" style="background: var(--orange-light); color: var(--orange);">④</div>
+          <div class="feat-text">
+            <strong>貝萊德全球非投資級債券 ・ 6.5%</strong>
+            專注於非投資級債券市場，由全球最大資產管理公司操盤。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon" style="background: var(--orange-light); color: var(--orange);">⑤</div>
+          <div class="feat-text">
+            <strong>PIMCO 多元收益債券 ・ 6.2%</strong>
+            全球債券王 PIMCO 旗艦商品，多元配置全球各類債券。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 重要警語</strong>　以上資料僅為示意參考數據，實際以基金公司公告為準。<strong>配息率非報酬率</strong>，配息可能來自基金本金。基金過往績效不代表未來表現，投資前應審慎評估自身風險承受度。本表所列基金為部分熱門代表，實際安達架上基金清單以公司公告為準。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 基金績效</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

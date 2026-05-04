@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配息時間表 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 配息行事曆 */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .month-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 18px;
+    transition: all .25s;
+  }
+  .month-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 8px 20px rgba(240,90,40,0.1);
+  }
+  .month-card.current {
+    border-color: var(--orange);
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+  }
+  .month-card.current .month-num { color: var(--orange); }
+  .month-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .month-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .month-divider-text {
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .month-events {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .month-event {
+    background: var(--bg-cream);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--navy);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .month-event .day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--orange);
+    margin-right: 8px;
+  }
+  .month-event .label {
+    flex: 1;
+    font-size: 11px;
+  }
+  .no-event {
+    font-size: 11px;
+    color: #ccc;
+    font-style: italic;
+    text-align: center;
+    padding: 8px;
+  }
+
+  /* 完整配息表格 */
+  .div-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .div-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .div-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px 12px;
+    letter-spacing: 1.5px;
+    text-align: left;
+  }
+  .div-table thead th.center { text-align: center; }
+  .div-table thead th.right { text-align: right; }
+  .div-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+    color: var(--navy);
+  }
+  .div-table tbody td.center { text-align: center; }
+  .div-table tbody td.right { text-align: right; }
+  .div-table tbody tr:nth-child(even) { background: var(--bg-cream); }
+  .div-table tbody tr:hover { background: var(--orange-light); }
+  .div-table .fund-name {
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .div-table .fund-class {
+    display: inline-block;
+    background: var(--orange-light);
+    color: var(--orange-deep);
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-left: 6px;
+  }
+  .div-table .fund-class.usd { background: rgba(46,139,87,0.15); color: var(--green); }
+  .div-table .day-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    letter-spacing: 1px;
+  }
+  .div-table .freq-monthly {
+    background: var(--teal-light);
+    color: var(--teal-deep);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+  .div-table .freq-quarterly {
+    background: rgba(232,160,32,0.15);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+  .div-table .rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--green);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="subpage-header">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#resources">工具資源</a>
+      <span class="sep">/</span>
+      <span class="current">配息時間表</span>
+    </nav>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+      <div>
+        <div class="subpage-eyebrow">Dividend Schedule ・ 配息行事曆</div>
+        <h1 class="subpage-title">配息<span class="accent">時間表</span></h1>
+        <p class="subpage-desc">熱門投資型保單連結基金 ・ 月配 / 季配 完整配息日期</p>
+      </div>
+      <a href="../index.html" class="back-link">← 返回主頁</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 月份配息行事曆 -->
+    <div class="section-block">
+      <h2 class="block-title">2026 年配息日程</h2>
+      <p class="block-subtitle">主要配息基金每月除息日期一覽 ・ 月配息基金通常每月固定日期撥款</p>
+
+      <div class="calendar-grid">
+        <div class="month-card current">
+          <div class="month-num">03</div>
+          <div class="month-name">March</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">04</div>
+          <div class="month-name">April</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">05</div>
+          <div class="month-name">May</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">06</div>
+          <div class="month-name">June</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">15</span><span class="label">★ 季配 (Q2)</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">07</div>
+          <div class="month-name">July</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">08</div>
+          <div class="month-name">August</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">09</div>
+          <div class="month-name">September</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">15</span><span class="label">★ 季配 (Q3)</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+        <div class="month-card">
+          <div class="month-num">10</div>
+          <div class="month-name">October</div>
+          <div class="month-events">
+            <div class="month-event"><span class="day">06</span><span class="label">安聯收益成長</span></div>
+            <div class="month-event"><span class="day">12</span><span class="label">摩根美國科技</span></div>
+            <div class="month-event"><span class="day">18</span><span class="label">PIMCO 多元收益</span></div>
+            <div class="month-event"><span class="day">25</span><span class="label">聯博全球高收</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 完整配息基金清單 -->
+    <div class="section-block">
+      <h2 class="block-title">熱門基金配息清單</h2>
+      <p class="block-subtitle">投資型保單常見連結基金之配息規則與最近配息率</p>
+
+      <table class="div-table">
+        <thead>
+          <tr>
+            <th>基金名稱</th>
+            <th class="center">配息頻率</th>
+            <th class="center">每月配息日</th>
+            <th class="right">最近配息率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="fund-name">安聯收益成長</span><span class="fund-class usd">AM USD</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 06 日</span></td>
+            <td class="right"><span class="rate">8.7%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">摩根美國科技</span><span class="fund-class">AM</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 12 日</span></td>
+            <td class="right"><span class="rate">7.5%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">PIMCO 多元收益債券</span><span class="fund-class usd">AM USD</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 18 日</span></td>
+            <td class="right"><span class="rate">6.2%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">聯博全球高收益債券</span><span class="fund-class">AM</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 25 日</span></td>
+            <td class="right"><span class="rate">6.8%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">富蘭克林坦伯頓全球債</span><span class="fund-class">AM</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 21 日</span></td>
+            <td class="right"><span class="rate">5.5%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">貝萊德世界礦業</span><span class="fund-class">A</span></td>
+            <td class="center"><span class="freq-quarterly">季配</span></td>
+            <td class="center"><span class="day-cell">3/6/9/12 月 15 日</span></td>
+            <td class="right"><span class="rate">5.8%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">摩根新興市場債券</span><span class="fund-class usd">AM USD</span></td>
+            <td class="center"><span class="freq-monthly">月配</span></td>
+            <td class="center"><span class="day-cell">每月 28 日</span></td>
+            <td class="right"><span class="rate">7.1%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">凱基平衡型代操帳戶</span><span class="fund-class">A</span></td>
+            <td class="center"><span class="freq-monthly">月撥回</span></td>
+            <td class="center"><span class="day-cell">每月 10 日</span></td>
+            <td class="right"><span class="rate">7.2%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">凱基美元收益代操</span><span class="fund-class usd">USD</span></td>
+            <td class="center"><span class="freq-monthly">月撥回</span></td>
+            <td class="center"><span class="day-cell">每月 10 日</span></td>
+            <td class="right"><span class="rate">6.4%</span></td>
+          </tr>
+          <tr>
+            <td><span class="fund-name">安聯神州 A 股基金</span><span class="fund-class">A</span></td>
+            <td class="center"><span class="freq-quarterly">季配</span></td>
+            <td class="center"><span class="day-cell">3/6/9/12 月 20 日</span></td>
+            <td class="right"><span class="rate">3.5%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>💡 重要說明</strong>　以上配息日期為一般規則，實際以各基金公司公告為準。配息率為近 1 年平均數據，<strong>配息率非報酬率</strong>，配息可能來自基金本金。如配息日遇假日將順延至次一營業日。
+      </div>
+    </div>
+
+    <!-- 配息小知識 -->
+    <div class="section-block">
+      <h2 class="block-title">配息小知識</h2>
+      <p class="block-subtitle">關於月配息您需要知道的幾件事</p>
+
+      <ul class="feature-list cols-1">
+        <li>
+          <div class="feat-icon">📅</div>
+          <div class="feat-text">
+            <strong>除息日 vs 撥款日</strong>
+            除息日是基金淨值除權息的日期，撥款日通常為除息後 3-7 個工作天，款項會直接匯入投保時指定的帳戶。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">💰</div>
+          <div class="feat-text">
+            <strong>配息來源透明化</strong>
+            金管會規定基金需揭露配息中本金佔比。若某月配息中超過 50% 來自本金，需特別留意基金是否處於市況不佳時期。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">📊</div>
+          <div class="feat-text">
+            <strong>配息率 vs 總報酬率</strong>
+            配息率高不代表報酬率高。建議同時觀察基金的「淨值變化 + 配息」總和，才是真正的投資報酬。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">🌍</div>
+          <div class="feat-text">
+            <strong>美元配息匯率影響</strong>
+            外幣計價基金配息會以該幣別撥款，需考量匯率轉換成本。長期持有可降低短期匯率波動影響。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 法律警語</strong>　本表所列配息日期、配息率均為示意參考數據，實際以基金公司公告為準。投資型保單之投資標的價值將隨市場波動，不保證最低收益，最高可能損失全部投資本金。投資前應審慎評估自身風險承受度。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 配息行事曆</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

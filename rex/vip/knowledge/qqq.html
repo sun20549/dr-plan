@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QQQ 投資解析 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  .article-hero {
+    background:
+      radial-gradient(circle at 80% 30%, rgba(74,111,165,0.4) 0%, transparent 50%),
+      linear-gradient(135deg, #1F3D6E 0%, #0a1f3a 100%);
+    color: #fff;
+    padding: 36px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .article-hero::before {
+    content: 'QQQ';
+    position: absolute;
+    top: 50%; right: 60px;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 220px;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    letter-spacing: 8px;
+  }
+  .article-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,160,32,0.15);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .article-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    position: relative; z-index: 2;
+  }
+  .article-title .accent { color: var(--gold); }
+  .article-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1.5px;
+    position: relative; z-index: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .article-meta .sep { color: rgba(255,255,255,0.2); }
+
+  /* QQQ 概覽卡 */
+  .qqq-overview {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+  .qqq-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .qqq-stat {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .qqq-stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .qqq-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .qqq-stat-value .u {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 4px;
+  }
+
+  /* 持股 TOP 10 */
+  .holdings-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .holdings-table thead { background: var(--navy); }
+  .holdings-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px 12px;
+    letter-spacing: 1.5px;
+  }
+  .holdings-table thead th:first-child { text-align: left; padding-left: 24px; }
+  .holdings-table thead th.center { text-align: center; }
+  .holdings-table thead th.right { text-align: right; padding-right: 24px; }
+  .holdings-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+  }
+  .holdings-table tbody td:first-child { padding-left: 24px; }
+  .holdings-table tbody td.center { text-align: center; }
+  .holdings-table tbody td.right { text-align: right; padding-right: 24px; font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--orange); }
+  .holdings-table tbody tr:hover { background: var(--bg-cream); }
+  .holdings-table .ticker {
+    display: inline-block;
+    background: var(--bg-cream);
+    color: var(--navy);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .holdings-table .name {
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* 優缺點對比 */
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .pc-card {
+    border-radius: 16px;
+    padding: 24px 26px;
+  }
+  .pc-card.pros {
+    background: linear-gradient(135deg, rgba(46,139,87,0.08) 0%, #fff 100%);
+    border: 2px solid var(--green);
+  }
+  .pc-card.cons {
+    background: linear-gradient(135deg, rgba(200,32,58,0.08) 0%, #fff 100%);
+    border: 2px solid var(--red);
+  }
+  .pc-card h3 {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pc-card.pros h3 { color: var(--green); }
+  .pc-card.cons h3 { color: var(--red); }
+  .pc-card ul { list-style: none; padding: 0; }
+  .pc-card li {
+    padding: 8px 0;
+    padding-left: 22px;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--navy);
+    border-bottom: 1px dashed rgba(0,0,0,0.06);
+  }
+  .pc-card li:last-child { border-bottom: none; }
+  .pc-card.pros li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 900;
+  }
+  .pc-card.cons li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 900;
+  }
+
+  /* 歷史報酬 */
+  .perf-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .perf-table thead { background: var(--navy); }
+  .perf-table thead th {
+    color: #fff;
+    font-size: 12px;
+    padding: 14px 12px;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+  .perf-table thead th:first-child { text-align: left; }
+  .perf-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+  }
+  .perf-table tbody td:first-child {
+    text-align: left;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .perf-table .pos { color: var(--green); }
+  .perf-table .neg { color: var(--red); }
+
+  /* 文章內容 */
+  .article-content { max-width: 760px; margin: 0 auto; }
+  .article-h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--orange);
+    display: inline-block;
+  }
+  .article-section { margin-bottom: 36px; }
+  .article-p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.95;
+    margin-bottom: 16px;
+  }
+  .article-p strong { color: var(--orange-deep); }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .related-item {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .25s;
+  }
+  .related-item:hover {
+    border-color: var(--orange);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+  .related-tag {
+    display: inline-block;
+    font-size: 10px;
+    background: var(--orange-light);
+    color: var(--orange-deep);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .related-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--navy);
+  }
+
+  @media (max-width: 900px) {
+    .article-hero { padding: 28px 24px 36px; }
+    .article-title { font-size: 24px; letter-spacing: 1px; }
+    .qqq-stat-grid { grid-template-columns: 1fr 1fr; }
+    .pros-cons { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="article-hero">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#knowledge">財商增益</a>
+      <span class="sep">/</span>
+      <span class="current">QQQ 投資解析</span>
+    </nav>
+
+    <span class="article-cat">★ ETF DEEP DIVE ・ ETF 深度解析</span>
+    <h1 class="article-title">QQQ 投資解析<br>科技股 ETF 王者的<span class="accent">長期觀察</span></h1>
+    <div class="article-meta">
+      <span>📅 2026/02/28</span>
+      <span class="sep">|</span>
+      <span>📖 約 10 分鐘閱讀</span>
+      <span class="sep">|</span>
+      <span>👤 鼎綸恩宇 ETF 觀點</span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- QQQ 概覽 -->
+    <div class="qqq-overview">
+      <h3 style="color: #fff; font-size: 18px; font-weight: 900; margin-bottom: 4px; letter-spacing: 1px;">Invesco QQQ Trust ・ NASDAQ 100 ETF</h3>
+      <p style="color: rgba(255,255,255,0.55); font-size: 13px; margin-bottom: 24px; letter-spacing: 0.5px;">追蹤那斯達克 100 指數 ・ 涵蓋全球最具創新動能的科技與成長型企業</p>
+
+      <div class="qqq-stat-grid">
+        <div class="qqq-stat">
+          <div class="qqq-stat-label">代號 / 交易所</div>
+          <div class="qqq-stat-value" style="font-size:22px;">QQQ <span class="u">NASDAQ</span></div>
+        </div>
+        <div class="qqq-stat">
+          <div class="qqq-stat-label">基金規模</div>
+          <div class="qqq-stat-value">285<span class="u">十億美元</span></div>
+        </div>
+        <div class="qqq-stat">
+          <div class="qqq-stat-label">總費用率</div>
+          <div class="qqq-stat-value">0.20<span class="u">%</span></div>
+        </div>
+        <div class="qqq-stat">
+          <div class="qqq-stat-label">成立年份</div>
+          <div class="qqq-stat-value">1999</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 文章內容 -->
+    <div class="article-content">
+
+      <div class="article-section">
+        <h2 class="article-h2">什麼是 QQQ？</h2>
+        <p class="article-p">
+          QQQ 是由 Invesco 發行的 ETF，追蹤 <strong>那斯達克 100 指數（NASDAQ-100）</strong>，該指數涵蓋那斯達克交易所市值最大的 100 家非金融類公司。由於那斯達克是全球科技股集中度最高的交易所，<strong>QQQ 實質上等於是美國最強科技與成長型企業的代表性投資工具</strong>。
+        </p>
+        <p class="article-p">
+          QQQ 自 1999 年成立至今逾 25 年，期間經歷了 2000 年網路泡沫、2008 年金融海嘯、2020 年新冠疫情等重大事件，仍是全球規模最大、流動性最佳的科技類 ETF 之一。
+        </p>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">前十大持股</h2>
+        <p class="article-p">QQQ 採市值加權方式編製，前十大持股佔基金約 50% 比重，集中度頗高：</p>
+
+        <table class="holdings-table">
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>公司名稱</th>
+              <th class="center">產業</th>
+              <th class="right">權重</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><span class="ticker">AAPL</span><span class="name">蘋果 Apple</span></td><td class="center">消費電子</td><td class="right">8.5%</td></tr>
+            <tr><td>2</td><td><span class="ticker">MSFT</span><span class="name">微軟 Microsoft</span></td><td class="center">軟體 / 雲端</td><td class="right">8.2%</td></tr>
+            <tr><td>3</td><td><span class="ticker">NVDA</span><span class="name">輝達 NVIDIA</span></td><td class="center">半導體 AI</td><td class="right">7.8%</td></tr>
+            <tr><td>4</td><td><span class="ticker">AMZN</span><span class="name">亞馬遜 Amazon</span></td><td class="center">電商 / 雲端</td><td class="right">5.4%</td></tr>
+            <tr><td>5</td><td><span class="ticker">META</span><span class="name">Meta Platforms</span></td><td class="center">社群媒體</td><td class="right">4.8%</td></tr>
+            <tr><td>6</td><td><span class="ticker">GOOGL</span><span class="name">Alphabet (A 股)</span></td><td class="center">搜尋 / 廣告</td><td class="right">2.7%</td></tr>
+            <tr><td>7</td><td><span class="ticker">GOOG</span><span class="name">Alphabet (C 股)</span></td><td class="center">搜尋 / 廣告</td><td class="right">2.6%</td></tr>
+            <tr><td>8</td><td><span class="ticker">TSLA</span><span class="name">特斯拉 Tesla</span></td><td class="center">電動車</td><td class="right">3.5%</td></tr>
+            <tr><td>9</td><td><span class="ticker">AVGO</span><span class="name">博通 Broadcom</span></td><td class="center">半導體</td><td class="right">3.2%</td></tr>
+            <tr><td>10</td><td><span class="ticker">COST</span><span class="name">好市多 Costco</span></td><td class="center">零售</td><td class="right">2.8%</td></tr>
+          </tbody>
+        </table>
+
+        <div class="note-box">
+          <strong>💡 觀察重點</strong>　科技七巨頭（蘋果、微軟、輝達、亞馬遜、Meta、Google、特斯拉）合計佔比超過 40%，這也是 QQQ 與 S&P 500 最大的差異 — <strong>QQQ 對科技股集中度極高</strong>，享受漲幅大但也承擔較高波動。
+        </div>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">歷史績效表現</h2>
+        <p class="article-p">QQQ 長期績效在主要 ETF 中表現亮眼，但波動度也明顯較高：</p>
+
+        <table class="perf-table">
+          <thead>
+            <tr>
+              <th>觀察期間</th>
+              <th>QQQ</th>
+              <th>SPY (S&P 500)</th>
+              <th>VTI (全美股)</th>
+              <th>安聯收益成長</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>近 1 年</td>
+              <td class="pos">+22.4%</td>
+              <td class="pos">+15.8%</td>
+              <td class="pos">+14.6%</td>
+              <td class="pos">+12.5%</td>
+            </tr>
+            <tr>
+              <td>近 3 年（年化）</td>
+              <td class="pos">+18.7%</td>
+              <td class="pos">+11.5%</td>
+              <td class="pos">+10.8%</td>
+              <td class="pos">+8.7%</td>
+            </tr>
+            <tr>
+              <td>近 5 年（年化）</td>
+              <td class="pos">+16.2%</td>
+              <td class="pos">+10.3%</td>
+              <td class="pos">+9.8%</td>
+              <td class="pos">+7.8%</td>
+            </tr>
+            <tr>
+              <td>近 10 年（年化）</td>
+              <td class="pos">+17.8%</td>
+              <td class="pos">+11.2%</td>
+              <td class="pos">+10.5%</td>
+              <td class="pos">+7.1%</td>
+            </tr>
+            <tr>
+              <td>2022 年（科技熊）</td>
+              <td class="neg">-32.6%</td>
+              <td class="neg">-18.1%</td>
+              <td class="neg">-19.5%</td>
+              <td class="neg">-12.3%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="article-p" style="margin-top: 16px;">
+          從上表可以清楚看到 — <strong>QQQ 是「報酬王者」，但也是「波動冠軍」</strong>。在科技股強勢的多頭年份能繳出 20%+ 報酬，但在熊市時也會跌得最深（2022 年下跌超過三成）。
+        </p>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">優缺點分析</h2>
+        <div class="pros-cons">
+          <div class="pc-card pros">
+            <h3>✓ 優點</h3>
+            <ul>
+              <li><strong>長期報酬最佳</strong>　近 10 年年化 +17.8%，遠勝多數指數型商品</li>
+              <li><strong>創新成長動能</strong>　涵蓋 AI、雲端、電動車等劃時代技術領航者</li>
+              <li><strong>流動性極佳</strong>　全球第二大 ETF，買賣價差小、交易便利</li>
+              <li><strong>費用率低</strong>　0.20% 總費用率，遠低於主動基金</li>
+              <li><strong>透明度高</strong>　持股每日公開，投資人清楚自己買到什麼</li>
+            </ul>
+          </div>
+          <div class="pc-card cons">
+            <h3>✗ 缺點 / 風險</h3>
+            <ul>
+              <li><strong>集中度高</strong>　前十大持股佔比超過 50%，個股風險集中</li>
+              <li><strong>波動度大</strong>　熊市跌幅深，需要強健的心理素質</li>
+              <li><strong>產業偏科技</strong>　約 60% 為科技類股，未涵蓋金融、能源等</li>
+              <li><strong>配息偏低</strong>　年化股息率僅約 0.6%，不適合追求現金流</li>
+              <li><strong>美元計價</strong>　台灣投資人需承擔匯率風險</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">QQQ vs 安聯收益成長 ・ 該怎麼選？</h2>
+        <p class="article-p">
+          兩者代表了完全不同的投資哲學：
+        </p>
+        <ul style="list-style: none; padding-left: 0; font-size: 14px; line-height: 1.95; color: var(--navy);">
+          <li style="padding: 12px 18px; background: var(--bg-cream); border-radius: 10px; margin-bottom: 8px;">
+            <strong style="color: var(--orange-deep);">QQQ：</strong>追求「成長性」與「資本利得」，適合<strong style="color: var(--orange-deep);">年輕、可長期持有、能承擔波動</strong>的投資人，作為財富累積引擎。
+          </li>
+          <li style="padding: 12px 18px; background: var(--bg-cream); border-radius: 10px;">
+            <strong style="color: var(--orange-deep);">安聯收益成長：</strong>追求「穩定現金流」與「均衡配置」，適合<strong style="color: var(--orange-deep);">退休族、需要月配息、希望降低波動</strong>的投資人，作為被動收入來源。
+          </li>
+        </ul>
+
+        <div class="note-box">
+          <strong>💡 顧問建議</strong>　如果您有充足時間且能承擔波動，可以考慮 <strong>「QQQ + 安聯收益成長」雙核心配置</strong> — 用 QQQ 做成長引擎，用安聯做穩定基底，組合起來能兼顧攻守，是相當主流的做法。
+        </div>
+      </div>
+
+      <div class="article-section">
+        <h2 class="article-h2">透過投資型保單配置 QQQ</h2>
+        <p class="article-p">
+          投資型保單雖無法直接購買 QQQ ETF，但可以透過<strong>「美國科技股基金」</strong>或<strong>「那斯達克 100 連動商品」</strong>達到類似效果。常見選擇包含：
+        </p>
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="padding: 12px 0; padding-left: 24px; position: relative; border-bottom: 1px dashed var(--border); font-size: 14px; color: var(--navy);">
+            <span style="position:absolute; left:0; color: var(--orange); font-weight: 900;">▸</span>
+            <strong>摩根美國科技基金</strong>　投資組合與 QQQ 高度相似，主動管理略勝指數
+          </li>
+          <li style="padding: 12px 0; padding-left: 24px; position: relative; border-bottom: 1px dashed var(--border); font-size: 14px; color: var(--navy);">
+            <span style="position:absolute; left:0; color: var(--orange); font-weight: 900;">▸</span>
+            <strong>富蘭克林坦伯頓全球科技基金</strong>　涵蓋全球科技龍頭，分散度更高
+          </li>
+          <li style="padding: 12px 0; padding-left: 24px; position: relative; font-size: 14px; color: var(--navy);">
+            <span style="position:absolute; left:0; color: var(--orange); font-weight: 900;">▸</span>
+            <strong>聯博美國成長基金</strong>　主動精選成長股，與 QQQ 持股有高度重疊
+          </li>
+        </ul>
+      </div>
+
+      <!-- 相關文章 -->
+      <div class="article-section">
+        <h2 class="article-h2" style="margin-top: 40px;">延伸閱讀</h2>
+        <div class="related-grid">
+          <a href="currency-buffer.html" class="related-item">
+            <span class="related-tag">投資觀念</span>
+            <div class="related-title">匯率緩衝 × 股債混合 ・ 打造抗波動投資組合</div>
+          </a>
+          <a href="index-comparison.html" class="related-item">
+            <span class="related-tag">市場分析</span>
+            <div class="related-title">近五日重要指數與安聯收益成長比較</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 投資警語</strong>　ETF 投資涉及股票市場風險，價格將隨市場波動。本文所提及之績效數據為示意數據，實際以官方公告為準。過往績效不代表未來表現，投資前請審慎評估自身風險承受度。
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ ETF 解析</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

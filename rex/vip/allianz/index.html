@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安聯收益成長基金 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 安聯頁面專屬樣式 */
+  .allianz-hero {
+    background:
+      radial-gradient(ellipse at top right, rgba(0,90,150,0.4) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, #002a4a 100%);
+    color: #fff;
+    padding: 40px 56px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .allianz-hero::before {
+    content: 'Allianz';
+    position: absolute;
+    top: 50%; right: 40px;
+    transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 130px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .allianz-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,90,150,0.3);
+    border: 1px solid rgba(102,178,221,0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: #93C5E6;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .allianz-tag::before {
+    content: '★';
+    color: var(--gold);
+  }
+  .allianz-name {
+    font-size: 38px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    line-height: 1.15;
+    margin-bottom: 6px;
+    position: relative; z-index: 2;
+  }
+  .allianz-name .accent { color: var(--gold); }
+  .allianz-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    position: relative; z-index: 2;
+  }
+  .allianz-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+    position: relative; z-index: 2;
+  }
+  .a-stat {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 16px;
+    backdrop-filter: blur(8px);
+  }
+  .a-stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .a-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .a-stat-value.green { color: #7FB069; }
+  .a-stat-value.unit-sm { font-size: 22px; }
+  .a-stat-value .u { font-size: 12px; color: rgba(255,255,255,0.5); margin-left: 3px; }
+
+  /* 三平衡型結構 */
+  .three-balance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .balance-card {
+    border-radius: 18px;
+    padding: 26px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .balance-card.div { background: linear-gradient(135deg, #C45A1F 0%, #962C0D 100%); }
+  .balance-card.cb { background: linear-gradient(135deg, #1A6B72 0%, #0a3a3e 100%); }
+  .balance-card.hy { background: linear-gradient(135deg, #4A6FA5 0%, #1F3D6E 100%); }
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+  }
+  .balance-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: rgba(255,255,255,0.95);
+    line-height: 1;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .balance-pct .u { font-size: 22px; opacity: 0.7; margin-left: 4px; }
+  .balance-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    position: relative; z-index: 1;
+  }
+  .balance-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+
+  /* 績效圖表 */
+  .perf-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .perf-table thead {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+  }
+  .perf-table thead th {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 14px 12px;
+    letter-spacing: 1.5px;
+  }
+  .perf-table thead th:first-child { text-align: left; }
+  .perf-table thead th:not(:first-child) { text-align: center; }
+  .perf-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0EBDD;
+    text-align: center;
+  }
+  .perf-table tbody td:first-child {
+    text-align: left;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .perf-table tbody tr:last-child td { border-bottom: none; }
+  .perf-table tbody tr:hover { background: var(--bg-cream); }
+  .perf-table .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .perf-table .pos { color: var(--green); }
+  .perf-table .neg { color: var(--red); }
+
+  /* 配息歷史簡圖 */
+  .dividend-chart {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 200px;
+    margin-bottom: 16px;
+    padding: 0 8px;
+    border-bottom: 2px solid #ddd;
+  }
+  .chart-bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--orange) 0%, var(--orange-deep) 100%);
+    border-radius: 6px 6px 0 0;
+    position: relative;
+    transition: all .3s;
+    min-height: 30px;
+  }
+  .chart-bar:hover {
+    background: linear-gradient(180deg, var(--gold) 0%, #c08a15 100%);
+  }
+  .chart-bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: var(--orange-deep);
+    white-space: nowrap;
+  }
+  .chart-labels {
+    display: flex;
+    gap: 8px;
+    padding: 0 8px;
+  }
+  .chart-labels span {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+
+  /* 月報資訊卡 */
+  .monthly-report {
+    background: linear-gradient(135deg, var(--bg-cream) 0%, #fff 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+  }
+  .monthly-report h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .monthly-report .date {
+    font-size: 12px;
+    color: var(--orange);
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+  .report-section {
+    border-top: 1px dashed var(--border);
+    padding-top: 18px;
+    margin-top: 18px;
+  }
+  .report-section:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+  .report-section h4 {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .report-section h4::before {
+    content: '▸';
+    color: var(--orange);
+  }
+  .report-section p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* 為什麼選擇 */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .why-item {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: all .25s;
+  }
+  .why-item:hover {
+    border-color: var(--orange);
+    box-shadow: 0 8px 20px rgba(240,90,40,0.08);
+  }
+  .why-item-num {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .why-item h4 {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .why-item p {
+    font-size: 12px;
+    color: #6b7680;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 900px) {
+    .allianz-hero { padding: 28px 24px 36px; }
+    .allianz-name { font-size: 26px; letter-spacing: 1px; }
+    .allianz-quick-stats { grid-template-columns: 1fr 1fr; }
+    .three-balance { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HERO -->
+  <header class="allianz-hero">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <span class="current">安聯收益成長基金</span>
+    </nav>
+
+    <span class="allianz-tag">FLAGSHIP FUND ・ 旗艦基金</span>
+    <h1 class="allianz-name">安聯<span class="accent">收益成長</span>基金</h1>
+    <p class="allianz-en">Allianz Income and Growth Fund ・ AM (穩定月配息) USD</p>
+
+    <div class="allianz-quick-stats">
+      <div class="a-stat">
+        <div class="a-stat-label">基金規模</div>
+        <div class="a-stat-value">355<span class="u">億美元</span></div>
+      </div>
+      <div class="a-stat">
+        <div class="a-stat-label">配息頻率</div>
+        <div class="a-stat-value">月配</div>
+      </div>
+      <div class="a-stat">
+        <div class="a-stat-label">年化配息率</div>
+        <div class="a-stat-value green">8.7<span class="u">%</span></div>
+      </div>
+      <div class="a-stat">
+        <div class="a-stat-label">成立年限</div>
+        <div class="a-stat-value">2007<span class="u">起</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 三平衡型介紹 -->
+    <div class="section-block">
+      <h2 class="block-title">三平衡型結構</h2>
+      <p class="block-subtitle">結合三大資產類別，創造穩定收益與成長動能</p>
+
+      <div class="three-balance">
+        <div class="balance-card div">
+          <div class="balance-pct">~33<span class="u">%</span></div>
+          <div class="balance-name">美國高股息股票</div>
+          <div class="balance-desc">精選高品質、有穩定股利政策的美國藍籌股，提供穩定股息收入並參與股市上漲機會。</div>
+        </div>
+        <div class="balance-card cb">
+          <div class="balance-pct">~33<span class="u">%</span></div>
+          <div class="balance-name">美國可轉換債券</div>
+          <div class="balance-desc">兼具債券保本特性與股票上漲潛力，為投資組合提供下檔保護與向上彈性。</div>
+        </div>
+        <div class="balance-card hy">
+          <div class="balance-pct">~33<span class="u">%</span></div>
+          <div class="balance-name">美國非投資級債券</div>
+          <div class="balance-desc">高收益債券提供較高利息收入，是配息來源的重要組成，享有信用風險溢酬。</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <p style="font-size:13px; line-height:1.9; color:var(--navy);">
+          <strong style="color:var(--orange);">▸ 設計理念：</strong>透過三大美國資產的均衡配置，安聯收益成長基金能在不同市場環境下發揮各類資產特性 — 股票提供成長動能、可轉債兼顧攻守、高收益債創造穩定收益。長期績效顯示，這種「三平衡」結構在 2008 年金融海嘯、2020 年新冠疫情等重大事件中均展現相對穩定的回復力。
+        </p>
+      </div>
+    </div>
+
+    <!-- 歷史績效 -->
+    <div class="section-block">
+      <h2 class="block-title">歷史績效表現</h2>
+      <p class="block-subtitle">截至 2026/03/06 之累積總報酬率（含配息再投資，美元計價 AM 級別）</p>
+
+      <table class="perf-table">
+        <thead>
+          <tr>
+            <th>觀察期間</th>
+            <th>近 1 個月</th>
+            <th>近 3 個月</th>
+            <th>近 6 個月</th>
+            <th>近 1 年</th>
+            <th>近 3 年</th>
+            <th>近 5 年</th>
+            <th>近 10 年</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>累積報酬率</td>
+            <td><span class="num pos">+1.85%</span></td>
+            <td><span class="num pos">+4.62%</span></td>
+            <td><span class="num pos">+7.93%</span></td>
+            <td><span class="num pos">+12.47%</span></td>
+            <td><span class="num pos">+28.51%</span></td>
+            <td><span class="num pos">+45.32%</span></td>
+            <td><span class="num pos">+98.74%</span></td>
+          </tr>
+          <tr>
+            <td>年化報酬率</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="num pos">+12.47%</span></td>
+            <td><span class="num pos">+8.72%</span></td>
+            <td><span class="num pos">+7.78%</span></td>
+            <td><span class="num pos">+7.13%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <strong>⚠ 重要提示</strong>　以上績效資料僅供參考，數據為示意值，實際以基金月報公告為準。過往績效不代表未來表現，基金投資涉及風險，可能造成本金損失。
+      </div>
+    </div>
+
+    <!-- 配息歷史 -->
+    <div class="section-block">
+      <h2 class="block-title">近 12 個月配息率</h2>
+      <p class="block-subtitle">月配息級別 AM (美元) 之每月年化配息率變化</p>
+
+      <div class="dividend-chart">
+        <div class="chart-bars">
+          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
+          <div class="chart-bar" style="height: 84%;"><span class="chart-bar-value">8.5%</span></div>
+          <div class="chart-bar" style="height: 88%;"><span class="chart-bar-value">8.9%</span></div>
+          <div class="chart-bar" style="height: 90%;"><span class="chart-bar-value">9.1%</span></div>
+          <div class="chart-bar" style="height: 87%;"><span class="chart-bar-value">8.8%</span></div>
+          <div class="chart-bar" style="height: 85%;"><span class="chart-bar-value">8.6%</span></div>
+          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
+          <div class="chart-bar" style="height: 88%;"><span class="chart-bar-value">8.9%</span></div>
+          <div class="chart-bar" style="height: 91%;"><span class="chart-bar-value">9.2%</span></div>
+          <div class="chart-bar" style="height: 89%;"><span class="chart-bar-value">9.0%</span></div>
+          <div class="chart-bar" style="height: 87%;"><span class="chart-bar-value">8.8%</span></div>
+          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
+        </div>
+        <div class="chart-labels">
+          <span>2025/04</span>
+          <span>05</span>
+          <span>06</span>
+          <span>07</span>
+          <span>08</span>
+          <span>09</span>
+          <span>10</span>
+          <span>11</span>
+          <span>12</span>
+          <span>2026/01</span>
+          <span>02</span>
+          <span>03</span>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>💡 配息來源說明</strong>　依規範揭露，本基金近 12 個月之配息來源中可能包含本金。投資人應留意配息率非報酬率，配息可能來自基金未實現之資本利得或本金。完整配息來源資訊請詳閱月報。
+      </div>
+    </div>
+
+    <!-- 月報重點 -->
+    <div class="section-block">
+      <h2 class="block-title">最新月報重點</h2>
+      <p class="block-subtitle">基金經理人觀點與市場展望</p>
+
+      <div class="monthly-report">
+        <h3>2026 年 3 月份月報摘要</h3>
+        <div class="date">資料日期：2026 / 03 / 06</div>
+
+        <div class="report-section">
+          <h4>本月績效回顧</h4>
+          <p>本月美國股市受 AI 題材延續推升，S&amp;P 500 指數上漲 2.8%，成長股表現優於價值股。基金組合中，科技權值股持股表現亮眼，可轉換債券亦受益於股市表現。固定收益部分，10 年期美債殖利率在 4.0-4.3% 區間震盪，高收益債信用利差維持低位。</p>
+        </div>
+
+        <div class="report-section">
+          <h4>持股調整</h4>
+          <p>本月小幅增加金融與工業類股權重，主因企業財報優於預期且通膨數據趨於穩定。減持部分前期漲幅較大之科技個股以實現獲利。可轉換債券部位維持中性，繼續關注利率走勢對債券評價之影響。</p>
+        </div>
+
+        <div class="report-section">
+          <h4>市場展望</h4>
+          <p>展望第二季，預期 Fed 仍將維持利率不變至年中，美國經濟軟著陸機率提升。基金將維持均衡配置，在股市中聚焦具盈利成長動能之優質公司，固定收益部分則採信用品質較高之高收益債券，避開違約風險較高之發行人。</p>
+        </div>
+
+        <div class="report-section">
+          <h4>風險提醒</h4>
+          <p>地緣政治風險、聯準會政策轉向時程、通膨僵固性等仍為主要不確定性。投資人應依自身風險承受度進行配置，並建議採長期定期定額方式參與。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 為什麼選擇 -->
+    <div class="section-block">
+      <h2 class="block-title">為什麼選擇安聯收益成長</h2>
+      <p class="block-subtitle">六大優勢使其成為國內投資型保單最熱門配置</p>
+
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-item-num">1</div>
+          <h4>歷史悠久 ・ 規模龐大</h4>
+          <p>2007 年成立，跨越多個市場循環，基金規模達 355 億美元，是市場流動性與穩定性的保證。</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">2</div>
+          <h4>三平衡結構 ・ 攻守兼備</h4>
+          <p>獨特的三大資產均衡設計，在不同市場環境下都能發揮特性，降低單一資產類別風險。</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">3</div>
+          <h4>穩定月配息</h4>
+          <p>長期維持 8-9% 年化配息率，是退休族與被動收入族群的核心配置選擇。</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">4</div>
+          <h4>美國市場專注</h4>
+          <p>聚焦全球最深廣的美國資本市場，享受美元計價穩定性與全球第一大經濟體成長。</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">5</div>
+          <h4>知名國際品牌</h4>
+          <p>安聯集團為全球前三大資產管理公司，管理資產超過 2.5 兆歐元，信譽卓著。</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">6</div>
+          <h4>國內保單熱門選</h4>
+          <p>幾乎所有國內保險公司投資型保單都將其列為連結標的，是市場最受歡迎的核心配置。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="info-card-dark" style="text-align:center; padding: 36px;">
+      <h3 style="font-size:24px; font-weight:900; color:#fff; letter-spacing:2px; margin-bottom:10px;">想配置<span style="color:var(--gold);">安聯收益成長基金</span>嗎？</h3>
+      <p style="font-size:13px; color:rgba(255,255,255,0.65); margin-bottom:20px; letter-spacing:0.5px;">透過投資型保單配置，享受專業基金 + 壽險保障雙重優勢</p>
+      <a href="tel:0925000049" class="btn btn-primary">📞 立即預約諮詢</a>
+      <a href="../index.html#products" class="btn btn-ghost" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.25);color:#fff; margin-left: 8px;">瀏覽連結商品</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 安聯收益成長基金</div>
+    <div class="footer-line">本頁所示資料為示意展示，實際數據以基金月報及公開說明書為準</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>

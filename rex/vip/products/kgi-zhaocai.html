@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凱基人壽 招財進保 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 商品頁專屬樣式 */
+  .product-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a3a4a 100%);
+    color: #fff;
+    padding: 36px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%);
+  }
+  .product-hero-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 32px;
+    align-items: center;
+    position: relative; z-index: 1;
+  }
+  .product-company-tag {
+    display: inline-block;
+    background: rgba(232,160,32,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(232,160,32,0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .product-hero-name {
+    font-size: 42px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 3px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .product-hero-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+  }
+  .product-hero-tagline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.8;
+    letter-spacing: 0.5px;
+  }
+  .product-hero-side {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+  }
+  .hero-side-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 12px;
+  }
+  .hero-side-row:last-child { border-bottom: none; }
+  .hero-side-row .label {
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+  }
+  .hero-side-row .value {
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .hero-side-row .value.gold { color: var(--gold); }
+
+  /* 標籤分區 */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab-bar button {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 14px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #999;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 1px;
+    margin-bottom: -2px;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .tab-bar button.active {
+    color: var(--orange);
+    border-bottom-color: var(--orange);
+  }
+  .tab-content { padding-top: 32px; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* 特色卡片 */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .feat-card {
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-card-num {
+    position: absolute;
+    top: 16px; right: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(240,90,40,0.15);
+    line-height: 1;
+  }
+  .feat-card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .feat-card-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .feat-card-desc {
+    font-size: 13px;
+    color: #6b7680;
+    line-height: 1.7;
+  }
+
+  /* 佣獎制度表格 */
+  .commission-section {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .commission-section .block-title {
+    color: #fff;
+  }
+  .commission-section .block-title::before {
+    background: var(--gold);
+  }
+  .commission-section .block-subtitle {
+    color: rgba(255,255,255,0.55);
+  }
+  .commission-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .commission-table th {
+    background: rgba(255,255,255,0.08);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 14px;
+    text-align: left;
+    letter-spacing: 1.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .commission-table th.right { text-align: right; }
+  .commission-table td {
+    padding: 14px;
+    font-size: 13px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .commission-table td.right { text-align: right; }
+  .commission-table tr:last-child td { border-bottom: none; }
+  .commission-table .pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .commission-table .small {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* 保費試算 */
+  .calc-box {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 32px;
+  }
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+  .calc-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .calc-input label {
+    font-size: 12px;
+    color: #6b7680;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .calc-input input,
+  .calc-input select {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--navy);
+    transition: all .2s;
+  }
+  .calc-input input:focus,
+  .calc-input select:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(240,90,40,0.1);
+  }
+  .calc-result {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .calc-result-item {
+    text-align: center;
+  }
+  .calc-result-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .calc-result-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .calc-result-value .unit { font-size: 14px; opacity: 0.7; margin-left: 4px; }
+
+  /* 適合客群 */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .audience-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    text-align: center;
+    transition: all .25s;
+  }
+  .audience-card:hover {
+    border-color: var(--teal);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(26,107,114,0.12);
+  }
+  .audience-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+  }
+  .audience-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .audience-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  /* 投資標的 */
+  .funds-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .fund-item {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all .2s;
+  }
+  .fund-item:hover {
+    border-color: var(--orange);
+    background: var(--bg-cream);
+  }
+  .fund-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    background: var(--teal);
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+  .fund-tag.usd { background: var(--green); }
+  .fund-tag.high { background: var(--orange); }
+  .fund-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+  }
+  .fund-rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+  }
+
+  /* 申請流程 */
+  .process-flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .process-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .process-step-num {
+    width: 64px; height: 64px;
+    background: #fff;
+    border: 3px solid var(--orange);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--orange);
+  }
+  .process-step-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .process-step-desc {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  /* CTA 區 */
+  .product-cta {
+    background:
+      radial-gradient(ellipse at right, rgba(232,160,32,0.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: #fff;
+    padding: 36px 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .cta-title-md {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .cta-title-md .accent { color: var(--gold); }
+  .cta-desc-md {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .cta-buttons-row {
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .product-hero { padding: 28px 24px 36px; }
+    .product-hero-grid { grid-template-columns: 1fr; gap: 20px; }
+    .product-hero-name { font-size: 28px; letter-spacing: 1px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .tab-bar button { padding: 12px 14px; font-size: 12px; }
+    .calc-grid { grid-template-columns: 1fr; }
+    .calc-result { grid-template-columns: 1fr 1fr; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .funds-grid { grid-template-columns: 1fr; }
+    .process-flow { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .process-flow::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 商品 HERO -->
+  <header class="product-hero">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="../index.html#products">商品專區</a>
+      <span class="sep">/</span>
+      <span class="current">凱基招財進保</span>
+    </nav>
+
+    <div class="product-hero-grid">
+      <div>
+        <span class="product-company-tag">凱基人壽 ・ KGI Life</span>
+        <h1 class="product-hero-name">招財進保</h1>
+        <p class="product-hero-en">Wealth Growth Variable Universal Life</p>
+        <p class="product-hero-tagline">
+          類全委投資型保單 ・ 由專業團隊代為操作多元資產配置<br>
+          提供月撥回機制 ・ 適合追求穩定現金流的客戶
+        </p>
+      </div>
+      <div class="product-hero-side">
+        <div class="hero-side-row">
+          <span class="label">商品類型</span>
+          <span class="value">變額萬能壽險</span>
+        </div>
+        <div class="hero-side-row">
+          <span class="label">投保年齡</span>
+          <span class="value">0-75 歲</span>
+        </div>
+        <div class="hero-side-row">
+          <span class="label">繳費方式</span>
+          <span class="value">躉繳 / 6 年期</span>
+        </div>
+        <div class="hero-side-row">
+          <span class="label">最低保費</span>
+          <span class="value">300,000 元</span>
+        </div>
+        <div class="hero-side-row">
+          <span class="label">計價幣別</span>
+          <span class="value gold">TWD / USD</span>
+        </div>
+        <div class="hero-side-row">
+          <span class="label">月撥回機制</span>
+          <span class="value gold">✓ 支援</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- TABS -->
+    <div class="tab-bar">
+      <button class="active" data-tab="features">商品特色</button>
+      <button data-tab="audience">適合客群</button>
+      <button data-tab="funds">投資標的</button>
+      <button data-tab="commission">佣獎制度</button>
+      <button data-tab="calc">保費試算</button>
+      <button data-tab="process">申請流程</button>
+    </div>
+
+    <div class="tab-content">
+
+      <!-- TAB: 商品特色 -->
+      <div class="tab-pane active" id="features">
+        <div class="section-block">
+          <h2 class="block-title">六大核心特色</h2>
+          <p class="block-subtitle">招財進保的關鍵賣點與差異化優勢</p>
+
+          <div class="features-grid">
+            <div class="feat-card">
+              <div class="feat-card-num">01</div>
+              <div class="feat-card-icon">🎯</div>
+              <div class="feat-card-title">專業全委代操</div>
+              <div class="feat-card-desc">由凱基集團專業投資團隊主動管理，依市場狀況動態調整資產配置，免除客戶選擇基金的困擾。</div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-card-num">02</div>
+              <div class="feat-card-icon">💰</div>
+              <div class="feat-card-title">月月撥回機制</div>
+              <div class="feat-card-desc">每月固定撥回機制，提供穩定現金流，適合退休族與被動收入族群配置。</div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-card-num">03</div>
+              <div class="feat-card-icon">🌍</div>
+              <div class="feat-card-title">全球分散投資</div>
+              <div class="feat-card-desc">投資組合涵蓋全球股票、債券、REITs 等多元資產，分散單一市場風險。</div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-card-num">04</div>
+              <div class="feat-card-icon">🛡️</div>
+              <div class="feat-card-title">壽險保障兼備</div>
+              <div class="feat-card-desc">投資功能搭配壽險保障，被保險人身故時提供保障給付，照顧家人需求。</div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-card-num">05</div>
+              <div class="feat-card-icon">💱</div>
+              <div class="feat-card-title">雙幣別選擇</div>
+              <div class="feat-card-desc">提供台幣與美元計價選擇，可依資金來源與目標彈性配置，分散匯率風險。</div>
+            </div>
+            <div class="feat-card">
+              <div class="feat-card-num">06</div>
+              <div class="feat-card-icon">⚡</div>
+              <div class="feat-card-title">部分提領彈性</div>
+              <div class="feat-card-desc">保單繳費期滿後可彈性部分提領，應對突發資金需求，不影響整體保障。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-box">
+          <strong>💡 顧問提醒</strong>　招財進保是「主動式管理」的代表性商品，適合不想自己看盤、信任專業代操的客戶。投資績效隨市場波動，撥回金額可能來自本金，購買前請審慎評估。
+        </div>
+      </div>
+
+      <!-- TAB: 適合客群 -->
+      <div class="tab-pane" id="audience">
+        <div class="section-block">
+          <h2 class="block-title">最適合的客戶輪廓</h2>
+          <p class="block-subtitle">透過實務經驗總結，這幾類客戶最能發揮商品優勢</p>
+
+          <div class="audience-grid">
+            <div class="audience-card">
+              <div class="audience-icon">👴</div>
+              <div class="audience-title">退休族 / 準退休族</div>
+              <div class="audience-desc">追求穩定月配息來源，希望既有資金能轉化為被動現金流，補強退休後的生活費需求。</div>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">💼</div>
+              <div class="audience-title">中高階主管</div>
+              <div class="audience-desc">工作忙碌無暇盯盤，希望由專業團隊代操，將資產交給可信賴的金融機構長期管理。</div>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">🏢</div>
+              <div class="audience-title">中小企業主</div>
+              <div class="audience-desc">公司獲利穩定，希望將部分閒置資金透過保單形式做長期配置，兼顧傳承規劃。</div>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">📊</div>
+              <div class="audience-title">理財新手</div>
+              <div class="audience-desc">沒有自行操作經驗，希望透過專業代操進入市場，享受長期投資複利效果。</div>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">👨‍👩‍👧</div>
+              <div class="audience-title">三明治世代</div>
+              <div class="audience-desc">需同時照顧上一代與下一代，希望有穩定現金流支持家庭日常開銷與長期目標。</div>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">💎</div>
+              <div class="audience-title">高資產族群</div>
+              <div class="audience-desc">資產分散配置策略中的重要一環，作為穩健核心持有部位，搭配其他投資組合運用。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-box">
+          <strong>⚠ 不適合的情況</strong>　追求短期高報酬、預期 5 年內需動用全部資金、無法承受市場波動者，建議考慮其他商品類型。
+        </div>
+      </div>
+
+      <!-- TAB: 投資標的 -->
+      <div class="tab-pane" id="funds">
+        <div class="section-block">
+          <h2 class="block-title">代操帳戶與連結基金</h2>
+          <p class="block-subtitle">招財進保提供類全委帳戶與多檔精選基金供配置</p>
+
+          <h3 style="font-size:15px; font-weight:900; color:var(--navy); margin: 20px 0 12px; letter-spacing:1px;">▸ 類全委帳戶</h3>
+          <div class="funds-grid">
+            <div class="fund-item">
+              <span class="fund-tag">A</span>
+              <span class="fund-name">凱基平衡型代操帳戶</span>
+              <span class="fund-rate">7.2%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">B</span>
+              <span class="fund-name">凱基積極成長型代操帳戶</span>
+              <span class="fund-rate">9.5%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">C</span>
+              <span class="fund-name">凱基穩健收益型代操帳戶</span>
+              <span class="fund-rate">5.8%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag usd">D</span>
+              <span class="fund-name">凱基美元收益代操帳戶</span>
+              <span class="fund-rate">6.4%</span>
+            </div>
+          </div>
+
+          <h3 style="font-size:15px; font-weight:900; color:var(--navy); margin: 28px 0 12px; letter-spacing:1px;">▸ 連結基金（部分熱門選擇）</h3>
+          <div class="funds-grid">
+            <div class="fund-item">
+              <span class="fund-tag high">★</span>
+              <span class="fund-name">安聯收益成長基金 (AM 月配)</span>
+              <span class="fund-rate">8.5%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">F</span>
+              <span class="fund-name">聯博全球高收益債券基金</span>
+              <span class="fund-rate">6.8%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">F</span>
+              <span class="fund-name">富蘭克林坦伯頓全球債</span>
+              <span class="fund-rate">5.5%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">F</span>
+              <span class="fund-name">摩根美國科技基金</span>
+              <span class="fund-rate">12.3%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag usd">F</span>
+              <span class="fund-name">PIMCO 多元收益債券基金</span>
+              <span class="fund-rate">6.2%</span>
+            </div>
+            <div class="fund-item">
+              <span class="fund-tag">F</span>
+              <span class="fund-name">貝萊德世界礦業基金</span>
+              <span class="fund-rate">8.9%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <strong>⚠ 重要說明</strong>　以上配息率為示意參考數據，實際以最新公告為準。配息率非報酬率，部分基金配息可能涉及本金，過往績效不代表未來表現。
+        </div>
+      </div>
+
+      <!-- TAB: 佣獎制度 -->
+      <div class="tab-pane" id="commission">
+        <div class="commission-section">
+          <h2 class="block-title">▸ 佣獎制度（夥伴專區）</h2>
+          <p class="block-subtitle">凱基招財進保佣獎結構詳細說明</p>
+
+          <table class="commission-table">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>內容說明</th>
+                <th class="right">比率 / 金額</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>首年度 FYC</strong></td>
+                <td>第一年度佣金率（依目標保費計算）</td>
+                <td class="right"><span class="pct">85<span style="font-size:14px;">%</span></span></td>
+              </tr>
+              <tr>
+                <td><strong>續年度 RYC</strong></td>
+                <td>第 2-6 年續期佣金</td>
+                <td class="right"><span class="pct">3<span style="font-size:14px;">%</span></span><br><span class="small">逐年</span></td>
+              </tr>
+              <tr>
+                <td><strong>超額保費 OPC</strong></td>
+                <td>超過目標保費部分</td>
+                <td class="right"><span class="pct">2<span style="font-size:14px;">%</span></span></td>
+              </tr>
+              <tr>
+                <td><strong>達成獎金</strong></td>
+                <td>季 / 年度業績達成獎勵</td>
+                <td class="right"><span class="pct">+5~15<span style="font-size:14px;">%</span></span></td>
+              </tr>
+              <tr>
+                <td><strong>育成津貼</strong></td>
+                <td>主管帶動下屬之育成獎勵</td>
+                <td class="right"><span class="pct">10<span style="font-size:14px;">%</span></span></td>
+              </tr>
+              <tr>
+                <td><strong>持續率獎金</strong></td>
+                <td>13M / 25M 持續率達標</td>
+                <td class="right"><span class="pct">+3<span style="font-size:14px;">%</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:14px; letter-spacing:0.5px;">
+            ※ 以上為一般通路示意佣率，實際以最新公司公告及夥伴職級為準。各家保經代之佣率可能略有不同，請洽窗口確認。
+          </p>
+        </div>
+      </div>
+
+      <!-- TAB: 保費試算 -->
+      <div class="tab-pane" id="calc">
+        <div class="section-block">
+          <h2 class="block-title">線上試算工具</h2>
+          <p class="block-subtitle">輸入您的基本資料，立即估算保費與保額</p>
+
+          <div class="calc-box">
+            <div class="calc-grid">
+              <div class="calc-input">
+                <label>性別</label>
+                <select id="gender">
+                  <option value="M">男性</option>
+                  <option value="F">女性</option>
+                </select>
+              </div>
+              <div class="calc-input">
+                <label>投保年齡</label>
+                <input type="number" id="age" value="40" min="0" max="75">
+              </div>
+              <div class="calc-input">
+                <label>目標保額（萬）</label>
+                <input type="number" id="amount" value="500" min="100">
+              </div>
+              <div class="calc-input">
+                <label>繳費方式</label>
+                <select id="period">
+                  <option value="6">6 年期</option>
+                  <option value="1">躉繳</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="text-align:center; margin: 20px 0 8px;">
+              <button class="btn btn-primary" onclick="calc()">▸ 開始試算</button>
+            </div>
+
+            <div class="calc-result" id="calcResult">
+              <div class="calc-result-item">
+                <div class="calc-result-label">月繳保費</div>
+                <div class="calc-result-value">--<span class="unit">元</span></div>
+              </div>
+              <div class="calc-result-item">
+                <div class="calc-result-label">總保費</div>
+                <div class="calc-result-value">--<span class="unit">萬</span></div>
+              </div>
+              <div class="calc-result-item">
+                <div class="calc-result-label">壽險保額</div>
+                <div class="calc-result-value">--<span class="unit">萬</span></div>
+              </div>
+            </div>
+          </div>
+
+          <p style="font-size:11px; color:#999; margin-top:12px; letter-spacing:0.5px; text-align:center;">
+            ※ 試算結果僅供參考，實際保費依核保結果而定，請洽專業顧問協助規劃。
+          </p>
+        </div>
+      </div>
+
+      <!-- TAB: 申請流程 -->
+      <div class="tab-pane" id="process">
+        <div class="section-block">
+          <h2 class="block-title">五步驟順利投保</h2>
+          <p class="block-subtitle">從預約到生效，預計 7-14 個工作天</p>
+
+          <div class="process-flow">
+            <div class="process-step">
+              <div class="process-step-num">01</div>
+              <div class="process-step-title">預約諮詢</div>
+              <div class="process-step-desc">電話或線上預約專業顧問一對一服務</div>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num">02</div>
+              <div class="process-step-title">需求分析</div>
+              <div class="process-step-desc">完整財務健檢與風險屬性評估</div>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num">03</div>
+              <div class="process-step-title">方案規劃</div>
+              <div class="process-step-desc">量身打造保費、保額、投資標的配置</div>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num">04</div>
+              <div class="process-step-title">送件核保</div>
+              <div class="process-step-desc">完成投保文件，必要時安排體檢</div>
+            </div>
+            <div class="process-step">
+              <div class="process-step-num">05</div>
+              <div class="process-step-title">保單生效</div>
+              <div class="process-step-desc">收件、繳費、保單寄發，開始享有保障</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3 style="font-size:14px; font-weight:900; color:var(--navy); margin-bottom:10px; letter-spacing:1px;">📋 投保所需文件</h3>
+          <ul style="list-style: none; padding-left: 0;">
+            <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size:13px; color:#555;">
+              <span style="position:absolute; left:0; color: var(--orange);">▸</span>身分證正反面影本
+            </li>
+            <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size:13px; color:#555;">
+              <span style="position:absolute; left:0; color: var(--orange);">▸</span>第二身分證件（健保卡 / 駕照）
+            </li>
+            <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size:13px; color:#555;">
+              <span style="position:absolute; left:0; color: var(--orange);">▸</span>投資型保單適合度問卷（KYC）
+            </li>
+            <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size:13px; color:#555;">
+              <span style="position:absolute; left:0; color: var(--orange);">▸</span>金融機構帳戶資料（扣繳用）
+            </li>
+            <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size:13px; color:#555;">
+              <span style="position:absolute; left:0; color: var(--orange);">▸</span>保額較高者需配合體檢報告
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="product-cta">
+      <h2 class="cta-title-md">想了解<span class="accent">招財進保</span>更多細節？</h2>
+      <p class="cta-desc-md">立即預約專業顧問，量身規劃您的投資型保單</p>
+      <div class="cta-buttons-row">
+        <a href="tel:0925000049" class="btn btn-primary">📞 立即預約諮詢</a>
+        <a href="../index.html#products" class="btn btn-ghost" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.25);color:#fff;">瀏覽其他商品</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 凱基人壽招財進保</div>
+    <div class="footer-line">本頁所示資料僅供參考，實際商品內容、佣獎結構以官方最新公告為準</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+<script>
+  // Tab 切換
+  document.querySelectorAll('.tab-bar button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(this.dataset.tab).classList.add('active');
+    });
+  });
+
+  // 簡易保費試算
+  function calc() {
+    const gender = document.getElementById('gender').value;
+    const age = parseInt(document.getElementById('age').value);
+    const amount = parseInt(document.getElementById('amount').value);
+    const period = parseInt(document.getElementById('period').value);
+
+    if (!age || !amount) {
+      alert('請輸入完整資料');
+      return;
+    }
+
+    // 簡化的試算邏輯（僅供範例展示）
+    // 實際應連接後端 API 取得精算結果
+    const baseRate = gender === 'M' ? 0.0085 : 0.0072;
+    const ageFactor = 1 + (age - 30) * 0.025;
+    const annual = amount * 10000 * baseRate * ageFactor;
+    const totalPremium = period === 1 ? annual * 6 : annual * period;
+    const monthly = totalPremium / (period === 1 ? 1 : (period * 12));
+
+    const lifeInsurance = amount * 1.05; // 簡化的保額計算
+
+    const resultBox = document.getElementById('calcResult');
+    resultBox.innerHTML = `
+      <div class="calc-result-item">
+        <div class="calc-result-label">${period === 1 ? '一次躉繳' : '月繳保費'}</div>
+        <div class="calc-result-value">${period === 1 ? Math.round(totalPremium / 10000) : Math.round(monthly).toLocaleString()}<span class="unit">${period === 1 ? '萬' : '元'}</span></div>
+      </div>
+      <div class="calc-result-item">
+        <div class="calc-result-label">總保費</div>
+        <div class="calc-result-value">${Math.round(totalPremium / 10000)}<span class="unit">萬</span></div>
+      </div>
+      <div class="calc-result-item">
+        <div class="calc-result-label">壽險保額</div>
+        <div class="calc-result-value">${Math.round(lifeInsurance)}<span class="unit">萬</span></div>
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>

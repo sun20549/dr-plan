@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客戶成交案例 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  /* 案例頁面專屬樣式 */
+  .summary-banner {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    padding: 28px 32px;
+    border-radius: 18px;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-banner::before {
+    content: '$';
+    position: absolute;
+    right: -10px;
+    top: -30px;
+    font-family: 'Playfair Display', serif;
+    font-size: 220px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+  }
+  .summary-stat {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .summary-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .summary-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .summary-stat-value .unit {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    margin-left: 4px;
+  }
+
+  /* 篩選列 */
+  .filter-bar {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .filter-tab {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .filter-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .filter-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .filter-tab .count {
+    margin-left: 6px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--orange);
+  }
+  .filter-tab.active .count { color: var(--gold); }
+
+  /* 排序工具列 */
+  .sort-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+  .sort-info {
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+  .sort-info strong {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+  }
+  .sort-options {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .sort-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--navy);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+  }
+  .sort-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .sort-btn.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  /* 案例層級分隔 */
+  .tier-divider {
+    margin: 28px 0 16px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--navy) 0%, transparent 100%);
+    border-left: 4px solid var(--gold);
+    color: #fff;
+    border-radius: 0 8px 8px 0;
+  }
+  .tier-divider-title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+  .tier-divider-title .icon { color: var(--gold); margin-right: 6px; }
+  .tier-divider-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* 鑽石級卡片 */
+  .diamond-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .case-diamond {
+    background: linear-gradient(135deg, var(--navy) 0%, #1A4A5A 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px 26px;
+    border: 2px solid var(--gold);
+    box-shadow: 0 8px 24px rgba(232,160,32,0.18);
+    text-decoration: none;
+    display: block;
+    transition: transform .25s, box-shadow .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-diamond::before {
+    content: '◆';
+    position: absolute;
+    top: -10px; right: -10px;
+    font-size: 100px;
+    color: rgba(232,160,32,0.08);
+    line-height: 1;
+  }
+  .case-diamond:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(232,160,32,0.3);
+  }
+  .case-d-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, var(--gold) 0%, #d68b15 100%);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 16px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .case-d-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .case-d-amount .unit {
+    font-size: 20px;
+    color: rgba(255,255,255,0.6);
+    margin-left: 4px;
+  }
+  .case-d-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+  }
+  .case-d-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 2px;
+  }
+  .case-d-meta .date::before { content: '・'; margin-right: 6px; color: rgba(255,255,255,0.3); }
+
+  /* 黃金級卡片 */
+  .gold-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .case-gold {
+    background: #fff;
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.08);
+    display: block;
+  }
+  .case-gold::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 100%);
+  }
+  .case-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(240,90,40,0.2);
+  }
+  .case-g-tag {
+    display: inline-block;
+    background: var(--orange-light);
+    color: var(--orange-deep);
+    font-size: 10px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 16px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .case-g-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .case-g-amount .unit { font-size: 16px; color: #999; margin-left: 4px; }
+  .case-g-meta {
+    color: #888;
+    font-size: 11px;
+    margin-top: 8px;
+  }
+  .case-g-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .case-g-meta .date::before { content: '・'; margin-right: 6px; color: #ccc; }
+
+  /* 標準級卡片 */
+  .std-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .case-std {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .2s;
+    display: block;
+  }
+  .case-std:hover {
+    background: #fff;
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(26,107,114,0.1);
+  }
+  .case-std-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .case-std-amount .unit { font-size: 13px; color: #999; margin-left: 3px; }
+  .case-std-amount.usd { color: var(--green); }
+  .case-std-meta {
+    font-size: 10px;
+    color: #888;
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .case-std-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: var(--navy);
+  }
+
+  /* 表格檢視 */
+  .case-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .case-table thead { background: var(--navy); }
+  .case-table thead th {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 14px 12px;
+    text-align: left;
+    letter-spacing: 1.5px;
+  }
+  .case-table thead th.right { text-align: right; }
+  .case-table thead th.center { text-align: center; }
+  .case-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    color: var(--navy);
+    border-bottom: 1px solid #F0EBDD;
+  }
+  .case-table tbody td.right { text-align: right; }
+  .case-table tbody td.center { text-align: center; }
+  .case-table tbody tr:hover { background: var(--bg-cream); cursor: pointer; }
+  .case-table .id-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .case-table .amount-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+  }
+  .case-table .amount-cell.diamond { color: var(--gold); }
+  .case-table .amount-cell.gold { color: var(--orange); }
+  .case-table .amount-cell.usd { color: var(--green); }
+  .tier-pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .tier-pill.diamond { background: rgba(232,160,32,0.15); color: var(--gold); }
+  .tier-pill.gold { background: var(--orange-light); color: var(--orange-deep); }
+  .tier-pill.std { background: var(--teal-light); color: var(--teal-deep); }
+  .tier-pill.usd { background: rgba(46,139,87,0.15); color: var(--green); }
+
+  /* 視圖切換 */
+  .view-toggle {
+    display: inline-flex;
+    background: var(--bg-cream);
+    border-radius: 20px;
+    padding: 3px;
+    border: 1px solid var(--border);
+  }
+  .view-toggle button {
+    background: transparent;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 18px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    transition: all .2s;
+  }
+  .view-toggle button.active {
+    background: #fff;
+    color: var(--navy);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="subpage-header">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <span class="current">客戶成交案例</span>
+    </nav>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+      <div>
+        <div class="subpage-eyebrow">Case Studies ・ 全紀錄</div>
+        <h1 class="subpage-title">客戶<span class="accent">成交實績</span></h1>
+        <p class="subpage-desc">每一筆都是專業規劃的見證 ・ 完整 70+ 筆案例依金額排序</p>
+      </div>
+      <a href="../index.html" class="back-link">← 返回主頁</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 統計總覽 -->
+    <div class="summary-banner">
+      <div class="summary-stat">
+        <div class="summary-stat-label">總成交件數</div>
+        <div class="summary-stat-value">73<span class="unit">筆</span></div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">累計總保費</div>
+        <div class="summary-stat-value">2.5<span class="unit">億+</span></div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">最高單筆</div>
+        <div class="summary-stat-value">2,500<span class="unit">萬</span></div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">資料區間</div>
+        <div class="summary-stat-value">2024-2026</div>
+      </div>
+    </div>
+
+    <!-- 篩選列 -->
+    <div class="filter-bar">
+      <span class="filter-label">▸ 金額篩選</span>
+      <button class="filter-tab active" data-filter="all">全部 <span class="count">73</span></button>
+      <button class="filter-tab" data-filter="diamond">千萬以上 <span class="count">4</span></button>
+      <button class="filter-tab" data-filter="gold">500萬-千萬 <span class="count">8</span></button>
+      <button class="filter-tab" data-filter="std">百萬-500萬 <span class="count">42</span></button>
+      <button class="filter-tab" data-filter="under">百萬以下 <span class="count">11</span></button>
+      <button class="filter-tab" data-filter="usd">外幣 USD <span class="count">8</span></button>
+    </div>
+
+    <!-- 排序與檢視 -->
+    <div class="sort-bar">
+      <div class="sort-info">顯示 <strong>73</strong> 筆案例 ・ 依金額由大至小</div>
+      <div class="sort-options">
+        <span style="font-size:12px;color:#888;letter-spacing:1px;">檢視:</span>
+        <div class="view-toggle">
+          <button class="active" data-view="card">卡片</button>
+          <button data-view="table">表格</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片檢視 -->
+    <div id="cardView">
+
+      <!-- 鑽石級 -->
+      <div class="tier-divider" data-tier="diamond">
+        <div class="tier-divider-title"><span class="icon">◆</span>鑽石級成交 ・ NT$ 1,000萬+</div>
+        <div class="tier-divider-sub">DIAMOND TIER ・ 4 件</div>
+      </div>
+      <div class="diamond-grid">
+        <a href="u0033.html" class="case-diamond">
+          <div class="case-d-tag">◆ DIAMOND</div>
+          <div class="case-d-amount">2,500<span class="unit">萬</span></div>
+          <div class="case-d-meta">
+            <span class="case-d-id">U0033</span>
+            <span class="date">2025/07/29</span>
+          </div>
+        </a>
+        <a href="u0042.html" class="case-diamond">
+          <div class="case-d-tag">◆ DIAMOND</div>
+          <div class="case-d-amount">1,200<span class="unit">萬</span></div>
+          <div class="case-d-meta">
+            <span class="case-d-id">U0042</span>
+            <span class="date">2025/08/18</span>
+          </div>
+        </a>
+        <a href="k3007.html" class="case-diamond">
+          <div class="case-d-tag">◆ DIAMOND</div>
+          <div class="case-d-amount">1,100<span class="unit">萬</span></div>
+          <div class="case-d-meta">
+            <span class="case-d-id">K3007</span>
+            <span class="date">2026/02/05</span>
+          </div>
+        </a>
+        <a href="u0073.html" class="case-diamond">
+          <div class="case-d-tag">◆ DIAMOND</div>
+          <div class="case-d-amount">900<span class="unit">萬</span></div>
+          <div class="case-d-meta">
+            <span class="case-d-id">U0073</span>
+            <span class="date">2025/12/22</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- 黃金級 -->
+      <div class="tier-divider" data-tier="gold">
+        <div class="tier-divider-title"><span class="icon">★</span>黃金級成交 ・ NT$ 500萬 - 1,000萬</div>
+        <div class="tier-divider-sub">GOLD TIER ・ 8 件</div>
+      </div>
+      <div class="gold-grid">
+        <a href="k1083.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">600<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">K1083</span>
+            <span class="date">2026/03/05</span>
+          </div>
+        </a>
+        <a href="u0048.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">600<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">U0048</span>
+            <span class="date">2025/09/08</span>
+          </div>
+        </a>
+        <a href="u0029.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">500<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">U0029</span>
+            <span class="date">2025/08/01</span>
+          </div>
+        </a>
+        <a href="k7565.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">500<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">K7565</span>
+            <span class="date">2026/03/31</span>
+          </div>
+        </a>
+        <a href="u0093.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">500<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">U0093</span>
+            <span class="date">2026/02/23</span>
+          </div>
+        </a>
+        <a href="c2847.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">450<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">C2847</span>
+            <span class="date">2024/01/26</span>
+          </div>
+        </a>
+        <a href="u0017.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">400<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">U0017</span>
+            <span class="date">2025/07/07</span>
+          </div>
+        </a>
+        <a href="k2303.html" class="case-gold">
+          <div class="case-g-tag">★ GOLD</div>
+          <div class="case-g-amount">400<span class="unit">萬</span></div>
+          <div class="case-g-meta">
+            <span class="case-g-id">K2303</span>
+            <span class="date">2026/03/27</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- 標準級 -->
+      <div class="tier-divider" data-tier="std">
+        <div class="tier-divider-title"><span class="icon" style="color:var(--teal-light);">●</span>標準級成交 ・ NT$ 100萬 - 500萬</div>
+        <div class="tier-divider-sub">STANDARD TIER ・ 42 件</div>
+      </div>
+      <div class="std-grid">
+        <a href="f4435.html" class="case-std"><div class="case-std-amount">370<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F4435</span><span>2025/04/22</span></div></a>
+        <a href="f5027.html" class="case-std"><div class="case-std-amount">360<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F5027</span><span>2024/11/04</span></div></a>
+        <a href="f1760.html" class="case-std"><div class="case-std-amount">325<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F1760</span><span>2024/08/19</span></div></a>
+        <a href="f2040.html" class="case-std"><div class="case-std-amount">315<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F2040</span><span>2024/08/20</span></div></a>
+        <a href="k2810.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K2810</span><span>2026/03/09</span></div></a>
+        <a href="k2835.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K2835</span><span>2026/03/16</span></div></a>
+        <a href="u0091.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0091</span><span>2026/03/23</span></div></a>
+        <a href="u0100.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0100</span><span>2026/03/30</span></div></a>
+        <a href="k1055.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K1055</span><span>2026/03/26</span></div></a>
+        <a href="k0852.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K0852</span><span>2025/11/27</span></div></a>
+        <a href="k1035.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K1035</span><span>2025/11/21</span></div></a>
+        <a href="k9685.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K9685</span><span>2025/10/14</span></div></a>
+        <a href="k9686.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K9686</span><span>2025/10/16</span></div></a>
+        <a href="k5777.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K5777</span><span>2026/02/06</span></div></a>
+        <a href="k5811.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K5811</span><span>2026/03/31</span></div></a>
+        <a href="k6122.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K6122</span><span>2026/03/26</span></div></a>
+        <a href="f4063.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F4063</span><span>2025/05/05</span></div></a>
+        <a href="f6338.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F6338</span><span>2024/04/29</span></div></a>
+        <a href="f4207.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F4207</span><span>2024/06/17</span></div></a>
+        <a href="f2149.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F2149</span><span>2025/03/26</span></div></a>
+        <a href="u0045.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0045</span><span>2025/08/25</span></div></a>
+        <a href="c4739.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C4739</span><span>2024/01/31</span></div></a>
+        <a href="c5994.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C5994</span><span>2024/01/26</span></div></a>
+        <a href="c0235.html" class="case-std"><div class="case-std-amount">300<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C0235</span><span>2025/05/13</span></div></a>
+        <a href="u0008.html" class="case-std"><div class="case-std-amount">250<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0008</span><span>2025/06/10</span></div></a>
+        <a href="u0009.html" class="case-std"><div class="case-std-amount">200<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0009</span><span>2025/07/02</span></div></a>
+        <a href="u0018.html" class="case-std"><div class="case-std-amount">200<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0018</span><span>2025/07/14</span></div></a>
+        <a href="f2161.html" class="case-std"><div class="case-std-amount">200<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F2161</span><span>2025/02/19</span></div></a>
+        <a href="u0070.html" class="case-std"><div class="case-std-amount">180<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0070</span><span>2025/11/18</span></div></a>
+        <a href="u0007.html" class="case-std"><div class="case-std-amount">150<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0007</span><span>2025/06/06</span></div></a>
+        <a href="c4342.html" class="case-std"><div class="case-std-amount">150<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C4342</span><span>2025/04/21</span></div></a>
+        <a href="f3231.html" class="case-std"><div class="case-std-amount">150<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F3231</span><span>2025/03/11</span></div></a>
+        <a href="k6522.html" class="case-std"><div class="case-std-amount">150<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K6522</span><span>2025/11/27</span></div></a>
+        <a href="k6523.html" class="case-std"><div class="case-std-amount">150<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K6523</span><span>2025/12/03</span></div></a>
+        <a href="f2906.html" class="case-std"><div class="case-std-amount">130<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F2906</span><span>2025/03/05</span></div></a>
+        <a href="c1530.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C1530</span><span>2024/02/06</span></div></a>
+        <a href="f5721.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F5721</span><span>2025/05/26</span></div></a>
+        <a href="f8911.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F8911</span><span>2025/08/25</span></div></a>
+        <a href="c3315.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C3315</span><span>2025/03/17</span></div></a>
+        <a href="c4669.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C4669</span><span>2025/05/14</span></div></a>
+        <a href="c5491.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C5491</span><span>2025/06/09</span></div></a>
+        <a href="u0046.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0046</span><span>2025/09/08</span></div></a>
+        <a href="u0062.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0062</span><span>2025/10/27</span></div></a>
+        <a href="f0585.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F0585</span><span>2024/09/10</span></div></a>
+        <a href="c2383.html" class="case-std"><div class="case-std-amount">100<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C2383</span><span>2024/01/24</span></div></a>
+      </div>
+
+      <!-- 百萬以下 -->
+      <div class="tier-divider" data-tier="under">
+        <div class="tier-divider-title"><span class="icon" style="color:#999;">○</span>標準級成交 ・ NT$ 100萬以下</div>
+        <div class="tier-divider-sub">ENTRY TIER ・ 11 件</div>
+      </div>
+      <div class="std-grid">
+        <a href="u0047.html" class="case-std"><div class="case-std-amount">105<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0047</span><span>2025/09/02</span></div></a>
+        <a href="u0006.html" class="case-std"><div class="case-std-amount">90<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0006</span><span>2025/06/02</span></div></a>
+        <a href="u0030.html" class="case-std"><div class="case-std-amount">90<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0030</span><span>2025/07/25</span></div></a>
+        <a href="f0725.html" class="case-std"><div class="case-std-amount">90<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F0725</span><span>2025/09/03</span></div></a>
+        <a href="u0043.html" class="case-std"><div class="case-std-amount">82<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0043</span><span>2025/08/25</span></div></a>
+        <a href="k0773.html" class="case-std"><div class="case-std-amount">80<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">K0773</span><span>2025/10/31</span></div></a>
+        <a href="u0056.html" class="case-std"><div class="case-std-amount">75<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">U0056</span><span>2025/10/08</span></div></a>
+        <a href="c4846.html" class="case-std"><div class="case-std-amount">50<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C4846</span><span>2024/02/23</span></div></a>
+        <a href="f3827.html" class="case-std"><div class="case-std-amount">50<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">F3827</span><span>2025/04/21</span></div></a>
+        <a href="c3510.html" class="case-std"><div class="case-std-amount">18.9<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C3510</span><span>2025/04/15</span></div></a>
+        <a href="c3949.html" class="case-std"><div class="case-std-amount">11.6<span class="unit">萬</span></div><div class="case-std-meta"><span class="case-std-id">C3949</span><span>2025/04/23</span></div></a>
+      </div>
+
+      <!-- 外幣 USD -->
+      <div class="tier-divider" data-tier="usd">
+        <div class="tier-divider-title"><span class="icon" style="color:#7FB069;">$</span>外幣計價 ・ USD</div>
+        <div class="tier-divider-sub">USD CURRENCY ・ 8 件</div>
+      </div>
+      <div class="std-grid">
+        <a href="f2328.html" class="case-std"><div class="case-std-amount usd">100K<span class="unit">USD</span></div><div class="case-std-meta"><span class="case-std-id">F2328</span><span>2024/08/07</span></div></a>
+      </div>
+
+    </div>
+
+    <!-- 表格檢視 (預設隱藏) -->
+    <div id="tableView" class="hidden">
+      <table class="case-table">
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th style="width:90px;">案例編號</th>
+            <th>等級</th>
+            <th class="right">保費金額</th>
+            <th class="right">成交日期</th>
+            <th style="width:60px;" class="center">詳情</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="id-cell">U0033</td><td><span class="tier-pill diamond">◆ DIAMOND</span></td><td class="right amount-cell diamond">2,500萬</td><td class="right">2025/07/29</td><td class="center"><a href="u0033.html">→</a></td></tr>
+          <tr><td>2</td><td class="id-cell">U0042</td><td><span class="tier-pill diamond">◆ DIAMOND</span></td><td class="right amount-cell diamond">1,200萬</td><td class="right">2025/08/18</td><td class="center"><a href="u0042.html">→</a></td></tr>
+          <tr><td>3</td><td class="id-cell">K3007</td><td><span class="tier-pill diamond">◆ DIAMOND</span></td><td class="right amount-cell diamond">1,100萬</td><td class="right">2026/02/05</td><td class="center"><a href="k3007.html">→</a></td></tr>
+          <tr><td>4</td><td class="id-cell">U0073</td><td><span class="tier-pill diamond">◆ DIAMOND</span></td><td class="right amount-cell diamond">900萬</td><td class="right">2025/12/22</td><td class="center"><a href="u0073.html">→</a></td></tr>
+          <tr><td>5</td><td class="id-cell">K1083</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">600萬</td><td class="right">2026/03/05</td><td class="center"><a href="k1083.html">→</a></td></tr>
+          <tr><td>6</td><td class="id-cell">U0048</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">600萬</td><td class="right">2025/09/08</td><td class="center"><a href="u0048.html">→</a></td></tr>
+          <tr><td>7</td><td class="id-cell">U0029</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">500萬</td><td class="right">2025/08/01</td><td class="center"><a href="u0029.html">→</a></td></tr>
+          <tr><td>8</td><td class="id-cell">K7565</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">500萬</td><td class="right">2026/03/31</td><td class="center"><a href="k7565.html">→</a></td></tr>
+          <tr><td>9</td><td class="id-cell">U0093</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">500萬</td><td class="right">2026/02/23</td><td class="center"><a href="u0093.html">→</a></td></tr>
+          <tr><td>10</td><td class="id-cell">C2847</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">450萬</td><td class="right">2024/01/26</td><td class="center"><a href="c2847.html">→</a></td></tr>
+          <tr><td>11</td><td class="id-cell">U0017</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">400萬</td><td class="right">2025/07/07</td><td class="center"><a href="u0017.html">→</a></td></tr>
+          <tr><td>12</td><td class="id-cell">K2303</td><td><span class="tier-pill gold">★ GOLD</span></td><td class="right amount-cell gold">400萬</td><td class="right">2026/03/27</td><td class="center"><a href="k2303.html">→</a></td></tr>
+          <tr><td>13</td><td class="id-cell">F4435</td><td><span class="tier-pill std">標準</span></td><td class="right amount-cell">370萬</td><td class="right">2025/04/22</td><td class="center"><a href="f4435.html">→</a></td></tr>
+          <tr><td>14</td><td class="id-cell">F5027</td><td><span class="tier-pill std">標準</span></td><td class="right amount-cell">360萬</td><td class="right">2024/11/04</td><td class="center"><a href="f5027.html">→</a></td></tr>
+          <tr><td>15</td><td class="id-cell">F1760</td><td><span class="tier-pill std">標準</span></td><td class="right amount-cell">325萬</td><td class="right">2024/08/19</td><td class="center"><a href="f1760.html">→</a></td></tr>
+          <tr><td>16</td><td class="id-cell">F2040</td><td><span class="tier-pill std">標準</span></td><td class="right amount-cell">315萬</td><td class="right">2024/08/20</td><td class="center"><a href="f2040.html">→</a></td></tr>
+          <tr><td>17</td><td class="id-cell">F2328</td><td><span class="tier-pill usd">USD</span></td><td class="right amount-cell usd">100K USD</td><td class="right">2024/08/07</td><td class="center"><a href="f2328.html">→</a></td></tr>
+          <tr style="background:rgba(232,160,32,0.05);"><td colspan="6" style="text-align:center; color:#999; font-size:12px; padding: 16px;">⋯ 還有 56 筆案例（顯示前 17 筆精選）⋯</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 客戶案例完整紀錄</div>
+    <div class="footer-line">本頁案例編號均經適度去識別化處理，僅供內部展示參考</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+<script>
+  // 篩選功能
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      const filter = this.dataset.filter;
+      const dividers = document.querySelectorAll('.tier-divider');
+      const grids = ['.diamond-grid', '.gold-grid', '.std-grid'];
+
+      // 隱藏全部
+      document.querySelectorAll('#cardView > .tier-divider, #cardView > .diamond-grid, #cardView > .gold-grid, #cardView > .std-grid').forEach(el => {
+        el.classList.add('hidden');
+      });
+
+      if (filter === 'all') {
+        document.querySelectorAll('#cardView > .tier-divider, #cardView > .diamond-grid, #cardView > .gold-grid, #cardView > .std-grid').forEach(el => {
+          el.classList.remove('hidden');
+        });
+      } else {
+        // 顯示對應的分隔與其後的網格
+        const targetDivider = document.querySelector(`.tier-divider[data-tier="${filter}"]`);
+        if (targetDivider) {
+          targetDivider.classList.remove('hidden');
+          // 顯示後面緊鄰的 grid
+          let next = targetDivider.nextElementSibling;
+          while (next && !next.classList.contains('tier-divider')) {
+            if (next.classList.contains('diamond-grid') ||
+                next.classList.contains('gold-grid') ||
+                next.classList.contains('std-grid')) {
+              next.classList.remove('hidden');
+              break;
+            }
+            next = next.nextElementSibling;
+          }
+        }
+      }
+    });
+  });
+
+  // 視圖切換
+  document.querySelectorAll('.view-toggle button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const view = this.dataset.view;
+      document.getElementById('cardView').classList.toggle('hidden', view !== 'card');
+      document.getElementById('tableView').classList.toggle('hidden', view !== 'table');
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例 C5994 ・ 300萬 ・ 投資型專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
+<style>
+  .hero-case {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    padding: 32px 56px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-case::before {
+    content: '◆';
+    position: absolute;
+    top: -30px; right: 40px;
+    font-size: 220px;
+    color: rgba(232,160,32,0.06);
+    line-height: 1;
+  }
+  .hero-case-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-case-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(26,107,114,0.3);
+    border: 1px solid rgba(26,107,114,0.6);
+    color: #93C5C9;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .hero-case-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .hero-case-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--orange);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .hero-case-amount .unit {
+    font-size: 26px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 6px;
+  }
+  .hero-case-id-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-case-id-row .meta {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 18px;
+    border-radius: 10px;
+  }
+  .hero-case-id-row .meta-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .hero-case-id-row .meta-value {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .hero-case-id-row .meta-value.lg {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+  .nav-cases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .nav-case {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .25s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-case:hover {
+    border-color: var(--orange);
+    background: #fff;
+  }
+  .nav-case .arrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--orange);
+  }
+  .nav-case .label { font-size: 11px; color: #888; letter-spacing: 1.5px; }
+  .nav-case .info { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .nav-case.right { flex-direction: row-reverse; text-align: right; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero-case">
+    <nav class="breadcrumb">
+      <a href="../index.html">投資型專區</a>
+      <span class="sep">/</span>
+      <a href="index.html">客戶案例</a>
+      <span class="sep">/</span>
+      <span class="current">C5994</span>
+    </nav>
+
+    <div class="hero-case-grid">
+      <div>
+        <span class="hero-case-tag">● STANDARD</span>
+        <h1 class="hero-case-title">投資型保單成交實績</h1>
+        <div class="hero-case-id-row">
+          <div class="meta">
+            <div class="meta-label">案例編號</div>
+            <div class="meta-value lg">C5994</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">成交日期</div>
+            <div class="meta-value">2024/01/26</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-bottom:6px;">總保費規模</div>
+        <div class="hero-case-amount">300<span class="unit">萬</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <div class="section-block">
+      <h2 class="block-title">案例摘要</h2>
+      <p class="block-subtitle">本筆成交案例之基本資訊（已去識別化處理）</p>
+
+      <div class="info-card">
+        <p style="font-size: 14px; line-height: 1.9; color: var(--navy);">
+          本案例為 <strong style="color: var(--orange-deep);">C5994</strong> 客戶於 2024/01/26 成交之投資型保單，總保費規模 <strong style="color: var(--orange-deep);">300萬</strong>。透過完整的需求訪談與專業規劃流程，依客戶風險屬性與財務目標量身設計最適化的投資型保單組合。
+        </p>
+        <p style="font-size: 14px; line-height: 1.9; color: var(--navy); margin-top: 12px;">
+          客戶於規劃過程中對商品特性、費用結構、投資標的均充分了解，並依適合度評估結果進行配置。鼎綸恩宇後續將提供定期績效檢視、市場資訊更新等長期服務。
+        </p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="block-title">服務承諾</h2>
+      <p class="block-subtitle">每一筆成交都代表一份信任</p>
+
+      <ul class="feature-list cols-1">
+        <li>
+          <div class="feat-icon">🎯</div>
+          <div class="feat-text">
+            <strong>專業需求分析</strong>
+            透過完整財務健檢與風險屬性評估，了解客戶實際狀況與規劃方向。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">📋</div>
+          <div class="feat-text">
+            <strong>量身打造方案</strong>
+            依個別需求設計保費、保額、投資標的配置，無制式套餐。
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">🔍</div>
+          <div class="feat-text">
+            <strong>長期績效追蹤</strong>
+            定期一對一檢視保單績效，依市場變化彈性調整投資組合。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠ 法律警語</strong>　本案例僅為服務歷程之去識別化展示，不代表所有客戶皆能獲得相同效益。投資型保險商品連結之投資標的價值將隨市場波動，最高可能損失全部本金，購買前應審慎評估自身需求與風險承受度。
+    </div>
+
+    <div class="nav-cases">
+      <a href="index.html" class="nav-case">
+        <span class="arrow">←</span>
+        <div>
+          <div class="label">返回</div>
+          <div class="info">案例完整列表</div>
+        </div>
+      </a>
+      <a href="index.html" class="nav-case right">
+        <span class="arrow">→</span>
+        <div>
+          <div class="label">查看其他</div>
+          <div class="info">73 筆完整成交</div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="footer-mini">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 案例 C5994</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+</body>
+</html>
