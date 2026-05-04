@@ -512,41 +512,128 @@
     margin-top: 2px;
   }
 
-  /* ────── 保障時間軸 ────── */
+  /* ────── 互動保障時間軸 ────── */
   .timeline-section {
     margin-bottom: 36px;
-    padding: 30px 28px;
+    padding: 28px 32px;
     background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
     border-radius: 18px;
     border: 2px solid #eee;
   }
-  .timeline {
-    position: relative;
-    padding: 30px 0 20px;
-    margin-top: 20px;
+
+  /* 控制列 */
+  .tl-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
   }
-  .timeline::before {
-    content: '';
+  .tl-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tl-control-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+  }
+  .tl-term {
+    display: inline-flex;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+  }
+  .tl-term label { cursor: pointer; }
+  .tl-term input { display: none; }
+  .tl-term span {
+    display: block;
+    padding: 7px 18px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #888;
+    transition: all .2s;
+  }
+  .tl-term input:checked + span {
+    background: linear-gradient(135deg, var(--teal) 0%, #155057 100%);
+    color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .tl-term label:not(:last-child) span { border-right: 1.5px solid #ddd; }
+
+  /* 拖曳提示（桌面版） */
+  .tl-hint {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orange-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .tl-hint::before {
+    content: '👈';
+    font-size: 13px;
+  }
+
+  /* 手機版的提示（覆蓋桌面提示） */
+  .tl-hint-mobile { display: none; }
+  @media (max-width: 760px) {
+    .tl-hint { display: none; }
+    .tl-hint-mobile {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--orange);
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: var(--orange-light);
+      padding: 5px 10px;
+      border-radius: 20px;
+    }
+    .tl-hint-mobile::before { content: '👆'; }
+  }
+
+  /* 滑動軌道 */
+  .tl-track {
+    position: relative;
+    height: 200px;
+    margin: 16px 0 16px;
+    padding: 0 18px;
+  }
+  .tl-rail {
     position: absolute;
-    top: 44px;
-    left: 8%;
-    right: 8%;
+    top: 90px;
+    left: 18px;
+    right: 18px;
     height: 4px;
     background: linear-gradient(to right, var(--orange) 0%, var(--gold) 50%, var(--teal) 100%);
     border-radius: 2px;
   }
-  .timeline-points {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-  }
-  .timeline-point {
+
+  /* 節點 */
+  .tl-node {
+    position: absolute;
+    top: 76px;
+    transform: translateX(-50%);
     text-align: center;
-    width: 22%;
-    position: relative;
+    width: 100px;
+    margin-left: 0;
+    user-select: none;
+    transition: opacity 0.2s, top 0.25s;
   }
-  .tp-dot {
-    width: 28px; height: 28px;
+  .tl-node-dot {
+    width: 32px; height: 32px;
     border-radius: 50%;
     background: white;
     border: 4px solid var(--orange);
@@ -555,37 +642,136 @@
     position: relative;
     z-index: 1;
   }
-  .timeline-point:nth-child(2) .tp-dot { border-color: var(--gold); box-shadow: 0 4px 10px rgba(232,160,32,0.3); }
-  .timeline-point:nth-child(3) .tp-dot { border-color: var(--gold); box-shadow: 0 4px 10px rgba(232,160,32,0.3); }
-  .timeline-point:nth-child(4) .tp-dot { border-color: var(--teal); box-shadow: 0 4px 10px rgba(26,107,114,0.3); }
-
-  .tp-age {
+  .tl-node[data-color="gold"] .tl-node-dot {
+    border-color: var(--gold);
+    box-shadow: 0 4px 10px rgba(232,160,32,0.3);
+  }
+  .tl-node[data-color="teal"] .tl-node-dot {
+    border-color: var(--teal);
+    box-shadow: 0 4px 10px rgba(26,107,114,0.3);
+  }
+  .tl-node-age {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
     color: var(--navy);
     line-height: 1;
     margin-bottom: 4px;
   }
-  .tp-age .unit { font-size: 14px; color: #888; }
-  .tp-label {
-    font-size: 12px;
+  .tl-node-age .unit { font-size: 12px; color: #888; }
+  .tl-node-label {
+    font-size: 11px;
     color: #666;
     font-weight: 700;
     letter-spacing: 1px;
   }
-  .tp-event {
-    margin-top: 8px;
-    padding: 4px 10px;
+  .tl-node-event {
+    margin-top: 6px;
+    padding: 3px 9px;
     background: var(--orange-light);
     color: var(--orange);
     border-radius: 12px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     display: inline-block;
+    white-space: nowrap;
   }
-  .timeline-point:nth-child(2) .tp-event,
-  .timeline-point:nth-child(3) .tp-event { background: var(--gold-light); color: #b87a14; }
-  .timeline-point:nth-child(4) .tp-event { background: var(--teal-light); color: var(--teal); }
+  .tl-node[data-color="gold"] .tl-node-event {
+    background: var(--gold-light);
+    color: #b87a14;
+  }
+  .tl-node[data-color="teal"] .tl-node-event {
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  /* 投保節點：可拖曳 */
+  .tl-node.draggable { cursor: grab; z-index: 5; }
+  .tl-node.draggable:active { cursor: grabbing; }
+  .tl-node.draggable .tl-node-dot {
+    width: 36px; height: 36px;
+    border-width: 5px;
+    background: var(--orange);
+    box-shadow: 0 0 0 6px rgba(240,90,40,0.15), 0 4px 12px rgba(240,90,40,0.5);
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .tl-node.draggable:hover .tl-node-dot {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(240,90,40,0.18), 0 6px 16px rgba(240,90,40,0.55);
+  }
+  .tl-node.draggable.dragging .tl-node-dot {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 12px rgba(240,90,40,0.22), 0 8px 20px rgba(240,90,40,0.6);
+  }
+  .tl-node.draggable .tl-node-age {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* 重疊保護：上下錯位 */
+  /* 預設節點 (.tl-below): dot 在 rail 上方，文字在 dot 下方 */
+  .tl-node {
+    /* 預設位置已是 top: 76px，dot 緊接 rail */
+  }
+  .tl-node.tl-below {
+    top: 76px;
+  }
+
+  /* tl-above: 整個節點翻轉到 rail 上方，文字在最上、dot 緊鄰 rail 上方 */
+  .tl-node.tl-above {
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tl-node.tl-above .tl-node-event {
+    order: 1;
+    margin: 0 0 4px 0;
+  }
+  .tl-node.tl-above .tl-node-label {
+    order: 2;
+    margin-bottom: 2px;
+  }
+  .tl-node.tl-above .tl-node-age {
+    order: 3;
+    margin-bottom: 4px;
+  }
+  .tl-node.tl-above .tl-node-dot {
+    order: 4;
+    margin: 0 auto 0;
+  }
+
+  /* 過去節點淡出 */
+  .tl-node.faded { opacity: 0.45; }
+  .tl-node.faded .tl-node-dot {
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  /* 年齡刻度 */
+  .tl-scale {
+    position: relative;
+    height: 16px;
+    margin-top: 14px;
+    padding: 0 18px;
+  }
+  .tl-scale-mark {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #ccc;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  /* 滑動範圍 hint */
+  .tl-range-info {
+    text-align: center;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #888;
+  }
+  .tl-range-info strong { color: var(--orange); font-weight: 900; }
 
   /* ────── 投保規則 + 折扣 ────── */
   .rules-grid {
@@ -1285,10 +1471,23 @@
     .data-table td:first-child { padding-left: 12px; }
     .data-table td.num, .data-table td.teal-num { font-size: 16px; }
     .data-table .item-desc { font-size: 10px; }
-    .timeline-points { flex-wrap: wrap; gap: 18px 0; }
-    .timeline-point { width: 50%; }
-    .timeline::before { display: none; }
-    .timeline-section { padding: 22px 18px; }
+    .timeline-section { padding: 22px 14px; }
+    .tl-controls { gap: 10px; margin-bottom: 18px; flex-direction: column; align-items: flex-start; }
+    .tl-control-group { width: 100%; justify-content: space-between; }
+    .tl-control-label { font-size: 10px; }
+    .tl-term span { padding: 6px 12px; font-size: 11.5px; }
+    .tl-track { height: 180px; padding: 0 10px; margin: 16px 0 16px; }
+    .tl-rail { left: 10px; right: 10px; top: 78px; }
+    .tl-node { width: 60px; top: 64px; }
+    .tl-node-dot { width: 22px; height: 22px; border-width: 3px; margin-bottom: 7px; }
+    .tl-node.draggable .tl-node-dot { width: 28px; height: 28px; border-width: 4px; }
+    .tl-node-age { font-size: 17px; }
+    .tl-node-age .unit { font-size: 9px; }
+    .tl-node-label { font-size: 9.5px; letter-spacing: 0; }
+    .tl-node-event { font-size: 8.5px; padding: 2px 6px; letter-spacing: 0; }
+    .tl-hint { font-size: 10px; padding: 5px 10px; }
+    .tl-scale { display: none; }
+    .tl-range-info { font-size: 10px; }
     .float-cta-text { display: none; }
     .float-cta { padding: 14px 16px; bottom: 18px; right: 18px; }
     .tagline-bar { padding: 10px 14px; gap: 10px; flex-wrap: wrap; }
@@ -2003,38 +2202,81 @@
       </div>
     </div>
 
-    <!-- ───── 保障時間軸 ───── -->
+    <!-- ───── 互動保障時間軸 ───── -->
     <div class="section-title-icon">保障時間軸</div>
-    <div class="section-sub">從 5 歲投保到 111 歲，保障一路相伴</div>
+    <div class="section-sub">拖動投保節點、切換繳費年期，看保障如何延展到 111 歲</div>
 
     <div class="timeline-section">
-      <div class="timeline">
-        <div class="timeline-points">
-          <div class="timeline-point">
-            <div class="tp-dot"></div>
-            <div class="tp-age">5<span class="unit">歲</span></div>
-            <div class="tp-label">投保</div>
-            <div class="tp-event">開始繳費</div>
-          </div>
-          <div class="timeline-point">
-            <div class="tp-dot"></div>
-            <div class="tp-age">14<span class="unit">歲</span></div>
-            <div class="tp-label">幼童期</div>
-            <div class="tp-event">幼童專屬給付</div>
-          </div>
-          <div class="timeline-point">
-            <div class="tp-dot"></div>
-            <div class="tp-age">34<span class="unit">歲</span></div>
-            <div class="tp-label">滿期</div>
-            <div class="tp-event">領回 113.2 萬</div>
-          </div>
-          <div class="timeline-point">
-            <div class="tp-dot"></div>
-            <div class="tp-age">111<span class="unit">歲</span></div>
-            <div class="tp-label">終身</div>
-            <div class="tp-event">醫療保障持續</div>
+      <!-- 控制列 -->
+      <div class="tl-controls">
+        <div class="tl-control-group">
+          <span class="tl-control-label">⏱ 繳費年期</span>
+          <div class="tl-term">
+            <label><input type="radio" name="tl-term" value="15" id="tl-t-15"><span>15 年</span></label>
+            <label><input type="radio" name="tl-term" value="20" id="tl-t-20" checked><span>20 年</span></label>
           </div>
         </div>
+        <span class="tl-hint">拖動橘色圓點調整投保年齡</span>
+        <span class="tl-hint-mobile">點軌道任意處調整投保年齡</span>
+      </div>
+
+      <!-- 滑動軌道 + 節點 -->
+      <div class="tl-track" id="tl-track">
+        <div class="tl-rail"></div>
+
+        <!-- 節點：投保（可拖曳）-->
+        <div class="tl-node draggable" id="tl-node-start" data-color="orange" style="left: 4.5%;">
+          <div class="tl-node-dot"></div>
+          <div class="tl-node-age"><span id="tl-age-start">5</span><span class="unit">歲</span></div>
+          <div class="tl-node-label">投保</div>
+          <div class="tl-node-event">開始繳費</div>
+        </div>
+
+        <!-- 節點：繳費期滿 -->
+        <div class="tl-node" id="tl-node-paid" data-color="orange">
+          <div class="tl-node-dot"></div>
+          <div class="tl-node-age"><span id="tl-age-paid">25</span><span class="unit">歲</span></div>
+          <div class="tl-node-label">繳費期滿</div>
+          <div class="tl-node-event" id="tl-paid-event">20 年完繳</div>
+        </div>
+
+        <!-- 節點：幼童期 14 歲（固定）-->
+        <div class="tl-node" id="tl-node-kid" data-color="gold">
+          <div class="tl-node-dot"></div>
+          <div class="tl-node-age">14<span class="unit">歲</span></div>
+          <div class="tl-node-label">幼童期</div>
+          <div class="tl-node-event">幼童專屬給付</div>
+        </div>
+
+        <!-- 節點：滿期 -->
+        <div class="tl-node" id="tl-node-mature" data-color="gold">
+          <div class="tl-node-dot"></div>
+          <div class="tl-node-age"><span id="tl-age-mature">35</span><span class="unit">歲</span></div>
+          <div class="tl-node-label">滿期</div>
+          <div class="tl-node-event">領回滿期金</div>
+        </div>
+
+        <!-- 節點：111 歲終身（固定）-->
+        <div class="tl-node" id="tl-node-end" data-color="teal" style="left: 95.5%;">
+          <div class="tl-node-dot"></div>
+          <div class="tl-node-age">111<span class="unit">歲</span></div>
+          <div class="tl-node-label">終身</div>
+          <div class="tl-node-event">醫療保障持續</div>
+        </div>
+      </div>
+
+      <!-- 年齡刻度 -->
+      <div class="tl-scale" id="tl-scale">
+        <span class="tl-scale-mark" style="left:4.5%;">0</span>
+        <span class="tl-scale-mark" style="left:23.4%;">25</span>
+        <span class="tl-scale-mark" style="left:42.3%;">50</span>
+        <span class="tl-scale-mark" style="left:61.2%;">75</span>
+        <span class="tl-scale-mark" style="left:80.1%;">100</span>
+        <span class="tl-scale-mark" style="left:95.5%;">111</span>
+      </div>
+
+      <div class="tl-range-info">
+        投保年齡可調整 <strong>0~60 歲</strong>　|　保障期間至 <strong>111 歲</strong>
       </div>
     </div>
 
@@ -2091,64 +2333,6 @@
             <td>保障期間</td>
             <td>多數至 99~105 歲</td>
             <td class="hl-col"><span class="yes">✓</span> 保障到 111 歲</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ───── 給付項目 ───── -->
-    <div class="section-title-icon">給付項目一覽</div>
-    <div class="section-sub">以投保範例（保額 10 萬／日額 1,000 元）為例</div>
-
-    <div class="table-section">
-      <table class="data-table">
-        <colgroup>
-          <col style="width:35%">
-          <col style="width:35%">
-          <col style="width:30%">
-        </colgroup>
-        <thead>
-          <tr>
-            <th style="text-align:left;padding-left:18px;">保障項目</th>
-            <th>給付內容</th>
-            <th>每次給付</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>住院醫療保險金<div class="item-desc">同次最高 365 天</div></td>
-            <td>日額 × 住院天數</td>
-            <td class="num">1,000<span style="font-size:12px;color:#888;">／日</span></td>
-          </tr>
-          <tr>
-            <td>加護病房暨燒燙傷病房<div class="item-desc">合併同次最高 365 天</div></td>
-            <td>額外加倍給付</td>
-            <td class="num">1,000<span style="font-size:12px;color:#888;">／日</span></td>
-          </tr>
-          <tr>
-            <td>手術醫療保險金<div class="item-desc">依手術等級表 1~30 倍</div></td>
-            <td>日額 × 1~30 倍</td>
-            <td class="num" style="font-size:18px;">1,000<br><span style="font-size:14px;color:#888;">~ 30,000</span></td>
-          </tr>
-          <tr>
-            <td>幼童特定傷病保險金<div class="item-desc">10 大特定傷病・住院 4 天以上</div></td>
-            <td>日額 × 15 倍</td>
-            <td class="teal-num">15,000</td>
-          </tr>
-          <tr>
-            <td>幼童食物中毒保險金<div class="item-desc">2 人以上同食中毒</div></td>
-            <td>日額 × 3 倍</td>
-            <td class="teal-num">3,000</td>
-          </tr>
-          <tr class="hl-row">
-            <td>滿期保險金<div class="item-desc">繳費期滿後第 10 保單週年日</div></td>
-            <td>1.06 倍年繳保費總額</td>
-            <td class="num">1,132,000</td>
-          </tr>
-          <tr>
-            <td>身故 / 完全失能保險金<div class="item-desc">當年度保額或保價金擇優</div></td>
-            <td>1.06 倍年繳保費 或 保價金</td>
-            <td class="num">擇優</td>
           </tr>
         </tbody>
       </table>
@@ -2328,6 +2512,218 @@
   <span class="float-cta-icon">📞</span>
   <span class="float-cta-text">免費諮詢</span>
 </a>
+
+<!-- 互動保障時間軸 JS -->
+<script>
+(function() {
+  'use strict';
+
+  const TL_MIN = 0, TL_MAX = 111;
+  const PAD_PCT = 4.5;   // 軌道左右 padding (%)
+  const USABLE_PCT = 100 - PAD_PCT * 2;
+
+  const track = document.getElementById('tl-track');
+  const nodeStart = document.getElementById('tl-node-start');
+  const nodePaid = document.getElementById('tl-node-paid');
+  const nodeKid = document.getElementById('tl-node-kid');
+  const nodeMature = document.getElementById('tl-node-mature');
+  const nodeEnd = document.getElementById('tl-node-end');
+
+  const ageStart = document.getElementById('tl-age-start');
+  const agePaid = document.getElementById('tl-age-paid');
+  const ageMature = document.getElementById('tl-age-mature');
+  const paidEvent = document.getElementById('tl-paid-event');
+
+  // 把年齡轉成軌道上的 left 百分比
+  // 桌面版用比例分配；手機版用等距分配（節點均分）
+  function isMobile() {
+    return window.innerWidth <= 760;
+  }
+
+  function ageToPct(age) {
+    return PAD_PCT + (age / TL_MAX) * USABLE_PCT;
+  }
+
+  // 取得目前所有要顯示的節點（依年齡排序）
+  function getOrderedAges(startAge, paidAge, matureAge) {
+    const items = [
+      { key: 'start', age: startAge },
+      { key: 'paid', age: paidAge },
+      { key: 'mature', age: matureAge },
+      { key: 'end', age: 111 }
+    ];
+    if (startAge < 14) items.push({ key: 'kid', age: 14 });
+    else items.push({ key: 'kid', age: 14, faded: true });
+    return items.sort((a, b) => a.age - b.age);
+  }
+
+  // 等距分配（手機版）
+  function evenPct(idx, total) {
+    if (total === 1) return 50;
+    return PAD_PCT + (idx / (total - 1)) * USABLE_PCT;
+  }
+
+  let startAge = 5;
+  let term = 20;
+
+  function update() {
+    const paidAge = Math.min(startAge + term, TL_MAX);
+    const matureAge = Math.min(startAge + term + 10, TL_MAX);
+
+    // 更新文字
+    ageStart.textContent = startAge;
+    agePaid.textContent = paidAge;
+    ageMature.textContent = matureAge;
+    paidEvent.textContent = term + ' 年完繳';
+
+    // 重置所有狀態
+    [nodeStart, nodePaid, nodeKid, nodeMature, nodeEnd].forEach(n => {
+      n.style.opacity = '1';
+      n.classList.remove('faded', 'tl-above', 'tl-below');
+    });
+
+    if (isMobile()) {
+      // ─── 手機版：等距分配 ───
+      // 列出所有要顯示的節點，依年齡排序
+      const items = [];
+      items.push({ el: nodeStart, age: startAge });
+      if (startAge < 14) {
+        items.push({ el: nodeKid, age: 14 });
+      } else {
+        // 已過幼童期，淡化但仍依年齡定位（會在投保節點之前）
+        nodeKid.classList.add('faded');
+        items.push({ el: nodeKid, age: 14 });
+      }
+      items.push({ el: nodePaid, age: paidAge });
+      items.push({ el: nodeMature, age: matureAge });
+      items.push({ el: nodeEnd, age: 111 });
+
+      // 依年齡排序
+      items.sort((a, b) => a.age - b.age);
+
+      // 等距分配位置
+      items.forEach((item, idx) => {
+        item.el.style.left = evenPct(idx, items.length) + '%';
+        item.el.classList.add('tl-below');
+      });
+    } else {
+      // ─── 桌面版：比例分配 + 重疊分層 ───
+      const startPct = ageToPct(startAge);
+      const paidPct = ageToPct(paidAge);
+      const maturePct = ageToPct(matureAge);
+      const kidPct = ageToPct(14);
+      const endPct = ageToPct(111);
+
+      nodeStart.style.left = startPct + '%';
+      nodePaid.style.left = paidPct + '%';
+      nodeMature.style.left = maturePct + '%';
+      nodeKid.style.left = kidPct + '%';
+
+      // 14 歲幼童期顯示邏輯
+      if (startAge >= 14) {
+        nodeKid.classList.add('faded');
+        const tooClose =
+          Math.abs(kidPct - startPct) < 4 ||
+          Math.abs(kidPct - paidPct) < 4 ||
+          Math.abs(kidPct - maturePct) < 4;
+        if (tooClose) nodeKid.style.opacity = '0';
+      }
+
+      // 自動分層演算法
+      const nodes = [
+        { el: nodeStart, pct: startPct },
+        { el: nodeKid, pct: kidPct, hidden: nodeKid.style.opacity === '0' },
+        { el: nodePaid, pct: paidPct },
+        { el: nodeMature, pct: maturePct },
+        { el: nodeEnd, pct: endPct }
+      ].filter(n => !n.hidden).sort((a, b) => a.pct - b.pct);
+
+      const MIN_GAP = 7;
+      let lastBelowPct = -100;
+      nodes.forEach(n => {
+        if (n.pct - lastBelowPct < MIN_GAP) {
+          n.el.classList.add('tl-above');
+        } else {
+          n.el.classList.add('tl-below');
+          lastBelowPct = n.pct;
+        }
+      });
+    }
+  }
+
+  // 螢幕大小變化時重新計算
+  window.addEventListener('resize', update);
+
+  // 拖曳邏輯
+  let dragging = false;
+
+  function getAgeFromClientX(clientX) {
+    const rect = track.getBoundingClientRect();
+    const padPx = rect.width * (PAD_PCT / 100);
+    const usablePx = rect.width - padPx * 2;
+    let x = clientX - rect.left - padPx;
+    x = Math.max(0, Math.min(usablePx, x));
+    let age = Math.round((x / usablePx) * TL_MAX);
+    age = Math.max(0, Math.min(60, age));  // 投保限制 0~60
+    return age;
+  }
+
+  function startDrag(e) {
+    dragging = true;
+    nodeStart.classList.add('dragging');
+    document.body.style.cursor = 'grabbing';
+    document.body.style.userSelect = 'none';
+    onDrag(e);
+    e.preventDefault();
+  }
+
+  function onDrag(e) {
+    if (!dragging) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    startAge = getAgeFromClientX(clientX);
+    update();
+  }
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    nodeStart.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  }
+
+  // 滑鼠事件
+  nodeStart.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', endDrag);
+
+  // 觸控事件
+  nodeStart.addEventListener('touchstart', startDrag, { passive: false });
+  document.addEventListener('touchmove', e => {
+    if (dragging) { onDrag(e); e.preventDefault(); }
+  }, { passive: false });
+  document.addEventListener('touchend', endDrag);
+
+  // 點擊軌道直接跳到該位置
+  track.addEventListener('click', e => {
+    if (e.target === nodeStart || nodeStart.contains(e.target)) return;
+    if (e.target.closest('.tl-node')) return;
+    startAge = getAgeFromClientX(e.clientX);
+    update();
+  });
+
+  // 年期切換
+  document.querySelectorAll('input[name="tl-term"]').forEach(el => {
+    el.addEventListener('change', () => {
+      term = parseInt(el.value);
+      update();
+    });
+  });
+
+  // 初始
+  update();
+})();
+</script>
 
 <!-- 試算系統 JS -->
 <script>
