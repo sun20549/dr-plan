@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投資型專區 ・ 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --orange-deep: #D04618;
+    --teal: #1A6B72;
+    --teal-deep: #0F4D52;
+    --navy: #0D2A3A;
+    --navy-deep: #061827;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --gold-bright: #FFD700;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --green: #2E8B57;
+    --bg-cream: #FAF7F2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-cream);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+
+  /* ═══════════════════════════════════════════
+     HERO SECTION - 投資型專區主視覺
+     ═══════════════════════════════════════════ */
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(232,160,32,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 15% 85%, rgba(26,107,114,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, rgba(240,90,40,0.12) 0%, transparent 70%),
+      linear-gradient(135deg, var(--navy) 0%, #0a2334 50%, #061827 100%);
+    padding: 56px 56px 72px;
+    overflow: hidden;
+    color: #fff;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '$';
+    position: absolute;
+    right: -40px;
+    top: 30px;
+    font-family: 'Playfair Display', serif;
+    font-size: 360px;
+    font-weight: 900;
+    color: rgba(232,160,32,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-brand-mark {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(240,90,40,0.4);
+    letter-spacing: 1px;
+  }
+  .hero-brand-text {
+    line-height: 1.2;
+  }
+  .hero-brand-name {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #fff;
+  }
+  .hero-brand-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .hero-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    transition: all .25s;
+  }
+  .hero-back:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+  }
+
+  .hero-main {
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .hero-eyebrow-line {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .hero-eyebrow-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-size: 68px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .hero-title .hero-title-en {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.4) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+  .hero-title .accent-orange {
+    color: var(--orange);
+  }
+  .hero-tagline {
+    font-size: 18px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 4px;
+    margin-top: 20px;
+    font-weight: 500;
+  }
+  .hero-tagline .dot {
+    color: var(--gold);
+    margin: 0 12px;
+  }
+
+  /* HERO 數據統計列 */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 48px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    position: relative;
+    z-index: 2;
+  }
+  .hero-stat {
+    padding: 22px 20px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .hero-stat-value .unit {
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 4px;
+  }
+  .hero-stat-value.orange { color: var(--orange); }
+  .hero-stat-value.white { color: #fff; }
+  .hero-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════════════
+     QUICK NAV - 快速導覽
+     ═══════════════════════════════════════════ */
+  .quicknav {
+    background: linear-gradient(180deg, #fff 0%, var(--bg-cream) 100%);
+    padding: 40px 56px;
+    border-bottom: 1px solid #EAE5DC;
+  }
+  .quicknav-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .qn-item {
+    text-decoration: none;
+    background: #fff;
+    border: 1.5px solid #E8E2D6;
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    transition: all .25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .qn-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s;
+  }
+  .qn-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(13,42,58,0.1);
+    border-color: var(--orange);
+  }
+  .qn-item:hover::before { transform: scaleX(1); }
+  .qn-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--orange-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .qn-item:nth-child(2) .qn-icon { background: var(--teal-light); }
+  .qn-item:nth-child(3) .qn-icon { background: rgba(232,160,32,0.15); }
+  .qn-item:nth-child(4) .qn-icon { background: rgba(46,139,87,0.12); }
+  .qn-item:nth-child(5) .qn-icon { background: rgba(13,42,58,0.08); }
+  .qn-label {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .qn-sub {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══════════════════════════════════════════
+     SECTION 通用樣式
+     ═══════════════════════════════════════════ */
+  .section {
+    padding: 56px 56px;
+    position: relative;
+  }
+  .section-head {
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .section-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .section-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .section-title .accent { color: var(--orange); }
+  .section-title .accent-teal { color: var(--teal); }
+  .section-desc {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #6b7680;
+    letter-spacing: 0.5px;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════
+     CASES - 客戶成交案例（依金額排序）
+     ═══════════════════════════════════════════ */
+  .cases-section {
+    background: linear-gradient(180deg, #fff 0%, #FAF6EE 100%);
+  }
+  .cases-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .cases-tab {
+    border: 1.5px solid #E0DAC9;
+    background: #fff;
+    color: var(--navy);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .cases-tab:hover { border-color: var(--orange); color: var(--orange); }
+  .cases-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  /* 鑽石級成交 (千萬以上) */
+  .case-diamond-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .case-card-diamond {
+    background: linear-gradient(135deg, var(--navy) 0%, #1A4A5A 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--gold);
+    box-shadow: 0 8px 24px rgba(232,160,32,0.2);
+    text-decoration: none;
+    display: block;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .case-card-diamond:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(232,160,32,0.35);
+  }
+  .case-card-diamond::before {
+    content: '◆';
+    position: absolute;
+    top: -10px; right: -10px;
+    font-size: 120px;
+    color: rgba(232,160,32,0.08);
+    line-height: 1;
+  }
+  .case-tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--gold) 0%, #d68b15 100%);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .case-card-diamond .case-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .case-card-diamond .case-amount .unit {
+    font-size: 22px;
+    color: rgba(255,255,255,0.6);
+    margin-left: 6px;
+  }
+  .case-meta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+  }
+  .case-meta .case-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 2px;
+  }
+  .case-meta .case-date::before {
+    content: '・';
+    margin-right: 8px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* 黃金級成交 (500萬-千萬) */
+  .case-gold-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .case-card-gold {
+    background: #fff;
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: var(--navy);
+    display: block;
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.08);
+  }
+  .case-card-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(240,90,40,0.2);
+  }
+  .case-card-gold::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 100%);
+  }
+  .case-card-gold .case-tier-badge {
+    background: var(--orange-light);
+    color: var(--orange-deep);
+  }
+  .case-card-gold .case-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 46px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .case-card-gold .case-amount .unit {
+    font-size: 18px;
+    color: #999;
+    margin-left: 4px;
+  }
+  .case-card-gold .case-meta {
+    color: #888;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .case-card-gold .case-meta .case-id {
+    color: var(--navy);
+    font-size: 16px;
+  }
+  .case-card-gold .case-meta .case-date::before { color: #ccc; }
+
+  /* 標準級成交 */
+  .case-std-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .case-card-std {
+    background: #FAF7F2;
+    border: 1.5px solid #E8E2D6;
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: var(--navy);
+    transition: all .2s;
+    display: block;
+  }
+  .case-card-std:hover {
+    background: #fff;
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(26,107,114,0.12);
+  }
+  .case-card-std .case-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .case-card-std .case-amount .unit {
+    font-size: 13px;
+    color: #999;
+    margin-left: 3px;
+  }
+  .case-card-std .case-meta {
+    font-size: 11px;
+    color: #888;
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .case-card-std .case-id {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+  }
+
+  .case-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0 14px;
+  }
+  .case-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ddd, transparent);
+  }
+  .case-divider-label {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .cases-cta {
+    margin-top: 28px;
+    text-align: center;
+  }
+  .cases-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    transition: all .25s;
+  }
+  .cases-cta-btn:hover {
+    background: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(240,90,40,0.35);
+  }
+
+  /* ═══════════════════════════════════════════
+     PRODUCTS - 投資型商品專區
+     ═══════════════════════════════════════════ */
+  .products-section {
+    background: var(--navy);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .products-section::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(240,90,40,0.15) 0%, transparent 70%);
+  }
+  .products-section::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 350px; height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,107,114,0.2) 0%, transparent 70%);
+  }
+  .products-section .section-title {
+    color: #fff;
+  }
+  .products-section .section-eyebrow {
+    color: var(--gold);
+  }
+  .products-section .section-eyebrow::before {
+    background: var(--gold);
+  }
+  .products-section .section-desc {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+  }
+  .product-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+  }
+  .product-card:hover {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .4s;
+  }
+  .product-card:hover::before { transform: scaleX(1); }
+
+  .product-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .product-company {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(232,160,32,0.12);
+    border-radius: 20px;
+    border: 1px solid rgba(232,160,32,0.3);
+  }
+  .product-arrow {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5);
+    transition: all .3s;
+    font-size: 14px;
+  }
+  .product-card:hover .product-arrow {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+    transform: rotate(-45deg);
+  }
+  .product-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1.5px;
+    line-height: 1.3;
+  }
+  .product-features {
+    list-style: none;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .product-features li {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .product-features li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-size: 9px;
+    top: 4px;
+  }
+  .product-tag {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    background: rgba(240,90,40,0.15);
+    color: var(--orange);
+    border-radius: 12px;
+    border: 1px solid rgba(240,90,40,0.3);
+    align-self: flex-start;
+  }
+
+  /* ═══════════════════════════════════════════
+     ALLIANZ - 安聯收益成長基金
+     ═══════════════════════════════════════════ */
+  .allianz-section {
+    background: linear-gradient(135deg, #FAF7F2 0%, #fff 100%);
+  }
+  .allianz-card {
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(13,42,58,0.08);
+    border: 1px solid #EAE5DC;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .allianz-left {
+    padding: 40px 36px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .allianz-left::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .allianz-left::after {
+    content: '◆';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    font-size: 200px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+  }
+  .allianz-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .allianz-name {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .allianz-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .allianz-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.8;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .allianz-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .allianz-meta-item {
+    flex: 1;
+    min-width: 110px;
+  }
+  .allianz-meta-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .allianz-meta-value {
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .allianz-meta-value .accent {
+    color: var(--gold-bright);
+  }
+
+  .allianz-right {
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #fff;
+  }
+  .allianz-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .allianz-stat {
+    background: var(--bg-cream);
+    border-radius: 12px;
+    padding: 18px 16px;
+    border: 1px solid #EAE5DC;
+  }
+  .allianz-stat-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .allianz-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: var(--orange);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .allianz-stat-value.green { color: var(--green); }
+  .allianz-stat-value.teal { color: var(--teal); }
+  .allianz-stat-value .unit { font-size: 16px; color: #999; margin-left: 2px; }
+  .allianz-stat-foot {
+    font-size: 10px;
+    color: #999;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .allianz-cta {
+    margin-top: 4px;
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    transition: all .25s;
+    border: 1px solid var(--navy);
+  }
+  .allianz-cta:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  /* ═══════════════════════════════════════════
+     KNOWLEDGE - 財商增益
+     ═══════════════════════════════════════════ */
+  .knowledge-section {
+    background: #fff;
+  }
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+  }
+  .knowledge-card {
+    border-radius: 18px;
+    padding: 28px 26px;
+    text-decoration: none;
+    color: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid;
+  }
+  .k-card-feature {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    border-color: var(--orange);
+  }
+  .k-card-feature::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .k-card-1 {
+    background: var(--bg-cream);
+    border-color: #EAE5DC;
+  }
+  .k-card-2 {
+    background: var(--teal-light);
+    border-color: var(--teal);
+  }
+  .knowledge-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(13,42,58,0.12);
+  }
+  .k-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    align-self: flex-start;
+    margin-bottom: 16px;
+  }
+  .k-card-1 .k-tag {
+    background: var(--orange-light);
+    color: var(--orange);
+  }
+  .k-card-2 .k-tag {
+    background: rgba(26,107,114,0.2);
+    color: var(--teal);
+  }
+  .k-title {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .k-card-feature .k-title { font-size: 26px; }
+  .k-desc {
+    font-size: 12px;
+    line-height: 1.7;
+    opacity: 0.85;
+    margin-bottom: 20px;
+  }
+  .k-arrow {
+    align-self: flex-end;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap .3s;
+  }
+  .knowledge-card:hover .k-arrow { gap: 14px; }
+
+  /* ═══════════════════════════════════════════
+     RESOURCES - 投資工具與資源
+     ═══════════════════════════════════════════ */
+  .resources-section {
+    background: linear-gradient(180deg, var(--bg-cream) 0%, #fff 100%);
+  }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .res-card {
+    background: #fff;
+    border: 1.5px solid #EAE5DC;
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-decoration: none;
+    color: var(--navy);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all .25s;
+    position: relative;
+  }
+  .res-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--orange);
+    box-shadow: 0 10px 24px rgba(240,90,40,0.12);
+  }
+  .res-icon-wrap {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--orange-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .res-card:nth-child(2) .res-icon-wrap { background: var(--teal-light); }
+  .res-card:nth-child(3) .res-icon-wrap { background: rgba(232,160,32,0.15); }
+  .res-card:nth-child(4) .res-icon-wrap { background: rgba(46,139,87,0.12); }
+  .res-name {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+  .res-desc {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .res-link {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ═══════════════════════════════════════════
+     FAQ - 常見問題
+     ═══════════════════════════════════════════ */
+  .faq-section {
+    background: #fff;
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .faq-item {
+    background: var(--bg-cream);
+    border: 1.5px solid #EAE5DC;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all .25s;
+  }
+  .faq-item[open] {
+    border-color: var(--orange);
+    box-shadow: 0 6px 16px rgba(240,90,40,0.1);
+  }
+  .faq-q {
+    padding: 18px 24px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    user-select: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    flex-shrink: 0;
+    line-height: 1;
+    width: 32px;
+  }
+  .faq-q-text { flex: 1; }
+  .faq-q-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.12);
+    color: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: transform .3s;
+    font-weight: 900;
+  }
+  .faq-item[open] .faq-q-icon {
+    transform: rotate(45deg);
+    background: var(--orange);
+    color: #fff;
+  }
+  .faq-a {
+    padding: 0 24px 22px 72px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* ═══════════════════════════════════════════
+     CTA - 立即諮詢
+     ═══════════════════════════════════════════ */
+  .cta-section {
+    background:
+      radial-gradient(ellipse at 80% 50%, rgba(232,160,32,0.18) 0%, transparent 50%),
+      linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    padding: 64px 56px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .cta-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .cta-title {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .cta-title .accent { color: var(--gold); }
+  .cta-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .cta-buttons {
+    display: inline-flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all .3s;
+  }
+  .cta-btn-primary {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    box-shadow: 0 10px 28px rgba(240,90,40,0.4);
+  }
+  .cta-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(240,90,40,0.55);
+  }
+  .cta-btn-ghost {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: #fff;
+    backdrop-filter: blur(8px);
+  }
+  .cta-btn-ghost:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: #fff;
+  }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ */
+  .footer {
+    background: #061827;
+    padding: 36px 56px;
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .footer-line { margin-bottom: 6px; }
+
+  /* ═══════════════════════════════════════════
+     FLOATING CTA
+     ═══════════════════════════════════════════ */
+  .float-cta {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 10px 28px rgba(240,90,40,0.45);
+    z-index: 999;
+    transition: all .3s;
+  }
+  .float-cta:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 36px rgba(240,90,40,0.6);
+  }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .hero { padding: 40px 28px 56px; }
+    .hero-title { font-size: 44px; letter-spacing: 2px; }
+    .hero-title .hero-title-en { font-size: 52px; }
+    .hero-tagline { font-size: 14px; letter-spacing: 2px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .hero-stat { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .hero-stat:nth-child(2) { border-right: none; }
+    .hero-stat:nth-child(3), .hero-stat:nth-child(4) { border-bottom: none; }
+    .hero-stat-value { font-size: 38px; }
+
+    .quicknav { padding: 28px 20px; }
+    .quicknav-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    .section { padding: 40px 24px; }
+    .section-title { font-size: 26px; letter-spacing: 1px; }
+
+    .case-diamond-row { grid-template-columns: 1fr; }
+    .case-card-diamond .case-amount { font-size: 48px; }
+    .case-gold-row { grid-template-columns: 1fr 1fr; }
+    .case-std-row { grid-template-columns: 1fr 1fr; }
+
+    .products-grid { grid-template-columns: 1fr; }
+
+    .allianz-card { grid-template-columns: 1fr; }
+    .allianz-left { padding: 28px 24px; }
+    .allianz-right { padding: 24px; }
+
+    .knowledge-grid { grid-template-columns: 1fr; }
+    .knowledge-card { min-height: 180px; }
+
+    .resources-grid { grid-template-columns: 1fr 1fr; }
+
+    .cta-section { padding: 44px 24px; }
+    .cta-title { font-size: 28px; letter-spacing: 1px; }
+
+    .footer { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- HERO SECTION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <div class="hero-brand-mark">DL</div>
+        <div class="hero-brand-text">
+          <div class="hero-brand-name">鼎綸恩宇</div>
+          <div class="hero-brand-sub">DING LUN ・ EN YU</div>
+        </div>
+      </div>
+      <a href="#" class="hero-back">← 返回主頁</a>
+    </div>
+
+    <div class="hero-main">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        <span class="hero-eyebrow-text">Investment Hub</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-en">Invest. Grow.</span>
+        投資型<span class="accent-orange">專區</span>
+      </h1>
+      <p class="hero-tagline">
+        資產配置 <span class="dot">◆</span> 穩健成長 <span class="dot">◆</span> 退休傳承
+      </p>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">70<span class="unit">+</span></div>
+        <div class="hero-stat-label">成交案例</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value orange">2.5<span class="unit">億+</span></div>
+        <div class="hero-stat-label">累計成交金額</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value white">5<span class="unit">家</span></div>
+        <div class="hero-stat-label">合作壽險公司</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">2026</div>
+        <div class="hero-stat-label">最新更新</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- QUICK NAV -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="quicknav">
+    <div class="quicknav-grid">
+      <a href="#cases" class="qn-item">
+        <div class="qn-icon">💎</div>
+        <div class="qn-label">客戶案例</div>
+        <div class="qn-sub">CASE STUDIES</div>
+      </a>
+      <a href="#products" class="qn-item">
+        <div class="qn-icon">📈</div>
+        <div class="qn-label">商品專區</div>
+        <div class="qn-sub">PRODUCTS</div>
+      </a>
+      <a href="#allianz" class="qn-item">
+        <div class="qn-icon">🌐</div>
+        <div class="qn-label">安聯收益</div>
+        <div class="qn-sub">ALLIANZ FUND</div>
+      </a>
+      <a href="#knowledge" class="qn-item">
+        <div class="qn-icon">📚</div>
+        <div class="qn-label">財商增益</div>
+        <div class="qn-sub">KNOWLEDGE</div>
+      </a>
+      <a href="#faq" class="qn-item">
+        <div class="qn-icon">💬</div>
+        <div class="qn-label">常見問題</div>
+        <div class="qn-sub">FAQ</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 客戶案例 (依金額排序) -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section cases-section" id="cases">
+    <div class="section-head">
+      <div class="section-eyebrow">Top Cases ・ 真實成交</div>
+      <h2 class="section-title">客戶<span class="accent">成交實績</span></h2>
+      <p class="section-desc">每一筆都是專業規劃的見證 ・ 依金額排序展示精選案例</p>
+    </div>
+
+    <div class="cases-tabs">
+      <button class="cases-tab active">全部案例</button>
+      <button class="cases-tab">千萬以上</button>
+      <button class="cases-tab">500萬-千萬</button>
+      <button class="cases-tab">百萬級</button>
+      <button class="cases-tab">外幣 USD</button>
+    </div>
+
+    <!-- 鑽石級 ─ 千萬以上 -->
+    <div class="case-divider">
+      <span class="case-divider-line"></span>
+      <span class="case-divider-label">◆ 鑽石級 ・ NT$ 1,000萬+</span>
+      <span class="case-divider-line"></span>
+    </div>
+    <div class="case-diamond-row">
+      <a href="#" class="case-card-diamond">
+        <div class="case-tier-badge">◆ TOP CASE</div>
+        <div class="case-amount">2,500<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0033</span>
+          <span class="case-date">2025/07/29</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-diamond">
+        <div class="case-tier-badge">◆ TOP CASE</div>
+        <div class="case-amount">1,200<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0042</span>
+          <span class="case-date">2025/08/18</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-diamond">
+        <div class="case-tier-badge">◆ TOP CASE</div>
+        <div class="case-amount">1,100<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">K3007</span>
+          <span class="case-date">2026/02/05</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-diamond">
+        <div class="case-tier-badge">◆ TOP CASE</div>
+        <div class="case-amount">900<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0073</span>
+          <span class="case-date">2025/12/22</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 黃金級 ─ 500萬-千萬 -->
+    <div class="case-divider">
+      <span class="case-divider-line"></span>
+      <span class="case-divider-label">★ 黃金級 ・ NT$ 500萬 - 1,000萬</span>
+      <span class="case-divider-line"></span>
+    </div>
+    <div class="case-gold-row">
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">600<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">K1083</span>
+          <span class="case-date">2026/03/05</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">600<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0048</span>
+          <span class="case-date">2025/09/08</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">500<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0029</span>
+          <span class="case-date">2025/08/01</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">500<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">K7565</span>
+          <span class="case-date">2026/03/31</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">500<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0093</span>
+          <span class="case-date">2026/02/23</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-gold">
+        <div class="case-tier-badge">★ GOLD</div>
+        <div class="case-amount">450<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">C2847</span>
+          <span class="case-date">2024/01/26</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 標準級 ─ 百萬以上 -->
+    <div class="case-divider">
+      <span class="case-divider-line"></span>
+      <span class="case-divider-label">● 標準級 ・ NT$ 100萬 - 500萬</span>
+      <span class="case-divider-line"></span>
+    </div>
+    <div class="case-std-row">
+      <a href="#" class="case-card-std">
+        <div class="case-amount">400<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">K2303</span>
+          <span class="case-date">2026/03/27</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">370<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">F4435</span>
+          <span class="case-date">2025/04/22</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">360<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">F5027</span>
+          <span class="case-date">2024/11/04</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">325<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">F1760</span>
+          <span class="case-date">2024/08/19</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">315<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">F2040</span>
+          <span class="case-date">2024/08/20</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">300<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">K2810</span>
+          <span class="case-date">2026/03/09</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">300<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">U0091</span>
+          <span class="case-date">2026/03/23</span>
+        </div>
+      </a>
+      <a href="#" class="case-card-std">
+        <div class="case-amount">300<span class="unit">萬</span></div>
+        <div class="case-meta">
+          <span class="case-id">F4063</span>
+          <span class="case-date">2025/05/05</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="cases-cta">
+      <a href="#" class="cases-cta-btn">查看全部 70+ 筆成交案例 →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 投資型商品專區 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section products-section" id="products">
+    <div class="section-head">
+      <div class="section-eyebrow">Featured Products ・ 主推商品</div>
+      <h2 class="section-title">投資型<span style="color:var(--gold);">商品專區</span></h2>
+      <p class="section-desc">嚴選五大壽險公司主推商品 ・ 一鍵查閱完整商品資訊與佣獎制度</p>
+    </div>
+
+    <div class="products-grid">
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">凱基人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">招財進保</div>
+        <ul class="product-features">
+          <li>類全委帳戶 ・ 月配息設計</li>
+          <li>專業團隊代操 ・ 進可攻退可守</li>
+          <li>適合穩健成長型客戶</li>
+        </ul>
+        <span class="product-tag">熱銷主推</span>
+      </a>
+
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">元大人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">元元豐收</div>
+        <ul class="product-features">
+          <li>多元投資標的 ・ 自由配置</li>
+          <li>彈性繳費 ・ 部分提領</li>
+          <li>含新契約變更申請書</li>
+        </ul>
+        <span class="product-tag">人氣商品</span>
+      </a>
+
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">法國巴黎人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">金采年華</div>
+        <ul class="product-features">
+          <li>退休專屬規劃 ・ 月退設計</li>
+          <li>長期穩定現金流</li>
+          <li>外商百年品牌</li>
+        </ul>
+        <span class="product-tag">退休首選</span>
+      </a>
+
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">安達人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">新幸福成雙</div>
+        <ul class="product-features">
+          <li>夫妻雙保障 ・ 互為被保險人</li>
+          <li>保障與投資並重</li>
+          <li>家庭規劃首選</li>
+        </ul>
+        <span class="product-tag">家庭推薦</span>
+      </a>
+
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">安達人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">富貴大贏家</div>
+        <ul class="product-features">
+          <li>高保額設計 ・ 資產傳承</li>
+          <li>多元基金選擇</li>
+          <li>適合高資產族群</li>
+        </ul>
+        <span class="product-tag">資產傳承</span>
+      </a>
+
+      <a href="#" class="product-card">
+        <div class="product-card-head">
+          <span class="product-company">安達人壽</span>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-name">美利紅 ・ 鴻利鑫喜</div>
+        <ul class="product-features">
+          <li>美元計價 ・ 抗通膨利器</li>
+          <li>分散匯率風險</li>
+          <li>長期穩健配置</li>
+        </ul>
+        <span class="product-tag">外幣商品</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 安聯收益成長基金 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section allianz-section" id="allianz">
+    <div class="section-head">
+      <div class="section-eyebrow">Spotlight Fund ・ 旗艦基金</div>
+      <h2 class="section-title">安聯<span class="accent-teal">收益成長基金</span></h2>
+      <p class="section-desc">全球策略性收益型基金 ・ 兼顧成長與穩定配息</p>
+    </div>
+
+    <div class="allianz-card">
+      <div class="allianz-left">
+        <span class="allianz-tag">★ FLAGSHIP FUND</span>
+        <div class="allianz-name">安聯收益成長基金</div>
+        <div class="allianz-en">Allianz Income and Growth</div>
+        <p class="allianz-desc">
+          結合美國高股息、可轉債、高收益債三大收益來源，分散風險、追求長期穩健報酬。是國內投資型保單最熱門配置之一。
+        </p>
+        <div class="allianz-meta">
+          <div class="allianz-meta-item">
+            <div class="allianz-meta-label">基金類型</div>
+            <div class="allianz-meta-value">三平衡型</div>
+          </div>
+          <div class="allianz-meta-item">
+            <div class="allianz-meta-label">計價幣別</div>
+            <div class="allianz-meta-value"><span class="accent">USD</span> / TWD</div>
+          </div>
+          <div class="allianz-meta-item">
+            <div class="allianz-meta-label">配息頻率</div>
+            <div class="allianz-meta-value">月配息</div>
+          </div>
+        </div>
+      </div>
+      <div class="allianz-right">
+        <div class="allianz-stats-grid">
+          <div class="allianz-stat">
+            <div class="allianz-stat-label">參考年化配息率</div>
+            <div class="allianz-stat-value">8.5<span class="unit">%</span></div>
+            <div class="allianz-stat-foot">※ 配息率非報酬率</div>
+          </div>
+          <div class="allianz-stat">
+            <div class="allianz-stat-label">近一年報酬</div>
+            <div class="allianz-stat-value green">+12.4<span class="unit">%</span></div>
+            <div class="allianz-stat-foot">※ 不代表未來</div>
+          </div>
+          <div class="allianz-stat">
+            <div class="allianz-stat-label">三年報酬</div>
+            <div class="allianz-stat-value teal">+28.6<span class="unit">%</span></div>
+            <div class="allianz-stat-foot">含息累積</div>
+          </div>
+          <div class="allianz-stat">
+            <div class="allianz-stat-label">基金規模</div>
+            <div class="allianz-stat-value teal">450<span class="unit">億美元</span></div>
+            <div class="allianz-stat-foot">全球策略</div>
+          </div>
+        </div>
+        <a href="#" class="allianz-cta">查閱最新月報與績效資料 →</a>
+      </div>
+    </div>
+
+    <p style="margin-top:14px; font-size:11px; color:#999; letter-spacing:0.5px; text-align:center;">
+      ※ 數據僅供參考，實際以官方公告為準。投資有風險，配息可能涉及本金。
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 財商增益 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section knowledge-section" id="knowledge">
+    <div class="section-head">
+      <div class="section-eyebrow">Financial Wisdom ・ 財商增益</div>
+      <h2 class="section-title">投資<span class="accent">必懂知識</span></h2>
+      <p class="section-desc">深入淺出的投資教學 ・ 讓您掌握每一個投資關鍵時機</p>
+    </div>
+
+    <div class="knowledge-grid">
+      <a href="#" class="knowledge-card k-card-feature">
+        <div>
+          <span class="k-tag">◆ 精選專文</span>
+          <div class="k-title">匯率緩衝<br>與股債混合配置</div>
+          <p class="k-desc">資產配置的黃金法則 ・ 透過股債平衡與多幣別布局，有效分散市場波動風險，打造穩健成長的投資組合。</p>
+        </div>
+        <span class="k-arrow">深入閱讀 →</span>
+      </a>
+
+      <a href="#" class="knowledge-card k-card-1">
+        <div>
+          <span class="k-tag">市場觀察</span>
+          <div class="k-title">近五日重要指數比較</div>
+          <p class="k-desc">美國與台灣重要指數即時對照，並與安聯收益成長走勢同步比較。</p>
+        </div>
+        <span class="k-arrow" style="color:var(--orange);">查看數據 →</span>
+      </a>
+
+      <a href="#" class="knowledge-card k-card-2">
+        <div>
+          <span class="k-tag">產品專欄</span>
+          <div class="k-title">QQQ 投資解析</div>
+          <p class="k-desc">納斯達克100指數投資邏輯與長期布局策略。</p>
+        </div>
+        <span class="k-arrow" style="color:var(--teal);">立即了解 →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 投資工具與資源 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section resources-section">
+    <div class="section-head">
+      <div class="section-eyebrow">Tools & Resources ・ 實用資源</div>
+      <h2 class="section-title">投資<span class="accent-teal">工具站</span></h2>
+      <p class="section-desc">隨時查閱配息日程、基金績效、商品比較等實用工具</p>
+    </div>
+
+    <div class="resources-grid">
+      <a href="#" class="res-card">
+        <div class="res-icon-wrap">📅</div>
+        <div class="res-name">配息時間表</div>
+        <p class="res-desc">各基金配息日期一覽，掌握每月現金流時點。</p>
+        <span class="res-link">查看日程 →</span>
+      </a>
+
+      <a href="#" class="res-card">
+        <div class="res-icon-wrap">📊</div>
+        <div class="res-name">基金報酬率與配息率</div>
+        <p class="res-desc">安達架上基金完整數據，定期更新追蹤。</p>
+        <span class="res-link">完整資料 →</span>
+      </a>
+
+      <a href="#" class="res-card">
+        <div class="res-icon-wrap">🛡️</div>
+        <div class="res-name">壽險型別解析</div>
+        <p class="res-desc">傳統型、利變型、投資型差異一次看懂。</p>
+        <span class="res-link">深入比較 →</span>
+      </a>
+
+      <a href="#" class="res-card">
+        <div class="res-icon-wrap">🚗</div>
+        <div class="res-name">購車方案</div>
+        <p class="res-desc">夥伴專屬購車優惠方案資訊整理。</p>
+        <span class="res-link">查看方案 →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 常見問題 FAQ -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section faq-section" id="faq">
+    <div class="section-head">
+      <div class="section-eyebrow">FAQ ・ 常見問題</div>
+      <h2 class="section-title">您可能想問的<span class="accent">問題</span></h2>
+      <p class="section-desc">最多客戶詢問的投資型保單問題 ・ 一次解答</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary class="faq-q">
+          <span class="faq-q-num">01</span>
+          <span class="faq-q-text">投資型保單和傳統儲蓄險有什麼不同？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          投資型保單將「保障」與「投資」分開，保戶可自行選擇基金組合，享有市場成長機會；傳統儲蓄險則由保險公司負責資金運用，報酬相對固定但通常較低。投資型適合追求長期成長、能承擔市場波動的客戶；傳統儲蓄險則適合追求保本與固定回報者。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <span class="faq-q-num">02</span>
+          <span class="faq-q-text">配息率高就是好的投資型保單嗎？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          不一定。「配息率」並不等於「報酬率」，部分基金的配息可能來自本金（即「配息來自本金」）。選擇商品時應綜合考量基金的「總報酬」、「波動度」、「投資標的」等指標，並確認配息來源是否健康。我們的專業顧問可以協助您看懂每一份基金月報。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <span class="faq-q-num">03</span>
+          <span class="faq-q-text">投資型保單的費用結構有哪些？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          主要費用包含：保單管理費、危險保費（保障成本）、基金經理費、解約費用等。前幾年的費用通常較高，建議至少持有 5-10 年以上以攤提成本。我們會提供完整的費用試算表，讓您清楚每一分錢的去向。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <span class="faq-q-num">04</span>
+          <span class="faq-q-text">如何挑選適合自己的投資型商品？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          挑選關鍵在於釐清三件事：（1）資金用途與時間長度（短期生活費 / 中期目標 / 長期退休）、（2）風險承受度（保守 / 穩健 / 積極）、（3）保障需求（壽險額度、被保險人）。建議先預約專業顧問做完整需求分析，量身規劃最適合您的配置。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <span class="faq-q-num">05</span>
+          <span class="faq-q-text">外幣（美元）保單值得買嗎？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          美元保單適合：（1）有美元收支需求、（2）想分散匯率風險、（3）追求美元計價市場長期成長機會的客戶。需注意匯率波動可能影響台幣回流時的價值，建議將外幣保單視為整體資產配置的一部分，而非全部資金投入。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">
+          <span class="faq-q-num">06</span>
+          <span class="faq-q-text">基金績效不好可以隨時轉換嗎？</span>
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          可以。投資型保單通常每年提供 4-12 次免費轉換基金的機會（依各家公司而異），超過次數會酌收費用。我們的顧問會定期協助您檢視配置，並在市場轉折時提供專業建議，讓您的資產持續健康成長。
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CTA 立即諮詢 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="cta-eyebrow">Start Your Journey</div>
+    <h2 class="cta-title">為您的資產<br>找到<span class="accent">最佳配置</span></h2>
+    <p class="cta-desc">專業顧問一對一諮詢 ・ 量身打造您的投資型保單規劃</p>
+    <div class="cta-buttons">
+      <a href="tel:0925000049" class="cta-btn cta-btn-primary">📞 立即預約諮詢</a>
+      <a href="#cases" class="cta-btn cta-btn-ghost">查看更多案例</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 內部資源網</div>
+    <div class="footer-line">本頁案例金額均經適度去識別化處理 ・ 投資有風險，過往績效不代表未來表現</div>
+    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
+  </footer>
+
+</div>
+
+<!-- Floating CTA -->
+<a href="tel:0925000049" class="float-cta">
+  <span>📞</span>
+  <span>預約諮詢</span>
+</a>
+
+<script>
+  // 案例分類 Tab
+  document.querySelectorAll('.cases-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.cases-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      // 實際應用時可在這裡篩選 case-card 的顯示/隱藏
+    });
+  });
+
+  // 平滑滾動已由 CSS scroll-behavior: smooth 處理
+
+  // FAQ 互斥開合（可選）：點開一個自動關閉其他
+  const faqs = document.querySelectorAll('.faq-item');
+  faqs.forEach(faq => {
+    faq.addEventListener('toggle', function() {
+      if (this.open) {
+        faqs.forEach(other => {
+          if (other !== this) other.removeAttribute('open');
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
