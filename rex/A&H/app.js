@@ -104,25 +104,64 @@ const App = (() => {
     const issues = [];
     if (age == null || isNaN(age)) return issues;
 
+    // 0) rateAgeBasis="proposer" 商品(如宏泰 WRA / WRB):
+    //    必須有要保人資料,且要保人不能是被保險人本人
+    //    這類商品的年齡/性別檢查改用要保人,所以下面 1) 之後的檢查都用要保人年齡
+    let checkAge = age;
+    let checkJob = jobLevel;
+    if (product.rateAgeBasis === 'proposer') {
+      const proposer = state.showProposer ? getCurrentProposer() : null;
+      if (!proposer || proposer.age == null) {
+        issues.push({
+          type: 'proposer_required',
+          severity: 'block',
+          msg: `本附約須有要保人資料,請於「投保人員資料」開啟「輸入要保人資料」並填入要保人年齡/性別`
+        });
+        return issues;  // 沒要保人,後面檢查無意義
+      }
+      // 要保人 = 被保險人本人?(用「年齡 + 性別」判斷,粗略但實務可用)
+      const ins = getCurrentInsured();
+      // 這裡用較寬鬆的判斷:如果性別年齡完全相同,警示;若姓名也相同則 block
+      const samePerson = (proposer.gender === ins.gender && proposer.age === ins.age);
+      if (samePerson && proposer.name && ins.name && proposer.name === ins.name) {
+        issues.push({
+          type: 'same_person',
+          severity: 'block',
+          msg: `本附約須要保人與被保險人為不同人,目前姓名/年齡/性別完全相同`
+        });
+      } else if (samePerson) {
+        issues.push({
+          type: 'same_person_warn',
+          severity: 'warn',
+          msg: `要保人與被保險人之年齡性別相同,請確認是否為同一人(本附約須不同人才可投保)`
+        });
+      }
+      // 改用要保人年齡作後續檢查
+      checkAge = proposer.age;
+      checkJob = proposer.job || 1;
+    }
+
     // 1) 投保年齡檢查
     const minAge = product.minAge ?? 0;
     const maxAge = product.maxAge ?? 99;
-    if (age < minAge || age > maxAge) {
+    if (checkAge < minAge || checkAge > maxAge) {
+      const who = product.rateAgeBasis === 'proposer' ? '要保人' : '被保險人';
       issues.push({
         type: 'age',
         severity: 'block',
-        msg: `投保年齡限 ${minAge}~${maxAge} 歲,本被保險人 ${age} 歲不符`
+        msg: `投保年齡限 ${minAge}~${maxAge} 歲,${who} ${checkAge} 歲不符`
       });
     }
 
     // 1a) 主約依繳費年期不同的年齡限制(如 DCF 30 年期 0-45 歲)
     if (product.ageByPeriod && period && product.ageByPeriod[period]) {
       const [pMin, pMax] = product.ageByPeriod[period];
-      if (age < pMin || age > pMax) {
+      if (checkAge < pMin || checkAge > pMax) {
+        const who = product.rateAgeBasis === 'proposer' ? '要保人' : '被保險人';
         issues.push({
           type: 'age_period',
           severity: 'block',
-          msg: `${period} 投保年齡限 ${pMin}~${pMax} 歲,本被保險人 ${age} 歲不符`
+          msg: `${period} 投保年齡限 ${pMin}~${pMax} 歲,${who} ${checkAge} 歲不符`
         });
       }
     }
@@ -340,9 +379,21 @@ const App = (() => {
   function calcProductFee(product, gender, age, period, amount, isFirstYear = true, jobLevel = 1, skipUnderwriteCheck = false) {
     if (!product || !period || amount === '' || amount == null) return 0;
 
+    // ★ rateAgeBasis === 'proposer':費率改用要保人年齡/性別(宏泰 WRA/WRB 等豁免附約)
+    //   若要保人未填寫,則無法計算(回傳 0)
+    let useGender = gender;
+    let useAge = age;
+    if (product.rateAgeBasis === 'proposer') {
+      const proposer = getCurrentProposer();
+      if (!proposer || proposer.age == null) return 0;
+      useGender = proposer.gender;
+      useAge = proposer.age;
+      jobLevel = proposer.job || 1;
+    }
+
     // ★ 核保檢查:有 block 等級違規 → 不能投保(費率 = 0)
     // skipUnderwriteCheck = true:走勢圖場景下計算「續保」費率,跳過投保上限檢查
-    if (!skipUnderwriteCheck && age != null && hasBlockingIssue(product, age, jobLevel, period, amount)) return 0;
+    if (!skipUnderwriteCheck && useAge != null && hasBlockingIssue(product, useAge, jobLevel, period, amount)) return 0;
 
     let ratesRoot = product.rates;
     if (product.rateMode === 'perUnit_firstYearDiff') {
@@ -350,21 +401,21 @@ const App = (() => {
     }
     if (!ratesRoot || !ratesRoot[period]) return 0;
 
-    const genderTable = ratesRoot[period][gender];
+    const genderTable = ratesRoot[period][useGender];
     if (!genderTable) return 0;
 
     if (product.rateMode === 'plan') {
       const planTable = genderTable[amount];
       if (!planTable) return 0;
-      return getRateForAge(planTable, age);
+      return getRateForAge(planTable, useAge);
     } else if (product.rateMode === 'fixedAmount') {
       const amtKey = String(amount);
       const amtTable = genderTable[amtKey];
       if (!amtTable) return 0;
-      return getRateForAge(amtTable, age);
+      return getRateForAge(amtTable, useAge);
     } else {
       // perUnit / perUnit_firstYearDiff
-      const baseRate = getRateForAge(genderTable, age);
+      const baseRate = getRateForAge(genderTable, useAge);
       const numAmount = parseFloat(amount) || 0;
       return Math.round(baseRate * numAmount);
     }
@@ -956,6 +1007,22 @@ const App = (() => {
       return { primary: `XCF${G}`, secondary: `XCF${G}2` };
     }
 
+    // XCG 防癌療程 — 首/續年雙費率
+    if (code === 'XCG') {
+      return { primary: `XCG${G}`, secondary: `XCG${G}2` };
+    }
+
+    // XTK 守護童心定期壽險(自然費率,單表)
+    if (code === 'XTK') {
+      return { primary: `XTK${G}`, secondary: null };
+    }
+
+    // XMBN 新傷害醫療(平準費率,依職業等級 + 保額萬倍)
+    if (code === 'XMBN') {
+      const job = row._jobLevel || 1;
+      return { primary: `XMBN${job}`, secondary: null };
+    }
+
     // XAB 意外失能(依職業等級)
     if (code === 'XAB') {
       // 從 row 拿職業等級;若沒有,用預設(被保險人職業)
@@ -963,7 +1030,7 @@ const App = (() => {
       return { primary: `XAB${job}`, secondary: null };
     }
 
-    // 沒有費率資料的商品(XTK / XCG / XMBN 等)
+    // 沒有費率資料的商品
     return { primary: null, secondary: null };
   }
 
@@ -1934,7 +2001,7 @@ const App = (() => {
     // ── 豁免保費附約特殊處理(全球 XWA 自然費率) ──
     // - 費率以「要保人(=XWA 被保險人)當下年齡」查表
     // - 保額以「該年其他險種年繳保費總和」決定 — 為簡化,以投保時保額為準
-    // - 要保人超過 75 歲(XWA 續保上限)→ 費率為 0
+    // - 要保人超過 74 歲(XWA 續保上限)→ 費率為 0
     if (row.isWaiver) {
       if (yearsSinceStart < 0) return 0;
       // 若使用者手動覆寫,逐年都用同樣保費(不重算,因為使用者已自訂)
@@ -1944,8 +2011,29 @@ const App = (() => {
       }
       // 自然費率:要保人當下年齡 = 投保時 + 流逝年
       const proposerAgeNow = (row.waiverProposerAge || 35) + yearsSinceStart;
-      if (proposerAgeNow > 75) return 0;             // 續保上限
-      const ratePerWan = getWaiverRatePerWan(row.waiverProposerGender || 'M', proposerAgeNow);
+      if (proposerAgeNow > 74) return 0;             // 續保上限
+
+      // 走勢圖估算:用 WAIVER_PREM_DB 查當下要保人年齡的 P 值
+      //   (取 30 期費率當代表;走勢圖求趨勢不求精確)
+      //   等效費率 ≈ P × Q_avg(投保時整段方案的平均 Q)
+      // 簡化:直接用「投保時 fee × 該年/投保年的 P 比值」當逐年費率
+      let ratePerWan = 0;
+      if (typeof WAIVER_PREM_DB !== 'undefined') {
+        const productCode = row.product.code || 'XWA';
+        const gender = row.waiverProposerGender || 'M';
+        const xwaKey = `${productCode}${proposerAgeNow}${gender}`;
+        const xwaTab = WAIVER_PREM_DB[xwaKey];
+        if (xwaTab) {
+          // 用 30 期當代表(常見繳費年期),除 100000 還原成「元/萬」
+          const P30 = xwaTab['30'] || 0;
+          ratePerWan = Math.round(P30 / 10);  // P 單位是 元/100000,轉成元/萬 = P/10
+        }
+      }
+      // 沒查到 → 用投保時的 fee/coverageWan 做為「投保年費率」回填
+      if (ratePerWan === 0) {
+        const baseCoverageWan = (row.waiverCoverage || 0) / 10000;
+        if (baseCoverageWan > 0) ratePerWan = Math.round((row.fee || 0) / baseCoverageWan);
+      }
       const coverageWan = (row.waiverCoverage || 0) / 10000;
       return Math.round(coverageWan * ratePerWan);
     }
@@ -3025,6 +3113,9 @@ const App = (() => {
         // 預設關係:本人 → 同步資料
         syncIfSelf();
       }
+      // 要保人切換會影響 rateAgeBasis="proposer" 的商品(WRA/WRB),需要重繪與重算
+      renderProductSection();
+      recompute();
     };
 
     $('#payMode').onchange = () => recompute();
