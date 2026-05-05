@@ -457,13 +457,18 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .summary-bar .sb-value #totalAnnual { font-size: 32px; margin: 0 4px; }
 /* 「元」單位略小 */
 .summary-bar .sb-value .sb-yuan { font-size: 22px; margin-left: 4px; opacity: 0.85; }
-.summary-bar .sb-mode { display: flex; gap: 6px; font-size: 12px; }
+.summary-bar .sb-mode { display: flex; gap: 8px; font-size: 12px; }
 .sb-mode-item {
   background: rgba(255,255,255,0.2);
   padding: 5px 12px; border-radius: 6px; font-weight: 600;
+  min-width: 110px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .sb-mode-item .v {
-  font-family: 'Bebas Neue', sans-serif; font-size: 16px; margin-left: 4px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px; margin-left: 6px;
 }
 
 /* ── Result Table ── */
@@ -895,6 +900,26 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   grid-column: span 2;
   text-align: right;
 }
+
+/* 任務 5:理賠分組小標題(同類型整併) */
+.bi-group-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0 4px;
+  padding: 4px 8px;
+  background: linear-gradient(90deg, var(--teal-light) 0%, transparent 80%);
+  border-left: 3px solid var(--teal);
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.5px;
+}
+.bi-group-title:first-child { margin-top: 0; }
+.bi-gt-icon { font-size: 13px; }
+.bi-gt-text { line-height: 1.2; }
+.benefit-item + .bi-group-title { margin-top: 12px; border-top: 1px dashed transparent; padding-top: 6px; }
 
 /* ─────────── 響應式設計 ─────────── */
 
@@ -3028,7 +3053,7 @@ const INSURANCE_DB = {
   shortName: "宏泰",
   color: "#005BAA",
   logoText: "宏",
-  logoUrl: "",
+  logoUrl: "https://sun20549.github.io/dr-plan/images/img_20_ed035a7e960e.png",
   website: "https://www.hontaiins.com.tw/",
 
   linkTemplate: {
@@ -3339,7 +3364,7 @@ const INSURANCE_DB = {
   shortName: "新光",
   color: "#E60012",
   logoText: "新",
-  logoUrl: "",
+  logoUrl: "https://sun20549.github.io/dr-plan/images/img_05_1d05f38a7f49.png",
   website: "https://www.skl.com.tw/",
 
   linkTemplate: {
@@ -4024,7 +4049,7 @@ const INSURANCE_DB = {
   shortName: "遠雄",
   color: "#005AAA",
   logoText: "遠",
-  logoUrl: "",
+  logoUrl: "https://sun20549.github.io/dr-plan/images/img_11_ece359f5f43c.png",
   website: "https://www.fglife.com.tw/",
 
   linkTemplate: {
@@ -4602,7 +4627,7 @@ const INSURANCE_DB = {
   shortName: "富邦",
   color: "#005EB8",
   logoText: "富",
-  logoUrl: "",
+  logoUrl: "https://sun20549.github.io/dr-plan/images/img_04_16fcbe59ba27.png",
   website: "https://www.fubon.com/life/",
 
   linkTemplate: {
@@ -6883,16 +6908,35 @@ const App = (() => {
     $('#resultCard').style.display = '';
     $('#chartCard').style.display = '';
 
-    // 表格
+    // 表格 — 按公司分組,加上每組標頭與小計(多公司時才顯示分組;單公司就照舊)
     const tbody = $('#resultTbody');
-    tbody.innerHTML = rows.map(r => {
+    // 先依 companyId 分群,保留原本順序(用第一次出現的順序)
+    const companyOrder = [];
+    const groupMap = {};  // cid -> { company, companyId, color, rows: [] }
+    rows.forEach(r => {
+      const cid = r.companyId || '_misc';
+      if (!groupMap[cid]) {
+        const co = state.db.companies.find(c => c.id === cid);
+        groupMap[cid] = {
+          companyId: cid,
+          company: r.company || (co && co.name) || '其他',
+          companyName: (co && co.name) || r.company || '其他',
+          color: (co && co.color) || '#1A6B72',
+          rows: []
+        };
+        companyOrder.push(cid);
+      }
+      groupMap[cid].rows.push(r);
+    });
+    const showGrouping = companyOrder.length >= 2;  // 兩家(含)以上才顯示分組
+
+    const renderRow = (r) => {
       let amtNum, amtUnit;
       if (r.isWaiver) {
-        // 豁免保費附約:期別欄顯示「同主約」,金額欄顯示計算依據
         amtNum = String(r.amount);
         amtUnit = '';
       } else if (r.product.amountMode === 'plan') {
-        amtNum = String(r.amount).replace(/^計劃/, '');  // 「計劃一」→ 「一」
+        amtNum = String(r.amount).replace(/^計劃/, '');
         amtUnit = '計畫';
       } else if (r.product.amountMode === 'fixedAmount') {
         amtNum = Number(r.amount).toLocaleString();
@@ -6910,7 +6954,33 @@ const App = (() => {
         <td class="center"><span class="tag ${r.type === '主約' ? 'tag-warn' : ''}">${r.type}</span></td>
         <td class="fee">${fmt(r.fee)} 元</td>
       </tr>`;
-    }).join('');
+    };
+
+    let tbodyHtml = '';
+    if (showGrouping) {
+      companyOrder.forEach(cid => {
+        const g = groupMap[cid];
+        const subTotal = g.rows.reduce((s, r) => s + (r.fee || 0), 0);
+        // 分組標頭(用公司色帶)
+        tbodyHtml += `<tr class="group-header" style="background:${g.color};">
+          <td colspan="7" style="color:#fff;font-weight:700;padding:8px 12px;font-size:13px;letter-spacing:1px;">
+            🏢 ${g.companyName}<span style="margin-left:8px;font-size:11px;opacity:0.85;font-weight:400;">${g.rows.length} 項商品</span>
+          </td>
+        </tr>`;
+        g.rows.forEach(r => { tbodyHtml += renderRow(r); });
+        // 小計
+        tbodyHtml += `<tr class="group-subtotal" style="background:#fff8ec;">
+          <td colspan="6" style="text-align:right;font-weight:700;color:var(--accent);padding:8px 12px;border-top:1px dashed #d4a849;">
+            ${g.companyName}小計
+          </td>
+          <td class="fee" style="color:var(--accent);font-weight:700;border-top:1px dashed #d4a849;">${fmt(subTotal)} 元</td>
+        </tr>`;
+      });
+    } else {
+      // 單公司:不顯示分組,維持原本扁平樣式
+      tbodyHtml = rows.map(renderRow).join('');
+    }
+    tbody.innerHTML = tbodyHtml;
 
     $('#totalAnnual').textContent = fmt(total);
 
@@ -8051,26 +8121,73 @@ const App = (() => {
       }
 
       html += `<div class="benefit-list">`;
-      benefitData.items.forEach(item => {
-        const result = calcBenefitValue(item, r.product, r.amount);
-        const starHtml = item.star ? '<span class="bi-star">★</span>' : '';
-        const noteHtml = item.note ? `<span class="bi-note">${item.note}</span>` : '';
-        let valueCell = '', unitCell = '', extraClass = '';
-        if (!result) {
-          valueCell = `<span class="bi-value-note">—</span>`;
-          extraClass = 'text-only';
-        } else if (result.type === 'text') {
-          valueCell = `<span class="bi-value-note">${result.text}</span>`;
-          extraClass = 'text-only';
-        } else {
-          valueCell = `<span class="bi-value">${Math.round(result.val).toLocaleString()}</span>`;
-          unitCell = item.unit || '';
+      // ── 任務 5:依類型自動分組,讓視覺更整齊 ──
+      const classifyItem = (it) => {
+        const name = String(it.name || '');
+        const note = String(it.note || '');
+        const text = name + ' ' + note;
+        // 順序很重要:先匹配的優先
+        if (/豁免/.test(text)) return { key: 'waiver', icon: '🛡️', title: '豁免保費' };
+        if (/重大燒燙傷|燒燙傷.*保險金/.test(text)) return { key: 'burn', icon: '🔥', title: '重大燒燙傷' };
+        if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折定額' };
+        if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '重大器官 / 移植' };
+        if (/重大傷病|癌症|罹癌|罹患/.test(text)) return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
+        if (/喪葬|身故/.test(text)) return { key: 'death', icon: '💀', title: '身故 / 喪葬' };
+        if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
+        if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
+        if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
+        if (/加護|燒燙傷.*日額|燒燙傷中心/.test(text) && /日額|每日/.test(text)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
+        if (/(住院|每日|日額).*保險金|住院.*日額/.test(text) && !/手術|處置|門診|實支/.test(text)) return { key: 'daily', icon: '🏥', title: '住院日額' };
+        if (/實支|病房費用|住院醫療費用|住院.*醫療.*費/.test(text)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
+        if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '門診手術' };
+        if (/特定處置/.test(text)) return { key: 'special', icon: '⚙️', title: '特定處置' };
+        if (/手術/.test(text)) return { key: 'surgery', icon: '🔪', title: '住院手術' };
+        if (/門診/.test(text)) return { key: 'opd', icon: '🏨', title: '門診' };
+        return { key: 'other', icon: '📋', title: '其他給付' };
+      };
+
+      // 預先整理:把 items 依 key 分組,但保留首次出現順序
+      const groupOrder = [];
+      const grouped = {};
+      benefitData.items.forEach(it => {
+        const cls = classifyItem(it);
+        if (!grouped[cls.key]) {
+          grouped[cls.key] = { meta: cls, items: [] };
+          groupOrder.push(cls.key);
         }
-        html += `<div class="benefit-item ${item.star ? 'starred' : ''} ${extraClass}">
-          <div class="bi-name">${starHtml}${item.name}${noteHtml}</div>
-          <div class="bi-value-cell">${valueCell}</div>
-          ${extraClass === 'text-only' ? '' : `<div class="bi-unit-cell">${unitCell}</div>`}
-        </div>`;
+        grouped[cls.key].items.push(it);
+      });
+      const showGroupTitle = groupOrder.length >= 2;  // 1 組就不需標題
+
+      groupOrder.forEach(key => {
+        const g = grouped[key];
+        if (showGroupTitle) {
+          html += `<div class="bi-group-title">
+            <span class="bi-gt-icon">${g.meta.icon}</span>
+            <span class="bi-gt-text">${g.meta.title}</span>
+          </div>`;
+        }
+        g.items.forEach(item => {
+          const result = calcBenefitValue(item, r.product, r.amount);
+          const starHtml = item.star ? '<span class="bi-star">★</span>' : '';
+          const noteHtml = item.note ? `<span class="bi-note">${item.note}</span>` : '';
+          let valueCell = '', unitCell = '', extraClass = '';
+          if (!result) {
+            valueCell = `<span class="bi-value-note">—</span>`;
+            extraClass = 'text-only';
+          } else if (result.type === 'text') {
+            valueCell = `<span class="bi-value-note">${result.text}</span>`;
+            extraClass = 'text-only';
+          } else {
+            valueCell = `<span class="bi-value">${Math.round(result.val).toLocaleString()}</span>`;
+            unitCell = item.unit || '';
+          }
+          html += `<div class="benefit-item ${item.star ? 'starred' : ''} ${extraClass}">
+            <div class="bi-name">${starHtml}${item.name}${noteHtml}</div>
+            <div class="bi-value-cell">${valueCell}</div>
+            ${extraClass === 'text-only' ? '' : `<div class="bi-unit-cell">${unitCell}</div>`}
+          </div>`;
+        });
       });
       html += `</div></div></div>`;
     });
