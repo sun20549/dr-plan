@@ -1716,7 +1716,7 @@ const PRODUCTS = [
     max_sa: 3000000,
     min_age: 0, max_age: 74
   },
-  // ===== 全球人壽 6 商品(twlife_v1 引擎,逐年 schedule + cum_prem 增量法) =====
+  // ===== 全球人壽 13 商品(twlife_v1 引擎,逐年 schedule + cum_prem 增量法) =====
   {
     plan_code: 'FYW',
     company: '全球人壽',
@@ -1819,7 +1819,126 @@ const PRODUCTS = [
     max_sa: 10000000,
     min_age: 0, max_age: 75
   },
-  // ===== 富邦人壽 5 商品 =====
+  {
+    plan_code: 'F3W',
+    company: '全球人壽',
+    product_name: '尊榮37利率變動型美元終身壽險(定額給付型)',
+    period: 7,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0435,
+    predicted_rate: 0,
+    discount: 0.054355,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FNW',
+    company: '全球人壽',
+    product_name: '豪利旺利率變動型美元終身壽險(定額給付型)',
+    period: 2,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0425,
+    predicted_rate: 0,
+    discount: 0.015138,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'FUW',
+    company: '全球人壽',
+    product_name: '美旺智富利率變動型美元終身壽險(定額給付型)',
+    period: 1,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.043,
+    predicted_rate: 0,
+    discount: 0.02501,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 10000,
+    max_sa: 10000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'QDW',
+    company: '全球人壽',
+    product_name: '88鑫傳承利率變動型終身壽險(定額給付型)',
+    period: 6,
+    currency: 'TWD',
+    type: '新台幣利率變動型終身壽險',
+    declared_rate: 0.024,
+    predicted_rate: 0,
+    discount: 0.024727,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 300000,  // ⚠️ TWD 預設值,請查 DM 校對
+    max_sa: 100000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'QHD',
+    company: '全球人壽',
+    product_name: '鑫滿富足利率變動型增額終身壽險(定額給付型)',
+    period: 6,
+    currency: 'TWD',
+    type: '新台幣利率變動型終身壽險',
+    declared_rate: 0.023,
+    predicted_rate: 0,
+    discount: 0.014928,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 300000,  // ⚠️ TWD 預設值,請查 DM 校對
+    max_sa: 100000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'QNW',
+    company: '全球人壽',
+    product_name: '代代豪旺利率變動型終身壽險(定額給付型)',
+    period: 1,
+    currency: 'TWD',
+    type: '新台幣利率變動型終身壽險',
+    declared_rate: 0.0245,
+    predicted_rate: 0,
+    discount: 0.013,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 300000,  // ⚠️ TWD 預設值,請查 DM 校對
+    max_sa: 100000000,
+    min_age: 0, max_age: 75
+  },
+  {
+    plan_code: 'QPW',
+    company: '全球人壽',
+    product_name: '台富88利率變動型終身壽險(定額給付型)',
+    period: 6,
+    currency: 'TWD',
+    type: '新台幣利率變動型終身壽險',
+    declared_rate: 0.0245,
+    predicted_rate: 0,
+    discount: 0.049237,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 300000,  // ⚠️ TWD 預設值,請查 DM 校對
+    max_sa: 100000000,
+    min_age: 0, max_age: 75
+  },
+    // ===== 富邦人壽 5 商品 =====
   {
     plan_code: 'FBM',
     company: '富邦人壽',
@@ -2421,8 +2540,8 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   const ratio = sumAssured / baseSA;
   
   // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio
-  // 改動原因:全球人壽 FYW/FVW/FKD/FBW 在 period 內每年保費隨年齡遞減(高保費級距折扣)
-  //          對台壽 / 凱基 / 全球 FDW/F8W (cum_prem 線性遞增) 結果不變
+  // 改動原因:全球人壽多數商品(如 FYW/FVW/FKD/FBW)在 period 內每年保費隨年齡遞減(高保費級距折扣)
+  //          對線性遞增型(台壽 / 凱基 / 部分全球商品如 FDW/F8W)結果不變
   let prevCum = 0;
   const schedule = db.schedule.map(r => {
     const cumScaled = Math.round(r.cum_prem * ratio);
