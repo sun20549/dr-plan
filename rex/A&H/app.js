@@ -2573,6 +2573,30 @@ const App = (() => {
   }
 
   // ── 理賠項目卡片 ──
+  /** 把 product.claims 結構轉成 benefitsLib 期待的格式 */
+  function convertProductClaims(product) {
+    if (!product.claims || !Array.isArray(product.claims.items)) return null;
+    const items = product.claims.items.map(it => {
+      // it.calc.type 可能是: 'ratio'(乘以保額元數)、'ratioWan'(乘以保額萬)、
+      //                     'plan'(計畫對應金額)、'unit'(單位 × perUnit)、'note'(純文字)
+      // 大部分宏泰商品保額單位是「萬元」(amountUnit='萬元'),理賠金額計算時要乘 10000
+      // 但 WRA/WRB 保額已是「元」(amountUnit='元'),不再乘 10000
+      // 為了讓 calcBenefitValue 正確,我們把「ratio」根據商品 amountUnit 自動分流:
+      //   amountUnit === '元'  → 保留 ratio(直接乘元)
+      //   amountUnit === '萬元' → 改成 ratioWan(乘 10000 後再乘 ratio)
+      let calc = it.calc;
+      if (calc && calc.type === 'ratio') {
+        if (product.amountUnit === '萬元' || product.amountUnit === '萬') {
+          // 保額是萬,改用 ratioWan
+          calc = { type: 'ratioWan', ratio: calc.ratio };
+        }
+        // 否則保留(amountUnit='元' 時直接 ratio)
+      }
+      return { name: it.name, calc, unit: it.unit, note: it.note };
+    });
+    return { title: product.claims.title || '理賠項目', items };
+  }
+
   /** 計算單項理賠金額 */
   function calcBenefitValue(item, product, amount) {
     const calc = item.calc;
@@ -2630,7 +2654,7 @@ const App = (() => {
         </div>`;
         return;
       }
-      const benefitData = lib[r.product.code];
+      const benefitData = lib[r.product.code] || convertProductClaims(r.product);
       if (!benefitData) {
         // 沒有理賠資料的商品仍顯示基本卡
         html += `<div class="benefit-card ${r.type === '主約' ? 'main' : ''}">
