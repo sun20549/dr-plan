@@ -119,23 +119,8 @@ const App = (() => {
         });
         return issues;  // 沒要保人,後面檢查無意義
       }
-      // 要保人 = 被保險人本人?(用「年齡 + 性別」判斷,粗略但實務可用)
-      const ins = getCurrentInsured();
-      // 這裡用較寬鬆的判斷:如果性別年齡完全相同,警示;若姓名也相同則 block
-      const samePerson = (proposer.gender === ins.gender && proposer.age === ins.age);
-      if (samePerson && proposer.name && ins.name && proposer.name === ins.name) {
-        issues.push({
-          type: 'same_person',
-          severity: 'block',
-          msg: `本附約須要保人與被保險人為不同人,目前姓名/年齡/性別完全相同`
-        });
-      } else if (samePerson) {
-        issues.push({
-          type: 'same_person_warn',
-          severity: 'warn',
-          msg: `要保人與被保險人之年齡性別相同,請確認是否為同一人(本附約須不同人才可投保)`
-        });
-      }
+      // 開了「輸入要保人資料」即視為要保人與被保險人為不同人
+      // (實際身分由業務員投保時確認;系統不再依年齡性別判斷)
       // 改用要保人年齡作後續檢查
       checkAge = proposer.age;
       checkJob = proposer.job || 1;
@@ -417,6 +402,10 @@ const App = (() => {
       // perUnit / perUnit_firstYearDiff
       const baseRate = getRateForAge(genderTable, useAge);
       const numAmount = parseFloat(amount) || 0;
+      // ★ 若 amountUnit === '元'(如宏泰 WRA/WRB):費率是「元/萬」,保額是「元」,要除 10000
+      if (product.amountUnit === '元') {
+        return Math.round(baseRate * numAmount / 10000);
+      }
       return Math.round(baseRate * numAmount);
     }
   }
@@ -467,9 +456,19 @@ const App = (() => {
         state.activeCompany = c.id;
         renderCompanyTabs();
         renderProductSection();
+        updateWaiverSectionVisibility();
       };
       wrap.appendChild(btn);
     });
+    // 初次渲染時也決定 XWA 區塊是否顯示
+    updateWaiverSectionVisibility();
+  }
+
+  /** XWA 豁免區塊只在「全球人壽」分頁顯示(XWA 是全球的商品)*/
+  function updateWaiverSectionVisibility() {
+    const sect = document.getElementById('waiverSection');
+    if (!sect) return;
+    sect.style.display = (state.activeCompany === 'quanqiu') ? '' : 'none';
   }
 
   // ── 渲染:商品列表 ──
@@ -496,6 +495,13 @@ const App = (() => {
     if (!validInsured) {
       html += `<div class="notice-text" style="margin-bottom:14px;">
         ⚠️ 請先於上方填入「被保險人」的出生日期,費率才會依保險年齡自動帶出。
+      </div>`;
+    }
+
+    // ★ 未成年(0~14 歲)被保險人,提醒要勾要保人(因為未成年無行為能力,不能自投保)
+    if (validInsured && age <= 14 && !state.showProposer) {
+      html += `<div class="notice-text" style="margin-bottom:14px; background:#fff8e6; border-color:#ffd591; color:#a0570a;">
+        ⚠️ 被保險人 ${age} 歲為未成年,法律上不能自行投保。建議於上方開啟「<b>輸入要保人資料</b>」並填寫要保人(通常為父母)資料。
       </div>`;
     }
 
@@ -531,7 +537,22 @@ const App = (() => {
         </div>
       </div>`;
     html += `<div class="product-list">`;
-    c.riderProducts.forEach(p => {
+    // ★ WRA / WRB 二擇一:
+    //   - 沒開「輸入要保人」→ 只顯示 WRB(乙型,被保人=要保人時用)
+    //   - 開了「輸入要保人」→ 只顯示 WRA(甲型,被保人≠要保人時用)
+    // 同時也清掉「不該選」的那一張(避免使用者切換要保人開關後,舊的選擇還留著)
+    const ridersToShow = c.riderProducts.filter(p => {
+      if (p.code === 'WRA') return state.showProposer;          // 有要保人才顯示 WRA
+      if (p.code === 'WRB') return !state.showProposer;         // 沒要保人才顯示 WRB
+      return true;
+    });
+    // 順手把不該存在的選擇清掉
+    if (state.showProposer) {
+      sel.riders = sel.riders.filter(r => r.code !== 'WRB');
+    } else {
+      sel.riders = sel.riders.filter(r => r.code !== 'WRA');
+    }
+    ridersToShow.forEach(p => {
       const r = sel.riders.find(r => r.code === p.code);
       const isSelected = !!r;
       const selPeriod = isSelected ? r.period : (p.defaultPeriod || p.periodOptions[0]);
@@ -545,6 +566,8 @@ const App = (() => {
     wrap.innerHTML = html;
 
     bindProductEvents();
+    // ★ 確保每次重繪都同步 XWA 區塊的顯示狀態(只在全球分頁顯示)
+    updateWaiverSectionVisibility();
   }
 
   function renderProductRow(type, cid, p, isSelected, selPeriod, selAmount, fee, validInsured) {
@@ -561,7 +584,35 @@ const App = (() => {
     // 保額/計畫(獨立欄位)+ 單位(獨立欄位)
     let amountInput = '';
     let amountUnit = p.amountUnit || '';
-    if (p.amountMode === 'plan') {
+    if (p.autoFillFromCompanyTotal) {
+      // ★ WRA / WRB:保額自動帶入同公司其他商品年繳保費總和(唯讀)
+      // 即時計算當前同公司商品保費合計(僅顯示用,實際計算在 recompute)
+      let liveTotal = 0;
+      if (validInsured) {
+        const ins = getCurrentInsured();
+        const sel = state.selections[cid];
+        if (sel) {
+          const company = state.db.companies.find(x => x.id === cid);
+          if (sel.main && company) {
+            const mp = company.mainProducts.find(mp => mp.code === sel.main.code);
+            if (mp) liveTotal += calcProductFee(mp, ins.gender, ins.age, sel.main.period, sel.main.amount);
+          }
+          if (sel.riders && company) {
+            sel.riders.forEach(r => {
+              const rp = company.riderProducts.find(rp => rp.code === r.code);
+              if (rp && !rp.autoFillFromCompanyTotal) {
+                liveTotal += calcProductFee(rp, ins.gender, ins.age, r.period, r.amount);
+              }
+            });
+          }
+        }
+      }
+      amountInput = `<input type="number" class="prod-amount-input prod-amount-auto"
+                     data-type="${type}" data-cid="${cid}" data-code="${p.code}"
+                     value="${liveTotal}" readonly disabled
+                     style="background:#f3f4f6; color:#666; cursor:not-allowed;"
+                     title="自動帶入同公司其他商品年繳保費總和">`;
+    } else if (p.amountMode === 'plan') {
       // 計畫下拉:value 保留「計劃一」(對應費率 key),顯示時去掉「計劃」字樣
       // 例如「計劃一」→ 顯示「一」,「計劃4A」→ 顯示「4A」,「HI-30」→ 顯示「HI-30」
       const planLabel = (s) => String(s).replace(/^計劃/, '');
@@ -652,7 +703,7 @@ const App = (() => {
       </div>
       <div class="product-period">${periodSel}</div>
       <div class="product-amount">${amountInput}</div>
-      <div class="product-amount-unit">${amountUnit}</div>
+      <div class="product-amount-unit">${p.autoFillFromCompanyTotal ? `${amountUnit}<small style="display:block;font-size:10px;color:#888;line-height:1;margin-top:2px;">自動帶入</small>` : amountUnit}</div>
       <div class="product-fee ${!isSelected || !validInsured || ineligible ? 'disabled' : ''}">${feeDisplay}</div>
       ${links}
       <button class="icon-btn no-print" onclick="App.openProductEditModal('${cid}','${type}','${p.code}')" title="編輯">✏️</button>
@@ -706,6 +757,8 @@ const App = (() => {
             }
           }
         }
+        // ★ 同步更新「同公司自動帶入」商品(WRA / WRB)的 amount 顯示和 fee
+        syncAutoFillRows(e.target.dataset.cid);
       };
       // ★ blur 或 change 時觸發完整重繪,讓警告列(超齡/超保額/體檢通知)即時顯示
       const fullUpdate = (e) => {
@@ -715,6 +768,51 @@ const App = (() => {
       };
       el.onblur = fullUpdate;
       el.onchange = fullUpdate;
+    });
+  }
+
+  /** 同步「自動帶入保額」商品(WRA / WRB)的保額欄位與保費顯示
+   *  在使用者修改其他商品(主約/附約)的保額時呼叫,讓 WRA/WRB 即時反映
+   */
+  function syncAutoFillRows(cid) {
+    if (!hasValidInsured()) return;
+    const ins = getCurrentInsured();
+    const c = state.db.companies.find(x => x.id === cid);
+    if (!c) return;
+    const sel = state.selections[cid];
+    if (!sel) return;
+
+    // 計算同公司「非自動帶入」商品的當下年繳保費總和
+    let total = 0;
+    if (sel.main) {
+      const mp = c.mainProducts.find(mp => mp.code === sel.main.code);
+      if (mp) total += calcProductFee(mp, ins.gender, ins.age, sel.main.period, sel.main.amount);
+    }
+    sel.riders.forEach(r => {
+      const rp = c.riderProducts.find(rp => rp.code === r.code);
+      if (rp && !rp.autoFillFromCompanyTotal) {
+        total += calcProductFee(rp, ins.gender, ins.age, r.period, r.amount);
+      }
+    });
+
+    // 更新所有 autoFillFromCompanyTotal 的商品行
+    c.riderProducts.forEach(p => {
+      if (!p.autoFillFromCompanyTotal) return;
+      // 同步 selections 內的 amount
+      const r = sel.riders.find(rr => rr.code === p.code);
+      if (r) r.amount = total;
+      // 找對應 DOM 行,更新欄位顯示
+      const inputEl = document.querySelector(`.prod-amount-input[data-cid="${cid}"][data-code="${p.code}"]`);
+      if (inputEl) inputEl.value = total;
+      // 更新保費(只有勾選的才需要更新)
+      if (r) {
+        const fee = calcProductFee(p, ins.gender, ins.age, r.period, total);
+        const row = inputEl?.closest('.product-item');
+        const feeEl = row?.querySelector('.product-fee');
+        if (feeEl && row.classList.contains('selected')) {
+          feeEl.innerHTML = `${fmt(fee)}<span class="product-fee-unit">元</span>`;
+        }
+      }
     });
   }
 
@@ -791,7 +889,13 @@ const App = (() => {
     if (!sel) return;
     // 只考慮符合年齡資格的商品(超齡的不能投保)
     const age = state.lastAge;
-    const eligibleRiders = c.riderProducts.filter(p => isAgeEligible(p, age));
+    // ★ WRA/WRB 二擇一:有要保人才能選 WRA;沒要保人才能選 WRB
+    const eligibleRiders = c.riderProducts.filter(p => {
+      if (!isAgeEligible(p, age)) return false;
+      if (p.code === 'WRA') return state.showProposer;
+      if (p.code === 'WRB') return !state.showProposer;
+      return true;
+    });
     const allSelected = eligibleRiders.length > 0 && eligibleRiders.every(p => sel.riders.find(r => r.code === p.code));
     if (allSelected) {
       sel.riders = [];
@@ -1382,14 +1486,35 @@ const App = (() => {
           total += fee;
         }
       }
+      // 第一遍:先處理「非自動帶入」的附約,計算其保費
+      const autoFillRiders = [];
       sel.riders.forEach(r => {
         const p = c.riderProducts.find(p => p.code === r.code);
-        if (p) {
-          const fee = calcProductFee(p, ins.gender, ins.age, r.period, r.amount);
-          rows.push({ company: c.shortName, companyId: c.id, type: '附約', product: p, period: r.period, amount: r.amount, fee, startAge: ins.age });
-          total += fee;
+        if (!p) return;
+        if (p.autoFillFromCompanyTotal) {
+          // 暫存,稍後算完同公司其他商品總和再處理
+          autoFillRiders.push({ r, p });
+          return;
         }
+        const fee = calcProductFee(p, ins.gender, ins.age, r.period, r.amount);
+        rows.push({ company: c.shortName, companyId: c.id, type: '附約', product: p, period: r.period, amount: r.amount, fee, startAge: ins.age });
+        total += fee;
       });
+
+      // 第二遍:處理 autoFillFromCompanyTotal 商品(WRA / WRB)
+      // 保額 = 同公司其他商品(主約+附約)年繳保費總和(單位:元)
+      if (autoFillRiders.length > 0) {
+        const sameCompanyTotal = rows
+          .filter(row => row.companyId === c.id)
+          .reduce((sum, row) => sum + (row.fee || 0), 0);
+        autoFillRiders.forEach(({ r, p }) => {
+          // 自動覆寫保額(單位:元)
+          r.amount = sameCompanyTotal;
+          const fee = calcProductFee(p, ins.gender, ins.age, r.period, sameCompanyTotal);
+          rows.push({ company: c.shortName, companyId: c.id, type: '附約', product: p, period: r.period, amount: sameCompanyTotal, fee, startAge: ins.age });
+          total += fee;
+        });
+      }
     });
 
     // ── 豁免保費附約(若啟用,以 row 形式加入)──
@@ -3009,8 +3134,11 @@ const App = (() => {
         const refDate = $('#proposalDate').value || new Date().toISOString().substr(0, 10);
         const age = calcInsuranceAge(iso, refDate);
         $('#' + role + '-age').value = age;
-        if (role === 'proposer') syncIfSelf();
-        if (role === 'insured') autoApplyScenario();
+        // 被保險人變動 → 同步給要保人(若關係為「本人」)
+        if (role === 'insured') {
+          syncIfSelf();
+          autoApplyScenario();
+        }
         renderProductSection();
         recompute();
       } else {
@@ -3079,8 +3207,11 @@ const App = (() => {
           [...wrap.querySelectorAll('input')].forEach(el => el.classList.remove('invalid'));
         }
         $('#' + role + '-birth').value = '';
-        if (role === 'proposer') syncIfSelf();
-        if (role === 'insured') autoApplyScenario();
+        // 被保險人年齡變動 → 同步給要保人(若關係為「本人」)
+        if (role === 'insured') {
+          syncIfSelf();
+          autoApplyScenario();
+        }
         renderProductSection();
         recompute();
       });
@@ -3107,10 +3238,10 @@ const App = (() => {
     $('#showProposerToggle').onchange = (e) => {
       state.showProposer = e.target.checked;
       $('#proposerCard').style.display = state.showProposer ? '' : 'none';
-      $('#relationLabel').textContent = state.showProposer ? '被保險人(為要保人之)' : '被保險人';
+      $('#relationLabel').textContent = state.showProposer ? '要保人(為被保險人之)' : '';
       $('#relationWrap').style.display = state.showProposer ? '' : 'none';
       if (state.showProposer) {
-        // 預設關係:本人 → 同步資料
+        // 預設關係:本人 → 從「被保險人」同步到「要保人」
         syncIfSelf();
       }
       // 要保人切換會影響 rateAgeBasis="proposer" 的商品(WRA/WRB),需要重繪與重算
@@ -3128,20 +3259,21 @@ const App = (() => {
   }
 
   /** 若關係為「本人」,將要保人資料同步至被保險人 */
+  /** 「本人」關係 → 把被保險人資料同步到要保人(被保險人是主) */
   function syncIfSelf() {
     if (!state.showProposer) return;
     if ($('#relation-select').value !== '本人') return;
-    $('#insured-name').value = $('#proposer-name').value;
-    $('#insured-gender').value = $('#proposer-gender').value;
+    $('#proposer-name').value = $('#insured-name').value;
+    $('#proposer-gender').value = $('#insured-gender').value;
     // 同步日期(三欄 + hidden)
-    const proposerBirth = $('#proposer-birth').value;
-    setDateTrio('insured', proposerBirth);
-    $('#insured-age').value = $('#proposer-age').value;
-    $('#insured-job').value = $('#proposer-job').value;
-    const g = $('.gender-toggle[data-target="insured-gender"]');
+    const insuredBirth = $('#insured-birth').value;
+    setDateTrio('proposer', insuredBirth);
+    $('#proposer-age').value = $('#insured-age').value;
+    $('#proposer-job').value = $('#insured-job').value;
+    const g = $('.gender-toggle[data-target="proposer-gender"]');
     if (g) {
       g.querySelectorAll('button').forEach(b => {
-        b.classList.toggle('active', b.dataset.val === $('#proposer-gender').value);
+        b.classList.toggle('active', b.dataset.val === $('#insured-gender').value);
       });
     }
   }
@@ -3405,7 +3537,7 @@ const App = (() => {
     state.showProposer = false;
     $('#proposerCard').style.display = 'none';
     $('#relationWrap').style.display = 'none';
-    $('#relationLabel').textContent = '被保險人';
+    $('#relationLabel').textContent = '要保人(為被保險人之)';
 
     // 預設主題色(男生)
     document.body.setAttribute('data-gender', 'M');
@@ -3417,13 +3549,137 @@ const App = (() => {
     renderProductSection();
   }
 
+  /** 複製試算結果到剪貼簿(純文字,可貼到 LINE / 郵件給客戶)*/
+  function copySummaryToClipboard() {
+    const ins = getCurrentInsured();
+    if (!hasValidInsured()) {
+      alert('請先填入被保險人資料');
+      return;
+    }
+    // 收集當前 rows
+    const rows = [];
+    state.db.companies.forEach(c => {
+      const sel = state.selections[c.id];
+      if (!sel) return;
+      if (sel.main) {
+        const p = c.mainProducts.find(p => p.code === sel.main.code);
+        if (p) {
+          const fee = calcProductFee(p, ins.gender, ins.age, sel.main.period, sel.main.amount);
+          rows.push({ company: c.shortName, product: p, period: sel.main.period, amount: sel.main.amount, fee, type: '主約' });
+        }
+      }
+      sel.riders.forEach(r => {
+        const p = c.riderProducts.find(p => p.code === r.code);
+        if (!p) return;
+        let amt = r.amount;
+        if (p.autoFillFromCompanyTotal) {
+          // 重新計算自動帶入金額
+          let total = 0;
+          if (sel.main) {
+            const mp = c.mainProducts.find(mp => mp.code === sel.main.code);
+            if (mp) total += calcProductFee(mp, ins.gender, ins.age, sel.main.period, sel.main.amount);
+          }
+          sel.riders.forEach(rr => {
+            const rp = c.riderProducts.find(rp => rp.code === rr.code);
+            if (rp && !rp.autoFillFromCompanyTotal) total += calcProductFee(rp, ins.gender, ins.age, rr.period, rr.amount);
+          });
+          amt = total;
+        }
+        const fee = calcProductFee(p, ins.gender, ins.age, r.period, amt);
+        rows.push({ company: c.shortName, product: p, period: r.period, amount: amt, fee, type: '附約' });
+      });
+    });
+    if (rows.length === 0) {
+      alert('尚未選擇任何商品');
+      return;
+    }
+    let total = 0;
+    rows.forEach(r => total += r.fee);
+    // 組純文字
+    const lines = [];
+    lines.push('━━━━━━━━━━━━━━━━━━━━');
+    lines.push('保險建議書(試算)');
+    lines.push('━━━━━━━━━━━━━━━━━━━━');
+    lines.push(`被保險人:${ins.name || '(姓名)'} ${ins.gender === 'M' ? '男' : '女'} ${ins.age} 歲`);
+    if (state.showProposer) {
+      const pp = getCurrentProposer();
+      if (pp && pp.age != null) {
+        lines.push(`要保人:${pp.name || '(姓名)'} ${pp.gender === 'M' ? '男' : '女'} ${pp.age} 歲`);
+      }
+    }
+    lines.push('');
+    rows.forEach(r => {
+      let amtStr = '';
+      if (r.product.amountMode === 'plan') amtStr = String(r.amount).replace(/^計劃/, '') + ' 計畫';
+      else if (r.product.amountUnit === '元') amtStr = Number(r.amount).toLocaleString() + ' 元';
+      else amtStr = Number(r.amount).toLocaleString() + ' ' + (r.product.amountUnit || '');
+      lines.push(`【${r.product.code}】${r.product.name}`);
+      lines.push(`  ${r.period} / ${amtStr} → 年繳 ${fmt(r.fee)} 元`);
+    });
+    lines.push('');
+    lines.push('━━━━━━━━━━━━━━━━━━━━');
+    let halfTotal = 0, quarterTotal = 0, monthlyTotal = 0;
+    rows.forEach(r => {
+      halfTotal += Math.round(r.fee * 0.520);
+      quarterTotal += Math.round(r.fee * 0.262);
+      monthlyTotal += Math.round(r.fee * 0.088);
+    });
+    lines.push(`年繳:${fmt(total)} 元`);
+    lines.push(`半年繳:${fmt(halfTotal)} 元`);
+    lines.push(`季  繳:${fmt(quarterTotal)} 元`);
+    lines.push(`月  繳:${fmt(monthlyTotal)} 元`);
+    lines.push('━━━━━━━━━━━━━━━━━━━━');
+    lines.push('※ 此為試算金額,實際保費以保險公司核定為準');
+
+    const text = lines.join('\n');
+    // 嘗試使用新版 Clipboard API,失敗則 fallback 到 textarea
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showCopyToast('已複製到剪貼簿');
+      }, () => {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showCopyToast('已複製到剪貼簿');
+    } catch (e) {
+      alert('複製失敗,請手動選取複製');
+    }
+    document.body.removeChild(ta);
+  }
+
+  function showCopyToast(msg) {
+    const btn = document.getElementById('copySummaryBtn');
+    if (!btn) { alert(msg); return; }
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ ' + msg;
+    btn.style.background = 'rgba(46,204,113,0.85)';
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.style.background = 'rgba(255,255,255,0.2)';
+    }, 1800);
+  }
+
   return {
     init,
     exportPDF,
     openCompanyAddModal, saveNewCompany,
     openProductEditModal, openProductAddModal, saveProductEdit, deleteProduct,
     closeModal, openModal,
-    toggleAllMain, toggleAllRiders
+    toggleAllMain, toggleAllRiders,
+    copySummaryToClipboard
   };
 
 })();
