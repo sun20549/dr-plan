@@ -942,80 +942,101 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .bi-gt-text { line-height: 1.2; }
 .benefit-item + .bi-group-title { margin-top: 12px; border-top: 1px dashed transparent; padding-top: 6px; }
 
-/* ─────────── 任務D(v3.27):跨公司按類型整合的理賠卡 ─────────── */
+/* ─────────── 任務D(v3.27/v3.29):跨公司按類型整合的理賠卡 ─────────── */
 
-/* 改成 1 列布局,讓每張類型卡能展開更寬 */
+/* v3.29:回到 2 欄(左右各一張小卡),不再單列 */
 .benefits-section {
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .benefit-card.type-grouped {
   border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .benefit-card.type-grouped .type-header {
   background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 .benefit-card.type-grouped .benefit-card-icon {
-  font-size: 24px;
+  font-size: 22px;
   flex-shrink: 0;
 }
 .benefit-card.type-grouped .benefit-card-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--navy);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 .benefit-card.type-grouped .benefit-card-title .bc-typect {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--accent);
   font-weight: 600;
   background: white;
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: 10px;
   border: 1px solid var(--border);
 }
 .benefit-card.type-grouped .benefit-card-meta {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--gray);
-  margin-top: 4px;
+  margin-top: 3px;
   line-height: 1.4;
 }
 
-/* 類型總額(右側) */
+/* 跨商品累計(類型卡頭右側) v3.29:橫向排列、數字大、單位緊跟在後 */
 .type-total {
-  text-align: right;
-  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 6px 12px;
   background: var(--navy);
   border-radius: 8px;
   color: white;
   flex-shrink: 0;
-  min-width: 130px;
+  margin-left: auto;
 }
 .type-total .tt-label {
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
   opacity: 0.7;
+  margin-bottom: 1px;
+  white-space: nowrap;
+}
+.type-total .tt-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  white-space: nowrap;
 }
 .type-total .tt-value {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
+  font-size: 26px;
   color: var(--gold);
   letter-spacing: 1px;
-  line-height: 1.1;
+  line-height: 1;
+  font-weight: 700;
 }
 .type-total .tt-unit {
-  font-size: 10px;
-  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+/* 2 欄卡片內部更緊湊 */
+.benefit-card.type-grouped .benefit-card-body {
+  padding: 10px 12px;
 }
 
 /* 公司色帶(類型卡內) */
@@ -1076,6 +1097,63 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   border: 1px solid var(--border);
   font-size: 10px;
 }
+
+/* v3.28 摘要瘦身:note 改 tooltip;同類多筆合併 */
+.bi-note-tip {
+  display: inline-block;
+  margin-left: 4px;
+  width: 14px; height: 14px;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal);
+  cursor: help;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.bi-note-tip:hover { background: var(--teal); color: white; }
+
+.bi-summary-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+.benefit-merged-group {
+  position: relative;
+  border-left: 2px solid var(--accent-bg);
+  padding-left: 6px;
+  margin-left: -8px;
+}
+.bm-expand-btn {
+  display: inline-block;
+  margin: 2px 0 6px 18px;
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px dashed var(--accent);
+  color: var(--accent);
+  border-radius: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.bm-expand-btn:hover { background: var(--accent-bg); }
+.bm-hidden-list {
+  display: none;
+  padding-left: 18px;
+  border-left: 1px dashed var(--border);
+  margin-left: 8px;
+}
+.bm-hidden-list.show { display: block; }
+.bm-hidden-list .benefit-item { font-size: 11px; opacity: 0.85; }
 
 /* ─────────── 響應式設計 ─────────── */
 
@@ -8217,7 +8295,7 @@ const App = (() => {
       if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折定額' };
       if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '重大器官 / 移植' };
       if (/重大傷病|癌症|罹癌|罹患/.test(text)) return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
-      if (/喪葬|身故/.test(text)) return { key: 'death', icon: '💀', title: '身故 / 喪葬' };
+      if (/喪葬|身故/.test(text)) return { key: 'death', icon: '🕊️', title: '身故 / 喪葬' };
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
@@ -8271,14 +8349,30 @@ const App = (() => {
       if (!g || g.items.length === 0) return;
 
       // 嘗試計算「同類型總額」(僅在所有 result 都是 num 且單位一致時)
+      // 注意:
+      //   - 失能/脫臼/燒燙傷 → 同事故僅給付一項,不算總額
+      //   - 同一商品多筆 → 通常條款互斥(身故 6 種類型只給最高一類),不算總額
+      //   - 跨商品/跨公司 → 才算總額(各家保單獨立給付)
       let groupTotal = null;
-      const numItems = g.items.filter(x => x.result && x.result.type === 'num');
-      if (numItems.length === g.items.length && g.items.length > 0) {
-        const firstUnit = g.items[0].item.unit || '';
-        const allSameUnit = g.items.every(x => (x.item.unit || '') === firstUnit);
-        // 只對「元」「元/次」「元/日」「元/年」這類簡單單位計算總和(避免比例/混合單位誤算)
-        if (allSameUnit && /^元(\/[次日年])?$/.test(firstUnit)) {
-          groupTotal = { val: numItems.reduce((s, x) => s + (x.result.val || 0), 0), unit: firstUnit };
+      const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
+      if (!NO_TOTAL_KEYS.has(key)) {
+        // 收集每個商品的「該類型最高一筆」當代表(避免同商品多筆重複計入)
+        const perRowMax = new Map();
+        g.items.forEach(x => {
+          if (x.result && x.result.type === 'num') {
+            const cur = perRowMax.get(x.row);
+            if (!cur || x.result.val > cur.val) {
+              perRowMax.set(x.row, { val: x.result.val, unit: x.item.unit || '' });
+            }
+          }
+        });
+        // 單位一致才算
+        const entries = [...perRowMax.values()];
+        if (entries.length >= 2) {  // 至少 2 個商品才有意義加總
+          const firstUnit = entries[0].unit;
+          if (entries.every(e => e.unit === firstUnit) && /^元(\/[次日年])?$/.test(firstUnit)) {
+            groupTotal = { val: entries.reduce((s, e) => s + e.val, 0), unit: firstUnit };
+          }
         }
       }
 
@@ -8300,10 +8394,12 @@ const App = (() => {
             <div class="benefit-card-meta">${compOrder.length} 家公司 ‧ ${compOrder.map(cid => getCompanyInfo(cid).shortName).filter(s => s).join(' / ')}</div>
           </div>`;
       if (groupTotal) {
-        html += `<div class="type-total" title="此類型給付總額(同單位才合計)">
-          <div class="tt-label">類型總額</div>
-          <div class="tt-value">${Math.round(groupTotal.val).toLocaleString()}</div>
-          <div class="tt-unit">${groupTotal.unit}</div>
+        html += `<div class="type-total" title="跨商品同類型最高給付的合計(不含失能/燒燙傷等互斥項目)">
+          <div class="tt-label">跨商品累計</div>
+          <div class="tt-row">
+            <div class="tt-value">${Math.round(groupTotal.val).toLocaleString()}</div>
+            <div class="tt-unit">${groupTotal.unit}</div>
+          </div>
         </div>`;
       }
       html += `</div><div class="benefit-card-body">`;
@@ -8333,10 +8429,18 @@ const App = (() => {
             <span class="bp-code">(${r.product.code})</span>
             <span class="bp-amt">${fmtAmount(r)}</span>
           </div>`;
-          // 該商品的 items
-          arr.forEach(({ item, result }) => {
+
+          // ── v3.28 摘要化:同前綴多筆 items(失能 1 級/3 級/11 級)合併為一行 ──
+          // 偵測「相同前綴 + 不同末段(等級/比例)」的多筆 items,合併摘要
+          const renderItem = ({ item, result }, summaryNote) => {
             const starHtml = item.star ? '<span class="bi-star">★</span>' : '';
-            const noteHtml = item.note ? `<span class="bi-note">${item.note}</span>` : '';
+            // 任務瘦身:note 改成 hover tooltip 顯示,不再佔行高
+            const noteIcon = item.note
+              ? `<span class="bi-note-tip" data-tip="${String(item.note).replace(/"/g,'&quot;')}" title="${String(item.note).replace(/"/g,'&quot;')}">ⓘ</span>`
+              : '';
+            const summaryHtml = summaryNote
+              ? `<span class="bi-summary-tag">${summaryNote}</span>`
+              : '';
             let valueCell = '', unitCell = '', extraClass = '';
             if (!result) {
               valueCell = `<span class="bi-value-note">—</span>`;
@@ -8348,11 +8452,94 @@ const App = (() => {
               valueCell = `<span class="bi-value">${Math.round(result.val).toLocaleString()}</span>`;
               unitCell = item.unit || '';
             }
-            html += `<div class="benefit-item ${item.star ? 'starred' : ''} ${extraClass}">
-              <div class="bi-name">${starHtml}${item.name}${noteHtml}</div>
+            return `<div class="benefit-item ${item.star ? 'starred' : ''} ${extraClass}">
+              <div class="bi-name">${starHtml}${item.name}${summaryHtml}${noteIcon}</div>
               <div class="bi-value-cell">${valueCell}</div>
               ${extraClass === 'text-only' ? '' : `<div class="bi-unit-cell">${unitCell}</div>`}
             </div>`;
+          };
+
+          // 偵測連續多筆 items 共享前綴(去掉「— X 級(N%)」這種末段)的合併
+          // 規則:取 item.name 第一個「— 」或「(」之前當前綴,連續同前綴 ≥3 筆才合併
+          const getPrefix = (name) => {
+            let s = String(name).replace(/^[①-⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]+\s*/, '');  // 去掉編號
+            s = s.replace(/^\s+/, '');  // 去掉前綴空白(對齊用的縮排)
+            s = s.split(/\s*[—\(]/)[0].trim();
+            // 統一「意外失能保險金」與「意外失能」這類核心關鍵字
+            // 取前 4 個中文字當核心(意外失能 vs 意外失能保險金,前 4 字都是「意外失能」)
+            const core = s.replace(/保險金$/, '');
+            return core.length >= 2 ? core.slice(0, 6) : core;
+          };
+
+          const merged = [];  // 結構: { type:'single'|'merged', items:[...], summaryNote?:string }
+          let i = 0;
+          while (i < arr.length) {
+            const curName = arr[i].item.name;
+            const curPrefix = getPrefix(curName);
+            // 試著向後匹配,直到不同前綴
+            let j = i + 1;
+            while (j < arr.length && getPrefix(arr[j].item.name) === curPrefix && curPrefix.length >= 2) {
+              j++;
+            }
+            if (j - i >= 3) {
+              // 合併 ≥3 筆同前綴 → 摘要為「最高金額」一行
+              const slice = arr.slice(i, j);
+              // 找出值最大的一筆當代表
+              let best = null, minV = null, maxV = null;
+              slice.forEach(x => {
+                if (x.result && x.result.type === 'num') {
+                  if (!best || x.result.val > best.result.val) best = x;
+                  if (minV === null || x.result.val < minV) minV = x.result.val;
+                  if (maxV === null || x.result.val > maxV) maxV = x.result.val;
+                }
+              });
+              const repr = best || slice[0];
+              // 嘗試從名稱抓百分比範圍(例如 100% / 5%)
+              const percents = slice.map(x => {
+                const m = String(x.item.name).match(/(\d+(?:\.\d+)?)%/);
+                return m ? parseFloat(m[1]) : null;
+              }).filter(v => v !== null);
+              let summaryNote;
+              if (percents.length >= 2) {
+                const minP = Math.min(...percents);
+                const maxP = Math.max(...percents);
+                summaryNote = `${minP}~${maxP}% 共 ${slice.length} 筆`;
+              } else {
+                summaryNote = `共 ${slice.length} 筆`;
+              }
+              merged.push({
+                type: 'merged',
+                repr,
+                count: slice.length,
+                summaryNote,
+                hidden: slice.filter(x => x !== repr)
+              });
+              i = j;
+            } else {
+              merged.push({ type: 'single', repr: arr[i] });
+              i++;
+            }
+          }
+
+          merged.forEach(group => {
+            if (group.type === 'single') {
+              html += renderItem(group.repr);
+            } else {
+              // 合併群:顯示代表項 + 摘要 tag,並提供「展開」連結看細節
+              const groupId = `bg-${Math.random().toString(36).slice(2, 9)}`;
+              html += `<div class="benefit-merged-group" data-group="${groupId}">`;
+              html += renderItem(group.repr, group.summaryNote);
+              html += `<button class="bm-expand-btn" type="button" onclick="
+                const grp = this.parentElement;
+                const hidden = grp.querySelector('.bm-hidden-list');
+                const showing = !hidden.classList.contains('show');
+                hidden.classList.toggle('show', showing);
+                this.textContent = showing ? '▼ 收起' : '▶ 展開另外 ${group.count - 1} 筆';
+              ">▶ 展開另外 ${group.count - 1} 筆</button>`;
+              html += `<div class="bm-hidden-list">`;
+              group.hidden.forEach(x => { html += renderItem(x); });
+              html += `</div></div>`;
+            }
           });
         });
       });
