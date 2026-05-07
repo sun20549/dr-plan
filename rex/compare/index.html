@@ -1403,6 +1403,7 @@ const PRODUCTS = [
     engine: 'taishin_v1',
     // 投保限制：1萬USD~1000萬USD，0~15歲限1萬~200萬,千元為單位
     unit_size: 1000,
+    sa_granularity: 1000,  // 保額粒度 1000 USD (= 萬元小數一位, Excel 規定)
     min_sa: 10000,
     max_sa: 10000000,
     min_sa_under15: 10000,
@@ -5433,6 +5434,24 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
   const tdOffset  = (db.meta && db.meta.dividend_offset_td  != null) ? db.meta.dividend_offset_td  : 1;
   
   const maxY = ts_getMaxYear(db, plan, sex, age);
+  
+  // 祝壽金保底 (對齊新光等保險公司條款):
+  //   多數終身險條款規定:「繳費期結束後」的「基本身故金 C」不得低於「最終年度祝壽金」
+  //   (= units × NFV 在 maxY 末的值)
+  //   例:UPD061 35男 Y65-Y75 的 C 欄都固定為 1,303,164 (= 祝壽金, 110歲)
+  //   但 Y1-Y6 繳費期內仍按 SA × corPolyr 算 (corPolyr=0.3 時 C=900,000, 不套祝壽金)
+  // 實作:預先取 maxY 末的 NFV; 計算 deathBasic 時,若 year > period 則納入保底
+  //
+  // 同樣的保底也套用到 F 欄 (累計增加保險金額對應身故):
+  //   F = max(cumIncFace × NSP/1000, cumIncFace × corPolyr, cumIncFace × NFV(maxY)/1000)
+  //   後期年度若 NSP/corPolyr 都比 NFV(maxY)/1000 小, 用祝壽金比例保底
+  const survivalNFV = (function() {
+    if (db.meta?.has_survival_floor === false) return 0;  // 明確關閉
+    const uMax = ts_getUV(db, plan, sex, age, maxY);
+    return uMax ? uMax.NFV : 0;  // 注意: 是 NFV 比例 (per 千元), 不是已乘 units
+  })();
+  const survivalBenefit = units * survivalNFV;  // 祝壽金 (絕對值)
+  
   const schedule = [];
   let cumPrem = 0, cumIncFace = 0;
   
@@ -5446,7 +5465,11 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     const csv = units * u.CSV;
     const nsp = u.NSP;
     const corPolyr = db.corridor_polyr[String(year)] ?? 1.0;
-    const deathBasic = Math.max(sumAssured * corPolyr, nfv);
+    // C (基本身故金) — 繳費期內: max(SA × corridor, units × NFV)
+    //                繳費期後: max(SA × corridor, units × NFV, 祝壽金保底)
+    const deathBasic = year > period
+      ? Math.max(sumAssured * corPolyr, nfv, survivalBenefit)
+      : Math.max(sumAssured * corPolyr, nfv);
     
     // cumIncFace 用 cumOffset (UPD061: 0, 其他預設: 1)
     const dCum = ts_getDIV(db, plan, sex, age, year - cumOffset);
@@ -5455,7 +5478,15 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     cumIncFace += incFaceYear;
     
     const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
-    const xIncDeath = Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
+    // F (累計增加身故) — 繳費期內: max(cumIncFace × NSP/1000, cumIncFace × corPolyr)
+    //                  繳費期後: max(cumIncFace × NSP/1000, cumIncFace × corPolyr, cumIncFace × NFV(maxY)/1000)
+    const xIncDeath = year > period
+      ? Math.max(
+          gIncSurr,
+          Math.round(cumIncFace * corPolyr),
+          Math.round(cumIncFace * survivalNFV / 1000)
+        )
+      : Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
     
     // TD_Death / TD_Surr 用 tdOffset (預設 1, UPD061 同)
     const dTd = (tdOffset === cumOffset) ? dCum : ts_getDIV(db, plan, sex, age, year - tdOffset);
@@ -5591,16 +5622,28 @@ function solveSAWithTieredDiscount(budgetReal, gpPerThousand, productMeta, maxIt
   return sa;
 }
 
-// === 工具：保額計算 + min/max 夾擊（對齊 Excel 試算邏輯）===
-// 註:Excel 直接按比例反推保額,不強制 unit_size 整數倍
-//    例如:預算 4000 / base_premium 4366 × base_sa 10000 = 9164(精確值)
-//    舊版用 Math.ceil 強制進位到 1000 倍會變 10000,跟業界 Excel 試算不符
-//    改為 Math.round(整數位即可),保留小數會出現 9164.23 這種無意義數字
+// === 工具:保額計算 + min/max 夾擊 + 粒度進位 (對齊 Excel 試算邏輯) ===
+// 設計考量:
+//   1. min/max:依年齡分段套限制
+//   2. 保額粒度 (sa_granularity):
+//      - 不同保險公司的條款規定保額必須是某粒度的整數倍
+//      - 例:新光美鴻添富規定「投保金額單位為萬元,最多到小數一位」→ 粒度 = 1,000 USD
+//      - 例:某商品「保額為 5,000 USD 的整數倍」→ 粒度 = 5,000
+//      - 沒設 sa_granularity 時不做粒度進位 (向下相容,維持原 Math.round 行為)
+//   3. 進位策略:取最接近預算的合法值 (Math.round 到 granularity)
+//      - 例:粒度 1000, 預算反推 600,668 → round 到 601,000
+//      - 預算反推 600,200 → round 到 600,000
 function applyInsuranceLimits(rawSA, productMeta, age) {
   const unit = productMeta.unit_size || 1000;
-  // 對齊 Excel:純比例計算後 round 到整數,不強制 unit 倍數
   let sa = Math.round(rawSA);
-  // 套用 min/max（依年齡分段）
+  
+  // 套用粒度進位 (若該商品有規定保額粒度)
+  const granularity = productMeta.sa_granularity;
+  if (granularity && granularity > 1) {
+    sa = Math.round(rawSA / granularity) * granularity;
+  }
+  
+  // 套用 min/max(依年齡分段)
   let minSA, maxSA;
   if (age <= 15 && productMeta.min_sa_under15 != null) {
     minSA = productMeta.min_sa_under15;
