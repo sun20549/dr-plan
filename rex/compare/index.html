@@ -5567,15 +5567,23 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     cumIncFace += incFaceYear;
     
     const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
-    // F (累計增加身故) — 繳費期內(year < period): max(cumIncFace × NSP/1000, cumIncFace × corPolyr)
-    //                  繳費期最末年起(year ≥ period): 同上 + cumIncFace × NFV(maxY)/1000 (祝壽金比例保底)
-    const xIncDeath = year >= period
-      ? Math.max(
-          gIncSurr,
-          Math.round(cumIncFace * corPolyr),
-          Math.round(cumIncFace * survivalNFV / 1000)
-        )
-      : Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
+    // F (累計增加身故) Excel 真實公式 (UPD061 X 欄分析得出):
+    //   F = max(U, gIncSurr × criteria, round(cumIncFace × corPolyr))
+    //   其中 U = round(premBasisRatio × round(GP_band1 × cumIncFace / 1000) × min(year, period), 2)
+    //   注意 Excel 公式中:
+    //   - U 是「累紅利對應的身故金保證」(= 1.06 × 累計繳費換算 × 已繳年數)
+    //   - NSP/1000 × criteria 比 NSP/1000 多了 × criteria_by_age (年齡係數)
+    //   - corPolyr 取整數 round
+    //   - 沒設 premium_basis_ratio (預設 0) 時 U=0, 退化成舊行為
+    //   - 沒設 criteria_by_age 時 criteria=1, NSP × crit = NSP, 等價舊行為
+    const minYearPeriod = Math.min(year, period);
+    const baseGP = ts_getGP(db, plan, sex, age) || 0;  // Band 1 GP, 用於 U 公式
+    const U_value = premiumBasisRatio > 0
+      ? +(premiumBasisRatio * Math.round(baseGP * cumIncFace / 1000) * minYearPeriod).toFixed(2)
+      : 0;
+    const F_NSP_crit = +(cumIncFace * nsp / 1000 * (criteria || 1)).toFixed(2);
+    const F_corP = Math.round(cumIncFace * corPolyr);
+    const xIncDeath = Math.max(U_value, F_NSP_crit, F_corP);
     
     // TD_Death / TD_Surr 用 tdOffset (預設 1, UPD061 同)
     const dTd = (tdOffset === cumOffset) ? dCum : ts_getDIV(db, plan, sex, age, year - tdOffset);
