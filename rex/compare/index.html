@@ -5786,12 +5786,16 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   const baseSA = db.meta.base_sa;
   const ratio = sumAssured / baseSA;
   
-  // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio
-  // 改動原因:全球人壽多數商品(如 FYW/FVW/FKD/FBW)在 period 內每年保費隨年齡遞減(高保費級距折扣)
-  //          對線性遞增型(台壽 / 凱基 / 部分全球商品如 FDW/F8W)結果不變
+  // 修補:對使用者年齡/性別與基準的差異做修正 (cum_prem 部分)
+  // schedule 的 cv/db 是按 SA 比例縮放(跟年齡無關),
+  // 但 cum_prem(累計保費)應該反映「使用者實際年齡的保費水準」,
+  // 故對保費部分套上 age/sex factor。
+  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
+  
+  // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio × factor
   let prevCum = 0;
   const schedule = db.schedule.map(r => {
-    const cumScaled = Math.round(r.cum_prem * ratio);
+    const cumScaled = Math.round(r.cum_prem * ratio * factor);
     const yearlyPrem = cumScaled - prevCum;
     prevCum = cumScaled;
     return {
@@ -5807,7 +5811,7 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   });
   
   // annual_premium_real 改用 Y1 實繳(對齊 STEP3 比較表 Y1 數字)
-  const annualPremiumReal = schedule[0]?.prem ?? Math.round(db.meta.base_premium * ratio);
+  const annualPremiumReal = schedule[0]?.prem ?? Math.round(db.meta.base_premium * ratio * factor);
   const annualPremiumOrig = db.meta.discount
     ? Math.round(annualPremiumReal / (1 - db.meta.discount))
     : annualPremiumReal;
@@ -5824,6 +5828,7 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
     is_estimated: !isExact,  // 標記為估算
     base_age: db.meta.base_age,
     base_sex: db.meta.base_sex,
+    age_factor: factor,  // 修補:讓 UI 可顯示年齡修正係數
     // 路徑 C:若 schedule 不含紅利累積(預設視為已含),帶 warning 給 UI
     // 用法:result.dividend_warning 為非空字串時,UI 在比較表那一列加灰色註記
     dividend_warning: db.meta.schedule_includes_dividend === false
@@ -5832,11 +5837,41 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   };
 }
 
+// === 工具:年齡保費因子近似公式 (修補 v1) ===
+// 原理:壽險保費隨年齡近似指數成長,女性約為男性的 0.85 倍
+// 用法:userPremium ≈ basePremium × estimateAgePremiumFactor(...)
+// ⚠ 此為近似公式;精確結果應由 db.gp_table[sex][age] 查表得到 (待補)
+function estimateAgePremiumFactor(userSex, userAge, baseSex, baseAge) {
+  if (baseAge == null || baseSex == null) return 1.0;
+  // 分段年齡保費成長率 (壽險業界經驗):
+  //   0~20: +0.8%/yr, 20~40: +1.5%/yr, 40~60: +3.0%/yr, 60+: +5.5%/yr
+  function ageToPoints(age) {
+    let pts = 0;
+    pts += Math.min(age, 20) * Math.log(1.008);
+    if (age > 20) pts += (Math.min(age, 40) - 20) * Math.log(1.015);
+    if (age > 40) pts += (Math.min(age, 60) - 40) * Math.log(1.030);
+    if (age > 60) pts += (age - 60) * Math.log(1.055);
+    return pts;
+  }
+  const ageFactor = Math.exp(ageToPoints(userAge) - ageToPoints(baseAge));
+  // 性別因子:同年齡下女性保費 ≈ 男性的 0.85 倍
+  let sexFactor = 1.0;
+  if (userSex !== baseSex) {
+    if (userSex === 'F' && baseSex === 'M') sexFactor = 0.85;
+    else if (userSex === 'M' && baseSex === 'F') sexFactor = 1 / 0.85;
+  }
+  return ageFactor * sexFactor;
+}
+
 function calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta) {
   const db = getDB(plan);
   if (!db) return null;
-  // 比例 = 預算 / 基準保費，保額 = 基準保額 × 比例
-  const ratio = budgetReal / db.meta.base_premium;
+  // 修補:對使用者年齡/性別與基準的差異做修正
+  // 原版直接 ratio = budgetReal / base_premium 完全忽略 sex/age,
+  // 導致 20歲男對 40歲基準的商品保額被低估 30~60%
+  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
+  const adjustedBasePremium = db.meta.base_premium * factor;
+  const ratio = budgetReal / adjustedBasePremium;
   const rawSA = db.meta.base_sa * ratio;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
@@ -5918,7 +5953,10 @@ function actuarialCalc_prudential_v2(plan, sex, age, sumAssured, period) {
 function calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budgetReal, productMeta) {
   const db = getDB(plan);
   if (!db) return null;
-  const ratio = budgetReal / db.meta.base_premium;
+  // 修補:對使用者年齡/性別與基準的差異做修正 (同 twlife_v1 修補理由)
+  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
+  const adjustedBasePremium = db.meta.base_premium * factor;
+  const ratio = budgetReal / adjustedBasePremium;
   const rawSA = db.meta.base_sa * ratio;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
