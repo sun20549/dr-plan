@@ -6203,6 +6203,13 @@ async function goStep2() {
     budget_usd: isUSD ? budget : (budget / rate),
     budget_twd: isUSD ? (budget * rate) : budget
   };
+  
+  // v7: 從 STEP1 進入 STEP2 時清除上次微調的保額,讓 STEP2 顯示依「新預算」反推的保額
+  // (使用者重新填表單表示要重新比較,「已調整」狀態屬於前一輪比較,應重置)
+  state.customSA.clear();
+  state.selectedCodes.clear();
+  document.getElementById('selected-count').textContent = 0;
+  document.getElementById('btn-compare-selected').disabled = true;
 
   document.getElementById('sum-name').textContent = name;
   document.getElementById('sum-gender').textContent = gender === 'M' ? '男性' : '女性';
