@@ -1378,6 +1378,66 @@ window.loadManifest = async function() {
 // ============================================================
 const PRODUCTS = [
   {
+    plan_code: 'UPD012',
+    company: '新光人壽',
+    product_name: '美鴻世代美元分紅終身壽險',
+    period: 1,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    mid_dividend_rate: 0.056,
+    predicted_rate: 0.0175,
+    // 級距折扣 (UPD012 躉繳專用, 從 Excel OP sheet 提取):
+    //   保費 < 60K:    0%
+    //   保費 60~100K:  1.0% (高保額折扣)
+    //   保費 ≥ 100K:   1.8% (高保費折扣)
+    discount_tiers: [
+      { threshold: 0,      rate: 0 },
+      { threshold: 60000,  rate: 0.01 },
+      { threshold: 100000, rate: 0.018 }
+    ],
+    discount: 0,
+    discount_method: 'simple',
+    engine: 'taishin_v1',
+    unit_size: 1000,
+    sa_granularity: 1000,
+    min_sa: 10000,
+    max_sa: 7500000,
+    min_sa_under15: 10000,
+    max_sa_under15: 2000000,
+    min_age: 0, max_age: 80
+  },
+  {
+    plan_code: 'UPD022',
+    company: '新光人壽',
+    product_name: '美鴻世代美元分紅終身壽險',
+    period: 2,
+    currency: 'USD',
+    type: '美元分紅終身壽險',
+    declared_rate: 0,
+    mid_dividend_rate: 0.056,
+    predicted_rate: 0.0175,
+    // 級距折扣 (UPD022 2年期專用, 跟 UPD012 不同級距):
+    //   保費 < 30K:    0%
+    //   保費 30~50K:   1.0%
+    //   保費 ≥ 50K:    1.8%
+    discount_tiers: [
+      { threshold: 0,     rate: 0 },
+      { threshold: 30000, rate: 0.01 },
+      { threshold: 50000, rate: 0.018 }
+    ],
+    discount: 0,
+    discount_method: 'simple',
+    engine: 'taishin_v1',
+    unit_size: 1000,
+    sa_granularity: 1000,
+    min_sa: 10000,
+    max_sa: 7500000,
+    min_sa_under15: 10000,
+    max_sa_under15: 2000000,
+    min_age: 0, max_age: 78
+  },
+  {
     plan_code: 'UPD061',
     company: '新光人壽',
     product_name: '美鴻添富美元分紅終身壽險',
@@ -5452,6 +5512,30 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
   })();
   const survivalBenefit = units * survivalNFV;  // 祝壽金 (絕對值)
   
+  // 「最低死亡保額倍數」(criteria_by_age) — UPD012/UPD022 (新光美鴻世代) 等商品的特殊規則
+  //   保險法規某些商品要求:基本身故金 C 不得低於「保價金 × 年齡對應倍數」
+  //   meta.criteria_by_age = [[0, 2.1], [31, 1.8], [41, 1.6], [51, 1.3], [61, 1.2], [71, 1.05], [91, 1]]
+  //                          ^^^^^^^^^ 表示 Age 0-30 倍數=2.1, Age 31-40 倍數=1.8, ...
+  //   公式新增:C = max(..., units × NFV × criteria_by_age)
+  //   沒設此欄位時不啟用 (向下相容,UPD061 等商品不受影響)
+  const criteriaByAge = db.meta?.criteria_by_age || null;
+  function getCriteria(attainedAge) {
+    if (!criteriaByAge) return 0;  // 0 = 不影響 max 結果
+    let crit = 0;
+    for (const [startAge, value] of criteriaByAge) {
+      if (attainedAge >= startAge) crit = value;
+      else break;
+    }
+    return crit;
+  }
+  
+  // 「累計保費保證」(premium_basis_ratio) — UPD012/UPD022 等商品的特殊規則
+  //   Excel J28 = "基本保額所繳保費倍率 = 1.06" 表示:
+  //   基本身故金 C 不得低於「累計實繳保費 × 1.06」
+  //   公式新增:C = max(..., cumPremium × premium_basis_ratio)
+  //   沒設時不啟用 (向下相容)
+  const premiumBasisRatio = db.meta?.premium_basis_ratio || 0;
+  
   const schedule = [];
   let cumPrem = 0, cumIncFace = 0;
   
@@ -5465,11 +5549,16 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     const csv = units * u.CSV;
     const nsp = u.NSP;
     const corPolyr = db.corridor_polyr[String(year)] ?? 1.0;
-    // C (基本身故金) — 繳費期內: max(SA × corridor, units × NFV)
-    //                繳費期後: max(SA × corridor, units × NFV, 祝壽金保底)
-    const deathBasic = year > period
-      ? Math.max(sumAssured * corPolyr, nfv, survivalBenefit)
-      : Math.max(sumAssured * corPolyr, nfv);
+    const attainedAge = age + year - 1;
+    const criteria = getCriteria(attainedAge);
+    const nfvCrit = nfv * criteria;  // = units × NFV × criteria_by_age
+    const premBasis = cumPrem * premiumBasisRatio;  // = 累計實繳保費 × 1.06
+    // C (基本身故金) — 繳費期內(year < period): max(SA × corridor, units × NFV, units × NFV × criteria, cumPrem × 1.06)
+    //                繳費期最末年起(year ≥ period): 同上 + 祝壽金保底
+    // 注意:繳費期最後一年(year == period)身故時保費已繳完,屬於「期後」邏輯。
+    const deathBasic = year >= period
+      ? Math.max(sumAssured * corPolyr, nfv, nfvCrit, premBasis, survivalBenefit)
+      : Math.max(sumAssured * corPolyr, nfv, nfvCrit, premBasis);
     
     // cumIncFace 用 cumOffset (UPD061: 0, 其他預設: 1)
     const dCum = ts_getDIV(db, plan, sex, age, year - cumOffset);
@@ -5478,9 +5567,9 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     cumIncFace += incFaceYear;
     
     const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
-    // F (累計增加身故) — 繳費期內: max(cumIncFace × NSP/1000, cumIncFace × corPolyr)
-    //                  繳費期後: max(cumIncFace × NSP/1000, cumIncFace × corPolyr, cumIncFace × NFV(maxY)/1000)
-    const xIncDeath = year > period
+    // F (累計增加身故) — 繳費期內(year < period): max(cumIncFace × NSP/1000, cumIncFace × corPolyr)
+    //                  繳費期最末年起(year ≥ period): 同上 + cumIncFace × NFV(maxY)/1000 (祝壽金比例保底)
+    const xIncDeath = year >= period
       ? Math.max(
           gIncSurr,
           Math.round(cumIncFace * corPolyr),
