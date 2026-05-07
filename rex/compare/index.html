@@ -195,13 +195,13 @@ body {
 .accuracy-tag.calc { background:#FEF3C7; color:#92400E; }
 .accuracy-tag.custom { background:#DBEAFE; color:#1E40AF; cursor:help; }
 
-/* v6: 保額微調齒輪 */
+/* v6: 保額微調齒輪 (獨立小欄,固定大小) */
 .sa-adjust-btn {
   display:inline-flex; align-items:center; justify-content:center;
-  width:24px; height:24px; margin-right:6px;
+  width:28px; height:28px;
   background:transparent; border:1px solid var(--gray-200); border-radius:6px;
-  font-size:13px; color:var(--gray-500); cursor:pointer;
-  transition:all .15s; vertical-align:middle;
+  font-size:14px; color:var(--gray-500); cursor:pointer;
+  transition:all .15s; line-height:1;
 }
 .sa-adjust-btn:hover { background:var(--orange); color:#fff; border-color:var(--orange); }
 
@@ -1233,6 +1233,7 @@ body {
           <th class="center" style="width:90px;">精算狀態</th>
           <th>代號</th>
           <th class="center">年期</th>
+          <th class="center" style="width:48px;"></th>
           <th class="right">保額</th>
           <th class="right">首年原始保費</th>
           <th class="right">首年實繳保費 <small style="color:var(--gray-500)">(已扣折扣)</small></th>
@@ -1298,6 +1299,10 @@ body {
             font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">
             🖨️ 列印 / 存 PDF
           </button>
+          <div class="currency-toggle" id="decimal-toggle" title="切換顯示精度">
+            <button class="active" data-decimal="0" onclick="toggleDecimal(false)">整數</button>
+            <button data-decimal="1" onclick="toggleDecimal(true)">完整</button>
+          </div>
           <div class="currency-toggle" id="currency-toggle">
             <button class="active" data-cur="USD" onclick="switchCurrency('USD')">USD</button>
             <button data-cur="TWD" onclick="switchCurrency('TWD')">TWD</button>
@@ -5415,6 +5420,18 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     : discount;
   const annualPremiumReal = Math.round(annualPremiumOrig * (1 - effectiveDiscount));
   
+  // === 拆 offset 機制 (對齊 Excel 紅利索引方式) ===
+  // Excel 試算表設計上,「累計紅利」跟「終期紅利」用不同 dur 索引:
+  //   - cumIncFace (累計增加保險金額):     用「當年 dur」 → div_table[year]
+  //   - TD_Death/TD_Surr (終期紅利):       用「前一年 dur」 → div_table[year - 1]
+  // 因為終期紅利是「年初宣告值,於年末計入」,跟年內持續累積的紅利索引方式不同。
+  //
+  // 預設 cum_offset=1, td_offset=1 (= 全用 year-1, 跟舊版引擎完全相容)
+  // UPD061 (新光美鴻添富) 用 cum_offset=0, td_offset=1
+  // 用 PDF (新光 LibreOffice 重算) 完整 60 年驗證 0 偏差
+  const cumOffset = (db.meta && db.meta.dividend_offset_cum != null) ? db.meta.dividend_offset_cum : 1;
+  const tdOffset  = (db.meta && db.meta.dividend_offset_td  != null) ? db.meta.dividend_offset_td  : 1;
+  
   const maxY = ts_getMaxYear(db, plan, sex, age);
   const schedule = [];
   let cumPrem = 0, cumIncFace = 0;
@@ -5431,15 +5448,19 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     const corPolyr = db.corridor_polyr[String(year)] ?? 1.0;
     const deathBasic = Math.max(sumAssured * corPolyr, nfv);
     
-    const d = ts_getDIV(db, plan, sex, age, year - 1);
-    const adFaceYear = +(units * d.AD).toFixed(2);
+    // cumIncFace 用 cumOffset (UPD061: 0, 其他預設: 1)
+    const dCum = ts_getDIV(db, plan, sex, age, year - cumOffset);
+    const adFaceYear = +(units * dCum.AD).toFixed(2);
     const incFaceYear = nsp > 0 ? Math.round(adFaceYear / (nsp / 1000)) : 0;
     cumIncFace += incFaceYear;
     
     const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
     const xIncDeath = Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
-    const tdDeath = +(units * d.TD_Death).toFixed(2);
-    const tdSurr = +(units * d.TD_Surr).toFixed(2);
+    
+    // TD_Death / TD_Surr 用 tdOffset (預設 1, UPD061 同)
+    const dTd = (tdOffset === cumOffset) ? dCum : ts_getDIV(db, plan, sex, age, year - tdOffset);
+    const tdDeath = +(units * dTd.TD_Death).toFixed(2);
+    const tdSurr = +(units * dTd.TD_Surr).toFixed(2);
     
     schedule.push({
       y: year,
@@ -5969,7 +5990,8 @@ const state = {
   sortYear: null,    // v4: 點年度排序
   sortBasis: null,   // v5: 排序基準('surrender' 或 'death'),切 tab 不變
   customSA: new Map(),  // v6: 微調保額 - key=plan_code, value=覆寫的保額(USD/TWD,跟商品幣別一致)
-  saAdjustModal: { plan_code: null, currentSA: 0, productMeta: null }  // 微調 modal 狀態
+  saAdjustModal: { plan_code: null, currentSA: 0, productMeta: null },  // 微調 modal 狀態
+  showDecimal: false  // v7: STEP3 是否顯示小數位 (預設整數,切換可看完整 2 位小數)
 };
 
 // ============================================================
@@ -6188,7 +6210,7 @@ async function renderProductList() {
     } else {
       hint = `資料庫目前有：${availableTypes.join('、')}`;
     }
-    tbody.innerHTML = `<tr><td colspan="9" class="empty">
+    tbody.innerHTML = `<tr><td colspan="10" class="empty">
       <div class="icon">📭</div>
       <div style="font-size:15px;font-weight:600;color:var(--text-2);margin-bottom:10px;">
         類型「${state.user.type}」+ ${state.user.period}年期 目前資料庫尚無此商品
@@ -6207,7 +6229,7 @@ async function renderProductList() {
   try {
     await window.loadManifest();  // 先載 manifest 才能查 path
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="9" class="empty" style="color:var(--danger);">manifest 載入失敗:${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" class="empty" style="color:var(--danger);">manifest 載入失敗:${e.message}</td></tr>`;
     return;
   }
   const loadResults = await Promise.allSettled(
@@ -6223,15 +6245,15 @@ async function renderProductList() {
   tbody.innerHTML = state.filteredProducts.map(p => {
     // 容錯:該商品 JSON 缺檔 → 顯示一行「載入失敗」訊息,其他商品照常運作
     if (loadFailedCodes.has(p.plan_code)) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--danger);text-align:center;font-size:12.5px;">❌ 商品資料載入失敗(JSON 檔可能未部署)</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--danger);text-align:center;font-size:12.5px;">❌ 商品資料載入失敗(JSON 檔可能未部署)</td></tr>`;
     }
     const r = calcProductForUser(p, state.user);
-    if (!r) return `<tr><td colspan="9" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
+    if (!r) return `<tr><td colspan="10" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
     if (r.unsupported) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--gray-500);text-align:center;font-size:12.5px;">⚠️ 此商品引擎(${r.engine_name})尚未實作</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--gray-500);text-align:center;font-size:12.5px;">⚠️ 此商品引擎(${r.engine_name})尚未實作</td></tr>`;
     }
     if (r.error) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--danger);text-align:center;font-size:12.5px;" title="${r.error_message}">❌ 試算失敗</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--danger);text-align:center;font-size:12.5px;" title="${r.error_message}">❌ 試算失敗</td></tr>`;
     }
     const isExact = r.is_exact;
     const isEstimated = r.is_estimated;
@@ -6254,10 +6276,8 @@ async function renderProductList() {
         <td class="center">${accuracyTag}</td>
         <td><span class="code-tag">${p.plan_code}</span></td>
         <td class="center">${p.period}</td>
-        <td class="right">
-          <button class="sa-adjust-btn" onclick="openSAAdjust('${p.plan_code}')" title="調整保額">⚙</button>
-          ${r.sum_assured.toLocaleString()}
-        </td>
+        <td class="center"><button class="sa-adjust-btn" onclick="openSAAdjust('${p.plan_code}')" title="調整保額">⚙</button></td>
+        <td class="right">${r.sum_assured.toLocaleString()}</td>
         <td class="right">${r.annual_premium_orig.toLocaleString()}</td>
         <td class="right">${r.annual_premium_real.toLocaleString()}</td>
       </tr>
@@ -6594,6 +6614,15 @@ function switchCurrency(cur) {
   renderCompareTable();
 }
 
+// v7: 切換 STEP3 顯示精度 (整數 / 完整 2 位小數)
+function toggleDecimal(showDecimal) {
+  state.showDecimal = !!showDecimal;
+  document.querySelectorAll('#decimal-toggle button').forEach(b => {
+    b.classList.toggle('active', (b.dataset.decimal === '1') === !!showDecimal);
+  });
+  renderCompareTable();
+}
+
 // v5: 列印 / 另存 PDF
 // v5.2: 列印 / 另存 PDF
 // 設計:每頁固定 6 個商品 + 完整 thead(公司、商品名、代號、年期、保額、首期、滿期、宣告利率)
@@ -6615,7 +6644,13 @@ function printCompareTable() {
     if (productCurrency === cur) return val;
     return cur === 'USD' ? val / rate : val * rate;
   };
-  const fmtMoney = v => v == null ? '-' : Math.round(v).toLocaleString();
+  const fmtMoney = v => {
+    if (v == null) return '-';
+    if (state.showDecimal) {
+      return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    return Math.round(v).toLocaleString();
+  };
   const fmtPct = v => v == null ? '-' : (v * 100).toFixed(1) + '%';
 
   // 客戶資訊摘要(每頁標題用)— 結構化為 [{label,value}] 給美化 meta-tag 使用
@@ -6918,7 +6953,14 @@ function renderCompareTable() {
     if (productCurrency === 'TWD' && !isShowTWD) return val / rate;
     return val;
   };
-  const fmtMoney = v => (v === 0 || v == null) ? '0' : Math.round(v).toLocaleString();
+  const fmtMoney = v => {
+    if (v === 0) return '0';
+    if (v == null) return '0';
+    if (state.showDecimal) {
+      return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    return Math.round(v).toLocaleString();
+  };
   const fmtPct = v => v === 0 ? '0.0%' : v.toFixed(1) + '%';
   const cur = state.currentCurrency;
 
