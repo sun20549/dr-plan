@@ -5413,11 +5413,15 @@ function actuarialCalc_prudential(plan, sex, age, sumAssured, period) {
   };
 }
 
-// === 工具：保額進位到 unit_size 倍數 + min/max 夾擊 ===
+// === 工具：保額計算 + min/max 夾擊（對齊 Excel 試算邏輯）===
+// 註:Excel 直接按比例反推保額,不強制 unit_size 整數倍
+//    例如:預算 4000 / base_premium 4366 × base_sa 10000 = 9164(精確值)
+//    舊版用 Math.ceil 強制進位到 1000 倍會變 10000,跟業界 Excel 試算不符
+//    改為 Math.round(整數位即可),保留小數會出現 9164.23 這種無意義數字
 function applyInsuranceLimits(rawSA, productMeta, age) {
   const unit = productMeta.unit_size || 1000;
-  // 進位（向上取整到 unit 倍數，因為要「超出一點預算」而不是不足）
-  let sa = Math.ceil(rawSA / unit) * unit;
+  // 對齊 Excel:純比例計算後 round 到整數,不強制 unit 倍數
+  let sa = Math.round(rawSA);
   // 套用 min/max（依年齡分段）
   let minSA, maxSA;
   if (age <= 15 && productMeta.min_sa_under15 != null) {
