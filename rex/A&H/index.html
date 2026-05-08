@@ -6284,23 +6284,13 @@ const App = (() => {
           if (net > 0) perRowMax.set(row, { val: net, unit: b.unit, limit: b.limit, deduct: b.deduct, row });
         });
 
-        // ★ DEBUG: 印「住院日額」卡的計算過程 (2026/05/08 排查用, 完成後可移除)
-        if (mainKey === 'medical' && cls.key === 'daily') {
-          const dbgItems = items.map(x => ({code: x.row.product.code, amount: x.row.amount, name: x.item.name, val: x.result && x.result.val, isDeduct: !!(x.item.note && /被保人自行負擔/.test(x.item.note))}));
-          const dbgBuckets = [...rowItemBuckets.entries()].map(([r, b]) => ({code: r.product.code, ...b}));
-          const dbgPerRow = [...perRowMax.values()].map(v => ({code: v.row.product.code, val: v.val, limit: v.limit, deduct: v.deduct}));
-          console.log(`[DEBUG ${subKey} 住院日額] items =`, JSON.stringify(dbgItems));
-          console.log(`[DEBUG ${subKey} 住院日額] buckets =`, JSON.stringify(dbgBuckets));
-          console.log(`[DEBUG ${subKey} 住院日額] perRowMax =`, JSON.stringify(dbgPerRow));
-        }
-
         const numVals = [...perRowMax.values()];
         const cidSet = new Set();
         items.forEach(x => cidSet.add(x.row.companyId));
 
         // 組成 tooltip 內容(滑入卡片時 hover 顯示)
         let tooltip = '';
-        if (numVals.length > 1 && numVals[0].unit && /^元(\/[次日年])?$/.test(numVals[0].unit)) {
+        if (numVals.length > 1 && numVals[0].unit && /^元(\/[次日年天])?$/.test(numVals[0].unit)) {
           const lines = numVals.map(v => {
             const code = v.row.product.code;
             if (v.deduct > 0) {
@@ -6323,7 +6313,7 @@ const App = (() => {
             const max = Math.max.apply(null, numVals.map(v => v.val));
             displayText = max.toLocaleString();
             unitTxt = unit;
-          } else if (sameUnit && /^元(\/[次日年])?$/.test(unit)) {
+          } else if (sameUnit && /^元(\/[次日年天])?$/.test(unit)) {
             const sum = numVals.reduce((s, v) => s + v.val, 0);
             displayText = sum.toLocaleString();
             unitTxt = unit;
@@ -6479,7 +6469,7 @@ const App = (() => {
         const entries = [...perRowMax.values()];
         if (entries.length >= 2) {  // 至少 2 個商品才有意義加總
           const firstUnit = entries[0].unit;
-          if (entries.every(e => e.unit === firstUnit) && /^元(\/[次日年])?$/.test(firstUnit)) {
+          if (entries.every(e => e.unit === firstUnit) && /^元(\/[次日年天])?$/.test(firstUnit)) {
             groupTotal = { val: entries.reduce((s, e) => s + e.val, 0), unit: firstUnit };
           }
         }
