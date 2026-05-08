@@ -2982,8 +2982,7 @@ tr
           <button class="chart-toggle" data-mode="byProduct">依商品分</button>
           <span class="cc-divider"></span>
           <span class="cc-label">期間:</span>
-          <button class="chart-range-toggle active" data-range="20">未來 20 年</button>
-          <button class="chart-range-toggle" data-range="30">未來 30 年</button>
+          <button class="chart-range-toggle active" data-range="30">未來 30 年</button>
           <button class="chart-range-toggle" data-range="60">未來 60 年</button>
           <span style="margin-left:auto;font-size:11px;color:var(--gray);">📌 主約期滿後不繳費,附約逐年依年齡計算</span>
         </div>
@@ -5083,7 +5082,7 @@ const App = (() => {
 
   // ── 走勢圖 ──
   let chartMode = 'total';
-  let chartYears = 20;  // 預設未來 20 年,可切換到 30 / 60
+  let chartYears = 30;  // 預設未來 30 年,可切換到 60
   let inflationEnabled = false;
   let inflationRate = 2.0;  // 預設 2%(央行政策目標 + 接近近 10 年實際)
 
