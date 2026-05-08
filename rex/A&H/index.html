@@ -135,6 +135,76 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark);
 }
 
+/* 公司篩選器 — 在 card-body 頂部,依使用者選擇的公司動態顯示 */
+.benefits-company-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  background: #f5f7fa;
+  border: 1px solid #e2e8ec;
+  border-radius: 8px;
+}
+.benefits-company-filter .bcf-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5a6772;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+.benefits-company-filter .bcf-btn {
+  background: white;
+  border: 1.5px solid #d6dde3;
+  color: #4a5560;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+.benefits-company-filter .bcf-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange-dark);
+}
+.benefits-company-filter .bcf-btn.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+  box-shadow: 0 2px 6px rgba(240, 90, 40, 0.25);
+}
+.benefits-company-filter .bcf-btn .bcf-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.benefits-company-filter .bcf-btn.active .bcf-dot {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+.benefits-company-filter .bcf-btn .bcf-count {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+@media (max-width: 767px) {
+  .benefits-company-filter {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .benefits-company-filter .bcf-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
+
 /* ── Person Block ── */
 .person-flow {
   display: grid; grid-template-columns: 1fr auto 1fr;
@@ -3195,6 +3265,8 @@ tr
         </div>
       </div>
       <div class="card-body">
+        <!-- 公司篩選器 (依使用者選擇的公司動態產生 — renderBenefitsCompanyFilter) -->
+        <div class="benefits-company-filter no-print" id="benefitsCompanyFilter" style="display:none;"></div>
         <div style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.6;">
           📌 以下保障項目金額依您所選的保額自動計算。⭐ 為主要保障項目。實際給付以契約條款為準。
         </div>
@@ -3648,6 +3720,7 @@ const App = (() => {
     lastAge: null,    // 最近一次 recompute 時的保險年齡(用於商品列表顯示超齡警告)
     lastJob: 1,       // 最近一次的職業等級(核保用)
     benefitsMode: 'simple',   // 'simple' | 'detail' — 理賠卡片顯示模式
+    benefitsCompanyFilter: 'all',   // 'all' | companyId — 理賠卡片公司篩選 (詳細/簡易模式皆適用)
     // ── 責任曲線調整 ──
     curve: {
       enabled: false,           // 是否啟用
@@ -5983,18 +6056,18 @@ const App = (() => {
   function convertProductClaims(product) {
     if (!product.claims || !Array.isArray(product.claims.items)) return null;
     const items = product.claims.items.map(it => {
-      // it.calc.type 可能是: 'ratio'(乘以保額元數)、'ratioWan'(乘以保額萬)、
-      //                     'plan'(計畫對應金額)、'unit'(單位 × perUnit)、'note'(純文字)
-      // 大部分宏泰商品保額單位是「萬元」(amountUnit='萬元'),理賠金額計算時要乘 10000
-      // 但 WRA/WRB 保額已是「元」(amountUnit='元'),不再乘 10000
-      // 為了讓 calcBenefitValue 正確,我們把「ratio」根據商品 amountUnit 自動分流:
-      //   amountUnit === '元'  → 保留 ratio(直接乘元)
-      //   amountUnit === '萬元' → 改成 ratioWan(乘 10000 後再乘 ratio)
+      // amountUnit 對 'ratio' 的影響:
+      //   '元'   → 保額已是元, 直接 ratio (例: 全球宏泰豁免類)
+      //   '萬元'/'萬'/'10萬' → 保額是萬元 (× 10000) → ratioWan
+      //     ('10萬' 是費率 perUnit 描述, 保額本身仍是「萬元」單位)
+      //   '百元' → 保額是「以 100 為單位」(× 100) → ratio × 100
       let calc = it.calc;
       if (calc && calc.type === 'ratio') {
-        if (product.amountUnit === '萬元' || product.amountUnit === '萬') {
-          // 保額是萬,改用 ratioWan
+        const unit = product.amountUnit;
+        if (unit === '萬元' || unit === '萬' || unit === '10萬') {
           calc = { type: 'ratioWan', ratio: calc.ratio };
+        } else if (unit === '百元') {
+          calc = { type: 'ratio', ratio: calc.ratio * 100 };
         }
         // 否則保留(amountUnit='元' 時直接 ratio)
       }
@@ -6033,12 +6106,92 @@ const App = (() => {
     return null;
   }
 
+  /**
+   * 公司篩選器 — 依「使用者實際選擇的公司」動態產生 pill 按鈕
+   * 只計入「非豁免、有 rows」的公司;若僅 1 家公司則隱藏整列(沒必要篩選)
+   */
+  function renderBenefitsCompanyFilter(rows) {
+    const bar = document.getElementById('benefitsCompanyFilter');
+    if (!bar) return;
+
+    // 收集每家公司在當前 rows 中的項目數(只算非豁免)
+    const counts = {};   // cid → count
+    const order = [];    // 維持出現順序
+    rows.forEach(r => {
+      if (r.isWaiver) return;
+      const cid = r.companyId;
+      if (!cid) return;
+      if (counts[cid] === undefined) { counts[cid] = 0; order.push(cid); }
+      counts[cid]++;
+    });
+
+    // 0 或 1 家 → 隱藏(沒篩選意義)
+    if (order.length < 2) {
+      bar.style.display = 'none';
+      bar.innerHTML = '';
+      // 重設篩選為 all,避免 stale state
+      if (state.benefitsCompanyFilter !== 'all') state.benefitsCompanyFilter = 'all';
+      return;
+    }
+
+    // 若目前選中的公司不在列表中,重設為 all
+    if (state.benefitsCompanyFilter !== 'all' && !order.includes(state.benefitsCompanyFilter)) {
+      state.benefitsCompanyFilter = 'all';
+    }
+
+    // 組 HTML
+    const totalCount = order.reduce((s, cid) => s + counts[cid], 0);
+    const activeCid = state.benefitsCompanyFilter;
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    let html = `<span class="bcf-label">📍 篩選公司</span>`;
+    html += `<button type="button" class="bcf-btn ${activeCid === 'all' ? 'active' : ''}" data-cid="all">
+      全部 <span class="bcf-count">(${order.length} 家)</span>
+    </button>`;
+    order.forEach(cid => {
+      const co = state.db.companies.find(c => c.id === cid) || { name: cid, shortName: cid, color: '#888' };
+      const isActive = activeCid === cid;
+      html += `<button type="button" class="bcf-btn ${isActive ? 'active' : ''}" data-cid="${escapeHtml(cid)}">
+        <span class="bcf-dot" style="background:${escapeHtml(co.color || '#888')};"></span>
+        ${escapeHtml(co.shortName || co.name || cid)}
+      </button>`;
+    });
+
+    bar.innerHTML = html;
+    bar.style.display = '';
+  }
+
   function renderBenefits(rows) {
     const wrap = $('#benefitsCard');
     const sec = $('#benefitsSection');
     if (!wrap || !sec) return;
-    if (rows.length === 0) { wrap.style.display = 'none'; return; }
+    if (rows.length === 0) {
+      wrap.style.display = 'none';
+      // 同時清空篩選器(避免下次有資料時殘留)
+      const bar = document.getElementById('benefitsCompanyFilter');
+      if (bar) { bar.style.display = 'none'; bar.innerHTML = ''; }
+      return;
+    }
     const lib = state.db.benefitsLib || {};
+
+    // ── 公司篩選器 (2026/05 新增) ──
+    // 依「使用者選擇的公司」動態渲染篩選按鈕,僅當有選擇 ≥2 家公司時才顯示
+    // 點擊單一公司 → 該模式下只顯示該公司的理賠卡片;點擊「全部」→ 跨公司整合呈現(原行為)
+    renderBenefitsCompanyFilter(rows);
+
+    // 套用篩選 — 注意:篩選器 UI 仍顯示所有選擇的公司,但 rows 在此被篩選
+    const filterCid = state.benefitsCompanyFilter;
+    if (filterCid && filterCid !== 'all') {
+      rows = rows.filter(r => r.companyId === filterCid);
+      if (rows.length === 0) {
+        // 該公司被篩掉所有 rows(理論上不會,但防呆),顯示空狀態
+        sec.innerHTML = `<div class="benefit-card"><div class="benefit-card-body" style="color:var(--gray);font-size:12px;text-align:center;padding:24px;">
+          所選公司沒有理賠資料。
+        </div></div>`;
+        wrap.style.display = '';
+        return;
+      }
+    }
 
     // ── 任務D(v3.27):跨公司按類型整合 ──
     // 1) 第一個區塊:每類型一張卡,內含所有公司+商品的相關理賠
@@ -7516,23 +7669,38 @@ const App = (() => {
     renderProductSection();
   }
 
-  /** v3.30:理賠卡片簡易/詳細切換 */
+  /** v3.30:理賠卡片簡易/詳細切換 + 公司篩選器 */
   function bindBenefitsModeEvents() {
     const sw = document.getElementById('benefitsModeSwitch');
-    if (!sw) return;
-    sw.addEventListener('click', (e) => {
-      const btn = e.target.closest('.bms-btn');
-      if (!btn) return;
-      const mode = btn.dataset.mode;
-      if (!mode || mode === state.benefitsMode) return;
-      state.benefitsMode = mode;
-      // 更新按鈕 active 狀態
-      sw.querySelectorAll('.bms-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.mode === mode);
+    if (sw) {
+      sw.addEventListener('click', (e) => {
+        const btn = e.target.closest('.bms-btn');
+        if (!btn) return;
+        const mode = btn.dataset.mode;
+        if (!mode || mode === state.benefitsMode) return;
+        state.benefitsMode = mode;
+        // 更新按鈕 active 狀態
+        sw.querySelectorAll('.bms-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.mode === mode);
+        });
+        // 觸發重新計算渲染
+        recompute();
       });
-      // 觸發重新計算渲染
-      recompute();
-    });
+    }
+
+    // 2026/05 新增:公司篩選器點擊事件 (event delegation,因按鈕為動態渲染)
+    const filterBar = document.getElementById('benefitsCompanyFilter');
+    if (filterBar) {
+      filterBar.addEventListener('click', (e) => {
+        const btn = e.target.closest('.bcf-btn');
+        if (!btn) return;
+        const cid = btn.dataset.cid;
+        if (!cid || cid === state.benefitsCompanyFilter) return;
+        state.benefitsCompanyFilter = cid;
+        // 重新觸發 renderBenefits (透過 recompute 完整流程,確保資料一致)
+        recompute();
+      });
+    }
   }
 
   /** 複製試算結果到剪貼簿(純文字,可貼到 LINE / 郵件給客戶)*/
