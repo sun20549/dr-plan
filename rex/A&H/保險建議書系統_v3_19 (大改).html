@@ -1400,19 +1400,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark, #D85416);
 }
 
-/* 「依條款」/ ✓ 文字樣式 — 比數字小、灰色,提示「需查條款」 */
-.benefits-simple-card .bsc-rule-text {
-  font-size: 14px;
-  color: #6B7785;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.benefits-simple-card.starred .bsc-rule-text,
-.benefits-simple-card.is-primary .bsc-rule-text {
-  color: var(--orange-dark, #D85416);
-  opacity: 0.85;
-}
-
 /* Tooltip — 滑入卡片時顯示「組成明細」(限額/自負額/淨給付) */
 .benefits-simple-card.has-tooltip {
   cursor: help;
@@ -6396,21 +6383,18 @@ const App = (() => {
       });
 
       // 各大類 + 各子組的「白名單」
-      // 2026/05 擴充: 簡易模式下 per-company 篩選後,若白名單太窄會把該家公司重要項目藏掉
-      // (例: 宏泰 HI 加護病房 20,000元/日、富邦 HSV 多筆雜費實支實付/門診手術…)
-      // 改為較寬鬆的白名單,讓單一公司視角下能看到該家完整的醫療保障輪廓
       const ALLOWED_CARDS = {
         // 人身/失能保障 — 只剩一般身故/失能 (XTK)
         'life':                        ['death','disability'],
-        // 住院醫療 — 兩個子類都加上 icu_daily,讓加護病房日額不被吃掉
-        'medical_實支實付型':          ['daily','reimburse','opsurg','surgery','icu_daily'],
-        'medical_定額型':              ['daily','surgery','reimburse','opsurg','icu_daily'],
+        // 住院醫療
+        'medical_實支實付型':          ['daily','reimburse','opsurg'],
+        'medical_定額型':              ['daily','surgery'],
         // 重大傷病
         'critical':                    ['critical'],
         // 癌症: 含單筆金 + 療程型 (cls 都不同, 直接同行排)
-        'cancer':                      ['critical','daily','surgery','chemo','targeting','reconstruct','transplant'],
-        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額/手術
-        'accident':                    ['death','disability','reimburse','daily','surgery','dislocation'],
+        'cancer':                      ['critical','daily','surgery'],
+        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額
+        'accident':                    ['death','disability','reimburse','daily'],
         // 其他
         other:                          null,
       };
@@ -6420,15 +6404,15 @@ const App = (() => {
         // 人身/失能保障 (XTK 一般身故/失能)
         'life':                  { death: '一般身故/喪葬', disability: '完全失能' },
         // 住院醫療 - 實支實付型
-        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術', surgery: '住院手術', icu_daily: '加護病房日額' },
+        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術' },
         // 住院醫療 - 定額型
-        'medical:定額型':       { daily: '住院日額', surgery: '住院手術', reimburse: '雜費限額', opsurg: '門診手術', icu_daily: '加護病房日額' },
+        'medical:定額型':       { daily: '住院日額', surgery: '住院手術' },
         // 重大傷病
         'critical':              { critical: '重大傷病金' },
         // 癌症
-        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術', chemo: '化放療', targeting: '標靶治療', reconstruct: '義乳重建', transplant: '骨髓移植' },
+        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術' },
         // 意外醫療
-        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額', surgery: '意外手術', dislocation: '骨折/脫臼' },
+        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額' },
       };
 
       // 各大類的「主要保障 cls.key」
@@ -6506,29 +6490,7 @@ const App = (() => {
             unitTxt = unit;
           }
         } else {
-          // ── 2026/05 改:沒有可計算金額時(全為 text/note 規則),改顯示「依條款」
-          //    並把該類所有 text 規則彙總到 tooltip,讓使用者 hover 看細節
-          //    原本顯示 ✓ 對使用者太不友善,看不出來 card 的意義
-          const textItems = items.filter(x => x.result && x.result.type === 'text');
-          const noteItems = items.filter(x => !x.result && x.item.note);
-          if (textItems.length > 0 || noteItems.length > 0) {
-            displayText = '<span class="bsc-rule-text">依條款</span>';
-            // 彙總前 3 筆規則描述當 tooltip
-            const tipLines = [];
-            textItems.slice(0, 3).forEach(x => {
-              const code = x.row.product.code;
-              const ruleText = (x.result && x.result.text) ? x.result.text : (x.item.note || '');
-              if (ruleText) tipLines.push(`${code}: ${String(ruleText).slice(0, 60)}`);
-            });
-            noteItems.slice(0, 3 - tipLines.length).forEach(x => {
-              const code = x.row.product.code;
-              tipLines.push(`${code}: ${String(x.item.note).slice(0, 60)}`);
-            });
-            if (tipLines.length > 0) tooltip = tipLines.join(' | ');
-          } else {
-            // 真的無資料才用 ✓
-            displayText = '<span class="bsc-rule-text">✓</span>';
-          }
+          displayText = '✓';
         }
 
         const title = titleOverride || cls.title;
