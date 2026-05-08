@@ -1330,6 +1330,66 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark, #D85416);
 }
 
+/* Tooltip — 滑入卡片時顯示「組成明細」(限額/自負額/淨給付) */
+.benefits-simple-card.has-tooltip {
+  cursor: help;
+}
+.benefits-simple-card.has-tooltip::before {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 42, 58, 0.95);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  letter-spacing: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.benefits-simple-card.has-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(13, 42, 58, 0.95);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+}
+.benefits-simple-card.has-tooltip:hover::before,
+.benefits-simple-card.has-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+/* 卡片右上角小提示圖示 */
+.benefits-simple-card.has-tooltip {
+  position: relative;
+}
+.benefits-simple-card.has-tooltip > .bsc-icon::after {
+  content: 'ⓘ';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  color: #B8C5D1;
+  font-style: normal;
+  opacity: 0.7;
+}
+
 .benefits-simple-card .bsc-value-text {
   font-size: 11.5px;
   color: var(--navy);
@@ -3929,10 +3989,65 @@ const App = (() => {
       }
     }
 
+    // === 3) 未滿 15 歲身故金額累計檢查 (《保險法》第 107 條 — 法定上限 69 萬) ===
+    // 計算所有含「身故/喪葬」給付項目的累計金額(壽險、意外險都算)
+    if (age < 15) {
+      const lib = db.benefitsLib || {};
+      let deathTotal = 0;
+      const deathProducts = [];
+      Object.entries(selections).forEach(([cid, sel]) => {
+        const c = db.companies.find(co => co.id === cid);
+        if (!c) return;
+        const collect = (sel_item, productList) => {
+          if (!sel_item) return;
+          const p = productList.find(p => p.code === sel_item.code);
+          if (!p) return;
+          // XAB 類「滿 16 歲後生效」的不算入
+          if (p.code === 'XAB') return;
+          const benefitData = lib[p.code];
+          if (!benefitData || !benefitData.items) return;
+          // 找含「身故/喪葬」字眼的 item
+          benefitData.items.forEach(item => {
+            const text = String(item.name || '') + ' ' + String(item.note || '');
+            if (!/喪葬|身故/.test(text)) return;
+            // 用 ratio 估算金額
+            const amt = parseFloat(sel_item.amount) || 0;
+            if (item.calc && item.calc.type === 'ratioWan' && amt > 0) {
+              const value = amt * 10000 * item.calc.ratio;
+              deathTotal += value;
+              deathProducts.push(`${p.code}(${item.name})`);
+            } else if (item.calc && item.calc.type === 'plan' && item.calc.planMap) {
+              const value = item.calc.planMap[sel_item.amount] || 0;
+              if (value > 0) {
+                deathTotal += value;
+                deathProducts.push(`${p.code}(${item.name})`);
+              }
+            }
+          });
+        };
+        if (sel.main) collect(sel.main, c.mainProducts);
+        sel.riders.forEach(r => collect(r, c.riderProducts));
+      });
+
+      if (deathTotal > 690000) {
+        issues.push({
+          type: 'minor_death_limit',
+          severity: 'block',
+          msg: `🚫 未滿 15 歲身故金額累計 ${deathTotal.toLocaleString()} 元,超過《保險法》第 107 條法定上限 690,000 元`,
+          detail: `已選商品身故給付:${deathProducts.join('、')}|請降低保額或刪除部分商品`
+        });
+      } else if (deathTotal > 690000 * 0.8) {
+        issues.push({
+          type: 'minor_death_warn',
+          severity: 'warn',
+          msg: `⚠️ 未滿 15 歲身故金額累計 ${deathTotal.toLocaleString()} 元,接近《保險法》107 條上限 690,000 元`,
+          detail: `已選商品身故給付:${deathProducts.join('、')}`
+        });
+      }
+    }
+
     return issues;
   }
-
-  /** 是否有 block 等級的違規 */
   function hasBlockingIssue(product, age, jobLevel, period, amount) {
     return underwriteCheck(product, age, jobLevel, period, amount).some(i => i.severity === 'block');
   }
@@ -5939,7 +6054,19 @@ const App = (() => {
       if (/重大燒燙傷|燒燙傷.*保險金/.test(text)) return { key: 'burn', icon: '🔥', title: '重大燒燙傷' };
       if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折定額' };
       if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '重大器官 / 移植' };
-      if (/重大傷病|癌症|罹癌|罹患/.test(text)) return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
+      // ★ 含「癌症」或「重大傷病」字眼但同時含「日額/每日/手術/化學/放射」, 不該歸 critical
+      //   優先判斷子類型, 才歸 critical 一次金
+      const isCancer = /重大傷病|癌症|罹癌|罹患/.test(text);
+      if (isCancer) {
+        if (/住院.*手術|手術.*醫療/.test(text)) return { key: 'surgery', icon: '⚕️', title: '癌症住院手術' };
+        if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '癌症門診手術' };
+        if (/標靶/.test(text)) return { key: 'targeting', icon: '🎯', title: '癌症標靶治療' };
+        if (/化學|放射/.test(text)) return { key: 'chemo', icon: '💉', title: '化學/放射治療' };
+        if (/(住院|每日|日額)/.test(text) && !/手術|處置/.test(text)) return { key: 'daily', icon: '🏥', title: '癌症住院日額' };
+        if (/義乳/.test(text)) return { key: 'reconstruct', icon: '💗', title: '義乳重建手術' };
+        // 純「重大傷病/癌症一次金」歸 critical
+        return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
+      }
       if (/喪葬|身故/.test(text)) return { key: 'death', icon: '🕊️', title: '身故 / 喪葬' };
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
@@ -6021,7 +6148,6 @@ const App = (() => {
         { key: 'critical', title: '重大傷病',      icon: '🎗️', color: '#EF5350' },
         { key: 'cancer',   title: '癌症險',        icon: '🌸', color: '#EC407A' },
         { key: 'accident', title: '意外醫療',      icon: '⚡', color: '#FFA726' },
-        { key: 'other',    title: '其他保障',      icon: '📋', color: '#78909C' },
       ];
 
       // 大類分組:mainKey → { subKey: [{ row, items[], maxByItem }] }
@@ -6134,10 +6260,8 @@ const App = (() => {
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
 
-        // ── 計算每個 row 在這張卡上的「淨給付」──
-        // 一般: 取該 row 同 cls.key 的最大數值
-        // 自負額型 row: 限額 - 自負額 = 淨給付(由 item.note 含「被保人自行負擔」判斷自負額)
-        const perRowMax = new Map();   // row → { val, unit }
+        // ── 計算每個 row 的「淨給付」+ 收集 tooltip 用的明細 ──
+        const perRowMax = new Map();
         const rowItemBuckets = new Map();  // row → { limit, deduct, unit }
         items.forEach(x => {
           if (!x.result || x.result.type !== 'num') return;
@@ -6147,10 +6271,8 @@ const App = (() => {
           }
           const b = rowItemBuckets.get(x.row);
           if (isDeduct) {
-            // 自負額: 取最大(若有多項)
             if (x.result.val > b.deduct) b.deduct = x.result.val;
           } else {
-            // 限額: 取最大(若同 row 同 cls 多項取最大)
             if (x.result.val > b.limit) {
               b.limit = x.result.val;
               b.unit = x.item.unit || '';
@@ -6159,14 +6281,31 @@ const App = (() => {
         });
         rowItemBuckets.forEach((b, row) => {
           const net = Math.max(0, b.limit - b.deduct);
-          if (net > 0) perRowMax.set(row, { val: net, unit: b.unit });
+          if (net > 0) perRowMax.set(row, { val: net, unit: b.unit, limit: b.limit, deduct: b.deduct, row });
         });
 
         const numVals = [...perRowMax.values()];
         const cidSet = new Set();
         items.forEach(x => cidSet.add(x.row.companyId));
 
-        let displayText = '', unitTxt = '', countLine = '';
+        // 組成 tooltip 內容(滑入卡片時 hover 顯示)
+        let tooltip = '';
+        if (numVals.length > 1 && numVals[0].unit && /^元(\/[次日年])?$/.test(numVals[0].unit)) {
+          const lines = numVals.map(v => {
+            const code = v.row.product.code;
+            if (v.deduct > 0) {
+              return `${code}: ${v.limit.toLocaleString()} − 自負 ${v.deduct.toLocaleString()} = ${v.val.toLocaleString()}`;
+            }
+            return `${code}: ${v.val.toLocaleString()}`;
+          });
+          const sum = numVals.reduce((s, v) => s + v.val, 0);
+          tooltip = lines.join(' | ') + ' = ' + sum.toLocaleString() + (numVals[0].unit || '');
+        } else if (numVals.length === 1 && numVals[0].deduct > 0) {
+          const v = numVals[0];
+          tooltip = `${v.row.product.code}: 限額 ${v.limit.toLocaleString()} − 自負 ${v.deduct.toLocaleString()} = ${v.val.toLocaleString()}${v.unit}`;
+        }
+
+        let displayText = '', unitTxt = '';
         if (numVals.length > 0) {
           const sameUnit = numVals.every(v => v.unit === numVals[0].unit);
           const unit = sameUnit ? numVals[0].unit : '';
@@ -6174,12 +6313,10 @@ const App = (() => {
             const max = Math.max.apply(null, numVals.map(v => v.val));
             displayText = max.toLocaleString();
             unitTxt = unit;
-            if (numVals.length > 1) countLine = `最高,共 ${numVals.length} 筆`;
           } else if (sameUnit && /^元(\/[次日年])?$/.test(unit)) {
             const sum = numVals.reduce((s, v) => s + v.val, 0);
             displayText = sum.toLocaleString();
             unitTxt = unit;
-            countLine = `累計 ${numVals.length} 筆`;
           } else {
             const max = Math.max.apply(null, numVals.map(v => v.val));
             displayText = max.toLocaleString();
@@ -6187,7 +6324,6 @@ const App = (() => {
           }
         } else {
           displayText = '✓';
-          countLine = `${items.length} 項說明`;
         }
 
         const title = titleOverride || cls.title;
@@ -6197,18 +6333,16 @@ const App = (() => {
           return `<span class="bsc-comp-chip" style="--company-color:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
         }).join('');
 
-        // 數字 + 單位「同行」(單位放右邊, 用 inline span)
         const valueLine = displayText + (unitTxt ? `<span class="bsc-unit-inline">${unitTxt}</span>` : '');
 
-        // 是否為該大類的主要保障 → 加 starred class 用品牌橘強調
         const isPrimary = (PRIMARY_CLS[mainKey] === cls.key);
-        const cardClass = 'benefits-simple-card' + (isPrimary ? ' starred' : '');
+        const cardClass = 'benefits-simple-card' + (isPrimary ? ' starred' : '') + (tooltip ? ' has-tooltip' : '');
+        const tooltipAttr = tooltip ? ` data-tip="${tooltip.replace(/"/g, '&quot;')}"` : '';
 
-        return `<div class="${cardClass}">
+        return `<div class="${cardClass}"${tooltipAttr}>
           <div class="bsc-icon">${cls.icon}</div>
           <div class="bsc-title">${title}</div>
           <div class="bsc-value">${valueLine}</div>
-          ${countLine ? `<div class="bsc-count">${countLine}</div>` : ''}
           <div class="bsc-comps">${compChips}</div>
         </div>`;
       };
