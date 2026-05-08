@@ -1260,13 +1260,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   letter-spacing: 0.5px;
 }
 
-/* 卡片新增的單位/累計獨立行 */
-.benefits-simple-card .bsc-unit {
-  font-size: 11px;
+/* 卡片數字右邊的單位(inline 顯示) */
+.benefits-simple-card .bsc-unit-inline {
+  font-size: 13px;
   color: #5C6F7C;
   font-weight: 600;
-  line-height: 1.3;
-  margin-top: 2px;
+  margin-left: 4px;
+  letter-spacing: 0;
+  font-family: inherit;
 }
 .benefits-simple-card .bsc-count {
   font-size: 10px;
@@ -5940,26 +5941,69 @@ const App = (() => {
         });
       });
 
-      // 依 mainKey 分組
-      const mainData = {};  // mainKey → { rows: [], totalsByCls: Map<clsKey, {val, unit, count}> }
+      // 依 mainKey 分組(★ disability 項目強制歸到 accident 大類,壽險不應有失能)
+      const mainData = {};  // mainKey → { rows: [], totalsByCls, allItems, cidSet }
       rowToInfo.forEach((meta, r) => {
         if (!mainData[meta.mainKey]) {
           mainData[meta.mainKey] = {
             mainTitle: meta.mainTitle,
-            rows: [],          // 該大類下所有 row + 子標籤
-            allItems: [],      // 該大類所有 (cls, result) 用於彙總
+            rows: [],
+            allItems: [],
             cidSet: new Set(),
           };
         }
         mainData[meta.mainKey].rows.push({ row: r, subTitle: meta.subTitle });
         mainData[meta.mainKey].cidSet.add(r.companyId);
-        rowToItems.get(r).forEach(({cls, item, result}) => {
-          mainData[meta.mainKey].allItems.push({ cls, item, result, row: r });
+      });
+      // 確保 accident 大類存在 (即使沒有 row.product.category 是意外, 還是可能有 disability item 要歸進來)
+      const ensureMain = (key, title) => {
+        if (!mainData[key]) {
+          mainData[key] = { mainTitle: title, rows: [], allItems: [], cidSet: new Set() };
+        }
+        return mainData[key];
+      };
+
+      // 把 item 分發到正確的 mainKey
+      rowToInfo.forEach((meta, r) => {
+        const items = rowToItems.get(r) || [];
+        items.forEach(({cls, item, result}) => {
+          // ★ 失能項目 (disability) 強制歸到「意外險」, 不論 product.category 是什麼
+          let targetKey = meta.mainKey;
+          let targetSubTitle = meta.subTitle;
+          if (cls.key === 'disability') {
+            targetKey = 'accident';
+            targetSubTitle = null;
+            ensureMain('accident', '意外險').cidSet.add(r.companyId);
+          }
+          const data = ensureMain(targetKey, meta.mainTitle);
+          data.allItems.push({ cls, item, result, row: r, subTitleOverride: targetSubTitle });
         });
       });
 
+      // 各大類 + 各子組的「白名單」: 只顯示這些 cls.key
+      // null = 全顯示, []=不顯示, [...] = 白名單
+      const ALLOWED_CARDS = {
+        life:                       ['death'],                          // 壽險: 身故
+        medical_實支實付型:          ['daily','reimburse','surgery'],    // 住院醫療-實支: 住院日額/雜費/住院手術
+        medical_定額型:              ['daily','surgery'],                 // 住院醫療-定額: 住院日額/住院手術
+        critical:                    ['critical'],                        // 重大傷病: 重大傷病單筆金
+        cancer:                      ['critical','daily','surgery'],     // 癌症: 單筆金/日額/手術
+        accident:                    ['death','disability','reimburse','daily'],
+                                                                         // 意外: 意外身故/失能(合併)/實支/日額
+        other:                       null,                                // 其他: 全顯示
+      };
+
+      // cls.key → 在指定 mainKey/subKey 下要顯示的「卡片標題」覆寫
+      const TITLE_OVERRIDE = {
+        // mainKey || mainKey:subKey → { clsKey: newTitle }
+        'medical:實支實付型': { reimburse: '雜費' },                       // 實支實付 → 雜費
+        'cancer':            { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術' },
+        'accident':          { death: '意外身故/失能', reimburse: '意外實支實付', daily: '意外日額' },
+        // disability 在 accident 底下會跟 death 合併, 不會單獨出現
+      };
+
       // 把單一小卡的 cls/items 渲染成 HTML 字串
-      const renderSubCard = (cls, items, mainKey) => {
+      const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
 
         // 計算代表值/累計
@@ -5976,49 +6020,44 @@ const App = (() => {
         const cidSet = new Set();
         items.forEach(x => cidSet.add(x.row.companyId));
 
-        let displayText = '', unitLine = '', countLine = '';
+        let displayText = '', unitTxt = '', countLine = '';
         if (numVals.length > 0) {
           const sameUnit = numVals.every(v => v.unit === numVals[0].unit);
           const unit = sameUnit ? numVals[0].unit : '';
           if (NO_TOTAL_KEYS.has(cls.key) || numVals.length === 1) {
-            const max = Math.max(...numVals.map(v => v.val));
+            const max = Math.max.apply(null, numVals.map(v => v.val));
             displayText = max.toLocaleString();
-            unitLine = unit;
+            unitTxt = unit;
             if (numVals.length > 1) countLine = `最高,共 ${numVals.length} 筆`;
           } else if (sameUnit && /^元(\/[次日年])?$/.test(unit)) {
             const sum = numVals.reduce((s, v) => s + v.val, 0);
             displayText = sum.toLocaleString();
-            unitLine = unit;
+            unitTxt = unit;
             countLine = `累計 ${numVals.length} 筆`;
           } else {
             const max = Math.max.apply(null, numVals.map(v => v.val));
             displayText = max.toLocaleString();
-            unitLine = unit;
+            unitTxt = unit;
           }
         } else {
           displayText = '✓';
           countLine = `${items.length} 項說明`;
         }
 
-        // 標題:意外險底下重命名
-        let title = cls.title;
-        if (mainKey === 'accident') {
-          if (cls.key === 'disability') title = '意外失能';
-          else if (cls.key === 'death')  title = '意外身故';
-          // burn 已是「重大燒燙傷」, 不改
-          // reimburse 已是「實支實付」, 在意外險底下含意明確不需改
-        }
+        const title = titleOverride || cls.title;
 
         const compChips = [...cidSet].map(cid => {
           const co = getCompanyInfo(cid);
           return `<span class="bsc-comp-chip" style="background:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
         }).join('');
 
+        // 數字 + 單位「同行」(單位放右邊, 用 inline span)
+        const valueLine = displayText + (unitTxt ? `<span class="bsc-unit-inline">${unitTxt}</span>` : '');
+
         return `<div class="benefits-simple-card">
           <div class="bsc-icon">${cls.icon}</div>
           <div class="bsc-title">${title}</div>
-          <div class="bsc-value">${displayText}</div>
-          ${unitLine ? `<div class="bsc-unit">${unitLine}</div>` : ''}
+          <div class="bsc-value">${valueLine}</div>
           ${countLine ? `<div class="bsc-count">${countLine}</div>` : ''}
           <div class="bsc-comps">${compChips}</div>
         </div>`;
@@ -6029,19 +6068,41 @@ const App = (() => {
         const data = mainData[mainKey];
         if (!data || data.allItems.length === 0) return '';
 
-        // 住院醫療要分子組: 實支實付型 / 定額型 (按 row 的 subTitle 分)
-        // 其他大類不分子組,直接全部一起渲染
-        const renderSubGroupCards = (allItems) => {
+        // 渲染指定 itemList(已過白名單)成卡片
+        const renderCardsFromItems = (allItems, subKey) => {
+          // 取得該 subKey 的白名單
+          const allowKey = subKey ? `${mainKey}_${subKey}` : mainKey;
+          const allow = ALLOWED_CARDS[allowKey] !== undefined
+            ? ALLOWED_CARDS[allowKey]
+            : ALLOWED_CARDS[mainKey];
+
+          // 同 cls.key 的 item 聚合
           const subGroups = {};
           allItems.forEach(({cls, item, result, row}) => {
+            // 過白名單
+            if (allow !== null && allow !== undefined && allow.indexOf(cls.key) === -1) return;
             if (!subGroups[cls.key]) subGroups[cls.key] = { meta: cls, items: [] };
             subGroups[cls.key].items.push({ item, result, row });
           });
+
+          // ★ 意外險特殊: 把 death + disability 合併成一張卡「意外身故/失能」
+          if (mainKey === 'accident' && subGroups.death && subGroups.disability) {
+            subGroups.death.items = subGroups.death.items.concat(subGroups.disability.items);
+            delete subGroups.disability;
+          }
+
+          // 取得標題覆寫表
+          const overrideKey = subKey ? `${mainKey}:${subKey}` : mainKey;
+          const overrideMap = TITLE_OVERRIDE[overrideKey] || TITLE_OVERRIDE[mainKey] || {};
+
           let cardsHtml = '';
-          TYPE_ORDER.forEach(key => {
+          // 用白名單順序渲染 (而非 TYPE_ORDER), 確保使用者要的順序
+          const renderOrder = (allow && allow.length > 0) ? allow : TYPE_ORDER;
+          renderOrder.forEach(key => {
             const g = subGroups[key];
             if (!g || g.items.length === 0) return;
-            cardsHtml += renderSubCard(g.meta, g.items, mainKey);
+            const titleOverride = overrideMap[key] || null;
+            cardsHtml += renderSubCard(g.meta, g.items, mainKey, subKey, titleOverride);
           });
           return cardsHtml;
         };
@@ -6049,19 +6110,18 @@ const App = (() => {
         let bodyHtml = '';
         if (mainKey === 'medical') {
           // 把 allItems 按 row.subTitle 分: 實支實付型 / 定額型
-          const subGrouped = {};   // subTitle → [item entries]
+          const subGrouped = {};
           data.allItems.forEach(it => {
-            const meta = rowToInfo.get(it.row);
-            const sub = (meta && meta.subTitle) || '其他';
+            const sub = (it.subTitleOverride !== undefined ? it.subTitleOverride
+                       : (rowToInfo.get(it.row) || {}).subTitle) || '其他';
             if (!subGrouped[sub]) subGrouped[sub] = [];
             subGrouped[sub].push(it);
           });
-          // 顯示順序:實支實付型 → 定額型 → 其他
           const subOrder = ['實支實付型', '定額型', '其他'];
           subOrder.forEach(sub => {
             const items = subGrouped[sub];
             if (!items || items.length === 0) return;
-            const cards = renderSubGroupCards(items);
+            const cards = renderCardsFromItems(items, sub);
             if (!cards) return;
             bodyHtml += `<div class="bmc-subsection">
               <div class="bmc-subtitle">${sub}</div>
@@ -6069,7 +6129,7 @@ const App = (() => {
             </div>`;
           });
         } else {
-          const cards = renderSubGroupCards(data.allItems);
+          const cards = renderCardsFromItems(data.allItems, null);
           if (!cards) return '';
           bodyHtml = `<div class="benefits-simple-grid bmc-grid">${cards}</div>`;
         }
