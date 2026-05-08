@@ -6286,12 +6286,12 @@ const App = (() => {
 
         // ★ DEBUG: 印「住院日額」卡的計算過程 (2026/05/08 排查用, 完成後可移除)
         if (mainKey === 'medical' && cls.key === 'daily') {
-          const dbgItems = items.map(x => ({code: x.row.product.code, amount: x.row.amount, name: x.item.name, val: x.result && x.result.val, isDeduct: !!(x.item.note && /被保人自行負擔/.test(x.item.note))}));
-          const dbgBuckets = [...rowItemBuckets.entries()].map(([r, b]) => ({code: r.product.code, ...b}));
-          const dbgPerRow = [...perRowMax.values()].map(v => ({code: v.row.product.code, val: v.val, limit: v.limit, deduct: v.deduct}));
-          console.log(`[DEBUG ${subKey} 住院日額] items =`, JSON.stringify(dbgItems));
-          console.log(`[DEBUG ${subKey} 住院日額] buckets =`, JSON.stringify(dbgBuckets));
-          console.log(`[DEBUG ${subKey} 住院日額] perRowMax =`, JSON.stringify(dbgPerRow));
+          console.log('[DEBUG 住院日額]', {
+            mainKey, subKey, clsKey: cls.key,
+            items: items.map(x => ({code: x.row.product.code, amount: x.row.amount, name: x.item.name, val: x.result && x.result.val, isDeduct: !!(x.item.note && /被保人自行負擔/.test(x.item.note))})),
+            buckets: [...rowItemBuckets.entries()].map(([r, b]) => ({code: r.product.code, ...b})),
+            perRowMax: [...perRowMax.values()].map(v => ({code: v.row.product.code, val: v.val, limit: v.limit, deduct: v.deduct})),
+          });
         }
 
         const numVals = [...perRowMax.values()];
