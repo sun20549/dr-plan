@@ -4922,46 +4922,6 @@ const App = (() => {
 
     if (rows.length === 0) return 0;
     const result = computeWaiverFeeFull(rows, waiver_age, waiver_gender, insGender, insJob, '年繳');
-
-    // ── DEBUG: 把逐附約計算明細暴露出來,方便對照 Excel 建議書 ──
-    //   F12 開瀏覽器 Console,輸入  __xwaDebug  即可看到完整明細
-    //   或輸入  __xwaDebug.print()  以表格形式列印
-    try {
-      const dbg = {
-        xwCode: xwCode,
-        proposer: { age: waiver_age, gender: waiver_gender, job: waiver_job },
-        insured:  { age: ins.age, gender: insGender, job: insJob },
-        riderCount: rows.length,
-        totalFee: result.totalFee,
-        breakdown: result.breakdown,
-        hasFallback: result.hasFallback,
-        fallbackCodes: result.fallbackCodes,
-        print: function() {
-          if (typeof console.table === 'function') {
-            console.log(`%c━━━ XWA 明細(${xwCode}, 要保人 ${waiver_age}${waiver_gender}, 被保人 ${ins.age}${insGender}) ━━━`, 'color:#0f4f5e;font-weight:bold');
-            console.table(result.breakdown.map(b => ({
-              代號: b.code,
-              名稱: b.name,
-              類型: b.type,
-              繳費年期: b.n_pay,
-              該年保費G: b.G,
-              XWA費率P: b.P,
-              S波動Q: b.Q && b.Q.toFixed ? b.Q.toFixed(4) : b.Q,
-              是否平準: b.isLevelRate ? '✓' : '',
-              是否fallback: b.fallback ? '⚠' : '',
-              對XW貢獻: b.fee,
-            })));
-            console.log(`%c合計: ${result.totalFee} 元`, 'color:#dc3545;font-weight:bold;font-size:14px');
-          } else {
-            console.log(JSON.stringify(result.breakdown, null, 2));
-          }
-        }
-      };
-      window.__xwaDebug = dbg;
-      // 自動印一次(僅開發模式 — 透過 query string 控制)
-      if (location.search.indexOf('xwadebug') !== -1) dbg.print();
-    } catch(e) { /* ignore */ }
-
     return result.totalFee || 0;
   }
 
