@@ -886,15 +886,16 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   display: grid;
   /* 名稱(自動撐開) / 數值(剛好夠 6 位數) / 單位(緊湊) */
   grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 4px 8px;
-  padding: 7px 0;
-  border-bottom: 1px dashed #eee;
+  gap: 4px 10px;
+  padding: 9px 0;                              /* 行距加大 */
+  border-bottom: 1px dashed #eef2f5;           /* 虛線改更淡 */
   align-items: baseline;
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.6;                            /* 增加行高 */
 }
 .benefit-item:last-child { border-bottom: none; }
 .benefit-item.starred {
-  background: linear-gradient(90deg, transparent, var(--accent-bg) 50%, transparent);
+  background: linear-gradient(90deg, transparent, #FFF4E6 50%, transparent);  /* 改淡橘背景 */
   padding-left: 4px;
   padding-right: 4px;
   margin-left: -4px;
@@ -902,32 +903,36 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 .bi-name {
   color: var(--navy);
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 600;
-  /* 中文整字保持完整,只在英文/數字/長行真的超出時斷字 */
   word-break: normal;
   overflow-wrap: break-word;
-  min-width: 0; /* 允許 grid 內收縮 */
+  min-width: 0;
 }
-.bi-name .bi-star { color: var(--gold); margin-right: 3px; }
+.bi-name .bi-star { color: var(--orange-dark, #D85416); margin-right: 3px; }  /* 星號改深橘 */
 .bi-note {
   display: block;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--gray);
-  margin-top: 2px;
+  margin-top: 3px;
   font-weight: 400;
+  line-height: 1.5;
 }
 .bi-value-cell {
   text-align: right;
   white-space: nowrap;
 }
 .bi-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px;
-  color: var(--accent);
-  font-weight: 600;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  color: var(--navy);                          /* 改深藍, 不再用品牌色強調 */
+  font-weight: 700;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;          /* 等寬數字 */
+}
+.benefit-item.starred .bi-value {
+  color: var(--orange-dark, #D85416);          /* 主要保障才用橘色強調 */
 }
 .bi-value-note {
   font-family: 'Noto Sans TC', sans-serif;
@@ -1045,24 +1050,27 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   line-height: 1.4;
 }
 
-/* 跨商品累計(類型卡頭右側) v3.29:橫向排列、數字大、單位緊跟在後 */
+/* 跨商品累計(類型卡頭右側) v3.29 → 2026/05 改淡橘底降低視覺重量 */
 .type-total {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 6px 12px;
-  background: var(--navy);
-  border-radius: 8px;
-  color: white;
+  padding: 6px 14px;
+  background: #FFF4E6;                      /* 淡橘底取代黑底 */
+  border: 1px solid #FFD8A8;
+  border-radius: 6px;
+  color: var(--orange-dark, #B8470F);
   flex-shrink: 0;
   margin-left: auto;
 }
 .type-total .tt-label {
   font-size: 9.5px;
   letter-spacing: 1.5px;
-  opacity: 0.7;
-  margin-bottom: 1px;
+  opacity: 0.85;
+  margin-bottom: 2px;
   white-space: nowrap;
+  color: #8B5A2B;
+  font-weight: 600;
 }
 .type-total .tt-row {
   display: flex;
@@ -1071,16 +1079,17 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   white-space: nowrap;
 }
 .type-total .tt-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 26px;
-  color: var(--gold);
-  letter-spacing: 1px;
-  line-height: 1;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, sans-serif;
+  font-size: 22px;
+  color: var(--orange-dark, #B8470F);        /* 深橘 */
+  letter-spacing: 0;
+  line-height: 1.1;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 .type-total .tt-unit {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
+  font-size: 11.5px;
+  color: #8B5A2B;
   font-weight: 500;
 }
 
@@ -1206,143 +1215,182 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .bm-hidden-list .benefit-item { font-size: 11px; opacity: 0.85; }
 
 /* ─────────── v3.30 簡易模式:理賠儀表板(摘要卡格)─────────── */
+/* ─────────── 2026/05 視覺重構:減少躁動、統一色調、加大留白 ─────────── */
 .benefits-simple-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 12px;
 }
 
-/* ── 2026/05:5 大類分組外框 ── */
+/* ── 5 大類分組外框 ── 統一淡灰底,左色條低調區分 ── */
 .benefits-main-cat {
-  background: #FAFCFD;
-  border-radius: 10px;
-  padding: 14px 16px 16px;
-  margin-bottom: 14px;
+  background: #F7F9FB;
+  border-radius: 12px;
+  padding: 18px 20px 20px;
+  margin-bottom: 16px;
+  border: none;
+  border-left: 3px solid #B8C5D1;  /* 統一淡灰品牌色, 不再多彩 */
 }
 .benefits-main-cat .bmc-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed #d8dee2;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 0;
+  border-bottom: none;  /* 拿掉虛線 */
 }
 .benefits-main-cat .bmc-icon {
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1;
+  opacity: 0.85;
 }
 .benefits-main-cat .bmc-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--navy);
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 .benefits-main-cat .bmc-grid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 10px;
 }
 .benefits-main-cat .benefits-simple-card {
-  padding: 14px 10px 10px;
+  padding: 16px 12px 12px;
   background: white;
 }
-.benefits-main-cat .benefits-simple-card .bsc-icon { font-size: 26px; }
-.benefits-main-cat .benefits-simple-card .bsc-value { font-size: 22px; }
 
-/* 子組(住院醫療底下分實支實付型/定額型) */
-.benefits-main-cat .bmc-subsection { margin-top: 6px; }
-.benefits-main-cat .bmc-subsection + .bmc-subsection { margin-top: 14px; }
+/* 子組(住院醫療底下分實支實付型/定額型)— 用淡背景色塊代替純文字 */
+.benefits-main-cat .bmc-subsection { margin-top: 4px; }
+.benefits-main-cat .bmc-subsection + .bmc-subsection { margin-top: 16px; }
 .benefits-main-cat .bmc-subtitle {
-  font-size: 12px;
-  font-weight: 600;
-  color: #5C6F7C;
-  margin-bottom: 6px;
-  padding-left: 4px;
-  letter-spacing: 0.5px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6B7C8A;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  background: #E8EEF3;
+  border-radius: 4px;
+  letter-spacing: 1px;
 }
 
-/* 卡片數字右邊的單位(inline 顯示) */
-.benefits-simple-card .bsc-unit-inline {
-  font-size: 13px;
-  color: #5C6F7C;
-  font-weight: 600;
-  margin-left: 4px;
-  letter-spacing: 0;
-  font-family: inherit;
-}
-.benefits-simple-card .bsc-count {
-  font-size: 10px;
-  color: var(--gray);
-  line-height: 1.3;
-  margin-top: 1px;
-}
+/* ─────────── 簡易卡片(整體重構)─────────── */
 .benefits-simple-card {
   position: relative;
   background: white;
-  border: 1px solid var(--border);
+  border: none;                                     /* 拔除框線, 改用陰影 */
   border-radius: 10px;
-  padding: 16px 14px 12px;
+  padding: 16px 14px 14px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  transition: box-shadow 0.15s, border-color 0.15s;
+  box-shadow: 0 1px 3px rgba(20, 40, 60, 0.04);     /* 微弱陰影替代框 */
+  transition: box-shadow 0.2s, transform 0.15s;
 }
 .benefits-simple-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(20, 40, 60, 0.08);
+  transform: translateY(-1px);
 }
-.benefits-simple-card.waiver {
-  background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
-  border-color: var(--orange-light);
-}
+
+/* icon: 降低存在感, 不要搶過數字 */
 .benefits-simple-card .bsc-icon {
-  font-size: 32px;
+  font-size: 26px;
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  opacity: 0.7;                                     /* 圖示降至 70% 透明 */
 }
+
+/* 標題: 加粗清楚 */
 .benefits-simple-card .bsc-title {
   font-size: 12px;
   font-weight: 700;
   color: var(--navy);
   letter-spacing: 0.5px;
+  margin-bottom: 2px;
 }
+
+/* 數字: 從鮮紅 → 深藍主色, 用無襯線等寬數字字體 */
 .benefits-simple-card .bsc-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  color: var(--accent);
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 22px;
+  color: var(--navy);                               /* ★ 改深藍 */
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 1px;
+  line-height: 1.15;
+  letter-spacing: 0;
   margin-top: 4px;
+  font-variant-numeric: tabular-nums;               /* 等寬數字, 對齊更好 */
 }
+/* ★ 主要保障(star) 才用品牌橘強調 */
+.benefits-simple-card.starred .bsc-value,
+.benefits-simple-card.is-primary .bsc-value {
+  color: var(--orange-dark, #D85416);
+}
+
 .benefits-simple-card .bsc-value-text {
   font-size: 11.5px;
   color: var(--navy);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-top: 6px;
 }
 .benefits-simple-card .bsc-sub {
   font-size: 10.5px;
   color: var(--gray);
-  line-height: 1.3;
+  line-height: 1.4;
 }
+
+/* 數字右邊的單位(inline) — 改深灰, 不搶眼 */
+.benefits-simple-card .bsc-unit-inline {
+  font-size: 12px;
+  color: #8895A2;
+  font-weight: 500;
+  margin-left: 3px;
+  letter-spacing: 0;
+  font-family: inherit;
+}
+.benefits-simple-card .bsc-count {
+  font-size: 10px;
+  color: #A8B2BC;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* 公司標籤(全球/宏泰等):改低調淡灰風格, 不再搶眼; 左邊保留小色點作為公司辨識 */
 .benefits-simple-card .bsc-comps {
   display: flex;
   gap: 3px;
-  margin-top: 6px;
+  margin-top: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 .benefits-simple-card .bsc-comp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px 2px 6px;
+  border-radius: 3px;
+  color: #6B7C8A !important;                        /* 改深淡灰字 */
+  background: #F2F5F8 !important;                   /* 改淡灰底, 蓋掉 inline style 公司色 */
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+/* 左邊用偽元素小色點顯示原公司色 (CSS 變數 --company-color 由 JS 設) */
+.benefits-simple-card .bsc-comp-chip::before {
+  content: '';
   display: inline-block;
-  padding: 1px 7px;
-  border-radius: 8px;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--company-color, #B8C5D1);
+}
+
+/* 豁免卡保留淡橘背景, 但縮一點 */
+.benefits-simple-card.waiver {
+  background: linear-gradient(180deg, #fffaf3 0%, #ffffff 100%);
 }
 
 /* ─────────── 響應式設計 ─────────── */
@@ -6058,6 +6106,15 @@ const App = (() => {
       };
 
       // 把單一小卡的 cls/items 渲染成 HTML 字串
+      // 各大類的「主要保障 cls.key」(僅該項用品牌橘強調, 其他用深藍)
+      const PRIMARY_CLS = {
+        life:     'death',
+        medical:  'reimburse',
+        critical: 'critical',
+        cancer:   'critical',
+        accident: 'death',
+      };
+
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
 
@@ -6103,13 +6160,17 @@ const App = (() => {
 
         const compChips = [...cidSet].map(cid => {
           const co = getCompanyInfo(cid);
-          return `<span class="bsc-comp-chip" style="background:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
+          return `<span class="bsc-comp-chip" style="--company-color:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
         }).join('');
 
         // 數字 + 單位「同行」(單位放右邊, 用 inline span)
         const valueLine = displayText + (unitTxt ? `<span class="bsc-unit-inline">${unitTxt}</span>` : '');
 
-        return `<div class="benefits-simple-card">
+        // 是否為該大類的主要保障 → 加 starred class 用品牌橘強調
+        const isPrimary = (PRIMARY_CLS[mainKey] === cls.key);
+        const cardClass = 'benefits-simple-card' + (isPrimary ? ' starred' : '');
+
+        return `<div class="${cardClass}">
           <div class="bsc-icon">${cls.icon}</div>
           <div class="bsc-title">${title}</div>
           <div class="bsc-value">${valueLine}</div>
