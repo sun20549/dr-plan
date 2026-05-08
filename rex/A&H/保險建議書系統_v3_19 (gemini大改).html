@@ -817,11 +817,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 
 /* ── 理賠項目卡片 ── */
-/* 簡易模式:2 欄 masonry 堆疊版面, 矮卡會自動填到高卡旁的空白 */
 .benefits-section {
-  display: block;
-  column-count: 2;
-  column-gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 .benefit-card {
   border: 1px solid var(--border);
@@ -830,8 +829,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  break-inside: avoid;
-  margin-bottom: 14px;
 }
 .benefit-card.main { border-color: var(--accent); border-width: 2px; }
 .benefit-card-header {
@@ -1229,39 +1226,36 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .benefits-main-cat {
   background: #F7F9FB;
   border-radius: 12px;
-  padding: 16px 18px 18px;
-  margin-bottom: 14px;
+  padding: 18px 20px 20px;
+  margin-bottom: 16px;
   border: none;
   border-left: 3px solid #B8C5D1;  /* 統一淡灰品牌色, 不再多彩 */
-  break-inside: avoid;             /* ★ Masonry: 大類不被切兩半 */
-  page-break-inside: avoid;
 }
 .benefits-main-cat .bmc-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   padding-bottom: 0;
   border-bottom: none;  /* 拿掉虛線 */
 }
 .benefits-main-cat .bmc-icon {
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1;
   opacity: 0.85;
 }
 .benefits-main-cat .bmc-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--navy);
   letter-spacing: 1.5px;
 }
 .benefits-main-cat .bmc-grid {
-  /* ★ 卡片密度提高: minmax 從 170px → 140px, 同寬度可塞更多卡 */
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
 }
 .benefits-main-cat .benefits-simple-card {
-  padding: 14px 10px 10px;       /* 卡片內距縮小 */
+  padding: 16px 12px 12px;
   background: white;
 }
 
@@ -1284,15 +1278,15 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .benefits-simple-card {
   position: relative;
   background: white;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 10px 10px;
+  border: none;                                     /* 拔除框線, 改用陰影 */
+  border-radius: 10px;
+  padding: 16px 14px 14px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  box-shadow: 0 1px 3px rgba(20, 40, 60, 0.04);
+  gap: 4px;
+  box-shadow: 0 1px 3px rgba(20, 40, 60, 0.04);     /* 微弱陰影替代框 */
   transition: box-shadow 0.2s, transform 0.15s;
 }
 .benefits-simple-card:hover {
@@ -1300,31 +1294,35 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   transform: translateY(-1px);
 }
 
+/* icon: 降低存在感, 不要搶過數字 */
 .benefits-simple-card .bsc-icon {
-  font-size: 22px;
+  font-size: 26px;
   line-height: 1;
-  margin-bottom: 2px;
-  opacity: 0.7;
+  margin-bottom: 4px;
+  opacity: 0.7;                                     /* 圖示降至 70% 透明 */
 }
 
+/* 標題: 加粗清楚 */
 .benefits-simple-card .bsc-title {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--navy);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   margin-bottom: 2px;
 }
 
+/* 數字: 從鮮紅 → 深藍主色, 用無襯線等寬數字字體 */
 .benefits-simple-card .bsc-value {
   font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 19px;
-  color: var(--navy);
+  font-size: 22px;
+  color: var(--navy);                               /* ★ 改深藍 */
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: 0;
-  margin-top: 2px;
-  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;               /* 等寬數字, 對齊更好 */
 }
+/* ★ 主要保障(star) 才用品牌橘強調 */
 .benefits-simple-card.starred .bsc-value,
 .benefits-simple-card.is-primary .bsc-value {
   color: var(--orange-dark, #D85416);
@@ -5990,38 +5988,38 @@ const App = (() => {
     let html = '';
 
     // ── v3.30 簡易模式:類型儀表板(摘要式)──
-    // ── 2026/05 改:4 大類分組(人身/醫療/重大傷病癌症/意外醫療)──
+    // ── 2026/05 改:5 大類分組(壽險/住院醫療/重大傷病/癌症險/意外險)──
     if (state.benefitsMode === 'simple') {
-      // 把 product.category 字串 → 4 大類 + 子分類
-      // ★ 重點: 壽險+意外身故失能 合併到「人身/失能保障」, 但用 subTitle 區分
-      //         重大傷病+癌症 合併到「重大傷病/癌症」, 但用 subTitle 區分
+      // 把 product.category 字串 → 5 大類 + 子分類
+      // 回傳 { mainKey, mainTitle, subTitle?, order }
       const categorize5 = (product) => {
         const cat = String(product.category || '');
         const code = String(product.code || '');
-        // ① 人身/失能保障 (壽險身故/失能 → 子組「一般身故/失能」)
-        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: '一般身故/失能' };
-        // ④ 重大傷病/癌症 — 合併
-        if (/癌症療程/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病/癌症', subTitle: '癌症療程型' };
-        if (/癌症一次金|癌症/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病/癌症', subTitle: '癌症一次金' };
-        if (/重大傷病|重疾/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病/癌症', subTitle: '重大傷病金' };
-        // ② 住院醫療
+        // 1. 壽險
+        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '壽險', subTitle: null };
+        // 4. 癌症險(放在 3 之前判斷,因為「重大傷病」也可能含癌症字眼)
+        if (/癌症療程/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: '療程型' };
+        if (/癌症一次金|癌症/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: '單筆給付型' };
+        // 3. 重大傷病
+        if (/重大傷病|重疾/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病', subTitle: null };
+        // 2. 住院醫療
         if (/實支實付|自負額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '實支實付型' };
         if (/定額醫療|住院日額|定額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額型' };
-        // ③ 意外:身故失能 → life 大類 (子組「意外身故/失能」)
-        //         意外醫療(實支/日額/燒燙傷) → accident 大類
-        if (/意外醫療|傷害醫療/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: '實支/日額型' };
-        if (/意外|傷害|失能/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: '意外身故/失能' };
+        // 5. 意外險
+        if (/意外醫療|傷害醫療/.test(cat)) return { mainKey: 'accident', mainTitle: '意外險', subTitle: '實支/日額型' };
+        if (/意外|傷害|失能/.test(cat)) return { mainKey: 'accident', mainTitle: '意外險', subTitle: null };
         // 兜底
         return { mainKey: 'other', mainTitle: '其他保障', subTitle: null };
       };
 
-      // 4 大類顯示順序與 icon (從 5 大類精簡: 壽險與意外失能合併, 重大傷病與癌症合併)
+      // 5 大類顯示順序與 icon
       const MAIN_CATEGORIES = [
-        { key: 'life',     title: '人身/失能保障', icon: '🛡️', color: '#5C6BC0' },
-        { key: 'medical',  title: '住院醫療',      icon: '🏥', color: '#26A69A' },
-        { key: 'critical', title: '重大傷病/癌症', icon: '🎗️', color: '#EF5350' },
-        { key: 'accident', title: '意外醫療',      icon: '⚡', color: '#FFA726' },
-        { key: 'other',    title: '其他保障',      icon: '📋', color: '#78909C' },
+        { key: 'life',     title: '壽險',     icon: '🕊️', color: '#5C6BC0' },
+        { key: 'medical',  title: '住院醫療', icon: '🏥', color: '#26A69A' },
+        { key: 'critical', title: '重大傷病', icon: '🎗️', color: '#EF5350' },
+        { key: 'cancer',   title: '癌症險',   icon: '🌸', color: '#EC407A' },
+        { key: 'accident', title: '意外險',   icon: '⚡', color: '#FFA726' },
+        { key: 'other',    title: '其他保障', icon: '📋', color: '#78909C' },
       ];
 
       // 大類分組:mainKey → { subKey: [{ row, items[], maxByItem }] }
@@ -6088,46 +6086,33 @@ const App = (() => {
       // 各大類 + 各子組的「白名單」: 只顯示這些 cls.key
       // null = 全顯示, []=不顯示, [...] = 白名單
       const ALLOWED_CARDS = {
-        // life 大類包含「一般身故/失能」與「意外身故/失能」兩個子組
-        'life_一般身故/失能':         ['death','disability'],
-        'life_意外身故/失能':         ['death','disability','burn'],            // 意外含燒燙傷
-        // medical 大類: 實支實付型 / 定額型
-        'medical_實支實付型':          ['daily','reimburse','surgery','opsurg'],
-        'medical_定額型':              ['daily','surgery','reimburse'],
-        // critical 大類: 重大傷病/癌症 — 含 3 個子組
-        'critical_重大傷病金':         ['critical'],
-        'critical_癌症一次金':         ['critical'],
-        'critical_癌症療程型':         ['critical','daily','surgery','opsurg','transplant','other'],
-        // accident 大類: 意外醫療
-        'accident_實支/日額型':        ['reimburse','daily','icu_daily'],
-        // 其他
-        other:                          null,
+        life:                       ['death'],                          // 壽險: 身故
+        medical_實支實付型:          ['daily','reimburse','surgery'],    // 住院醫療-實支: 住院日額/雜費/住院手術
+        medical_定額型:              ['daily','surgery'],                 // 住院醫療-定額: 住院日額/住院手術
+        critical:                    ['critical'],                        // 重大傷病: 重大傷病單筆金
+        cancer:                      ['critical','daily','surgery'],     // 癌症: 單筆金/日額/手術
+        accident:                    ['death','disability','reimburse','daily'],
+                                                                         // 意外: 意外身故/失能(合併)/實支/日額
+        other:                       null,                                // 其他: 全顯示
       };
 
       // cls.key → 在指定 mainKey/subKey 下要顯示的「卡片標題」覆寫
       const TITLE_OVERRIDE = {
-        // 一般身故/失能子組
-        'life:一般身故/失能':   { death: '身故/喪葬', disability: '完全失能' },
-        // 意外身故/失能子組
-        'life:意外身故/失能':   { death: '意外身故', disability: '意外失能', burn: '重大燒燙傷' },
-        // 住院醫療 - 實支實付型
-        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', surgery: '住院手術', opsurg: '門診手術' },
-        // 住院醫療 - 定額型
-        'medical:定額型':       { reimburse: '住院雜費', daily: '住院日額', surgery: '住院手術' },
-        // 重大傷病/癌症 子組
-        'critical:重大傷病金':   { critical: '重大傷病金' },
-        'critical:癌症一次金':   { critical: '癌症單筆金' },
-        'critical:癌症療程型':   { critical: '癌症一次金', daily: '癌症日額', surgery: '癌症手術', opsurg: '癌症門診手術', transplant: '骨髓移植', other: '癌症療法/其他' },
-        // 意外醫療
-        'accident:實支/日額型': { reimburse: '意外實支實付', daily: '意外日額', icu_daily: '加護病房日額' },
+        // mainKey || mainKey:subKey → { clsKey: newTitle }
+        'medical:實支實付型': { reimburse: '雜費' },                       // 實支實付 → 雜費
+        'cancer':            { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術' },
+        'accident':          { death: '意外身故/失能', reimburse: '意外實支實付', daily: '意外日額' },
+        // disability 在 accident 底下會跟 death 合併, 不會單獨出現
       };
 
+      // 把單一小卡的 cls/items 渲染成 HTML 字串
       // 各大類的「主要保障 cls.key」(僅該項用品牌橘強調, 其他用深藍)
       const PRIMARY_CLS = {
-        life:     'death',         // 身故/喪葬類
-        medical:  'reimburse',     // 雜費/實支實付
-        critical: 'critical',      // 重大傷病/癌症一次金
-        accident: 'reimburse',     // 意外實支實付
+        life:     'death',
+        medical:  'reimburse',
+        critical: 'critical',
+        cancer:   'critical',
+        accident: 'death',
       };
 
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
