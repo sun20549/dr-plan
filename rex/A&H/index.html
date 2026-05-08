@@ -6149,10 +6149,8 @@ const App = (() => {
 
         // ④ 住院醫療 (實支實付 / 定額)
         if (/實支實付|自負額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '實支實付型' };
-        if (/定額醫療|住院日額|定額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額型' };
-        // ⑤ 意外醫療 + 意外身故/失能 全歸 accident, 意外身故/失能排第一格
-        if (/意外醫療|傷害醫療/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: null };
-        if (/意外|傷害|失能/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: null };
+        if (/定額醫療|住院日額|定額|手術/.test(cat) || /HSV|YHA|H2D/.test(code)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額型' };
+
         // 兜底
         return { mainKey: 'other', mainTitle: '其他保障', subTitle: null };
       };
