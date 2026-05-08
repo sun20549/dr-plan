@@ -5997,19 +5997,19 @@ const App = (() => {
       const categorize5 = (product) => {
         const cat = String(product.category || '');
         const code = String(product.code || '');
-        // ① 人身/失能保障 (壽險身故/失能 → 子組「一般身故/失能」)
-        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: '一般身故/失能' };
-        // ④ 重大傷病 vs 癌症 — 拆回兩個獨立大類
-        if (/癌症療程/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: '療程型' };
-        if (/癌症一次金|癌症/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: '單筆給付型' };
-        if (/重大傷病|重疾/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病', subTitle: null };
-        // ② 住院醫療
+        // ① 人身/失能保障 (壽險身故/失能 — 此大類只剩「一般身故/失能」)
+        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: null };
+        // ② 重大傷病
+        if (/重大傷病|重疾/.test(cat) && !/癌症/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病', subTitle: null };
+        // ③ 癌症 — 拆兩個子組,但顯示為同一行(子組之間不換行)
+        if (/癌症療程/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: null };
+        if (/癌症一次金|癌症/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: null };
+        // ④ 住院醫療
         if (/實支實付|自負額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '實支實付型' };
         if (/定額醫療|住院日額|定額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額型' };
-        // ③ 意外:身故失能 → life 大類 (子組「意外身故/失能」)
-        //         意外醫療 → accident 大類
-        if (/意外醫療|傷害醫療/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: '實支/日額型' };
-        if (/意外|傷害|失能/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: '意外身故/失能' };
+        // ⑤ 意外醫療 + 意外身故/失能 全歸 accident, 意外身故/失能排第一格
+        if (/意外醫療|傷害醫療/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: null };
+        if (/意外|傷害|失能/.test(cat)) return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: null };
         // 兜底
         return { mainKey: 'other', mainTitle: '其他保障', subTitle: null };
       };
@@ -6073,12 +6073,10 @@ const App = (() => {
       rowToInfo.forEach((meta, r) => {
         const items = rowToItems.get(r) || [];
         items.forEach(({cls, item, result}) => {
-          // ★ 法令限制: 未滿 16 歲被保人, XAB 不給付意外身故 (PDF 條款明定)
-          //              未滿 15 歲限制壽險身故金額(《保險法》107 條)
+          // ★ 法令限制: 未滿 16 歲被保人, XAB 不給付意外身故
           if (cls.key === 'death' && insuredAge !== null && insuredAge < 16) {
             const codeNeedsCheck = String(r.product.code || '');
             const noteText = String(item.note || '');
-            // XAB 意外身故 — 未滿 16 歲完全不給付, 跳過
             if (codeNeedsCheck === 'XAB' || /滿.*16.*生效|滿十六歲/.test(noteText)) {
               return;
             }
@@ -6086,55 +6084,42 @@ const App = (() => {
 
           let targetKey = meta.mainKey;
           let targetSubTitle = meta.subTitle;
-          // ★ 燒燙傷 (burn) 強制歸到「意外醫療」(不論 product.category)
-          if (cls.key === 'burn') {
-            targetKey = 'accident';
-            targetSubTitle = '實支/日額型';
-            ensureMain('accident', '意外醫療').cidSet.add(r.companyId);
-          }
           const data = ensureMain(targetKey, meta.mainTitle);
           data.allItems.push({ cls, item, result, row: r, subTitleOverride: targetSubTitle });
         });
       });
 
-      // 各大類 + 各子組的「白名單」: 只顯示這些 cls.key
+      // 各大類 + 各子組的「白名單」
       const ALLOWED_CARDS = {
-        // 人身/失能保障 — 兩個子組各自的白名單
-        'life_一般身故/失能':         ['death','disability'],
-        'life_意外身故/失能':         ['death','disability'],
-        // 住院醫療 — 實支實付型: 住院日額/雜費/門診手術 (拿掉住院手術)
+        // 人身/失能保障 — 只剩一般身故/失能 (XTK)
+        'life':                        ['death','disability'],
+        // 住院醫療
         'medical_實支實付型':          ['daily','reimburse','opsurg'],
-        // 住院醫療 — 定額型: 住院日額/住院手術
         'medical_定額型':              ['daily','surgery'],
-        // 重大傷病: 只顯示 critical
+        // 重大傷病
         'critical':                    ['critical'],
-        // 癌症: 單筆金/日額/手術
-        'cancer_單筆給付型':           ['critical'],
-        'cancer_療程型':               ['critical','daily','surgery'],
-        // 意外醫療: 實支/日額(去掉 icu_daily 加護日額、其他給付)
-        'accident_實支/日額型':        ['reimburse','daily','burn'],
+        // 癌症: 含單筆金 + 療程型 (cls 都不同, 直接同行排)
+        'cancer':                      ['critical','daily','surgery'],
+        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額
+        'accident':                    ['death','disability','reimburse','daily'],
         // 其他
         other:                          null,
       };
 
-      // cls.key → 在指定 mainKey/subKey 下要顯示的「卡片標題」覆寫
+      // cls.key → 顯示標題覆寫
       const TITLE_OVERRIDE = {
-        // 一般身故/失能子組(XTK)
-        'life:一般身故/失能':   { death: '一般身故', disability: '完全失能' },
-        // 意外身故/失能子組(XAB)
-        'life:意外身故/失能':   { death: '意外身故', disability: '意外失能' },
+        // 人身/失能保障 (XTK 一般身故/失能)
+        'life':                  { death: '一般身故/喪葬', disability: '完全失能' },
         // 住院醫療 - 實支實付型
         'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術' },
-        // 住院醫療 - 定額型(住院日額已合併住院雜費補助金, 住院手術用 surgery×3)
+        // 住院醫療 - 定額型
         'medical:定額型':       { daily: '住院日額', surgery: '住院手術' },
-        // 重大傷病 - 不需覆寫(就用原本「重大傷病/癌症」cls 標題)
+        // 重大傷病
         'critical':              { critical: '重大傷病金' },
-        // 癌症 - 單筆給付型 (XCF)
-        'cancer:單筆給付型':     { critical: '癌症單筆金' },
-        // 癌症 - 療程型 (XCG)
-        'cancer:療程型':         { critical: '癌症一次金', daily: '癌症日額', surgery: '癌症手術' },
+        // 癌症
+        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術' },
         // 意外醫療
-        'accident:實支/日額型': { reimburse: '意外實支實付', daily: '意外日額', burn: '重大燒燙傷' },
+        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額' },
       };
 
       // 各大類的「主要保障 cls.key」
@@ -6143,7 +6128,7 @@ const App = (() => {
         medical:  'reimburse',
         critical: 'critical',
         cancer:   'critical',
-        accident: 'reimburse',
+        accident: 'disability',     // 意外失能金額最大, 設為主要保障
       };
 
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
@@ -6267,11 +6252,8 @@ const App = (() => {
         };
 
         let bodyHtml = '';
-        if (mainKey === 'medical' || mainKey === 'life' || mainKey === 'cancer') {
-          // 按 row.subTitle 分組
-          // medical: 實支實付型 / 定額型
-          // life:    一般身故/失能 / 意外身故/失能
-          // cancer:  單筆給付型 / 療程型
+        if (mainKey === 'medical') {
+          // 把 allItems 按 row.subTitle 分: 實支實付型 / 定額型
           const subGrouped = {};
           data.allItems.forEach(it => {
             const sub = (it.subTitleOverride !== undefined ? it.subTitleOverride
@@ -6279,12 +6261,7 @@ const App = (() => {
             if (!subGrouped[sub]) subGrouped[sub] = [];
             subGrouped[sub].push(it);
           });
-          const subOrders = {
-            medical: ['實支實付型', '定額型', '其他'],
-            life:    ['一般身故/失能', '意外身故/失能', '其他'],
-            cancer:  ['單筆給付型', '療程型', '其他'],
-          };
-          const subOrder = subOrders[mainKey] || ['其他'];
+          const subOrder = ['實支實付型', '定額型', '其他'];
           subOrder.forEach(sub => {
             const items = subGrouped[sub];
             if (!items || items.length === 0) return;
