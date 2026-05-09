@@ -193,71 +193,6 @@ body {
 .accuracy-tag.exact { background:#DCFCE7; color:#166534; }
 .accuracy-tag.estimated { background:#FFEDD5; color:#9A3412; cursor:help; }
 .accuracy-tag.calc { background:#FEF3C7; color:#92400E; }
-.accuracy-tag.custom { background:#DBEAFE; color:#1E40AF; cursor:help; }
-
-/* v6: 保額微調齒輪 (獨立小欄,固定大小) */
-.sa-adjust-btn {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:28px; height:28px;
-  background:transparent; border:1px solid var(--gray-200); border-radius:6px;
-  font-size:14px; color:var(--gray-500); cursor:pointer;
-  transition:all .15s; line-height:1;
-}
-.sa-adjust-btn:hover { background:var(--orange); color:#fff; border-color:var(--orange); }
-
-/* v6: 微調保額 modal */
-.sa-modal-backdrop {
-  display:none; position:fixed; inset:0; background:rgba(15,30,46,0.5);
-  z-index:1000; justify-content:center; align-items:center;
-}
-.sa-modal-backdrop.active { display:flex; }
-.sa-modal {
-  background:#fff; border-radius:14px; padding:28px 32px;
-  width:min(440px, 92vw); box-shadow:0 20px 50px rgba(0,0,0,.18);
-}
-.sa-modal h3 { margin:0 0 6px 0; font-size:18px; color:var(--navy); }
-.sa-modal .sub { color:var(--gray-500); font-size:13px; margin-bottom:18px; }
-.sa-modal .product-info { background:var(--gray-100); padding:10px 14px; border-radius:8px;
-  font-size:13px; color:var(--gray-700); margin-bottom:18px; line-height:1.6; }
-.sa-modal .product-info b { color:var(--navy); }
-.sa-input-row {
-  display:flex; align-items:center; gap:8px; margin-bottom:14px;
-}
-.sa-input-row label { width:60px; font-size:14px; color:var(--gray-700); flex-shrink:0; }
-.sa-input-row .input-wrapper {
-  flex:1; display:flex; align-items:center; border:1.5px solid var(--gray-200);
-  border-radius:8px; overflow:hidden; background:#fff;
-}
-.sa-input-row .input-wrapper:focus-within { border-color:var(--orange); }
-.sa-input-row .step-btn {
-  background:var(--gray-100); border:none; width:40px; height:42px;
-  font-size:18px; font-weight:700; color:var(--gray-700); cursor:pointer;
-}
-.sa-input-row .step-btn:hover { background:var(--gray-200); }
-.sa-input-row input {
-  flex:1; border:none; outline:none; padding:10px 12px; font-size:15px;
-  text-align:center; font-family:'Montserrat',monospace; font-variant-numeric:tabular-nums;
-  background:transparent; color:var(--navy);
-}
-.sa-input-row .unit { padding:0 12px; color:var(--gray-500); font-size:13px; }
-.sa-modal .preview {
-  background:rgba(240,90,40,0.06); padding:12px 14px; border-radius:8px;
-  margin:14px 0 18px 0; font-size:13.5px; color:var(--navy);
-}
-.sa-modal .preview .row { display:flex; justify-content:space-between; padding:3px 0; }
-.sa-modal .preview .row b { color:var(--orange); font-variant-numeric:tabular-nums; }
-.sa-modal .actions { display:flex; gap:10px; justify-content:flex-end; }
-.sa-modal .btn {
-  padding:9px 22px; border-radius:8px; font-size:13.5px; font-weight:600;
-  cursor:pointer; border:none; font-family:inherit; transition:all .15s;
-}
-.sa-modal .btn-cancel { background:var(--gray-100); color:var(--gray-700); }
-.sa-modal .btn-cancel:hover { background:var(--gray-200); }
-.sa-modal .btn-reset { background:#FEF3C7; color:#92400E; margin-right:auto; }
-.sa-modal .btn-reset:hover { background:#FDE68A; }
-.sa-modal .btn-confirm { background:var(--orange); color:#fff; }
-.sa-modal .btn-confirm:hover { background:#D04618; }
-.sa-modal .btn-confirm:disabled { background:var(--gray-300); cursor:not-allowed; }
 
 /* STEP 3 */
 .tabs { display:flex; gap:4px; border-bottom:2px solid var(--gray-200); margin-bottom:0; }
@@ -1233,7 +1168,6 @@ body {
           <th class="center" style="width:90px;">精算狀態</th>
           <th>代號</th>
           <th class="center">年期</th>
-          <th class="center" style="width:48px;"></th>
           <th class="right">保額</th>
           <th class="right">首年原始保費</th>
           <th class="right">首年實繳保費 <small style="color:var(--gray-500)">(已扣折扣)</small></th>
@@ -1242,32 +1176,6 @@ body {
       <tbody id="product-tbody"></tbody>
     </table>
   </section>
-
-  <!-- v6: 保額微調 modal -->
-  <div class="sa-modal-backdrop" id="sa-adjust-backdrop" onclick="closeSAAdjustOnBackdrop(event)">
-    <div class="sa-modal" onclick="event.stopPropagation()">
-      <h3>調整保額</h3>
-      <p class="sub" id="sa-modal-sub">微調此商品的保額,系統會自動更新保費和逐年數字</p>
-      <div class="product-info" id="sa-modal-product"></div>
-      <div class="sa-input-row">
-        <label>保額</label>
-        <div class="input-wrapper">
-          <button class="step-btn" onclick="stepSA(-1)">−</button>
-          <input type="text" id="sa-input" inputmode="numeric"
-                 oninput="onSAInputChange(this)"
-                 onfocus="this.select()">
-          <span class="unit" id="sa-unit">USD</span>
-          <button class="step-btn" onclick="stepSA(1)">+</button>
-        </div>
-      </div>
-      <div class="preview" id="sa-preview"></div>
-      <div class="actions">
-        <button class="btn btn-reset" onclick="resetSA()">↺ 還原預設</button>
-        <button class="btn btn-cancel" onclick="closeSAAdjust()">取消</button>
-        <button class="btn btn-confirm" id="sa-confirm-btn" onclick="confirmSAAdjust()">確定</button>
-      </div>
-    </div>
-  </div>
 
   <!-- STEP 3 -->
   <section class="step-page" id="step-3">
@@ -1299,10 +1207,6 @@ body {
             font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">
             🖨️ 列印 / 存 PDF
           </button>
-          <div class="currency-toggle" id="decimal-toggle" title="切換顯示精度">
-            <button class="active" data-decimal="0" onclick="toggleDecimal(false)">整數</button>
-            <button data-decimal="1" onclick="toggleDecimal(true)">完整</button>
-          </div>
           <div class="currency-toggle" id="currency-toggle">
             <button class="active" data-cur="USD" onclick="switchCurrency('USD')">USD</button>
             <button data-cur="TWD" onclick="switchCurrency('TWD')">TWD</button>
@@ -1378,66 +1282,6 @@ window.loadManifest = async function() {
 // ============================================================
 const PRODUCTS = [
   {
-    plan_code: 'UPD012',
-    company: '新光人壽',
-    product_name: '美鴻世代美元分紅終身壽險',
-    period: 1,
-    currency: 'USD',
-    type: '美元分紅終身壽險',
-    declared_rate: 0,
-    mid_dividend_rate: 0.056,
-    predicted_rate: 0.0175,
-    // 級距折扣 (UPD012 躉繳專用, 從 Excel OP sheet 提取):
-    //   保費 < 60K:    0%
-    //   保費 60~100K:  1.0% (高保額折扣)
-    //   保費 ≥ 100K:   1.8% (高保費折扣)
-    discount_tiers: [
-      { threshold: 0,      rate: 0 },
-      { threshold: 60000,  rate: 0.01 },
-      { threshold: 100000, rate: 0.018 }
-    ],
-    discount: 0,
-    discount_method: 'simple',
-    engine: 'taishin_v1',
-    unit_size: 1000,
-    sa_granularity: 1000,
-    min_sa: 10000,
-    max_sa: 7500000,
-    min_sa_under15: 10000,
-    max_sa_under15: 2000000,
-    min_age: 0, max_age: 80
-  },
-  {
-    plan_code: 'UPD022',
-    company: '新光人壽',
-    product_name: '美鴻世代美元分紅終身壽險',
-    period: 2,
-    currency: 'USD',
-    type: '美元分紅終身壽險',
-    declared_rate: 0,
-    mid_dividend_rate: 0.056,
-    predicted_rate: 0.0175,
-    // 級距折扣 (UPD022 2年期專用, 跟 UPD012 不同級距):
-    //   保費 < 30K:    0%
-    //   保費 30~50K:   1.0%
-    //   保費 ≥ 50K:    1.8%
-    discount_tiers: [
-      { threshold: 0,     rate: 0 },
-      { threshold: 30000, rate: 0.01 },
-      { threshold: 50000, rate: 0.018 }
-    ],
-    discount: 0,
-    discount_method: 'simple',
-    engine: 'taishin_v1',
-    unit_size: 1000,
-    sa_granularity: 1000,
-    min_sa: 10000,
-    max_sa: 7500000,
-    min_sa_under15: 10000,
-    max_sa_under15: 2000000,
-    min_age: 0, max_age: 78
-  },
-  {
     plan_code: 'UPD061',
     company: '新光人壽',
     product_name: '美鴻添富美元分紅終身壽險',
@@ -1447,23 +1291,11 @@ const PRODUCTS = [
     declared_rate: 0,
     mid_dividend_rate: 0.056,  // 中分紅率(假設投資報酬率)
     predicted_rate: 0.0225,
-    // 級距折扣 (對齊 Excel OP sheet 規則):
-    //   保費 ≥ 0:    1.0% (繳費方式 1.0%)
-    //   保費 ≥ 10K:  1.5% (+ 高保費 0.5%)
-    //   保費 ≥ 15K:  2.0% (+ 高保費 1.0%)
-    //   保費 ≥ 20K:  2.5% (+ 高保費 1.5%) ← 高保費上限
-    discount_tiers: [
-      { threshold: 0,     rate: 0.01 },
-      { threshold: 10000, rate: 0.015 },
-      { threshold: 15000, rate: 0.02 },
-      { threshold: 20000, rate: 0.025 }
-    ],
-    discount: 0.01,  // 保留: 不支援 discount_tiers 的舊路徑會 fallback 到這裡
+    discount: 0.01,
     discount_method: 'simple',
     engine: 'taishin_v1',
-    // 投保限制：1萬USD~1000萬USD，0~15歲限1萬~200萬,千元為單位
+    // 投保限制：1萬USD~1000萬USD，0~15歲限1萬~200萬，千元為單位
     unit_size: 1000,
-    sa_granularity: 1000,  // 保額粒度 1000 USD (= 萬元小數一位, Excel 規定)
     min_sa: 10000,
     max_sa: 10000000,
     min_sa_under15: 10000,
@@ -2716,10 +2548,10 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 10000,
-    max_sa: 5000000,
+    min_sa: 3000,
+    max_sa: 8000000,
     min_age: 0,
-    max_age: 75
+    max_age: 88
   },
   {
     plan_code: '6U9Z',
@@ -2758,6 +2590,24 @@ const PRODUCTS = [
     max_age: 75
   },
   {
+    plan_code: '6UD3',
+    company: '凱基人壽',
+    product_name: '享美鑫美元利率變動型終身壽險－定期給付型',
+    period: 1,
+    currency: 'USD',
+    type: '美元利率變動型終身壽險',
+    declared_rate: 0.0435,
+    predicted_rate: 0,
+    discount: 0.006,
+    discount_method: 'simple',
+    engine: 'twlife_v1',
+    unit_size: 1000,
+    min_sa: 3000,
+    max_sa: 6000000,
+    min_age: 0,
+    max_age: 88
+  },
+  {
     plan_code: '6UD4',
     company: '凱基人壽',
     product_name: '美利成臻美元利率變動型終身壽險－定期給付型',
@@ -2770,9 +2620,9 @@ const PRODUCTS = [
     discount_method: 'simple',
     engine: 'twlife_v1',
     unit_size: 1000,
-    min_sa: 10000,
-    max_sa: 5000000,
-    min_age: 0,
+    min_sa: 3000,
+    max_sa: 10000000,
+    min_age: 18,
     max_age: 75
   },
   {
@@ -5467,7 +5317,7 @@ function ts_getMaxYear(db, plan, sex, age) {
 }
 
 // === 台新精算引擎 ===
-function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.01, productMeta = null) {
+function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.01) {
   const db = getDB(plan);
   if (!db) return null;
   const units = sumAssured / 1000;
@@ -5475,67 +5325,9 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
   if (gp === null) return null;
   
   const annualPremiumOrig = +(units * gp).toFixed(2);
-  // 級距折扣支援: 根據原始保費查級距, 沒級距則用傳入的 discount
-  const effectiveDiscount = (productMeta && productMeta.discount_tiers)
-    ? resolveDiscount(productMeta, annualPremiumOrig)
-    : discount;
-  const annualPremiumReal = Math.round(annualPremiumOrig * (1 - effectiveDiscount));
-  
-  // === 拆 offset 機制 (對齊 Excel 紅利索引方式) ===
-  // Excel 試算表設計上,「累計紅利」跟「終期紅利」用不同 dur 索引:
-  //   - cumIncFace (累計增加保險金額):     用「當年 dur」 → div_table[year]
-  //   - TD_Death/TD_Surr (終期紅利):       用「前一年 dur」 → div_table[year - 1]
-  // 因為終期紅利是「年初宣告值,於年末計入」,跟年內持續累積的紅利索引方式不同。
-  //
-  // 預設 cum_offset=1, td_offset=1 (= 全用 year-1, 跟舊版引擎完全相容)
-  // UPD061 (新光美鴻添富) 用 cum_offset=0, td_offset=1
-  // 用 PDF (新光 LibreOffice 重算) 完整 60 年驗證 0 偏差
-  const cumOffset = (db.meta && db.meta.dividend_offset_cum != null) ? db.meta.dividend_offset_cum : 1;
-  const tdOffset  = (db.meta && db.meta.dividend_offset_td  != null) ? db.meta.dividend_offset_td  : 1;
+  const annualPremiumReal = Math.round(annualPremiumOrig * (1 - discount));
   
   const maxY = ts_getMaxYear(db, plan, sex, age);
-  
-  // 祝壽金保底 (對齊新光等保險公司條款):
-  //   多數終身險條款規定:「繳費期結束後」的「基本身故金 C」不得低於「最終年度祝壽金」
-  //   (= units × NFV 在 maxY 末的值)
-  //   例:UPD061 35男 Y65-Y75 的 C 欄都固定為 1,303,164 (= 祝壽金, 110歲)
-  //   但 Y1-Y6 繳費期內仍按 SA × corPolyr 算 (corPolyr=0.3 時 C=900,000, 不套祝壽金)
-  // 實作:預先取 maxY 末的 NFV; 計算 deathBasic 時,若 year > period 則納入保底
-  //
-  // 同樣的保底也套用到 F 欄 (累計增加保險金額對應身故):
-  //   F = max(cumIncFace × NSP/1000, cumIncFace × corPolyr, cumIncFace × NFV(maxY)/1000)
-  //   後期年度若 NSP/corPolyr 都比 NFV(maxY)/1000 小, 用祝壽金比例保底
-  const survivalNFV = (function() {
-    if (db.meta?.has_survival_floor === false) return 0;  // 明確關閉
-    const uMax = ts_getUV(db, plan, sex, age, maxY);
-    return uMax ? uMax.NFV : 0;  // 注意: 是 NFV 比例 (per 千元), 不是已乘 units
-  })();
-  const survivalBenefit = units * survivalNFV;  // 祝壽金 (絕對值)
-  
-  // 「最低死亡保額倍數」(criteria_by_age) — UPD012/UPD022 (新光美鴻世代) 等商品的特殊規則
-  //   保險法規某些商品要求:基本身故金 C 不得低於「保價金 × 年齡對應倍數」
-  //   meta.criteria_by_age = [[0, 2.1], [31, 1.8], [41, 1.6], [51, 1.3], [61, 1.2], [71, 1.05], [91, 1]]
-  //                          ^^^^^^^^^ 表示 Age 0-30 倍數=2.1, Age 31-40 倍數=1.8, ...
-  //   公式新增:C = max(..., units × NFV × criteria_by_age)
-  //   沒設此欄位時不啟用 (向下相容,UPD061 等商品不受影響)
-  const criteriaByAge = db.meta?.criteria_by_age || null;
-  function getCriteria(attainedAge) {
-    if (!criteriaByAge) return 0;  // 0 = 不影響 max 結果
-    let crit = 0;
-    for (const [startAge, value] of criteriaByAge) {
-      if (attainedAge >= startAge) crit = value;
-      else break;
-    }
-    return crit;
-  }
-  
-  // 「累計保費保證」(premium_basis_ratio) — UPD012/UPD022 等商品的特殊規則
-  //   Excel J28 = "基本保額所繳保費倍率 = 1.06" 表示:
-  //   基本身故金 C 不得低於「累計實繳保費 × 1.06」
-  //   公式新增:C = max(..., cumPremium × premium_basis_ratio)
-  //   沒設時不啟用 (向下相容)
-  const premiumBasisRatio = db.meta?.premium_basis_ratio || 0;
-  
   const schedule = [];
   let cumPrem = 0, cumIncFace = 0;
   
@@ -5549,46 +5341,17 @@ function actuarialCalc_taishin(plan, sex, age, sumAssured, period, discount = 0.
     const csv = units * u.CSV;
     const nsp = u.NSP;
     const corPolyr = db.corridor_polyr[String(year)] ?? 1.0;
-    const attainedAge = age + year - 1;
-    const criteria = getCriteria(attainedAge);
-    const nfvCrit = nfv * criteria;  // = units × NFV × criteria_by_age
-    const premBasis = cumPrem * premiumBasisRatio;  // = 累計實繳保費 × 1.06
-    // C (基本身故金) — 繳費期內(year < period): max(SA × corridor, units × NFV, units × NFV × criteria, cumPrem × 1.06)
-    //                繳費期最末年起(year ≥ period): 同上 + 祝壽金保底
-    // 注意:繳費期最後一年(year == period)身故時保費已繳完,屬於「期後」邏輯。
-    const deathBasic = year >= period
-      ? Math.max(sumAssured * corPolyr, nfv, nfvCrit, premBasis, survivalBenefit)
-      : Math.max(sumAssured * corPolyr, nfv, nfvCrit, premBasis);
+    const deathBasic = Math.max(sumAssured * corPolyr, nfv);
     
-    // cumIncFace 用 cumOffset (UPD061: 0, 其他預設: 1)
-    const dCum = ts_getDIV(db, plan, sex, age, year - cumOffset);
-    const adFaceYear = +(units * dCum.AD).toFixed(2);
+    const d = ts_getDIV(db, plan, sex, age, year - 1);
+    const adFaceYear = +(units * d.AD).toFixed(2);
     const incFaceYear = nsp > 0 ? Math.round(adFaceYear / (nsp / 1000)) : 0;
     cumIncFace += incFaceYear;
     
     const gIncSurr = +(cumIncFace * nsp / 1000).toFixed(2);
-    // F (累計增加身故) Excel 真實公式 (UPD061 X 欄分析得出):
-    //   F = max(U, gIncSurr × criteria, round(cumIncFace × corPolyr))
-    //   其中 U = round(premBasisRatio × round(GP_band1 × cumIncFace / 1000) × min(year, period), 2)
-    //   注意 Excel 公式中:
-    //   - U 是「累紅利對應的身故金保證」(= 1.06 × 累計繳費換算 × 已繳年數)
-    //   - NSP/1000 × criteria 比 NSP/1000 多了 × criteria_by_age (年齡係數)
-    //   - corPolyr 取整數 round
-    //   - 沒設 premium_basis_ratio (預設 0) 時 U=0, 退化成舊行為
-    //   - 沒設 criteria_by_age 時 criteria=1, NSP × crit = NSP, 等價舊行為
-    const minYearPeriod = Math.min(year, period);
-    const baseGP = ts_getGP(db, plan, sex, age) || 0;  // Band 1 GP, 用於 U 公式
-    const U_value = premiumBasisRatio > 0
-      ? +(premiumBasisRatio * Math.round(baseGP * cumIncFace / 1000) * minYearPeriod).toFixed(2)
-      : 0;
-    const F_NSP_crit = +(cumIncFace * nsp / 1000 * (criteria || 1)).toFixed(2);
-    const F_corP = Math.round(cumIncFace * corPolyr);
-    const xIncDeath = Math.max(U_value, F_NSP_crit, F_corP);
-    
-    // TD_Death / TD_Surr 用 tdOffset (預設 1, UPD061 同)
-    const dTd = (tdOffset === cumOffset) ? dCum : ts_getDIV(db, plan, sex, age, year - tdOffset);
-    const tdDeath = +(units * dTd.TD_Death).toFixed(2);
-    const tdSurr = +(units * dTd.TD_Surr).toFixed(2);
+    const xIncDeath = Math.max(gIncSurr, Math.round(cumIncFace * corPolyr));
+    const tdDeath = +(units * d.TD_Death).toFixed(2);
+    const tdSurr = +(units * d.TD_Surr).toFixed(2);
     
     schedule.push({
       y: year,
@@ -5668,79 +5431,12 @@ function actuarialCalc_prudential(plan, sex, age, sumAssured, period) {
   };
 }
 
-// === 工具:依保費級距解析折扣率 (對齊 Excel 級距折扣邏輯) ===
-// Excel 多數商品的折扣是「級距式」: 保費越高折扣越多 (例如新光美鴻添富 0~2.5%)
-// 設計:
-//   productMeta.discount_tiers = [
-//     { threshold: 0,     rate: 0.01 },     // 保費 ≥ 0    → 折扣 1.0% (基本繳費方式)
-//     { threshold: 10000, rate: 0.015 },    // 保費 ≥ 10K  → 折扣 1.5% (基本+高保費 0.5%)
-//     { threshold: 15000, rate: 0.02 },     // 保費 ≥ 15K  → 折扣 2.0% (基本+高保費 1.0%)
-//     { threshold: 20000, rate: 0.025 },    // 保費 ≥ 20K  → 折扣 2.5% (基本+高保費 1.5%)
-//   ]
-// 沒設 discount_tiers 時, fallback 到 productMeta.discount (向下相容)
-// 級距以「年繳原始保費(USD or TWD,跟商品 currency 一致)」為基準
-function resolveDiscount(productMeta, annualPremiumGross) {
-  // 沒級距 → 用固定 discount
-  if (!productMeta.discount_tiers || productMeta.discount_tiers.length === 0) {
-    return productMeta.discount || 0;
-  }
-  // 找最高符合的級距
-  const sorted = [...productMeta.discount_tiers].sort((a, b) => b.threshold - a.threshold);
-  for (const tier of sorted) {
-    if (annualPremiumGross >= tier.threshold) return tier.rate;
-  }
-  return productMeta.discount || 0;
-}
-
-// === 工具:迭代收斂找穩定折扣率 + 計算保額 ===
-// 因為「折扣 → 保額 → 保費 → 折扣」是循環關係,需要迭代到穩定
-// 用法: rawSA = solveSAWithTieredDiscount(budget, gpPerThousand, productMeta)
-// 演算法:
-//   1. 先用最低折扣估保額 (上界)
-//   2. 計算對應的原始保費
-//   3. 用保費查級距表得新折扣
-//   4. 用新折扣重算保額,直到折扣穩定 (通常 1-2 輪即收斂)
-function solveSAWithTieredDiscount(budgetReal, gpPerThousand, productMeta, maxIter = 5) {
-  // 沒級距 → 直接用固定 discount,不迭代
-  if (!productMeta.discount_tiers) {
-    const d = productMeta.discount || 0;
-    return budgetReal / (1 - d) / gpPerThousand * 1000;
-  }
-  // 起步用最低級距折扣
-  let disc = productMeta.discount_tiers[0]?.rate ?? 0;
-  let sa = budgetReal / (1 - disc) / gpPerThousand * 1000;
-  for (let i = 0; i < maxIter; i++) {
-    const premiumGross = sa * gpPerThousand / 1000;
-    const newDisc = resolveDiscount(productMeta, premiumGross);
-    if (Math.abs(newDisc - disc) < 1e-6) break;  // 收斂
-    disc = newDisc;
-    sa = budgetReal / (1 - disc) / gpPerThousand * 1000;
-  }
-  return sa;
-}
-
-// === 工具:保額計算 + min/max 夾擊 + 粒度進位 (對齊 Excel 試算邏輯) ===
-// 設計考量:
-//   1. min/max:依年齡分段套限制
-//   2. 保額粒度 (sa_granularity):
-//      - 不同保險公司的條款規定保額必須是某粒度的整數倍
-//      - 例:新光美鴻添富規定「投保金額單位為萬元,最多到小數一位」→ 粒度 = 1,000 USD
-//      - 例:某商品「保額為 5,000 USD 的整數倍」→ 粒度 = 5,000
-//      - 沒設 sa_granularity 時不做粒度進位 (向下相容,維持原 Math.round 行為)
-//   3. 進位策略:取最接近預算的合法值 (Math.round 到 granularity)
-//      - 例:粒度 1000, 預算反推 600,668 → round 到 601,000
-//      - 預算反推 600,200 → round 到 600,000
+// === 工具：保額進位到 unit_size 倍數 + min/max 夾擊 ===
 function applyInsuranceLimits(rawSA, productMeta, age) {
   const unit = productMeta.unit_size || 1000;
-  let sa = Math.round(rawSA);
-  
-  // 套用粒度進位 (若該商品有規定保額粒度)
-  const granularity = productMeta.sa_granularity;
-  if (granularity && granularity > 1) {
-    sa = Math.round(rawSA / granularity) * granularity;
-  }
-  
-  // 套用 min/max(依年齡分段)
+  // 進位（向上取整到 unit 倍數，因為要「超出一點預算」而不是不足）
+  let sa = Math.ceil(rawSA / unit) * unit;
+  // 套用 min/max（依年齡分段）
   let minSA, maxSA;
   if (age <= 15 && productMeta.min_sa_under15 != null) {
     minSA = productMeta.min_sa_under15;
@@ -5759,13 +5455,8 @@ function calcSumAssuredFromBudget_taishin(plan, sex, age, budgetReal, discount, 
   const db = getDB(plan);
   const gp = ts_getGP(db, plan, sex, age);
   if (!gp) return null;
-  // 級距折扣支援:有 discount_tiers 時迭代收斂,沒有時用固定 discount (向下相容)
-  let rawSA;
-  if (productMeta.discount_tiers) {
-    rawSA = solveSAWithTieredDiscount(budgetReal, gp, productMeta);
-  } else {
-    rawSA = budgetReal / (1 - discount) / gp * 1000;
-  }
+  // 原始反推（未進位）
+  const rawSA = budgetReal / (1 - discount) / gp * 1000;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
 function calcSumAssuredFromBudget_prudential(plan, sex, age, budgetReal, productMeta) {
@@ -5786,16 +5477,12 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   const baseSA = db.meta.base_sa;
   const ratio = sumAssured / baseSA;
   
-  // 修補:對使用者年齡/性別與基準的差異做修正 (cum_prem 部分)
-  // schedule 的 cv/db 是按 SA 比例縮放(跟年齡無關),
-  // 但 cum_prem(累計保費)應該反映「使用者實際年齡的保費水準」,
-  // 故對保費部分套上 age/sex factor。
-  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
-  
-  // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio × factor
+  // 逐年資料按比例縮放;每年實繳 = (cum_prem 增量) × ratio
+  // 改動原因:全球人壽多數商品(如 FYW/FVW/FKD/FBW)在 period 內每年保費隨年齡遞減(高保費級距折扣)
+  //          對線性遞增型(台壽 / 凱基 / 部分全球商品如 FDW/F8W)結果不變
   let prevCum = 0;
   const schedule = db.schedule.map(r => {
-    const cumScaled = Math.round(r.cum_prem * ratio * factor);
+    const cumScaled = Math.round(r.cum_prem * ratio);
     const yearlyPrem = cumScaled - prevCum;
     prevCum = cumScaled;
     return {
@@ -5811,7 +5498,7 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   });
   
   // annual_premium_real 改用 Y1 實繳(對齊 STEP3 比較表 Y1 數字)
-  const annualPremiumReal = schedule[0]?.prem ?? Math.round(db.meta.base_premium * ratio * factor);
+  const annualPremiumReal = schedule[0]?.prem ?? Math.round(db.meta.base_premium * ratio);
   const annualPremiumOrig = db.meta.discount
     ? Math.round(annualPremiumReal / (1 - db.meta.discount))
     : annualPremiumReal;
@@ -5828,7 +5515,6 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
     is_estimated: !isExact,  // 標記為估算
     base_age: db.meta.base_age,
     base_sex: db.meta.base_sex,
-    age_factor: factor,  // 修補:讓 UI 可顯示年齡修正係數
     // 路徑 C:若 schedule 不含紅利累積(預設視為已含),帶 warning 給 UI
     // 用法:result.dividend_warning 為非空字串時,UI 在比較表那一列加灰色註記
     dividend_warning: db.meta.schedule_includes_dividend === false
@@ -5837,41 +5523,11 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
   };
 }
 
-// === 工具:年齡保費因子近似公式 (修補 v1) ===
-// 原理:壽險保費隨年齡近似指數成長,女性約為男性的 0.85 倍
-// 用法:userPremium ≈ basePremium × estimateAgePremiumFactor(...)
-// ⚠ 此為近似公式;精確結果應由 db.gp_table[sex][age] 查表得到 (待補)
-function estimateAgePremiumFactor(userSex, userAge, baseSex, baseAge) {
-  if (baseAge == null || baseSex == null) return 1.0;
-  // 分段年齡保費成長率 (壽險業界經驗):
-  //   0~20: +0.8%/yr, 20~40: +1.5%/yr, 40~60: +3.0%/yr, 60+: +5.5%/yr
-  function ageToPoints(age) {
-    let pts = 0;
-    pts += Math.min(age, 20) * Math.log(1.008);
-    if (age > 20) pts += (Math.min(age, 40) - 20) * Math.log(1.015);
-    if (age > 40) pts += (Math.min(age, 60) - 40) * Math.log(1.030);
-    if (age > 60) pts += (age - 60) * Math.log(1.055);
-    return pts;
-  }
-  const ageFactor = Math.exp(ageToPoints(userAge) - ageToPoints(baseAge));
-  // 性別因子:同年齡下女性保費 ≈ 男性的 0.85 倍
-  let sexFactor = 1.0;
-  if (userSex !== baseSex) {
-    if (userSex === 'F' && baseSex === 'M') sexFactor = 0.85;
-    else if (userSex === 'M' && baseSex === 'F') sexFactor = 1 / 0.85;
-  }
-  return ageFactor * sexFactor;
-}
-
 function calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta) {
   const db = getDB(plan);
   if (!db) return null;
-  // 修補:對使用者年齡/性別與基準的差異做修正
-  // 原版直接 ratio = budgetReal / base_premium 完全忽略 sex/age,
-  // 導致 20歲男對 40歲基準的商品保額被低估 30~60%
-  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
-  const adjustedBasePremium = db.meta.base_premium * factor;
-  const ratio = budgetReal / adjustedBasePremium;
+  // 比例 = 預算 / 基準保費，保額 = 基準保額 × 比例
+  const ratio = budgetReal / db.meta.base_premium;
   const rawSA = db.meta.base_sa * ratio;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
@@ -5953,10 +5609,7 @@ function actuarialCalc_prudential_v2(plan, sex, age, sumAssured, period) {
 function calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budgetReal, productMeta) {
   const db = getDB(plan);
   if (!db) return null;
-  // 修補:對使用者年齡/性別與基準的差異做修正 (同 twlife_v1 修補理由)
-  const factor = estimateAgePremiumFactor(sex, age, db.meta.base_sex, db.meta.base_age);
-  const adjustedBasePremium = db.meta.base_premium * factor;
-  const ratio = budgetReal / adjustedBasePremium;
+  const ratio = budgetReal / db.meta.base_premium;
   const rawSA = db.meta.base_sa * ratio;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
@@ -6070,35 +5723,14 @@ function calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budgetReal, productM
   const ageStr = String(age);
   const gp = db.rv_table.gp?.[sex]?.[ageStr];
   if (gp == null) return null;
-  // budgetReal = units × gp × (1 - discount)
-  // 注意:此引擎的 gp 是「每 unit_size 美元保額/年」(unit_size 通常 10000)
-  // 換算成「每千元保額/年」: gpPerThousand = gp / (unitSize / 1000) = gp * 1000 / unitSize
-  // 但為了沿用 solveSAWithTieredDiscount 的「每千元」介面, 改用 units 思維直接迭代
-  let rawSA;
-  if (productMeta.discount_tiers) {
-    // 迭代收斂版本 (units 介面)
-    let disc = productMeta.discount_tiers[0]?.rate ?? 0;
-    let units = budgetReal / gp / (1 - disc);
-    for (let i = 0; i < 5; i++) {
-      const premiumGross = units * gp;
-      const newDisc = resolveDiscount(productMeta, premiumGross);
-      if (Math.abs(newDisc - disc) < 1e-6) break;
-      disc = newDisc;
-      units = budgetReal / gp / (1 - disc);
-    }
-    rawSA = units * unitSize;
-  } else {
-    const discount = db.meta.discount || productMeta.discount || 0;
-    const units = budgetReal / gp / (1 - discount);
-    rawSA = units * unitSize;
-  }
+  // budgetReal = units × gp × (1 - discount)  →  units = budgetReal / gp / (1-d)
+  const discount = db.meta.discount || 0;
+  const units = budgetReal / gp / (1 - discount);
+  const rawSA = units * unitSize;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
 
 // === Dispatcher ===
-// v6 新增 customSA 機制:
-//   若 state.customSA 有此商品的覆寫保額,跳過「預算反推保額」改用覆寫值直接精算
-//   這樣使用者點齒輪微調保額後,後續顯示都用覆寫值,直到使用者改 STEP1 條件或重置
 function calcProductForUser(productMeta, user) {
   try {
     const sex = user.gender;
@@ -6107,30 +5739,27 @@ function calcProductForUser(productMeta, user) {
     const plan = productMeta.plan_code;
     const engine = productMeta.engine || 'taishin_v1';
     
-    // 檢查使用者是否手動微調過此商品的保額
-    const customSA = state.customSA?.get(plan);
-    
     let sumAssured, result;
     if (engine === 'prudential_v1') {
-      sumAssured = customSA ?? calcSumAssuredFromBudget_prudential(plan, sex, age, budget, productMeta);
+      sumAssured = calcSumAssuredFromBudget_prudential(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;
       result = actuarialCalc_prudential(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'prudential_v2') {
-      sumAssured = customSA ?? calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
+      sumAssured = calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;
       result = actuarialCalc_prudential_v2(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'kgi_rv_v1') {
-      sumAssured = customSA ?? calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budget, productMeta);
+      sumAssured = calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;
       result = actuarialCalc_kgi_rv_v1(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'twlife_v1') {
-      sumAssured = customSA ?? calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
+      sumAssured = calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
       if (!sumAssured) return null;
       result = actuarialCalc_twlife(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'taishin_v1') {
-      sumAssured = customSA ?? calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
+      sumAssured = calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
       if (!sumAssured) return null;
-      result = actuarialCalc_taishin(plan, sex, age, sumAssured, user.period, productMeta.discount, productMeta);
+      result = actuarialCalc_taishin(plan, sex, age, sumAssured, user.period, productMeta.discount);
       if (!result) return null;
       const db = getDB(plan);
       if (sex === 'M' && age === db.meta.base_age_M && Math.abs(sumAssured - db.meta.base_sa_M) < 100 && db.golden_M32) {
@@ -6141,14 +5770,13 @@ function calcProductForUser(productMeta, user) {
       // 未知 engine,標記不支援但不 crash
       return { unsupported: true, engine_name: engine };
     }
-    // 預算對照:實際保費 vs 使用者預算(同幣別)
+    // 預算對照：實際保費 vs 使用者預算（同幣別）
     if (result) {
       const actualPremium = result.annual_premium_real;
-      result.budget_target = budget;          // 使用者預算(商品幣別)
-      result.budget_actual = actualPremium;   // 實際保費(商品幣別)
-      result.budget_diff = actualPremium - budget;  // 正數=超支,負數=有餘
+      result.budget_target = budget;          // 使用者預算（商品幣別）
+      result.budget_actual = actualPremium;   // 實際保費（商品幣別）
+      result.budget_diff = actualPremium - budget;  // 正數=超支，負數=有餘
       result.budget_within = Math.abs(result.budget_diff) < 1;  // 完全打平
-      result.is_custom_sa = customSA != null;  // v6: 標記為手動微調保額
     }
     return result;
   } catch (err) {
@@ -6166,10 +5794,7 @@ const state = {
   currentCurrency: 'USD',
   compareList: [],
   sortYear: null,    // v4: 點年度排序
-  sortBasis: null,   // v5: 排序基準('surrender' 或 'death'),切 tab 不變
-  customSA: new Map(),  // v6: 微調保額 - key=plan_code, value=覆寫的保額(USD/TWD,跟商品幣別一致)
-  saAdjustModal: { plan_code: null, currentSA: 0, productMeta: null },  // 微調 modal 狀態
-  showDecimal: false  // v7: STEP3 是否顯示小數位 (預設整數,切換可看完整 2 位小數)
+  sortBasis: null    // v5: 排序基準('surrender' 或 'death'),切 tab 不變
 };
 
 // ============================================================
@@ -6338,13 +5963,6 @@ async function goStep2() {
     budget_usd: isUSD ? budget : (budget / rate),
     budget_twd: isUSD ? (budget * rate) : budget
   };
-  
-  // v7: 從 STEP1 進入 STEP2 時清除上次微調的保額,讓 STEP2 顯示依「新預算」反推的保額
-  // (使用者重新填表單表示要重新比較,「已調整」狀態屬於前一輪比較,應重置)
-  state.customSA.clear();
-  state.selectedCodes.clear();
-  document.getElementById('selected-count').textContent = 0;
-  document.getElementById('btn-compare-selected').disabled = true;
 
   document.getElementById('sum-name').textContent = name;
   document.getElementById('sum-gender').textContent = gender === 'M' ? '男性' : '女性';
@@ -6395,7 +6013,7 @@ async function renderProductList() {
     } else {
       hint = `資料庫目前有：${availableTypes.join('、')}`;
     }
-    tbody.innerHTML = `<tr><td colspan="10" class="empty">
+    tbody.innerHTML = `<tr><td colspan="9" class="empty">
       <div class="icon">📭</div>
       <div style="font-size:15px;font-weight:600;color:var(--text-2);margin-bottom:10px;">
         類型「${state.user.type}」+ ${state.user.period}年期 目前資料庫尚無此商品
@@ -6414,7 +6032,7 @@ async function renderProductList() {
   try {
     await window.loadManifest();  // 先載 manifest 才能查 path
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="10" class="empty" style="color:var(--danger);">manifest 載入失敗:${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="empty" style="color:var(--danger);">manifest 載入失敗:${e.message}</td></tr>`;
     return;
   }
   const loadResults = await Promise.allSettled(
@@ -6430,23 +6048,20 @@ async function renderProductList() {
   tbody.innerHTML = state.filteredProducts.map(p => {
     // 容錯:該商品 JSON 缺檔 → 顯示一行「載入失敗」訊息,其他商品照常運作
     if (loadFailedCodes.has(p.plan_code)) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--danger);text-align:center;font-size:12.5px;">❌ 商品資料載入失敗(JSON 檔可能未部署)</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--danger);text-align:center;font-size:12.5px;">❌ 商品資料載入失敗(JSON 檔可能未部署)</td></tr>`;
     }
     const r = calcProductForUser(p, state.user);
-    if (!r) return `<tr><td colspan="10" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
+    if (!r) return `<tr><td colspan="9" style="color:var(--gray-500);text-align:center;">${p.plan_code}:該年齡無此商品試算資料</td></tr>`;
     if (r.unsupported) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--gray-500);text-align:center;font-size:12.5px;">⚠️ 此商品引擎(${r.engine_name})尚未實作</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--gray-500);text-align:center;font-size:12.5px;">⚠️ 此商品引擎(${r.engine_name})尚未實作</td></tr>`;
     }
     if (r.error) {
-      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="7" style="color:var(--danger);text-align:center;font-size:12.5px;" title="${r.error_message}">❌ 試算失敗</td></tr>`;
+      return `<tr><td><span style="color:var(--gray-400);">—</span></td><td><span class="company-tag">${p.company}</span></td><td class="product-name" style="color:var(--gray-500);">${p.product_name}</td><td colspan="6" style="color:var(--danger);text-align:center;font-size:12.5px;" title="${r.error_message}">❌ 試算失敗</td></tr>`;
     }
     const isExact = r.is_exact;
     const isEstimated = r.is_estimated;
-    const isCustom = r.is_custom_sa;  // v6: 微調保額標記
     let accuracyTag;
-    if (isCustom) {
-      accuracyTag = '<span class="accuracy-tag custom" title="保額已手動微調">✏️ 已調整</span>';
-    } else if (isExact) {
+    if (isExact) {
       accuracyTag = '<span class="accuracy-tag exact">原廠數據</span>';
     } else if (isEstimated) {
       accuracyTag = `<span class="accuracy-tag estimated" title="基準試算:${r.base_sex==='M'?'男':'女'}${r.base_age}歲">📐 估算</span>`;
@@ -6461,7 +6076,6 @@ async function renderProductList() {
         <td class="center">${accuracyTag}</td>
         <td><span class="code-tag">${p.plan_code}</span></td>
         <td class="center">${p.period}</td>
-        <td class="center"><button class="sa-adjust-btn" onclick="openSAAdjust('${p.plan_code}')" title="調整保額">⚙</button></td>
         <td class="right">${r.sum_assured.toLocaleString()}</td>
         <td class="right">${r.annual_premium_orig.toLocaleString()}</td>
         <td class="right">${r.annual_premium_real.toLocaleString()}</td>
@@ -6484,237 +6098,6 @@ function toggleAll(cb) {
     c.checked = cb.checked;
     toggleSelect(c);
   });
-}
-
-// ============================================================
-// v6: 保額微調功能
-// ============================================================
-
-// 計算保費 — 給定保額,反向算出原始保費和實繳保費
-// (用於 modal 預覽即時更新)
-function previewPremiumForSA(productMeta, sumAssured) {
-  const sex = state.user.gender;
-  const age = state.user.age;
-  const plan = productMeta.plan_code;
-  const engine = productMeta.engine;
-  
-  let premiumGross = null;
-  let premiumNet = null;
-  
-  try {
-    if (engine === 'taishin_v1' || engine === 'kgi_rv_v1') {
-      // 用 GP 表精算
-      const db = getDB(plan);
-      let gp;
-      if (engine === 'taishin_v1') {
-        gp = ts_getGP(db, plan, sex, age);
-        if (gp != null) {
-          const units = sumAssured / 1000;
-          premiumGross = +(units * gp).toFixed(2);
-        }
-      } else {
-        // kgi_rv_v1
-        const unitSize = db.meta.unit_size || 10000;
-        gp = db.rv_table?.gp?.[sex]?.[String(age)];
-        if (gp != null) {
-          const units = sumAssured / unitSize;
-          premiumGross = +(units * gp).toFixed(2);
-        }
-      }
-    } else if (engine === 'twlife_v1' || engine === 'prudential_v2') {
-      // 用 base 比例縮放
-      const db = getDB(plan);
-      const ratio = sumAssured / db.meta.base_sa;
-      premiumGross = (db.meta.base_premium_gross || db.meta.base_premium / (1 - (db.meta.discount || 0))) * ratio;
-      premiumNet = db.meta.base_premium * ratio;
-    }
-    
-    if (premiumGross != null && premiumNet == null) {
-      const disc = (productMeta.discount_tiers)
-        ? resolveDiscount(productMeta, premiumGross)
-        : (productMeta.discount || 0);
-      premiumNet = premiumGross * (1 - disc);
-    }
-  } catch (e) {
-    console.warn('previewPremiumForSA error:', e);
-  }
-  
-  return {
-    premiumGross: premiumGross != null ? Math.round(premiumGross) : null,
-    premiumNet: premiumNet != null ? Math.round(premiumNet) : null
-  };
-}
-
-function openSAAdjust(planCode) {
-  const productMeta = PRODUCTS.find(p => p.plan_code === planCode);
-  if (!productMeta) return;
-  
-  // 取目前保額(優先讀 customSA, 否則用試算結果)
-  const r = calcProductForUser(productMeta, state.user);
-  if (!r || r.error || r.unsupported) {
-    alert('此商品目前無法試算,無法調整保額');
-    return;
-  }
-  
-  const currentSA = state.customSA.get(planCode) ?? r.sum_assured;
-  
-  // 存到 state 供 modal 函式使用
-  state.saAdjustModal = {
-    plan_code: planCode,
-    productMeta: productMeta,
-    originalSA: r.sum_assured,  // 不含微調的「依預算反推」保額,做還原預設用
-    currentSA: currentSA
-  };
-  
-  // 填入 modal
-  const ageStr = state.user.age + '歲 ' + (state.user.gender==='M' ? '男' : '女');
-  document.getElementById('sa-modal-product').innerHTML = 
-    `<b>${productMeta.company} · ${productMeta.product_name}</b><br>` +
-    `<span style="color:var(--gray-500);font-size:12px;">${planCode} · ${productMeta.period}年期 · ${ageStr}</span>`;
-  document.getElementById('sa-input').value = currentSA.toLocaleString();
-  document.getElementById('sa-unit').textContent = productMeta.currency;
-  
-  updateSAPreview();
-  document.getElementById('sa-adjust-backdrop').classList.add('active');
-}
-
-function closeSAAdjust() {
-  document.getElementById('sa-adjust-backdrop').classList.remove('active');
-}
-
-function closeSAAdjustOnBackdrop(e) {
-  if (e.target.id === 'sa-adjust-backdrop') closeSAAdjust();
-}
-
-function getSAFromInput() {
-  const raw = document.getElementById('sa-input').value.replace(/[^\d]/g, '');
-  return parseInt(raw, 10) || 0;
-}
-
-function setSAInputValue(sa) {
-  document.getElementById('sa-input').value = sa.toLocaleString();
-  state.saAdjustModal.currentSA = sa;
-  updateSAPreview();
-}
-
-function onSAInputChange(input) {
-  // 即時格式化(加千分位)+ 更新預覽
-  const sa = parseInt(input.value.replace(/[^\d]/g, ''), 10) || 0;
-  // 重新格式化但保留游標位置
-  const cursorPos = input.selectionStart;
-  const oldLen = input.value.length;
-  input.value = sa.toLocaleString();
-  const newLen = input.value.length;
-  // 嘗試保留游標相對位置
-  try { input.setSelectionRange(cursorPos + (newLen - oldLen), cursorPos + (newLen - oldLen)); } catch(e) {}
-  state.saAdjustModal.currentSA = sa;
-  updateSAPreview();
-}
-
-function stepSA(direction) {
-  // ± 按鈕:依商品 unit_size 加減
-  const m = state.saAdjustModal;
-  if (!m.productMeta) return;
-  const unit = m.productMeta.unit_size || 1000;
-  // 智能 step:大保額用大 step
-  let step = unit;
-  if (m.currentSA >= 1000000) step = 10000;
-  else if (m.currentSA >= 100000) step = 1000;
-  else step = unit;
-  
-  let newSA = m.currentSA + direction * step;
-  
-  // 套 min/max
-  const minSA = (state.user.age <= 15 && m.productMeta.min_sa_under15)
-    ? m.productMeta.min_sa_under15 : (m.productMeta.min_sa || unit);
-  const maxSA = (state.user.age <= 15 && m.productMeta.max_sa_under15)
-    ? m.productMeta.max_sa_under15 : (m.productMeta.max_sa || Infinity);
-  newSA = Math.max(minSA, Math.min(maxSA, newSA));
-  
-  setSAInputValue(newSA);
-}
-
-function updateSAPreview() {
-  const m = state.saAdjustModal;
-  if (!m.productMeta) return;
-  const sa = m.currentSA;
-  const preview = document.getElementById('sa-preview');
-  const confirmBtn = document.getElementById('sa-confirm-btn');
-  
-  // 邊界檢查
-  const unit = m.productMeta.unit_size || 1000;
-  const minSA = (state.user.age <= 15 && m.productMeta.min_sa_under15)
-    ? m.productMeta.min_sa_under15 : (m.productMeta.min_sa || unit);
-  const maxSA = (state.user.age <= 15 && m.productMeta.max_sa_under15)
-    ? m.productMeta.max_sa_under15 : (m.productMeta.max_sa || Infinity);
-  
-  if (sa < minSA) {
-    preview.innerHTML = `<div style="color:var(--danger);">⚠️ 低於最低投保額 ${minSA.toLocaleString()} ${m.productMeta.currency}</div>`;
-    confirmBtn.disabled = true;
-    return;
-  }
-  if (sa > maxSA) {
-    preview.innerHTML = `<div style="color:var(--danger);">⚠️ 超過最高投保額 ${maxSA.toLocaleString()} ${m.productMeta.currency}</div>`;
-    confirmBtn.disabled = true;
-    return;
-  }
-  confirmBtn.disabled = false;
-  
-  // 算保費預覽
-  const pp = previewPremiumForSA(m.productMeta, sa);
-  if (pp.premiumGross == null) {
-    preview.innerHTML = '<div style="color:var(--gray-500);">此商品引擎暫不支援即時預覽</div>';
-    return;
-  }
-  
-  const cur = m.productMeta.currency;
-  const userBudget = cur === 'USD' ? state.user.budget_usd : state.user.budget_twd;
-  const diff = pp.premiumNet - userBudget;
-  let diffNote = '';
-  if (Math.abs(diff) < 1) {
-    diffNote = '<span style="color:#16A34A;">✓ 跟預算對齊</span>';
-  } else if (diff > 0) {
-    diffNote = `<span style="color:#DC2626;">超預算 ${Math.abs(diff).toLocaleString()} ${cur}</span>`;
-  } else {
-    diffNote = `<span style="color:var(--gray-500);">低於預算 ${Math.abs(diff).toLocaleString()} ${cur}</span>`;
-  }
-  
-  preview.innerHTML = `
-    <div class="row"><span>每年原始保費:</span><b>${pp.premiumGross.toLocaleString()} ${cur}</b></div>
-    <div class="row"><span>每年實繳保費(已扣折扣):</span><b>${pp.premiumNet.toLocaleString()} ${cur}</b></div>
-    <div class="row" style="border-top:1px dashed var(--gray-200); padding-top:8px; margin-top:6px;">
-      <span>vs 預算 ${userBudget.toLocaleString()} ${cur}:</span>${diffNote}
-    </div>
-  `;
-}
-
-function resetSA() {
-  // 還原成依預算反推的原始值
-  const m = state.saAdjustModal;
-  if (!m.productMeta) return;
-  state.customSA.delete(m.plan_code);
-  // 重新試算原始值
-  const r = calcProductForUser(m.productMeta, state.user);
-  if (r && r.sum_assured) {
-    setSAInputValue(r.sum_assured);
-  }
-}
-
-function confirmSAAdjust() {
-  const m = state.saAdjustModal;
-  if (!m.plan_code) return;
-  const sa = m.currentSA;
-  
-  // 如果跟「依預算反推」的原始值一樣 → 不存(視為還原)
-  if (sa === m.originalSA) {
-    state.customSA.delete(m.plan_code);
-  } else {
-    state.customSA.set(m.plan_code, sa);
-  }
-  
-  closeSAAdjust();
-  // 重新渲染列表
-  renderProductList();
 }
 
 // ============================================================
@@ -6799,15 +6182,6 @@ function switchCurrency(cur) {
   renderCompareTable();
 }
 
-// v7: 切換 STEP3 顯示精度 (整數 / 完整 2 位小數)
-function toggleDecimal(showDecimal) {
-  state.showDecimal = !!showDecimal;
-  document.querySelectorAll('#decimal-toggle button').forEach(b => {
-    b.classList.toggle('active', (b.dataset.decimal === '1') === !!showDecimal);
-  });
-  renderCompareTable();
-}
-
 // v5: 列印 / 另存 PDF
 // v5.2: 列印 / 另存 PDF
 // 設計:每頁固定 6 個商品 + 完整 thead(公司、商品名、代號、年期、保額、首期、滿期、宣告利率)
@@ -6829,13 +6203,7 @@ function printCompareTable() {
     if (productCurrency === cur) return val;
     return cur === 'USD' ? val / rate : val * rate;
   };
-  const fmtMoney = v => {
-    if (v == null) return '-';
-    if (state.showDecimal) {
-      return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    return Math.round(v).toLocaleString();
-  };
+  const fmtMoney = v => v == null ? '-' : Math.round(v).toLocaleString();
   const fmtPct = v => v == null ? '-' : (v * 100).toFixed(1) + '%';
 
   // 客戶資訊摘要(每頁標題用)— 結構化為 [{label,value}] 給美化 meta-tag 使用
@@ -7138,14 +6506,7 @@ function renderCompareTable() {
     if (productCurrency === 'TWD' && !isShowTWD) return val / rate;
     return val;
   };
-  const fmtMoney = v => {
-    if (v === 0) return '0';
-    if (v == null) return '0';
-    if (state.showDecimal) {
-      return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    return Math.round(v).toLocaleString();
-  };
+  const fmtMoney = v => (v === 0 || v == null) ? '0' : Math.round(v).toLocaleString();
   const fmtPct = v => v === 0 ? '0.0%' : v.toFixed(1) + '%';
   const cur = state.currentCurrency;
 

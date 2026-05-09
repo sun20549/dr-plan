@@ -19,10 +19,15 @@
     "calc_method": "保額",
     "premium_mode": "lump_sum",
     "type_for_step1": "美元利率變動型終身壽險",
-    "source_file": "6UD4.pdf (PDF 為 M20 躉繳試算,base_sa 直接取自 PDF 投保金額欄)",
+    "source_file": "6UD4.pdf + 6UD4.xlsx",
     "extracted_at": "2026-05-08",
-    "extraction_note": "PDF 註1:本商品於部分保單年度有壽險保障逐年遞減,當宣告利率低於水準時可能下降。see Y11+ sa_basic 從 244,651 開始遞減 | base_premium=40000 對應 PDF cum_prem,實繳 34553(註折減後)",
-    "base_premium_net": 34553
+    "extraction_note": "PDF 註1:本商品於部分保單年度有壽險保障逐年遞減,當宣告利率低於水準時可能下降。see Y11+ sa_basic 從 244,651 開始遞減 | base_premium=40000 對應 PDF cum_prem,實繳 34553(註折減後)。校正紀錄(2026-05-09):補 min_sa=3000/max_sa=10000000/min_age=18/max_age=75(對齊 xlsx 險種基本資料);guaranteed_rate=0.0175 對齊 PDF 印刷值(xlsx 險種基本資料躉繳列為 0.0185,但 PDF 揭露用 1.75%)。discount 0.136175 為當前試算情境反推值(40000→34553),商品實際門檻折扣表(xlsx 險種基本資料):$100K→1%/$200K→2%/$500K→3%/$800K→4%/$1.2M→5.5%/$1.5M→7%。預定費用率 PDF 揭露 12.89%~14.12%。",
+    "base_premium_net": 34553,
+    "min_sa": 3000,
+    "max_sa": 10000000,
+    "min_age": 18,
+    "max_age": 75,
+    "updated_at": "2026-05-09"
   },
   "schedule": [
     {
@@ -1023,15 +1028,9 @@
       "cv_total": 33257,
       "death_benefit": 73836,
       "cv_to_prem_ratio": 0.8314,
-      "irr": -0.037508
-    },
-    "y6": {
-      "age": 25,
-      "cum_prem": 40000,
-      "cv_total": 44043,
-      "death_benefit": 278153,
-      "cv_to_prem_ratio": 1.1011,
-      "irr": 0.041274
+      "irr": -0.168575,
+      "irr_actual_paid": -0.037508,
+      "cv_to_actual_paid_ratio": 0.9625
     },
     "y10": {
       "age": 29,
@@ -1039,23 +1038,9 @@
       "cv_total": 52211,
       "death_benefit": 308227,
       "cv_to_prem_ratio": 1.3053,
-      "irr": 0.042144
-    },
-    "y12": {
-      "age": 31,
-      "cum_prem": 40000,
-      "cv_total": 56559,
-      "death_benefit": 311613,
-      "cv_to_prem_ratio": 1.414,
-      "irr": 0.041921
-    },
-    "y15": {
-      "age": 34,
-      "cum_prem": 40000,
-      "cv_total": 63675,
-      "death_benefit": 316787,
-      "cv_to_prem_ratio": 1.5919,
-      "irr": 0.041595
+      "irr": 0.026999,
+      "irr_actual_paid": 0.042144,
+      "cv_to_actual_paid_ratio": 1.511
     },
     "y20": {
       "age": 39,
@@ -1063,7 +1048,9 @@
       "cv_total": 77341,
       "death_benefit": 325549,
       "cv_to_prem_ratio": 1.9335,
-      "irr": 0.041109
+      "irr": 0.033517,
+      "irr_actual_paid": 0.041109,
+      "cv_to_actual_paid_ratio": 2.2383
     },
     "y30": {
       "age": 49,
@@ -1071,7 +1058,39 @@
       "cv_total": 112072,
       "death_benefit": 343816,
       "cv_to_prem_ratio": 2.8018,
-      "irr": 0.040001
+      "irr": 0.034939,
+      "irr_actual_paid": 0.040001,
+      "cv_to_actual_paid_ratio": 3.2435
+    },
+    "y50": {
+      "age": 69,
+      "cum_prem": 40000,
+      "cv_total": 219397,
+      "death_benefit": 383272,
+      "cv_to_prem_ratio": 5.4849,
+      "irr": 0.034626,
+      "irr_actual_paid": 0.03766,
+      "cv_to_actual_paid_ratio": 6.3496
+    },
+    "y70": {
+      "age": 89,
+      "cum_prem": 40000,
+      "cv_total": 354637,
+      "death_benefit": 427605,
+      "cv_to_prem_ratio": 8.8659,
+      "irr": 0.031666,
+      "irr_actual_paid": 0.033825,
+      "cv_to_actual_paid_ratio": 10.2636
+    },
+    "y90": {
+      "age": 109,
+      "cum_prem": 40000,
+      "cv_total": 476645,
+      "death_benefit": 476645,
+      "cv_to_prem_ratio": 11.9161,
+      "irr": 0.027915,
+      "irr_actual_paid": 0.029588,
+      "cv_to_actual_paid_ratio": 13.7946
     }
   }
 }

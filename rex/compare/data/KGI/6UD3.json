@@ -18,9 +18,15 @@
     "calc_method": "保額",
     "premium_mode": "lump_sum",
     "type_for_step1": "美元利率變動型終身壽險",
-    "source_file": "6UD3.pdf (依 PDF 試算數據抽取,base_sa 反推自躉繳保費 4000/11587×10000)",
+    "source_file": "6UD3.pdf + 6UD3.xlsx",
     "extracted_at": "2026-05-08",
-    "extraction_note": "base_sa=3452 為從躉繳保費反推(4000 USD / 每萬美元費率 11587),請以 DM 校對"
+    "extraction_note": "base_sa=3452 為從躉繳保費反推(4000 USD / 每萬美元費率 11587)。校正紀錄(2026-05-09):補 min_sa=3000/max_sa=6000000/max_age=88(對齊 xlsx 險種基本資料躉繳列);補 base_premium_gross=4000(躉繳無折減,xlsx 高保費費率折減為 0.006 級距,$4000 < $10000 門檻所以不適用)。註:本商品 xlsx 顯示有躉繳(period=1)+ 2 年期(period=2)兩種繳法,但 PDF 僅演示躉繳,2 年期版本(plan_code=6U3X)暫不部署,待補 schedule。預定費用率 PDF 揭露 6.24%~11.49%。",
+    "min_sa": 3000,
+    "max_sa": 6000000,
+    "min_age": 0,
+    "max_age": 88,
+    "base_premium_gross": 4000,
+    "updated_at": "2026-05-09"
   },
   "schedule": [
     {
@@ -1031,14 +1037,6 @@
       "cv_to_prem_ratio": 1.4235,
       "irr": 0.035943
     },
-    "y15": {
-      "age": 34,
-      "cum_prem": 4000,
-      "cv_total": 7041,
-      "death_benefit": 10982,
-      "cv_to_prem_ratio": 1.7603,
-      "irr": 0.038417
-    },
     "y20": {
       "age": 39,
       "cum_prem": 4000,
@@ -1054,6 +1052,30 @@
       "death_benefit": 18078,
       "cv_to_prem_ratio": 3.3123,
       "irr": 0.040728
+    },
+    "y50": {
+      "age": 69,
+      "cum_prem": 4000,
+      "cv_total": 30625,
+      "death_benefit": 32833,
+      "cv_to_prem_ratio": 7.6562,
+      "irr": 0.04155
+    },
+    "y70": {
+      "age": 89,
+      "cum_prem": 4000,
+      "cv_total": 70848,
+      "death_benefit": 70435,
+      "cv_to_prem_ratio": 17.712,
+      "irr": 0.041915
+    },
+    "y90": {
+      "age": 109,
+      "cum_prem": 4000,
+      "cv_total": 162820,
+      "death_benefit": 162820,
+      "cv_to_prem_ratio": 40.705,
+      "irr": 0.042041
     }
   }
 }
