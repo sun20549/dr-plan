@@ -9,7 +9,11 @@
 <style>
   /* 商品頁專屬樣式 */
   .product-hero {
-    background: linear-gradient(135deg, var(--navy) 0%, #0a3a4a 100%);
+    background:
+      linear-gradient(135deg, rgba(13,42,58,0.92) 0%, rgba(10,58,74,0.92) 100%),
+      url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover, cover;
+    background-position: center;
     color: #fff;
     padding: 36px 56px 44px;
     position: relative;
@@ -475,6 +479,11 @@
       <span class="sep">/</span>
       <span class="current">安達新幸福成雙</span>
     </nav>
+
+    <div style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; background: rgba(232,160,32,0.15); border: 1px solid rgba(232,160,32,0.4); border-radius: 20px; margin-bottom: 14px; position: relative; z-index: 2;">
+      <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #1B365D, #0A1F3D); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 0.5px;">Chubb</div>
+      <div style="font-size: 11px; color: var(--gold); letter-spacing: 1.5px; font-weight: 700;">安達國際 ・ 全球頂尖保險集團</div>
+    </div>
 
     <div class="product-hero-grid">
       <div>

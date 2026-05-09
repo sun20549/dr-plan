@@ -10,8 +10,11 @@
   /* 安聯頁面專屬樣式 */
   .allianz-hero {
     background:
-      radial-gradient(ellipse at top right, rgba(0,90,150,0.4) 0%, transparent 60%),
-      linear-gradient(135deg, var(--navy) 0%, #002a4a 100%);
+      radial-gradient(ellipse at top right, rgba(0,55,129,0.5) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(13,42,58,0.95) 0%, rgba(0,42,74,0.95) 100%),
+      url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover, cover, cover;
+    background-position: center;
     color: #fff;
     padding: 40px 56px 50px;
     position: relative;
@@ -373,6 +376,23 @@
   </header>
 
   <div class="content">
+
+    <!-- 品牌專業視覺 -->
+    <div class="section-block" style="margin-bottom: 32px;">
+      <div style="background: linear-gradient(135deg, #003781 0%, #001f4d 100%); border-radius: 18px; padding: 28px 32px; color: #fff; position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; align-items: center;">
+        <div style="position: relative; z-index: 1;">
+          <div style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; letter-spacing: 2px; margin-bottom: 6px;">Allianz</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 3px; margin-bottom: 14px; text-transform: uppercase;">Global Investors</div>
+          <div style="display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 14px; font-size: 11px; letter-spacing: 1.5px; color: rgba(255,255,255,0.8);">百年品牌 ・ 全球前三大</div>
+        </div>
+        <div style="position: relative; z-index: 1;">
+          <p style="font-size: 13px; line-height: 1.9; color: rgba(255,255,255,0.85);">
+            <strong style="color: #FFD700;">安聯集團（Allianz）</strong>創立於 1890 年，總部位於德國慕尼黑，是全球前三大資產管理公司，管理資產規模超過 <strong style="color: #FFD700;">2.5 兆歐元</strong>。安聯收益成長基金為旗艦商品，自 2007 年成立以來，是國內投資型保單最熱門的核心配置標的之一。
+          </p>
+        </div>
+        <div style="position: absolute; top: -50px; right: -50px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,215,0,0.06); pointer-events: none;"></div>
+      </div>
+    </div>
 
     <!-- 三平衡型介紹 -->
     <div class="section-block">

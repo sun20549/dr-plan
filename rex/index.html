@@ -198,20 +198,58 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 /* RWD */
 @media(max-width:920px){
   .page{width:100%;border-radius:0;}
-  .header{padding:20px 20px;}
-  .header-inner{flex-wrap:wrap;gap:16px;}
-  .header-center{order:-1;width:100%;text-align:center;}
-  .header-center .hero-line{font-size:44px;}
-  .header-center .hero-sub{font-size:14px;}
-  .header-right{flex-direction:row;min-width:0;width:100%;justify-content:center;}
-  .tagline-bar{padding:10px 16px;gap:10px;flex-wrap:wrap;}
+  .header{padding:24px 18px 22px;}
+  .header::before{display:none;}
+  .header-inner{flex-direction:column;align-items:center;gap:14px;}
+  .logo-area{gap:12px;}
+  .logo-area img{width:64px;height:64px;padding:8px;border-radius:14px;}
+  .logo-text .brand{font-size:14px;}
+  .logo-text .tag{font-size:10px;letter-spacing:1.5px;padding:2px 8px;}
+  .header-center{position:static;padding-top:0;pointer-events:auto;}
+  .header-center .hero-line{font-size:38px;letter-spacing:3px;}
+  .header-center .hero-sub{font-size:13px;letter-spacing:2px;margin-top:2px;}
+  .header-right{margin-left:0;width:100%;justify-content:center;display:flex;}
+  .hdr-badge{width:100%;padding:10px 14px;font-size:11px;letter-spacing:0.5px;}
+  .hdr-badge .big{font-size:15px;}
+  .tagline-bar{padding:8px 14px;gap:8px;flex-wrap:wrap;}
   .tagline-bar span{font-size:11px;letter-spacing:1px;}
-  .nav{padding:0 8px;overflow-x:auto;}
-  .nav a.nav-link{padding:12px 8px;font-size:12px;}
-  .body{padding:24px 20px 36px;}
-  .doc-cards,.tools-grid,.co-grid,.company-grid,.cc-grid,.hero-tools-grid{grid-template-columns:1fr;}
+  .tagline-bar .dot{font-size:14px;}
+  .nav{padding:0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .nav a.nav-link{padding:11px 6px;font-size:12px;}
+  .body{padding:18px 14px 28px;}
+  .section-header{margin-bottom:10px;}
+  .sec-title{font-size:16px;}
+  .sec-sub{font-size:11px;}
+
+  /* 體系專業工具:手機保持 2 欄,內容壓縮 */
+  .hero-tools-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .hero-tool-card{padding:14px 12px 12px;gap:6px;border-radius:14px;}
+  .hero-tool-card::before{height:3px;}
+  .htc-tag{font-size:9px;letter-spacing:0.3px;padding:3px 8px;border-radius:10px;}
+  .htc-icon-wrap{width:40px;height:40px;border-radius:10px;}
+  .htc-icon-wrap svg{width:26px;height:26px;}
+  .htc-title{font-size:14px;letter-spacing:0;margin-top:2px;}
+  .htc-desc{font-size:11px;line-height:1.55;}
+  .htc-features{gap:2px;margin-top:2px;}
+  .htc-feature{font-size:10px;}
+  .htc-cta{font-size:11px;padding:6px 12px;border-radius:14px;}
+  .hero-tool-card .htc-soon{font-size:9px;padding:3px 8px;}
+
+  /* 其他單欄區塊維持單欄 */
+  .doc-cards,.tools-grid,.co-grid,.company-grid,.cc-grid{grid-template-columns:1fr;}
   .hontai-body{grid-template-columns:1fr;}
   .float-search{right:8px;left:8px;min-width:0;}
+}
+
+@media(max-width:380px){
+  /* 極窄螢幕 (iPhone SE 等):卡片改回單欄 */
+  .hero-tools-grid{grid-template-columns:1fr;gap:10px;}
+  .hero-tool-card{padding:16px 16px 14px;}
+  .htc-title{font-size:16px;}
+  .htc-desc{font-size:12px;}
+  .htc-feature{font-size:11px;}
+  .htc-icon-wrap{width:48px;height:48px;}
+  .htc-icon-wrap svg{width:30px;height:30px;}
 }
 </style>
 </head>
@@ -325,8 +363,8 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
         <div class="htc-cta">進入系統 →</div>
       </a>
 
-      <!-- 卡 4:保險經紀人制度分析(暫停連結) -->
-      <a href="#" class="hero-tool-card hero-tool-teal is-disabled" aria-disabled="true" onclick="event.preventDefault();return false;">
+      <!-- 卡 4:保險經紀人制度分析 -->
+      <a href="./income/" class="hero-tool-card hero-tool-teal">
         <div class="htc-tag">招募輔助 · 同業對照</div>
         <div class="htc-icon-wrap">
           <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
@@ -344,7 +382,7 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
           <span class="htc-feature">✓ 同業差異一目了然</span>
           <span class="htc-feature">✓ 招募溝通有力支援</span>
         </div>
-        <div class="htc-soon">系統建置中</div>
+        <div class="htc-cta">進入系統 →</div>
       </a>
     </div>
   </div>
