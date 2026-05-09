@@ -1,0 +1,3187 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+<link rel="shortcut icon" href="../../images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../images/favicon-180.png">
+<title>保險經紀人制度比較</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+    --gray-light: #f5f5f5;
+    --gray-mid: #ddd;
+    --gray-text: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .page {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 28px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    gap: 24px;
+  }
+
+  .back-link {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .2s;
+  }
+  .back-link:hover { color: #fff; }
+
+  .title-area {
+    flex: 1;
+    text-align: center;
+  }
+  .title-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: #E8A020;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    background: rgba(232,160,32,0.08);
+    margin-bottom: 10px;
+  }
+  .title-main {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 4px;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .header-spacer { width: 80px; }
+
+  /* ── DISCLAIMER BAR ── */
+  .disclaimer-bar {
+    background: var(--teal);
+    padding: 10px 48px;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .disclaimer-bar strong { color: var(--gold); margin-right: 6px; }
+
+  /* ── BODY ── */
+  .body-content { padding: 32px 48px 60px; }
+
+  /* ── INTRO ── */
+  .intro {
+    background: linear-gradient(135deg, #fafafa 0%, #f0ede8 100%);
+    border-left: 4px solid var(--orange);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .intro strong { color: var(--navy); }
+
+  /* ── CONTROL BAR ── */
+  .control-bar {
+    background: #fff;
+    border: 2px solid var(--gray-mid);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  }
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .control-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .selector-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .selector-tag {
+    background: var(--teal);
+    color: white;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  select {
+    padding: 8px 14px;
+    border: 1.5px solid var(--gray-mid);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--navy);
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s;
+    min-width: 160px;
+  }
+  select:hover, select:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+
+  .add-btn, .remove-btn {
+    padding: 8px 16px;
+    border: 1.5px dashed var(--orange);
+    background: var(--orange-light);
+    color: var(--orange);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+  }
+  .add-btn:hover {
+    background: var(--orange);
+    color: white;
+  }
+  .remove-btn {
+    border-color: #ccc;
+    background: #f5f5f5;
+    color: #666;
+    border-style: solid;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .remove-btn:hover {
+    background: #e63946;
+    color: white;
+    border-color: #e63946;
+  }
+  .add-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ── COMPARISON GRID ── */
+  .comparison-wrap {
+    overflow-x: auto;
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* COLUMN HEADERS */
+  .col-header {
+    background: var(--navy);
+    color: #fff;
+    text-align: center;
+    padding: 18px 12px !important;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+  }
+  .col-header.self {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+  }
+  .col-header.self::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .col-header .col-name {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .col-header .col-tag {
+    font-size: 10px;
+    opacity: 0.8;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+
+  /* LABEL COLUMN */
+  .row-label {
+    background: var(--gray-light);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 13px;
+    width: 140px;
+    letter-spacing: 1px;
+    border-right: 2px solid #fff;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+  .row-label .label-icon {
+    display: inline-block;
+    width: 4px;
+    height: 14px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .row-label .label-sub {
+    display: block;
+    font-size: 10px;
+    color: #999;
+    font-weight: 500;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* DATA CELLS */
+  .data-cell {
+    color: #444;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .data-cell.self {
+    background: rgba(240, 90, 40, 0.05);
+  }
+  .data-cell strong { color: var(--orange); font-weight: 700; }
+
+  /* RANK TABLE INSIDE CELL */
+  .rank-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .rank-mini-header {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) auto auto;
+    column-gap: 12px;
+    padding: 4px 10px 4px;
+    font-size: 9px;
+    color: #999;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    text-align: right;
+  }
+  .rank-mini-header.single {
+    grid-template-columns: minmax(60px, 1fr) auto;
+  }
+  .rank-mini-header .col-name { text-align: left; }
+  .rank-mini-header .col-sys { min-width: 56px; }
+  .rank-mini-header .col-act { min-width: 56px; }
+  .rank-mini-row {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) auto auto;
+    column-gap: 12px;
+    align-items: center;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    font-size: 12px;
+  }
+  .rank-mini-row.single {
+    grid-template-columns: minmax(60px, 1fr) auto;
+  }
+  .data-cell.self .rank-mini-row {
+    background: #fff;
+    border-color: rgba(240,90,40,0.25);
+  }
+  .rank-mini-name {
+    color: var(--navy);
+    font-weight: 600;
+    min-width: 0;
+    word-break: break-word;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .rank-mini-rate {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    text-align: right;
+    white-space: nowrap;
+    min-width: 56px;
+  }
+  .rank-mini-rate.sys {
+    color: #888;
+    font-size: 14px;
+  }
+  .rank-mini-rate.act {
+    color: var(--orange);
+  }
+  .rank-mini-rate.same {
+    color: var(--orange);
+    min-width: 80px;
+  }
+  /* 複雜數字(含 % 號 + / + 等)字級自動縮小 */
+  .rank-mini-rate.complex {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  /* DISCOUNT BADGE */
+  .discount-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--teal-light);
+    color: var(--teal);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .data-cell.self .discount-badge {
+    background: rgba(240,90,40,0.15);
+    color: var(--orange);
+  }
+
+  /* SECTION HEADERS IN TABLE */
+  .section-header td {
+    background: var(--navy);
+    color: #fff;
+    padding: 8px 16px !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: left;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-text);
+  }
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* 職級選擇 grid - 鼎綸獨佔一行,對照 N 家排第二行 */
+  .rank-select-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rank-select-row {
+    display: grid;
+    gap: 12px;
+  }
+  .rank-select-row.dl-row {
+    grid-template-columns: 1fr;
+  }
+  .rank-select-row.others-row.cnt-1 { grid-template-columns: 1fr; }
+  .rank-select-row.others-row.cnt-2 { grid-template-columns: 1fr 1fr; }
+  .rank-select-row.others-row.cnt-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* 多卡並排:重新排版 calc-result-grid */
+  .calc-result-grid.multi {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .calc-result-grid.multi .calc-result-vs { display: none; }
+  .calc-result-grid.multi .calc-result-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .calc-result-grid.multi .calc-result-row.others-cnt-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .calc-result-grid.multi .calc-result-row.others-cnt-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* 多筆差距列表 */
+  .multi-diff-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .multi-diff-item {
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+  .multi-diff-item.deficit {
+    background: #ddd;
+  }
+  .multi-diff-item-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .multi-diff-item-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.5px;
+    color: var(--navy);
+  }
+  .multi-diff-item-value small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    margin-left: 4px;
+    color: #555;
+  }
+
+  /* 退休明細列表 — 動態 1/2 欄 */
+  .retire-detail-list {
+    display: grid;
+    gap: 14px;
+  }
+  .retire-detail-list.cols-1 { grid-template-columns: 1fr; }
+  .retire-detail-list.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .retire-detail-item {
+    background: white;
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 4px 14px rgba(240,90,40,0.1);
+    background: linear-gradient(180deg, #fff 0%, #fffaf2 100%);
+  }
+
+  /* 對比區:鼎綸 ↓ 對方 */
+  .retire-detail-vs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .retire-detail-vs .rd-dl {
+    color: var(--orange);
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+  }
+  .retire-detail-vs .rd-vs-arrow {
+    color: #aaa;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .retire-detail-vs .rd-other {
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 17px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+  .retire-detail-vs .rd-other-rank {
+    font-size: 13px;
+    color: #777;
+    font-weight: 600;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .retire-detail-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--orange);
+    letter-spacing: 1px;
+    line-height: 1;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(240,90,40,0.15);
+  }
+  .retire-detail-amount small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 18px;
+    margin-left: 6px;
+    color: #888;
+    font-weight: 700;
+  }
+  .retire-detail-formula {
+    font-size: 13px;
+    color: #777;
+    letter-spacing: 0.3px;
+    padding-top: 10px;
+    border-top: 1px dashed #e8e3da;
+  }
+  .retire-detail-formula b {
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 14px;
+  }
+
+  /* 移動裝置調整 */
+  @media (max-width: 700px) {
+    .retire-detail-list.cols-2 { grid-template-columns: 1fr; }
+    .retire-detail-amount { font-size: 38px; }
+    .retire-detail-amount small { font-size: 14px; }
+    .retire-detail-vs .rd-dl,
+    .retire-detail-vs .rd-other { font-size: 15px; }
+  }
+
+  /* ── 可搜尋下拉 (Combobox) ── */
+  .combo {
+    position: relative;
+  }
+  .combo-input {
+    width: 100%;
+    padding: 10px 36px 10px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--navy);
+    background: #fff;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .combo-input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26,107,114,0.08);
+  }
+  .combo-input:disabled {
+    background: #f5f5f5;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+  .combo-input::placeholder {
+    color: #b0b5bd;
+  }
+  .combo-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #999;
+    font-size: 10px;
+    transition: transform 0.2s ease;
+  }
+  .combo.open .combo-arrow {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  .combo-clear {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .combo-clear:hover { background: var(--orange); }
+  .combo.has-value .combo-clear { display: flex; }
+  .combo-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 280px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(13,42,58,0.12);
+    z-index: 50;
+    display: none;
+  }
+  .combo.open .combo-list {
+    display: block;
+  }
+  .combo-item {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--navy);
+    cursor: pointer;
+    border-bottom: 1px solid #f0f2f5;
+    transition: background 0.12s ease;
+    line-height: 1.5;
+  }
+  .combo-item:last-child { border-bottom: none; }
+  .combo-item:hover,
+  .combo-item.active {
+    background: rgba(240, 90, 40, 0.08);
+    color: var(--orange);
+  }
+  .combo-item mark {
+    background: rgba(232, 160, 32, 0.35);
+    color: var(--orange);
+    font-weight: 900;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .combo-item .item-company {
+    font-size: 11px;
+    color: #999;
+    margin-right: 6px;
+  }
+  .combo-empty {
+    padding: 16px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+  }
+
+  /* ── CALCULATOR ── */
+  .calc-section {
+    margin-top: 36px;
+    background: linear-gradient(135deg, #fafafa 0%, #f0ede8 100%);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .calc-title {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .calc-title-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    background: var(--orange);
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .calc-title h2 {
+    font-size: 24px;
+    color: var(--navy);
+    letter-spacing: 3px;
+    font-weight: 900;
+  }
+  .calc-title p {
+    color: #666;
+    font-size: 13px;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  .calc-step {
+    margin-top: 22px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 22px;
+    border: 1px solid #e8e3da;
+  }
+  .calc-step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .calc-step-num {
+    background: var(--orange);
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .calc-step-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .calc-step-hint {
+    font-size: 11px;
+    color: #999;
+    margin-left: auto;
+    letter-spacing: 1px;
+  }
+
+  /* tabs (商品 vs 直接輸入 FYC) */
+  .calc-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .calc-tab {
+    flex: 1;
+    padding: 8px 12px;
+    background: #f5f1eb;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #888;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: 1px;
+  }
+  .calc-tab.active {
+    background: white;
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .calc-tab:hover { background: #efe9e0; }
+  .calc-tab.active:hover { background: white; }
+
+  .calc-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .calc-fields.full { grid-template-columns: 1fr; }
+  .calc-fields.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .calc-field label {
+    font-size: 11px;
+    color: #666;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .calc-field select, .calc-field input[type="number"], .calc-field input[type="text"] {
+    padding: 10px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--navy);
+    transition: border-color .15s;
+  }
+  .calc-field select:focus, .calc-field input:focus {
+    border-color: var(--teal);
+    outline: none;
+  }
+  .calc-field input[readonly] {
+    background: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+  }
+  .calc-field-hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: -2px;
+  }
+
+  .calc-fyc-display {
+    background: var(--teal-light);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    text-align: center;
+    border: 1.5px solid var(--teal);
+  }
+  .calc-fyc-display .label {
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+  .calc-fyc-display .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--teal);
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+  .calc-fyc-display .value small {
+    font-family: inherit;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+
+  /* 結果區 */
+  .calc-result {
+    margin-top: 22px;
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    border-radius: 16px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .calc-result::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.1);
+    filter: blur(40px);
+  }
+  .calc-result-title {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .calc-result-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: stretch;
+    position: relative; z-index: 1;
+  }
+  .calc-result-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 18px 14px;
+    backdrop-filter: blur(4px);
+  }
+  .calc-result-card.dl {
+    background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%);
+    border-color: var(--orange);
+  }
+  .calc-result-card .name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 1.5px;
+  }
+  .calc-result-card .role {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .calc-result-card .amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+  .calc-result-card .amount small {
+    font-family: inherit;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .calc-result-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 2px;
+  }
+
+  .calc-diff {
+    margin-top: 20px;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .calc-diff-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+  .calc-diff-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+  }
+  .calc-diff-value small {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    margin-left: 6px;
+    color: #555;
+  }
+  .calc-diff-percent {
+    font-size: 13px;
+    color: #555;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* 視覺化長條 */
+  .calc-bar-wrap {
+    margin-top: 18px;
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .calc-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .calc-bar-row:last-child { margin-bottom: 0; }
+  .calc-bar-name {
+    flex-shrink: 0;
+    width: 80px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-align: right;
+  }
+  .calc-bar-track {
+    flex: 1;
+    height: 22px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .calc-bar-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.6s ease;
+    background: rgba(255,255,255,0.4);
+  }
+  .calc-bar-fill.dl {
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+  }
+  .calc-bar-amount {
+    flex-shrink: 0;
+    width: 100px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: white;
+    text-align: left;
+    letter-spacing: 0.5px;
+  }
+
+  /* 退休震撼 */
+  .retire-shock {
+    margin-top: 22px;
+    background: #fff;
+    border: 2px dashed var(--orange);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+  }
+  .retire-shock-header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .retire-shock-tag {
+    display: inline-block;
+    padding: 3px 12px;
+    background: var(--orange);
+    color: white;
+    font-size: 10px;
+    letter-spacing: 3px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+  .retire-shock-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+  .retire-shock-desc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .retire-summary {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe6b8 100%);
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    border: 1px solid #f0d4a8;
+  }
+  .retire-summary-label {
+    font-size: 11px;
+    color: #7a5a2a;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+  .retire-summary-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--orange);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin: 6px 0;
+    text-shadow: 0 2px 8px rgba(240,90,40,0.15);
+  }
+  .retire-summary-value small {
+    font-family: inherit;
+    font-size: 18px;
+    color: #7a5a2a;
+    margin-left: 6px;
+  }
+  .retire-summary-formula {
+    font-size: 12px;
+    color: #7a5a2a;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+  .retire-summary-bigtext {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed rgba(122, 90, 42, 0.3);
+    font-size: 16px;
+    color: #5a3a0a;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .retire-summary-bigtext:empty { display: none; }
+  .retire-summary-bigtext .big-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--orange);
+    letter-spacing: 1px;
+    margin: 0 6px;
+    text-shadow: 0 2px 12px rgba(240,90,40,0.25);
+    line-height: 1;
+    vertical-align: middle;
+  }
+  .retire-summary-bigtext .big-unit {
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .retire-summary-note {
+    font-size: 10px;
+    color: #aa8540;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* 進階選項(續年度) */
+  .calc-advanced-toggle {
+    margin-top: 16px;
+    text-align: center;
+  }
+  .calc-advanced-toggle button {
+    background: transparent;
+    border: 1px dashed #aaa;
+    color: #777;
+    padding: 8px 18px;
+    border-radius: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 1px;
+    transition: all .15s;
+  }
+  .calc-advanced-toggle button:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .calc-advanced {
+    margin-top: 14px;
+    background: var(--teal-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: none;
+  }
+  .calc-advanced.show { display: block; }
+  .calc-advanced-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .calc-advanced-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .calc-advanced-result {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .calc-advanced-result strong {
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+
+  /* 動作按鈕 */
+  .calc-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .calc-action-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 1.5px solid #ddd;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 1px;
+    transition: all .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .calc-action-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+    transform: translateY(-1px);
+  }
+  .calc-action-btn.primary {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+  .calc-action-btn.primary:hover {
+    background: #D04618;
+    color: white;
+  }
+
+  /* 空狀態提示 */
+  .calc-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    font-size: 13px;
+  }
+
+  /* PRINT */
+  @media print {
+    .header, .footer, .control-bar, .comparison-wrap, .info-box,
+    .calc-actions, .calc-advanced-toggle, .disclaimer-bar { display: none !important; }
+    .page { box-shadow: none; width: 100%; }
+    .body-content { padding: 16px; }
+    .calc-section { background: white !important; box-shadow: none; padding: 0; margin-top: 0; }
+    .calc-result, .retire-shock { page-break-inside: avoid; }
+    .calc-result { background: #0D2A3A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .calc-result-card.dl, .calc-bar-fill.dl, .retire-summary-value, .calc-diff {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .calc-section { padding: 16px; margin-top: 24px; }
+    .calc-step { padding: 14px; }
+    .calc-fields, .calc-fields.three { grid-template-columns: 1fr; }
+    .calc-result { padding: 18px; }
+    .calc-result-grid { grid-template-columns: 1fr; }
+    .calc-result-vs { display: none; }
+    .calc-result-card .amount { font-size: 26px; }
+    .retire-shock { padding: 16px; }
+    .retire-summary-value { font-size: 40px; }
+    .calc-advanced-fields { grid-template-columns: 1fr; }
+    .calc-bar-name { width: 60px; font-size: 10px; }
+    .calc-bar-amount { width: 80px; font-size: 13px; }
+    .calc-tabs { flex-direction: column; gap: 4px; }
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    margin-top: 28px;
+    background: #fff8f0;
+    border: 1px solid #f0d4a8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: #7a5a2a;
+    line-height: 1.7;
+  }
+  .info-box strong { color: var(--orange); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.65);
+    padding: 24px 48px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    line-height: 1.8;
+  }
+  .footer a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .footer a:hover { color: #fff; }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    .body-content { padding: 20px 16px 40px; }
+    .header { padding: 20px 16px; }
+    .disclaimer-bar { padding: 10px 16px; font-size: 11px; }
+    .footer { padding: 20px 16px; }
+    .title-main { font-size: 22px; letter-spacing: 2px; }
+    .title-sub { font-size: 10px; }
+    .header-spacer { display: none; }
+    .control-row { flex-direction: column; align-items: stretch; }
+    .selector-group { flex-direction: column; }
+    .selector { width: 100%; }
+    select { width: 100%; min-width: 0; }
+    .row-label { width: 90px; font-size: 11px; padding: 10px 8px; }
+    .comparison-table th, .comparison-table td { padding: 10px 8px; font-size: 11px; }
+    .col-header .col-name { font-size: 16px; }
+    .rank-mini-row { padding: 4px 8px; font-size: 10px; column-gap: 6px; }
+    .rank-mini-rate { font-size: 13px; min-width: 40px; }
+    .rank-mini-rate.same { min-width: 56px; }
+    .rank-mini-rate.complex { font-size: 9px; }
+    .rank-mini-header { padding: 4px 8px 2px; font-size: 8px; column-gap: 6px; }
+    .rank-mini-header .col-sys, .rank-mini-header .col-act { min-width: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <a href="../../" class="back-link">← 回鼎綸恩宇</a>
+      <div class="title-area">
+        <div class="title-tag">CAREER COMPARISON</div>
+        <div class="title-main">保險經紀人制度比較</div>
+        <div class="title-sub">INSURANCE BROKER SYSTEM COMPARISON</div>
+      </div>
+      <div class="header-spacer"></div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER BAR -->
+  <div class="disclaimer-bar">
+    各公司制度可能已調整,實際內容請以各公司最新公告為準。除鼎綸外,其他公司均以代號呈現。
+  </div>
+
+  <!-- BODY -->
+  <div class="body-content">
+
+    <!-- INTRO -->
+    <div class="intro">
+      <strong>📊 如何使用這份比較表?</strong><br>
+      預設顯示<strong>「鼎綸」</strong>與另一家保經公司並列對照。透過下方選單切換對照公司,點擊<strong>「+ 新增對照」</strong>可同時比較最多 3 家(鼎綸 + 2 家)。表中所有數字皆為制度實際發放比例,可從職階分潤、續年度佣金、組織獎金、績效獎金等多面向評估。
+    </div>
+
+    <!-- CONTROL BAR -->
+    <div class="control-bar">
+      <div class="control-row">
+        <span class="control-label">選擇對照公司</span>
+        <div class="selector-group" id="selectorGroup">
+          <!-- 動態插入 -->
+        </div>
+        <button class="add-btn" id="addBtn" onclick="addCompare()">+ 新增對照</button>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="comparison-wrap">
+      <table class="comparison-table" id="comparisonTable">
+        <!-- 動態插入 -->
+      </table>
+    </div>
+
+    <!-- ============ CALCULATOR SECTION ============ -->
+    <div class="calc-section" id="calcSection">
+      <div class="calc-title">
+        <div class="calc-title-tag">INCOME SIMULATOR</div>
+        <h2>制度差異・收入試算</h2>
+        <p>選擇兩家公司職級,看看同一張保單你能拿多少差距</p>
+      </div>
+
+      <!-- STEP 1: 選擇商品/輸入 FYC -->
+      <div class="calc-step">
+        <div class="calc-step-header">
+          <div class="calc-step-num">1</div>
+          <div class="calc-step-title">選擇保單與保費</div>
+          <div class="calc-step-hint">選商品自動算 FYC,或直接輸入金額</div>
+        </div>
+
+        <div class="calc-tabs">
+          <button class="calc-tab active" id="tabProduct" onclick="switchInputMode('product')">📋 從商品選擇</button>
+          <button class="calc-tab" id="tabManual" onclick="switchInputMode('manual')">✏️ 直接輸入 FYC</button>
+        </div>
+
+        <!-- 模式 A:選商品 -->
+        <div id="modeProduct">
+          <div class="calc-fields">
+            <div class="calc-field">
+              <label>保險公司</label>
+              <div class="combo" id="insurerCombo">
+                <input type="text" class="combo-input" id="insurerInput" placeholder="輸入或點選公司名稱..." autocomplete="off">
+                <button type="button" class="combo-clear" id="insurerClear" onclick="clearInsurer(event)">✕</button>
+                <span class="combo-arrow">▼</span>
+                <div class="combo-list" id="insurerList"></div>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label>商品 <span style="color:#999;font-size:11px;font-weight:400">(可直接搜尋)</span></label>
+              <div class="combo" id="productCombo">
+                <input type="text" class="combo-input" id="productInput" placeholder="輸入商品/公司關鍵字..." autocomplete="off">
+                <button type="button" class="combo-clear" id="productClear" onclick="clearProduct(event)">✕</button>
+                <span class="combo-arrow">▼</span>
+                <div class="combo-list" id="productList"></div>
+              </div>
+            </div>
+          </div>
+          <div class="calc-fields" style="margin-top:12px">
+            <div class="calc-field">
+              <label>保費 <span id="premiumCurrency" style="color:#999"></span></label>
+              <input type="text" inputmode="numeric" id="premiumInput" placeholder="例如:50,000" oninput="onPremiumInput()">
+              <div class="calc-field-hint" id="premiumHint">輸入該保單的年繳/期繳保費</div>
+            </div>
+            <div class="calc-field">
+              <label>代理費率(自動帶入)</label>
+              <input type="text" id="rateDisplay" readonly placeholder="--">
+              <div class="calc-field-hint" id="productYearHint"></div>
+            </div>
+          </div>
+
+          <!-- 外幣專用:匯率與換算後台幣保費 -->
+          <div class="calc-fields" id="fxFields" style="margin-top:12px;display:none">
+            <div class="calc-field">
+              <label>匯率(<span id="fxRateLabel">USD</span> → TWD)</label>
+              <input type="number" id="fxRateInput" step="0.01" placeholder="32.5" oninput="recalcAll()">
+              <div class="calc-field-hint">可自行輸入即時匯率</div>
+            </div>
+            <div class="calc-field">
+              <label>換算後台幣保費</label>
+              <input type="text" id="twPremiumDisplay" readonly placeholder="--">
+              <div class="calc-field-hint">外幣保費 × 匯率</div>
+            </div>
+          </div>
+
+          <div class="calc-fyc-display" id="fycDisplay" style="display:none">
+            <div class="label">FYC 首年佣金</div>
+            <div class="value"><span id="fycValue">0</span><small>元</small></div>
+          </div>
+        </div>
+
+        <!-- 模式 B:手動輸入 FYC -->
+        <div id="modeManual" style="display:none">
+          <div class="calc-fields full">
+            <div class="calc-field">
+              <label>直接輸入 FYC(首年佣金總額)</label>
+              <input type="text" inputmode="numeric" id="manualFyc" placeholder="例如:30,000" oninput="onManualFycInput()">
+              <div class="calc-field-hint">已知這張保單會給保經公司的首年佣金總額</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: 選擇職級(動態跟著對照公司數量) -->
+      <div class="calc-step">
+        <div class="calc-step-header">
+          <div class="calc-step-num">2</div>
+          <div class="calc-step-title">選擇各家職級</div>
+          <div class="calc-step-hint">會跟著上方對照公司數量自動展開</div>
+        </div>
+        <div id="rankSelectGrid" class="rank-select-grid">
+          <!-- JS 動態插入 -->
+        </div>
+        <div class="calc-field-hint" style="margin-top:8px;text-align:center">
+          ⚠️ 在最上方比較表「+ 新增對照」即可同時試算多家;此處選項會同步
+        </div>
+      </div>
+
+      <!-- STEP 3: 結果顯示 -->
+      <div id="calcResult" class="calc-empty">
+        填完上方資訊,即可看到收入差異
+      </div>
+
+      <!-- 進階:續年度估算 -->
+      <div class="calc-advanced-toggle">
+        <button onclick="toggleAdvanced()" id="advancedBtn">▼ 顯示續年度估算(進階)</button>
+      </div>
+      <div class="calc-advanced" id="calcAdvanced">
+        <div class="calc-advanced-title">📅 續年度佣金累積估算</div>
+        <div class="calc-advanced-fields">
+          <div class="calc-field">
+            <label>續年度佣金率(%,通常 80%)</label>
+            <input type="number" id="renewalRate" value="80" step="1" min="0" max="100" oninput="recalcAll()">
+          </div>
+          <div class="calc-field">
+            <label>續年數(通常 5 年)</label>
+            <input type="number" id="renewalYears" value="5" step="1" min="0" max="20" oninput="recalcAll()">
+          </div>
+        </div>
+        <div class="calc-advanced-result" id="renewalResult">
+          請先完成上方步驟
+        </div>
+      </div>
+
+      <!-- ============ 退休震撼計算 ============ -->
+      <div class="retire-shock" id="retireShockBox" style="display:none">
+        <div class="retire-shock-header">
+          <span class="retire-shock-tag">CAREER TOTAL</span>
+          <div class="retire-shock-title">📅 退休前累積差距</div>
+          <div class="retire-shock-desc" id="retireShockDesc">假設每年做相同保費業績,推算到退休的累積差額</div>
+        </div>
+        <div class="calc-fields three" id="retireFieldsGrid">
+          <div class="calc-field">
+            <label>目前年齡</label>
+            <input type="number" id="ageNow" placeholder="請輸入目前年齡以計算累積差距" min="18" max="70" oninput="recalcRetire()">
+          </div>
+          <div class="calc-field">
+            <label>退休年齡</label>
+            <input type="number" id="ageRetire" placeholder="請輸入退休年齡以計算累積差距" min="40" max="80" oninput="recalcRetire()">
+          </div>
+          <div class="calc-field" id="yearlyDealsField">
+            <label>每年平均成交件數</label>
+            <input type="number" id="yearlyDeals" value="12" min="0" max="500" step="1" oninput="recalcRetire()">
+            <div class="calc-field-hint">同上方那張保單的年度件數</div>
+          </div>
+        </div>
+        <div class="retire-summary" id="retireSummary" style="display:none">
+          <div class="retire-summary-label">💥 退休前累積差距</div>
+          <div class="retire-summary-value">+<span id="retireDiff">0</span><small>元</small></div>
+          <div class="retire-summary-formula" id="retireFormula"></div>
+          <div class="retire-summary-bigtext" id="retireBigText"></div>
+          <div class="retire-summary-note">
+            ※ 此估算僅以「首年佣金」單筆差距 推算<br>
+            實際差距會更大,因為:續年度佣金、組織獎金、晉升、年資加碼等皆未計入
+          </div>
+        </div>
+      </div>
+
+      <!-- 動作按鈕 -->
+      <div class="calc-actions">
+        <button class="calc-action-btn" onclick="window.print()">🖨️ 列印 / 存成 PDF</button>
+        <button class="calc-action-btn" onclick="copyShareLink()" id="shareBtn">🔗 複製分享連結</button>
+        <button class="calc-action-btn" onclick="resetCalc()">↺ 重設</button>
+      </div>
+    </div>
+    <!-- ============ END CALCULATOR ============ -->
+
+    <!-- INFO BOX -->
+    <div class="info-box">
+      <strong>📌 名詞說明:</strong><br>
+      • <strong>FYC(First Year Commission)</strong>:首年度佣金,新契約成立第一年由保險公司支付的佣金。<br>
+      • <strong>代理費率</strong>:保險公司支付給保經公司的佣金比例。「代理費率之80%」表示保經公司另抽取20%作為公司營運費用。<br>
+      • <strong>職級率(K值)</strong>:不同職級可分得佣金的百分比。<br>
+      • <strong>續年度佣金</strong>:保單第2年起,客戶持續繳費時所產生的續期佣金。<br>
+      • <strong>代數獎金</strong>:組織內主管對下線單位收益的分潤,通常分一代、二代、三代。<br>
+      • <strong>K值制度</strong>:保險公司獎勵金以「主管 K值 - 夥伴 K值」差額分配,鼓勵組織發展。
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    本資料僅供制度結構參考,不構成任何加盟建議。<br>
+    瞭解鼎綸恩宇加盟制度詳情 → <a href="../">回首頁</a>　|　立即諮詢 📱 0925-000-049
+  </div>
+
+</div>
+
+<script>
+// 保險經紀人制度資料庫
+// 資料時點:2022/04
+// 鼎綸具名,其他公司諧音匿名化
+// 注意:此資料純供制度結構參考,各公司制度可能已調整
+
+// 保險經紀人制度資料庫
+// 資料時點:2022/04(其他公司)/ 2025-2026 最新(鼎綸)
+// 鼎綸具名,其他公司諧音匿名化
+
+const COMPANIES = [
+  {
+    id: 'dinglun',
+    name: '鼎綸',
+    isSelf: true,
+    discount: '代理費(來佣)100% 不打折',
+    ranks: [
+      { name: '🌱 主任', system: '40%', actual: '40%' },
+      { name: '📋 襄理', system: '50%', actual: '50%' },
+      { name: '💼 經理', system: '60%', actual: '60%' },
+      { name: '🏢 總監', system: '70%', actual: '70%' },
+      { name: '🤝 協理', system: '82%', actual: '82%' },
+      { name: '👑 副總', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '2-6年:保費 × 服津率 × 總監30% / 協理60% / 副總90%\n7年起:保費 × 服津率 × 職級率',
+    persistency: '保費 × 獎金率 × 總監30% / 協理60% / 副總90%',
+    org_bonus: '【副總代數獎金】(首佣・續佣・產險)\n第一代5% / 第二代2% / 第三代1%\n\n【低增高 / 平階 / 跨區】首佣代數獎金\n第一代2% / 第二代1%',
+    perf_bonus: '【副總營運效率代數獎金】\n第一代20% / 第二代10% / 第三代5%\n\n育成輔導津貼:8%\n營運效率獎金:25%',
+    insurer_reward: '—',
+    other: '【產險】比照壽險職級率(同%數)\n\n【每月系統費】\n副總4,000元 / 協理2,000元 / 總監1,000元\n經理・襄理・主任250元\n\n【每月副總節點擴充費】\n第一代1,000元 / 第二代400元 / 第三代200元\n\n業界天花板:最高 98%(含育成津貼)'
+  },
+  {
+    id: 'a',
+    name: '富仕大',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '40%', actual: '40%' },
+      { name: '業務主任', system: '48%', actual: '48%' },
+      { name: '業務襄理', system: '56%', actual: '56%' },
+      { name: '業務經理', system: '64%', actual: '64%' },
+      { name: '儲備處經理(含)以上', system: '72%', actual: '72%' },
+      { name: '職場負責人/自負盈虧', system: '72%+15%', actual: '72%+15%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 30%',
+    persistency: '保費 × 獎金率 ×\n個人最高4%/直轄組最高2%/儲備處最高2%/通訊處最高2%',
+    org_bonus: '通訊處:第一代2%/第二代1%/第三代0.5%\n儲備處:第一代2%/第二代0.5%\n主管組:第一代2%',
+    perf_bonus: '通訊處年終超額獎勵\n200-300萬:1%/300-500萬:2%/500萬以上:3%\n每月個人行銷績效獎勵\n5-8萬:4%/8-10萬:5%/10-15萬:6%\n15-20萬:8%/20萬以上:10%',
+    insurer_reward: '—',
+    other: '財務補助(登錄後一年)\n6萬:5千/12萬:2萬/25萬:4萬/40萬:6萬/50萬:8萬'
+  },
+  {
+    id: 'b',
+    name: '富義達',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '60%', actual: '48%' },
+      { name: '業務主任', system: '80%', actual: '64%' },
+      { name: '業務襄理', system: '85%', actual: '68%' },
+      { name: '業務區經理', system: '90%', actual: '72%' },
+      { name: '業務處經理(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務總監(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務協理(需付管銷)', system: '90%+12.5%', actual: '72%+10%' },
+      { name: '業務副總(需付管銷)', system: '90%+12.5%', actual: '72%+10%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 80%',
+    yearend: '保費 × 代理費率 × 職級率 × 80%',
+    service: '無',
+    persistency: '發放第13個月繼續率獎金\n保費 × 獎金率 ×\n總監3%/處經理35%/經手人40%(需綁出席率)',
+    org_bonus: '區:第一代3.2%/第二代1.6%/第三代0.8%\n處:第一代1.2%/第二代0.8%/第三代0.4%\n(已回推實際代理費率)',
+    perf_bonus: '處達成獎金:整處單位業績達360萬以上,達成獎金3%',
+    insurer_reward: '—',
+    other: '處經理(含)以上經營利潤:每月以整處代理費10%發放經營績效獎金(須先扣除合署辦公室管銷費用)\n連鎖津貼:業務總監1.2%/業務協理2%/業務副總2.4%\n有認股制度'
+  },
+  {
+    id: 'c',
+    name: '富贏瑞智',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務主任', system: '50%', actual: '50%' },
+      { name: '業務襄理', system: '58%', actual: '58%' },
+      { name: '區經理', system: '65%', actual: '65%' },
+      { name: '處經理', system: '72%', actual: '72%' },
+      { name: '總監', system: '76%', actual: '76%' },
+      { name: '營運總監', system: '80%', actual: '80%' },
+      { name: '地區營運長', system: '84%', actual: '84%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 職級率 × 年終率',
+    service: '保費 × 服津率 × 50% × 職級率',
+    persistency: '保費 × 獎金率 ×\n主任10%/襄理15%/區經理45%/處經理55%/總監65%/營運總監70%/營運長70%\n營運長另領營運中心10%',
+    org_bonus: '營運總監:第一代4%/第二代2%/第三代1%\n營運長:第一代1%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '低增高:2%/盈餘20%分紅\n平階:總監、處經理2%/區經理、襄理3.5%/主任4%\n利潤中心制:營運中心 FYB 9% + 行政費 - 管銷'
+  },
+  {
+    id: 'd',
+    name: '合誠',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '60%', actual: '48%' },
+      { name: '主任', system: '70%', actual: '56%' },
+      { name: '副理', system: '80%', actual: '64%' },
+      { name: '經理', system: '85%', actual: '68%' },
+      { name: '區經理', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 職級率 × 80%',
+    yearend: '無',
+    service: '無',
+    persistency: '區經理階達成下列條件,取得繼續率獎金資格:\nA. 個人直轄區FYB達100萬以上\nB. 第13及第25工作月繼續率達82%及80%以上\n發放:個人直轄區為該區獎金50%,所屬代數區為10%(計算至第三代)',
+    org_bonus: '區經理:第一代4.8%/第二代3.2%/第三代1.6%\n經理:第一代4.8%/第二代3.2%/第三代1.6%\n(已回推實際代理費率)',
+    perf_bonus: 'A. 副理階以下:FYC達10萬以上,加發個人達成FYC × 5%\nB. 經理階以上:FYC達30萬以上,加發個人達成FYC × 6%\n(FYC = 行銷佣金 + 組織輔導佣金 + 組織代數佣金)',
+    insurer_reward: '—',
+    other: '無'
+  },
+  {
+    id: 'e',
+    name: '臺銘',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '40%' },
+      { name: '業務主任', system: '60%', actual: '48%' },
+      { name: '業務襄理', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '區經理', system: '90%', actual: '72%' },
+      { name: '通訊處經理', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '無',
+    service: '保費 × 服津率 × 30%',
+    persistency: '13月繼續率:處經理:全處 + 保費 × 獎金率 ×(1.4%~3.5%)\n總監、協理、副總:體系 + 保費 × 獎金率 ×(0.2%~0.5%)\n25月繼續率:處經理:全處 + 保費 × 獎金率 ×(0.7%~2.8%)\n總監、協理、副總:體系 + 保費 × 獎金率 ×(0.1%~0.4%)\n*早會等公司活動活動率80%\n*協理與副總為疊加方式計算',
+    org_bonus: '處:第一代1.2%/第二代0.8%/第三代0.4%\n區:第一代3.2%/第二代1.6%/第三代0.8%\n(已回推實際代理費率)',
+    perf_bonus: '保費 × 代理費率 ×\n個人2.4%/區經理直轄1.6%/通訊處1.6%(已回推實際代理費率)',
+    insurer_reward: '—',
+    other: '1. 通訊處經理(含)以上,每月1,500元勞保補貼及團保\n2. 通訊處經理,額外加發整處代理費率1.2%'
+  },
+  {
+    id: 'f',
+    name: '臺達',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '40%' },
+      { name: '業務主任', system: '60%', actual: '48%' },
+      { name: '業務襄理', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '區經理', system: '90%', actual: '72%' },
+      { name: '處經理', system: '90%', actual: '72%' },
+      { name: '總監', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '待查證',
+    service: '保費 × 服津率 × 30%\n早會活動率80% + 半年一件',
+    persistency: '13月繼續率:個人:保費 × 獎金率 ×(0.4%~1%)\n處經理:全處 + 保費 × 獎金率 ×(1.4%~3.5%)\n總監:體系 + 保費 × 獎金率 ×(0.6%~1.5%)\n25月繼續率:個人:保費 × 獎金率 ×(0.4%~1%)\n處經理:全處 + 保費 × 獎金率 ×(0.7%~2.8%)\n總監:體系 + 保費 × 獎金率 ×(0.3%~1.2%)\n*早會活動率80%',
+    org_bonus: '區經理:第一代4%/第二代2%/第三代1%\n處經理:第一代1.5%/第二代1%/第三代0.5%\n總監:全體系3%',
+    perf_bonus: '個人FYB 3%\n區經理:區直轄 + FYB 2%\n處經理以上:全處 + FYB 2%',
+    insurer_reward: '待查證',
+    other: '分紅:年終繼續率服津的75% = 分紅\n分紅25%分給各階,其餘給營運長'
+  },
+  {
+    id: 'g',
+    name: '泰揚',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '60%', actual: '48%' },
+      { name: '業務主任', system: '70%', actual: '56%' },
+      { name: '業務副理', system: '80%', actual: '64%' },
+      { name: '業務區經理', system: '90%', actual: '72%' },
+      { name: '處經理', system: '90%', actual: '72%' },
+      { name: '協理', system: '90%', actual: '72%' },
+      { name: '副總', system: '90%', actual: '72%' },
+      { name: '資深副總', system: '90%', actual: '72%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 80%',
+    yearend: '無',
+    service: '保費 × 代理費率 ×\n個人2.4%/直轄組1.6%/處1.6%(已回推實際代理費率)',
+    persistency: '無',
+    org_bonus: '處:第一代1.2%/第二代0.8%/第三代0.4%\n區:第一代3.2%/第二代1.6%/第三代0.8%\n(已回推實際代理費率)',
+    perf_bonus: '(每半年,已回推實際代理費率)\n協理代理費187.5萬體系0.8%\n副總代理費375萬體系0.8%\n資深副總代理費750萬體系0.8%\n達成獎金:個人最高年度代理費150萬加發5.6%\n處最高年度代理費500萬體系4%\n協理最高年度代理費1875萬體系1.6%\n副總最高年度代理費3750萬體系1.6%\n資深副總最高年度代理費7500萬體系1.6%',
+    insurer_reward: '—',
+    other: '營運費用:處經理(含)以上:代理費之1.2%\n處經理津貼:最高做代理費125萬加發7.2%\n平階輔導津貼:由上一代主管提撥2%\n新秀獎勵專案請見內部專區(已回推實際代理費率)'
+  },
+  {
+    id: 'h',
+    name: '達承',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '60%', actual: '48%' },
+      { name: '主任', system: '80%', actual: '64%' },
+      { name: '襄理', system: '85%', actual: '68%' },
+      { name: '經理', system: '90%', actual: '72%' },
+      { name: '職場負責人/自負盈虧', system: '—', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '待查證',
+    service: '保費 × 服津率 × 80%\n2-6年給事業體 / 7年起給個人',
+    persistency: '保費 × 獎金率 × 80%\n給事業體',
+    org_bonus: '經理:第一代3.2%/第二代1.6%/第三代0.8%\n通訊處:第一代1.2%/第二代0.8%/第三代0.4%\n(實際%數)',
+    perf_bonus: '50萬內:1%/51-100萬以內:3%\n101萬超出:6%/201萬超出:9%',
+    insurer_reward: '待查證',
+    other: '30-50萬:2%/50-100萬:4%/100-200萬:8%\n200-300萬:12%/300-400萬:16%/400萬以上:20%'
+  },
+  {
+    id: 'i',
+    name: '力科安',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業務專員', system: '55%-70%', actual: '44%-56%' },
+      { name: '襄理', system: '75%', actual: '60%' },
+      { name: '副理', system: '80%', actual: '64%' },
+      { name: '經理', system: '85%', actual: '68%' },
+      { name: '總監', system: '92%', actual: '73.6%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率\n個人60%/經理60%+10%/總監60%+20%',
+    service: '無',
+    persistency: '保費 × 年期換算係數 ×\n13個月(達80%):5%\n25個月(達75%):3%',
+    org_bonus: '無(只有 Leader 獎金)',
+    perf_bonus: 'Leader 獎金\n第一組:5萬/第二組:10萬/第三組:15萬\n維持六組:100萬/年',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'j',
+    name: '詠煦',
+    discount: '代理費率之80%',
+    ranks: [
+      { name: '業專', system: '50%', actual: '40%' },
+      { name: '副理', system: '60%', actual: '48%' },
+      { name: '區經理', system: '70%', actual: '56%' },
+      { name: '處經理', system: '80%', actual: '64%' },
+      { name: '事業體協理', system: '90%', actual: '72%' },
+      { name: '事業部資深協理', system: '100%', actual: '80%' },
+      { name: '資深副總', system: '100%', actual: '80%' },
+      { name: '執行副總', system: '100%', actual: '80%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 80%',
+    renewal: '保費 × 代理費率 × 90%',
+    yearend: '保費 × 代理費率 × 年終率\n個人60%/協理60%+10%/資深協理以上60%+20%',
+    service: '保費 × 服津率 × 80%(給事業部資深協理以上)',
+    persistency: '保費 × 獎金率 × 80% ×\n事業部以上100% / 事業體50%',
+    org_bonus: '資協以上:第一代4.8%/第二代1.6%/第三代0.8%\n無限代:資深副總0.4%/執行副總0.8%/營運長1.6%\n行政中心:第一代0.8%/第二代0.4%/第三代0.2%\n(已回推實際代理費率)',
+    perf_bonus: '最高250萬加發\n資深協理0.96% / 協理2.24%\n(已回推實際代理費率)',
+    insurer_reward: '轉換獎勵旅遊',
+    other: '專職獎金:保費 × 代理費 × 4%\n(已回推實際代理費率)(特定商品)'
+  },
+  {
+    id: 'k',
+    name: '兩岸興福',
+    discount: '代理費率之90%',
+    ranks: [
+      { name: '專員', system: '50%', actual: '45%' },
+      { name: '主任', system: '60%', actual: '54%' },
+      { name: '襄理', system: '65%', actual: '58.5%' },
+      { name: '副理', system: '70%', actual: '63%' },
+      { name: '區經理', system: '75%', actual: '67.5%' },
+      { name: '處經理', system: '80%', actual: '72%' },
+      { name: '總監', system: '83%', actual: '74.7%' },
+      { name: '業務協理/業務副總', system: '86%/88%', actual: '77.4%/79.2%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 90%',
+    renewal: '保費 × 代理費率 × 90% × 85.5% × 襄理以下50% / 副理60% / 區經理70% / 處經理90% / 總監95% / 協理98% / 副總100%',
+    yearend: '保費 × 代理費率 × 90% × 年終率 × 85.5% ×\n區經理以下25% / 處經理總監40% / 協理49% / 副總50%',
+    service: '保費 × 服津率 × 95% × 77% ×\n區經理以下25% / 處經理30% / 總監35% / 協理49% / 副總50%',
+    persistency: '保費 × 獎金率 × 95% × 77% ×\n區經理以下25% / 處經理30% / 總監35% / 協理49% / 副總50%',
+    org_bonus: '區經理以下:一3%二1%\n處經理總監:一1.5%二0.5%\n業務協理:一1%二0.5%\n業務副總斷代\n(皆由上一階主管撥出)',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'l',
+    name: '盤實',
+    discount: '代理費率之95%',
+    ranks: [
+      { name: '儲備主管', system: '57%', actual: '54.1%' },
+      { name: '業務經理', system: '69%', actual: '65.5%' },
+      { name: '業務總監', system: '77%', actual: '73.1%' },
+      { name: '資深業務總監', system: '81%', actual: '77%' },
+      { name: '業務協理/副總', system: '85%', actual: '80.8%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率 × 95%',
+    renewal: '保費 × 代理費率 × 職級率 × 95%',
+    yearend: '保費 × 代理費率 × 年終率 × 80% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    service: '(第六年起)保費 × 服津率 × 50% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    persistency: '保費 × 獎金率 × 50% ×\n儲備主管20% / 業務經理30% / 業務總監40% / 資深業務總監50% / 業務協理副總60%',
+    org_bonus: '第一代2%/第二代1%/第三代0.5%/第四代0.25%/第五代0.25%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'm',
+    name: '華翰',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '50%' },
+      { name: '業務主任', system: '65%', actual: '65%' },
+      { name: '業務副理', system: '70%', actual: '70%' },
+      { name: '業務經理', system: '75%', actual: '75%' },
+      { name: '資深經理', system: '80%', actual: '80%' },
+      { name: '事業部總監', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '個人:保費 × 服津率 × 30%(2-6年) / 50%(7年後)\n事業部總監:保費 × 服津率 × 10%(2-6年) / 20%(7年後)',
+    persistency: '13及25個月\n個人:保費 × 列表獎金率 × 60%\n事業部總監:保費 × 列表獎金率 × 20%',
+    org_bonus: '第一代3%/第二代0.3%/第三代0.2%',
+    perf_bonus: '無',
+    insurer_reward: '待查證',
+    other: '待查證'
+  },
+  {
+    id: 'n',
+    name: '功盛',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '專員', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '區襄理', system: '68%', actual: '68%' },
+      { name: '區副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '事業部負責人', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率\n(若出席率未達70%,與事業部均分)',
+    service: '續佣發放時:招攬人:無 / 事業部:保費 × 服津率 × 86%\n續佣停發後:招攬人/事業部:皆為保費 × 服津率 × 43%',
+    persistency: '保費 × 獎金率 × 86%(限事業部)',
+    org_bonus: '第一代5%/第二代2%/第三代1%',
+    perf_bonus: '事業部月績效獎金:\nFYC≥30萬+1% / FYC≥60萬+2%\nFYC≥150萬+3% / FYC≥200萬+4%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '保費 × 代理 × 80%(6%給事業部)'
+  },
+  {
+    id: 'o',
+    name: '遠建利民壹',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業專', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '68%', actual: '68%' },
+      { name: '副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '資深經理', system: '80%', actual: '80%' },
+      { name: '事業部', system: '82%', actual: '82%' },
+      { name: '營業部', system: '90%+2%', actual: '90%+2%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '續佣發放時:招攬人:無 / 事業部:保費 × 服津率 × 86%\n續佣停發後:招攬人/事業部:皆為保費 × 服津率 × 43%',
+    persistency: '保費 × 獎金率 × 86%/90%+2%(限事業部/營業部)',
+    org_bonus: '第一代5%/第二代2%/第三代1%',
+    perf_bonus: 'FYC≥30萬+1% / FYC≥60萬+2%\nFYC≥150萬+3% / FYC≥200萬+4%',
+    insurer_reward: '—',
+    other: '保費 × 代理 × 80%(6%給事業部)'
+  },
+  {
+    id: 'p',
+    name: '磊善系統',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '50%', actual: '50%' },
+      { name: '業務襄理', system: '60%', actual: '60%' },
+      { name: '業務經理', system: '70%', actual: '70%' },
+      { name: '業務總監', system: '77%', actual: '77%' },
+      { name: '業務副總', system: '80%', actual: '80%' },
+      { name: '執行業務副總', system: '82%', actual: '82%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 10%',
+    service: '無',
+    persistency: '待查證',
+    org_bonus: '待查證',
+    perf_bonus: '保費 × 獎金率 × 82%\nFYB需達:組360萬 / 區720萬 / 處2000萬',
+    insurer_reward: '待查證',
+    other: '—'
+  },
+  {
+    id: 'q',
+    name: '維晟',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務專員', system: '45%', actual: '45%' },
+      { name: '業務主任', system: '55%', actual: '55%' },
+      { name: '業務襄理', system: '65%', actual: '65%' },
+      { name: '區經理', system: '70%', actual: '70%' },
+      { name: '處經理', system: '76%', actual: '76%' },
+      { name: '業務總監', system: '83%', actual: '83%' },
+      { name: '業務協理', system: '89%+1%營運獎金', actual: '89%+1%營運獎金' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 90% × 職級率',
+    service: '保費 × 服津率 × 50% × 職級率\n10年期以下:第7年開始發放\n11年期以上:第2年開始發放',
+    persistency: '保費 × 獎金率 ×\n業務專員5%/業務主任5%/業務襄理5%\n區經理15%/處經理30%/業務總監50%/業務協理75%',
+    org_bonus: '第一代2%/第二代1%/第三代0.5%',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'r',
+    name: '巨復',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務顧問', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '65%', actual: '65%' },
+      { name: '區副理', system: '70%', actual: '70%' },
+      { name: '區經理', system: '75%', actual: '75%' },
+      { name: '處經理', system: '82%', actual: '82%' },
+      { name: '協理', system: '86%', actual: '86%' },
+      { name: '總監', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '總監90%/協理86%/處經理82%/區經理、區副理80%/襄理以下75%',
+    yearend: '總監90%/協理86%/處經理82%/區經理75%/區副理以下70%',
+    service: '總監90%/協理86%/處經理70%/區經理、區副理45%/襄理以下30%',
+    persistency: '總監90%/協理86%/處經理70%/區經理、區副理45%/襄理以下30%',
+    org_bonus: '副總:一代處2.5%/二代處1%/三代處0.5%\n總監:第一代1%/協理:第一代1%/處經理:第一代2%\n區經理:第一代2.5%/第二代1%/第三代0.5%',
+    perf_bonus: '總監:100-200萬:1%/200-300萬:2%/300-400萬:3%/400萬以上:4%\n協理:50-100萬:1%/100-150萬:2%/150-200萬:3%/200萬以上:4%\n處經理:30-60萬:1%/60-90萬:2%/90-120萬:3%/120萬以上:4%',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 's',
+    name: '信庵',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '行銷專員', system: '50%', actual: '50%' },
+      { name: '行銷主任', system: '60%', actual: '60%' },
+      { name: '行銷襄理', system: '70%', actual: '70%' },
+      { name: '業務/行銷經理', system: '75%', actual: '75%' },
+      { name: '業務處經理/首席行銷經理', system: '80%', actual: '80%' },
+      { name: '業務/行銷總監', system: '82%', actual: '82%' },
+      { name: '業務/行銷協理', system: '86%', actual: '86%' },
+      { name: '執行/業務副總/自負盈虧', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 職級率\n2-6年給公司 / 7年起套組織',
+    persistency: '保費 × 獎金率 ×\n業務副總90%/業務行銷協理86%/業務行銷總監50%/業務處經理首席行銷經理50%',
+    org_bonus: 'UM以上主管,獎勵金 × K值套組織,首續佣2%',
+    perf_bonus: '營運中心績效獎金:\n100-150萬:1%/150-200萬:1.5%\n200-250萬:2%/250-300萬:2.5%\n300萬以上:3%\n系統營運獎金:\n250-500萬:0.5%/500萬以上:1%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '分紅:公司盈餘20%'
+  },
+  {
+    id: 't',
+    name: '凡亞',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '專員', system: '40%', actual: '40%' },
+      { name: '主任', system: '50%', actual: '50%' },
+      { name: '襄理', system: '60%', actual: '60%' },
+      { name: '副理', system: '68%', actual: '68%' },
+      { name: '區經理', system: '74%', actual: '74%' },
+      { name: '資深經理', system: '78%', actual: '78%' },
+      { name: '處經理', system: '83%', actual: '83%' },
+      { name: '協理/副總/營運長', system: '86%/90%/92%', actual: '86%/90%/92%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '營副90/協處80/資70/區65/副60/襄55/主50/專40',
+    yearend: '營運長、副總經理90% / 協理、處經理80% / 資深經理以下70%',
+    service: '營副80/協處70/資60/區55/副襄主50/專40\n第七年開始發放',
+    persistency: '營運長、副總經理80% / 協理70% / 處經理50%',
+    org_bonus: '營運長:一0.5%/二0.3%\n副總:一1%/二0.5%\n協理:一2%/二0.5%\n處經理:一1.5%/二0.5%\n資深經理:一2.5%/二1%\n(除營運長外,皆跟主管對拆)',
+    perf_bonus: '無',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'u',
+    name: '世瑋',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '顧問', system: '60%', actual: '60%' },
+      { name: '主任', system: '65%', actual: '65%' },
+      { name: '襄理', system: '70%', actual: '70%' },
+      { name: '區經理', system: '75%', actual: '75%' },
+      { name: '處經理', system: '80%', actual: '80%' },
+      { name: '事業部', system: '84%', actual: '84%' },
+      { name: '總監', system: '86%', actual: '86%' },
+      { name: '營運中心協理/副總', system: '90%', actual: '90%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '2-6年:營運中心90/總監40/事業部30/處經理20\n7年起:營運中心90/總監80/事業部70/處經理60/其他20',
+    persistency: '保費 × 獎金率 ×\n營運中心90/總監80/事業部70/處經理60/其他20',
+    org_bonus: '營運中心:第一代1.2%/第二代0.8%\n總監:第一代1.2%/第二代0.8%\n事業部:第一代1%',
+    perf_bonus: '營運中心績效獎金:\nFYB≥100萬+1% / FYB≥150萬+1.5%\nFYB≥200萬+2% / FYB≥250萬+2.5%\nFYB≥300萬+3%',
+    insurer_reward: '—',
+    other: '—'
+  },
+  {
+    id: 'v',
+    name: '聯衆',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '業務主任', system: '52%', actual: '52%' },
+      { name: '業務襄理', system: '62%', actual: '62%' },
+      { name: '業務副理', system: '70%', actual: '70%' },
+      { name: '業務經理', system: '76%', actual: '76%' },
+      { name: '業務資深經理', system: '80%', actual: '80%' },
+      { name: '業務總監', system: '82%', actual: '82%' },
+      { name: '事業部負責人', system: '86%', actual: '86%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率',
+    renewal: '保費 × 代理費率 × 職級率',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率',
+    service: '保費 × 服津率 × 職級率\n第二年開始發放,套組織',
+    persistency: '保費 × 獎金率 × 事業部86%',
+    org_bonus: '第一代2.5%/第二代1%/第三代0.5%',
+    perf_bonus: '事業部負責人:\n150萬以下:2%/150-200萬:3%/200-500萬:4%/500萬以上:5%',
+    insurer_reward: '獎勵金 × K值,套組織',
+    other: '—'
+  },
+  {
+    id: 'w',
+    name: '磊善事業',
+    discount: '代理費率(原始)',
+    ranks: [
+      { name: '資深專員', system: '50%', actual: '50%' },
+      { name: '主任', system: '60%', actual: '60%' },
+      { name: '襄理', system: '68%', actual: '68%' },
+      { name: '副理', system: '74%', actual: '74%' },
+      { name: '區經理', system: '78%', actual: '78%' },
+      { name: '事業部總監', system: '82%', actual: '82%' },
+      { name: '事業部協理', system: '86%', actual: '86%' },
+      { name: '副總/資深副總/營運長', system: '88%', actual: '88%' }
+    ],
+    fyc: '保費 × 代理費率 × 職級率(副總88%/資深副總91%/營運長94%)',
+    renewal: '保費 × 代理費率 × 職級率(副總86%/資深副總87%/營運長88%)',
+    yearend: '保費 × 代理費率 × 年終率 × 職級率(副總/資深副總/營運長88%)',
+    service: '保費 × 服津率 ×\n總監82%/協理、副總、資副86%/營運長88%',
+    persistency: '保費 × 獎金率 ×\n總監45%/協理80%/副總、資副86%/營運長88%',
+    org_bonus: '營運長:一代處1%/資副:一代處2%/二代處0.5%\n副總:一代處2.5%/二代處1%/三代處0.5%\n協理:第一代2.5%/第二代1%/第三代0.5%\n總監:第一代4%/第二代2%/第三代2%',
+    perf_bonus: '無(所有獎金無門檻發放)',
+    insurer_reward: '獎勵金 × 95%,給個人',
+    other: '財務補助(登錄後一年)\n6萬:5千/12萬:2萬/25萬:4萬\n40萬:6萬/50萬:8萬'
+  }
+];
+</script>
+<script>
+  // 狀態:目前比較中的公司 ID 列表(不含鼎綸,鼎綸固定第一欄)
+  let comparingIds = ['a']; // 預設對照「富仕大」(A 公司)
+  const MAX_COMPARE = 2; // 鼎綸以外最多 2 家
+
+  function getCompany(id) {
+    return COMPANIES.find(c => c.id === id);
+  }
+
+  function renderSelectors() {
+    const group = document.getElementById('selectorGroup');
+    group.innerHTML = '';
+    comparingIds.forEach((id, idx) => {
+      const tag = String.fromCharCode(65 + idx); // A, B
+      const sel = document.createElement('div');
+      sel.className = 'selector';
+      sel.innerHTML = `
+        <span class="selector-tag">對照 ${tag}</span>
+        <select onchange="changeCompare(${idx}, this.value)">
+          ${COMPANIES.filter(c => !c.isSelf).map(c => `
+            <option value="${c.id}" ${c.id === id ? 'selected' : ''}>${c.name}</option>
+          `).join('')}
+        </select>
+        ${comparingIds.length > 1 ? `<button class="remove-btn" onclick="removeCompare(${idx})">✕</button>` : ''}
+      `;
+      group.appendChild(sel);
+    });
+    document.getElementById('addBtn').disabled = comparingIds.length >= MAX_COMPARE;
+  }
+
+  function changeCompare(idx, newId) {
+    comparingIds[idx] = newId;
+    renderTable();
+  }
+
+  function addCompare() {
+    if (comparingIds.length >= MAX_COMPARE) return;
+    // 找一個還沒被選的公司
+    const used = new Set(comparingIds);
+    const next = COMPANIES.find(c => !c.isSelf && !used.has(c.id));
+    if (next) {
+      comparingIds.push(next.id);
+      renderSelectors();
+      renderTable();
+    }
+  }
+
+  function removeCompare(idx) {
+    comparingIds.splice(idx, 1);
+    if (comparingIds.length === 0) comparingIds.push('a');
+    renderSelectors();
+    renderTable();
+  }
+
+  function renderRankMini(ranks, isSelf) {
+    // 判斷數字是否「複雜」(超過6字元、含 / 或 + 等符號) → 用較小的字體
+    const isComplex = (val) => {
+      if (!val) return false;
+      return val.length > 6 || /[\/+]/.test(val) || /[\u4e00-\u9fff]/.test(val); // 含中文也算複雜
+    };
+    // 判斷這家公司「制度 vs 實際」是否完全一致
+    const allSame = ranks.every(r => r.system === r.actual);
+    const headerHTML = allSame
+      ? `<div class="rank-mini-header single"><span class="col-name">職級</span><span class="col-act">職級率</span></div>`
+      : `<div class="rank-mini-header"><span class="col-name">職級</span><span class="col-sys">制度</span><span class="col-act">實際</span></div>`;
+    const rowsHTML = ranks.map(r => {
+      const sysComplex = isComplex(r.system) ? ' complex' : '';
+      const actComplex = isComplex(r.actual) ? ' complex' : '';
+      if (allSame) {
+        return `<div class="rank-mini-row single">
+          <span class="rank-mini-name">${r.name}</span>
+          <span class="rank-mini-rate same${actComplex}">${r.actual}</span>
+        </div>`;
+      } else {
+        return `<div class="rank-mini-row">
+          <span class="rank-mini-name">${r.name}</span>
+          <span class="rank-mini-rate sys${sysComplex}">${r.system}</span>
+          <span class="rank-mini-rate act${actComplex}">${r.actual}</span>
+        </div>`;
+      }
+    }).join('');
+    return `<div class="rank-mini">${headerHTML}${rowsHTML}</div>`;
+  }
+
+  function renderCell(content, isSelf) {
+    return `<td class="data-cell${isSelf ? ' self' : ''}">${content || '<span style="color:#bbb">—</span>'}</td>`;
+  }
+
+  function renderTable() {
+    const dl = getCompany('dinglun');
+    const others = comparingIds.map(id => getCompany(id));
+    const allCompanies = [dl, ...others];
+    const cols = allCompanies.length + 1; // +1 for label column
+
+    const sections = [
+      { title: '基礎制度', rows: [
+        { label: '佣金計算基礎', sub: 'COMMISSION BASE', key: 'discount', render: (c) => `<span class="discount-badge">${c.discount}</span>` },
+        { label: '職階分潤表', sub: 'RANK & RATE', key: 'ranks', render: (c, isSelf) => renderRankMini(c.ranks, isSelf) },
+      ]},
+      { title: '主要佣金項目', rows: [
+        { label: '首年佣金', sub: 'FYC', key: 'fyc' },
+        { label: '續年度佣金', sub: 'RENEWAL', key: 'renewal' },
+        { label: '年終獎金', sub: 'YEAR-END', key: 'yearend' },
+        { label: '服務津貼', sub: 'SERVICE', key: 'service' },
+        { label: '繼續率獎金', sub: 'PERSISTENCY', key: 'persistency' },
+      ]},
+      { title: '組織與績效', rows: [
+        { label: '組織代數獎金', sub: 'OVERRIDE', key: 'org_bonus' },
+        { label: '績效獎金', sub: 'PERFORMANCE', key: 'perf_bonus' },
+        { label: '保險公司獎勵', sub: 'INSURER REWARD', key: 'insurer_reward' },
+        { label: '其他/特色', sub: 'OTHERS', key: 'other' },
+      ]},
+    ];
+
+    let html = '';
+    // 表頭
+    html += '<thead><tr>';
+    html += '<th class="row-label" style="background:var(--navy);color:#fff;text-align:center;border-radius:10px 0 0 0;">項目</th>';
+    allCompanies.forEach(c => {
+      html += `<th class="col-header${c.isSelf ? ' self' : ''}">
+        <span class="col-name">${c.name}</span>
+        <span class="col-tag">${c.isSelf ? '★ OUR COMPANY ★' : '同業參考'}</span>
+      </th>`;
+    });
+    html += '</tr></thead>';
+
+    // 表體
+    html += '<tbody>';
+    sections.forEach(section => {
+      html += `<tr class="section-header"><td colspan="${cols}">${section.title}</td></tr>`;
+      section.rows.forEach(row => {
+        html += '<tr>';
+        html += `<td class="row-label"><span class="label-icon"></span>${row.label}<span class="label-sub">${row.sub}</span></td>`;
+        allCompanies.forEach(c => {
+          const content = row.render ? row.render(c, c.isSelf) : c[row.key];
+          html += renderCell(content, c.isSelf);
+        });
+        html += '</tr>';
+      });
+    });
+    html += '</tbody>';
+
+    document.getElementById('comparisonTable').innerHTML = html;
+
+    // 通知試算器:對照公司可能變了,要更新
+    if (window.onCompareCompanyChange) window.onCompareCompanyChange();
+  }
+
+  // 初始化
+  renderSelectors();
+  renderTable();
+</script>
+
+<!-- 共用商品系統 -->
+<script src="../../products.js"></script>
+
+<!-- 試算器邏輯 -->
+<script>
+// ===== 試算器狀態 =====
+const calcState = {
+  inputMode: 'product',  // 'product' or 'manual'
+  insurer: '',
+  productIdx: -1,
+  premium: 0,
+  manualFyc: 0,
+  dlRankIdx: -1,
+  otherRankIdxList: [],  // 對應 comparingIds,逐家的職級選擇
+  showAdvanced: false,
+  ageNow: null,
+  ageRetire: null,
+  yearlyDeals: 12,
+  renewalRate: 80,
+  renewalYears: 5
+};
+
+// ===== 工具函數 =====
+function fmt(n) {
+  if (!n || isNaN(n)) return '0';
+  return Math.round(n).toLocaleString('zh-TW');
+}
+
+function getDinglun() { return COMPANIES.find(c => c.isSelf); }
+
+// 解析職級率字串成小數(取第一個有效數字 / 100)
+function parseRate(rateStr) {
+  if (!rateStr) return null;
+  const m = rateStr.match(/(\d+(?:\.\d+)?)/);
+  return m ? parseFloat(m[1]) / 100 : null;
+}
+
+// ===== 工具:轉義 HTML =====
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ===== 工具:關鍵字高亮 =====
+function highlightMatch(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(escapedQuery, 'gi'), m => `<mark>${m}</mark>`);
+}
+
+// ===== 初始化保險公司 combobox =====
+function initInsurerOptions() {
+  if (typeof PRODUCTS === 'undefined') return;
+  // 不需特別動作,combobox 在輸入時才即時渲染列表
+  setupCombo('insurer');
+  setupCombo('product');
+  renderInsurerList(''); // 預先渲染
+  renderProductList('');
+}
+
+// ===== 通用 combobox 行為設定 =====
+function setupCombo(name) {
+  const combo = document.getElementById(name + 'Combo');
+  const input = document.getElementById(name + 'Input');
+  if (!combo || !input) return;
+
+  // 點擊輸入框 → 開啟列表
+  input.addEventListener('focus', () => combo.classList.add('open'));
+  input.addEventListener('click', () => combo.classList.add('open'));
+
+  // 輸入時即時搜尋
+  input.addEventListener('input', () => {
+    combo.classList.add('open');
+    if (name === 'insurer') {
+      renderInsurerList(input.value);
+    } else {
+      renderProductList(input.value);
+    }
+  });
+
+  // 失焦時關閉(延遲一點,讓 click 事件先觸發)
+  input.addEventListener('blur', () => {
+    setTimeout(() => combo.classList.remove('open'), 150);
+  });
+
+  // 點擊外部關閉
+  document.addEventListener('click', (e) => {
+    if (!combo.contains(e.target)) combo.classList.remove('open');
+  });
+}
+
+// ===== 渲染保險公司列表 =====
+function renderInsurerList(query) {
+  const list = document.getElementById('insurerList');
+  if (!list) return;
+  const q = (query || '').toLowerCase().trim();
+  const insurers = Object.keys(PRODUCTS).filter(i =>
+    !q || i.toLowerCase().includes(q)
+  );
+  if (insurers.length === 0) {
+    list.innerHTML = '<div class="combo-empty">查無相符的公司</div>';
+    return;
+  }
+  list.innerHTML = insurers.map(i => {
+    const isActive = i === calcState.insurer;
+    return `<div class="combo-item ${isActive ? 'active' : ''}" data-value="${escapeHtml(i)}">${highlightMatch(i, q)}</div>`;
+  }).join('');
+  // 綁 click
+  list.querySelectorAll('.combo-item').forEach(el => {
+    el.addEventListener('click', () => selectInsurer(el.dataset.value));
+  });
+}
+
+// ===== 渲染商品列表(支援跨公司搜尋)=====
+function renderProductList(query) {
+  const list = document.getElementById('productList');
+  if (!list) return;
+  const q = (query || '').toLowerCase().trim();
+
+  // 候選列表:若已選保險公司,顯示該公司商品;若未選且有 query,跨公司搜尋
+  let candidates = [];
+  if (calcState.insurer) {
+    candidates = (PRODUCTS[calcState.insurer] || []).map((prod, i) => ({
+      company: calcState.insurer, prod, i, sameCompany: true
+    }));
+  } else if (q) {
+    Object.keys(PRODUCTS).forEach(company => {
+      PRODUCTS[company].forEach((prod, i) => {
+        candidates.push({ company, prod, i, sameCompany: false });
+      });
+    });
+  }
+
+  // 篩選
+  const filtered = q
+    ? candidates.filter(c =>
+        c.prod.name.toLowerCase().includes(q) ||
+        c.company.toLowerCase().includes(q)
+      )
+    : candidates;
+
+  if (filtered.length === 0) {
+    if (!calcState.insurer && !q) {
+      list.innerHTML = '<div class="combo-empty">請先選擇保險公司,或直接輸入商品關鍵字搜尋</div>';
+    } else {
+      list.innerHTML = '<div class="combo-empty">查無相符的商品</div>';
+    }
+    return;
+  }
+
+  list.innerHTML = filtered.slice(0, 100).map(c => {
+    const yearLabel = c.prod.year === '躉' ? '躉繳' : c.prod.year === '99' ? '終身' : `${c.prod.year}年`;
+    const displayText = `${c.prod.name} (${yearLabel})`;
+    const isActive = c.company === calcState.insurer && c.i === calcState.productIdx;
+    const companyTag = c.sameCompany ? '' : `<span class="item-company">[${escapeHtml(c.company)}]</span>`;
+    return `<div class="combo-item ${isActive ? 'active' : ''}" data-company="${escapeHtml(c.company)}" data-idx="${c.i}">${companyTag}${highlightMatch(displayText, q)}</div>`;
+  }).join('');
+  list.querySelectorAll('.combo-item').forEach(el => {
+    el.addEventListener('click', () => {
+      selectProduct(el.dataset.company, parseInt(el.dataset.idx));
+    });
+  });
+}
+
+// ===== 選擇保險公司 =====
+function selectInsurer(name) {
+  calcState.insurer = name;
+  calcState.productIdx = -1;
+  document.getElementById('insurerInput').value = name;
+  document.getElementById('insurerCombo').classList.add('has-value');
+  document.getElementById('insurerCombo').classList.remove('open');
+
+  // 重置商品
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  renderProductList('');
+  onProductChange(); // 重置代理費率顯示等
+
+  recalcAll();
+}
+
+function clearInsurer(e) {
+  e.stopPropagation();
+  calcState.insurer = '';
+  calcState.productIdx = -1;
+  document.getElementById('insurerInput').value = '';
+  document.getElementById('insurerCombo').classList.remove('has-value');
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  onProductChange();
+  renderInsurerList('');
+  renderProductList('');
+  recalcAll();
+}
+
+// ===== 選擇商品 =====
+function selectProduct(company, idx) {
+  // 若跨公司搜尋,先設公司
+  if (company !== calcState.insurer) {
+    calcState.insurer = company;
+    document.getElementById('insurerInput').value = company;
+    document.getElementById('insurerCombo').classList.add('has-value');
+  }
+  calcState.productIdx = idx;
+  const product = PRODUCTS[company][idx];
+  const yearLabel = product.year === '躉' ? '躉繳' : product.year === '99' ? '終身' : `${product.year}年`;
+  document.getElementById('productInput').value = `${product.name} (${yearLabel})`;
+  document.getElementById('productCombo').classList.add('has-value');
+  document.getElementById('productCombo').classList.remove('open');
+  onProductChange();
+}
+
+function clearProduct(e) {
+  e.stopPropagation();
+  calcState.productIdx = -1;
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  onProductChange();
+}
+
+// 舊的 onInsurerChange 廢棄(combobox 走 selectInsurer)
+function onInsurerChange() {
+  // 保留以免 HTML inline event handler 找不到
+}
+
+function onProductChange() {
+  const product = (calcState.insurer && calcState.productIdx >= 0)
+    ? PRODUCTS[calcState.insurer][calcState.productIdx] : null;
+  const rateDisplay = document.getElementById('rateDisplay');
+  const yearHint = document.getElementById('productYearHint');
+  const premHint = document.getElementById('premiumHint');
+  const premCurr = document.getElementById('premiumCurrency');
+  const fxFields = document.getElementById('fxFields');
+  const fxRateInput = document.getElementById('fxRateInput');
+  const fxRateLabel = document.getElementById('fxRateLabel');
+
+  if (product) {
+    rateDisplay.value = `${product.rate}%`;
+    const yearLabel = product.year === '躉' ? '躉繳' : product.year === '99' ? '終身' : `${product.year}年期`;
+    yearHint.textContent = `繳別:${yearLabel}` + (product.note ? ` | ${product.note}` : '');
+    const currency = detectCurrency(product.name);
+    if (currency) {
+      premCurr.textContent = `(${currency.symbol})`;
+      premHint.textContent = `※ 此商品為${currency.symbol}計價,請輸入外幣金額`;
+      fxFields.style.display = '';
+      fxRateLabel.textContent = currency.code;
+      if (!fxRateInput.value) fxRateInput.value = currency.defaultRate;
+    } else {
+      premCurr.textContent = '(新台幣)';
+      premHint.textContent = '輸入該保單的年繳/期繳保費';
+      fxFields.style.display = 'none';
+      fxRateInput.value = '';
+    }
+  } else {
+    rateDisplay.value = '';
+    yearHint.textContent = '';
+    premCurr.textContent = '';
+    premHint.textContent = '輸入該保單的年繳/期繳保費';
+    fxFields.style.display = 'none';
+  }
+  recalcAll();
+}
+
+// ===== 千分位輸入處理 =====
+function parseNumberInput(str) {
+  if (!str) return 0;
+  const cleaned = String(str).replace(/[,\s]/g, '');
+  const v = parseFloat(cleaned);
+  return isNaN(v) ? 0 : v;
+}
+
+function formatNumberInput(n) {
+  if (!n || isNaN(n)) return '';
+  return Math.round(n).toLocaleString('zh-TW');
+}
+
+function onPremiumInput() {
+  const input = document.getElementById('premiumInput');
+  const cursorPos = input.selectionStart;
+  const oldLen = input.value.length;
+  const num = parseNumberInput(input.value);
+  if (num > 0) {
+    input.value = formatNumberInput(num);
+    // 嘗試保持游標位置
+    const newLen = input.value.length;
+    const diff = newLen - oldLen;
+    input.setSelectionRange(cursorPos + diff, cursorPos + diff);
+  }
+  recalcAll();
+}
+
+function onManualFycInput() {
+  const input = document.getElementById('manualFyc');
+  const cursorPos = input.selectionStart;
+  const oldLen = input.value.length;
+  const num = parseNumberInput(input.value);
+  if (num > 0) {
+    input.value = formatNumberInput(num);
+    const newLen = input.value.length;
+    const diff = newLen - oldLen;
+    input.setSelectionRange(cursorPos + diff, cursorPos + diff);
+  }
+  recalcAll();
+}
+
+// ===== 切換輸入模式 =====
+function switchInputMode(mode) {
+  calcState.inputMode = mode;
+  document.getElementById('tabProduct').classList.toggle('active', mode === 'product');
+  document.getElementById('tabManual').classList.toggle('active', mode === 'manual');
+  document.getElementById('modeProduct').style.display = mode === 'product' ? '' : 'none';
+  document.getElementById('modeManual').style.display = mode === 'manual' ? '' : 'none';
+  recalcAll();
+}
+
+// ===== 計算 FYC =====
+function computeFyc() {
+  if (calcState.inputMode === 'manual') {
+    return parseNumberInput(document.getElementById('manualFyc').value);
+  }
+  // product mode
+  const premium = parseNumberInput(document.getElementById('premiumInput').value);
+  if (premium <= 0) return 0;
+  if (!calcState.insurer || calcState.productIdx < 0) return 0;
+  const product = PRODUCTS[calcState.insurer][calcState.productIdx];
+  if (!product) return 0;
+  // 外幣處理:用使用者輸入的匯率
+  const currency = detectCurrency(product.name);
+  let twPremium;
+  if (currency) {
+    const userFx = parseFloat(document.getElementById('fxRateInput').value);
+    const fxRate = (userFx && userFx > 0) ? userFx : currency.defaultRate;
+    twPremium = premium * fxRate;
+    // 更新換算後台幣保費顯示
+    document.getElementById('twPremiumDisplay').value = formatNumberInput(twPremium) + ' 元';
+  } else {
+    twPremium = premium;
+  }
+  return twPremium * (product.rate / 100);
+}
+
+// ===== 工具:取得當前所有對照公司 =====
+function getAllOthers() {
+  return comparingIds.map(id => COMPANIES.find(c => c.id === id)).filter(Boolean);
+}
+
+// ===== 動態渲染職級選擇區 =====
+function refreshRankSelects() {
+  const dl = getDinglun();
+  const others = getAllOthers();
+  const grid = document.getElementById('rankSelectGrid');
+  if (!grid) return;
+
+  // 確保 otherRankIdxList 長度跟 comparingIds 一致(保留先前選擇)
+  while (calcState.otherRankIdxList.length < comparingIds.length) {
+    calcState.otherRankIdxList.push(-1);
+  }
+  while (calcState.otherRankIdxList.length > comparingIds.length) {
+    calcState.otherRankIdxList.pop();
+  }
+
+  // 鼎綸職級下拉
+  let dlOptions = '<option value="">-- 請選擇 --</option>' +
+    dl.ranks.map((r, i) =>
+      `<option value="${i}" ${i === calcState.dlRankIdx ? 'selected' : ''}>${r.name} (${r.actual})</option>`
+    ).join('');
+
+  let html = `
+    <div class="rank-select-row dl-row">
+      <div class="calc-field">
+        <label>🟠 鼎綸 職級</label>
+        <select id="dlRankSelect" onchange="onDlRankChange()">${dlOptions}</select>
+      </div>
+    </div>
+  `;
+
+  // 對照公司們
+  if (others.length > 0) {
+    html += `<div class="rank-select-row others-row cnt-${others.length}">`;
+    others.forEach((other, idx) => {
+      const currentSel = calcState.otherRankIdxList[idx];
+      const opts = '<option value="">-- 請選擇 --</option>' +
+        other.ranks.map((r, i) => {
+          const showRate = r.system === r.actual ? r.actual : `制度${r.system} / 實際${r.actual}`;
+          return `<option value="${i}" ${i === currentSel ? 'selected' : ''}>${r.name} (${showRate})</option>`;
+        }).join('');
+      html += `
+        <div class="calc-field">
+          <label>🔷 ${other.name} 職級</label>
+          <select onchange="onOtherRankChange(${idx}, this.value)">${opts}</select>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function onDlRankChange() {
+  const v = parseInt(document.getElementById('dlRankSelect').value);
+  calcState.dlRankIdx = isNaN(v) ? -1 : v;
+  recalcAll();
+}
+
+function onOtherRankChange(idx, val) {
+  const v = parseInt(val);
+  calcState.otherRankIdxList[idx] = isNaN(v) ? -1 : v;
+  recalcAll();
+}
+
+// ===== 主要計算 =====
+function recalcAll() {
+  const fyc = computeFyc();
+  // 顯示 FYC 區
+  if (calcState.inputMode === 'product') {
+    const fycBox = document.getElementById('fycDisplay');
+    if (fyc > 0) {
+      fycBox.style.display = '';
+      document.getElementById('fycValue').textContent = fmt(fyc);
+    } else {
+      fycBox.style.display = 'none';
+    }
+  }
+
+  const dl = getDinglun();
+  const others = getAllOthers();
+
+  // 收集已選有效的對照公司+職級
+  const selectedOthers = [];
+  others.forEach((other, idx) => {
+    const rankIdx = calcState.otherRankIdxList[idx];
+    if (rankIdx >= 0 && rankIdx < other.ranks.length) {
+      const rank = other.ranks[rankIdx];
+      const rate = parseRate(rank.actual);
+      selectedOthers.push({ company: other, rank, rate, rankIdx });
+    }
+  });
+
+  // 是否能計算結果(必須有 FYC、有鼎綸職級、至少一家對照公司有選職級)
+  if (!fyc || calcState.dlRankIdx < 0 || selectedOthers.length === 0) {
+    document.getElementById('calcResult').className = 'calc-empty';
+    document.getElementById('calcResult').innerHTML = '填完上方資訊,即可看到收入差異';
+    document.getElementById('retireShockBox').style.display = 'none';
+    document.getElementById('renewalResult').textContent = '請先完成上方步驟';
+    return;
+  }
+
+  const dlRank = dl.ranks[calcState.dlRankIdx];
+  const dlRate = parseRate(dlRank.actual);
+  if (dlRate === null) {
+    document.getElementById('calcResult').innerHTML = '<div class="calc-empty">⚠️ 鼎綸此職級含複雜結構,無法精確計算</div>';
+    return;
+  }
+
+  // 過濾掉無法解析率的對照公司,給警告
+  const validOthers = selectedOthers.filter(o => o.rate !== null);
+  const invalidOthers = selectedOthers.filter(o => o.rate === null);
+
+  if (validOthers.length === 0) {
+    document.getElementById('calcResult').innerHTML = '<div class="calc-empty">⚠️ 所選對照職級含複雜結構(如 +附加),無法精確計算單純差距</div>';
+    return;
+  }
+
+  const dlIncome = fyc * dlRate;
+  const allIncomes = [dlIncome, ...validOthers.map(o => fyc * o.rate)];
+  const maxIncome = Math.max(...allIncomes);
+
+  // 結果卡片(鼎綸 + N 家)
+  let cardsHTML = `
+    <div class="calc-result-row others-cnt-${validOthers.length + 1}" style="display:grid;grid-template-columns:repeat(${validOthers.length + 1}, 1fr);gap:12px;">
+      <div class="calc-result-card dl">
+        <div class="name">🟠 鼎綸</div>
+        <div class="role">${dlRank.name} ${dlRank.actual}</div>
+        <div class="amount">${fmt(dlIncome)}<small>元</small></div>
+      </div>
+  `;
+  validOthers.forEach(o => {
+    const otherIncome = fyc * o.rate;
+    cardsHTML += `
+      <div class="calc-result-card">
+        <div class="name">🔷 ${o.company.name}</div>
+        <div class="role">${o.rank.name} ${o.rank.actual}</div>
+        <div class="amount">${fmt(otherIncome)}<small>元</small></div>
+      </div>
+    `;
+  });
+  cardsHTML += `</div>`;
+
+  // 多家差距列表
+  let diffListHTML = '<div class="multi-diff-list">';
+  validOthers.forEach(o => {
+    const otherIncome = fyc * o.rate;
+    const diff = dlIncome - otherIncome;
+    const diffPct = otherIncome > 0 ? (diff / otherIncome) * 100 : 0;
+    const isPos = diff >= 0;
+    diffListHTML += `
+      <div class="multi-diff-item${isPos ? '' : ' deficit'}">
+        <div class="multi-diff-item-label">
+          ${isPos ? '🎯 鼎綸領先' : '差距'} <b>${o.company.name}</b> · ${o.rank.name}
+          <span style="font-weight:400;font-size:11px;color:#555">(同一張保單)</span>
+        </div>
+        <div class="multi-diff-item-value">
+          ${isPos ? '+' : ''}${fmt(diff)}<small>元 ${isPos ? '(' + diffPct.toFixed(1) + '%)' : ''}</small>
+        </div>
+      </div>
+    `;
+  });
+  diffListHTML += '</div>';
+
+  // 視覺化長條(鼎綸 + N 家)
+  let barHTML = '<div class="calc-bar-wrap">';
+  // 鼎綸
+  const dlBarPct = maxIncome > 0 ? (dlIncome / maxIncome) * 100 : 0;
+  barHTML += `
+    <div class="calc-bar-row">
+      <div class="calc-bar-name">鼎綸</div>
+      <div class="calc-bar-track"><div class="calc-bar-fill dl" style="width:${dlBarPct}%"></div></div>
+      <div class="calc-bar-amount">${fmt(dlIncome)}</div>
+    </div>
+  `;
+  validOthers.forEach(o => {
+    const otherIncome = fyc * o.rate;
+    const pct = maxIncome > 0 ? (otherIncome / maxIncome) * 100 : 0;
+    barHTML += `
+      <div class="calc-bar-row">
+        <div class="calc-bar-name">${o.company.name}</div>
+        <div class="calc-bar-track"><div class="calc-bar-fill" style="width:${pct}%"></div></div>
+        <div class="calc-bar-amount">${fmt(otherIncome)}</div>
+      </div>
+    `;
+  });
+  barHTML += '</div>';
+
+  // 警告無效對照
+  let invalidWarn = '';
+  if (invalidOthers.length > 0) {
+    invalidWarn = `<div style="background:rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;margin-top:14px;font-size:11px;text-align:center">
+      ⚠️ ${invalidOthers.map(o => o.company.name).join('、')} 此職級含複雜結構,單筆差距無法精確計算,已從本次比對中略過
+    </div>`;
+  }
+
+  document.getElementById('calcResult').className = '';
+  document.getElementById('calcResult').innerHTML = `
+    <div class="calc-result">
+      <div class="calc-result-title">SINGLE POLICY · 單筆首年收入</div>
+      ${cardsHTML}
+      ${diffListHTML}
+      ${barHTML}
+      ${invalidWarn}
+    </div>
+  `;
+
+  // 續年度估算(以「最大領先」那家算)
+  calcState.renewalRate = parseFloat(document.getElementById('renewalRate').value) || 0;
+  calcState.renewalYears = parseFloat(document.getElementById('renewalYears').value) || 0;
+  if (calcState.renewalRate > 0 && calcState.renewalYears > 0) {
+    let renewalHTML = '';
+    validOthers.forEach(o => {
+      const otherIncome = fyc * o.rate;
+      const diff = dlIncome - otherIncome;
+      const renewalFyc = fyc * (calcState.renewalRate / 100);
+      const dlRenewalTotal = renewalFyc * dlRate * calcState.renewalYears;
+      const otherRenewalTotal = renewalFyc * o.rate * calcState.renewalYears;
+      const renewalDiff = dlRenewalTotal - otherRenewalTotal;
+      const totalDiff = diff + renewalDiff;
+      renewalHTML += `<div style="padding:6px 0;border-bottom:1px dashed rgba(0,0,0,0.06)">
+        <b>vs ${o.company.name}:</b> 續年差 +${fmt(renewalDiff)} · 累計 <strong>+${fmt(totalDiff)}</strong> 元
+      </div>`;
+    });
+    document.getElementById('renewalResult').innerHTML = renewalHTML || '請先選擇職級';
+  } else {
+    document.getElementById('renewalResult').textContent = '請輸入續年度佣金率與續年數';
+  }
+
+  // 顯示退休震撼
+  document.getElementById('retireShockBox').style.display = '';
+  recalcRetire();
+}
+
+// ===== 退休震撼計算 =====
+function recalcRetire() {
+  const ageNow = parseInt(document.getElementById('ageNow').value);
+  const ageRetire = parseInt(document.getElementById('ageRetire').value);
+  const yearlyDeals = parseFloat(document.getElementById('yearlyDeals').value);
+
+  calcState.ageNow = ageNow;
+  calcState.ageRetire = ageRetire;
+  calcState.yearlyDeals = yearlyDeals;
+
+  // 模式切換 UI
+  const yearlyDealsField = document.getElementById('yearlyDealsField');
+  const retireFieldsGrid = document.getElementById('retireFieldsGrid');
+  const retireDesc = document.getElementById('retireShockDesc');
+  if (calcState.inputMode === 'manual') {
+    yearlyDealsField.style.display = 'none';
+    retireFieldsGrid.style.gridTemplateColumns = '1fr 1fr';
+    retireDesc.textContent = '同樣這張保單,差距 × 你還要做幾年的累積';
+  } else {
+    yearlyDealsField.style.display = '';
+    retireFieldsGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+    retireDesc.textContent = '假設每年做相同保費業績,推算到退休的累積差額';
+  }
+
+  const summary = document.getElementById('retireSummary');
+
+  const fyc = computeFyc();
+  const dl = getDinglun();
+  const others = getAllOthers();
+
+  // 收集已選有效的對照公司+職級
+  const selectedOthers = [];
+  others.forEach((other, idx) => {
+    const rankIdx = calcState.otherRankIdxList[idx];
+    if (rankIdx >= 0 && rankIdx < other.ranks.length) {
+      const rank = other.ranks[rankIdx];
+      const rate = parseRate(rank.actual);
+      if (rate !== null) {
+        selectedOthers.push({ company: other, rank, rate });
+      }
+    }
+  });
+
+  if (!fyc || calcState.dlRankIdx < 0 || selectedOthers.length === 0) {
+    summary.style.display = 'none';
+    return;
+  }
+  const dlRate = parseRate(dl.ranks[calcState.dlRankIdx].actual);
+  if (dlRate === null) {
+    summary.style.display = 'none';
+    return;
+  }
+  const dlIncome = fyc * dlRate;
+
+  if (!ageNow || !ageRetire || ageNow >= ageRetire) {
+    summary.style.display = 'none';
+    return;
+  }
+  if (calcState.inputMode === 'product' && (!yearlyDeals || yearlyDeals <= 0)) {
+    summary.style.display = 'none';
+    return;
+  }
+
+  const yearsToRetire = ageRetire - ageNow;
+  const isProduct = calcState.inputMode === 'product';
+
+  // 計算每一家的累積差距
+  const retireResults = selectedOthers.map(o => {
+    const otherIncome = fyc * o.rate;
+    const singleDiff = dlIncome - otherIncome;
+    let totalDiff;
+    if (isProduct) {
+      totalDiff = singleDiff * yearlyDeals * yearsToRetire;
+    } else {
+      totalDiff = singleDiff * yearsToRetire;
+    }
+    return { company: o.company, rank: o.rank, otherIncome, singleDiff, totalDiff };
+  });
+
+  // 不排序 — 保持跟上方對照公司一致的順序
+  const dlRankName = dl.ranks[calcState.dlRankIdx].name;
+
+  // 列出每一家(精緻版,並排呈現)
+  const colCount = retireResults.length;
+  let listHTML = `<div class="retire-detail-list cols-${colCount}">`;
+  retireResults.forEach((r) => {
+    const formula = isProduct
+      ? `每筆多 <b>${fmt(r.singleDiff)}</b>元 × 每年 <b>${yearlyDeals}</b>件 × <b>${yearsToRetire}</b>年`
+      : `每筆多 <b>${fmt(r.singleDiff)}</b>元 × <b>${yearsToRetire}</b>年`;
+    listHTML += `
+      <div class="retire-detail-item">
+        <div class="retire-detail-vs">
+          <div class="rd-dl">🟠 鼎綸 ${dlRankName}</div>
+          <div class="rd-vs-arrow">↓ 領先 ↓</div>
+          <div class="rd-other">🔷 ${r.company.name}<br><span class="rd-other-rank">${r.rank.name}</span></div>
+        </div>
+        <div class="retire-detail-amount">+${fmt(r.totalDiff)}<small>元</small></div>
+        <div class="retire-detail-formula">${formula}</div>
+      </div>
+    `;
+  });
+  listHTML += '</div>';
+
+  summary.style.display = '';
+  summary.innerHTML = `
+    ${listHTML}
+    <div class="retire-summary-note">
+      ※ 此估算僅以「首年佣金」單筆差距推算,實際差距會更大<br>
+      未計入:續年度佣金、組織獎金、晉升、年資加碼等
+    </div>
+  `;
+}
+
+// ===== 進階選項切換 =====
+function toggleAdvanced() {
+  calcState.showAdvanced = !calcState.showAdvanced;
+  document.getElementById('calcAdvanced').classList.toggle('show', calcState.showAdvanced);
+  document.getElementById('advancedBtn').textContent =
+    calcState.showAdvanced ? '▲ 隱藏續年度估算' : '▼ 顯示續年度估算(進階)';
+}
+
+// ===== 重設 =====
+function resetCalc() {
+  if (!confirm('確定要重設所有試算內容嗎?')) return;
+  document.getElementById('insurerInput').value = '';
+  document.getElementById('insurerCombo').classList.remove('has-value');
+  document.getElementById('productInput').value = '';
+  document.getElementById('productCombo').classList.remove('has-value');
+  calcState.insurer = '';
+  calcState.productIdx = -1;
+  onProductChange();
+  renderInsurerList('');
+  renderProductList('');
+  document.getElementById('premiumInput').value = '';
+  document.getElementById('manualFyc').value = '';
+  calcState.dlRankIdx = -1;
+  calcState.otherRankIdxList = comparingIds.map(() => -1);
+  refreshRankSelects();
+  document.getElementById('ageNow').value = '';
+  document.getElementById('ageRetire').value = '';
+  document.getElementById('yearlyDeals').value = '12';
+  switchInputMode('product');
+  recalcAll();
+}
+
+// ===== 分享連結(帶參數) =====
+function copyShareLink() {
+  const params = new URLSearchParams();
+  params.set('other', comparingIds[0]);
+  if (calcState.inputMode === 'manual') {
+    params.set('mode', 'manual');
+    const v = parseNumberInput(document.getElementById('manualFyc').value);
+    if (v > 0) params.set('fyc', v);
+  } else {
+    if (calcState.insurer) params.set('insurer', calcState.insurer);
+    if (calcState.productIdx >= 0) params.set('pidx', calcState.productIdx);
+    const prem = parseNumberInput(document.getElementById('premiumInput').value);
+    if (prem > 0) params.set('prem', prem);
+  }
+  if (calcState.dlRankIdx >= 0) params.set('dlrank', calcState.dlRankIdx);
+  // 多家對照職級用逗號分隔
+  const otherRanks = calcState.otherRankIdxList.map(v => v >= 0 ? v : '').join(',');
+  if (otherRanks.replace(/,/g, '').length > 0) params.set('otranks', otherRanks);
+  const ageNow = parseInt(document.getElementById('ageNow').value);
+  if (ageNow) params.set('age', ageNow);
+  const ageRet = parseInt(document.getElementById('ageRetire').value);
+  if (ageRet) params.set('aret', ageRet);
+  const md = parseFloat(document.getElementById('yearlyDeals').value);
+  if (md && md !== 12) params.set('yd', md);
+
+  const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('shareBtn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ 已複製連結!';
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  }).catch(() => {
+    prompt('複製此連結:', url);
+  });
+}
+
+// ===== 從 URL 參數還原 =====
+function restoreFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.toString()) return;
+
+  // 對照公司
+  const other = params.get('other');
+  if (other && COMPANIES.find(c => c.id === other)) {
+    comparingIds[0] = other;
+    renderSelectors();
+    renderTable();
+  }
+
+  // 模式
+  const mode = params.get('mode');
+  if (mode === 'manual') {
+    switchInputMode('manual');
+    const fyc = params.get('fyc');
+    if (fyc) document.getElementById('manualFyc').value = formatNumberInput(parseFloat(fyc));
+  } else {
+    const insurer = params.get('insurer');
+    if (insurer && PRODUCTS[insurer]) {
+      selectInsurer(insurer);
+      const pidx = params.get('pidx');
+      if (pidx !== null) {
+        const idx = parseInt(pidx);
+        if (PRODUCTS[insurer][idx]) {
+          selectProduct(insurer, idx);
+        }
+      }
+      const prem = params.get('prem');
+      if (prem) {
+        document.getElementById('premiumInput').value = formatNumberInput(parseFloat(prem));
+      }
+      recalcAll();
+    }
+  }
+
+  // 職級
+  setTimeout(() => {
+    const dlrank = params.get('dlrank');
+    if (dlrank !== null) calcState.dlRankIdx = parseInt(dlrank);
+    const otranks = params.get('otranks') || params.get('otrank'); // 向下相容舊連結
+    if (otranks !== null) {
+      // 舊連結 otrank 是單一值,新連結 otranks 是逗號分隔
+      const list = String(otranks).split(',').map(v => v === '' ? -1 : parseInt(v));
+      calcState.otherRankIdxList = list;
+    }
+    refreshRankSelects();
+
+    const age = params.get('age');
+    if (age) document.getElementById('ageNow').value = age;
+    const aret = params.get('aret');
+    if (aret) document.getElementById('ageRetire').value = aret;
+    const md = params.get('yd') || params.get('md'); // 向下相容舊連結
+    if (md) {
+      // 舊連結是月件,要轉成年件
+      const isOld = params.get('md') && !params.get('yd');
+      const val = isOld ? parseFloat(md) * 12 : parseFloat(md);
+      document.getElementById('yearlyDeals').value = val;
+    }
+
+    recalcAll();
+  }, 200);
+}
+
+// ===== 對照公司變更時 =====
+window.onCompareCompanyChange = function() {
+  refreshRankSelects();
+  recalcAll();
+};
+
+// ===== 啟動 =====
+document.addEventListener('DOMContentLoaded', function() {
+  // 等 PRODUCTS 從 ../products.js 載入
+  if (typeof PRODUCTS !== 'undefined') {
+    initInsurerOptions();
+  } else {
+    // 若還沒載完,稍等
+    setTimeout(() => {
+      if (typeof PRODUCTS !== 'undefined') initInsurerOptions();
+    }, 200);
+  }
+  refreshRankSelects();
+  restoreFromUrl();
+});
+
+// 立即跑一次(若 DOMContentLoaded 已過)
+if (document.readyState === 'loading') {
+  // 等待
+} else {
+  if (typeof PRODUCTS !== 'undefined') initInsurerOptions();
+  refreshRankSelects();
+  setTimeout(restoreFromUrl, 100);
+}
+</script>
+
+</body>
+</html>

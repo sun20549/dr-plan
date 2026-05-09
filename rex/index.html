@@ -84,6 +84,10 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
 .hero-tool-card:hover::before{transform:scaleX(1);}
 .hero-tool-orange{--htc-accent:var(--orange);--htc-accent-bg:rgba(240,90,40,.08);color:var(--orange);}
 .hero-tool-teal{--htc-accent:var(--teal);--htc-accent-bg:rgba(26,107,114,.08);color:var(--teal);}
+.hero-tool-navy{--htc-accent:var(--navy);--htc-accent-bg:rgba(13,42,58,.08);color:var(--navy);}
+.hero-tool-gold{--htc-accent:#b07800;--htc-accent-bg:rgba(232,160,32,.12);color:#b07800;}
+.hero-tool-card.is-disabled{opacity:.55;cursor:not-allowed;pointer-events:none;}
+.hero-tool-card .htc-soon{display:inline-block;align-self:flex-start;background:#eee;color:#888;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:3px 10px;border-radius:12px;margin-top:4px;}
 .htc-tag{display:inline-block;align-self:flex-start;background:var(--htc-accent-bg);color:var(--htc-accent);font-size:11px;font-weight:700;letter-spacing:0.5px;padding:4px 12px;border-radius:14px;margin-bottom:2px;}
 .htc-icon-wrap{width:54px;height:54px;border-radius:14px;background:var(--htc-accent-bg);display:flex;align-items:center;justify-content:center;color:var(--htc-accent);}
 .htc-title{font-size:18px;font-weight:900;color:var(--navy);letter-spacing:0.5px;margin-top:4px;}
@@ -278,8 +282,51 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
         <div class="htc-cta">進入系統 →</div>
       </a>
 
-      <!-- 卡 2:保險經紀人制度分析 -->
-      <a href="./compare/" class="hero-tool-card hero-tool-teal">
+      <!-- 卡 2:投資型專區(新增) -->
+      <a href="./vip/" class="hero-tool-card hero-tool-navy">
+        <div class="htc-tag">投資型 · 商品專區</div>
+        <div class="htc-icon-wrap">
+          <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
+            <path d="M4 26L11 18L16 22L22 14L28 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 14H28V20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="11" cy="18" r="1.8" fill="currentColor"/>
+            <circle cx="16" cy="22" r="1.8" fill="currentColor"/>
+            <circle cx="22" cy="14" r="1.8" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="htc-title">投資型專區</div>
+        <div class="htc-desc">投資型保單商品專區,集中投資型壽險、年金等商品資訊與分析工具,協助業務快速掌握重點。</div>
+        <div class="htc-features">
+          <span class="htc-feature">✓ 投資型商品總覽</span>
+          <span class="htc-feature">✓ 費用結構說明</span>
+          <span class="htc-feature">✓ 標的選擇參考</span>
+        </div>
+        <div class="htc-cta">進入專區 →</div>
+      </a>
+
+      <!-- 卡 3:儲蓄險分析器(新增) -->
+      <a href="./compare/" class="hero-tool-card hero-tool-gold">
+        <div class="htc-tag">儲蓄險 · 比較工具</div>
+        <div class="htc-icon-wrap">
+          <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
+            <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 9V16L20.5 18.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 22V25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <text x="16" y="14.5" text-anchor="middle" font-size="8" font-weight="900" fill="currentColor">$</text>
+          </svg>
+        </div>
+        <div class="htc-title">儲蓄險分析器</div>
+        <div class="htc-desc">各家儲蓄險商品橫向比較,提供 IRR、繳費期、解約金等關鍵數據對照,幫助業務快速找出最適商品。</div>
+        <div class="htc-features">
+          <span class="htc-feature">✓ IRR 試算與比較</span>
+          <span class="htc-feature">✓ 解約金走勢對照</span>
+          <span class="htc-feature">✓ 多家商品橫向分析</span>
+        </div>
+        <div class="htc-cta">進入系統 →</div>
+      </a>
+
+      <!-- 卡 4:保險經紀人制度分析(暫停連結) -->
+      <a href="#" class="hero-tool-card hero-tool-teal is-disabled" aria-disabled="true" onclick="event.preventDefault();return false;">
         <div class="htc-tag">招募輔助 · 同業對照</div>
         <div class="htc-icon-wrap">
           <svg viewBox="0 0 32 32" fill="none" width="36" height="36">
@@ -297,7 +344,7 @@ body{background:var(--light);font-family:'Noto Sans TC',sans-serif;color:var(--n
           <span class="htc-feature">✓ 同業差異一目了然</span>
           <span class="htc-feature">✓ 招募溝通有力支援</span>
         </div>
-        <div class="htc-cta">進入系統 →</div>
+        <div class="htc-soon">系統建置中</div>
       </a>
     </div>
   </div>
