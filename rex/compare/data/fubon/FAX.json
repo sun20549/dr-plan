@@ -1,4 +1,5 @@
 {
+  "schema": "v4",
   "meta": {
     "product_id": "FAX",
     "company": "富邦人壽",
@@ -10,14 +11,28 @@
     "base_age": 30,
     "base_sa": 120000,
     "base_premium": 22218,
-    "discount": 0.025,
-    "declared_rate": 0,
-    "source_file": "富邦_智富美家_FAX__V2_0-1150101.xlsx",
-    "extracted_at": "2026-05-06",
     "base_premium_gross": 22788,
-    "dividend_option": "儲存生息"
+    "discount": 0.025,
+    "min_age": 0,
+    "max_age": 74,
+    "min_sa": 10000,
+    "max_sa": 1000000,
+    "declared_rate": 0.04,
+    "predicted_rate": 0,
+    "dividend_option": "購買增額繳清保險金額",
+    "source_file": "富邦人壽智富美家外幣利率變動型終身壽險_FAX_20260101-試算表20260108.xlsx",
+    "extracted_at": "2026-05-10"
   },
   "schedule": [
+    {
+      "y": 1,
+      "age": 30,
+      "cum_prem": 22218,
+      "cv_basic": 16320,
+      "cv_total": 16800,
+      "death_benefit": 37392,
+      "increment_amount": 3000
+    },
     {
       "y": 2,
       "age": 31,

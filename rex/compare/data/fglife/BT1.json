@@ -7,78 +7,87 @@
     "period": 1,
     "engine": "twlife_v1",
     "base_sex": "M",
-    "base_age": 41,
-    "base_sa": 142324,
-    "base_premium": 135000,
-    "discount": 0.02,
+    "base_age": 20,
+    "base_sa": 41446,
+    "base_premium": 40000,
+    "base_premium_gross": 40161,
+    "base_premium_net": 40000,
+    "discount": 0.004,
     "declared_rate": 0.041,
-    "source_file": "遠雄_美滿固特益美元養老保險_BT1_NZA__試算表.xls",
-    "extracted_at": "2026-05-06",
-    "base_premium_gross": 137755,
+    "guaranteed_rate": 0.041,
+    "source_file": "d-美滿固特益美元養老保險-20260509.pdf + 試算表.xls",
+    "extracted_at": "2026-05-09",
     "premium_mode": "lump_sum",
-    "extraction_note": "試算表為躉繳設定 (period=1)。商品本身可能支援多年期，需以 DM 確認實際年期選項。",
     "is_lump_sum_demo": true,
     "product_type": "endowment",
+    "is_endowment": true,
     "protection_period": 7,
-    "is_endowment": true
+    "extraction_note": "試算情境為躉繳(period=1)。商品本身支援:躉繳。 養老期 7 年,Y7 滿期(maturity_benefit)。原始 PDF Y7 解約金 D 欄=0(因已領滿期金),系統 cv_basic/cv_total 統一寫滿期金值以維持單調遞增。 PDF 表定保費 40,161、實繳 40,000、折扣率 0.40%(個案折扣,含繳費方式 1% + 高保額分級)。"
   },
   "schedule": [
     {
       "y": 1,
-      "age": 41,
-      "cum_prem": 135000,
-      "cv_basic": 101207,
-      "cv_total": 101207,
-      "death_benefit": 188912
+      "age": 20,
+      "cum_prem": 40000,
+      "cv_basic": 29385,
+      "cv_total": 29385,
+      "death_benefit": 74440,
+      "pv_total": 39179
     },
     {
       "y": 2,
-      "age": 42,
-      "cum_prem": 135000,
-      "cv_basic": 112294,
-      "cv_total": 112294,
-      "death_benefit": 196524
+      "age": 21,
+      "cum_prem": 40000,
+      "cv_basic": 32618,
+      "cv_total": 32618,
+      "death_benefit": 77463,
+      "pv_total": 40770
     },
     {
       "y": 3,
-      "age": 43,
-      "cum_prem": 135000,
-      "cv_basic": 144544,
-      "cv_total": 144544,
-      "death_benefit": 204414
+      "age": 22,
+      "cum_prem": 40000,
+      "cv_basic": 42001,
+      "cv_total": 42001,
+      "death_benefit": 80606,
+      "pv_total": 42424
     },
     {
       "y": 4,
-      "age": 44,
-      "cum_prem": 135000,
-      "cv_basic": 150351,
-      "cv_total": 150351,
-      "death_benefit": 212624
+      "age": 23,
+      "cum_prem": 40000,
+      "cv_basic": 43701,
+      "cv_total": 43701,
+      "death_benefit": 83874,
+      "pv_total": 44144
     },
     {
       "y": 5,
-      "age": 45,
-      "cum_prem": 135000,
-      "cv_basic": 156357,
-      "cv_total": 156357,
-      "death_benefit": 221112
+      "age": 24,
+      "cum_prem": 40000,
+      "cv_basic": 45475,
+      "cv_total": 45475,
+      "death_benefit": 87277,
+      "pv_total": 45935
     },
     {
       "y": 6,
-      "age": 46,
-      "cum_prem": 135000,
-      "cv_basic": 162605,
-      "cv_total": 162605,
-      "death_benefit": 229939
+      "age": 25,
+      "cum_prem": 40000,
+      "cv_basic": 47323,
+      "cv_total": 47323,
+      "death_benefit": 90820,
+      "pv_total": 47800
     },
     {
       "y": 7,
-      "age": 47,
-      "cum_prem": 135000,
-      "cv_basic": 170789,
-      "cv_total": 170789,
-      "death_benefit": 239105,
-      "maturity_benefit": 170789
+      "age": 26,
+      "cum_prem": 40000,
+      "cv_basic": 49735,
+      "cv_total": 49735,
+      "death_benefit": 94497,
+      "maturity_benefit": 49735,
+      "pv_total": 49735
     }
   ]
 }

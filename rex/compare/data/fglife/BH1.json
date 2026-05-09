@@ -1,0 +1,405 @@
+{
+  "meta": {
+    "product_id": "BH1",
+    "company": "遠雄人壽",
+    "product_name": "傳富萬豪美元利率變動型終身壽險",
+    "currency": "USD",
+    "period": 1,
+    "engine": "twlife_v1",
+    "base_sex": "M",
+    "base_age": 20,
+    "base_sa": 294942,
+    "base_premium": 40000,
+    "base_premium_gross": 41026,
+    "base_premium_net": 40000,
+    "discount": 0.025,
+    "declared_rate": 0.0432,
+    "guaranteed_rate": 0.0175,
+    "source_file": "d-傳富萬豪美元利率變動型終身壽險-20260509.pdf + 試算表.xls",
+    "extracted_at": "2026-05-09",
+    "premium_mode": "lump_sum",
+    "is_lump_sum_demo": true,
+    "product_type": "whole_life",
+    "extraction_note": "試算情境為躉繳(period=1)。商品本身支援:躉繳, 2年期。 身故金 Y3 起跳升至 ~310,300(基本保額+增額繳清),Y1-Y2 為基本保額對應之低保證身故倍率。 PDF 表定保費 41,026、實繳 40,000、折扣率 2.50%(個案折扣,含繳費方式 1% + 高保額分級)。 終身壽 Y90 後表中無數據(110 歲以下空白行);Y90 末身故金 392,530;滿期/祝壽合計 412,965。"
+  },
+  "schedule": [
+    {
+      "y": 1,
+      "age": 20,
+      "cum_prem": 40000,
+      "cv_basic": 23507,
+      "cv_inc": 805,
+      "cv_total": 24312,
+      "death_benefit": 65778
+    },
+    {
+      "y": 2,
+      "age": 21,
+      "cum_prem": 40000,
+      "cv_basic": 25483,
+      "cv_inc": 1659,
+      "cv_total": 27142,
+      "death_benefit": 68613
+    },
+    {
+      "y": 3,
+      "age": 22,
+      "cum_prem": 40000,
+      "cv_basic": 27459,
+      "cv_inc": 2555,
+      "cv_total": 30014,
+      "death_benefit": 310300
+    },
+    {
+      "y": 4,
+      "age": 23,
+      "cum_prem": 40000,
+      "cv_basic": 29465,
+      "cv_inc": 3498,
+      "cv_total": 32963,
+      "death_benefit": 310794
+    },
+    {
+      "y": 5,
+      "age": 24,
+      "cum_prem": 40000,
+      "cv_basic": 32857,
+      "cv_inc": 4489,
+      "cv_total": 37346,
+      "death_benefit": 311306
+    },
+    {
+      "y": 6,
+      "age": 25,
+      "cum_prem": 40000,
+      "cv_basic": 33328,
+      "cv_inc": 5535,
+      "cv_total": 38863,
+      "death_benefit": 311773
+    },
+    {
+      "y": 7,
+      "age": 26,
+      "cum_prem": 40000,
+      "cv_basic": 34125,
+      "cv_inc": 6633,
+      "cv_total": 40758,
+      "death_benefit": 312299
+    },
+    {
+      "y": 8,
+      "age": 27,
+      "cum_prem": 40000,
+      "cv_basic": 34597,
+      "cv_inc": 7787,
+      "cv_total": 42384,
+      "death_benefit": 312785
+    },
+    {
+      "y": 9,
+      "age": 28,
+      "cum_prem": 40000,
+      "cv_basic": 35069,
+      "cv_inc": 8997,
+      "cv_total": 44066,
+      "death_benefit": 313273
+    },
+    {
+      "y": 10,
+      "age": 29,
+      "cum_prem": 40000,
+      "cv_basic": 35570,
+      "cv_inc": 10275,
+      "cv_total": 45845,
+      "death_benefit": 313798
+    },
+    {
+      "y": 11,
+      "age": 30,
+      "cum_prem": 40000,
+      "cv_basic": 36042,
+      "cv_inc": 11605,
+      "cv_total": 47647,
+      "death_benefit": 314301
+    },
+    {
+      "y": 12,
+      "age": 31,
+      "cum_prem": 40000,
+      "cv_basic": 36543,
+      "cv_inc": 13008,
+      "cv_total": 49551,
+      "death_benefit": 314776
+    },
+    {
+      "y": 13,
+      "age": 32,
+      "cum_prem": 40000,
+      "cv_basic": 37045,
+      "cv_inc": 14477,
+      "cv_total": 51522,
+      "death_benefit": 315303
+    },
+    {
+      "y": 14,
+      "age": 33,
+      "cum_prem": 40000,
+      "cv_basic": 37517,
+      "cv_inc": 16003,
+      "cv_total": 53520,
+      "death_benefit": 315777
+    },
+    {
+      "y": 15,
+      "age": 34,
+      "cum_prem": 40000,
+      "cv_basic": 38018,
+      "cv_inc": 17611,
+      "cv_total": 55629,
+      "death_benefit": 316277
+    },
+    {
+      "y": 16,
+      "age": 35,
+      "cum_prem": 40000,
+      "cv_basic": 38519,
+      "cv_inc": 19292,
+      "cv_total": 57811,
+      "death_benefit": 316811
+    },
+    {
+      "y": 17,
+      "age": 36,
+      "cum_prem": 40000,
+      "cv_basic": 38991,
+      "cv_inc": 21032,
+      "cv_total": 60023,
+      "death_benefit": 317298
+    },
+    {
+      "y": 18,
+      "age": 37,
+      "cum_prem": 40000,
+      "cv_basic": 39493,
+      "cv_inc": 22865,
+      "cv_total": 62358,
+      "death_benefit": 317825
+    },
+    {
+      "y": 19,
+      "age": 38,
+      "cum_prem": 40000,
+      "cv_basic": 39965,
+      "cv_inc": 24760,
+      "cv_total": 64725,
+      "death_benefit": 318307
+    },
+    {
+      "y": 20,
+      "age": 39,
+      "cum_prem": 40000,
+      "cv_basic": 40466,
+      "cv_inc": 26754,
+      "cv_total": 67220,
+      "death_benefit": 318846
+    },
+    {
+      "y": 21,
+      "age": 40,
+      "cum_prem": 40000,
+      "cv_basic": 40938,
+      "cv_inc": 28814,
+      "cv_total": 69752,
+      "death_benefit": 319346
+    },
+    {
+      "y": 22,
+      "age": 41,
+      "cum_prem": 40000,
+      "cv_basic": 41410,
+      "cv_inc": 30960,
+      "cv_total": 72370,
+      "death_benefit": 319866
+    },
+    {
+      "y": 23,
+      "age": 42,
+      "cum_prem": 40000,
+      "cv_basic": 41852,
+      "cv_inc": 33170,
+      "cv_total": 75022,
+      "death_benefit": 320353
+    },
+    {
+      "y": 24,
+      "age": 43,
+      "cum_prem": 40000,
+      "cv_basic": 42324,
+      "cv_inc": 35494,
+      "cv_total": 77818,
+      "death_benefit": 320868
+    },
+    {
+      "y": 25,
+      "age": 44,
+      "cum_prem": 40000,
+      "cv_basic": 42767,
+      "cv_inc": 37886,
+      "cv_total": 80653,
+      "death_benefit": 321361
+    },
+    {
+      "y": 26,
+      "age": 45,
+      "cum_prem": 40000,
+      "cv_basic": 43209,
+      "cv_inc": 40372,
+      "cv_total": 83581,
+      "death_benefit": 321889
+    },
+    {
+      "y": 27,
+      "age": 46,
+      "cum_prem": 40000,
+      "cv_basic": 43651,
+      "cv_inc": 42956,
+      "cv_total": 86607,
+      "death_benefit": 322402
+    },
+    {
+      "y": 28,
+      "age": 47,
+      "cum_prem": 40000,
+      "cv_basic": 44064,
+      "cv_inc": 45608,
+      "cv_total": 89672,
+      "death_benefit": 322905
+    },
+    {
+      "y": 29,
+      "age": 48,
+      "cum_prem": 40000,
+      "cv_basic": 44507,
+      "cv_inc": 48394,
+      "cv_total": 92901,
+      "death_benefit": 323457
+    },
+    {
+      "y": 30,
+      "age": 49,
+      "cum_prem": 40000,
+      "cv_basic": 44920,
+      "cv_inc": 51252,
+      "cv_total": 96172,
+      "death_benefit": 323951
+    },
+    {
+      "y": 35,
+      "age": 54,
+      "cum_prem": 40000,
+      "cv_basic": 46925,
+      "cv_inc": 67131,
+      "cv_total": 114056,
+      "death_benefit": 326536
+    },
+    {
+      "y": 40,
+      "age": 59,
+      "cum_prem": 40000,
+      "cv_basic": 48724,
+      "cv_inc": 85726,
+      "cv_total": 134450,
+      "death_benefit": 329132
+    },
+    {
+      "y": 45,
+      "age": 64,
+      "cum_prem": 40000,
+      "cv_basic": 50229,
+      "cv_inc": 107123,
+      "cv_total": 157352,
+      "death_benefit": 331769
+    },
+    {
+      "y": 50,
+      "age": 69,
+      "cum_prem": 40000,
+      "cv_basic": 51231,
+      "cv_inc": 130973,
+      "cv_total": 182204,
+      "death_benefit": 334415
+    },
+    {
+      "y": 55,
+      "age": 74,
+      "cum_prem": 40000,
+      "cv_basic": 51408,
+      "cv_inc": 156158,
+      "cv_total": 207566,
+      "death_benefit": 337159
+    },
+    {
+      "y": 60,
+      "age": 79,
+      "cum_prem": 40000,
+      "cv_basic": 50848,
+      "cv_inc": 182228,
+      "cv_total": 233076,
+      "death_benefit": 339800
+    },
+    {
+      "y": 65,
+      "age": 84,
+      "cum_prem": 40000,
+      "cv_basic": 49550,
+      "cv_inc": 208301,
+      "cv_total": 257851,
+      "death_benefit": 342520
+    },
+    {
+      "y": 70,
+      "age": 89,
+      "cum_prem": 40000,
+      "cv_basic": 47545,
+      "cv_inc": 233337,
+      "cv_total": 280882,
+      "death_benefit": 345363
+    },
+    {
+      "y": 75,
+      "age": 94,
+      "cum_prem": 40000,
+      "cv_basic": 44949,
+      "cv_inc": 256523,
+      "cv_total": 301472,
+      "death_benefit": 348112
+    },
+    {
+      "y": 80,
+      "age": 99,
+      "cum_prem": 40000,
+      "cv_basic": 42029,
+      "cv_inc": 277991,
+      "cv_total": 320020,
+      "death_benefit": 350757
+    },
+    {
+      "y": 85,
+      "age": 104,
+      "cum_prem": 40000,
+      "cv_basic": 39788,
+      "cv_inc": 304148,
+      "cv_total": 343936,
+      "death_benefit": 353711
+    },
+    {
+      "y": 90,
+      "age": 109,
+      "cum_prem": 40000,
+      "cv_basic": 40673,
+      "cv_inc": 358473,
+      "cv_total": 399146,
+      "death_benefit": 392530
+    }
+  ]
+}

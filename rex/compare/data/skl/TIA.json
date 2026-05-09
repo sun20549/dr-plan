@@ -1,0 +1,953 @@
+{
+  "meta": {
+    "company": "新光人壽",
+    "plan_code": "TIA",
+    "product_name": "美創富外幣利率變動型終身壽險(定期給付型)",
+    "period": 2,
+    "currency": "USD",
+    "currency_unit": "萬元",
+    "type": "美元利率變動型終身壽險(定期給付型)",
+    "engine": "twlife_v1",
+    "min_age": 0,
+    "max_age": 75,
+    "min_sa": 3000,
+    "max_sa": 5000000,
+    "unit_size": 1000,
+    "declared_rate": 0.0415,
+    "predicted_rate": 0.0175,
+    "discount": 0.021,
+    "discount_method": "simple",
+    "discount_tiers": [
+      {
+        "threshold": 0,
+        "rate": 0
+      },
+      {
+        "threshold": 20000,
+        "rate": 0.005
+      },
+      {
+        "threshold": 45000,
+        "rate": 0.008
+      },
+      {
+        "threshold": 85000,
+        "rate": 0.021
+      }
+    ],
+    "discount_tier_unit": "USD_premium",
+    "extraction_note_discount": "高保費折扣區間以年繳化保險費(美元)為門檻;TIA(2 年期)折扣表跟 TI0(躉繳)的折扣表不同",
+    "base_age": 20,
+    "base_sex": "M",
+    "base_sa": 179000,
+    "base_premium": 102746,
+    "base_premium_net": 99561,
+    "premium_per_unit": 5740,
+    "schedule_includes_dividend": true
+  },
+  "schedule": [
+    {
+      "y": 1,
+      "cum_prem": 99561.0,
+      "death_benefit": 156027.14,
+      "cv_basic": 61589.6,
+      "cv_total": 63560.47,
+      "sa_basic": 156027.14,
+      "acc_sa": 1913.78,
+      "dividend": 1970.87
+    },
+    {
+      "y": 2,
+      "cum_prem": 199122.0,
+      "death_benefit": 360026.22,
+      "cv_basic": 149986.24,
+      "cv_total": 156538.41,
+      "sa_basic": 356217.7,
+      "acc_sa": 6255.71,
+      "dividend": 4547.7
+    },
+    {
+      "y": 3,
+      "cum_prem": 199122.0,
+      "death_benefit": 374948.11,
+      "cv_basic": 188770.35,
+      "cv_total": 200170.34,
+      "sa_basic": 362286.87,
+      "acc_sa": 10701.84,
+      "dividend": 4736.18
+    },
+    {
+      "y": 4,
+      "cum_prem": 199122.0,
+      "death_benefit": 390485.87,
+      "cv_basic": 191985.37,
+      "cv_total": 208511.95,
+      "sa_basic": 368457.0,
+      "acc_sa": 15254.68,
+      "dividend": 4932.45
+    },
+    {
+      "y": 5,
+      "cum_prem": 199122.0,
+      "death_benefit": 406664.79,
+      "cv_basic": 195253.73,
+      "cv_total": 217198.49,
+      "sa_basic": 374729.7,
+      "acc_sa": 19916.79,
+      "dividend": 5136.82
+    },
+    {
+      "y": 6,
+      "cum_prem": 199122.0,
+      "death_benefit": 423503.99,
+      "cv_basic": 198573.11,
+      "cv_total": 226240.46,
+      "sa_basic": 381100.13,
+      "acc_sa": 24690.8,
+      "dividend": 5349.53
+    },
+    {
+      "y": 7,
+      "cum_prem": 199122.0,
+      "death_benefit": 441037.23,
+      "cv_basic": 203987.32,
+      "cv_total": 237695.8,
+      "sa_basic": 387575.99,
+      "acc_sa": 29579.38,
+      "dividend": 5571.0
+    },
+    {
+      "y": 8,
+      "cum_prem": 199122.0,
+      "death_benefit": 459289.72,
+      "cv_basic": 207450.61,
+      "cv_total": 247532.94,
+      "sa_basic": 394156.21,
+      "acc_sa": 34585.28,
+      "dividend": 5801.55
+    },
+    {
+      "y": 9,
+      "cum_prem": 199122.0,
+      "death_benefit": 478288.13,
+      "cv_basic": 210968.5,
+      "cv_total": 257772.06,
+      "sa_basic": 400840.25,
+      "acc_sa": 39711.32,
+      "dividend": 6041.53
+    },
+    {
+      "y": 10,
+      "cum_prem": 199122.0,
+      "death_benefit": 498059.26,
+      "cv_basic": 214540.45,
+      "cv_total": 268427.73,
+      "sa_basic": 407626.86,
+      "acc_sa": 44960.39,
+      "dividend": 6291.27
+    },
+    {
+      "y": 11,
+      "cum_prem": 199122.0,
+      "death_benefit": 518600.21,
+      "cv_basic": 218152.84,
+      "cv_total": 279498.2,
+      "sa_basic": 414490.43,
+      "acc_sa": 50335.44,
+      "dividend": 6550.74
+    },
+    {
+      "y": 12,
+      "cum_prem": 199122.0,
+      "death_benefit": 454813.42,
+      "cv_basic": 221868.17,
+      "cv_total": 291080.49,
+      "sa_basic": 354989.22,
+      "acc_sa": 55839.49,
+      "dividend": 6822.2
+    },
+    {
+      "y": 13,
+      "cum_prem": 199122.0,
+      "death_benefit": 473644.95,
+      "cv_basic": 225639.34,
+      "cv_total": 303132.75,
+      "sa_basic": 361022.95,
+      "acc_sa": 61475.63,
+      "dividend": 7104.67
+    },
+    {
+      "y": 14,
+      "cum_prem": 199122.0,
+      "death_benefit": 493236.67,
+      "cv_basic": 229465.47,
+      "cv_total": 315671.47,
+      "sa_basic": 367144.75,
+      "acc_sa": 67247.04,
+      "dividend": 7398.55
+    },
+    {
+      "y": 15,
+      "cum_prem": 199122.0,
+      "death_benefit": 513615.89,
+      "cv_basic": 233346.01,
+      "cv_total": 328714.08,
+      "sa_basic": 373353.73,
+      "acc_sa": 73156.96,
+      "dividend": 7704.23
+    },
+    {
+      "y": 16,
+      "cum_prem": 199122.0,
+      "death_benefit": 534801.18,
+      "cv_basic": 237276.31,
+      "cv_total": 342272.71,
+      "sa_basic": 379642.17,
+      "acc_sa": 79208.73,
+      "dividend": 8022.02
+    },
+    {
+      "y": 17,
+      "cum_prem": 199122.0,
+      "death_benefit": 556829.13,
+      "cv_basic": 241259.24,
+      "cv_total": 356370.55,
+      "sa_basic": 386014.93,
+      "acc_sa": 85405.74,
+      "dividend": 8352.43
+    },
+    {
+      "y": 18,
+      "cum_prem": 199122.0,
+      "death_benefit": 579727.25,
+      "cv_basic": 245293.36,
+      "cv_total": 371025.37,
+      "sa_basic": 392469.49,
+      "acc_sa": 91751.48,
+      "dividend": 8695.91
+    },
+    {
+      "y": 19,
+      "cum_prem": 199122.0,
+      "death_benefit": 603523.72,
+      "cv_basic": 249377.07,
+      "cv_total": 386255.16,
+      "sa_basic": 399003.35,
+      "acc_sa": 98249.52,
+      "dividend": 9052.86
+    },
+    {
+      "y": 20,
+      "cum_prem": 199122.0,
+      "death_benefit": 628247.93,
+      "cv_basic": 253508.92,
+      "cv_total": 402078.61,
+      "sa_basic": 405614.36,
+      "acc_sa": 104903.5,
+      "dividend": 9423.71
+    },
+    {
+      "y": 21,
+      "cum_prem": 199122.0,
+      "death_benefit": 653923.42,
+      "cv_basic": 257684.99,
+      "cv_total": 418510.92,
+      "sa_basic": 412296.07,
+      "acc_sa": 111717.18,
+      "dividend": 9808.85
+    },
+    {
+      "y": 22,
+      "cum_prem": 199122.0,
+      "death_benefit": 595731.84,
+      "cv_basic": 262002.3,
+      "cv_total": 435735.29,
+      "sa_basic": 366803.22,
+      "acc_sa": 118694.4,
+      "dividend": 10212.55
+    },
+    {
+      "y": 23,
+      "cum_prem": 199122.0,
+      "death_benefit": 620209.07,
+      "cv_basic": 266374.37,
+      "cv_total": 453638.64,
+      "sa_basic": 372924.13,
+      "acc_sa": 125839.07,
+      "dividend": 10632.16
+    },
+    {
+      "y": 24,
+      "cum_prem": 199122.0,
+      "death_benefit": 645647.53,
+      "cv_basic": 270800.68,
+      "cv_total": 472244.94,
+      "sa_basic": 379121.11,
+      "acc_sa": 133155.21,
+      "dividend": 11068.24
+    },
+    {
+      "y": 25,
+      "cum_prem": 199122.0,
+      "death_benefit": 672078.51,
+      "cv_basic": 275279.8,
+      "cv_total": 491577.35,
+      "sa_basic": 385391.83,
+      "acc_sa": 140646.94,
+      "dividend": 11521.35
+    },
+    {
+      "y": 26,
+      "cum_prem": 199122.0,
+      "death_benefit": 699507.01,
+      "cv_basic": 279799.19,
+      "cv_total": 511639.35,
+      "sa_basic": 391718.95,
+      "acc_sa": 148318.47,
+      "dividend": 11991.55
+    },
+    {
+      "y": 27,
+      "cum_prem": 199122.0,
+      "death_benefit": 727993.24,
+      "cv_basic": 284368.7,
+      "cv_total": 532475.01,
+      "sa_basic": 398116.23,
+      "acc_sa": 156174.11,
+      "dividend": 12479.88
+    },
+    {
+      "y": 28,
+      "cum_prem": 199122.0,
+      "death_benefit": 757572.53,
+      "cv_basic": 288987.26,
+      "cv_total": 554110.12,
+      "sa_basic": 404582.24,
+      "acc_sa": 164218.28,
+      "dividend": 12986.95
+    },
+    {
+      "y": 29,
+      "cum_prem": 199122.0,
+      "death_benefit": 788278.63,
+      "cv_basic": 293652.9,
+      "cv_total": 576569.46,
+      "sa_basic": 411114.13,
+      "acc_sa": 172455.52,
+      "dividend": 13513.35
+    },
+    {
+      "y": 30,
+      "cum_prem": 199122.0,
+      "death_benefit": 820147.33,
+      "cv_basic": 298364.0,
+      "cv_total": 599879.08,
+      "sa_basic": 417709.75,
+      "acc_sa": 180890.45,
+      "dividend": 14059.67
+    },
+    {
+      "y": 31,
+      "cum_prem": 199122.0,
+      "death_benefit": 853224.58,
+      "cv_basic": 303122.35,
+      "cv_total": 624072.74,
+      "sa_basic": 424371.41,
+      "acc_sa": 189527.82,
+      "dividend": 14626.71
+    },
+    {
+      "y": 32,
+      "cum_prem": 199122.0,
+      "death_benefit": 761368.9,
+      "cv_basic": 308174.45,
+      "cv_total": 649701.46,
+      "sa_basic": 369809.35,
+      "acc_sa": 198372.49,
+      "dividend": 15227.38
+    },
+    {
+      "y": 33,
+      "cum_prem": 199122.0,
+      "death_benefit": 792588.24,
+      "cv_basic": 313291.88,
+      "cv_total": 676341.92,
+      "sa_basic": 375950.3,
+      "acc_sa": 207429.43,
+      "dividend": 15851.77
+    },
+    {
+      "y": 34,
+      "cum_prem": 199122.0,
+      "death_benefit": 825034.91,
+      "cv_basic": 318473.93,
+      "cv_total": 704029.74,
+      "sa_basic": 382168.76,
+      "acc_sa": 216703.73,
+      "dividend": 16500.69
+    },
+    {
+      "y": 35,
+      "cum_prem": 199122.0,
+      "death_benefit": 858751.49,
+      "cv_basic": 323719.71,
+      "cv_total": 732801.27,
+      "sa_basic": 388463.65,
+      "acc_sa": 226200.62,
+      "dividend": 17175.03
+    },
+    {
+      "y": 36,
+      "cum_prem": 199122.0,
+      "death_benefit": 893751.83,
+      "cv_basic": 329017.21,
+      "cv_total": 762668.2,
+      "sa_basic": 394820.66,
+      "acc_sa": 235925.43,
+      "dividend": 17875.03
+    },
+    {
+      "y": 37,
+      "cum_prem": 199122.0,
+      "death_benefit": 930105.42,
+      "cv_basic": 334375.04,
+      "cv_total": 793689.86,
+      "sa_basic": 401250.16,
+      "acc_sa": 245883.64,
+      "dividend": 18602.11
+    },
+    {
+      "y": 38,
+      "cum_prem": 199122.0,
+      "death_benefit": 967855.2,
+      "cv_basic": 339791.22,
+      "cv_total": 825903.1,
+      "sa_basic": 407749.47,
+      "acc_sa": 256080.85,
+      "dividend": 19357.1
+    },
+    {
+      "y": 39,
+      "cum_prem": 199122.0,
+      "death_benefit": 1007043.25,
+      "cv_basic": 345262.89,
+      "cv_total": 859343.51,
+      "sa_basic": 414315.55,
+      "acc_sa": 266522.79,
+      "dividend": 20140.86
+    },
+    {
+      "y": 40,
+      "cum_prem": 199122.0,
+      "death_benefit": 1047711.88,
+      "cv_basic": 350787.19,
+      "cv_total": 894047.48,
+      "sa_basic": 420944.63,
+      "acc_sa": 277215.34,
+      "dividend": 20954.24
+    },
+    {
+      "y": 41,
+      "cum_prem": 199122.0,
+      "death_benefit": 1089834.36,
+      "cv_basic": 356338.16,
+      "cv_total": 929991.86,
+      "sa_basic": 427605.94,
+      "acc_sa": 288164.51,
+      "dividend": 21796.69
+    },
+    {
+      "y": 42,
+      "cum_prem": 199122.0,
+      "death_benefit": 1039972.91,
+      "cv_basic": 362253.39,
+      "cv_total": 968120.09,
+      "sa_basic": 398478.88,
+      "acc_sa": 299376.46,
+      "dividend": 22690.31
+    },
+    {
+      "y": 43,
+      "cum_prem": 199122.0,
+      "death_benefit": 1082537.68,
+      "cv_basic": 368242.2,
+      "cv_total": 1007744.13,
+      "sa_basic": 405066.44,
+      "acc_sa": 310857.49,
+      "dividend": 23619.0
+    },
+    {
+      "y": 44,
+      "cum_prem": 199122.0,
+      "death_benefit": 1126760.15,
+      "cv_basic": 374301.88,
+      "cv_total": 1048911.13,
+      "sa_basic": 411732.22,
+      "acc_sa": 322614.07,
+      "dividend": 24583.86
+    },
+    {
+      "y": 45,
+      "cum_prem": 199122.0,
+      "death_benefit": 1172690.21,
+      "cv_basic": 380429.23,
+      "cv_total": 1091667.85,
+      "sa_basic": 418472.29,
+      "acc_sa": 334652.81,
+      "dividend": 25585.96
+    },
+    {
+      "y": 46,
+      "cum_prem": 199122.0,
+      "death_benefit": 1220326.8,
+      "cv_basic": 386604.37,
+      "cv_total": 1136013.16,
+      "sa_basic": 425264.98,
+      "acc_sa": 346980.48,
+      "dividend": 26625.31
+    },
+    {
+      "y": 47,
+      "cum_prem": 199122.0,
+      "death_benefit": 1269760.76,
+      "cv_basic": 392837.15,
+      "cv_total": 1182031.66,
+      "sa_basic": 432121.04,
+      "acc_sa": 359604.01,
+      "dividend": 27703.87
+    },
+    {
+      "y": 48,
+      "cum_prem": 199122.0,
+      "death_benefit": 1321033.38,
+      "cv_basic": 399120.95,
+      "cv_total": 1229761.89,
+      "sa_basic": 439033.12,
+      "acc_sa": 372530.5,
+      "dividend": 28822.54
+    },
+    {
+      "y": 49,
+      "cum_prem": 199122.0,
+      "death_benefit": 1374181.48,
+      "cv_basic": 405447.7,
+      "cv_total": 1279237.87,
+      "sa_basic": 445992.64,
+      "acc_sa": 385767.23,
+      "dividend": 29982.14
+    },
+    {
+      "y": 50,
+      "cum_prem": 199122.0,
+      "death_benefit": 1429240.84,
+      "cv_basic": 411809.36,
+      "cv_total": 1330493.12,
+      "sa_basic": 452990.47,
+      "acc_sa": 399321.64,
+      "dividend": 31183.43
+    },
+    {
+      "y": 51,
+      "cum_prem": 199122.0,
+      "death_benefit": 1486094.26,
+      "cv_basic": 418154.91,
+      "cv_total": 1383418.49,
+      "sa_basic": 459970.57,
+      "acc_sa": 413201.36,
+      "dividend": 32423.87
+    },
+    {
+      "y": 52,
+      "cum_prem": 199122.0,
+      "death_benefit": 1435133.43,
+      "cv_basic": 425280.73,
+      "cv_total": 1440761.31,
+      "sa_basic": 433786.45,
+      "acc_sa": 427414.2,
+      "dividend": 33767.85
+    },
+    {
+      "y": 53,
+      "cum_prem": 199122.0,
+      "death_benefit": 1494557.16,
+      "cv_basic": 432509.82,
+      "cv_total": 1500417.99,
+      "sa_basic": 441160.18,
+      "acc_sa": 441968.14,
+      "dividend": 35166.05
+    },
+    {
+      "y": 54,
+      "cum_prem": 199122.0,
+      "death_benefit": 1556368.77,
+      "cv_basic": 439841.3,
+      "cv_total": 1562472.05,
+      "sa_basic": 448638.26,
+      "acc_sa": 456871.38,
+      "dividend": 36620.44
+    },
+    {
+      "y": 55,
+      "cum_prem": 199122.0,
+      "death_benefit": 1620653.55,
+      "cv_basic": 447274.1,
+      "cv_total": 1627009.02,
+      "sa_basic": 456219.63,
+      "acc_sa": 472132.3,
+      "dividend": 38133.03
+    },
+    {
+      "y": 56,
+      "cum_prem": 199122.0,
+      "death_benefit": 1687506.87,
+      "cv_basic": 454809.1,
+      "cv_total": 1694124.46,
+      "sa_basic": 463905.35,
+      "acc_sa": 487759.47,
+      "dividend": 39706.04
+    },
+    {
+      "y": 57,
+      "cum_prem": 199122.0,
+      "death_benefit": 1757009.67,
+      "cv_basic": 462442.56,
+      "cv_total": 1763899.83,
+      "sa_basic": 471691.49,
+      "acc_sa": 503761.7,
+      "dividend": 41341.4
+    },
+    {
+      "y": 58,
+      "cum_prem": 199122.0,
+      "death_benefit": 1829249.96,
+      "cv_basic": 470171.96,
+      "cv_total": 1836423.33,
+      "sa_basic": 479575.55,
+      "acc_sa": 520147.98,
+      "dividend": 43041.17
+    },
+    {
+      "y": 59,
+      "cum_prem": 199122.0,
+      "death_benefit": 1904316.48,
+      "cv_basic": 477994.44,
+      "cv_total": 1911784.24,
+      "sa_basic": 487554.47,
+      "acc_sa": 536927.53,
+      "dividend": 44807.45
+    },
+    {
+      "y": 60,
+      "cum_prem": 199122.0,
+      "death_benefit": 1982299.14,
+      "cv_basic": 485906.77,
+      "cv_total": 1990072.7,
+      "sa_basic": 495625.05,
+      "acc_sa": 554109.79,
+      "dividend": 46642.33
+    },
+    {
+      "y": 61,
+      "cum_prem": 199122.0,
+      "death_benefit": 2063289.11,
+      "cv_basic": 493905.57,
+      "cv_total": 2071380.45,
+      "sa_basic": 503783.69,
+      "acc_sa": 571704.43,
+      "dividend": 48547.98
+    },
+    {
+      "y": 62,
+      "cum_prem": 199122.0,
+      "death_benefit": 2147378.74,
+      "cv_basic": 501987.06,
+      "cv_total": 2155799.82,
+      "sa_basic": 512026.82,
+      "acc_sa": 589721.34,
+      "dividend": 50526.56
+    },
+    {
+      "y": 63,
+      "cum_prem": 199122.0,
+      "death_benefit": 2234658.89,
+      "cv_basic": 510146.77,
+      "cv_total": 2243422.18,
+      "sa_basic": 520349.78,
+      "acc_sa": 608170.65,
+      "dividend": 52580.2
+    },
+    {
+      "y": 64,
+      "cum_prem": 199122.0,
+      "death_benefit": 2325217.55,
+      "cv_basic": 518379.16,
+      "cv_total": 2334335.95,
+      "sa_basic": 528746.85,
+      "acc_sa": 627062.75,
+      "dividend": 54711.0
+    },
+    {
+      "y": 65,
+      "cum_prem": 199122.0,
+      "death_benefit": 2419139.19,
+      "cv_basic": 526677.6,
+      "cv_total": 2428625.95,
+      "sa_basic": 537211.22,
+      "acc_sa": 646408.26,
+      "dividend": 56920.92
+    },
+    {
+      "y": 66,
+      "cum_prem": 199122.0,
+      "death_benefit": 2516500.12,
+      "cv_basic": 535033.5,
+      "cv_total": 2526368.61,
+      "sa_basic": 545734.31,
+      "acc_sa": 666218.06,
+      "dividend": 59211.76
+    },
+    {
+      "y": 67,
+      "cum_prem": 199122.0,
+      "death_benefit": 2617371.05,
+      "cv_basic": 543437.19,
+      "cv_total": 2627635.09,
+      "sa_basic": 554306.08,
+      "acc_sa": 686503.29,
+      "dividend": 61585.2
+    },
+    {
+      "y": 68,
+      "cum_prem": 199122.0,
+      "death_benefit": 2721813.47,
+      "cv_basic": 551877.22,
+      "cv_total": 2732487.11,
+      "sa_basic": 562914.9,
+      "acc_sa": 707275.37,
+      "dividend": 64042.66
+    },
+    {
+      "y": 69,
+      "cum_prem": 199122.0,
+      "death_benefit": 2829898.04,
+      "cv_basic": 560344.28,
+      "cv_total": 2840995.54,
+      "sa_basic": 571551.3,
+      "acc_sa": 728545.98,
+      "dividend": 66585.83
+    },
+    {
+      "y": 70,
+      "cum_prem": 199122.0,
+      "death_benefit": 2941693.62,
+      "cv_basic": 568828.88,
+      "cv_total": 2953229.53,
+      "sa_basic": 580205.59,
+      "acc_sa": 750327.08,
+      "dividend": 69216.31
+    },
+    {
+      "y": 71,
+      "cum_prem": 199122.0,
+      "death_benefit": 3057204.41,
+      "cv_basic": 577309.54,
+      "cv_total": 3069193.41,
+      "sa_basic": 588855.76,
+      "acc_sa": 772630.93,
+      "dividend": 71934.22
+    },
+    {
+      "y": 72,
+      "cum_prem": 199122.0,
+      "death_benefit": 3122743.59,
+      "cv_basic": 587382.23,
+      "cv_total": 3197689.42,
+      "sa_basic": 587382.24,
+      "acc_sa": 795470.07,
+      "dividend": 74945.84
+    },
+    {
+      "y": 73,
+      "cum_prem": 199122.0,
+      "death_benefit": 3253629.86,
+      "cv_basic": 597657.9,
+      "cv_total": 3331716.96,
+      "sa_basic": 597657.91,
+      "acc_sa": 818857.35,
+      "dividend": 78087.12
+    },
+    {
+      "y": 74,
+      "cum_prem": 199122.0,
+      "death_benefit": 3390000.82,
+      "cv_basic": 608113.12,
+      "cv_total": 3471360.82,
+      "sa_basic": 608113.12,
+      "acc_sa": 842805.92,
+      "dividend": 81360.01
+    },
+    {
+      "y": 75,
+      "cum_prem": 199122.0,
+      "death_benefit": 3532084.7,
+      "cv_basic": 618750.73,
+      "cv_total": 3616854.72,
+      "sa_basic": 618750.73,
+      "acc_sa": 867329.26,
+      "dividend": 84770.04
+    },
+    {
+      "y": 76,
+      "cum_prem": 199122.0,
+      "death_benefit": 3680121.03,
+      "cv_basic": 629573.96,
+      "cv_total": 3768443.91,
+      "sa_basic": 629573.97,
+      "acc_sa": 892441.16,
+      "dividend": 88322.91
+    },
+    {
+      "y": 77,
+      "cum_prem": 199122.0,
+      "death_benefit": 3834360.05,
+      "cv_basic": 640586.22,
+      "cv_total": 3926384.69,
+      "sa_basic": 640586.23,
+      "acc_sa": 918155.75,
+      "dividend": 92024.64
+    },
+    {
+      "y": 78,
+      "cum_prem": 199122.0,
+      "death_benefit": 3995058.97,
+      "cv_basic": 651790.37,
+      "cv_total": 4090940.39,
+      "sa_basic": 651790.37,
+      "acc_sa": 944487.49,
+      "dividend": 95881.42
+    },
+    {
+      "y": 79,
+      "cum_prem": 199122.0,
+      "death_benefit": 4162489.69,
+      "cv_basic": 663189.98,
+      "cv_total": 4262389.44,
+      "sa_basic": 663189.99,
+      "acc_sa": 971451.19,
+      "dividend": 99899.75
+    },
+    {
+      "y": 80,
+      "cum_prem": 199122.0,
+      "death_benefit": 4336932.93,
+      "cv_basic": 674788.29,
+      "cv_total": 4441019.32,
+      "sa_basic": 674788.29,
+      "acc_sa": 999062.02,
+      "dividend": 104086.39
+    },
+    {
+      "y": 81,
+      "cum_prem": 199122.0,
+      "death_benefit": 4518680.71,
+      "cv_basic": 686588.51,
+      "cv_total": 4627129.05,
+      "sa_basic": 686588.51,
+      "acc_sa": 1027335.51,
+      "dividend": 108448.33
+    },
+    {
+      "y": 82,
+      "cum_prem": 199122.0,
+      "death_benefit": 4708039.18,
+      "cv_basic": 698594.21,
+      "cv_total": 4821032.1,
+      "sa_basic": 698594.22,
+      "acc_sa": 1056287.56,
+      "dividend": 112992.94
+    },
+    {
+      "y": 83,
+      "cum_prem": 199122.0,
+      "death_benefit": 4905326.9,
+      "cv_basic": 710809.0,
+      "cv_total": 5023054.74,
+      "sa_basic": 710809.0,
+      "acc_sa": 1085934.46,
+      "dividend": 117727.85
+    },
+    {
+      "y": 84,
+      "cum_prem": 199122.0,
+      "death_benefit": 5110874.08,
+      "cv_basic": 723236.25,
+      "cv_total": 5233535.07,
+      "sa_basic": 723236.25,
+      "acc_sa": 1116292.89,
+      "dividend": 122660.98
+    },
+    {
+      "y": 85,
+      "cum_prem": 199122.0,
+      "death_benefit": 5325025.49,
+      "cv_basic": 735879.56,
+      "cv_total": 5452826.11,
+      "sa_basic": 735879.56,
+      "acc_sa": 1147379.92,
+      "dividend": 127800.61
+    },
+    {
+      "y": 86,
+      "cum_prem": 199122.0,
+      "death_benefit": 5548139.77,
+      "cv_basic": 748742.5,
+      "cv_total": 5681295.13,
+      "sa_basic": 748742.5,
+      "acc_sa": 1179213.04,
+      "dividend": 133155.35
+    },
+    {
+      "y": 87,
+      "cum_prem": 199122.0,
+      "death_benefit": 5780585.94,
+      "cv_basic": 761828.11,
+      "cv_total": 5919319.98,
+      "sa_basic": 761828.12,
+      "acc_sa": 1211810.15,
+      "dividend": 138734.06
+    },
+    {
+      "y": 88,
+      "cum_prem": 199122.0,
+      "death_benefit": 6022751.76,
+      "cv_basic": 775139.98,
+      "cv_total": 6167297.77,
+      "sa_basic": 775139.99,
+      "acc_sa": 1245189.59,
+      "dividend": 144546.04
+    },
+    {
+      "y": 89,
+      "cum_prem": 199122.0,
+      "death_benefit": 6275040.58,
+      "cv_basic": 788681.69,
+      "cv_total": 6425641.54,
+      "sa_basic": 788681.7,
+      "acc_sa": 1279370.14,
+      "dividend": 150600.97
+    },
+    {
+      "y": 90,
+      "cum_prem": 199122.0,
+      "death_benefit": 6537873.34,
+      "cv_basic": 0.0,
+      "cv_total": 0.0,
+      "sa_basic": 802457.0,
+      "acc_sa": 1314371.02,
+      "dividend": 156908.96
+    }
+  ],
+  "extraction_note": "TIA 美創富(定期給付型)2 年期。schedule 為 20 歲男、投保 17.9 萬美元、年繳、宣告利率 4.15% 假設情境(情境一)。Y1=99,561(首期折扣後),Y2=199,122(累計),Y3 起繳費期滿不再增加。sa_basic Y1=156,027,後續隨累計增加保險金額擴張,但 Y12/Y22/Y32/Y42/Y52(每 10 年)有結構性 step-down 修正。保障終期至 109 歲(Y90,cv_basic=0,僅 sa_basic 與 acc_sa 給付)。PDF 另附情境二(1.75% 預定利率)做下行對照。TIA 為 TI0 躉繳版的 2 年期姊妹商品,共用同一份 xlsx,但折扣表與年齡上限不同。",
+  "source_file": "新光人壽美創富外幣利率變動型終身壽險_定期給付型__TI0_TIA_20260501-試算表20260509.xlsx + d-美創富外幣利率變動型終身壽險_定期給付型_-20260510004645.pdf",
+  "extracted_at": "2026-05-09T16:53:23+08:00"
+}
