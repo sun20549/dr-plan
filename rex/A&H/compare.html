@@ -548,6 +548,42 @@ body {
   font-size: 12px;
   letter-spacing: 0.5px;
 }
+
+/* 平均保費列(較淡的橘色底) */
+.compare-table tbody tr.row-fee-avg td {
+  background: #fffaf5;
+  padding: 12px;
+  text-align: center;
+}
+.compare-table tbody tr.row-fee-avg td:first-child {
+  background: #fff0e2;
+  color: var(--orange-dark);
+  font-size: 12px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.compare-table tbody tr.row-fee-zero td {
+  background: #fff5ec;
+}
+.compare-table tbody tr.row-fee-zero td:first-child {
+  background: #ffe9d8;
+}
+
+.cell-fee-avg {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--navy);
+  font-weight: 400;
+}
+.cell-fee-sub {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 10px;
+  color: var(--gray);
+  margin-top: 3px;
+  letter-spacing: 0;
+}
 .row-fee-sub {
   font-size: 10px;
   color: var(--gray);
@@ -886,16 +922,44 @@ body.customer-mode .picker-item .code { display: none; }
 }
 .ratio-explainer strong { color: var(--orange-dark); }
 
-/* 全年齡保費展開表 */
+/* ─── 全年齡保費表(預設展開) ─── */
 .full-age-table {
-  margin-top: 14px;
-  display: none;
-  max-height: 300px;
-  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .full-age-table { grid-template-columns: 1fr; }
+}
+.full-age-block {
+  background: white;
   border: 1px solid var(--border);
   border-radius: 8px;
+  overflow: hidden;
 }
-.full-age-table.show { display: block; }
+.full-age-block.client-gender {
+  border: 2px solid var(--orange);
+  box-shadow: 0 2px 8px rgba(240,90,40,0.1);
+}
+.full-age-block-title {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.full-age-block-title.male { background: #3D8FCC; }
+.full-age-block-title.female { background: #E85A7A; }
+.full-age-block-title.male::before { content: '♂'; font-size: 16px; }
+.full-age-block-title.female::before { content: '♀'; font-size: 16px; }
+
+.full-age-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+}
 .full-age-table table {
   width: 100%;
   border-collapse: collapse;
@@ -914,29 +978,85 @@ body.customer-mode .picker-item .code { display: none; }
 }
 .full-age-table th:first-child {
   text-align: left;
-  min-width: 60px;
+  min-width: 50px;
+}
+.full-age-table th .code-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
 .full-age-table td {
-  padding: 4px 8px;
+  padding: 5px 8px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
   color: var(--navy);
+  vertical-align: top;
 }
 .full-age-table td:first-child {
   text-align: left;
-  font-family: inherit;
-  font-size: 11px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
   font-weight: 700;
   background: var(--gray-bg);
   color: var(--navy);
+  letter-spacing: 0.5px;
 }
-.full-age-table tr.male-row td { background: rgba(61,143,204,0.04); }
-.full-age-table tr.male-row td:first-child { background: rgba(61,143,204,0.1); }
-.full-age-table tr.female-row td { background: rgba(232,90,122,0.04); }
-.full-age-table tr.female-row td:first-child { background: rgba(232,90,122,0.1); }
-.full-age-table tr.client-highlight td { background: var(--orange-light) !important; font-weight: 700; }
+.full-age-table td .age-unit {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 9px;
+  color: var(--gray);
+  margin-left: 2px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+.cell-yearly {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+}
+.cell-cum {
+  font-size: 9px;
+  color: var(--gray);
+  margin-top: 1px;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* 客戶當年 — 橘色高亮 */
+.full-age-table tr.client-row td {
+  background: var(--orange-light) !important;
+  font-weight: 700;
+}
+.full-age-table tr.client-row td:first-child {
+  background: var(--orange) !important;
+  color: white;
+}
+.full-age-table tr.client-row .cell-yearly {
+  color: var(--orange-dark);
+  font-size: 14px;
+}
+
+/* 客戶比較範圍內(從現年→上限)— 淡橘底色 */
+.full-age-table tr.in-range-row:not(.client-row) td {
+  background: rgba(255,237,224,0.4);
+}
+
+/* 總計列 */
+.full-age-table tr.total-row td {
+  background: var(--navy) !important;
+  color: white !important;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 8px;
+}
+.full-age-table tr.total-row td:first-child {
+  background: var(--orange-dark) !important;
+}
+
+
 
 /* ════════════════════════════════════════════════════════════
  *  v0.6 — 直式公司卡(每家公司一張長卡,從上到下統一閱讀)
@@ -1373,9 +1493,8 @@ const App = (() => {
     selected: {},          // code → { cid, amount }
     customerMode: false,
     showStar: true,
-    viewMode: 'vertical',  // 'vertical' (一家一卡) | 'horizontal' (並排對照)
     client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
-    ui: { ratioExpanded: false, fullAgeExpanded: false },
+    ui: { fullAgeExpanded: true },    // 全年齡表預設展開
     db: {
       companies: {},       // cid → company JSON
       benefitsLib: null,   // 全球商品的給付定義
@@ -1851,6 +1970,42 @@ const App = (() => {
     return { val: 0, label: '—' };
   }
 
+  /* ═══ 累計/平均保費計算 ═══════════════════════════════
+   *  計算「從 startAge 一路續保到該商品最大續保年齡,累計保費」
+   *  以及該段年數的平均
+   *  輸入:product, amount, startAge, endAge(可省略,用 product.maxAgeContinuous), gender
+   *  輸出:{ total, avg, years, missing: [] }  // missing = 哪些歲查不到費率
+   * ─────────────────────────────────────────────── */
+  function calcCumulativePremium(product, amount, startAge, endAge, gender) {
+    if (!product) return { total: 0, avg: 0, years: 0, missing: [] };
+    const end = endAge !== undefined && endAge !== null ? endAge : (product.maxAgeContinuous || 80);
+    let total = 0;
+    let cnt = 0;
+    const missing = [];
+    for (let a = startAge; a <= end; a++) {
+      const fee = lookupPremium(product, amount, a, gender);
+      if (fee !== null && fee > 0) {
+        total += fee;
+        cnt++;
+      } else {
+        missing.push(a);
+      }
+    }
+    const years = end - startAge + 1;
+    const avg = cnt > 0 ? Math.round(total / cnt) : 0;
+    return { total, avg, years, validYears: cnt, missing };
+  }
+
+  /* ─── 取得「該類別所有商品」最低續保上限 (用於統一比較範圍) ─── */
+  function getCompareEndAge(cols) {
+    let minEnd = 80;
+    cols.forEach(col => {
+      const maxA = col.product?.maxAgeContinuous;
+      if (maxA && maxA < minEnd) minEnd = maxA;
+    });
+    return minEnd;
+  }
+
   /* ═══ 渲染 ═══════════════════════════════════════ */
 
   function renderCatTabs() {
@@ -1982,21 +2137,30 @@ const App = (() => {
     const gender = state.client.gender;
 
     // 每家公司計算保費 + CP
+    // 比較截止年齡 = 三家最低續保上限(若都 80,則 80)
+    const endAge = getCompareEndAge(cols);
     const cpData = cols.map(col => {
-      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
+      // 三種保費
+      const feeCurrent = lookupPremium(col.product, col.sel.amount, age, gender);
+      const fromClient = calcCumulativePremium(col.product, col.sel.amount, age, endAge, gender);
+      const fromZero = calcCumulativePremium(col.product, col.sel.amount, 0, endAge, gender);
+      // 兩個給付指標(只看給付,跟保費分開)
       const primary = getPrimaryValue(col.product, col.sel.amount, state.categoryKey);
       const daily = getDailyValue(col.product, col.sel.amount);
-      const annual = getAnnualMax(col.product, col.sel.amount);
+      // CP 用「從客戶年齡 → 上限」的平均年保費(這是業務員實際情境)
+      const avgPremium = fromClient.avg;
       return {
-        fee, primary, daily, annual,
-        cpPrimary: (fee && fee > 0 && primary.val > 0) ? primary.val / fee : 0,
-        cpDaily:   (fee && fee > 0 && daily > 0) ? daily / fee : 0,
-        cpAnnual:  (fee && fee > 0 && annual.val > 0) ? annual.val / fee : 0
+        feeCurrent, fromClient, fromZero, primary, daily,
+        avgPremium,
+        cpPrimary: (avgPremium > 0 && primary.val > 0) ? primary.val / avgPremium : 0,
+        cpDaily:   (avgPremium > 0 && daily > 0) ? daily / avgPremium : 0
       };
     });
     const maxCpP = Math.max(...cpData.map(d => d.cpPrimary), 0);
     const maxCpD = Math.max(...cpData.map(d => d.cpDaily), 0);
-    const maxCpA = Math.max(...cpData.map(d => d.cpAnnual), 0);
+
+    // 比較範圍註記
+    const compareRangeNote = `比較範圍: ${age}–${endAge} 歲, 共 ${endAge - age + 1} 年`;
 
     // ─── 渲染整張表 ───
     const table = document.getElementById('compareTable');
@@ -2050,33 +2214,46 @@ const App = (() => {
       html += '</tr>';
     });
 
-    // ─── 分隔: 年繳保費列 ───
-    html += `<tr class="row-fee-divider"><td><strong>💰 年繳保費</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
+    // ─── 分隔:當年保費 ───
+    html += `<tr class="row-fee-divider row-fee-current"><td><strong>💰 當年保費</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
     cpData.forEach(d => {
-      html += `<td class="cell-fee">${d.fee !== null ? d.fee.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
+      html += `<td class="cell-fee">${d.feeCurrent !== null ? d.feeCurrent.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
     });
     html += '</tr>';
 
-    // ─── 分隔: CP 三列 ───
-    html += `<tr class="row-cp"><td><strong>主打 CP</strong><div class="row-cp-sub">${cpData[0]?.primary?.label || ''} ÷ 保費</div></td>`;
+    // ─── 從客戶年齡 → endAge 平均保費 ───
+    html += `<tr class="row-fee-avg"><td><strong>📊 ${age}→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge - age + 1} 年,總繳 ÷ 年數</div></td>`;
+    cpData.forEach(d => {
+      const c = d.fromClient;
+      const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
+      html += `<td class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
+    });
+    html += '</tr>';
+
+    // ─── 從 0 → endAge 平均保費 ───
+    html += `<tr class="row-fee-avg row-fee-zero"><td><strong>📊 0→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge + 1} 年,終身平均</div></td>`;
+    cpData.forEach(d => {
+      const c = d.fromZero;
+      const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
+      html += `<td class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
+    });
+    html += '</tr>';
+
+    // ─── CP 兩列(只用「客戶→上限」平均保費當分母)───
+    // 主打項 CP (該類別最關鍵給付)
+    const primaryLabel = cpData[0]?.primary?.label || '主打項';
+    html += `<tr class="row-cp"><td><strong>${primaryLabel} CP</strong><div class="row-cp-sub">${primaryLabel} ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpPrimary > 0 && d.cpPrimary === maxCpP;
       html += `<td>${d.cpPrimary > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span>` : '<span class="cell-none">—</span>'}</td>`;
     });
     html += '</tr>';
 
-    html += `<tr class="row-cp"><td><strong>日額 CP</strong><div class="row-cp-sub">住院日額 ÷ 保費</div></td>`;
+    // 日額 CP (對實支實付/手術險/日額型重要)
+    html += `<tr class="row-cp"><td><strong>住院日額 CP</strong><div class="row-cp-sub">日額 ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpDaily > 0 && d.cpDaily === maxCpD;
       html += `<td>${d.cpDaily > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span>` : '<span class="cell-none">—</span>'}</td>`;
-    });
-    html += '</tr>';
-
-    html += `<tr class="row-cp"><td><strong>年上限 CP</strong><div class="row-cp-sub">全年最高 ÷ 保費</div></td>`;
-    cpData.forEach(d => {
-      const isBest = d.cpAnnual > 0 && d.cpAnnual === maxCpA;
-      const annualSub = d.annual.source !== '無資料' ? ` <span class="cell-unit">(${d.annual.source})</span>` : '';
-      html += `<td>${d.cpAnnual > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpAnnual.toFixed(1)}</span>${annualSub}` : '<span class="cell-none">—</span>'}</td>`;
     });
     html += '</tr>';
 
@@ -2096,36 +2273,80 @@ const App = (() => {
       if (el.tagName === 'INPUT') el.addEventListener('input', handler);
     });
 
-    // 連動全年齡表(若已展開)
-    if (state.ui.fullAgeExpanded) renderFullAgeTable(cols);
+    // 連動全年齡表(預設展開)
+    const fullAgeSec = document.getElementById('fullAgeSection');
+    if (state.ui.fullAgeExpanded) {
+      fullAgeSec.style.display = '';
+      renderFullAgeTable(cols);
+    } else {
+      fullAgeSec.style.display = 'none';
+    }
   }
 
   /* ─── 全年齡保費表 ─── */
   function renderFullAgeTable(cols) {
     const wrap = document.getElementById('fullAgeTable');
-    const ages = [];
-    for (let a = 0; a <= 80; a += 5) ages.push(a);
     const clientAge = parseInt(document.getElementById('clientAge').value, 10) || 35;
     const clientGender = state.client.gender;
+    const endAge = getCompareEndAge(cols);
 
-    let html = '<table><thead><tr><th>年齡</th>';
-    cols.forEach(col => {
-      html += `<th>${col.company.shortName||''}<br><span style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;">${col.code}</span></th>`;
-    });
-    html += '</tr></thead><tbody>';
-    ['M','F'].forEach(g => {
-      ages.forEach(age => {
-        const isClient = (g === clientGender) && (age <= clientAge && (age + 5 > clientAge));
-        const cls = isClient ? 'client-highlight' : (g === 'M' ? 'male-row' : 'female-row');
-        html += `<tr class="${cls}"><td>${g==='M'?'男':'女'} ${age}-${age+4}</td>`;
-        cols.forEach(col => {
+    let html = '';
+
+    ['M', 'F'].forEach(g => {
+      const genderLabel = g === 'M' ? '男' : '女';
+      const isClientGender = g === clientGender;
+      html += `<div class="full-age-block ${isClientGender ? 'client-gender' : ''}">
+        <div class="full-age-block-title ${g === 'M' ? 'male' : 'female'}">
+          ${genderLabel}性${isClientGender ? ' (客戶性別)' : ''}
+        </div>
+        <div class="full-age-scroll">
+        <table>
+          <thead><tr><th>年齡</th>`;
+      cols.forEach(col => {
+        html += `<th>${col.company.shortName||''}<br><span class="code-tag">${col.code}</span></th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      // 各家累計值 (跑到每一歲都更新)
+      const cumulative = cols.map(() => 0);
+
+      for (let age = 0; age <= 80; age++) {
+        const isClient = isClientGender && age === clientAge;
+        const isInRange = isClientGender && age >= clientAge && age <= endAge;
+        const cls = [
+          isClient ? 'client-row' : '',
+          isInRange ? 'in-range-row' : '',
+          age > 80 ? 'over-row' : ''
+        ].filter(Boolean).join(' ');
+
+        html += `<tr class="${cls}"><td>${age}<span class="age-unit">歲</span></td>`;
+        cols.forEach((col, i) => {
           const fee = lookupPremium(col.product, col.sel.amount, age, g);
-          html += `<td>${fee !== null ? fee.toLocaleString() : '—'}</td>`;
+          if (fee !== null && fee > 0 && age <= (col.product?.maxAgeContinuous || 80)) {
+            cumulative[i] += fee;
+            const cumDisplay = cumulative[i] >= 10000 ? (cumulative[i]/10000).toFixed(1) + '萬' : cumulative[i].toLocaleString();
+            html += `<td>
+              <div class="cell-yearly">${fee.toLocaleString()}</div>
+              <div class="cell-cum">累計 ${cumDisplay}</div>
+            </td>`;
+          } else {
+            html += `<td><span class="cell-none">—</span></td>`;
+          }
         });
         html += '</tr>';
+      }
+
+      // 總計列
+      html += `<tr class="total-row"><td><strong>總繳</strong></td>`;
+      cumulative.forEach(c => {
+        const display = c >= 10000 ? (c/10000).toFixed(1) + ' 萬元' : c.toLocaleString() + ' 元';
+        html += `<td><strong>${display}</strong></td>`;
       });
+      html += '</tr>';
+
+      html += '</tbody></table></div></div>';
     });
-    html += '</tbody></table>';
+
     wrap.innerHTML = html;
   }
 
@@ -2161,14 +2382,15 @@ const App = (() => {
       renderTable();
     });
 
-    // 全年齡保費表(工具列按鈕)
-    document.getElementById('btnFullAge').addEventListener('click', () => {
+    // 全年齡保費表(工具列按鈕 — 預設展開狀態)
+    const btnFullAge = document.getElementById('btnFullAge');
+    btnFullAge.classList.toggle('active', state.ui.fullAgeExpanded);
+    btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';
+    btnFullAge.addEventListener('click', () => {
       state.ui.fullAgeExpanded = !state.ui.fullAgeExpanded;
-      const sec = document.getElementById('fullAgeSection');
-      const btn = document.getElementById('btnFullAge');
-      sec.style.display = state.ui.fullAgeExpanded ? '' : 'none';
-      btn.classList.toggle('active', state.ui.fullAgeExpanded);
-      if (state.ui.fullAgeExpanded) renderTable();  // 重渲染以填入 fullage 表
+      btnFullAge.classList.toggle('active', state.ui.fullAgeExpanded);
+      btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';
+      renderTable();
     });
   }
 
