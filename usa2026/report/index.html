@@ -519,12 +519,16 @@
     margin-top: 4px;
     letter-spacing: 0.5px;
   }
-  /* 保費換算提示(在進度文字下方,小灰字) */
+  /* 保費換算提示(inline 在進度文字後方) */
   .lb-premium-hint {
     font-size: 11px;
     color: #999;
-    margin-top: 3px;
     letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .lb-fyb-sep {
+    color: #ccc;
+    margin: 0 2px;
   }
   .lb-premium-hint .ph-num {
     font-family: 'Bebas Neue', sans-serif;
@@ -1452,7 +1456,7 @@ function renderLeaderboard(members) {
       const parts = [];
       if (m.nextProdA > 0) parts.push(`<span class="ph-num">${fmtBig(m.nextProdA).value}${fmtBig(m.nextProdA).unit}</span> ${m.nextProdLabelA}`);
       if (m.nextProdB > 0) parts.push(`<span class="ph-num">${fmtBig(m.nextProdB).value}${fmtBig(m.nextProdB).unit}</span> ${m.nextProdLabelB}`);
-      premiumHint = `<div class="lb-premium-hint">≈ ${parts.join(' 或 ')}</div>`;
+      premiumHint = `<span class="lb-premium-hint">≈ ${parts.join(' 或 ')}</span>`;
     }
     
     return `
@@ -1466,7 +1470,7 @@ function renderLeaderboard(members) {
           <div class="lb-progress-bar">
             <div class="lb-progress-fill" style="width:${c.progressPercent}%"></div>
           </div>
-          <div class="lb-fyb-text">${progressText}${premiumHint}</div>
+          <div class="lb-fyb-text">${progressText}${premiumHint ? ' <span class="lb-fyb-sep">・</span> ' + premiumHint : ''}</div>
         </div>
         <div class="lb-amount">
           <div class="lb-amount-label">競賽業績</div>
