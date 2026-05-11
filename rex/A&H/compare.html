@@ -538,6 +538,321 @@ body {
 body.customer-mode .th-code,
 body.customer-mode .picker-item .code { display: none; }
 
+/* ─── 客戶資料卡 (年齡/性別輸入) ─── */
+.client-info {
+  background: white;
+  border: 1px solid var(--orange-light);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+.client-info-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange-dark);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.client-info-title::before { content: '👤'; }
+.client-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--navy);
+}
+.client-info-row label {
+  font-weight: 700;
+  min-width: 32px;
+}
+.client-info-row input[type="number"] {
+  width: 60px;
+  padding: 4px 6px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--navy);
+}
+.client-info-row input[type="number"]:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(240,90,40,0.15);
+}
+.gender-toggle {
+  display: inline-flex;
+  background: var(--gray-bg);
+  border-radius: 999px;
+  padding: 2px;
+  border: 1px solid var(--border);
+}
+.gender-toggle button {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--gray);
+  transition: all .15s;
+}
+.gender-toggle button.active.male {
+  background: #3D8FCC;
+  color: white;
+  box-shadow: 0 1px 3px rgba(61,143,204,0.3);
+}
+.gender-toggle button.active.female {
+  background: #E85A7A;
+  color: white;
+  box-shadow: 0 1px 3px rgba(232,90,122,0.3);
+}
+
+/* ─── 保費分析區塊(表格下方) ─── */
+.premium-section {
+  border-top: 2px solid var(--orange);
+  background: linear-gradient(180deg, #fff8f5 0%, white 100%);
+  padding: 18px 16px;
+}
+.premium-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.premium-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.premium-section-title::before { content: '💰'; }
+.expand-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  color: var(--gray);
+  cursor: pointer;
+  font-family: inherit;
+}
+.expand-btn:hover { color: var(--orange-dark); border-color: var(--orange); }
+.expand-btn .arrow { display: inline-block; transition: transform .2s; }
+.expand-btn.expanded .arrow { transform: rotate(180deg); }
+
+/* 保費小卡(每個商品一張) */
+.premium-grid {
+  display: grid;
+  gap: 10px;
+}
+.premium-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--card-color, var(--gray));
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+}
+.premium-card-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.premium-card-name .pc-code {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  color: var(--gray);
+  margin-left: 6px;
+  letter-spacing: 1px;
+}
+.premium-card-amt {
+  font-size: 11px;
+  color: var(--gray);
+}
+.premium-card-amt strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: var(--navy);
+  letter-spacing: 1px;
+  display: block;
+}
+.premium-card-fee {
+  font-size: 11px;
+  color: var(--gray);
+  text-align: right;
+}
+.premium-card-fee strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: var(--orange-dark);
+  letter-spacing: 1px;
+  display: block;
+}
+
+/* 性價比區(展開後出現) */
+.ratio-analysis {
+  margin-top: 14px;
+  display: none;
+}
+.ratio-analysis.show { display: block; }
+.ratio-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.ratio-table th {
+  background: var(--navy);
+  color: white;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.ratio-table th:first-child {
+  text-align: left;
+  background: #1a3a4d;
+}
+.ratio-table th .col-color {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.ratio-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+.ratio-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--gray-bg);
+}
+.ratio-table tr:last-child td { border-bottom: none; }
+.ratio-table td:last-child { border-right: none; }
+
+.ratio-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--navy);
+}
+.ratio-val.best {
+  color: var(--orange);
+  font-weight: 700;
+}
+.ratio-val.best::after { content: ' ⭐'; font-size: 10px; }
+.ratio-sub {
+  font-size: 10px;
+  color: var(--gray);
+}
+.ratio-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+.ratio-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--gray-bg);
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.ratio-bar-fill {
+  height: 100%;
+  background: var(--bar-color, var(--gray));
+  transition: width .3s;
+}
+
+.ratio-explainer {
+  background: var(--orange-light);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--navy);
+  line-height: 1.5;
+}
+.ratio-explainer strong { color: var(--orange-dark); }
+
+/* 全年齡保費展開表 */
+.full-age-table {
+  margin-top: 14px;
+  display: none;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.full-age-table.show { display: block; }
+.full-age-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.full-age-table th {
+  position: sticky;
+  top: 0;
+  background: var(--navy);
+  color: white;
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  z-index: 1;
+}
+.full-age-table th:first-child {
+  text-align: left;
+  min-width: 60px;
+}
+.full-age-table td {
+  padding: 4px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  color: var(--navy);
+}
+.full-age-table td:first-child {
+  text-align: left;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--gray-bg);
+  color: var(--navy);
+}
+.full-age-table tr.male-row td { background: rgba(61,143,204,0.04); }
+.full-age-table tr.male-row td:first-child { background: rgba(61,143,204,0.1); }
+.full-age-table tr.female-row td { background: rgba(232,90,122,0.04); }
+.full-age-table tr.female-row td:first-child { background: rgba(232,90,122,0.1); }
+.full-age-table tr.client-highlight td { background: var(--orange-light) !important; font-weight: 700; }
+
 /* ─── 列印優化 ─── */
 @media print {
   body { background: white; }
@@ -604,6 +919,23 @@ body.customer-mode .picker-item .code { display: none; }
       </div>
 
       <div class="picker-toggles">
+        <!-- 客戶資料卡 -->
+        <div class="client-info">
+          <div class="client-info-title">客戶資料</div>
+          <div class="client-info-row">
+            <label>年齡</label>
+            <input type="number" id="clientAge" min="0" max="80" value="35">
+            <span style="color: var(--gray); font-size: 11px;">歲</span>
+          </div>
+          <div class="client-info-row">
+            <label>性別</label>
+            <div class="gender-toggle">
+              <button type="button" id="genderM" class="male active">男</button>
+              <button type="button" id="genderF" class="female">女</button>
+            </div>
+          </div>
+        </div>
+
         <label>
           <input type="checkbox" id="customerMode">
           客戶模式 (隱藏代號)
@@ -626,6 +958,37 @@ body.customer-mode .picker-item .code { display: none; }
       <div class="compare-table-wrap">
         <div class="empty-state" id="emptyState">勾選左側商品後,這裡會顯示對照表。</div>
         <table class="compare-table" id="compareTable" style="display:none;"></table>
+      </div>
+
+      <!-- ════ 保費分析區 ════ -->
+      <div class="premium-section" id="premiumSection" style="display:none;">
+        <div class="premium-section-header">
+          <div class="premium-section-title">該客戶條件下的年繳保費</div>
+          <div style="display: flex; gap: 6px;">
+            <button class="expand-btn" type="button" id="toggleRatio">
+              性價比分析 <span class="arrow">▼</span>
+            </button>
+            <button class="expand-btn" type="button" id="toggleFullAge">
+              全年齡保費表 <span class="arrow">▼</span>
+            </button>
+          </div>
+        </div>
+        <div class="premium-grid" id="premiumGrid"></div>
+
+        <!-- 性價比分析(預設折疊) -->
+        <div class="ratio-analysis" id="ratioAnalysis">
+          <table class="ratio-table" id="ratioTable"></table>
+          <div class="ratio-explainer">
+            <strong>怎麼看?</strong> 三個指標各代表不同維度 ——
+            <strong>主打項 CP</strong>:這類別最關鍵的給付 ÷ 年保費(整體 CP 值);
+            <strong>住院日額 CP</strong>:每元保費換得的每日日額(日常理賠 CP);
+            <strong>年理賠上限 CP</strong>:全年最多賠到 ÷ 年保費(極端事件槓桿)。
+            <strong>不同類別的給付性質不同,只能在同類別內比較。</strong>
+          </div>
+        </div>
+
+        <!-- 全年齡保費表(預設折疊) -->
+        <div class="full-age-table" id="fullAgeTable"></div>
       </div>
     </section>
 
@@ -654,6 +1017,8 @@ const App = (() => {
     selected: {},          // code → { cid, amount }
     customerMode: false,
     showStar: true,
+    client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
+    ui: { ratioExpanded: false, fullAgeExpanded: false },
     db: {
       companies: {},       // cid → company JSON
       benefitsLib: null,   // 全球商品的給付定義
@@ -957,6 +1322,178 @@ const App = (() => {
     };
   }
 
+  /* ─── 取得商品某計劃/某保額下的「年繳保費」 ─────────
+   *  支援兩種 JSON 結構:
+   *    1. rateTable[plan]      (舊式,簡單表)
+   *    2. rates[period][gender][plan][age]  (新式,巢狀)
+   *  HSV 等年齡只有 5 歲間距 → 找 ≤ age 的最大 key
+   *  回傳 null = 查不到
+   * ─────────────────────────────────────────── */
+  function lookupPremium(product, amount, age, gender) {
+    if (!product) return null;
+    const g = gender === 'F' ? 'F' : 'M';
+    const ageStr = String(age);
+
+    // 嘗試 rates 巢狀結構
+    if (product.rates && typeof product.rates === 'object') {
+      const period = product.defaultPeriod || Object.keys(product.rates)[0];
+      const periodData = product.rates[period];
+      if (periodData && periodData[g]) {
+        const planData = periodData[g][String(amount)];
+        if (planData && typeof planData === 'object') {
+          // 年齡降階:找 ≤ age 的最大 key
+          if (planData[ageStr] !== undefined) return planData[ageStr];
+          const ages = Object.keys(planData).map(Number).sort((a,b) => a-b);
+          let best = null;
+          for (const a of ages) {
+            if (a <= age) best = a;
+            else break;
+          }
+          return best !== null ? planData[String(best)] : null;
+        }
+      }
+    }
+
+    // 退回 rateTable (簡單表)
+    if (product.rateTable && product.rateTable[amount] !== undefined) {
+      const v = product.rateTable[amount];
+      // 可能是純數字或 { M, F } 結構
+      if (typeof v === 'number') return v;
+      if (typeof v === 'object') return v[g] !== undefined ? v[g] : null;
+    }
+
+    // 如果是 ratio/wan 等沒固定費率表的商品 → 沒辦法精準算,回 null
+    return null;
+  }
+
+  /* ─── 取得商品的所有可選計劃/保額 (給 dropdown 用) ─── */
+  function getAmountOptions(product) {
+    if (!product) return [];
+    if (Array.isArray(product.amountSuggestions) && product.amountSuggestions.length > 0) {
+      return product.amountSuggestions.map(String);
+    }
+    if (product.rateTable) return Object.keys(product.rateTable);
+    return [];
+  }
+
+  /* ─── 取得該類別「主打給付項」 (用於性價比 主打項 CP) ─── */
+  const PRIMARY_ROW_BY_CATEGORY = {
+    '實支實付型': '住院雜費限額',         // 跟 ROW_TEMPLATES 內 rowTitle 對齊
+    '實支實付型(自負額)': null,              // 用 cls.key reimburse 抓
+    '手術險': null,                          // surgery cls
+    '定額日額': null,                        // daily cls
+    '重大傷病': null,                        // critical cls
+    '癌症險(單筆金)': null,                  // critical cls
+    '癌症險(療程型)': null                   // critical cls
+  };
+  const PRIMARY_CLS_BY_CATEGORY = {
+    '實支實付型(自負額)': 'reimburse',
+    '手術險': 'surgery',
+    '定額日額': 'daily',
+    '重大傷病': 'critical',
+    '癌症險(單筆金)': 'critical',
+    '癌症險(療程型)': 'critical'
+  };
+
+  /* ─── 取得「住院日額」的數值 (給性價比 日額 CP) ─── */
+  function getDailyValue(product, amount) {
+    const items = getItems(product);
+    const classifyItem = window.AHShared.classifyItem;
+    const calc = window.AHShared.calcBenefitValue;
+    let max = 0;
+    for (const it of items) {
+      const cls = classifyItem(it).key;
+      // 嚴格抓 daily,但也接受 name 含「住院日額」或「每日病房」的項目 (跨歸位)
+      const isDailyByName = /住院日額|每日.*病房|住院.*日額/.test(it.name) && !/加護|燒燙傷|加倍/.test(it.name);
+      if (cls === 'daily' || isDailyByName) {
+        const r = calc(it, product, amount);
+        if (r && r.type === 'num' && r.val > max) max = r.val;
+      }
+    }
+    return max;
+  }
+
+  /* ─── 取得「年理賠上限」 (簡單估:住院日額×365 + 雜費限額) ─── */
+  function getAnnualMax(product, amount) {
+    const items = getItems(product);
+    const classifyItem = window.AHShared.classifyItem;
+    const calc = window.AHShared.calcBenefitValue;
+    // 富邦 HSV 有「每年保險金給付總限額」項目,優先取
+    for (const it of items) {
+      if (/每年.*總限額|每年保險金/.test(it.name)) {
+        const r = calc(it, product, amount);
+        if (r && r.type === 'num') return { val: r.val, source: '條款上限' };
+      }
+    }
+    // 否則用 住院日額×365 + 雜費限額(粗估)
+    const daily = getDailyValue(product, amount) * 365;
+    let misc = 0;
+    items.forEach(it => {
+      const k = classifyItem(it).key;
+      if (k === 'reimburse') {
+        const r = calc(it, product, amount);
+        if (r && r.type === 'num' && r.val > misc) misc = r.val;
+      }
+    });
+    if (daily > 0 || misc > 0) return { val: daily + misc, source: '估算' };
+    // 重大傷病/癌症 一次金 → 直接拿 critical 最大值
+    let crit = 0;
+    items.forEach(it => {
+      const k = classifyItem(it).key;
+      if (k === 'critical') {
+        const r = calc(it, product, amount);
+        if (r && r.type === 'num' && r.val > crit) crit = r.val;
+      }
+    });
+    if (crit > 0) return { val: crit, source: '一次金' };
+    return { val: 0, source: '無資料' };
+  }
+
+  /* ─── 取得「主打給付項」的數值 (給性價比 主打 CP) ─── */
+  function getPrimaryValue(product, amount, categoryKey) {
+    const items = getItems(product);
+    const classifyItem = window.AHShared.classifyItem;
+    const calc = window.AHShared.calcBenefitValue;
+
+    // 優先用 ROW_TEMPLATES 的 PRIMARY_ROW
+    const primaryRow = PRIMARY_ROW_BY_CATEGORY[categoryKey];
+    if (primaryRow && ROW_TEMPLATES[categoryKey]) {
+      const rowDef = ROW_TEMPLATES[categoryKey].find(r => r.rowTitle === primaryRow);
+      if (rowDef) {
+        // 找該商品 code 的 match pattern
+        const code = product.code;
+        const pat = rowDef.matches[code];
+        if (pat) {
+          const rx = new RegExp(pat);
+          let max = 0;
+          for (const it of items) {
+            if (rx.test(it.name)) {
+              const r = calc(it, product, amount);
+              if (r && r.type === 'num' && r.val > max) max = r.val;
+            }
+          }
+          if (max > 0) return { val: max, label: primaryRow };
+        }
+      }
+    }
+
+    // 否則用 PRIMARY_CLS
+    const primaryCls = PRIMARY_CLS_BY_CATEGORY[categoryKey];
+    if (primaryCls) {
+      let max = 0;
+      let label = CLS_TITLE[primaryCls] || primaryCls;
+      for (const it of items) {
+        if (classifyItem(it).key === primaryCls) {
+          const r = calc(it, product, amount);
+          if (r && r.type === 'num' && r.val > max) max = r.val;
+        }
+      }
+      if (max > 0) return { val: max, label };
+    }
+
+    return { val: 0, label: '—' };
+  }
+
   /* ═══ 渲染 ═══════════════════════════════════════ */
 
   function renderCatTabs() {
@@ -1094,7 +1631,8 @@ const App = (() => {
       // 保額輸入欄:plan 用 select,其他用 number input
       let amtField;
       if (p.amountMode === 'plan') {
-        const opts = Object.keys((p.rateTable||{})).map(plan => `<option ${plan===String(col.sel.amount)?'selected':''}>${plan}</option>`).join('') || `<option>${col.sel.amount}</option>`;
+        const planOpts = getAmountOptions(p);
+        const opts = planOpts.map(plan => `<option ${plan===String(col.sel.amount)?'selected':''}>${plan}</option>`).join('') || `<option>${col.sel.amount}</option>`;
         amtField = `<select data-code="${col.code}">${opts}</select>`;
       } else {
         amtField = `<input type="number" min="1" data-code="${col.code}" value="${col.sel.amount}">`;
@@ -1159,6 +1697,165 @@ const App = (() => {
         });
       }
     });
+
+    // 連動渲染保費分析區
+    renderPremiumSection(cols);
+  }
+
+  /* ═══ 保費分析區渲染 ═══════════════════════════════ */
+  function renderPremiumSection(cols) {
+    const section = document.getElementById('premiumSection');
+    if (!cols || cols.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = '';
+    const age = parseInt(document.getElementById('clientAge').value, 10) || 35;
+    const gender = state.client.gender;
+
+    // ── 上方:保費小卡 ──
+    const grid = document.getElementById('premiumGrid');
+    grid.innerHTML = '';
+    cols.forEach(col => {
+      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
+      const company = col.company || {};
+      const p = col.product || {};
+      const card = document.createElement('div');
+      card.className = 'premium-card';
+      card.style.setProperty('--card-color', `var(--c-${col.sel.cid})`);
+      card.innerHTML = `
+        <div class="premium-card-name">
+          ${company.shortName || ''} · ${(p.name||'').slice(0,12)}${(p.name||'').length>12?'…':''}
+          <span class="pc-code">${col.code}</span>
+        </div>
+        <div class="premium-card-amt">投保<strong>${col.sel.amount}${p.amountUnit||''}</strong></div>
+        <div class="premium-card-amt">${age} 歲 ${gender==='F'?'女':'男'}</div>
+        <div class="premium-card-fee">年繳<strong>${fee !== null ? fee.toLocaleString() : '—'}</strong></div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // ── 性價比表 ──
+    renderRatioTable(cols, age, gender);
+
+    // ── 全年齡表 ──
+    renderFullAgeTable(cols);
+  }
+
+  /* ─── 性價比表 (3 個指標 × 商品數) ─── */
+  function renderRatioTable(cols, age, gender) {
+    const tbl = document.getElementById('ratioTable');
+    // 預算每個商品的:保費、主打項、日額、年上限
+    const rows = cols.map(col => {
+      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
+      const primary = getPrimaryValue(col.product, col.sel.amount, state.categoryKey);
+      const daily = getDailyValue(col.product, col.sel.amount);
+      const annual = getAnnualMax(col.product, col.sel.amount);
+      return { col, fee, primary, daily, annual };
+    });
+
+    // 找各指標最大值(用於 best 標示 + bar width)
+    const cpPrimary = rows.map(r => (r.fee && r.fee > 0 && r.primary.val > 0) ? r.primary.val / r.fee : 0);
+    const cpDaily = rows.map(r => (r.fee && r.fee > 0 && r.daily > 0) ? r.daily / r.fee : 0);
+    const cpAnnual = rows.map(r => (r.fee && r.fee > 0 && r.annual.val > 0) ? r.annual.val / r.fee : 0);
+    const maxPrimary = Math.max(...cpPrimary, 0.0001);
+    const maxDaily = Math.max(...cpDaily, 0.0001);
+    const maxAnnual = Math.max(...cpAnnual, 0.0001);
+
+    let html = '<thead><tr><th>性價比指標</th>';
+    rows.forEach(r => {
+      const cid = r.col.sel.cid;
+      html += `<th><span class="col-color" style="background: var(--c-${cid})"></span>${r.col.company.shortName||''} ${r.col.code}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    // 主打項 CP
+    const primaryLabel = rows[0]?.primary?.label || '主打項';
+    html += `<tr><td><strong>主打項 CP</strong><br><span class="ratio-sub">${primaryLabel} ÷ 年保費</span></td>`;
+    rows.forEach((r, i) => {
+      const cp = cpPrimary[i];
+      const isBest = cp > 0 && cp === Math.max(...cpPrimary);
+      const cid = r.col.sel.cid;
+      if (cp > 0) {
+        html += `<td>
+          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(1)}</span>
+          <div class="ratio-sub">${r.primary.val.toLocaleString()} ÷ ${r.fee.toLocaleString()}</div>
+          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxPrimary*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
+        </td>`;
+      } else {
+        html += '<td><span class="ratio-sub">—</span></td>';
+      }
+    });
+    html += '</tr>';
+
+    // 日額 CP
+    html += `<tr><td><strong>住院日額 CP</strong><br><span class="ratio-sub">日額 ÷ 年保費</span></td>`;
+    rows.forEach((r, i) => {
+      const cp = cpDaily[i];
+      const isBest = cp > 0 && cp === Math.max(...cpDaily);
+      const cid = r.col.sel.cid;
+      if (cp > 0) {
+        html += `<td>
+          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(2)}</span>
+          <div class="ratio-sub">${r.daily.toLocaleString()}/天 ÷ ${r.fee.toLocaleString()}</div>
+          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxDaily*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
+        </td>`;
+      } else {
+        html += '<td><span class="ratio-sub">—</span></td>';
+      }
+    });
+    html += '</tr>';
+
+    // 年上限 CP
+    html += `<tr><td><strong>年理賠上限 CP</strong><br><span class="ratio-sub">全年最高 ÷ 年保費</span></td>`;
+    rows.forEach((r, i) => {
+      const cp = cpAnnual[i];
+      const isBest = cp > 0 && cp === Math.max(...cpAnnual);
+      const cid = r.col.sel.cid;
+      if (cp > 0) {
+        html += `<td>
+          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(1)}</span>
+          <div class="ratio-sub">${r.annual.val.toLocaleString()} (${r.annual.source}) ÷ ${r.fee.toLocaleString()}</div>
+          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxAnnual*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
+        </td>`;
+      } else {
+        html += '<td><span class="ratio-sub">—</span></td>';
+      }
+    });
+    html += '</tr></tbody>';
+
+    tbl.innerHTML = html;
+  }
+
+  /* ─── 全年齡保費表 ─── */
+  function renderFullAgeTable(cols) {
+    const wrap = document.getElementById('fullAgeTable');
+    // 收集所有商品涉及的年齡 (0-80)
+    const ages = [];
+    for (let a = 0; a <= 80; a += 5) ages.push(a);  // 5 歲間距,82 個年齡點縮成 17 個
+    const clientAge = parseInt(document.getElementById('clientAge').value, 10) || 35;
+    const clientGender = state.client.gender;
+
+    let html = '<table><thead><tr><th>年齡</th>';
+    cols.forEach(col => {
+      html += `<th>${col.company.shortName||''}<br><span style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;">${col.code}</span></th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    ['M','F'].forEach(g => {
+      ages.forEach(age => {
+        const isClient = (g === clientGender) && (age <= clientAge && (age + 5 > clientAge));
+        const cls = isClient ? 'client-highlight' : (g === 'M' ? 'male-row' : 'female-row');
+        html += `<tr class="${cls}"><td>${g==='M'?'男':'女'} ${age}-${age+4}</td>`;
+        cols.forEach(col => {
+          const fee = lookupPremium(col.product, col.sel.amount, age, g);
+          html += `<td>${fee !== null ? fee.toLocaleString() : '—'}</td>`;
+        });
+        html += '</tr>';
+      });
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
   }
 
   /* ═══ Bind ═══════════════════════════════════════ */
@@ -1173,6 +1870,41 @@ const App = (() => {
       renderTable();
     });
     document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+    // 客戶資料卡
+    const ageInput = document.getElementById('clientAge');
+    ageInput.addEventListener('input', () => {
+      state.client.age = parseInt(ageInput.value, 10) || 0;
+      renderTable();
+    });
+    document.getElementById('genderM').addEventListener('click', () => {
+      state.client.gender = 'M';
+      document.getElementById('genderM').classList.add('active');
+      document.getElementById('genderF').classList.remove('active');
+      renderTable();
+    });
+    document.getElementById('genderF').addEventListener('click', () => {
+      state.client.gender = 'F';
+      document.getElementById('genderF').classList.add('active');
+      document.getElementById('genderM').classList.remove('active');
+      renderTable();
+    });
+
+    // 展開按鈕
+    document.getElementById('toggleRatio').addEventListener('click', () => {
+      state.ui.ratioExpanded = !state.ui.ratioExpanded;
+      const el = document.getElementById('ratioAnalysis');
+      const btn = document.getElementById('toggleRatio');
+      el.classList.toggle('show', state.ui.ratioExpanded);
+      btn.classList.toggle('expanded', state.ui.ratioExpanded);
+    });
+    document.getElementById('toggleFullAge').addEventListener('click', () => {
+      state.ui.fullAgeExpanded = !state.ui.fullAgeExpanded;
+      const el = document.getElementById('fullAgeTable');
+      const btn = document.getElementById('toggleFullAge');
+      el.classList.toggle('show', state.ui.fullAgeExpanded);
+      btn.classList.toggle('expanded', state.ui.fullAgeExpanded);
+    });
   }
 
   /* ═══ Init ═══════════════════════════════════════ */
