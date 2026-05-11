@@ -1352,23 +1352,67 @@
     .tier-row { grid-template-columns: 60px 1fr; gap: 14px; padding: 16px 18px; }
     .tier-rank { width: 56px; height: 56px; font-size: 22px; }
     .tier-fyb { grid-column: 2; text-align: left; margin-top: 4px; }
-    .top-nav { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
-    .nav-brand { font-size: 11px; letter-spacing: 1px; order: 1; flex-basis: 100%; justify-content: center; margin-top: 4px; }
-    .nav-back { font-size: 11px; padding: 6px 12px; letter-spacing: 1px; }
-    .nav-report { font-size: 11px; padding: 6px 12px; letter-spacing: 1px; }
-    .nav-report span:not(.nav-report-dot) { letter-spacing: 0.5px; }
-    /* 戰報橫幅手機版 — 換行、縮字 */
-    .report-banner { padding: 18px 20px; }
+    
+    /* ──── Nav 緊湊化:三點一行不換行 ──── */
+    .top-nav { padding: 10px 12px; gap: 6px; }
+    .nav-back {
+      font-size: 0; /* 隱藏文字,只剩箭頭圖示 */
+      padding: 7px 11px;
+      letter-spacing: 0;
+    }
+    .nav-back::before {
+      content: '←';
+      font-size: 16px;
+      font-weight: 900;
+    }
+    .nav-brand {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      gap: 8px;
+    }
+    .nav-brand img { width: 26px; height: 26px; }
+    .nav-brand span { display: none; } /* 手機隱藏「鼎綸恩宇・競賽旅遊」文字,只剩 logo */
+    .nav-report {
+      font-size: 12px;
+      padding: 7px 13px;
+      letter-spacing: 1px;
+    }
+    
+    /* ──── 戰報橫幅手機版:三欄小方塊 ──── */
+    .report-banner { padding: 18px 16px; }
     .report-banner-inner { grid-template-columns: 1fr; gap: 14px; }
-    .report-banner-stats { gap: 10px; }
-    .report-banner-num { font-size: 24px; }
-    .report-banner-label { font-size: 10px; }
+    .report-banner-tag { font-size: 11px; letter-spacing: 2px; }
+    .report-banner-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .report-banner-divider { display: none; }
+    .report-banner-stat {
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 10px;
+      padding: 10px 6px;
+      backdrop-filter: blur(4px);
+    }
+    .report-banner-num { font-size: 22px; }
+    .report-banner-unit { font-size: 11px; }
+    .report-banner-label {
+      font-size: 10px;
+      margin-left: 0;
+      margin-top: 2px;
+    }
     .report-banner-right {
       width: 100%;
       justify-content: center;
-      padding: 10px 16px;
+      padding: 12px 16px;
       font-size: 13px;
     }
+    
     .calc-section { padding: 36px 20px; }
     .policy-fields { grid-template-columns: 1fr; }
     .fx-row { grid-template-columns: 1fr; }
