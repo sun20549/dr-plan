@@ -922,42 +922,59 @@ body.customer-mode .picker-item .code { display: none; }
 }
 .ratio-explainer strong { color: var(--orange-dark); }
 
-/* ─── 全年齡保費表(預設展開) ─── */
+/* ─── 全年齡保費表(預設展開) — 每家公司一塊,塊內男女兩欄 ─── */
 .full-age-table {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 900px) {
-  .full-age-table { grid-template-columns: 1fr; }
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
 }
 .full-age-block {
   background: white;
   border: 1px solid var(--border);
+  border-left: 4px solid var(--block-color, var(--gray));
   border-radius: 8px;
   overflow: hidden;
-}
-.full-age-block.client-gender {
-  border: 2px solid var(--orange);
-  box-shadow: 0 2px 8px rgba(240,90,40,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .full-age-block-title {
-  padding: 8px 12px;
+  padding: 10px 14px;
   font-size: 13px;
   font-weight: 700;
-  color: white;
-  letter-spacing: 1px;
+  color: var(--navy);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, rgba(0,0,0,0.02) 0%, rgba(255,255,255,0) 60%);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-.full-age-block-title.male { background: #3D8FCC; }
-.full-age-block-title.female { background: #E85A7A; }
-.full-age-block-title.male::before { content: '♂'; font-size: 16px; }
-.full-age-block-title.female::before { content: '♀'; font-size: 16px; }
+.full-age-block-title .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.full-age-block-title .amt-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  color: var(--navy);
+  background: var(--orange-light);
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+  margin-left: 4px;
+}
+.full-age-block-title .range-tag {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 500;
+  margin-left: auto;
+  letter-spacing: 0;
+}
 
 .full-age-scroll {
-  max-height: 500px;
+  max-height: 520px;
   overflow-y: auto;
 }
 .full-age-table table {
@@ -965,7 +982,7 @@ body.customer-mode .picker-item .code { display: none; }
   border-collapse: collapse;
   font-size: 11px;
 }
-.full-age-table th {
+.full-age-table thead th {
   position: sticky;
   top: 0;
   background: var(--navy);
@@ -974,36 +991,33 @@ body.customer-mode .picker-item .code { display: none; }
   text-align: center;
   font-size: 10px;
   font-weight: 600;
+  letter-spacing: 0.5px;
   z-index: 1;
 }
-.full-age-table th:first-child {
-  text-align: left;
-  min-width: 50px;
+.full-age-table thead th.th-male {
+  background: #3D8FCC;
 }
-.full-age-table th .code-tag {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 9px;
-  letter-spacing: 1px;
-  opacity: 0.8;
+.full-age-table thead th.th-female {
+  background: #E85A7A;
 }
-.full-age-table td {
+.full-age-table tbody td {
   padding: 5px 8px;
   text-align: center;
   border-bottom: 1px solid #f0f0f0;
-  border-right: 1px solid #f0f0f0;
-  color: var(--navy);
-  vertical-align: top;
-}
-.full-age-table td:first-child {
-  text-align: left;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 13px;
-  font-weight: 700;
-  background: var(--gray-bg);
-  color: var(--navy);
   letter-spacing: 0.5px;
+  color: var(--navy);
 }
-.full-age-table td .age-unit {
+.full-age-table .age-cell {
+  text-align: left;
+  background: var(--gray-bg);
+  font-weight: 700;
+  color: var(--navy);
+  border-right: 1px solid #e8e8ed;
+  min-width: 40px;
+}
+.age-cell .age-unit {
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 9px;
   color: var(--gray);
@@ -1011,49 +1025,45 @@ body.customer-mode .picker-item .code { display: none; }
   letter-spacing: 0;
   font-weight: 400;
 }
-.cell-yearly {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  color: var(--navy);
-}
-.cell-cum {
-  font-size: 9px;
-  color: var(--gray);
-  margin-top: 1px;
-  font-family: 'Noto Sans TC', sans-serif;
-}
+.fee-cell.male-col { background: rgba(61,143,204,0.04); }
+.fee-cell.female-col { background: rgba(232,90,122,0.04); }
 
-/* 客戶當年 — 橘色高亮 */
-.full-age-table tr.client-row td {
-  background: var(--orange-light) !important;
-  font-weight: 700;
-}
-.full-age-table tr.client-row td:first-child {
+/* 客戶所在年齡列 → 整列淡橘背景 */
+.full-age-table tr.client-row .age-cell {
   background: var(--orange) !important;
   color: white;
 }
-.full-age-table tr.client-row .cell-yearly {
+.full-age-table tr.client-row .fee-cell {
+  background: var(--orange-light) !important;
+  font-weight: 700;
   color: var(--orange-dark);
   font-size: 14px;
 }
+/* 客戶當前年齡 + 性別 → 該格更顯眼 */
+.full-age-table tr.client-row .fee-cell.client-cell {
+  background: var(--orange) !important;
+  color: white;
+}
 
-/* 客戶比較範圍內(從現年→上限)— 淡橘底色 */
-.full-age-table tr.in-range-row:not(.client-row) td {
-  background: rgba(255,237,224,0.4);
+/* 範圍內(現年→上限)→ 極淡橘 */
+.full-age-table tr.in-range-row:not(.client-row) .fee-cell {
+  background: rgba(255,237,224,0.5) !important;
+}
+.full-age-table tr.in-range-row:not(.client-row) .age-cell {
+  background: #fff5ec;
 }
 
 /* 總計列 */
 .full-age-table tr.total-row td {
   background: var(--navy) !important;
   color: white !important;
-  font-family: 'Bebas Neue', sans-serif;
   font-size: 13px;
   letter-spacing: 1px;
   padding: 8px;
 }
 .full-age-table tr.total-row td:first-child {
   background: var(--orange-dark) !important;
+  text-align: left;
 }
 
 
@@ -2133,7 +2143,8 @@ const App = (() => {
     }
 
     // 客戶條件
-    const age = parseInt(document.getElementById('clientAge').value, 10) || 35;
+    const ageRaw = parseInt(document.getElementById('clientAge').value, 10);
+    const age = Number.isFinite(ageRaw) && ageRaw >= 0 ? ageRaw : 35;
     const gender = state.client.gender;
 
     // 每家公司計算保費 + CP
@@ -2286,63 +2297,73 @@ const App = (() => {
   /* ─── 全年齡保費表 ─── */
   function renderFullAgeTable(cols) {
     const wrap = document.getElementById('fullAgeTable');
-    const clientAge = parseInt(document.getElementById('clientAge').value, 10) || 35;
+    const clientAgeRaw = parseInt(document.getElementById('clientAge').value, 10);
+    const clientAge = Number.isFinite(clientAgeRaw) && clientAgeRaw >= 0 ? clientAgeRaw : 35;
     const clientGender = state.client.gender;
-    const endAge = getCompareEndAge(cols);
 
+    // 每家公司一塊
     let html = '';
+    cols.forEach(col => {
+      const company = col.company || {};
+      const p = col.product || {};
+      const cid = col.sel.cid;
+      const maxAge = p.maxAgeContinuous || 80;
 
-    ['M', 'F'].forEach(g => {
-      const genderLabel = g === 'M' ? '男' : '女';
-      const isClientGender = g === clientGender;
-      html += `<div class="full-age-block ${isClientGender ? 'client-gender' : ''}">
-        <div class="full-age-block-title ${g === 'M' ? 'male' : 'female'}">
-          ${genderLabel}性${isClientGender ? ' (客戶性別)' : ''}
+      html += `<div class="full-age-block" style="--block-color: var(--c-${cid});">
+        <div class="full-age-block-title">
+          <span class="dot" style="background: var(--c-${cid});"></span>
+          ${company.shortName || ''} · ${col.code}
+          <span class="amt-tag">${col.sel.amount}${p.amountUnit||''}</span>
+          <span class="range-tag">續保至 ${maxAge} 歲</span>
         </div>
         <div class="full-age-scroll">
         <table>
-          <thead><tr><th>年齡</th>`;
-      cols.forEach(col => {
-        html += `<th>${col.company.shortName||''}<br><span class="code-tag">${col.code}</span></th>`;
-      });
-      html += '</tr></thead><tbody>';
+          <thead>
+            <tr>
+              <th rowspan="2">年齡</th>
+              <th colspan="2">年繳保費(元)</th>
+            </tr>
+            <tr>
+              <th class="th-male">男 ♂</th>
+              <th class="th-female">女 ♀</th>
+            </tr>
+          </thead>
+          <tbody>`;
 
-      // 各家累計值 (跑到每一歲都更新)
-      const cumulative = cols.map(() => 0);
-
-      for (let age = 0; age <= 80; age++) {
-        const isClient = isClientGender && age === clientAge;
-        const isInRange = isClientGender && age >= clientAge && age <= endAge;
+      for (let age = 0; age <= maxAge; age++) {
+        const isClientAge = age === clientAge;
+        const isInRange = age >= clientAge && age <= maxAge;
         const cls = [
-          isClient ? 'client-row' : '',
-          isInRange ? 'in-range-row' : '',
-          age > 80 ? 'over-row' : ''
+          isClientAge ? 'client-row' : '',
+          isInRange ? 'in-range-row' : ''
         ].filter(Boolean).join(' ');
 
-        html += `<tr class="${cls}"><td>${age}<span class="age-unit">歲</span></td>`;
-        cols.forEach((col, i) => {
-          const fee = lookupPremium(col.product, col.sel.amount, age, g);
-          if (fee !== null && fee > 0 && age <= (col.product?.maxAgeContinuous || 80)) {
-            cumulative[i] += fee;
-            const cumDisplay = cumulative[i] >= 10000 ? (cumulative[i]/10000).toFixed(1) + '萬' : cumulative[i].toLocaleString();
-            html += `<td>
-              <div class="cell-yearly">${fee.toLocaleString()}</div>
-              <div class="cell-cum">累計 ${cumDisplay}</div>
-            </td>`;
-          } else {
-            html += `<td><span class="cell-none">—</span></td>`;
-          }
-        });
-        html += '</tr>';
+        const feeM = lookupPremium(col.product, col.sel.amount, age, 'M');
+        const feeF = lookupPremium(col.product, col.sel.amount, age, 'F');
+        const mCls = (isClientAge && clientGender === 'M') ? 'client-cell' : '';
+        const fCls = (isClientAge && clientGender === 'F') ? 'client-cell' : '';
+
+        html += `<tr class="${cls}">
+          <td class="age-cell">${age}<span class="age-unit">歲</span></td>
+          <td class="fee-cell male-col ${mCls}">${feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—'}</td>
+          <td class="fee-cell female-col ${fCls}">${feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—'}</td>
+        </tr>`;
       }
 
-      // 總計列
-      html += `<tr class="total-row"><td><strong>總繳</strong></td>`;
-      cumulative.forEach(c => {
-        const display = c >= 10000 ? (c/10000).toFixed(1) + ' 萬元' : c.toLocaleString() + ' 元';
-        html += `<td><strong>${display}</strong></td>`;
-      });
-      html += '</tr>';
+      // 總繳列
+      let totalM = 0, totalF = 0;
+      for (let age = 0; age <= maxAge; age++) {
+        const fm = lookupPremium(col.product, col.sel.amount, age, 'M');
+        const ff = lookupPremium(col.product, col.sel.amount, age, 'F');
+        if (fm !== null && fm > 0) totalM += fm;
+        if (ff !== null && ff > 0) totalF += ff;
+      }
+      const disp = (v) => v >= 10000 ? (v/10000).toFixed(1) + ' 萬' : v.toLocaleString();
+      html += `<tr class="total-row">
+        <td><strong>總繳</strong></td>
+        <td class="male-col"><strong>${disp(totalM)}</strong></td>
+        <td class="female-col"><strong>${disp(totalF)}</strong></td>
+      </tr>`;
 
       html += '</tbody></table></div></div>';
     });
