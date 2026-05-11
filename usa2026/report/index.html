@@ -502,22 +502,28 @@
   }
   .lb-amount {
     text-align: right;
-    min-width: 120px;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
-  .lb-amount-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--usa-blue);
-    line-height: 1;
-    letter-spacing: 0.5px;
-  }
-  .lb-row.achieved .lb-amount-value { color: var(--orange); }
   .lb-amount-label {
     font-size: 10px;
     color: #888;
     letter-spacing: 1.5px;
-    margin-top: 4px;
+    margin-bottom: 4px;
+    font-weight: 700;
+    align-self: flex-start; /* 標籤靠左 */
   }
+  .lb-amount-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--usa-blue);
+    line-height: 1;
+    letter-spacing: 0.5px;
+    align-self: flex-end; /* 數字靠右 */
+  }
+  .lb-row.achieved .lb-amount-value { color: var(--orange); }
   /* 保費小字(次要資訊) */
   .lb-amount-premium {
     margin-top: 8px;
@@ -526,6 +532,8 @@
     font-size: 11px;
     color: #888;
     letter-spacing: 0.5px;
+    width: 100%;
+    text-align: right;
   }
   .lb-amount-premium .premium-label {
     font-weight: 500;
@@ -1395,8 +1403,8 @@ function renderLeaderboard(members) {
           <div class="lb-fyb-text">${progressText}</div>
         </div>
         <div class="lb-amount">
+          <div class="lb-amount-label">競賽業績</div>
           <div class="lb-amount-value">${fmt(m.fyb)}</div>
-          <div class="lb-amount-label">業績</div>
           ${m.premium > 0 ? `
             <div class="lb-amount-premium">
               <span class="premium-label">保費</span>
