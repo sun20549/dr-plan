@@ -1081,6 +1081,20 @@ async function loadData() {
     const mainCsv = await fetchSheetCSV(MAIN_GID);
     const mainRows = parseCSV(mainCsv);
     
+    // ▼▼▼ 偵錯模式(網址加 ?debug=1 顯示) ▼▼▼
+    const debugMode = new URLSearchParams(location.search).get('debug') === '1';
+    if (debugMode) {
+      const dbg = document.createElement('div');
+      dbg.style.cssText = 'position:fixed; bottom:0; left:0; right:0; max-height:50vh; overflow:auto; background:#000; color:#0f0; font-family:monospace; font-size:11px; padding:12px; z-index:9999; line-height:1.5;';
+      let html = `<strong style="color:#ff0">[CSV 原始資料 共 ${mainRows.length} 列]</strong><br>`;
+      mainRows.slice(0, 20).forEach((r, i) => {
+        const cells = r.map((c, j) => `[${j}]"${c}"`).join(' ');
+        html += `<div>列 ${i}: ${cells}</div>`;
+      });
+      dbg.innerHTML = html + '<button onclick="this.parentElement.remove()" style="margin-top:8px;padding:4px 12px;">關閉</button>';
+      document.body.appendChild(dbg);
+    }
+    
     // 動態找標題列(用「業務員姓名」或「總競賽業績」當錨點,避免硬編碼 index)
     let headerIdx = -1;
     let cols = { name: 0, fyb: 1, url: 10 }; // fallback default
@@ -1102,31 +1116,50 @@ async function loadData() {
       // 找不到標題列就退回原本假設:第 2 列(index 1)是標題
       headerIdx = 1;
     }
+    console.log(`[戰報] 標題列在第 ${headerIdx} 列, name欄=${cols.name}, fyb欄=${cols.fyb}, url欄=${cols.url}`);
     
     // 從標題列下一列開始,掃完整張表(允許中間有空白列、不會中斷)
     const members = [];
     const seenNames = new Set();
+    const skipped = []; // 記錄被跳過的列(偵錯用)
     for (let i = headerIdx + 1; i < mainRows.length; i++) {
       const row = mainRows[i] || [];
+      const rawName = (row[cols.name] || '').toString();
       // name 容許清掉前後空白、零寬字元、全形空白
-      let name = (row[cols.name] || '').toString()
+      let name = rawName
         .replace(/[\u200B-\u200D\uFEFF]/g, '') // 零寬字元
         .replace(/[\u3000\s]+/g, '')           // 所有空白(含全形)
         .trim();
-      if (!name) continue;
-      // 忽略明顯是合計列的列
-      if (/總和|合計|尚差|目標/.test(name)) continue;
-      if (seenNames.has(name)) continue; // 防重複
-      seenNames.add(name);
       
       const fyb = toNum(row[cols.fyb]);
+      
+      // 改變策略:**只要有業績或有名字其中之一就保留**(寬鬆很多)
+      if (!name && fyb === 0) {
+        skipped.push({ i, reason: '無名無業績', rawName, fyb });
+        continue;
+      }
+      // 名字為空但有業績:用「未命名 N」
+      if (!name) name = `未命名${i}`;
+      
+      // 忽略明顯是合計/註解列(精確匹配,避免誤判)
+      if (/^(總和|合計|尚差|目標|小計|備註|說明)/.test(name)) {
+        skipped.push({ i, reason: '合計列', rawName, fyb });
+        continue;
+      }
+      if (seenNames.has(name)) {
+        skipped.push({ i, reason: '重複名字', rawName, fyb });
+        continue;
+      }
+      seenNames.add(name);
+      
       const personalUrl = (row[cols.url] || '').toString().trim();
       const gid = extractGid(personalUrl);
-      members.push({ name, fyb, gid, personalUrl });
+      members.push({ name, fyb, gid, personalUrl, rowIdx: i });
     }
     
     // 偵錯資訊(F12 console 可看)
     console.log(`[戰報] 從總表載入 ${members.length} 位夥伴`, members.map(m => `${m.name}:${m.fyb}`));
+    if (skipped.length > 0) console.log(`[戰報] 跳過 ${skipped.length} 列:`, skipped);
     
     // 按業績排序
     members.sort((a, b) => b.fyb - a.fyb);
