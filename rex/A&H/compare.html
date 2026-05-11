@@ -4,200 +4,244 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>險種比較 ‧ 鼎綸恩宇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <script src="shared.js"></script>
 <style>
-/* ─────────────────────────────────────────
- *  Design tokens (與保險建議書系統同調)
- * ───────────────────────────────────────── */
-:root {
-  --bg: #F7F9FB;
-  --surface: #FFFFFF;
-  --border: #E5E9EE;
-  --border-strong: #CBD2DA;
-  --text: #1F2A37;
-  --text-secondary: #5A6678;
-  --text-tertiary: #8C95A3;
-  --brand: #1A6B72;
-  --brand-strong: #0F4B50;
-  --accent: #E07A1F;
-  --accent-soft: #FDF1E5;
-  --navy: #2C3E50;
-  --danger: #D14C4C;
-  --success: #2D9F6F;
-  --filter-bg: #F0F4F8;
-  --row-alt: #FAFBFC;
-  --highlight: #FFF8E1;
+/* ═══════════════════════════════════════════════════════════
+ *  compare.html v0.3 — 對齊 保險建議書系統 v3_20 視覺風格
+ * ═══════════════════════════════════════════════════════════ */
 
-  /* 公司色 */
+:root {
+  --orange: #F05A28;
+  --orange-dark: #D04618;
+  --orange-light: #FDE8DF;
+  --teal: #1A6B72;
+  --teal-light: #D0EAEC;
+  --navy: #0D2A3A;
+  --light: #F8F5F0;
+  --gold: #E8A020;
+  --gray: #8A99A6;
+  --gray-bg: #f5f5f5;
+  --border: #e5e5e5;
+  --green: #28a745;
+  --red: #dc3545;
+
+  /* 公司色 (跟建議書 logo 風格對齊) */
   --c-quanqiu: #1A6B72;
   --c-hongtai: #6F4FB8;
   --c-xinguang: #E60012;
   --c-farglory: #2B7DC4;
   --c-fubon: #0D6E3F;
-
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 12px;
-
-  --font: 'Inter', 'Microsoft JhengHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
+  background: var(--light);
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--navy);
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── 頁面框架 ────────────────────────── */
-.app {
+/* ─── 頂部 toolbar (深藍漸層 + 橘 Logo) ─── */
+.toolbar {
+  background: linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.toolbar-left { display: flex; align-items: center; gap: 14px; }
+.brand-logo {
+  width: 42px; height: 42px;
+  background: var(--orange);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(240,90,40,0.4);
+  overflow: hidden;
+}
+.brand-logo img { width: 100%; height: 100%; object-fit: contain; }
+.brand-text { color: white; }
+.brand-text .b-name { font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+.brand-text .b-sub { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
+.toolbar-right { display: flex; gap: 8px; flex-wrap: wrap; }
+.tb-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s;
+}
+.tb-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+.tb-btn.primary { background: var(--orange); border-color: var(--orange); }
+.tb-btn.primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+
+/* ─── 容器 ─── */
+.container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 20px 24px 40px;
+  padding: 24px 20px 80px;
 }
 
-.page-header {
+/* ─── 頁面標題列 (副標) ─── */
+.page-intro {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
+  align-items: flex-end;
+  margin-bottom: 16px;
 }
-
-.page-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.page-intro h1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 1.5px;
+  margin: 0 0 4px 0;
 }
-
-.page-title .tag {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 8px;
-  background: var(--accent-soft);
-  color: var(--accent);
+.page-intro h1 .tag {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  padding: 2px 9px;
+  background: var(--orange-light);
+  color: var(--orange-dark);
   border-radius: 4px;
-  letter-spacing: 0.5px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
-
-.page-subtitle {
+.page-intro .page-subtitle {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--gray);
+  letter-spacing: 1px;
 }
 
-.header-links { display: flex; gap: 8px; }
-.header-links a {
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 4px 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
-  background: var(--surface);
-}
-.header-links a:hover { color: var(--brand); border-color: var(--brand); }
-
-/* ── 險種類別 tab ────────────────────── */
+/* ─── 險種類別 tabs (圓角頂部標籤) ─── */
 .cat-tabs {
   display: flex;
   gap: 4px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  overflow-x: auto;
   flex-wrap: wrap;
+  background: var(--gray-bg);
+  padding: 8px 8px 0 8px;
+  border: 1px solid var(--border);
+  border-bottom: none;
 }
-
 .cat-tab {
-  padding: 10px 16px;
+  padding: 10px 18px;
   font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: none;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--gray);
+  background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
   cursor: pointer;
-  margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
   white-space: nowrap;
+  transition: all .15s;
 }
-
-.cat-tab:hover { color: var(--brand); }
-
+.cat-tab:hover { color: var(--orange-dark); background: rgba(240,90,40,0.06); }
 .cat-tab.active {
-  color: var(--brand);
-  border-bottom-color: var(--brand);
-  font-weight: 600;
+  color: white;
+  background: var(--orange);
+  box-shadow: 0 -2px 8px rgba(240,90,40,0.2);
 }
-
 .cat-tab .badge {
+  display: inline-block;
   font-size: 10px;
   font-weight: 400;
-  color: var(--text-tertiary);
+  padding: 1px 6px;
   margin-left: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 999px;
 }
+.cat-tab:not(.active) .badge { background: var(--border); color: var(--gray); }
 
-/* ── 主版面:左側商品選 + 右側比較表 ── */
+/* ─── 主版面 (左 picker 右 panel) ─── */
 .main-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 260px 1fr;
   gap: 18px;
+  background: white;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 @media (max-width: 900px) {
   .main-layout { grid-template-columns: 1fr; }
 }
 
-/* ── 左側 product picker ──────────────── */
+/* ─── 左側商品選取 ─── */
 .picker {
-  background: var(--surface);
+  background: var(--gray-bg);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: 10px;
   padding: 14px;
   height: fit-content;
   position: sticky;
-  top: 16px;
+  top: 80px;
 }
 
 .picker-title {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1px;
   margin-bottom: 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.picker-title::before { content: '✓'; color: var(--orange); font-size: 14px; }
 
-.picker-company {
-  margin-bottom: 12px;
-}
+.picker-company { margin-bottom: 12px; }
 
 .picker-company-name {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  margin-bottom: 4px;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1px dashed var(--border);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  letter-spacing: 0.5px;
 }
-
 .picker-company-name::before {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: var(--company-color, var(--text-tertiary));
+  background: var(--company-color, var(--gray));
 }
 
 .picker-item {
@@ -205,17 +249,18 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  padding: 3px 0;
+  padding: 4px 0;
   cursor: pointer;
-  color: var(--text);
+  color: var(--navy);
 }
-.picker-item:hover { color: var(--brand); }
-
-.picker-item input { cursor: pointer; margin: 0; }
+.picker-item:hover { color: var(--orange-dark); }
+.picker-item input { cursor: pointer; margin: 0; accent-color: var(--orange); }
 .picker-item .code {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-family: 'Bebas Neue', sans-serif;
   font-size: 11px;
-  color: var(--text-tertiary);
+  color: var(--gray);
+  letter-spacing: 1px;
+  margin-left: auto;
 }
 
 .picker-toggles {
@@ -227,72 +272,76 @@ body {
   flex-direction: column;
   gap: 6px;
 }
-
 .picker-toggles label {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--text-secondary);
+  color: var(--navy);
   cursor: pointer;
+  font-weight: 500;
 }
+.picker-toggles input { accent-color: var(--orange); }
 
 .picker-empty {
   text-align: center;
-  color: var(--text-tertiary);
+  color: var(--gray);
   font-size: 12px;
   padding: 20px 0;
 }
 
-/* ── 右側比較表 ──────────────────────── */
+/* ─── 右側比較表 panel ─── */
 .compare-panel {
-  background: var(--surface);
+  background: white;
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .compare-toolbar {
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--filter-bg);
+  background: var(--navy);
+  color: white;
 }
 
 .compare-title {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.compare-actions {
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
   display: flex;
+  align-items: center;
   gap: 6px;
 }
+.compare-title::before { content: '📊'; }
+
+.compare-actions { display: flex; gap: 6px; }
 
 .btn {
   padding: 6px 12px;
   font-size: 12px;
-  font-weight: 500;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--text);
-  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border-radius: 6px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  transition: all .15s;
 }
-.btn:hover { background: var(--filter-bg); border-color: var(--brand); color: var(--brand); }
-.btn.primary { background: var(--brand); color: white; border-color: var(--brand); }
-.btn.primary:hover { background: var(--brand-strong); color: white; }
+.btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+.btn.primary { background: var(--orange); border-color: var(--orange); }
+.btn.primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
 
 /* 表格 */
-.compare-table-wrap {
-  overflow-x: auto;
-}
+.compare-table-wrap { overflow-x: auto; }
 
 .compare-table {
   width: 100%;
@@ -304,68 +353,68 @@ body {
 .compare-table thead th {
   position: sticky;
   top: 0;
-  background: var(--surface);
-  padding: 10px 12px;
+  background: white;
+  padding: 12px;
   text-align: center;
-  font-weight: 600;
-  border-bottom: 1px solid var(--border-strong);
+  font-weight: 700;
+  border-bottom: 2px solid var(--orange);
   vertical-align: top;
   z-index: 2;
 }
 
 .compare-table thead th:first-child {
   text-align: left;
-  background: var(--filter-bg);
-  color: var(--text-secondary);
+  background: var(--gray-bg);
+  color: var(--navy);
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  letter-spacing: 1px;
   min-width: 140px;
   border-right: 1px solid var(--border);
+  border-bottom: 2px solid var(--orange);
   position: sticky;
   left: 0;
   z-index: 3;
 }
 
-.th-product {
-  min-width: 150px;
-  max-width: 200px;
-}
+.th-product { min-width: 160px; max-width: 220px; }
 
 .th-company {
   font-size: 11px;
-  font-weight: 500;
-  color: var(--text-tertiary);
+  font-weight: 700;
+  color: var(--navy);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
   margin-bottom: 4px;
+  letter-spacing: 0.5px;
 }
-
 .th-company::before {
   content: '';
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: var(--th-color, var(--text-tertiary));
+  background: var(--th-color, var(--gray));
 }
 
 .th-name {
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
+  font-weight: 700;
+  color: var(--navy);
   margin-bottom: 6px;
   line-height: 1.35;
 }
 
 .th-code {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 10px;
-  color: var(--text-tertiary);
-  padding: 1px 6px;
-  background: var(--filter-bg);
-  border-radius: 3px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  padding: 1px 8px;
+  background: var(--gray-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
   display: inline-block;
   margin-bottom: 6px;
 }
@@ -379,24 +428,28 @@ body {
 }
 
 .th-amt input, .th-amt select {
-  width: 80px;
-  padding: 4px 6px;
-  font-size: 12px;
+  width: 84px;
+  padding: 5px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
   text-align: center;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-sm);
-  font-family: var(--font);
-  background: var(--surface);
+  color: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
 }
 .th-amt input:focus, .th-amt select:focus {
   outline: none;
-  border-color: var(--brand);
-  box-shadow: 0 0 0 2px rgba(26,107,114,0.15);
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(240,90,40,0.15);
 }
-
+.th-amt select { font-family: 'Noto Sans TC', sans-serif; font-size: 12px; }
 .th-amt .unit {
   font-size: 11px;
-  color: var(--text-tertiary);
+  color: var(--gray);
+  font-weight: 500;
 }
 
 .th-actions {
@@ -405,35 +458,34 @@ body {
   gap: 4px;
   margin-top: 6px;
 }
-
 .th-link {
   font-size: 10px;
-  padding: 2px 6px;
+  font-weight: 700;
+  padding: 2px 7px;
   border: 1px solid var(--border);
-  border-radius: 3px;
-  color: var(--text-secondary);
+  border-radius: 4px;
+  color: var(--gray);
   text-decoration: none;
-  background: var(--surface);
+  background: white;
+  letter-spacing: 0.5px;
 }
-.th-link:hover { color: var(--brand); border-color: var(--brand); }
+.th-link:hover { color: var(--orange-dark); border-color: var(--orange); background: var(--orange-light); }
 
 /* tbody */
 .compare-table tbody td {
-  padding: 11px 12px;
+  padding: 12px;
   border-bottom: 1px solid var(--border);
   text-align: center;
   vertical-align: middle;
-  font-variant-numeric: tabular-nums;
 }
 
-.compare-table tbody tr:nth-child(odd) td {
-  background: var(--row-alt);
-}
+.compare-table tbody tr:nth-child(odd) td { background: rgba(248,245,240,0.4); }
+.compare-table tbody tr:hover td { background: var(--orange-light); }
 
 .compare-table tbody td:first-child {
   text-align: left;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 700;
+  color: var(--navy);
   font-size: 13px;
   position: sticky;
   left: 0;
@@ -441,88 +493,100 @@ body {
   border-right: 1px solid var(--border);
 }
 
-.compare-table tbody tr:nth-child(odd) td:first-child { background: var(--row-alt); }
-.compare-table tbody tr:nth-child(even) td:first-child { background: var(--surface); }
-
-.compare-table tbody tr.section-header td {
-  background: var(--filter-bg) !important;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 6px 12px;
-}
-
 .cell-val {
-  font-size: 14px;
-  font-weight: 500;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
   color: var(--navy);
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
 }
-
-.cell-val.star {
-  color: var(--accent);
-}
+.cell-val.star { color: var(--orange); }
 
 .cell-unit {
   font-size: 10px;
-  color: var(--text-tertiary);
+  color: var(--gray);
   margin-left: 2px;
+  font-family: 'Noto Sans TC', sans-serif;
+  letter-spacing: 0;
 }
 
 .cell-rule {
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: var(--gray);
   font-style: italic;
   cursor: help;
-  border-bottom: 1px dotted var(--text-tertiary);
+  border-bottom: 1px dotted var(--gray);
+  padding: 1px 3px;
 }
 
 .cell-none {
-  font-size: 13px;
-  color: var(--text-tertiary);
+  font-size: 14px;
+  color: #cbd2da;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .empty-state {
-  padding: 40px 20px;
+  padding: 60px 20px;
   text-align: center;
-  color: var(--text-tertiary);
+  color: var(--gray);
   font-size: 13px;
+  background: var(--gray-bg);
 }
 
-/* ── 客戶模式 ────────────────────────── */
+/* ─── 客戶模式 (隱藏代號) ─── */
 body.customer-mode .th-code,
 body.customer-mode .picker-item .code { display: none; }
 
-/* ── 列印 ────────────────────────────── */
+/* ─── 列印優化 ─── */
 @media print {
   body { background: white; }
-  .app { max-width: none; padding: 0; }
-  .picker, .header-links, .compare-actions, .th-actions, .th-amt input, .th-amt select { display: none !important; }
-  .th-amt::after { content: attr(data-print-amt); font-size: 12px; }
-  .main-layout { grid-template-columns: 1fr; }
-  .compare-panel { border: none; box-shadow: none; }
-  .cat-tabs { display: none; }
-  .compare-toolbar { background: white; padding: 8px 0; }
+  .container { max-width: none; padding: 0; }
+  .toolbar { display: none; }
+  .picker, .header-links, .compare-actions, .th-actions, .th-amt input, .th-amt select, .cat-tabs { display: none !important; }
+  .th-amt::after { content: attr(data-print-amt); font-size: 12px; font-family: 'Bebas Neue', sans-serif; }
+  .main-layout {
+    grid-template-columns: 1fr;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+  .compare-panel { border: 1px solid #ccc; box-shadow: none; }
+  .compare-toolbar { background: white !important; color: var(--navy); }
+  .compare-title { color: var(--navy); }
   .compare-table { font-size: 11px; }
   .compare-table thead th, .compare-table tbody td { padding: 6px 8px; }
+  .cell-val { font-size: 14px; }
+  .page-intro h1 { font-size: 18px; }
 }
 
-/* tooltip 用 title attribute, 不額外做 */
 </style>
 </head>
 <body>
 
-<div class="app">
-
-  <!-- Header -->
-  <div class="page-header">
-    <div>
-      <h1 class="page-title">險種比較 <span class="tag">CompARE</span></h1>
-      <div class="page-subtitle" id="page-subtitle">同險種跨公司並排對照 ‧ 自由調整保額即時重算</div>
+<!-- 頂部 toolbar (深藍漸層) -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="brand-logo"><img src="https://sun20549.github.io/dr-plan/images/img_01_44039bd1b179.png" alt="鼎綸恩宇" onerror="this.parentElement.innerHTML='DL';"></div>
+    <div class="brand-text">
+      <div class="b-name">鼎綸恩宇</div>
+      <div class="b-sub">INSURANCE COMPARE</div>
     </div>
-    <div class="header-links">
-      <a href="./">建議書系統</a>
+  </div>
+  <div class="toolbar-right">
+    <a class="tb-btn" href="./">📋 建議書系統</a>
+    <button class="tb-btn primary" onclick="window.print()">🖨️ 列印 / PDF</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 頁面介紹 -->
+  <div class="page-intro">
+    <div>
+      <h1>險種比較<span class="tag">CompARE</span></h1>
+      <div class="page-subtitle">同險種跨公司並排對照 ‧ 自由調整保額即時重算</div>
     </div>
   </div>
 
@@ -556,7 +620,7 @@ body.customer-mode .picker-item .code { display: none; }
       <div class="compare-toolbar">
         <div class="compare-title" id="compareTitle">請先選 ≥ 2 個商品</div>
         <div class="compare-actions">
-          <button class="btn" id="btnPrint" type="button">列印 / PDF</button>
+          <button class="btn" id="btnPrint" type="button">🖨️ 列印</button>
         </div>
       </div>
       <div class="compare-table-wrap">
