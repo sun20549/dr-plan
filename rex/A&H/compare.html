@@ -853,7 +853,299 @@ body.customer-mode .picker-item .code { display: none; }
 .full-age-table tr.female-row td:first-child { background: rgba(232,90,122,0.1); }
 .full-age-table tr.client-highlight td { background: var(--orange-light) !important; font-weight: 700; }
 
-/* ─── 列印優化 ─── */
+/* ════════════════════════════════════════════════════════════
+ *  v0.6 — 直式公司卡(每家公司一張長卡,從上到下統一閱讀)
+ * ════════════════════════════════════════════════════════════ */
+
+/* 視圖切換 toggle (橫向/直式) */
+.view-mode-toggle {
+  display: inline-flex;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 2px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.view-mode-toggle button {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.7);
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.view-mode-toggle button.active {
+  background: var(--orange);
+  color: white;
+  box-shadow: 0 1px 3px rgba(240,90,40,0.3);
+}
+
+/* 直式容器 */
+.vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+}
+
+/* 一家公司一張卡 */
+.company-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--card-color, var(--gray));
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* 卡 header (公司名 + 商品名 + 計劃選擇 + 動作) */
+.cc-header {
+  background: linear-gradient(90deg, var(--card-tint, rgba(0,0,0,0.02)) 0%, rgba(255,255,255,0) 100%);
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.cc-company {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+.cc-company::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--card-color, var(--gray));
+}
+.cc-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+.cc-code {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  padding: 1px 7px;
+  background: var(--gray-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+.cc-amt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--gray);
+}
+.cc-amt select, .cc-amt input {
+  width: 90px;
+  padding: 5px 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+}
+.cc-amt select { font-family: 'Noto Sans TC', sans-serif; font-size: 12px; }
+.cc-amt select:focus, .cc-amt input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(240,90,40,0.15);
+}
+.cc-actions {
+  display: flex;
+  gap: 4px;
+}
+.cc-link {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--gray);
+  text-decoration: none;
+  background: white;
+  letter-spacing: 0.5px;
+}
+.cc-link:hover { color: var(--orange-dark); border-color: var(--orange); background: var(--orange-light); }
+
+/* 卡 body (給付項目兩欄表) */
+.cc-body {
+  padding: 0;
+}
+.cc-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.cc-benefit-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.cc-benefit-row:nth-child(odd) { background: rgba(248,245,240,0.4); }
+.cc-benefit-row:nth-last-child(-n+2):not(:last-child) { /* 最後兩列為奇數列 */ }
+.cc-benefit-row.row-empty { color: var(--gray); }
+.cc-benefit-label {
+  color: var(--navy);
+  font-weight: 500;
+}
+.cc-benefit-label.star::after { content: ' ⭐'; font-size: 10px; }
+.cc-benefit-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.cc-benefit-val.empty {
+  color: #cbd2da;
+}
+.cc-benefit-val.rule {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  color: var(--gray);
+  font-style: italic;
+  border-bottom: 1px dotted var(--gray);
+  cursor: help;
+}
+.cc-benefit-unit {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 10px;
+  color: var(--gray);
+  margin-left: 2px;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  .cc-benefits { grid-template-columns: 1fr; }
+}
+
+/* 卡 footer (保費 + CP) */
+.cc-footer {
+  background: linear-gradient(180deg, #fff8f5 0%, white 100%);
+  border-top: 2px solid var(--card-color, var(--gray));
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+.cc-fee {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.cc-fee-label {
+  font-size: 11px;
+  color: var(--gray);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.cc-fee-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--orange-dark);
+  line-height: 1;
+}
+.cc-fee-unit {
+  font-size: 11px;
+  color: var(--gray);
+  margin-left: 4px;
+}
+.cc-fee-condition {
+  font-size: 10px;
+  color: var(--gray);
+  margin-left: 10px;
+}
+
+.cc-cp {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  font-size: 11px;
+}
+.cc-cp-item {
+  text-align: center;
+  padding: 4px 6px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.cc-cp-label {
+  color: var(--gray);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.cc-cp-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--navy);
+}
+.cc-cp-val.best {
+  color: var(--orange);
+  font-weight: 700;
+}
+.cc-cp-val.best::after { content: ' ⭐'; font-size: 9px; }
+.cc-cp-sub {
+  font-size: 9px;
+  color: var(--gray);
+  margin-top: 1px;
+}
+
+@media (max-width: 720px) {
+  .cc-footer { grid-template-columns: 1fr; }
+}
+
+.vertical-explainer {
+  background: var(--orange-light);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--navy);
+  line-height: 1.6;
+}
+.vertical-explainer strong { color: var(--orange-dark); }
+
+
 @media print {
   body { background: white; }
   .container { max-width: none; padding: 0; }
@@ -952,15 +1244,26 @@ body.customer-mode .picker-item .code { display: none; }
       <div class="compare-toolbar">
         <div class="compare-title" id="compareTitle">請先選 ≥ 2 個商品</div>
         <div class="compare-actions">
+          <div class="view-mode-toggle">
+            <button type="button" id="viewModeVertical" class="active">📋 直式</button>
+            <button type="button" id="viewModeHorizontal">📊 並排</button>
+          </div>
           <button class="btn" id="btnPrint" type="button">🖨️ 列印</button>
         </div>
       </div>
-      <div class="compare-table-wrap">
-        <div class="empty-state" id="emptyState">勾選左側商品後,這裡會顯示對照表。</div>
-        <table class="compare-table" id="compareTable" style="display:none;"></table>
+
+      <!-- 空狀態 -->
+      <div class="empty-state" id="emptyState">勾選左側商品後,這裡會顯示對照表。</div>
+
+      <!-- ━━━━━ 直式 view (預設): 一家公司一張長卡 ━━━━━ -->
+      <div class="vertical-stack" id="verticalStack" style="display:none; padding: 18px;"></div>
+
+      <!-- ━━━━━ 並排 view: 原本的橫向表 ━━━━━ -->
+      <div class="compare-table-wrap" id="horizontalWrap" style="display:none;">
+        <table class="compare-table" id="compareTable"></table>
       </div>
 
-      <!-- ════ 保費分析區 ════ -->
+      <!-- ━━━━━ 保費分析區 (只在「並排」view 顯示) ━━━━━ -->
       <div class="premium-section" id="premiumSection" style="display:none;">
         <div class="premium-section-header">
           <div class="premium-section-title">該客戶條件下的年繳保費</div>
@@ -1017,6 +1320,7 @@ const App = (() => {
     selected: {},          // code → { cid, amount }
     customerMode: false,
     showStar: true,
+    viewMode: 'vertical',  // 'vertical' (一家一卡) | 'horizontal' (並排對照)
     client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
     ui: { ratioExpanded: false, fullAgeExpanded: false },
     db: {
@@ -1571,21 +1875,24 @@ const App = (() => {
   function renderTable() {
     const titleEl = document.getElementById('compareTitle');
     const empty = document.getElementById('emptyState');
-    const table = document.getElementById('compareTable');
+    const horizWrap = document.getElementById('horizontalWrap');
+    const vertWrap = document.getElementById('verticalStack');
+    const premiumSec = document.getElementById('premiumSection');
     const selectedCodes = Object.keys(state.selected);
 
     if (selectedCodes.length === 0) {
       titleEl.textContent = '請先勾選商品';
       empty.style.display = '';
-      table.style.display = 'none';
+      horizWrap.style.display = 'none';
+      vertWrap.style.display = 'none';
+      premiumSec.style.display = 'none';
       return;
     }
 
     titleEl.textContent = `${state.categoryKey} ‧ ${selectedCodes.length} 個商品對照`;
     empty.style.display = 'none';
-    table.style.display = '';
 
-    // 取所有選中商品 + 評估每個 cls.key 在表上的呈現
+    // 取所有選中商品
     const cols = selectedCodes.map(code => {
       const sel = state.selected[code];
       const product = findProduct(sel.cid, code);
@@ -1593,19 +1900,33 @@ const App = (() => {
       return { code, sel, product, company };
     });
 
-    // 取要顯示的列定義:優先使用 ROW_TEMPLATES,沒有則 fallback 到 cls.key 自動歸位
+    // 算 row defs (同 logic,兩個 view 共用)
+    const rowDefs = computeRowDefs(cols);
+
+    if (state.viewMode === 'vertical') {
+      horizWrap.style.display = 'none';
+      premiumSec.style.display = 'none';   // 直式內含保費,不重複
+      vertWrap.style.display = '';
+      renderVerticalView(cols, rowDefs);
+    } else {
+      vertWrap.style.display = 'none';
+      horizWrap.style.display = '';
+      premiumSec.style.display = '';
+      renderHorizontalView(cols, rowDefs);
+    }
+  }
+
+  /* ─── 共用:算 rowDefs(列定義) ─── */
+  function computeRowDefs(cols) {
     const template = ROW_TEMPLATES[state.categoryKey];
-    let rowDefs;  // 統一格式:[{ rowTitle, evaluator(col) → result }]
     if (template) {
-      // 用模板 — 過濾掉「所有 col 都 none」的列
-      rowDefs = template
+      return template
         .map(t => ({
           rowTitle: t.rowTitle,
           evaluator: (col) => evalProductForRow(col.product, col.sel.amount, col.code, t)
         }))
         .filter(rd => cols.some(col => rd.evaluator(col).kind !== 'none'));
     } else {
-      // 用 cls.key 自動歸位
       const clsOrder = CLS_ORDER_BY_CATEGORY[state.categoryKey] || ['daily','icu_daily','reimburse','surgery','opsurg','critical','death','disability','other'];
       const presentCls = new Set();
       cols.forEach(col => {
@@ -1614,13 +1935,170 @@ const App = (() => {
         });
       });
       const rowKeys = clsOrder.filter(k => presentCls.has(k));
-      // 加上「order 沒列到、但確實存在」的 cls.key,丟到最後
       presentCls.forEach(k => { if (!rowKeys.includes(k)) rowKeys.push(k); });
-      rowDefs = rowKeys.map(k => ({
+      return rowKeys.map(k => ({
         rowTitle: CLS_TITLE[k] || k,
         evaluator: (col) => evalProductCls(col.product, col.sel.amount, k)
       }));
     }
+  }
+
+  /* ─── 直式 view:一家公司一張長卡 ─── */
+  function renderVerticalView(cols, rowDefs) {
+    const wrap = document.getElementById('verticalStack');
+    const age = parseInt(document.getElementById('clientAge').value, 10) || 35;
+    const gender = state.client.gender;
+
+    // 算每家 CP 值(用於 best 標示)
+    const cpData = cols.map(col => {
+      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
+      const primary = getPrimaryValue(col.product, col.sel.amount, state.categoryKey);
+      const daily = getDailyValue(col.product, col.sel.amount);
+      const annual = getAnnualMax(col.product, col.sel.amount);
+      return {
+        fee,
+        primary,
+        daily,
+        annual,
+        cpPrimary: (fee && fee > 0 && primary.val > 0) ? primary.val / fee : 0,
+        cpDaily: (fee && fee > 0 && daily > 0) ? daily / fee : 0,
+        cpAnnual: (fee && fee > 0 && annual.val > 0) ? annual.val / fee : 0
+      };
+    });
+    const maxCpPrimary = Math.max(...cpData.map(d => d.cpPrimary));
+    const maxCpDaily = Math.max(...cpData.map(d => d.cpDaily));
+    const maxCpAnnual = Math.max(...cpData.map(d => d.cpAnnual));
+
+    let html = '';
+    cols.forEach((col, idx) => {
+      const cid = col.sel.cid;
+      const company = col.company || {};
+      const p = col.product || {};
+      const d = cpData[idx];
+
+      // 計劃選項
+      const planOpts = getAmountOptions(p);
+      let amtField;
+      if (p.amountMode === 'plan' && planOpts.length > 0) {
+        const opts = planOpts.map(plan => `<option ${plan===String(col.sel.amount)?'selected':''}>${plan}</option>`).join('');
+        amtField = `<select data-code="${col.code}">${opts}</select>`;
+      } else {
+        amtField = `<input type="number" min="1" data-code="${col.code}" value="${col.sel.amount}">`;
+      }
+
+      // 連結
+      const linkTpl = company.linkTemplate || {};
+      const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
+
+      // tint 色塊 (公司色淡化 5%)
+      const tintMap = {
+        quanqiu: 'rgba(26,107,114,0.04)',
+        hongtai: 'rgba(111,79,184,0.04)',
+        xinguang: 'rgba(230,0,18,0.04)',
+        farglory: 'rgba(43,125,196,0.04)',
+        fubon: 'rgba(13,110,63,0.04)'
+      };
+
+      html += `<div class="company-card" style="--card-color: var(--c-${cid}); --card-tint: ${tintMap[cid]||'rgba(0,0,0,0.02)'};">
+        <div class="cc-header">
+          <div>
+            <div class="cc-company">${company.shortName || company.name || ''}</div>
+            <div class="cc-name">${p.name || col.code}<span class="cc-code">${col.code}</span></div>
+          </div>
+          <div class="cc-amt">
+            投保 ${amtField}<span style="font-size:11px;color:var(--gray);">${p.amountUnit||''}</span>
+          </div>
+          <div class="cc-actions">
+            ${linkTpl.dm ? `<a class="cc-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
+            ${linkTpl.clause ? `<a class="cc-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
+            ${linkTpl.rate ? `<a class="cc-link" href="${linkUrls('rate')}" target="_blank">費率</a>` : ''}
+          </div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-benefits">`;
+
+      // 給付項目兩欄排列 — 過濾掉「該商品沒此給付」的列
+      const benefits = rowDefs.map(rd => {
+        // 為此 col 評估
+        const dummyCol = col;
+        return { rowTitle: rd.rowTitle, result: rd.evaluator(dummyCol) };
+      }).filter(b => b.result.kind !== 'none');
+
+      benefits.forEach(b => {
+        const r = b.result;
+        if (r.kind === 'num') {
+          const starCls = (state.showStar && r.star) ? ' star' : '';
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          html += `<div class="cc-benefit-row" title="${tt}">
+            <span class="cc-benefit-label${starCls}">${b.rowTitle}</span>
+            <span class="cc-benefit-val">${r.val.toLocaleString()}${r.unit ? `<span class="cc-benefit-unit">${r.unit}</span>` : ''}</span>
+          </div>`;
+        } else if (r.kind === 'rule') {
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          html += `<div class="cc-benefit-row">
+            <span class="cc-benefit-label">${b.rowTitle}</span>
+            <span class="cc-benefit-val rule" title="${tt}">依條款</span>
+          </div>`;
+        }
+      });
+
+      html += `</div>
+        </div>
+        <div class="cc-footer">
+          <div class="cc-fee">
+            <span class="cc-fee-label">年繳保費</span>
+            <span class="cc-fee-val">${d.fee !== null ? d.fee.toLocaleString() : '—'}</span>
+            <span class="cc-fee-condition">(${age} 歲 ${gender==='F'?'女':'男'}, ${col.sel.amount}${p.amountUnit||''})</span>
+          </div>
+          <div class="cc-cp">
+            <div class="cc-cp-item">
+              <div class="cc-cp-label">主打 CP</div>
+              <div class="cc-cp-val${d.cpPrimary === maxCpPrimary && d.cpPrimary > 0 ? ' best' : ''}">${d.cpPrimary > 0 ? d.cpPrimary.toFixed(1) : '—'}</div>
+              <div class="cc-cp-sub">${d.primary.label}</div>
+            </div>
+            <div class="cc-cp-item">
+              <div class="cc-cp-label">日額 CP</div>
+              <div class="cc-cp-val${d.cpDaily === maxCpDaily && d.cpDaily > 0 ? ' best' : ''}">${d.cpDaily > 0 ? d.cpDaily.toFixed(2) : '—'}</div>
+              <div class="cc-cp-sub">日額/保費</div>
+            </div>
+            <div class="cc-cp-item">
+              <div class="cc-cp-label">年上限 CP</div>
+              <div class="cc-cp-val${d.cpAnnual === maxCpAnnual && d.cpAnnual > 0 ? ' best' : ''}">${d.cpAnnual > 0 ? d.cpAnnual.toFixed(1) : '—'}</div>
+              <div class="cc-cp-sub">${d.annual.source}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    // explainer
+    html += `<div class="vertical-explainer">
+      <strong>怎麼看 CP 值?</strong>
+      <strong>主打 CP</strong> = 該類別最關鍵給付金額 ÷ 年保費(整體 CP);
+      <strong>日額 CP</strong> = 每元保費換的每日日額(日常理賠 CP);
+      <strong>年上限 CP</strong> = 全年最高賠付金額 ÷ 年保費(極端事件槓桿)。
+      <strong>不同類別性質不同,只能在同類別內比較。</strong>數字越大代表 CP 越高,⭐ 標示同類別最高者。
+    </div>`;
+
+    wrap.innerHTML = html;
+
+    // 綁定計劃/保額即時重算
+    wrap.querySelectorAll('.cc-amt select, .cc-amt input').forEach(el => {
+      const handler = (e) => {
+        const code = e.target.dataset.code;
+        if (state.selected[code]) {
+          state.selected[code].amount = e.target.value;
+          renderTable();
+        }
+      };
+      el.addEventListener('change', handler);
+      if (el.tagName === 'INPUT') el.addEventListener('input', handler);
+    });
+  }
+
+  /* ─── 並排(橫向)view:原本的表格(保留作為對照) ─── */
+  function renderHorizontalView(cols, rowDefs) {
+    const table = document.getElementById('compareTable');
 
     // ── header ──
     let html = '<thead><tr><th>給付項目</th>';
@@ -1904,6 +2382,20 @@ const App = (() => {
       const btn = document.getElementById('toggleFullAge');
       el.classList.toggle('show', state.ui.fullAgeExpanded);
       btn.classList.toggle('expanded', state.ui.fullAgeExpanded);
+    });
+
+    // 視圖模式切換
+    document.getElementById('viewModeVertical').addEventListener('click', () => {
+      state.viewMode = 'vertical';
+      document.getElementById('viewModeVertical').classList.add('active');
+      document.getElementById('viewModeHorizontal').classList.remove('active');
+      renderTable();
+    });
+    document.getElementById('viewModeHorizontal').addEventListener('click', () => {
+      state.viewMode = 'horizontal';
+      document.getElementById('viewModeHorizontal').classList.add('active');
+      document.getElementById('viewModeVertical').classList.remove('active');
+      renderTable();
     });
   }
 
