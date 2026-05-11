@@ -350,6 +350,16 @@ body {
   min-width: 600px;
 }
 
+/* ── 公司欄之間的清楚直線分隔 ── */
+.compare-table thead th:not(:first-child):not(:last-child),
+.compare-table tbody td:not(:first-child):not(:last-child) {
+  border-right: 2px solid #e5e5ea;
+}
+.compare-table thead th:first-child,
+.compare-table tbody td:first-child {
+  border-right: 2px solid #e5e5ea;
+}
+
 .compare-table thead th {
   position: sticky;
   top: 0;
@@ -524,6 +534,81 @@ body {
   font-size: 14px;
   color: #cbd2da;
   font-family: 'Bebas Neue', sans-serif;
+}
+
+/* ─── 整合表內:保費列 + CP 列(底部 4 列) ─── */
+.compare-table tbody tr.row-fee-divider td {
+  background: linear-gradient(180deg, #fff8f5 0%, #fff5ef 100%);
+  border-top: 3px solid var(--orange);
+  padding: 14px 12px;
+}
+.compare-table tbody tr.row-fee-divider td:first-child {
+  background: linear-gradient(180deg, var(--orange-light) 0%, #ffe4d4 100%);
+  color: var(--orange-dark);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+.row-fee-sub {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 500;
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+.cell-fee {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: var(--orange-dark);
+  font-weight: 400;
+  text-align: center;
+}
+.cell-fee .cell-unit {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 10px;
+  color: var(--gray);
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+
+.compare-table tbody tr.row-cp td {
+  background: rgba(248,245,240,0.4);
+  padding: 10px 12px;
+  text-align: center;
+}
+.compare-table tbody tr.row-cp td:first-child {
+  background: var(--gray-bg);
+  color: var(--navy);
+  font-size: 12px;
+  text-align: left;
+}
+.row-cp-sub {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 500;
+  margin-top: 1px;
+  letter-spacing: 0;
+}
+.cell-cp {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--navy);
+}
+.cell-cp.best {
+  color: var(--orange);
+  font-weight: 700;
+}
+.cell-cp.best::after {
+  content: ' ⭐';
+  font-size: 11px;
+}
+
+/* 全年齡保費表 section */
+.full-age-section {
+  border-top: 2px solid var(--orange);
+  background: linear-gradient(180deg, #fff8f5 0%, white 100%);
+  padding: 16px;
 }
 
 .empty-state {
@@ -1244,10 +1329,7 @@ body.customer-mode .picker-item .code { display: none; }
       <div class="compare-toolbar">
         <div class="compare-title" id="compareTitle">請先選 ≥ 2 個商品</div>
         <div class="compare-actions">
-          <div class="view-mode-toggle">
-            <button type="button" id="viewModeVertical" class="active">📋 直式</button>
-            <button type="button" id="viewModeHorizontal">📊 並排</button>
-          </div>
+          <button class="btn" id="btnFullAge" type="button">📊 全年齡保費表</button>
           <button class="btn" id="btnPrint" type="button">🖨️ 列印</button>
         </div>
       </div>
@@ -1255,42 +1337,13 @@ body.customer-mode .picker-item .code { display: none; }
       <!-- 空狀態 -->
       <div class="empty-state" id="emptyState">勾選左側商品後,這裡會顯示對照表。</div>
 
-      <!-- ━━━━━ 直式 view (預設): 一家公司一張長卡 ━━━━━ -->
-      <div class="vertical-stack" id="verticalStack" style="display:none; padding: 18px;"></div>
-
-      <!-- ━━━━━ 並排 view: 原本的橫向表 ━━━━━ -->
+      <!-- 主比較表(整合給付 + 保費 + CP,三欄到底) -->
       <div class="compare-table-wrap" id="horizontalWrap" style="display:none;">
         <table class="compare-table" id="compareTable"></table>
       </div>
 
-      <!-- ━━━━━ 保費分析區 (只在「並排」view 顯示) ━━━━━ -->
-      <div class="premium-section" id="premiumSection" style="display:none;">
-        <div class="premium-section-header">
-          <div class="premium-section-title">該客戶條件下的年繳保費</div>
-          <div style="display: flex; gap: 6px;">
-            <button class="expand-btn" type="button" id="toggleRatio">
-              性價比分析 <span class="arrow">▼</span>
-            </button>
-            <button class="expand-btn" type="button" id="toggleFullAge">
-              全年齡保費表 <span class="arrow">▼</span>
-            </button>
-          </div>
-        </div>
-        <div class="premium-grid" id="premiumGrid"></div>
-
-        <!-- 性價比分析(預設折疊) -->
-        <div class="ratio-analysis" id="ratioAnalysis">
-          <table class="ratio-table" id="ratioTable"></table>
-          <div class="ratio-explainer">
-            <strong>怎麼看?</strong> 三個指標各代表不同維度 ——
-            <strong>主打項 CP</strong>:這類別最關鍵的給付 ÷ 年保費(整體 CP 值);
-            <strong>住院日額 CP</strong>:每元保費換得的每日日額(日常理賠 CP);
-            <strong>年理賠上限 CP</strong>:全年最多賠到 ÷ 年保費(極端事件槓桿)。
-            <strong>不同類別的給付性質不同,只能在同類別內比較。</strong>
-          </div>
-        </div>
-
-        <!-- 全年齡保費表(預設折疊) -->
+      <!-- 全年齡保費表 (從工具列按鈕展開) -->
+      <div class="full-age-section" id="fullAgeSection" style="display:none;">
         <div class="full-age-table" id="fullAgeTable"></div>
       </div>
     </section>
@@ -1876,21 +1929,19 @@ const App = (() => {
     const titleEl = document.getElementById('compareTitle');
     const empty = document.getElementById('emptyState');
     const horizWrap = document.getElementById('horizontalWrap');
-    const vertWrap = document.getElementById('verticalStack');
-    const premiumSec = document.getElementById('premiumSection');
     const selectedCodes = Object.keys(state.selected);
 
     if (selectedCodes.length === 0) {
       titleEl.textContent = '請先勾選商品';
       empty.style.display = '';
       horizWrap.style.display = 'none';
-      vertWrap.style.display = 'none';
-      premiumSec.style.display = 'none';
+      document.getElementById('fullAgeSection').style.display = 'none';
       return;
     }
 
     titleEl.textContent = `${state.categoryKey} ‧ ${selectedCodes.length} 個商品對照`;
     empty.style.display = 'none';
+    horizWrap.style.display = '';
 
     // 取所有選中商品
     const cols = selectedCodes.map(code => {
@@ -1900,27 +1951,11 @@ const App = (() => {
       return { code, sel, product, company };
     });
 
-    // 算 row defs (同 logic,兩個 view 共用)
-    const rowDefs = computeRowDefs(cols);
-
-    if (state.viewMode === 'vertical') {
-      horizWrap.style.display = 'none';
-      premiumSec.style.display = 'none';   // 直式內含保費,不重複
-      vertWrap.style.display = '';
-      renderVerticalView(cols, rowDefs);
-    } else {
-      vertWrap.style.display = 'none';
-      horizWrap.style.display = '';
-      premiumSec.style.display = '';
-      renderHorizontalView(cols, rowDefs);
-    }
-  }
-
-  /* ─── 共用:算 rowDefs(列定義) ─── */
-  function computeRowDefs(cols) {
+    // 算 row defs (給付明細)
     const template = ROW_TEMPLATES[state.categoryKey];
+    let rowDefs;
     if (template) {
-      return template
+      rowDefs = template
         .map(t => ({
           rowTitle: t.rowTitle,
           evaluator: (col) => evalProductForRow(col.product, col.sel.amount, col.code, t)
@@ -1936,177 +1971,40 @@ const App = (() => {
       });
       const rowKeys = clsOrder.filter(k => presentCls.has(k));
       presentCls.forEach(k => { if (!rowKeys.includes(k)) rowKeys.push(k); });
-      return rowKeys.map(k => ({
+      rowDefs = rowKeys.map(k => ({
         rowTitle: CLS_TITLE[k] || k,
         evaluator: (col) => evalProductCls(col.product, col.sel.amount, k)
       }));
     }
-  }
 
-  /* ─── 直式 view:一家公司一張長卡 ─── */
-  function renderVerticalView(cols, rowDefs) {
-    const wrap = document.getElementById('verticalStack');
+    // 客戶條件
     const age = parseInt(document.getElementById('clientAge').value, 10) || 35;
     const gender = state.client.gender;
 
-    // 算每家 CP 值(用於 best 標示)
+    // 每家公司計算保費 + CP
     const cpData = cols.map(col => {
       const fee = lookupPremium(col.product, col.sel.amount, age, gender);
       const primary = getPrimaryValue(col.product, col.sel.amount, state.categoryKey);
       const daily = getDailyValue(col.product, col.sel.amount);
       const annual = getAnnualMax(col.product, col.sel.amount);
       return {
-        fee,
-        primary,
-        daily,
-        annual,
+        fee, primary, daily, annual,
         cpPrimary: (fee && fee > 0 && primary.val > 0) ? primary.val / fee : 0,
-        cpDaily: (fee && fee > 0 && daily > 0) ? daily / fee : 0,
-        cpAnnual: (fee && fee > 0 && annual.val > 0) ? annual.val / fee : 0
+        cpDaily:   (fee && fee > 0 && daily > 0) ? daily / fee : 0,
+        cpAnnual:  (fee && fee > 0 && annual.val > 0) ? annual.val / fee : 0
       };
     });
-    const maxCpPrimary = Math.max(...cpData.map(d => d.cpPrimary));
-    const maxCpDaily = Math.max(...cpData.map(d => d.cpDaily));
-    const maxCpAnnual = Math.max(...cpData.map(d => d.cpAnnual));
+    const maxCpP = Math.max(...cpData.map(d => d.cpPrimary), 0);
+    const maxCpD = Math.max(...cpData.map(d => d.cpDaily), 0);
+    const maxCpA = Math.max(...cpData.map(d => d.cpAnnual), 0);
 
-    let html = '';
-    cols.forEach((col, idx) => {
-      const cid = col.sel.cid;
-      const company = col.company || {};
-      const p = col.product || {};
-      const d = cpData[idx];
-
-      // 計劃選項
-      const planOpts = getAmountOptions(p);
-      let amtField;
-      if (p.amountMode === 'plan' && planOpts.length > 0) {
-        const opts = planOpts.map(plan => `<option ${plan===String(col.sel.amount)?'selected':''}>${plan}</option>`).join('');
-        amtField = `<select data-code="${col.code}">${opts}</select>`;
-      } else {
-        amtField = `<input type="number" min="1" data-code="${col.code}" value="${col.sel.amount}">`;
-      }
-
-      // 連結
-      const linkTpl = company.linkTemplate || {};
-      const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
-
-      // tint 色塊 (公司色淡化 5%)
-      const tintMap = {
-        quanqiu: 'rgba(26,107,114,0.04)',
-        hongtai: 'rgba(111,79,184,0.04)',
-        xinguang: 'rgba(230,0,18,0.04)',
-        farglory: 'rgba(43,125,196,0.04)',
-        fubon: 'rgba(13,110,63,0.04)'
-      };
-
-      html += `<div class="company-card" style="--card-color: var(--c-${cid}); --card-tint: ${tintMap[cid]||'rgba(0,0,0,0.02)'};">
-        <div class="cc-header">
-          <div>
-            <div class="cc-company">${company.shortName || company.name || ''}</div>
-            <div class="cc-name">${p.name || col.code}<span class="cc-code">${col.code}</span></div>
-          </div>
-          <div class="cc-amt">
-            投保 ${amtField}<span style="font-size:11px;color:var(--gray);">${p.amountUnit||''}</span>
-          </div>
-          <div class="cc-actions">
-            ${linkTpl.dm ? `<a class="cc-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
-            ${linkTpl.clause ? `<a class="cc-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
-            ${linkTpl.rate ? `<a class="cc-link" href="${linkUrls('rate')}" target="_blank">費率</a>` : ''}
-          </div>
-        </div>
-        <div class="cc-body">
-          <div class="cc-benefits">`;
-
-      // 給付項目兩欄排列 — 過濾掉「該商品沒此給付」的列
-      const benefits = rowDefs.map(rd => {
-        // 為此 col 評估
-        const dummyCol = col;
-        return { rowTitle: rd.rowTitle, result: rd.evaluator(dummyCol) };
-      }).filter(b => b.result.kind !== 'none');
-
-      benefits.forEach(b => {
-        const r = b.result;
-        if (r.kind === 'num') {
-          const starCls = (state.showStar && r.star) ? ' star' : '';
-          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<div class="cc-benefit-row" title="${tt}">
-            <span class="cc-benefit-label${starCls}">${b.rowTitle}</span>
-            <span class="cc-benefit-val">${r.val.toLocaleString()}${r.unit ? `<span class="cc-benefit-unit">${r.unit}</span>` : ''}</span>
-          </div>`;
-        } else if (r.kind === 'rule') {
-          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<div class="cc-benefit-row">
-            <span class="cc-benefit-label">${b.rowTitle}</span>
-            <span class="cc-benefit-val rule" title="${tt}">依條款</span>
-          </div>`;
-        }
-      });
-
-      html += `</div>
-        </div>
-        <div class="cc-footer">
-          <div class="cc-fee">
-            <span class="cc-fee-label">年繳保費</span>
-            <span class="cc-fee-val">${d.fee !== null ? d.fee.toLocaleString() : '—'}</span>
-            <span class="cc-fee-condition">(${age} 歲 ${gender==='F'?'女':'男'}, ${col.sel.amount}${p.amountUnit||''})</span>
-          </div>
-          <div class="cc-cp">
-            <div class="cc-cp-item">
-              <div class="cc-cp-label">主打 CP</div>
-              <div class="cc-cp-val${d.cpPrimary === maxCpPrimary && d.cpPrimary > 0 ? ' best' : ''}">${d.cpPrimary > 0 ? d.cpPrimary.toFixed(1) : '—'}</div>
-              <div class="cc-cp-sub">${d.primary.label}</div>
-            </div>
-            <div class="cc-cp-item">
-              <div class="cc-cp-label">日額 CP</div>
-              <div class="cc-cp-val${d.cpDaily === maxCpDaily && d.cpDaily > 0 ? ' best' : ''}">${d.cpDaily > 0 ? d.cpDaily.toFixed(2) : '—'}</div>
-              <div class="cc-cp-sub">日額/保費</div>
-            </div>
-            <div class="cc-cp-item">
-              <div class="cc-cp-label">年上限 CP</div>
-              <div class="cc-cp-val${d.cpAnnual === maxCpAnnual && d.cpAnnual > 0 ? ' best' : ''}">${d.cpAnnual > 0 ? d.cpAnnual.toFixed(1) : '—'}</div>
-              <div class="cc-cp-sub">${d.annual.source}</div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-    });
-
-    // explainer
-    html += `<div class="vertical-explainer">
-      <strong>怎麼看 CP 值?</strong>
-      <strong>主打 CP</strong> = 該類別最關鍵給付金額 ÷ 年保費(整體 CP);
-      <strong>日額 CP</strong> = 每元保費換的每日日額(日常理賠 CP);
-      <strong>年上限 CP</strong> = 全年最高賠付金額 ÷ 年保費(極端事件槓桿)。
-      <strong>不同類別性質不同,只能在同類別內比較。</strong>數字越大代表 CP 越高,⭐ 標示同類別最高者。
-    </div>`;
-
-    wrap.innerHTML = html;
-
-    // 綁定計劃/保額即時重算
-    wrap.querySelectorAll('.cc-amt select, .cc-amt input').forEach(el => {
-      const handler = (e) => {
-        const code = e.target.dataset.code;
-        if (state.selected[code]) {
-          state.selected[code].amount = e.target.value;
-          renderTable();
-        }
-      };
-      el.addEventListener('change', handler);
-      if (el.tagName === 'INPUT') el.addEventListener('input', handler);
-    });
-  }
-
-  /* ─── 並排(橫向)view:原本的表格(保留作為對照) ─── */
-  function renderHorizontalView(cols, rowDefs) {
+    // ─── 渲染整張表 ───
     const table = document.getElementById('compareTable');
-
-    // ── header ──
     let html = '<thead><tr><th>給付項目</th>';
     cols.forEach(col => {
       const colorVar = `--c-${col.sel.cid}`;
       const company = col.company || {};
       const p = col.product || {};
-      // 保額輸入欄:plan 用 select,其他用 number input
       let amtField;
       if (p.amountMode === 'plan') {
         const planOpts = getAmountOptions(p);
@@ -2133,7 +2031,7 @@ const App = (() => {
     });
     html += '</tr></thead><tbody>';
 
-    // ── rows (統一用 rowDefs) ──
+    // 給付明細列
     rowDefs.forEach(rd => {
       html += `<tr><td>${rd.rowTitle}</td>`;
       cols.forEach(col => {
@@ -2152,165 +2050,61 @@ const App = (() => {
       html += '</tr>';
     });
 
+    // ─── 分隔: 年繳保費列 ───
+    html += `<tr class="row-fee-divider"><td><strong>💰 年繳保費</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
+    cpData.forEach(d => {
+      html += `<td class="cell-fee">${d.fee !== null ? d.fee.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
+    });
+    html += '</tr>';
+
+    // ─── 分隔: CP 三列 ───
+    html += `<tr class="row-cp"><td><strong>主打 CP</strong><div class="row-cp-sub">${cpData[0]?.primary?.label || ''} ÷ 保費</div></td>`;
+    cpData.forEach(d => {
+      const isBest = d.cpPrimary > 0 && d.cpPrimary === maxCpP;
+      html += `<td>${d.cpPrimary > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+    });
+    html += '</tr>';
+
+    html += `<tr class="row-cp"><td><strong>日額 CP</strong><div class="row-cp-sub">住院日額 ÷ 保費</div></td>`;
+    cpData.forEach(d => {
+      const isBest = d.cpDaily > 0 && d.cpDaily === maxCpD;
+      html += `<td>${d.cpDaily > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+    });
+    html += '</tr>';
+
+    html += `<tr class="row-cp"><td><strong>年上限 CP</strong><div class="row-cp-sub">全年最高 ÷ 保費</div></td>`;
+    cpData.forEach(d => {
+      const isBest = d.cpAnnual > 0 && d.cpAnnual === maxCpA;
+      const annualSub = d.annual.source !== '無資料' ? ` <span class="cell-unit">(${d.annual.source})</span>` : '';
+      html += `<td>${d.cpAnnual > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpAnnual.toFixed(1)}</span>${annualSub}` : '<span class="cell-none">—</span>'}</td>`;
+    });
+    html += '</tr>';
+
     html += '</tbody>';
     table.innerHTML = html;
 
-    // 綁定保額輸入即時重算
+    // 綁定保額即時重算
     table.querySelectorAll('.th-amt input, .th-amt select').forEach(el => {
-      el.addEventListener('change', (e) => {
+      const handler = (e) => {
         const code = e.target.dataset.code;
         if (state.selected[code]) {
           state.selected[code].amount = e.target.value;
           renderTable();
         }
-      });
-      // input 也綁 input 事件,輸入時即時重算 (number input)
-      if (el.tagName === 'INPUT') {
-        el.addEventListener('input', (e) => {
-          const code = e.target.dataset.code;
-          if (state.selected[code]) {
-            state.selected[code].amount = e.target.value;
-            renderTable();
-          }
-        });
-      }
+      };
+      el.addEventListener('change', handler);
+      if (el.tagName === 'INPUT') el.addEventListener('input', handler);
     });
 
-    // 連動渲染保費分析區
-    renderPremiumSection(cols);
-  }
-
-  /* ═══ 保費分析區渲染 ═══════════════════════════════ */
-  function renderPremiumSection(cols) {
-    const section = document.getElementById('premiumSection');
-    if (!cols || cols.length === 0) {
-      section.style.display = 'none';
-      return;
-    }
-    section.style.display = '';
-    const age = parseInt(document.getElementById('clientAge').value, 10) || 35;
-    const gender = state.client.gender;
-
-    // ── 上方:保費小卡 ──
-    const grid = document.getElementById('premiumGrid');
-    grid.innerHTML = '';
-    cols.forEach(col => {
-      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
-      const company = col.company || {};
-      const p = col.product || {};
-      const card = document.createElement('div');
-      card.className = 'premium-card';
-      card.style.setProperty('--card-color', `var(--c-${col.sel.cid})`);
-      card.innerHTML = `
-        <div class="premium-card-name">
-          ${company.shortName || ''} · ${(p.name||'').slice(0,12)}${(p.name||'').length>12?'…':''}
-          <span class="pc-code">${col.code}</span>
-        </div>
-        <div class="premium-card-amt">投保<strong>${col.sel.amount}${p.amountUnit||''}</strong></div>
-        <div class="premium-card-amt">${age} 歲 ${gender==='F'?'女':'男'}</div>
-        <div class="premium-card-fee">年繳<strong>${fee !== null ? fee.toLocaleString() : '—'}</strong></div>
-      `;
-      grid.appendChild(card);
-    });
-
-    // ── 性價比表 ──
-    renderRatioTable(cols, age, gender);
-
-    // ── 全年齡表 ──
-    renderFullAgeTable(cols);
-  }
-
-  /* ─── 性價比表 (3 個指標 × 商品數) ─── */
-  function renderRatioTable(cols, age, gender) {
-    const tbl = document.getElementById('ratioTable');
-    // 預算每個商品的:保費、主打項、日額、年上限
-    const rows = cols.map(col => {
-      const fee = lookupPremium(col.product, col.sel.amount, age, gender);
-      const primary = getPrimaryValue(col.product, col.sel.amount, state.categoryKey);
-      const daily = getDailyValue(col.product, col.sel.amount);
-      const annual = getAnnualMax(col.product, col.sel.amount);
-      return { col, fee, primary, daily, annual };
-    });
-
-    // 找各指標最大值(用於 best 標示 + bar width)
-    const cpPrimary = rows.map(r => (r.fee && r.fee > 0 && r.primary.val > 0) ? r.primary.val / r.fee : 0);
-    const cpDaily = rows.map(r => (r.fee && r.fee > 0 && r.daily > 0) ? r.daily / r.fee : 0);
-    const cpAnnual = rows.map(r => (r.fee && r.fee > 0 && r.annual.val > 0) ? r.annual.val / r.fee : 0);
-    const maxPrimary = Math.max(...cpPrimary, 0.0001);
-    const maxDaily = Math.max(...cpDaily, 0.0001);
-    const maxAnnual = Math.max(...cpAnnual, 0.0001);
-
-    let html = '<thead><tr><th>性價比指標</th>';
-    rows.forEach(r => {
-      const cid = r.col.sel.cid;
-      html += `<th><span class="col-color" style="background: var(--c-${cid})"></span>${r.col.company.shortName||''} ${r.col.code}</th>`;
-    });
-    html += '</tr></thead><tbody>';
-
-    // 主打項 CP
-    const primaryLabel = rows[0]?.primary?.label || '主打項';
-    html += `<tr><td><strong>主打項 CP</strong><br><span class="ratio-sub">${primaryLabel} ÷ 年保費</span></td>`;
-    rows.forEach((r, i) => {
-      const cp = cpPrimary[i];
-      const isBest = cp > 0 && cp === Math.max(...cpPrimary);
-      const cid = r.col.sel.cid;
-      if (cp > 0) {
-        html += `<td>
-          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(1)}</span>
-          <div class="ratio-sub">${r.primary.val.toLocaleString()} ÷ ${r.fee.toLocaleString()}</div>
-          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxPrimary*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
-        </td>`;
-      } else {
-        html += '<td><span class="ratio-sub">—</span></td>';
-      }
-    });
-    html += '</tr>';
-
-    // 日額 CP
-    html += `<tr><td><strong>住院日額 CP</strong><br><span class="ratio-sub">日額 ÷ 年保費</span></td>`;
-    rows.forEach((r, i) => {
-      const cp = cpDaily[i];
-      const isBest = cp > 0 && cp === Math.max(...cpDaily);
-      const cid = r.col.sel.cid;
-      if (cp > 0) {
-        html += `<td>
-          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(2)}</span>
-          <div class="ratio-sub">${r.daily.toLocaleString()}/天 ÷ ${r.fee.toLocaleString()}</div>
-          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxDaily*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
-        </td>`;
-      } else {
-        html += '<td><span class="ratio-sub">—</span></td>';
-      }
-    });
-    html += '</tr>';
-
-    // 年上限 CP
-    html += `<tr><td><strong>年理賠上限 CP</strong><br><span class="ratio-sub">全年最高 ÷ 年保費</span></td>`;
-    rows.forEach((r, i) => {
-      const cp = cpAnnual[i];
-      const isBest = cp > 0 && cp === Math.max(...cpAnnual);
-      const cid = r.col.sel.cid;
-      if (cp > 0) {
-        html += `<td>
-          <span class="ratio-val${isBest?' best':''}">${cp.toFixed(1)}</span>
-          <div class="ratio-sub">${r.annual.val.toLocaleString()} (${r.annual.source}) ÷ ${r.fee.toLocaleString()}</div>
-          <div class="ratio-bar-wrap"><div class="ratio-bar"><div class="ratio-bar-fill" style="width:${(cp/maxAnnual*100).toFixed(0)}%; --bar-color: var(--c-${cid})"></div></div></div>
-        </td>`;
-      } else {
-        html += '<td><span class="ratio-sub">—</span></td>';
-      }
-    });
-    html += '</tr></tbody>';
-
-    tbl.innerHTML = html;
+    // 連動全年齡表(若已展開)
+    if (state.ui.fullAgeExpanded) renderFullAgeTable(cols);
   }
 
   /* ─── 全年齡保費表 ─── */
   function renderFullAgeTable(cols) {
     const wrap = document.getElementById('fullAgeTable');
-    // 收集所有商品涉及的年齡 (0-80)
     const ages = [];
-    for (let a = 0; a <= 80; a += 5) ages.push(a);  // 5 歲間距,82 個年齡點縮成 17 個
+    for (let a = 0; a <= 80; a += 5) ages.push(a);
     const clientAge = parseInt(document.getElementById('clientAge').value, 10) || 35;
     const clientGender = state.client.gender;
 
@@ -2319,7 +2113,6 @@ const App = (() => {
       html += `<th>${col.company.shortName||''}<br><span style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;">${col.code}</span></th>`;
     });
     html += '</tr></thead><tbody>';
-
     ['M','F'].forEach(g => {
       ages.forEach(age => {
         const isClient = (g === clientGender) && (age <= clientAge && (age + 5 > clientAge));
@@ -2368,34 +2161,14 @@ const App = (() => {
       renderTable();
     });
 
-    // 展開按鈕
-    document.getElementById('toggleRatio').addEventListener('click', () => {
-      state.ui.ratioExpanded = !state.ui.ratioExpanded;
-      const el = document.getElementById('ratioAnalysis');
-      const btn = document.getElementById('toggleRatio');
-      el.classList.toggle('show', state.ui.ratioExpanded);
-      btn.classList.toggle('expanded', state.ui.ratioExpanded);
-    });
-    document.getElementById('toggleFullAge').addEventListener('click', () => {
+    // 全年齡保費表(工具列按鈕)
+    document.getElementById('btnFullAge').addEventListener('click', () => {
       state.ui.fullAgeExpanded = !state.ui.fullAgeExpanded;
-      const el = document.getElementById('fullAgeTable');
-      const btn = document.getElementById('toggleFullAge');
-      el.classList.toggle('show', state.ui.fullAgeExpanded);
-      btn.classList.toggle('expanded', state.ui.fullAgeExpanded);
-    });
-
-    // 視圖模式切換
-    document.getElementById('viewModeVertical').addEventListener('click', () => {
-      state.viewMode = 'vertical';
-      document.getElementById('viewModeVertical').classList.add('active');
-      document.getElementById('viewModeHorizontal').classList.remove('active');
-      renderTable();
-    });
-    document.getElementById('viewModeHorizontal').addEventListener('click', () => {
-      state.viewMode = 'horizontal';
-      document.getElementById('viewModeHorizontal').classList.add('active');
-      document.getElementById('viewModeVertical').classList.remove('active');
-      renderTable();
+      const sec = document.getElementById('fullAgeSection');
+      const btn = document.getElementById('btnFullAge');
+      sec.style.display = state.ui.fullAgeExpanded ? '' : 'none';
+      btn.classList.toggle('active', state.ui.fullAgeExpanded);
+      if (state.ui.fullAgeExpanded) renderTable();  // 重渲染以填入 fullage 表
     });
   }
 
