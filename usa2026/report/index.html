@@ -300,6 +300,19 @@
     margin-top: 8px;
     letter-spacing: 1px;
   }
+  /* 總保費 highlight 卡:略帶金色光暈,氣勢最強 */
+  .team-stat.highlight {
+    background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,140,0,0.08) 100%);
+    border: 1px solid rgba(255,215,0,0.5);
+    box-shadow: 0 4px 20px rgba(255,215,0,0.15), inset 0 0 20px rgba(255,215,0,0.05);
+  }
+  .team-stat.highlight .team-stat-value {
+    color: #FFE872;
+    text-shadow: 0 2px 12px rgba(255,215,0,0.5);
+  }
+  .team-stat.highlight .team-stat-label {
+    color: rgba(255,215,0,0.95);
+  }
 
   /* ── 排行榜 ── */
   .leaderboard {
@@ -1115,7 +1128,7 @@ async function loadData() {
     // 動態找標題列 — 用「包含」而非「完全等於」,容忍合併儲存格的情況
     // (例如 Sheet 把標題列和上方說明列合併,gviz CSV 會塞成一個 cell)
     let headerIdx = -1;
-    let cols = { name: 0, fyb: 1, url: 10 }; // fallback default
+    let cols = { name: 0, fyb: 1, url: 10, premium: -1 }; // fallback default
     for (let i = 0; i < Math.min(mainRows.length, 6); i++) {
       const r = (mainRows[i] || []).map(c => (c || '').toString().trim());
       // 改用 includes,讓「2026...業務員姓名」這種合併儲存格也能命中
@@ -1128,6 +1141,9 @@ async function loadData() {
         // 找個人分頁網址欄(關鍵字配對,K 欄無論幾號都能找到)
         const urlIdx = r.findIndex(c => c.includes('分頁') || c.includes('網址') || c.includes('連結') || c === '個人分頁網址');
         if (urlIdx >= 0) cols.url = urlIdx;
+        // 找總保費欄(可選,沒有就跳過)
+        const premIdx = r.findIndex(c => c === '總保費' || c.includes('總保費') || c.includes('總台幣保費'));
+        if (premIdx >= 0) cols.premium = premIdx;
         break;
       }
     }
@@ -1135,7 +1151,7 @@ async function loadData() {
       // 找不到標題列就退回原本假設:第 2 列(index 1)是標題
       headerIdx = 1;
     }
-    console.log(`[戰報] 標題列在第 ${headerIdx} 列, name欄=${cols.name}, fyb欄=${cols.fyb}, url欄=${cols.url}`);
+    console.log(`[戰報] 標題列在第 ${headerIdx} 列, name欄=${cols.name}, fyb欄=${cols.fyb}, url欄=${cols.url}, 保費欄=${cols.premium}`);
     
     // 從標題列下一列開始,掃完整張表(允許中間有空白列、不會中斷)
     const members = [];
@@ -1173,7 +1189,8 @@ async function loadData() {
       
       const personalUrl = (row[cols.url] || '').toString().trim();
       const gid = extractGid(personalUrl);
-      members.push({ name, fyb, gid, personalUrl, rowIdx: i });
+      const premium = cols.premium >= 0 ? toNum(row[cols.premium]) : 0;
+      members.push({ name, fyb, premium, gid, personalUrl, rowIdx: i });
     }
     
     // 偵錯資訊(F12 console 可看)
@@ -1216,9 +1233,19 @@ async function loadData() {
 function renderTeamOverview(members) {
   const totalFyb = members.reduce((s, m) => s + m.fyb, 0);
   const totalSeats = members.reduce((s, m) => s + m.calc.seats, 0);
-  const achievedCount = members.filter(m => m.calc.achieved).length;
+  const totalPremium = members.reduce((s, m) => s + (m.premium || 0), 0);
+  const hasPremium = totalPremium > 0;
   
   const daysLeft = Math.max(0, Math.ceil((CONTEST_END - new Date()) / (1000*60*60*24)));
+  
+  // 總保費卡片(只在 Sheet 有填 L 欄時才出現)
+  const premiumCard = hasPremium ? `
+    <div class="team-stat highlight">
+      <div class="team-stat-label">🔥 累積總保費</div>
+      <div class="team-stat-value long">${fmt(totalPremium)}<span class="team-stat-unit">元</span></div>
+      <div class="team-stat-sub">夥伴實際成交保費</div>
+    </div>
+  ` : '';
   
   const html = `
     <div class="team-stat">
@@ -1226,15 +1253,11 @@ function renderTeamOverview(members) {
       <div class="team-stat-value long">${fmt(totalFyb)}<span class="team-stat-unit">元</span></div>
       <div class="team-stat-sub">${members.length} 位夥伴累計</div>
     </div>
+    ${premiumCard}
     <div class="team-stat">
       <div class="team-stat-label">累積完整席次</div>
       <div class="team-stat-value">${totalSeats}<span class="team-stat-unit">席</span></div>
       <div class="team-stat-sub">每 500 萬 = 1 席</div>
-    </div>
-    <div class="team-stat">
-      <div class="team-stat-label">已達 1 席</div>
-      <div class="team-stat-value">${achievedCount}<span class="team-stat-unit">位</span></div>
-      <div class="team-stat-sub">共 ${members.length} 位</div>
     </div>
     <div class="team-stat">
       <div class="team-stat-label">距結算還剩</div>
