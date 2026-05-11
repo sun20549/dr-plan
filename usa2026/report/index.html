@@ -1095,13 +1095,15 @@ async function loadData() {
       document.body.appendChild(dbg);
     }
     
-    // 動態找標題列(用「業務員姓名」或「總競賽業績」當錨點,避免硬編碼 index)
+    // 動態找標題列 — 用「包含」而非「完全等於」,容忍合併儲存格的情況
+    // (例如 Sheet 把標題列和上方說明列合併,gviz CSV 會塞成一個 cell)
     let headerIdx = -1;
     let cols = { name: 0, fyb: 1, url: 10 }; // fallback default
     for (let i = 0; i < Math.min(mainRows.length, 6); i++) {
       const r = (mainRows[i] || []).map(c => (c || '').toString().trim());
-      const nameIdx = r.findIndex(c => c === '業務員姓名');
-      const fybIdx  = r.findIndex(c => c === '總競賽業績');
+      // 改用 includes,讓「2026...業務員姓名」這種合併儲存格也能命中
+      const nameIdx = r.findIndex(c => c.includes('業務員姓名') || c === '姓名');
+      const fybIdx  = r.findIndex(c => c.includes('總競賽業績') || c.includes('業績') && c.length < 10);
       if (nameIdx >= 0 && fybIdx >= 0) {
         headerIdx = i;
         cols.name = nameIdx;
