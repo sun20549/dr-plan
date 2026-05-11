@@ -303,12 +303,18 @@
   }
   .report-banner-stats {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 18px;
     flex-wrap: wrap;
   }
   .report-banner-stat {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .report-banner-numwrap {
+    display: inline-flex;
     align-items: baseline;
     gap: 4px;
   }
@@ -323,17 +329,18 @@
   .report-banner-unit {
     font-size: 13px;
     color: rgba(255,255,255,0.8);
-    margin-right: 4px;
   }
   .report-banner-label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 1px;
-    margin-left: 2px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-left: 0;
   }
   .report-banner-divider {
     color: rgba(255,255,255,0.25);
     font-size: 14px;
+    align-self: center;
   }
   .report-banner-right {
     display: inline-flex;
@@ -1391,21 +1398,26 @@
     .report-banner-divider { display: none; }
     .report-banner-stat {
       flex-direction: column;
-      align-items: center;
-      gap: 2px;
+      align-items: flex-start; /* 整體左對齊,label 在左上 */
+      gap: 6px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,215,0,0.25);
       border-radius: 10px;
-      padding: 10px 6px;
+      padding: 10px 10px;
       backdrop-filter: blur(4px);
+    }
+    .report-banner-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.7);
+      align-self: flex-start; /* 左上 */
+    }
+    .report-banner-numwrap {
+      align-self: center; /* 數字本身置中 */
+      align-items: baseline;
     }
     .report-banner-num { font-size: 22px; }
     .report-banner-unit { font-size: 11px; }
-    .report-banner-label {
-      font-size: 10px;
-      margin-left: 0;
-      margin-top: 2px;
-    }
     .report-banner-right {
       width: 100%;
       justify-content: center;
@@ -1462,21 +1474,27 @@
         </div>
         <div class="report-banner-stats loading" id="bannerStats">
           <div class="report-banner-stat">
-            <span class="report-banner-num" id="bannerPremium">--</span>
-            <span class="report-banner-unit"></span>
             <span class="report-banner-label">保費</span>
+            <div class="report-banner-numwrap">
+              <span class="report-banner-num" id="bannerPremium">--</span>
+              <span class="report-banner-unit"></span>
+            </div>
           </div>
           <span class="report-banner-divider">・</span>
           <div class="report-banner-stat">
-            <span class="report-banner-num" id="bannerFyb">--</span>
-            <span class="report-banner-unit"></span>
-            <span class="report-banner-label">業績</span>
+            <span class="report-banner-label">競賽業績</span>
+            <div class="report-banner-numwrap">
+              <span class="report-banner-num" id="bannerFyb">--</span>
+              <span class="report-banner-unit"></span>
+            </div>
           </div>
           <span class="report-banner-divider">・</span>
           <div class="report-banner-stat">
-            <span class="report-banner-num" id="bannerReward">--</span>
-            <span class="report-banner-unit"></span>
             <span class="report-banner-label">獎金</span>
+            <div class="report-banner-numwrap">
+              <span class="report-banner-num" id="bannerReward">--</span>
+              <span class="report-banner-unit"></span>
+            </div>
           </div>
         </div>
       </div>
