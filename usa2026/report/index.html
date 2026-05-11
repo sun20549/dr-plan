@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+<link rel="shortcut icon" href="../../images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../images/favicon-180.png">
+<title>戰報榜｜美國東岸之旅 - 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --usa-blue: #001840;
+    --usa-blue-mid: #002868;
+    --usa-red: #BF0A30;
+    --usa-gold: #FFD700;
+    --light: #F8F5F0;
+    --navy: #0D2A3A;
+    --orange: #F05A28;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+  }
+
+  .page {
+    width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV (同試算機) ── */
+  .top-nav {
+    background: linear-gradient(160deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-nav::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 40px,
+      rgba(255,255,255,0.02) 40px,
+      rgba(255,255,255,0.02) 80px
+    );
+  }
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 24px;
+    transition: all 0.25s ease;
+    position: relative; z-index: 1;
+    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.06);
+  }
+  .nav-back:hover {
+    background: var(--usa-gold);
+    color: var(--usa-blue);
+    border-color: var(--usa-gold);
+    transform: translateX(-3px);
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 14px;
+    position: relative; z-index: 1;
+  }
+  .nav-brand img {
+    width: 32px; height: 32px;
+    object-fit: contain;
+    background: #fff;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background:
+      linear-gradient(135deg, rgba(0,24,64,0.92) 0%, rgba(0,40,104,0.85) 60%, rgba(191,10,48,0.75) 100%),
+      url('../../images/img_31_4e84b679ed82.png') center/cover;
+    padding: 50px 48px 60px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🏆';
+    position: absolute;
+    top: -40px; right: -10px;
+    font-size: 260px;
+    opacity: 0.08;
+    line-height: 1;
+    transform: rotate(15deg);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--usa-red) 0,
+      var(--usa-red) 60px,
+      #fff 60px,
+      #fff 120px
+    );
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--usa-red);
+    padding: 6px 16px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(191,10,48,0.5);
+  }
+  .hero-period {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 1.5px;
+  }
+  .hero-title {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--usa-gold);
+    text-shadow: 0 4px 20px rgba(255,215,0,0.4);
+  }
+  .hero-subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 6px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+  }
+  .hero-meta-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 24px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.2s;
+  }
+  .hero-link:hover {
+    background: var(--usa-gold);
+    color: var(--usa-blue);
+    border-color: var(--usa-gold);
+  }
+  .last-update {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1px;
+  }
+  .last-update .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    margin-right: 6px;
+    box-shadow: 0 0 8px #4ade80;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 44px 48px;
+    border-bottom: 1px solid #EFEAE0;
+  }
+  .section-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: var(--usa-red);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+  }
+
+  /* ── 團隊總覽 ── */
+  .team-overview {
+    background: linear-gradient(135deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    color: #fff;
+    border-bottom: none;
+  }
+  .team-overview .section-tag { color: var(--usa-gold); }
+  .team-overview .section-title { color: #fff; }
+  .team-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .team-stat {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 12px;
+    padding: 22px 18px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+  }
+  .team-stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .team-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: var(--usa-gold);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .team-stat-unit {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-left: 2px;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .team-stat-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ── 排行榜 ── */
+  .leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .lb-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 22px;
+    border: 1px solid #E8E2D5;
+    border-radius: 14px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .lb-row:hover {
+    border-color: var(--usa-gold);
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(0,24,64,0.08);
+  }
+  .lb-row.achieved {
+    background: linear-gradient(135deg, #fffbea 0%, #fff8d6 100%);
+    border-color: var(--usa-gold);
+  }
+  .lb-row.achieved::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--usa-gold) 0%, var(--orange) 100%);
+  }
+  .lb-rank {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: #EFEAE0;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .lb-rank.gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255,165,0,0.4);
+  }
+  .lb-rank.silver {
+    background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(128,128,128,0.3);
+  }
+  .lb-rank.bronze {
+    background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(205,127,50,0.3);
+  }
+  .lb-body { min-width: 0; }
+  .lb-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .lb-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--usa-blue);
+    letter-spacing: 1px;
+  }
+  .lb-seat-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--usa-gold);
+    color: var(--usa-blue);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .lb-progress-bar {
+    height: 8px;
+    background: #EFEAE0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .lb-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--usa-blue-mid) 0%, var(--usa-red) 100%);
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+  .lb-row.achieved .lb-progress-fill {
+    background: linear-gradient(90deg, var(--usa-gold) 0%, var(--orange) 100%);
+  }
+  .lb-fyb-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .lb-amount {
+    text-align: right;
+    min-width: 120px;
+  }
+  .lb-amount-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--usa-blue);
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .lb-row.achieved .lb-amount-value { color: var(--orange); }
+  .lb-amount-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+  }
+
+  /* ── 個人戰報 modal ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,24,64,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal {
+    width: 100%;
+    max-width: 720px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    animation: modalUp 0.3s ease;
+  }
+  @keyframes modalUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-header {
+    background: linear-gradient(135deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    padding: 28px 32px;
+    color: #fff;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.3); }
+  .modal-name {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .modal-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+  }
+  .modal-body { padding: 28px 32px; }
+
+  /* 個人卡片內的核心數字 */
+  .pc-hero {
+    text-align: center;
+    padding: 20px 0 28px;
+    border-bottom: 1px dashed #E8E2D5;
+    margin-bottom: 24px;
+  }
+  .pc-seat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--usa-red);
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+  .pc-seat-big.achieved { color: var(--orange); }
+  .pc-fyb-big {
+    font-size: 14px;
+    color: #666;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+  .pc-fyb-big strong {
+    color: var(--usa-blue);
+    font-size: 16px;
+    font-weight: 900;
+  }
+
+  /* 進度條 */
+  .pc-progress-section { margin-bottom: 24px; }
+  .pc-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .pc-progress-bar {
+    height: 14px;
+    background: #EFEAE0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .pc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--usa-blue-mid) 0%, var(--usa-red) 60%, var(--orange) 100%);
+    border-radius: 8px;
+    transition: width 0.6s ease;
+  }
+  .pc-progress-marks {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .pc-mark {
+    text-align: center;
+    padding: 6px 4px;
+    background: #F5EFE2;
+    border-radius: 6px;
+    font-size: 10px;
+    color: #999;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .pc-mark.lit {
+    background: var(--usa-gold);
+    color: var(--usa-blue);
+  }
+
+  /* 獎勵卡片 */
+  .pc-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .pc-reward {
+    padding: 16px 14px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1.5px solid #E8E2D5;
+  }
+  .pc-reward.travel {
+    background: linear-gradient(135deg, #fff8d6 0%, #fff3b8 100%);
+    border-color: var(--usa-gold);
+  }
+  .pc-reward.cash {
+    background: linear-gradient(135deg, #e6f4ea 0%, #c8e6c9 100%);
+    border-color: #4caf50;
+  }
+  .pc-reward.total {
+    background: linear-gradient(135deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+    color: #fff;
+    border-color: var(--usa-blue);
+  }
+  .pc-reward-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .pc-reward.total .pc-reward-label { color: rgba(255,255,255,0.75); }
+  .pc-reward-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--usa-red);
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .pc-reward.cash .pc-reward-value { color: #2e7d32; }
+  .pc-reward.total .pc-reward-value { color: var(--usa-gold); }
+
+  /* 下一階建議 */
+  .pc-next {
+    background: linear-gradient(135deg, #fff 0%, #f8f5f0 100%);
+    border: 1px solid #E8E2D5;
+    border-left: 4px solid var(--orange);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+  }
+  .pc-next-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--orange);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .pc-next-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--navy);
+  }
+  .pc-next-text strong {
+    color: var(--usa-red);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+
+  /* 摘要 + 明細 */
+  .pc-summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .pc-summary-stat {
+    background: #f8f5f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .pc-summary-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--usa-blue);
+    line-height: 1;
+  }
+  .pc-summary-lbl {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .pc-toggle-details {
+    width: 100%;
+    background: #f5efe2;
+    border: 1px solid #E8E2D5;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--usa-blue);
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  .pc-toggle-details:hover { background: #ede5cf; }
+  .pc-details {
+    margin-top: 14px;
+    display: none;
+  }
+  .pc-details.show { display: block; }
+  .pc-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .pc-detail-table th {
+    background: var(--usa-blue);
+    color: #fff;
+    padding: 8px 6px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .pc-detail-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #EFEAE0;
+  }
+  .pc-detail-table tr:last-child td { border-bottom: none; }
+  .pc-detail-prod {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.4;
+  }
+  .pc-detail-fyb {
+    color: var(--usa-red);
+    font-weight: 700;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-align: right;
+  }
+
+  .pc-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .pc-action-btn {
+    flex: 1;
+    min-width: 200px;
+    background: linear-gradient(135deg, var(--usa-red) 0%, #8a0a30 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .pc-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(191,10,48,0.4);
+  }
+  .pc-action-btn.secondary {
+    background: linear-gradient(135deg, var(--usa-blue) 0%, var(--usa-blue-mid) 100%);
+  }
+
+  /* ── 載入狀態 ── */
+  .loading {
+    text-align: center;
+    padding: 60px 24px;
+    color: #888;
+  }
+  .loading-spinner {
+    display: inline-block;
+    width: 40px; height: 40px;
+    border: 3px solid #EFEAE0;
+    border-top-color: var(--usa-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .error-state {
+    background: #fff5f5;
+    border: 1px solid #fcc;
+    border-radius: 12px;
+    padding: 24px;
+    color: #c00;
+    text-align: center;
+  }
+  .error-state strong { display: block; margin-bottom: 8px; font-size: 16px; }
+  .error-state small { color: #666; font-size: 12px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    padding: 22px 48px;
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
+
+  /* ── RWD ── */
+  @media (max-width: 920px) {
+    .page { width: 100%; }
+    .hero { padding: 36px 24px 48px; }
+    .hero-title { font-size: 36px; letter-spacing: 1px; }
+    .hero-subtitle { font-size: 20px; letter-spacing: 3px; }
+    .section { padding: 32px 20px; }
+    .team-stats { grid-template-columns: repeat(2, 1fr); }
+    .lb-row { grid-template-columns: 44px 1fr; gap: 12px; padding: 14px 16px; }
+    .lb-amount { grid-column: 2; text-align: left; margin-top: 4px; }
+    .lb-amount-value { font-size: 22px; }
+    .top-nav { padding: 14px 18px; }
+    .nav-brand { font-size: 11px; letter-spacing: 1px; }
+    .modal-body { padding: 20px 18px; }
+    .modal-header { padding: 22px 20px; }
+    .pc-seat-big { font-size: 48px; }
+    .pc-rewards { grid-template-columns: 1fr; }
+    .pc-summary-row { grid-template-columns: 1fr 1fr 1fr; }
+    .pc-detail-table { font-size: 11px; }
+    .pc-detail-table th, .pc-detail-table td { padding: 6px 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <a href="../" class="nav-back">← 試算機</a>
+    <div class="nav-brand">
+      <img src="../../images/img_01_44039bd1b179.png" alt="鼎綸恩宇" />
+      <span>鼎綸恩宇 ・ 戰報榜</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-tag">USA 2026 戰況實況</span>
+    <span class="hero-period">115/01/01 - 115/06/30</span>
+    <h1 class="hero-title">恩宇<em>戰報榜</em></h1>
+    <p class="hero-subtitle">EAST COAST USA · LEADERBOARD</p>
+    <div class="hero-meta-row">
+      <a href="../" class="hero-link">🧮 開啟試算機</a>
+      <span id="lastUpdate" class="last-update"><span class="dot"></span>載入中…</span>
+    </div>
+  </section>
+
+  <!-- 團隊總覽 -->
+  <section class="section team-overview">
+    <div class="section-tag">TEAM OVERVIEW</div>
+    <h2 class="section-title">恩宇全隊衝刺中 🚀</h2>
+    <div class="team-stats" id="teamStats">
+      <div class="team-stat">
+        <div class="team-stat-label">總業績</div>
+        <div class="team-stat-value">—</div>
+      </div>
+      <div class="team-stat">
+        <div class="team-stat-label">累積席次</div>
+        <div class="team-stat-value">—</div>
+      </div>
+      <div class="team-stat">
+        <div class="team-stat-label">達標人數</div>
+        <div class="team-stat-value">—</div>
+      </div>
+      <div class="team-stat">
+        <div class="team-stat-label">距結算還剩</div>
+        <div class="team-stat-value">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 排行榜 -->
+  <section class="section">
+    <div class="section-tag">LEADERBOARD</div>
+    <h2 class="section-title">夥伴戰況</h2>
+    <div id="leaderboard" class="leaderboard">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>正在讀取最新業績資料…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>資料來源:恩宇營運區 2026 上半年旅遊競賽統計 · 約 5 分鐘自動同步</div>
+    <div style="margin-top:6px; opacity:0.6;">© 鼎綸保險經紀人 ・ <a href="../">回試算機</a></div>
+  </footer>
+
+</div>
+
+<!-- 個人戰報 Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-name" id="modalName">—</div>
+      <div class="modal-sub" id="modalSub">—</div>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- 動態填入 -->
+    </div>
+  </div>
+</div>
+
+<script>
+// =====================================================
+// 設定
+// =====================================================
+const SHEET_ID = '1SG9jezxFM92ax00ZZX_MtggX_ysxCA0_-O6CoPL6oio';
+const MAIN_GID = '969935996';      // 競賽總表
+const DB_GID   = '1509973946';     // 商品總表
+const CONTEST_END = new Date('2026-06-30T23:59:59'); // 115/06/30
+
+// 計算規則(個人組)
+const SEATS_PER_TIER = 5;          // 5 個 1/5 = 1 完整席次
+const TIER_AMOUNT = 1_000_000;     // 每 100 萬一格
+const SEAT_AMOUNT = TIER_AMOUNT * SEATS_PER_TIER; // 每 500 萬一席
+const TRAVEL_PER_FIFTH = 30_000;   // 每 1/5 = 3 萬
+const TRAVEL_PER_SEAT = 150_000;   // 1 完整席次 = 15 萬(也是封頂)
+const TRAVEL_CAP = 150_000;        // 旅遊金封頂
+
+// =====================================================
+// 工具:從 Sheet 讀 CSV (gviz API, 不需要 API key)
+// =====================================================
+async function fetchSheetCSV(gid) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.text();
+}
+
+// 簡易 CSV parser(支援雙引號內含逗號/換行)
+function parseCSV(text) {
+  const rows = [];
+  let cur = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"' && text[i+1] === '"') { field += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { field += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { cur.push(field); field = ''; }
+      else if (ch === '\n') { cur.push(field); rows.push(cur); cur = []; field = ''; }
+      else if (ch === '\r') { /* skip */ }
+      else { field += ch; }
+    }
+  }
+  if (field !== '' || cur.length) { cur.push(field); rows.push(cur); }
+  return rows;
+}
+
+// 數字解析(處理千分位、空字串、負號)
+function toNum(v) {
+  if (v == null || v === '') return 0;
+  const cleaned = String(v).replace(/[,\s$]/g, '');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? 0 : n;
+}
+
+// 民國日期 1150112 → "2026/01/12"
+function rocToDate(rocStr) {
+  const s = String(rocStr).trim();
+  if (!/^\d{7}$/.test(s)) return s;
+  const year = parseInt(s.substring(0,3)) + 1911;
+  const month = s.substring(3,5);
+  const day = s.substring(5,7);
+  return `${year}/${month}/${day}`;
+}
+
+// 千分位格式化
+function fmt(n) {
+  return Math.round(n).toLocaleString('zh-TW');
+}
+
+// 從個人分頁的 URL 中抽 gid
+function extractGid(url) {
+  if (!url) return null;
+  const m = String(url).match(/gid=(\d+)/);
+  return m ? m[1] : null;
+}
+
+// =====================================================
+// 業績計算邏輯(個人組,跟試算機一致)
+// =====================================================
+function calculateRewards(fyb) {
+  // 計算席次
+  const totalFifths = Math.floor(fyb / TIER_AMOUNT); // 業績換算成「1/5」總數
+  const seats = Math.floor(totalFifths / SEATS_PER_TIER); // 完整席次
+  const remainder = totalFifths % SEATS_PER_TIER; // 剩下的 1/5 數
+  
+  // 旅遊金:封頂 150k
+  let travelMoney = Math.min(seats, 1) * TRAVEL_PER_SEAT;
+  if (seats === 0) {
+    travelMoney = remainder * TRAVEL_PER_FIFTH;
+  }
+  
+  // 超額退現:1 席以後的部分
+  let cashBack = 0;
+  if (seats >= 1) {
+    const extraFifths = (seats - 1) * SEATS_PER_TIER + remainder;
+    cashBack = extraFifths * TRAVEL_PER_FIFTH;
+  }
+  
+  // 進度條:正在追的這一席進度
+  const currentSeatProgress = remainder; // 0~4
+  const nextSeatFyb = (seats + 1) * SEAT_AMOUNT;
+  const gapToNextFifth = ((totalFifths + 1) * TIER_AMOUNT) - fyb;
+  const gapToNextSeat = nextSeatFyb - fyb;
+  
+  return {
+    fyb,
+    seats,
+    remainder,
+    seatDisplay: `${seats} 席 + ${remainder}/5`,
+    travelMoney,
+    cashBack,
+    totalReward: travelMoney + cashBack,
+    achieved: seats >= 1,
+    progressPercent: (remainder / SEATS_PER_TIER) * 100,
+    gapToNextFifth: Math.max(0, gapToNextFifth),
+    gapToNextSeat: Math.max(0, gapToNextSeat),
+    nextSeatFyb,
+  };
+}
+
+// =====================================================
+// 主流程
+// =====================================================
+let memberData = []; // 全部夥伴的資料
+
+async function loadData() {
+  try {
+    // 1) 讀競賽總表
+    const mainCsv = await fetchSheetCSV(MAIN_GID);
+    const mainRows = parseCSV(mainCsv);
+    
+    // 競賽總表結構:
+    // row[0]: 標題列 "2026年菁英會議競賽旅遊獎勵"
+    // row[1]: 欄位名稱列
+    // row[2+]: 夥伴資料
+    // A=姓名, B=總業績, K=個人分頁網址(我們新加的)
+    
+    const members = [];
+    for (let i = 2; i < mainRows.length; i++) {
+      const row = mainRows[i];
+      const name = (row[0] || '').trim();
+      if (!name) continue;
+      const fyb = toNum(row[1]);
+      const personalUrl = (row[10] || '').trim(); // K 欄 = index 10
+      const gid = extractGid(personalUrl);
+      members.push({ name, fyb, gid, personalUrl });
+    }
+    
+    // 按業績排序
+    members.sort((a, b) => b.fyb - a.fyb);
+    
+    // 2) 計算每個人的獎勵
+    members.forEach(m => {
+      m.calc = calculateRewards(m.fyb);
+    });
+    
+    memberData = members;
+    
+    // 3) 渲染團隊總覽
+    renderTeamOverview(members);
+    
+    // 4) 渲染排行榜
+    renderLeaderboard(members);
+    
+    // 5) 更新時間
+    const now = new Date();
+    document.getElementById('lastUpdate').innerHTML = 
+      `<span class="dot"></span>資料更新於 ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+    
+  } catch (err) {
+    console.error('載入失敗:', err);
+    document.getElementById('leaderboard').innerHTML = `
+      <div class="error-state">
+        <strong>😢 無法讀取競賽資料</strong>
+        <div>請確認 Google Sheet 設為「知道連結的任何人可檢視」</div>
+        <small style="margin-top:8px; display:block;">錯誤訊息:${err.message}</small>
+      </div>
+    `;
+  }
+}
+
+function renderTeamOverview(members) {
+  const totalFyb = members.reduce((s, m) => s + m.fyb, 0);
+  const totalSeats = members.reduce((s, m) => s + m.calc.seats, 0);
+  const achievedCount = members.filter(m => m.calc.achieved).length;
+  
+  const daysLeft = Math.max(0, Math.ceil((CONTEST_END - new Date()) / (1000*60*60*24)));
+  
+  const html = `
+    <div class="team-stat">
+      <div class="team-stat-label">總競賽業績</div>
+      <div class="team-stat-value">${fmt(totalFyb)}<span class="team-stat-unit">元</span></div>
+      <div class="team-stat-sub">${members.length} 位夥伴累計</div>
+    </div>
+    <div class="team-stat">
+      <div class="team-stat-label">累積完整席次</div>
+      <div class="team-stat-value">${totalSeats}<span class="team-stat-unit">席</span></div>
+      <div class="team-stat-sub">每 500 萬 = 1 席</div>
+    </div>
+    <div class="team-stat">
+      <div class="team-stat-label">已達 1 席</div>
+      <div class="team-stat-value">${achievedCount}<span class="team-stat-unit">位</span></div>
+      <div class="team-stat-sub">共 ${members.length} 位</div>
+    </div>
+    <div class="team-stat">
+      <div class="team-stat-label">距結算還剩</div>
+      <div class="team-stat-value">${daysLeft}<span class="team-stat-unit">天</span></div>
+      <div class="team-stat-sub">到 115/06/30 止</div>
+    </div>
+  `;
+  document.getElementById('teamStats').innerHTML = html;
+}
+
+function renderLeaderboard(members) {
+  if (members.length === 0) {
+    document.getElementById('leaderboard').innerHTML = '<div class="loading">尚無夥伴資料</div>';
+    return;
+  }
+  
+  const html = members.map((m, idx) => {
+    const rank = idx + 1;
+    let rankClass = '';
+    if (rank === 1) rankClass = 'gold';
+    else if (rank === 2) rankClass = 'silver';
+    else if (rank === 3) rankClass = 'bronze';
+    
+    const c = m.calc;
+    const seatTag = c.achieved 
+      ? `<span class="lb-seat-tag">🏆 ${c.seats} 席</span>` 
+      : '';
+    
+    const progressText = c.achieved
+      ? `${c.seats} 席 + ${c.remainder}/5 ・ 距下一席還差 ${fmt(c.gapToNextSeat)} 元`
+      : `${c.remainder}/5 ・ 距下一格還差 ${fmt(c.gapToNextFifth)} 元`;
+    
+    return `
+      <div class="lb-row ${c.achieved ? 'achieved' : ''}" data-idx="${idx}">
+        <div class="lb-rank ${rankClass}">${rank}</div>
+        <div class="lb-body">
+          <div class="lb-name-row">
+            <span class="lb-name">${m.name}</span>
+            ${seatTag}
+          </div>
+          <div class="lb-progress-bar">
+            <div class="lb-progress-fill" style="width:${c.progressPercent}%"></div>
+          </div>
+          <div class="lb-fyb-text">${progressText}</div>
+        </div>
+        <div class="lb-amount">
+          <div class="lb-amount-value">${fmt(m.fyb)}</div>
+          <div class="lb-amount-label">業績</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  document.getElementById('leaderboard').innerHTML = html;
+  
+  // 綁定點擊事件
+  document.querySelectorAll('.lb-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const idx = parseInt(row.dataset.idx);
+      openPersonalReport(memberData[idx]);
+    });
+  });
+}
+
+// =====================================================
+// 個人戰報 Modal
+// =====================================================
+async function openPersonalReport(member) {
+  const modal = document.getElementById('modalBackdrop');
+  document.getElementById('modalName').textContent = member.name;
+  document.getElementById('modalSub').textContent = '載入保單明細…';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <div>正在讀取 ${member.name} 的保單明細…</div>
+    </div>
+  `;
+  modal.classList.add('show');
+  
+  // 渲染主要區塊(總業績、席次、獎勵)— 這些不依賴明細,可以馬上顯示
+  const c = member.calc;
+  
+  let policies = [];
+  let loadError = null;
+  
+  if (member.gid) {
+    try {
+      const csv = await fetchSheetCSV(member.gid);
+      policies = parsePolicies(csv);
+    } catch (err) {
+      loadError = err.message;
+    }
+  } else {
+    loadError = '尚未設定個人分頁網址';
+  }
+  
+  renderPersonalBody(member, policies, loadError);
+}
+
+function parsePolicies(csv) {
+  const rows = parseCSV(csv);
+  // 個人分頁欄位: A=日期, C=客戶, D=商品, H=年齡, I=原幣保費, J=匯率, K=台幣保費, L=費率, M=加碼, N=業績, P=備註
+  // 注意:gviz CSV 不會輸出隱藏欄,所以實際 column index 可能不一樣
+  // 我們用「找標題列」的方式定位
+  
+  // 找標題列(包含「輸入」或「客戶姓名」)
+  let headerIdx = -1;
+  let cols = {};
+  for (let i = 0; i < Math.min(rows.length, 5); i++) {
+    const r = rows[i].map(c => (c||'').trim());
+    if (r.includes('客戶姓名') || r.includes('選擇商品 (搜尋用)') || r.includes('競賽業績')) {
+      headerIdx = i;
+      r.forEach((cell, j) => {
+        if (cell === '輸入') cols.date = j;
+        else if (cell === '客戶姓名') cols.customer = j;
+        else if (cell.includes('選擇商品')) cols.product = j;
+        else if (cell === '被保人年齡') cols.age = j;
+        else if (cell === '原幣保費') cols.origPremium = j;
+        else if (cell === '匯率') cols.fx = j;
+        else if (cell === '換算台幣保費') cols.twdPremium = j;
+        else if (cell.includes('代理費率')) cols.rate = j;
+        else if (cell.includes('加碼')) cols.bonus = j;
+        else if (cell === '競賽業績') cols.fyb = j;
+        else if (cell === '備註') cols.note = j;
+      });
+      break;
+    }
+  }
+  
+  if (headerIdx < 0) return [];
+  
+  const policies = [];
+  for (let i = headerIdx + 1; i < rows.length; i++) {
+    const r = rows[i];
+    const product = (r[cols.product] || '').trim();
+    const fyb = toNum(r[cols.fyb]);
+    
+    // 過濾空白列、預設值列
+    if (!product || product === '無 | |' || product.startsWith('無 |')) continue;
+    if (fyb === 0) continue;
+    
+    policies.push({
+      date: r[cols.date] || '',
+      customer: r[cols.customer] || '',
+      product,
+      age: r[cols.age] || '',
+      origPremium: toNum(r[cols.origPremium]),
+      fx: toNum(r[cols.fx]) || 1,
+      twdPremium: toNum(r[cols.twdPremium]),
+      rate: r[cols.rate] || '',
+      bonus: r[cols.bonus] || '',
+      fyb,
+      note: r[cols.note] || '',
+    });
+  }
+  
+  return policies;
+}
+
+function renderPersonalBody(member, policies, loadError) {
+  const c = member.calc;
+  document.getElementById('modalSub').textContent = 
+    `${policies.length} 張有效保單 ・ 總業績 ${fmt(member.fyb)} 元`;
+  
+  // 計算 summary
+  let topProduct = '—', topProductCount = 0;
+  let biggestPolicy = 0;
+  if (policies.length > 0) {
+    biggestPolicy = Math.max(...policies.map(p => p.fyb));
+    const prodCount = {};
+    policies.forEach(p => {
+      // 取商品名(中間段)
+      const parts = p.product.split('|').map(s => s.trim());
+      const key = parts[1] || p.product;
+      prodCount[key] = (prodCount[key] || 0) + 1;
+    });
+    const top = Object.entries(prodCount).sort((a,b) => b[1]-a[1])[0];
+    if (top) { topProduct = top[0]; topProductCount = top[1]; }
+  }
+  
+  // 進度條 5 格標記
+  let markHtml = '';
+  for (let i = 1; i <= 5; i++) {
+    const lit = i <= c.remainder;
+    markHtml += `<div class="pc-mark ${lit ? 'lit' : ''}">${i}/5</div>`;
+  }
+  
+  // 獎勵卡片
+  let rewardsHtml;
+  if (c.achieved) {
+    rewardsHtml = `
+      <div class="pc-reward travel">
+        <div class="pc-reward-label">🎁 旅遊金</div>
+        <div class="pc-reward-value">${fmt(c.travelMoney)}</div>
+      </div>
+      <div class="pc-reward cash">
+        <div class="pc-reward-label">💰 超額退現</div>
+        <div class="pc-reward-value">${fmt(c.cashBack)}</div>
+      </div>
+      <div class="pc-reward total">
+        <div class="pc-reward-label">🏆 預估總獎勵</div>
+        <div class="pc-reward-value">${fmt(c.totalReward)}</div>
+      </div>
+    `;
+  } else {
+    rewardsHtml = `
+      <div class="pc-reward travel" style="grid-column: 1 / -1;">
+        <div class="pc-reward-label">🎁 目前可拿旅遊金</div>
+        <div class="pc-reward-value">${fmt(c.travelMoney)}</div>
+        <div style="font-size:11px; color:#888; margin-top:6px;">達 1 完整席次後封頂 15 萬</div>
+      </div>
+    `;
+  }
+  
+  // 下一階建議
+  let nextHtml;
+  if (c.achieved) {
+    nextHtml = `
+      <div class="pc-next">
+        <div class="pc-next-title">🎯 下一步</div>
+        <div class="pc-next-text">
+          再做 <strong>${fmt(c.gapToNextSeat)}</strong> 元業績,
+          就能再增加 <strong>${fmt(SEAT_AMOUNT * 0.03)}</strong> 元超額退現,
+          或先做 <strong>${fmt(c.gapToNextFifth)}</strong> 元到下一個 1/5。
+        </div>
+      </div>
+    `;
+  } else {
+    const fyb = member.fyb;
+    nextHtml = `
+      <div class="pc-next">
+        <div class="pc-next-title">🎯 下一步</div>
+        <div class="pc-next-text">
+          再做 <strong>${fmt(c.gapToNextFifth)}</strong> 元業績,
+          就能多拿 <strong>${fmt(TRAVEL_PER_FIFTH)}</strong> 元旅遊金。<br>
+          距離「達 1 完整席次」還差 <strong>${fmt(c.gapToNextSeat)}</strong> 元。
+        </div>
+      </div>
+    `;
+  }
+  
+  // 摘要
+  const summaryHtml = `
+    <div class="pc-summary-row">
+      <div class="pc-summary-stat">
+        <div class="pc-summary-num">${policies.length}</div>
+        <div class="pc-summary-lbl">張保單</div>
+      </div>
+      <div class="pc-summary-stat">
+        <div class="pc-summary-num">${fmt(biggestPolicy)}</div>
+        <div class="pc-summary-lbl">最大單筆業績</div>
+      </div>
+      <div class="pc-summary-stat">
+        <div class="pc-summary-num" style="font-size:14px; line-height:1.3;">${topProduct.length > 8 ? topProduct.substring(0,8) + '…' : topProduct}</div>
+        <div class="pc-summary-lbl">主力商品 (${topProductCount} 張)</div>
+      </div>
+    </div>
+  `;
+  
+  // 明細表
+  let detailHtml = '';
+  if (loadError) {
+    detailHtml = `<div class="pc-details show" style="color:#c00; font-size:12px; padding:14px;">⚠️ 無法讀取保單明細:${loadError}</div>`;
+  } else if (policies.length > 0) {
+    const detailRows = policies.map(p => {
+      const parts = p.product.split('|').map(s => s.trim());
+      const company = parts[0] || '';
+      const prodName = parts[1] || '';
+      const term = parts[2] || '';
+      return `
+        <tr>
+          <td style="white-space:nowrap; font-size:11px; color:#666;">${rocToDate(p.date)}</td>
+          <td style="font-size:11px;">${p.customer}</td>
+          <td>
+            <div class="pc-detail-prod">
+              <strong>${company}</strong> ${prodName}<br>
+              <span style="color:#999;">${term} · ${p.age}歲</span>
+            </div>
+          </td>
+          <td style="text-align:right; font-size:11px; color:#555;">${fmt(p.twdPremium)}</td>
+          <td class="pc-detail-fyb">${fmt(p.fyb)}</td>
+        </tr>
+      `;
+    }).join('');
+    
+    detailHtml = `
+      <button class="pc-toggle-details" onclick="toggleDetails()">📋 查看 ${policies.length} 張保單明細 ▾</button>
+      <div class="pc-details" id="pcDetails">
+        <table class="pc-detail-table">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>客戶</th>
+              <th>商品</th>
+              <th style="text-align:right;">台幣保費</th>
+              <th style="text-align:right;">業績</th>
+            </tr>
+          </thead>
+          <tbody>${detailRows}</tbody>
+        </table>
+      </div>
+    `;
+  }
+  
+  // 跳到試算機規劃
+  const calcUrl = `../?prefill_fyb=${c.gapToNextSeat || c.gapToNextFifth}`;
+  
+  document.getElementById('modalBody').innerHTML = `
+    <div class="pc-hero">
+      <div class="pc-seat-big ${c.achieved ? 'achieved' : ''}">${c.seatDisplay}</div>
+      <div class="pc-fyb-big">總業績 <strong>${fmt(member.fyb)}</strong> 元</div>
+    </div>
+    
+    <div class="pc-progress-section">
+      <div class="pc-progress-label">
+        <span>正在追的這一席進度</span>
+        <span>${c.remainder}/5 (${c.progressPercent.toFixed(0)}%)</span>
+      </div>
+      <div class="pc-progress-bar">
+        <div class="pc-progress-fill" style="width:${c.progressPercent}%"></div>
+      </div>
+      <div class="pc-progress-marks">${markHtml}</div>
+    </div>
+    
+    <div class="pc-rewards">${rewardsHtml}</div>
+    
+    ${nextHtml}
+    
+    ${summaryHtml}
+    
+    ${detailHtml}
+    
+    <div class="pc-actions">
+      <a href="../" class="pc-action-btn">🧮 用試算機規劃缺口</a>
+      ${member.personalUrl ? `<a href="${member.personalUrl}" target="_blank" class="pc-action-btn secondary">📊 開啟 Sheet 分頁</a>` : ''}
+    </div>
+  `;
+}
+
+function toggleDetails() {
+  const el = document.getElementById('pcDetails');
+  const btn = document.querySelector('.pc-toggle-details');
+  if (el.classList.contains('show')) {
+    el.classList.remove('show');
+    btn.innerHTML = btn.innerHTML.replace('▴', '▾').replace('收合', '查看');
+  } else {
+    el.classList.add('show');
+    btn.innerHTML = btn.innerHTML.replace('▾', '▴').replace('查看', '收合');
+  }
+}
+
+// Modal 關閉
+document.getElementById('modalClose').addEventListener('click', () => {
+  document.getElementById('modalBackdrop').classList.remove('show');
+});
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modalBackdrop') {
+    document.getElementById('modalBackdrop').classList.remove('show');
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('modalBackdrop').classList.remove('show');
+  }
+});
+
+// 起動
+loadData();
+</script>
+
+</body>
+</html>
