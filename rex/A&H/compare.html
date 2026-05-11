@@ -662,6 +662,16 @@ body {
   margin-top: 2px;
   letter-spacing: 0;
 }
+.fee-disclaimer {
+  font-size: 9px;
+  color: var(--gray);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  opacity: 0.7;
+  display: inline-block;
+  margin-top: 1px;
+}
 .cell-fee {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 24px;
@@ -911,14 +921,14 @@ body.customer-mode .picker-item .code { display: none; }
   transition: all .15s;
 }
 .gender-toggle button.active.male {
-  background: #3D8FCC;
+  background: var(--navy);
   color: white;
-  box-shadow: 0 1px 3px rgba(61,143,204,0.3);
+  box-shadow: 0 1px 3px rgba(20,36,80,0.3);
 }
 .gender-toggle button.active.female {
-  background: #E85A7A;
+  background: var(--orange);
   color: white;
-  box-shadow: 0 1px 3px rgba(232,90,122,0.3);
+  box-shadow: 0 1px 3px rgba(240,90,40,0.3);
 }
 
 /* ─── 保費分析區塊(表格下方) ─── */
@@ -1730,7 +1740,7 @@ const App = (() => {
       ]
     },
     { key: '實支實付型(自負額)', products: [
-        { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃3' }
+        { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' }
       ]
     },
     { key: '手術險', products: [
@@ -1743,8 +1753,11 @@ const App = (() => {
         { cid: 'hongtai', code: 'HI', defaultAmount: 3 }
       ]
     },
-    { key: '重大傷病', products: [
-        { cid: 'quanqiu', code: 'DCF', defaultAmount: 100 },
+    { key: '重大傷病(終身)', products: [
+        { cid: 'quanqiu', code: 'DCF', defaultAmount: 100 }
+      ]
+    },
+    { key: '重大傷病(一年期)', products: [
         { cid: 'quanqiu', code: 'XDE', defaultAmount: 100 },
         { cid: 'hongtai', code: 'NDD', defaultAmount: 100 },
         { cid: 'xinguang', code: 'M4D', defaultAmount: 100 }
@@ -1795,7 +1808,8 @@ const App = (() => {
     '實支實付型(自負額)': ['daily','icu_daily','reimburse','opsurg','other'],
     '手術險': ['surgery','daily','icu_daily','death','maturity','other','waiver'],
     '定額日額': ['daily','icu_daily','other'],
-    '重大傷病': ['critical','daily','maturity','other'],
+    '重大傷病(終身)': ['critical','daily','maturity','other'],
+    '重大傷病(一年期)': ['critical','daily','maturity','other'],
     '癌症險(單筆金)': ['critical'],
     '癌症險(療程型)': ['critical','daily','surgery','opsurg','chemo','targeting','transplant','reconstruct','other']
   };
@@ -2131,7 +2145,8 @@ const App = (() => {
     '實支實付型(自負額)': null,              // 用 cls.key reimburse 抓
     '手術險': null,                          // surgery cls
     '定額日額': null,                        // daily cls
-    '重大傷病': null,                        // critical cls
+    '重大傷病(終身)': null,                  // critical cls
+    '重大傷病(一年期)': null,                 // critical cls
     '癌症險(單筆金)': null,                  // critical cls
     '癌症險(療程型)': null                   // critical cls
   };
@@ -2139,7 +2154,8 @@ const App = (() => {
     '實支實付型(自負額)': 'reimburse',
     '手術險': 'surgery',
     '定額日額': 'daily',
-    '重大傷病': 'critical',
+    '重大傷病(終身)': 'critical',
+    '重大傷病(一年期)': 'critical',
     '癌症險(單筆金)': 'critical',
     '癌症險(療程型)': 'critical'
   };
@@ -2501,7 +2517,7 @@ const App = (() => {
     html += '</tr>';
 
     // ─── 從客戶年齡 → endAge 平均保費 ───
-    html += `<tr class="row-fee-avg"><td><strong>📊 ${age}→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge - age + 1} 年,總繳 ÷ 年數</div></td>`;
+    html += `<tr class="row-fee-avg"><td><strong>📊 ${age}→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge - age + 1} 年,總繳 ÷ 年數<br><span class="fee-disclaimer">※ 假設費率不變</span></div></td>`;
     cpData.forEach(d => {
       const c = d.fromClient;
       const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
@@ -2510,7 +2526,7 @@ const App = (() => {
     html += '</tr>';
 
     // ─── 從 0 → endAge 平均保費 ───
-    html += `<tr class="row-fee-avg row-fee-zero"><td><strong>📊 0→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge + 1} 年,終身平均</div></td>`;
+    html += `<tr class="row-fee-avg row-fee-zero"><td><strong>📊 0→${endAge} 歲平均</strong><div class="row-fee-sub">${endAge + 1} 年,終身平均<br><span class="fee-disclaimer">※ 假設費率不變</span></div></td>`;
     cpData.forEach(d => {
       const c = d.fromZero;
       const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
