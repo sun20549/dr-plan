@@ -489,8 +489,8 @@ body {
   vertical-align: middle;
 }
 
-.compare-table tbody tr:nth-child(odd) td { background: rgba(248,245,240,0.4); }
-.compare-table tbody tr:hover td { background: var(--orange-light); }
+.compare-table tbody tr:nth-child(odd):not(.row-fee-detail):not(.row-fee-subhead):not(.row-fee-section-header) td { background: rgba(248,245,240,0.4); }
+.compare-table tbody tr:hover:not(.row-fee-detail):not(.row-fee-subhead):not(.row-fee-section-header) td { background: var(--orange-light); }
 
 .compare-table tbody td:first-child {
   text-align: left;
@@ -638,6 +638,121 @@ body {
 .cell-cp.best::after {
   content: ' ⭐';
   font-size: 11px;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * v1.1 — 費率明細整合進主表(0-80 歲費率,接在 CP 列之後)
+ * 主表 thead/上半部每家公司 1 個 td/th colspan=2,
+ * 下半部費率區每家拆男/女 2 欄。年齡欄是同一條軸,從給付一路延伸到 80 歲。
+ * ════════════════════════════════════════════════════════════ */
+
+/* 區段標題列(整列 orange-dark,「📊 各年齡費率明細」) */
+.compare-table tbody tr.row-fee-section-header td {
+  background: var(--orange-dark) !important;
+  color: white !important;
+  text-align: left !important;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--orange);
+}
+/* 第一欄(空)+ 每家男女 sub-header */
+.compare-table tbody tr.row-fee-subhead td.age-axis-corner {
+  background: var(--navy) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.compare-table tbody tr.row-fee-subhead th.fa-th-male,
+.compare-table tbody tr.row-fee-subhead th.fa-th-female {
+  background: #3D8FCC;
+  color: white;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.compare-table tbody tr.row-fee-subhead th.fa-th-female {
+  background: #E85A7A;
+}
+
+/* 各歲費率列 */
+.compare-table tbody tr.row-fee-detail td {
+  padding: 4px 10px !important;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+  background: white;
+  white-space: nowrap;
+  border-bottom: 1px solid #f0f0f0;
+}
+/* 年齡欄(費率明細列的第一格) */
+.compare-table tbody tr.row-fee-detail td.age-cell {
+  text-align: left;
+  background: var(--gray-bg) !important;
+  font-weight: 700;
+  font-family: 'Bebas Neue', sans-serif;
+  border-right: 1px solid #e8e8ed;
+  min-width: 56px;
+  font-size: 12px;
+}
+.compare-table tbody tr.row-fee-detail td.age-cell .age-unit {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 9px;
+  color: var(--gray);
+  margin-left: 2px;
+  font-weight: 400;
+}
+
+/* 男 / 女欄淡藍/淡粉底 */
+.compare-table tbody tr.row-fee-detail td.fee-cell.male-col   { background: rgba(61,143,204,0.10); }
+.compare-table tbody tr.row-fee-detail td.fee-cell.female-col { background: rgba(232,90,122,0.10); }
+
+/* 公司之間的彩色分隔線(畫在男欄左邊) */
+.compare-table tbody tr.row-fee-detail td.fee-cell.male-col {
+  border-left: 2px solid var(--company-color, #d8dde6);
+}
+
+/* 客戶當前年齡列(整列淡橘背景) */
+.compare-table tbody tr.row-fee-detail.client-row td.age-cell {
+  background: var(--orange) !important;
+  color: white;
+}
+.compare-table tbody tr.row-fee-detail.client-row td.fee-cell {
+  background: var(--orange-light) !important;
+  font-weight: 700;
+  color: var(--orange-dark);
+  font-size: 14px;
+}
+.compare-table tbody tr.row-fee-detail.client-row td.fee-cell.client-cell {
+  background: var(--orange) !important;
+  color: white;
+}
+
+/* 範圍內(現年→上限)極淡橘 */
+.compare-table tbody tr.row-fee-detail.in-range-row:not(.client-row) td.fee-cell {
+  background: rgba(255,237,224,0.5) !important;
+}
+.compare-table tbody tr.row-fee-detail.in-range-row:not(.client-row) td.age-cell {
+  background: #fff5ec !important;
+}
+
+/* 超出該家公司續保上限 */
+.compare-table tbody tr.row-fee-detail td.fee-cell.out-of-range {
+  color: #c4c8d0;
+  background: #fafbfc !important;
+  font-style: italic;
+}
+
+/* 費率明細列不要被 zebra/hover 干擾 */
+.compare-table tbody tr.row-fee-detail:nth-child(odd) td {
+  /* 覆寫 tbody zebra */
+}
+.compare-table tbody tr.row-fee-detail:hover td {
+  /* 不要 hover 橘色覆寫掉淡藍/淡粉 */
 }
 
 /* 全年齡保費表 section */
@@ -2188,7 +2303,11 @@ const App = (() => {
     const compareRangeNote = `比較範圍: ${age}–${endAge} 歲, 共 ${endAge - age + 1} 年`;
 
     // ─── 渲染整張表 ───
+    // v1.1:把費率明細合併進這張表 — 上半每家 1 欄(colspan=2 跨到下半的男/女),
+    //       下半每家 2 欄(男/女)。年齡軸從給付列一路延伸到 80 歲費率,在同一張表內。
     const table = document.getElementById('compareTable');
+    const showFee = state.ui.fullAgeExpanded;  // 控制下半費率區的顯示
+
     let html = '<thead><tr><th>給付項目</th>';
     cols.forEach(col => {
       const colorVar = `--c-${col.sel.cid}`;
@@ -2206,7 +2325,8 @@ const App = (() => {
       const linkTpl = company.linkTemplate || {};
       const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
 
-      html += `<th class="th-product" style="--th-color: var(${colorVar})">
+      // 公司 th 用 colspan="2",讓下方男/女兩格對齊
+      html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
         <div class="th-company">${company.shortName || company.name || ''}</div>
         <span class="th-code">${col.code}</span>
         <div class="th-name">${p.name || col.code}</div>
@@ -2220,7 +2340,7 @@ const App = (() => {
     });
     html += '</tr></thead><tbody>';
 
-    // 給付明細列
+    // 給付明細列 — 每家 1 個 td colspan=2
     rowDefs.forEach(rd => {
       html += `<tr><td>${rd.rowTitle}</td>`;
       cols.forEach(col => {
@@ -2228,12 +2348,12 @@ const App = (() => {
         if (r.kind === 'num') {
           const starCls = (state.showStar && r.star) ? ' star' : '';
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<td><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
+          html += `<td colspan="2"><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
         } else if (r.kind === 'rule') {
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<td><span class="cell-rule" title="${tt}">依條款</span></td>`;
+          html += `<td colspan="2"><span class="cell-rule" title="${tt}">依條款</span></td>`;
         } else {
-          html += `<td><span class="cell-none">—</span></td>`;
+          html += `<td colspan="2"><span class="cell-none">—</span></td>`;
         }
       });
       html += '</tr>';
@@ -2242,7 +2362,7 @@ const App = (() => {
     // ─── 分隔:當年保費 ───
     html += `<tr class="row-fee-divider row-fee-current"><td><strong>💰 當年保費</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
     cpData.forEach(d => {
-      html += `<td class="cell-fee">${d.feeCurrent !== null ? d.feeCurrent.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
+      html += `<td colspan="2" class="cell-fee">${d.feeCurrent !== null ? d.feeCurrent.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
     });
     html += '</tr>';
 
@@ -2251,7 +2371,7 @@ const App = (() => {
     cpData.forEach(d => {
       const c = d.fromClient;
       const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
-      html += `<td class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
+      html += `<td colspan="2" class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
     });
     html += '</tr>';
 
@@ -2260,27 +2380,73 @@ const App = (() => {
     cpData.forEach(d => {
       const c = d.fromZero;
       const totalK = c.total >= 10000 ? Math.round(c.total / 10000) + ' 萬' : c.total.toLocaleString();
-      html += `<td class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
+      html += `<td colspan="2" class="cell-fee-avg">${c.avg > 0 ? c.avg.toLocaleString() : '—'}<span class="cell-unit">元/年</span><div class="cell-fee-sub">總繳 ${totalK}</div></td>`;
     });
     html += '</tr>';
 
     // ─── CP 兩列(只用「客戶→上限」平均保費當分母)───
-    // 主打項 CP (該類別最關鍵給付)
     const primaryLabel = cpData[0]?.primary?.label || '主打項';
     html += `<tr class="row-cp"><td><strong>${primaryLabel} CP</strong><div class="row-cp-sub">${primaryLabel} ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpPrimary > 0 && d.cpPrimary === maxCpP;
-      html += `<td>${d.cpPrimary > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+      html += `<td colspan="2">${d.cpPrimary > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span>` : '<span class="cell-none">—</span>'}</td>`;
     });
     html += '</tr>';
 
-    // 日額 CP (對實支實付/手術險/日額型重要)
     html += `<tr class="row-cp"><td><strong>住院日額 CP</strong><div class="row-cp-sub">日額 ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpDaily > 0 && d.cpDaily === maxCpD;
-      html += `<td>${d.cpDaily > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+      html += `<td colspan="2">${d.cpDaily > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span>` : '<span class="cell-none">—</span>'}</td>`;
     });
     html += '</tr>';
+
+    // ═══════════════════════════════════════════════════════════════
+    // v1.1: 費率明細(整合進主表底部) — 每家拆男/女兩欄
+    // ═══════════════════════════════════════════════════════════════
+    if (showFee) {
+      // 分隔列(整列 navy 底,標題置左)
+      const totalCols = 1 + cols.length * 2;
+      html += `<tr class="row-fee-section-header"><td colspan="${totalCols}">📊 各年齡費率明細(0–80 歲)</td></tr>`;
+
+      // 男/女 sub-header 列(年齡欄空白 + 每家 男♂ / 女♀)
+      html += '<tr class="row-fee-subhead"><td class="age-axis-corner"></td>';
+      cols.forEach(col => {
+        html += `<th class="fa-th-male">男 ♂</th><th class="fa-th-female">女 ♀</th>`;
+      });
+      html += '</tr>';
+
+      // 各年齡費率列
+      const tableMaxAge = Math.max(...cols.map(c => (c.product?.maxAgeContinuous || 80)));
+      for (let a = 0; a <= tableMaxAge; a++) {
+        const isClientAge = a === age;
+        const isInRange = a >= age;
+        const cls = [
+          'row-fee-detail',
+          isClientAge ? 'client-row' : '',
+          isInRange   ? 'in-range-row' : ''
+        ].filter(Boolean).join(' ');
+
+        html += `<tr class="${cls}"><td class="age-cell">${a}<span class="age-unit">歲</span></td>`;
+        cols.forEach(col => {
+          const maxAge = col.product?.maxAgeContinuous || 80;
+          const outOfRange = a > maxAge;
+          const cid = col.sel.cid;
+          let feeM = null, feeF = null;
+          if (!outOfRange) {
+            feeM = lookupPremium(col.product, col.sel.amount, a, 'M');
+            feeF = lookupPremium(col.product, col.sel.amount, a, 'F');
+          }
+          const mCls = (isClientAge && gender === 'M' && !outOfRange) ? 'client-cell' : '';
+          const fCls = (isClientAge && gender === 'F' && !outOfRange) ? 'client-cell' : '';
+          const oorCls = outOfRange ? 'out-of-range' : '';
+          const mDisp = outOfRange ? '—' : (feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—');
+          const fDisp = outOfRange ? '—' : (feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—');
+          html += `<td class="fee-cell male-col ${mCls} ${oorCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
+          html += `<td class="fee-cell female-col ${fCls} ${oorCls}">${fDisp}</td>`;
+        });
+        html += '</tr>';
+      }
+    }
 
     html += '</tbody>';
     table.innerHTML = html;
@@ -2298,14 +2464,9 @@ const App = (() => {
       if (el.tagName === 'INPUT') el.addEventListener('input', handler);
     });
 
-    // 連動全年齡表(預設展開)
+    // v1.1:費率區整合進主表,#fullAgeSection 隱藏不再使用
     const fullAgeSec = document.getElementById('fullAgeSection');
-    if (state.ui.fullAgeExpanded) {
-      fullAgeSec.style.display = '';
-      renderFullAgeTable(cols);
-    } else {
-      fullAgeSec.style.display = 'none';
-    }
+    if (fullAgeSec) fullAgeSec.style.display = 'none';
   }
 
   /* ─── 全年齡保費表(v1.0):單張統整表,N 家公司並排 ─── */
