@@ -1948,36 +1948,92 @@ const App = (() => {
     if (!product) return null;
     const g = gender === 'F' ? 'F' : 'M';
     const ageStr = String(age);
+    const mode = product.amountMode;
 
-    // 嘗試 rates 巢狀結構
-    if (product.rates && typeof product.rates === 'object') {
-      const period = product.defaultPeriod || Object.keys(product.rates)[0];
-      const periodData = product.rates[period];
-      if (periodData && periodData[g]) {
-        const planData = periodData[g][String(amount)];
-        if (planData && typeof planData === 'object') {
-          // 年齡降階:找 ≤ age 的最大 key
-          if (planData[ageStr] !== undefined) return planData[ageStr];
-          const ages = Object.keys(planData).map(Number).sort((a,b) => a-b);
-          let best = null;
-          for (const a of ages) {
-            if (a <= age) best = a;
-            else break;
-          }
-          return best !== null ? planData[String(best)] : null;
+    // 內部:從 ratesObj (rates / firstYearRates) 取一個值,自動辨識結構
+    // 結構 A:rates[period][gender][plan-key][age-key] = 該歲該計劃的最終年保費 (plan 模式)
+    // 結構 B:rates[period][gender][age-key]          = 每「單位」年費率 (wan/free 模式,需要再 × 保額單位數)
+    function readRates(ratesObj) {
+      if (!ratesObj || typeof ratesObj !== 'object') return null;
+      const period = product.defaultPeriod || Object.keys(ratesObj)[0];
+      const periodData = ratesObj[period];
+      if (!periodData || !periodData[g]) return null;
+      const gd = periodData[g];
+
+      // 試結構 A:periodData[g][amount] 是 dict (age → val)
+      const planData = gd[String(amount)];
+      if (planData && typeof planData === 'object') {
+        // 年齡降階
+        if (planData[ageStr] !== undefined) return planData[ageStr];
+        const ages = Object.keys(planData).map(Number).sort((a,b) => a-b);
+        let best = null;
+        for (const a of ages) {
+          if (a <= age) best = a;
+          else break;
+        }
+        return best !== null ? planData[String(best)] : null;
+      }
+
+      // 試結構 B:periodData[g][age] 直接是數字 (每單位費率)
+      const direct = gd[ageStr];
+      if (typeof direct === 'number') {
+        // 年齡降階:確保 direct 有值
+        return computeWithAmount(direct);
+      }
+      // 也許找不到直接 age,做降階
+      const numAges = Object.keys(gd).map(Number).filter(n => !isNaN(n)).sort((a,b) => a-b);
+      if (numAges.length > 0) {
+        let best = null;
+        for (const a of numAges) {
+          if (a <= age) best = a;
+          else break;
+        }
+        if (best !== null) {
+          const v = gd[String(best)];
+          if (typeof v === 'number') return computeWithAmount(v);
         }
       }
+      return null;
     }
 
-    // 退回 rateTable (簡單表)
+    // 算「每單位費率 × 保額單位數」— 依 amountUnit 判斷一單位多大
+    function computeWithAmount(ratePerUnit) {
+      const unit = product.amountUnit || '';
+      let units;
+      if (unit.includes('10萬')) {
+        // 每 10 萬為一單位,amount 是「萬數」,所以 ÷ 10
+        units = Number(amount) / 10;
+      } else if (unit.includes('百')) {
+        // 「百元」單位(類似 YHA / H2D 等),amount × 100
+        units = Number(amount) * 100;
+      } else if (unit.includes('萬')) {
+        // 「萬元」單位,amount 直接是萬數
+        units = Number(amount);
+      } else {
+        units = Number(amount);
+      }
+      const fee = ratePerUnit * units;
+      // 費率資料常含小數,結果取整;且不允許負數
+      return fee > 0 ? Math.round(fee) : 0;
+    }
+
+    // 主路徑:product.rates
+    let v = readRates(product.rates);
+    if (v !== null && v !== undefined) return v;
+
+    // 退路 1:firstYearRates(M4D / XCF / XCG 等用首年/續保分表的商品)
+    if (product.firstYearRates) {
+      v = readRates(product.firstYearRates);
+      if (v !== null && v !== undefined) return v;
+    }
+
+    // 退路 2:rateTable (簡單表)
     if (product.rateTable && product.rateTable[amount] !== undefined) {
-      const v = product.rateTable[amount];
-      // 可能是純數字或 { M, F } 結構
-      if (typeof v === 'number') return v;
-      if (typeof v === 'object') return v[g] !== undefined ? v[g] : null;
+      const rt = product.rateTable[amount];
+      if (typeof rt === 'number') return rt;
+      if (typeof rt === 'object') return rt[g] !== undefined ? rt[g] : null;
     }
 
-    // 如果是 ratio/wan 等沒固定費率表的商品 → 沒辦法精準算,回 null
     return null;
   }
 
