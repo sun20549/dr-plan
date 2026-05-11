@@ -253,14 +253,14 @@
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,215,0,0.2);
     border-radius: 12px;
-    padding: 22px 14px;
+    padding: 26px 14px;
     text-align: center;
     backdrop-filter: blur(6px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 130px;
+    min-height: 150px;
   }
   .team-stat-label {
     font-size: 11px;
@@ -271,28 +271,28 @@
   }
   .team-stat-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
+    font-size: 56px;
     color: var(--usa-gold);
     line-height: 1;
     letter-spacing: 1px;
     display: inline-flex;
     align-items: baseline;
     justify-content: center;
-    gap: 4px;
+    gap: 6px;
     white-space: nowrap;
     text-shadow: 0 2px 8px rgba(255,215,0,0.25);
   }
   /* 業績那欄數字最長,自動縮小一點才不會擠 */
   .team-stat-value.long {
-    font-size: 28px;
+    font-size: 40px;
     letter-spacing: 0.5px;
   }
   .team-stat-unit {
-    font-size: 14px;
-    color: rgba(255,255,255,0.85);
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
     font-family: 'Noto Sans TC', sans-serif;
-    font-weight: 500;
-    margin-left: 2px;
+    font-weight: 700;
+    letter-spacing: 1px;
   }
   .team-stat-sub {
     font-size: 11px;
@@ -879,7 +879,12 @@
     .hero-title { font-size: 36px; letter-spacing: 1px; }
     .hero-subtitle { font-size: 20px; letter-spacing: 3px; }
     .section { padding: 32px 20px; }
-    .team-stats { grid-template-columns: repeat(2, 1fr); }
+    .team-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .team-stat { padding: 20px 10px; min-height: 130px; }
+    .team-stat-value { font-size: 44px; }
+    .team-stat-value.long { font-size: 30px; }
+    .team-stat-unit { font-size: 14px; }
+    .team-stat-label { font-size: 10px; letter-spacing: 1.5px; }
     .lb-row { grid-template-columns: 44px 1fr; gap: 12px; padding: 14px 16px; }
     .lb-amount { grid-column: 2; text-align: left; margin-top: 4px; }
     .lb-amount-value { font-size: 22px; }
@@ -1047,6 +1052,24 @@ function rocToDate(rocStr) {
 // 千分位格式化
 function fmt(n) {
   return Math.round(n).toLocaleString('zh-TW');
+}
+
+// 「億」+「萬」單位切換(給團隊總覽大數字用)
+// 回傳 { value: '5.4', unit: '億' } 或 { value: '5,597', unit: '萬' } 或 { value: '500', unit: '' }
+function fmtBig(n) {
+  n = Math.round(n);
+  if (n >= 100_000_000) {
+    // ≥ 1 億 → "X.X 億"(1 位小數,但若整數就不顯示小數)
+    const v = n / 100_000_000;
+    const display = v >= 10 ? Math.round(v).toString() : (Math.round(v * 10) / 10).toFixed(1).replace(/\.0$/, '');
+    return { value: display, unit: '億' };
+  }
+  if (n >= 10_000) {
+    // ≥ 1 萬 → "X,XXX 萬"
+    return { value: Math.round(n / 10_000).toLocaleString('zh-TW'), unit: '萬' };
+  }
+  // < 1 萬 → 保留原樣
+  return { value: n.toLocaleString('zh-TW'), unit: '' };
 }
 
 // 從個人分頁的 URL 中抽 gid
@@ -1232,32 +1255,37 @@ async function loadData() {
 
 function renderTeamOverview(members) {
   const totalFyb = members.reduce((s, m) => s + m.fyb, 0);
-  const totalSeats = members.reduce((s, m) => s + m.calc.seats, 0);
+  const totalReward = members.reduce((s, m) => s + m.calc.totalReward, 0);
   const totalPremium = members.reduce((s, m) => s + (m.premium || 0), 0);
   const hasPremium = totalPremium > 0;
   
   const daysLeft = Math.max(0, Math.ceil((CONTEST_END - new Date()) / (1000*60*60*24)));
   
-  // 總保費卡片(只在 Sheet 有填 L 欄時才出現)
+  // 用 fmtBig 把大數字壓縮成「X億」或「X萬」
+  const premiumBig = fmtBig(totalPremium);
+  const fybBig = fmtBig(totalFyb);
+  const rewardBig = fmtBig(totalReward);
+  
+  // 卡片排序:🔥 總保費 → 總業績 → 🎁 旅遊獎金 → 倒數
   const premiumCard = hasPremium ? `
     <div class="team-stat highlight">
       <div class="team-stat-label">🔥 累積總保費</div>
-      <div class="team-stat-value long">${fmt(totalPremium)}<span class="team-stat-unit">元</span></div>
+      <div class="team-stat-value">${premiumBig.value}<span class="team-stat-unit">${premiumBig.unit}元</span></div>
       <div class="team-stat-sub">夥伴實際成交保費</div>
     </div>
   ` : '';
   
   const html = `
-    <div class="team-stat">
-      <div class="team-stat-label">總競賽業績</div>
-      <div class="team-stat-value long">${fmt(totalFyb)}<span class="team-stat-unit">元</span></div>
-      <div class="team-stat-sub">${members.length} 位夥伴累計</div>
-    </div>
     ${premiumCard}
     <div class="team-stat">
-      <div class="team-stat-label">累積完整席次</div>
-      <div class="team-stat-value">${totalSeats}<span class="team-stat-unit">席</span></div>
-      <div class="team-stat-sub">每 500 萬 = 1 席</div>
+      <div class="team-stat-label">總競賽業績</div>
+      <div class="team-stat-value">${fybBig.value}<span class="team-stat-unit">${fybBig.unit}元</span></div>
+      <div class="team-stat-sub">${members.length} 位夥伴累計</div>
+    </div>
+    <div class="team-stat">
+      <div class="team-stat-label">🎁 累積旅遊獎金</div>
+      <div class="team-stat-value">${rewardBig.value}<span class="team-stat-unit">${rewardBig.unit}元</span></div>
+      <div class="team-stat-sub">含旅遊金 + 超額退現</div>
     </div>
     <div class="team-stat">
       <div class="team-stat-label">距結算還剩</div>
