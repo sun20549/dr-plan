@@ -958,9 +958,51 @@
     .team-stat-value.long { font-size: 30px; }
     .team-stat-unit { font-size: 14px; }
     .team-stat-label { font-size: 10px; letter-spacing: 1.5px; }
-    .lb-row { grid-template-columns: 44px 1fr; gap: 12px; padding: 14px 16px; }
-    .lb-amount { grid-column: 2; text-align: left; margin-top: 4px; }
-    .lb-amount-value { font-size: 22px; }
+    
+    /* ──── 排行榜手機版重新設計 ──── */
+    .lb-row {
+      grid-template-columns: 40px 1fr auto;
+      gap: 10px;
+      padding: 14px 14px;
+      align-items: flex-start;
+    }
+    .lb-rank { width: 36px; height: 36px; font-size: 16px; }
+    .lb-name { font-size: 16px; }
+    /* 業績區改成右上角小型 */
+    .lb-amount {
+      min-width: 0;
+      align-items: flex-end;
+    }
+    .lb-amount-label {
+      display: none; /* 手機版隱藏「競賽業績」標籤,直接看數字 */
+    }
+    .lb-amount-value {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .lb-amount-premium {
+      margin-top: 4px;
+      padding-top: 4px;
+      font-size: 10px;
+    }
+    .lb-amount-premium .premium-num { font-size: 12px; }
+    /* 進度文字 + 保費換算改回兩行 (手機版空間不夠) */
+    .lb-fyb-text {
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .lb-fyb-sep { display: none; } /* 隱藏 ・ 分隔點 */
+    .lb-premium-hint {
+      display: block;
+      margin-top: 2px;
+      white-space: normal;
+    }
+    /* 席次徽章 + 文字也縮小 */
+    .lb-seat-badge { width: 22px; height: 22px; font-size: 11px; }
+    .lb-seat-count-text .num { font-size: 18px; }
+    .lb-seat-count-text { font-size: 11px; }
+    .lb-tofifth-tag { font-size: 10px; margin-left: 4px; }
+    
     .top-nav { padding: 14px 18px; }
     .nav-brand { font-size: 11px; letter-spacing: 1px; }
     .modal-body { padding: 20px 18px; }
