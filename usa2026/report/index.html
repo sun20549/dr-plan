@@ -253,34 +253,51 @@
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,215,0,0.2);
     border-radius: 12px;
-    padding: 22px 18px;
+    padding: 22px 14px;
     text-align: center;
     backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 130px;
   }
   .team-stat-label {
     font-size: 11px;
     letter-spacing: 2px;
     color: rgba(255,255,255,0.7);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: 700;
   }
   .team-stat-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
+    font-size: 40px;
     color: var(--usa-gold);
     line-height: 1;
     letter-spacing: 1px;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(255,215,0,0.25);
+  }
+  /* 業績那欄數字最長,自動縮小一點才不會擠 */
+  .team-stat-value.long {
+    font-size: 28px;
+    letter-spacing: 0.5px;
   }
   .team-stat-unit {
-    font-size: 13px;
-    color: rgba(255,255,255,0.7);
-    margin-left: 2px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
     font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    margin-left: 2px;
   }
   .team-stat-sub {
     font-size: 11px;
     color: rgba(255,255,255,0.55);
-    margin-top: 4px;
+    margin-top: 8px;
     letter-spacing: 1px;
   }
 
@@ -1206,7 +1223,7 @@ function renderTeamOverview(members) {
   const html = `
     <div class="team-stat">
       <div class="team-stat-label">總競賽業績</div>
-      <div class="team-stat-value">${fmt(totalFyb)}<span class="team-stat-unit">元</span></div>
+      <div class="team-stat-value long">${fmt(totalFyb)}<span class="team-stat-unit">元</span></div>
       <div class="team-stat-sub">${members.length} 位夥伴累計</div>
     </div>
     <div class="team-stat">
