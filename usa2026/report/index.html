@@ -518,6 +518,33 @@
     letter-spacing: 1.5px;
     margin-top: 4px;
   }
+  /* 保費小字(次要資訊) */
+  .lb-amount-premium {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(0,0,0,0.08);
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+  .lb-amount-premium .premium-label {
+    font-weight: 500;
+    color: #aaa;
+    margin-right: 4px;
+    font-size: 10px;
+  }
+  .lb-amount-premium .premium-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: #555;
+    letter-spacing: 0.3px;
+  }
+  .lb-amount-premium .premium-unit {
+    font-size: 11px;
+    color: #888;
+    margin-left: 1px;
+  }
+  .lb-row.achieved .lb-amount-premium .premium-num { color: #8b6914; }
 
   /* ── 個人戰報 modal ── */
   .modal-backdrop {
@@ -1270,7 +1297,7 @@ function renderTeamOverview(members) {
   const premiumCard = hasPremium ? `
     <div class="team-stat highlight">
       <div class="team-stat-label">🔥 累積總保費</div>
-      <div class="team-stat-value">${premiumBig.value}<span class="team-stat-unit">${premiumBig.unit}元</span></div>
+      <div class="team-stat-value">${premiumBig.value}<span class="team-stat-unit">${premiumBig.unit}</span></div>
       <div class="team-stat-sub">夥伴實際成交保費</div>
     </div>
   ` : '';
@@ -1279,12 +1306,12 @@ function renderTeamOverview(members) {
     ${premiumCard}
     <div class="team-stat">
       <div class="team-stat-label">總競賽業績</div>
-      <div class="team-stat-value">${fybBig.value}<span class="team-stat-unit">${fybBig.unit}元</span></div>
+      <div class="team-stat-value">${fybBig.value}<span class="team-stat-unit">${fybBig.unit}</span></div>
       <div class="team-stat-sub">${members.length} 位夥伴累計</div>
     </div>
     <div class="team-stat">
       <div class="team-stat-label">🎁 累積旅遊獎金</div>
-      <div class="team-stat-value">${rewardBig.value}<span class="team-stat-unit">${rewardBig.unit}元</span></div>
+      <div class="team-stat-value">${rewardBig.value}<span class="team-stat-unit">${rewardBig.unit}</span></div>
       <div class="team-stat-sub">含旅遊金 + 超額退現</div>
     </div>
     <div class="team-stat">
@@ -1370,6 +1397,12 @@ function renderLeaderboard(members) {
         <div class="lb-amount">
           <div class="lb-amount-value">${fmt(m.fyb)}</div>
           <div class="lb-amount-label">業績</div>
+          ${m.premium > 0 ? `
+            <div class="lb-amount-premium">
+              <span class="premium-label">保費</span>
+              <span class="premium-num">${fmtBig(m.premium).value}</span><span class="premium-unit">${fmtBig(m.premium).unit}</span>
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
