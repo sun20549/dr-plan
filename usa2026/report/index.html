@@ -964,20 +964,24 @@
       grid-template-columns: 40px 1fr auto;
       gap: 10px;
       padding: 14px 14px;
-      align-items: flex-start;
+      align-items: center; /* 整體垂直置中 */
     }
     .lb-rank { width: 36px; height: 36px; font-size: 16px; }
     .lb-name { font-size: 16px; }
-    /* 業績區改成右上角小型 */
+    /* 業績區 — 垂直置中、整體往中間靠 */
     .lb-amount {
       min-width: 0;
       align-items: flex-end;
+      justify-content: center;
     }
     .lb-amount-label {
-      display: none; /* 手機版隱藏「競賽業績」標籤,直接看數字 */
+      align-self: flex-end; /* 手機版改靠右,跟數字對齊 */
+      font-size: 9px;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
     }
     .lb-amount-value {
-      font-size: 18px;
+      font-size: 19px;
       letter-spacing: 0;
     }
     .lb-amount-premium {
