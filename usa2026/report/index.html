@@ -197,6 +197,25 @@
     color: var(--usa-blue);
     border-color: var(--usa-gold);
   }
+  .refresh-btn {
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .refresh-btn.spinning {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .refresh-btn.spinning::before {
+    content: '🔄 ';
+    display: inline-block;
+    animation: spin-icon 0.8s linear infinite;
+  }
+  .refresh-btn.spinning {
+    color: rgba(255,255,255,0.5);
+  }
+  @keyframes spin-icon {
+    to { transform: rotate(360deg); }
+  }
   .last-update {
     font-size: 12px;
     color: rgba(255,255,255,0.65);
@@ -500,6 +519,21 @@
     margin-top: 4px;
     letter-spacing: 0.5px;
   }
+  /* 保費換算提示(在進度文字下方,小灰字) */
+  .lb-premium-hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+  }
+  .lb-premium-hint .ph-num {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--usa-blue-mid);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    margin-right: 2px;
+  }
+  .lb-row.achieved .lb-premium-hint .ph-num { color: #8b6914; }
   .lb-amount {
     text-align: right;
     min-width: 130px;
@@ -955,6 +989,7 @@
     <p class="hero-subtitle">EAST COAST USA · LEADERBOARD</p>
     <div class="hero-meta-row">
       <a href="../" class="hero-link">🧮 開啟試算機</a>
+      <button id="refreshBtn" class="hero-link refresh-btn" title="清除快取重新讀取 Sheet">🔄 重新整理</button>
       <span id="lastUpdate" class="last-update"><span class="dot"></span>載入中…</span>
     </div>
   </section>
@@ -1037,9 +1072,11 @@ const TRAVEL_CAP = 150_000;        // 旅遊金封頂
 // =====================================================
 // 工具:從 Sheet 讀 CSV (gviz API, 不需要 API key)
 // =====================================================
-async function fetchSheetCSV(gid) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
-  const res = await fetch(url);
+async function fetchSheetCSV(gid, forceRefresh = false) {
+  // forceRefresh = true 時加時間戳繞過快取
+  const cacheBuster = forceRefresh ? `&_t=${Date.now()}` : '';
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}${cacheBuster}`;
+  const res = await fetch(url, forceRefresh ? { cache: 'no-store' } : {});
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.text();
 }
@@ -1163,10 +1200,10 @@ function calculateRewards(fyb) {
 // =====================================================
 let memberData = []; // 全部夥伴的資料
 
-async function loadData() {
+async function loadData(forceRefresh = false) {
   try {
     // 1) 讀競賽總表
-    const mainCsv = await fetchSheetCSV(MAIN_GID);
+    const mainCsv = await fetchSheetCSV(MAIN_GID, forceRefresh);
     const mainRows = parseCSV(mainCsv);
     
     // ▼▼▼ 偵錯模式(網址加 ?debug=1 顯示) ▼▼▼
@@ -1186,7 +1223,8 @@ async function loadData() {
     // 動態找標題列 — 用「包含」而非「完全等於」,容忍合併儲存格的情況
     // (例如 Sheet 把標題列和上方說明列合併,gviz CSV 會塞成一個 cell)
     let headerIdx = -1;
-    let cols = { name: 0, fyb: 1, url: 10, premium: -1 }; // fallback default
+    let cols = { name: 0, fyb: 1, url: 10, premium: -1, nextProdA: -1, nextProdB: -1 };
+    let nextProdLabelA = '一生傳富', nextProdLabelB = '台新6年期';
     for (let i = 0; i < Math.min(mainRows.length, 6); i++) {
       const r = (mainRows[i] || []).map(c => (c || '').toString().trim());
       // 改用 includes,讓「2026...業務員姓名」這種合併儲存格也能命中
@@ -1196,20 +1234,36 @@ async function loadData() {
         headerIdx = i;
         cols.name = nameIdx;
         cols.fyb = fybIdx;
-        // 找個人分頁網址欄(關鍵字配對,K 欄無論幾號都能找到)
+        // 找個人分頁網址欄
         const urlIdx = r.findIndex(c => c.includes('分頁') || c.includes('網址') || c.includes('連結') || c === '個人分頁網址');
         if (urlIdx >= 0) cols.url = urlIdx;
-        // 找總保費欄(可選,沒有就跳過)
+        // 找總保費欄
         const premIdx = r.findIndex(c => c === '總保費' || c.includes('總保費') || c.includes('總台幣保費'));
         if (premIdx >= 0) cols.premium = premIdx;
+        // 找「約多少 XXX」欄位(下一階達標的保費換算,Sheet 已經算好,我們直接用)
+        // 找出**第一個**「下一階差額」之後的「約多少 XX」(這樣不會抓到「達標一席差額」後的那組)
+        const gapIdx = r.findIndex(c => c.includes('差額') && !c.includes('達標一席'));
+        if (gapIdx >= 0) {
+          for (let j = gapIdx + 1; j < r.length; j++) {
+            const c2 = r[j];
+            if (!c2 || !c2.includes('約多少')) continue;
+            if (cols.nextProdA < 0) {
+              cols.nextProdA = j;
+              nextProdLabelA = c2.replace('約多少', '').trim();
+            } else if (cols.nextProdB < 0) {
+              cols.nextProdB = j;
+              nextProdLabelB = c2.replace('約多少', '').trim();
+              break;
+            }
+          }
+        }
         break;
       }
     }
     if (headerIdx < 0) {
-      // 找不到標題列就退回原本假設:第 2 列(index 1)是標題
       headerIdx = 1;
     }
-    console.log(`[戰報] 標題列在第 ${headerIdx} 列, name欄=${cols.name}, fyb欄=${cols.fyb}, url欄=${cols.url}, 保費欄=${cols.premium}`);
+    console.log(`[戰報] 標題列在第 ${headerIdx} 列, name欄=${cols.name}, fyb欄=${cols.fyb}, url欄=${cols.url}, 保費欄=${cols.premium}, 商品A欄=${cols.nextProdA}(${nextProdLabelA}), 商品B欄=${cols.nextProdB}(${nextProdLabelB})`);
     
     // 從標題列下一列開始,掃完整張表(允許中間有空白列、不會中斷)
     const members = [];
@@ -1248,7 +1302,10 @@ async function loadData() {
       const personalUrl = (row[cols.url] || '').toString().trim();
       const gid = extractGid(personalUrl);
       const premium = cols.premium >= 0 ? toNum(row[cols.premium]) : 0;
-      members.push({ name, fyb, premium, gid, personalUrl, rowIdx: i });
+      // 下一階達標需要的保費(直接讀 Sheet 已算好的)
+      const nextProdA = cols.nextProdA >= 0 ? toNum(row[cols.nextProdA]) : 0;
+      const nextProdB = cols.nextProdB >= 0 ? toNum(row[cols.nextProdB]) : 0;
+      members.push({ name, fyb, premium, nextProdA, nextProdB, nextProdLabelA, nextProdLabelB, gid, personalUrl, rowIdx: i });
     }
     
     // 偵錯資訊(F12 console 可看)
@@ -1389,6 +1446,15 @@ function renderLeaderboard(members) {
       ? `距下一席還差 <strong style="color:var(--usa-red);">${fmt(c.gapToNextSeat)}</strong> 元`
       : `距下一格還差 <strong style="color:var(--usa-red);">${fmt(c.gapToNextFifth)}</strong> 元`;
     
+    // 保費換算提示(Sheet 上 F、G 欄已有,讀進來顯示)
+    let premiumHint = '';
+    if (m.nextProdA > 0 || m.nextProdB > 0) {
+      const parts = [];
+      if (m.nextProdA > 0) parts.push(`<span class="ph-num">${fmtBig(m.nextProdA).value}${fmtBig(m.nextProdA).unit}</span> ${m.nextProdLabelA}`);
+      if (m.nextProdB > 0) parts.push(`<span class="ph-num">${fmtBig(m.nextProdB).value}${fmtBig(m.nextProdB).unit}</span> ${m.nextProdLabelB}`);
+      premiumHint = `<div class="lb-premium-hint">≈ ${parts.join(' 或 ')}</div>`;
+    }
+    
     return `
       <div class="lb-row ${c.achieved ? 'achieved' : ''}" data-idx="${idx}">
         <div class="lb-rank ${rankClass}">${rank}</div>
@@ -1400,7 +1466,7 @@ function renderLeaderboard(members) {
           <div class="lb-progress-bar">
             <div class="lb-progress-fill" style="width:${c.progressPercent}%"></div>
           </div>
-          <div class="lb-fyb-text">${progressText}</div>
+          <div class="lb-fyb-text">${progressText}${premiumHint}</div>
         </div>
         <div class="lb-amount">
           <div class="lb-amount-label">競賽業績</div>
@@ -1577,28 +1643,34 @@ function renderPersonalBody(member, policies, loadError) {
     `;
   }
   
-  // 下一階建議
+  // 下一階建議 — 用比較對獎勵之後算「再做多少能多拿多少」
+  function nextStepReward(currentReward, addFyb) {
+    return calculateRewards(member.fyb + addFyb).totalReward - currentReward;
+  }
+  const currentReward = c.totalReward;
+  const rewardForNextFifth = nextStepReward(currentReward, c.gapToNextFifth);
+  const rewardForNextSeat = nextStepReward(currentReward, c.gapToNextSeat);
+  
   let nextHtml;
   if (c.achieved) {
+    // 已達席:重點是「再做 X 元能多拿 Y 元獎勵」
     nextHtml = `
       <div class="pc-next">
         <div class="pc-next-title">🎯 下一步</div>
         <div class="pc-next-text">
-          再做 <strong>${fmt(c.gapToNextSeat)}</strong> 元業績,
-          就能再增加 <strong>${fmt(SEAT_AMOUNT * 0.03)}</strong> 元超額退現,
-          或先做 <strong>${fmt(c.gapToNextFifth)}</strong> 元到下一個 1/5。
+          再做 <strong>${fmt(c.gapToNextFifth)}</strong> 元業績,
+          就能多拿 <strong>${fmt(rewardForNextFifth)}</strong> 元獎勵${c.gapToNextFifth !== c.gapToNextSeat ? `;<br>再做 <strong>${fmt(c.gapToNextSeat)}</strong> 元可達下一個完整席次,共多拿 <strong>${fmt(rewardForNextSeat)}</strong> 元。` : '(剛好達下一席)。'}
         </div>
       </div>
     `;
   } else {
-    const fyb = member.fyb;
     nextHtml = `
       <div class="pc-next">
         <div class="pc-next-title">🎯 下一步</div>
         <div class="pc-next-text">
           再做 <strong>${fmt(c.gapToNextFifth)}</strong> 元業績,
           就能多拿 <strong>${fmt(TRAVEL_PER_FIFTH)}</strong> 元旅遊金。<br>
-          距離「達 1 完整席次」還差 <strong>${fmt(c.gapToNextSeat)}</strong> 元。
+          距離「達 1 完整席次拿 15 萬旅遊金」還差 <strong>${fmt(c.gapToNextSeat)}</strong> 元。
         </div>
       </div>
     `;
@@ -1726,6 +1798,20 @@ document.getElementById('modalBackdrop').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     document.getElementById('modalBackdrop').classList.remove('show');
+  }
+});
+
+// 重新整理按鈕事件
+document.getElementById('refreshBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('refreshBtn');
+  if (btn.classList.contains('spinning')) return;
+  btn.classList.add('spinning');
+  btn.textContent = '讀取中…';
+  try {
+    await loadData(true);
+  } finally {
+    btn.classList.remove('spinning');
+    btn.textContent = '🔄 重新整理';
   }
 });
 
