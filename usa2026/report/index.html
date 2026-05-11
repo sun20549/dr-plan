@@ -373,6 +373,81 @@
     font-weight: 900;
     letter-spacing: 1px;
   }
+  /* ── 席次徽章列(金牌) ── */
+  .lb-seats-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 6px;
+    flex-wrap: wrap;
+  }
+  .lb-seat-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 60%, #FF8C00 100%);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    box-shadow: 0 3px 8px rgba(255,165,0,0.45), inset 0 -2px 4px rgba(139,69,19,0.2);
+    border: 1.5px solid #fff8d6;
+    position: relative;
+  }
+  .lb-seat-badge::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 6px;
+    width: 8px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+  }
+  .lb-seat-count-text {
+    margin-left: 4px;
+    font-weight: 900;
+    color: var(--orange);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+  .lb-seat-count-text .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--usa-red);
+    margin: 0 2px;
+    vertical-align: -2px;
+  }
+  .lb-tofifth-tag {
+    margin-left: 6px;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+  /* 未達席次的進度標籤 */
+  .lb-fifths-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 6px 0;
+  }
+  .lb-fifth-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #E8E2D5;
+    border: 1.5px solid #d4cdb8;
+  }
+  .lb-fifth-dot.lit {
+    background: var(--usa-gold);
+    border-color: var(--orange);
+    box-shadow: 0 0 6px rgba(255,165,0,0.5);
+  }
+  .lb-fifth-label {
+    margin-left: 6px;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
   .lb-progress-bar {
     height: 8px;
     background: #EFEAE0;
@@ -1006,22 +1081,52 @@ async function loadData() {
     const mainCsv = await fetchSheetCSV(MAIN_GID);
     const mainRows = parseCSV(mainCsv);
     
-    // 競賽總表結構:
-    // row[0]: 標題列 "2026年菁英會議競賽旅遊獎勵"
-    // row[1]: 欄位名稱列
-    // row[2+]: 夥伴資料
-    // A=姓名, B=總業績, K=個人分頁網址(我們新加的)
+    // 動態找標題列(用「業務員姓名」或「總競賽業績」當錨點,避免硬編碼 index)
+    let headerIdx = -1;
+    let cols = { name: 0, fyb: 1, url: 10 }; // fallback default
+    for (let i = 0; i < Math.min(mainRows.length, 6); i++) {
+      const r = (mainRows[i] || []).map(c => (c || '').toString().trim());
+      const nameIdx = r.findIndex(c => c === '業務員姓名');
+      const fybIdx  = r.findIndex(c => c === '總競賽業績');
+      if (nameIdx >= 0 && fybIdx >= 0) {
+        headerIdx = i;
+        cols.name = nameIdx;
+        cols.fyb = fybIdx;
+        // 找個人分頁網址欄(關鍵字配對,K 欄無論幾號都能找到)
+        const urlIdx = r.findIndex(c => c.includes('分頁') || c.includes('網址') || c.includes('連結') || c === '個人分頁網址');
+        if (urlIdx >= 0) cols.url = urlIdx;
+        break;
+      }
+    }
+    if (headerIdx < 0) {
+      // 找不到標題列就退回原本假設:第 2 列(index 1)是標題
+      headerIdx = 1;
+    }
     
+    // 從標題列下一列開始,掃完整張表(允許中間有空白列、不會中斷)
     const members = [];
-    for (let i = 2; i < mainRows.length; i++) {
-      const row = mainRows[i];
-      const name = (row[0] || '').trim();
+    const seenNames = new Set();
+    for (let i = headerIdx + 1; i < mainRows.length; i++) {
+      const row = mainRows[i] || [];
+      // name 容許清掉前後空白、零寬字元、全形空白
+      let name = (row[cols.name] || '').toString()
+        .replace(/[\u200B-\u200D\uFEFF]/g, '') // 零寬字元
+        .replace(/[\u3000\s]+/g, '')           // 所有空白(含全形)
+        .trim();
       if (!name) continue;
-      const fyb = toNum(row[1]);
-      const personalUrl = (row[10] || '').trim(); // K 欄 = index 10
+      // 忽略明顯是合計列的列
+      if (/總和|合計|尚差|目標/.test(name)) continue;
+      if (seenNames.has(name)) continue; // 防重複
+      seenNames.add(name);
+      
+      const fyb = toNum(row[cols.fyb]);
+      const personalUrl = (row[cols.url] || '').toString().trim();
       const gid = extractGid(personalUrl);
       members.push({ name, fyb, gid, personalUrl });
     }
+    
+    // 偵錯資訊(F12 console 可看)
+    console.log(`[戰報] 從總表載入 ${members.length} 位夥伴`, members.map(m => `${m.name}:${m.fyb}`));
     
     // 按業績排序
     members.sort((a, b) => b.fyb - a.fyb);
@@ -1102,13 +1207,49 @@ function renderLeaderboard(members) {
     else if (rank === 3) rankClass = 'bronze';
     
     const c = m.calc;
-    const seatTag = c.achieved 
-      ? `<span class="lb-seat-tag">🏆 ${c.seats} 席</span>` 
-      : '';
     
+    // 席次視覺化:已達席用「金色獎盃」呈現,沒達席用「1/5 圓點」呈現
+    let seatVisual = '';
+    if (c.seats > 0) {
+      // 畫實際席次數的金色獎盃(最多畫 7 個,超過就用 + 號表示)
+      const maxShow = 7;
+      const showCount = Math.min(c.seats, maxShow);
+      let badges = '';
+      for (let s = 0; s < showCount; s++) {
+        badges += `<span class="lb-seat-badge" title="第 ${s+1} 席">🏆</span>`;
+      }
+      if (c.seats > maxShow) {
+        badges += `<span class="lb-seat-count-text">+${c.seats - maxShow}</span>`;
+      }
+      // 後面跟「第 N 席進度」
+      const nextTag = c.remainder > 0 
+        ? `<span class="lb-tofifth-tag">+ ${c.remainder}/5 朝下一席邁進</span>`
+        : `<span class="lb-tofifth-tag">下一席:0/5 起跳</span>`;
+      seatVisual = `
+        <div class="lb-seats-row">
+          ${badges}
+          <span class="lb-seat-count-text"><span class="num">${c.seats}</span>席達標</span>
+          ${nextTag}
+        </div>
+      `;
+    } else {
+      // 未達席的話,畫 5 個圓點看推進到哪一格
+      let dots = '';
+      for (let s = 1; s <= 5; s++) {
+        dots += `<span class="lb-fifth-dot ${s <= c.remainder ? 'lit' : ''}"></span>`;
+      }
+      seatVisual = `
+        <div class="lb-fifths-row">
+          ${dots}
+          <span class="lb-fifth-label">${c.remainder}/5 ・ 達標需 500 萬</span>
+        </div>
+      `;
+    }
+    
+    // 文字提示
     const progressText = c.achieved
-      ? `${c.seats} 席 + ${c.remainder}/5 ・ 距下一席還差 ${fmt(c.gapToNextSeat)} 元`
-      : `${c.remainder}/5 ・ 距下一格還差 ${fmt(c.gapToNextFifth)} 元`;
+      ? `距下一席還差 <strong style="color:var(--usa-red);">${fmt(c.gapToNextSeat)}</strong> 元`
+      : `距下一格還差 <strong style="color:var(--usa-red);">${fmt(c.gapToNextFifth)}</strong> 元`;
     
     return `
       <div class="lb-row ${c.achieved ? 'achieved' : ''}" data-idx="${idx}">
@@ -1116,8 +1257,8 @@ function renderLeaderboard(members) {
         <div class="lb-body">
           <div class="lb-name-row">
             <span class="lb-name">${m.name}</span>
-            ${seatTag}
           </div>
+          ${seatVisual}
           <div class="lb-progress-bar">
             <div class="lb-progress-fill" style="width:${c.progressPercent}%"></div>
           </div>
