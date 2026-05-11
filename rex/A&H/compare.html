@@ -203,9 +203,80 @@ body {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 14px;
+  padding-right: 32px;  /* 留空間給右上角的收合按鈕 */
   height: fit-content;
   position: sticky;
   top: 80px;
+}
+
+/* 左側面板的「收合」按鈕(右上角) */
+.picker-collapse-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gray);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.15s;
+}
+.picker-collapse-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--orange-light);
+}
+
+/* 收合狀態的「展開」邊條 */
+.picker-reopen-rail {
+  display: none;  /* 預設不顯示,只在 collapsed 才顯 */
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+  width: 28px;
+  background: var(--gray-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 4px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray);
+  font-size: 10px;
+  transition: all 0.15s;
+}
+.picker-reopen-rail:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--orange-light);
+}
+.picker-reopen-rail .rail-icon {
+  font-size: 14px;
+}
+.picker-reopen-rail .rail-text {
+  writing-mode: vertical-rl;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* 收合 state:.main-layout 加 .picker-collapsed → picker 隱藏、欄寬重新分配給比較表 */
+.main-layout.picker-collapsed {
+  grid-template-columns: 28px 1fr;  /* 左側只留 28px 給 reopen 邊條 */
+}
+.main-layout.picker-collapsed .picker {
+  display: none;
+}
+.main-layout.picker-collapsed .picker-reopen-rail {
+  display: flex;
 }
 
 .picker-title {
@@ -1549,6 +1620,7 @@ body.customer-mode .picker-item .code { display: none; }
 
     <!-- 左側商品選取 -->
     <aside class="picker" id="picker">
+      <button class="picker-collapse-btn" id="pickerCollapseBtn" type="button" title="收合左側面板" aria-label="收合左側面板">◀</button>
       <div class="picker-title">選要比的商品</div>
       <div id="pickerBody">
         <div class="picker-empty">載入中...</div>
@@ -1582,6 +1654,12 @@ body.customer-mode .picker-item .code { display: none; }
         </label>
       </div>
     </aside>
+
+    <!-- 收合狀態下顯示的「展開」邊條 — 點它把 picker 叫回來 -->
+    <button class="picker-reopen-rail" id="pickerReopenRail" type="button" title="展開左側面板" aria-label="展開左側面板">
+      <span class="rail-icon">▶</span>
+      <span class="rail-text">選商品</span>
+    </button>
 
     <!-- 右側比較表 -->
     <section class="compare-panel">
@@ -2668,6 +2746,28 @@ const App = (() => {
       btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';
       renderTable();
     });
+
+    // 左側面板收合 / 展開
+    const layout = document.querySelector('.main-layout');
+    const collapseBtn = document.getElementById('pickerCollapseBtn');
+    const reopenRail = document.getElementById('pickerReopenRail');
+    const PICKER_COLLAPSED_KEY = 'ah_picker_collapsed';
+
+    // 還原上次狀態
+    try {
+      if (localStorage.getItem(PICKER_COLLAPSED_KEY) === '1') {
+        layout.classList.add('picker-collapsed');
+      }
+    } catch(e) { /* localStorage 可能被 disable,忽略 */ }
+
+    function setPickerCollapsed(collapsed) {
+      layout.classList.toggle('picker-collapsed', collapsed);
+      try {
+        localStorage.setItem(PICKER_COLLAPSED_KEY, collapsed ? '1' : '0');
+      } catch(e) { /* ignore */ }
+    }
+    if (collapseBtn) collapseBtn.addEventListener('click', () => setPickerCollapsed(true));
+    if (reopenRail) reopenRail.addEventListener('click', () => setPickerCollapsed(false));
   }
 
   /* ═══ Init ═══════════════════════════════════════ */
