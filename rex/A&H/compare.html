@@ -922,100 +922,112 @@ body.customer-mode .picker-item .code { display: none; }
 }
 .ratio-explainer strong { color: var(--orange-dark); }
 
-/* ─── 全年齡保費表(預設展開) — 每家公司一塊,塊內男女兩欄 ─── */
+/* ─── 全年齡保費表(v1.0):單張統整表,N 家並排,sticky thead + sticky 年齡欄 ─── */
 .full-age-table {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
-}
-.full-age-block {
   background: white;
   border: 1px solid var(--border);
-  border-left: 4px solid var(--block-color, var(--gray));
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.full-age-block-title {
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--navy);
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(90deg, rgba(0,0,0,0.02) 0%, rgba(255,255,255,0) 60%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.full-age-block-title .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.full-age-block-title .amt-tag {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 11px;
-  color: var(--navy);
-  background: var(--orange-light);
-  padding: 2px 8px;
-  border-radius: 999px;
-  letter-spacing: 1px;
-  margin-left: 4px;
-}
-.full-age-block-title .range-tag {
-  font-size: 10px;
-  color: var(--gray);
-  font-weight: 500;
-  margin-left: auto;
-  letter-spacing: 0;
-}
-
 .full-age-scroll {
-  max-height: 520px;
-  overflow-y: auto;
+  max-height: 600px;
+  overflow: auto;             /* 兩向 scroll:垂直按年齡、水平按公司多 */
+  position: relative;
 }
 .full-age-table table {
-  width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;  /* sticky 用,collapse 會讓 border 在 sticky 時消失 */
+  border-spacing: 0;
   font-size: 11px;
 }
+.full-age-table col.col-age    { width: 64px; }
+.full-age-table col.col-male,
+.full-age-table col.col-female { width: 84px; }
+
+/* ── thead 三層:公司名 / 商品代號 / 男女 ──
+ * 注意:class 加 fa- 前綴以避開主比較表的 .th-company/.th-code(display:flex/inline-block) */
 .full-age-table thead th {
   position: sticky;
-  top: 0;
   background: var(--navy);
   color: white;
-  padding: 6px 8px;
+  padding: 6px 10px;
   text-align: center;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  z-index: 1;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 }
-.full-age-table thead th.th-male {
+.full-age-table thead tr:nth-child(1) th { top: 0;    z-index: 5; }
+.full-age-table thead tr:nth-child(2) th { top: 28px; z-index: 5; }
+.full-age-table thead tr:nth-child(3) th { top: 54px; z-index: 5; }
+
+.full-age-table thead th.fa-th-company {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: var(--company-color, var(--navy));
+  border-left: 1px solid rgba(255,255,255,0.2);
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+.full-age-table thead th.fa-th-code {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  background: var(--navy);
+  opacity: 0.92;
+}
+.full-age-table thead th.fa-th-code .fa-amt-tag {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  background: rgba(255,255,255,0.15);
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 4px;
+  letter-spacing: 0.5px;
+}
+.full-age-table thead th.fa-th-male {
   background: #3D8FCC;
 }
-.full-age-table thead th.th-female {
+.full-age-table thead th.fa-th-female {
   background: #E85A7A;
 }
+/* 左欄「年齡」表頭三列 — sticky left + 高 z-index 蓋過水平捲動的同列其他 th */
+.full-age-table thead th.fa-th-age {
+  left: 0;
+  z-index: 7;
+  background: var(--navy);
+  border-right: 1px solid rgba(255,255,255,0.2);
+  min-width: 56px;
+}
+.full-age-table thead th.fa-th-corner {
+  background: var(--navy);
+}
+
+/* ── tbody ── */
 .full-age-table tbody td {
-  padding: 5px 8px;
+  padding: 5px 10px;
   text-align: center;
   border-bottom: 1px solid #f0f0f0;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 13px;
   letter-spacing: 0.5px;
   color: var(--navy);
+  white-space: nowrap;
 }
+/* 年齡欄(第一欄)橫向 sticky */
 .full-age-table .age-cell {
+  position: sticky;
+  left: 0;
+  z-index: 2;
   text-align: left;
   background: var(--gray-bg);
   font-weight: 700;
   color: var(--navy);
   border-right: 1px solid #e8e8ed;
-  min-width: 40px;
+  min-width: 56px;
 }
 .age-cell .age-unit {
   font-family: 'Noto Sans TC', sans-serif;
@@ -1025,13 +1037,21 @@ body.customer-mode .picker-item .code { display: none; }
   letter-spacing: 0;
   font-weight: 400;
 }
-.fee-cell.male-col { background: rgba(61,143,204,0.04); }
-.fee-cell.female-col { background: rgba(232,90,122,0.04); }
 
-/* 客戶所在年齡列 → 整列淡橘背景 */
+/* 男/女欄底色 — 淡藍/淡粉 */
+.fee-cell.male-col   { background: rgba(61,143,204,0.10); }
+.fee-cell.female-col { background: rgba(232,90,122,0.10); }
+
+/* 公司之間的分隔線(每個男欄左邊一條,但第一個男欄不要) */
+.fee-cell.male-col.col-start {
+  border-left: 2px solid var(--company-color, #d8dde6);
+}
+
+/* 客戶當前年齡列 → 整列淡橘 */
 .full-age-table tr.client-row .age-cell {
   background: var(--orange) !important;
   color: white;
+  z-index: 3;                 /* 蓋過其他 sticky,避免被遮 */
 }
 .full-age-table tr.client-row .fee-cell {
   background: var(--orange-light) !important;
@@ -1039,7 +1059,7 @@ body.customer-mode .picker-item .code { display: none; }
   color: var(--orange-dark);
   font-size: 14px;
 }
-/* 客戶當前年齡 + 性別 → 該格更顯眼 */
+/* 客戶當前年齡 + 性別 → 該格深橘 + 白字 */
 .full-age-table tr.client-row .fee-cell.client-cell {
   background: var(--orange) !important;
   color: white;
@@ -1053,17 +1073,11 @@ body.customer-mode .picker-item .code { display: none; }
   background: #fff5ec;
 }
 
-/* 總計列 */
-.full-age-table tr.total-row td {
-  background: var(--navy) !important;
-  color: white !important;
-  font-size: 13px;
-  letter-spacing: 1px;
-  padding: 8px;
-}
-.full-age-table tr.total-row td:first-child {
-  background: var(--orange-dark) !important;
-  text-align: left;
+/* 超出該家公司續保上限 → 灰色 dash */
+.full-age-table .fee-cell.out-of-range {
+  color: #c4c8d0;
+  background: #fafbfc !important;
+  font-style: italic;
 }
 
 
@@ -2294,81 +2308,105 @@ const App = (() => {
     }
   }
 
-  /* ─── 全年齡保費表 ─── */
+  /* ─── 全年齡保費表(v1.0):單張統整表,N 家公司並排 ─── */
   function renderFullAgeTable(cols) {
     const wrap = document.getElementById('fullAgeTable');
     const clientAgeRaw = parseInt(document.getElementById('clientAge').value, 10);
     const clientAge = Number.isFinite(clientAgeRaw) && clientAgeRaw >= 0 ? clientAgeRaw : 35;
     const clientGender = state.client.gender;
 
-    // 每家公司一塊
-    let html = '';
+    if (!cols || cols.length === 0) { wrap.innerHTML = ''; return; }
+
+    // 表格年齡範圍:0 → 各家最大 maxAgeContinuous(讓超出某家上限的格子顯示 dash)
+    const tableMaxAge = Math.max(...cols.map(c => (c.product?.maxAgeContinuous || 80)));
+
+    // ── colgroup(顯式宣告 1 + N×2 欄,避免 chrome 把 colspan 算錯) ──
+    let colgroupHtml = '<colgroup>';
+    colgroupHtml += '<col class="col-age">';
+    cols.forEach(() => {
+      colgroupHtml += '<col class="col-male"><col class="col-female">';
+    });
+    colgroupHtml += '</colgroup>';
+
+    // ── thead(三層:公司名 / 商品代號+保額 / 男女) ──
+    // 注意:用 fa- 前綴避免跟主比較表的 .th-company/.th-code 等 class 撞到。
+    let theadHtml = '<thead>';
+
+    // 第一層:左上角(空)+ 每家公司名(colspan=2)
+    theadHtml += '<tr>';
+    theadHtml += '<th class="fa-th-age fa-th-corner"></th>';
     cols.forEach(col => {
       const company = col.company || {};
-      const p = col.product || {};
       const cid = col.sel.cid;
-      const maxAge = p.maxAgeContinuous || 80;
-
-      html += `<div class="full-age-block" style="--block-color: var(--c-${cid});">
-        <div class="full-age-block-title">
-          <span class="dot" style="background: var(--c-${cid});"></span>
-          ${company.shortName || ''} · ${col.code}
-          <span class="amt-tag">${col.sel.amount}${p.amountUnit||''}</span>
-          <span class="range-tag">續保至 ${maxAge} 歲</span>
-        </div>
-        <div class="full-age-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th rowspan="2">年齡</th>
-              <th colspan="2">年繳保費(元)</th>
-            </tr>
-            <tr>
-              <th class="th-male">男 ♂</th>
-              <th class="th-female">女 ♀</th>
-            </tr>
-          </thead>
-          <tbody>`;
-
-      for (let age = 0; age <= maxAge; age++) {
-        const isClientAge = age === clientAge;
-        const isInRange = age >= clientAge && age <= maxAge;
-        const cls = [
-          isClientAge ? 'client-row' : '',
-          isInRange ? 'in-range-row' : ''
-        ].filter(Boolean).join(' ');
-
-        const feeM = lookupPremium(col.product, col.sel.amount, age, 'M');
-        const feeF = lookupPremium(col.product, col.sel.amount, age, 'F');
-        const mCls = (isClientAge && clientGender === 'M') ? 'client-cell' : '';
-        const fCls = (isClientAge && clientGender === 'F') ? 'client-cell' : '';
-
-        html += `<tr class="${cls}">
-          <td class="age-cell">${age}<span class="age-unit">歲</span></td>
-          <td class="fee-cell male-col ${mCls}">${feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—'}</td>
-          <td class="fee-cell female-col ${fCls}">${feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—'}</td>
-        </tr>`;
-      }
-
-      // 總繳列
-      let totalM = 0, totalF = 0;
-      for (let age = 0; age <= maxAge; age++) {
-        const fm = lookupPremium(col.product, col.sel.amount, age, 'M');
-        const ff = lookupPremium(col.product, col.sel.amount, age, 'F');
-        if (fm !== null && fm > 0) totalM += fm;
-        if (ff !== null && ff > 0) totalF += ff;
-      }
-      const disp = (v) => v >= 10000 ? (v/10000).toFixed(1) + ' 萬' : v.toLocaleString();
-      html += `<tr class="total-row">
-        <td><strong>總繳</strong></td>
-        <td class="male-col"><strong>${disp(totalM)}</strong></td>
-        <td class="female-col"><strong>${disp(totalF)}</strong></td>
-      </tr>`;
-
-      html += '</tbody></table></div></div>';
+      theadHtml += `<th colspan="2" class="fa-th-company" style="--company-color: var(--c-${cid});">${company.shortName || ''}</th>`;
     });
+    theadHtml += '</tr>';
 
-    wrap.innerHTML = html;
+    // 第二層:左上角(空)+ 商品代號 + 保額 tag
+    theadHtml += '<tr>';
+    theadHtml += '<th class="fa-th-age fa-th-corner"></th>';
+    cols.forEach(col => {
+      const p = col.product || {};
+      const amtUnit = p.amountUnit || '';
+      theadHtml += `<th colspan="2" class="fa-th-code">${col.code}<span class="fa-amt-tag">${col.sel.amount}${amtUnit}</span></th>`;
+    });
+    theadHtml += '</tr>';
+
+    // 第三層:左上角「年齡」+ 男 / 女
+    theadHtml += '<tr>';
+    theadHtml += '<th class="fa-th-age">年齡</th>';
+    cols.forEach(() => {
+      theadHtml += '<th class="fa-th-male">男 ♂</th><th class="fa-th-female">女 ♀</th>';
+    });
+    theadHtml += '</tr>';
+
+    theadHtml += '</thead>';
+
+    // ── tbody ──
+    let tbodyHtml = '<tbody>';
+    for (let age = 0; age <= tableMaxAge; age++) {
+      const isClientAge = age === clientAge;
+      const isInRange = age >= clientAge;
+      const cls = [
+        isClientAge ? 'client-row' : '',
+        isInRange   ? 'in-range-row' : ''
+      ].filter(Boolean).join(' ');
+
+      tbodyHtml += `<tr class="${cls}">`;
+      tbodyHtml += `<td class="age-cell">${age}<span class="age-unit">歲</span></td>`;
+
+      cols.forEach(col => {
+        const maxAge = col.product?.maxAgeContinuous || 80;
+        const outOfRange = age > maxAge;
+        const cid = col.sel.cid;
+
+        let feeM = null, feeF = null;
+        if (!outOfRange) {
+          feeM = lookupPremium(col.product, col.sel.amount, age, 'M');
+          feeF = lookupPremium(col.product, col.sel.amount, age, 'F');
+        }
+
+        const mCls = (isClientAge && clientGender === 'M' && !outOfRange) ? 'client-cell' : '';
+        const fCls = (isClientAge && clientGender === 'F' && !outOfRange) ? 'client-cell' : '';
+        const oorCls = outOfRange ? 'out-of-range' : '';
+
+        const mDisp = outOfRange ? '—' : (feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—');
+        const fDisp = outOfRange ? '—' : (feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—');
+
+        // col-start 標在男欄,讓 CSS 畫公司分隔線
+        tbodyHtml += `<td class="fee-cell male-col col-start ${mCls} ${oorCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
+        tbodyHtml += `<td class="fee-cell female-col ${fCls} ${oorCls}">${fDisp}</td>`;
+      });
+
+      tbodyHtml += '</tr>';
+    }
+    tbodyHtml += '</tbody>';
+
+    wrap.innerHTML = `
+      <div class="full-age-scroll">
+        <table>${colgroupHtml}${theadHtml}${tbodyHtml}</table>
+      </div>
+    `;
   }
 
   /* ═══ Bind ═══════════════════════════════════════ */
