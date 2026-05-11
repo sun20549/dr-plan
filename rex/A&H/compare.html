@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>險種比較 ‧ 鼎綸恩宇</title>
+<script src="shared.js"></script>
+<style>
+/* ─────────────────────────────────────────
+ *  Design tokens (與保險建議書系統同調)
+ * ───────────────────────────────────────── */
+:root {
+  --bg: #F7F9FB;
+  --surface: #FFFFFF;
+  --border: #E5E9EE;
+  --border-strong: #CBD2DA;
+  --text: #1F2A37;
+  --text-secondary: #5A6678;
+  --text-tertiary: #8C95A3;
+  --brand: #1A6B72;
+  --brand-strong: #0F4B50;
+  --accent: #E07A1F;
+  --accent-soft: #FDF1E5;
+  --navy: #2C3E50;
+  --danger: #D14C4C;
+  --success: #2D9F6F;
+  --filter-bg: #F0F4F8;
+  --row-alt: #FAFBFC;
+  --highlight: #FFF8E1;
+
+  /* 公司色 */
+  --c-quanqiu: #1A6B72;
+  --c-hongtai: #6F4FB8;
+  --c-xinguang: #E60012;
+  --c-farglory: #2B7DC4;
+  --c-fubon: #0D6E3F;
+
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+
+  --font: 'Inter', 'Microsoft JhengHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 頁面框架 ────────────────────────── */
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-title .tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.page-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.header-links { display: flex; gap: 8px; }
+.header-links a {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.header-links a:hover { color: var(--brand); border-color: var(--brand); }
+
+/* ── 險種類別 tab ────────────────────── */
+.cat-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.cat-tab {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.cat-tab:hover { color: var(--brand); }
+
+.cat-tab.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+  font-weight: 600;
+}
+
+.cat-tab .badge {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin-left: 4px;
+}
+
+/* ── 主版面:左側商品選 + 右側比較表 ── */
+.main-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .main-layout { grid-template-columns: 1fr; }
+}
+
+/* ── 左側 product picker ──────────────── */
+.picker {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  height: fit-content;
+  position: sticky;
+  top: 16px;
+}
+
+.picker-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.picker-company {
+  margin-bottom: 12px;
+}
+
+.picker-company-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.picker-company-name::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--company-color, var(--text-tertiary));
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 3px 0;
+  cursor: pointer;
+  color: var(--text);
+}
+.picker-item:hover { color: var(--brand); }
+
+.picker-item input { cursor: pointer; margin: 0; }
+.picker-item .code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.picker-toggles {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.picker-toggles label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.picker-empty {
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  padding: 20px 0;
+}
+
+/* ── 右側比較表 ──────────────────────── */
+.compare-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.compare-toolbar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--filter-bg);
+}
+
+.compare-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.compare-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.btn:hover { background: var(--filter-bg); border-color: var(--brand); color: var(--brand); }
+.btn.primary { background: var(--brand); color: white; border-color: var(--brand); }
+.btn.primary:hover { background: var(--brand-strong); color: white; }
+
+/* 表格 */
+.compare-table-wrap {
+  overflow-x: auto;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 600px;
+}
+
+.compare-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-strong);
+  vertical-align: top;
+  z-index: 2;
+}
+
+.compare-table thead th:first-child {
+  text-align: left;
+  background: var(--filter-bg);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  min-width: 140px;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 3;
+}
+
+.th-product {
+  min-width: 150px;
+  max-width: 200px;
+}
+
+.th-company {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.th-company::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--th-color, var(--text-tertiary));
+}
+
+.th-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.th-code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  padding: 1px 6px;
+  background: var(--filter-bg);
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.th-amt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.th-amt input, .th-amt select {
+  width: 80px;
+  padding: 4px 6px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  font-family: var(--font);
+  background: var(--surface);
+}
+.th-amt input:focus, .th-amt select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(26,107,114,0.15);
+}
+
+.th-amt .unit {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.th-actions {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.th-link {
+  font-size: 10px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: var(--surface);
+}
+.th-link:hover { color: var(--brand); border-color: var(--brand); }
+
+/* tbody */
+.compare-table tbody td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.compare-table tbody tr:nth-child(odd) td {
+  background: var(--row-alt);
+}
+
+.compare-table tbody td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 13px;
+  position: sticky;
+  left: 0;
+  background: inherit;
+  border-right: 1px solid var(--border);
+}
+
+.compare-table tbody tr:nth-child(odd) td:first-child { background: var(--row-alt); }
+.compare-table tbody tr:nth-child(even) td:first-child { background: var(--surface); }
+
+.compare-table tbody tr.section-header td {
+  background: var(--filter-bg) !important;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+}
+
+.cell-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+.cell-val.star {
+  color: var(--accent);
+}
+
+.cell-unit {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-left: 2px;
+}
+
+.cell-rule {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+  cursor: help;
+  border-bottom: 1px dotted var(--text-tertiary);
+}
+
+.cell-none {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+/* ── 客戶模式 ────────────────────────── */
+body.customer-mode .th-code,
+body.customer-mode .picker-item .code { display: none; }
+
+/* ── 列印 ────────────────────────────── */
+@media print {
+  body { background: white; }
+  .app { max-width: none; padding: 0; }
+  .picker, .header-links, .compare-actions, .th-actions, .th-amt input, .th-amt select { display: none !important; }
+  .th-amt::after { content: attr(data-print-amt); font-size: 12px; }
+  .main-layout { grid-template-columns: 1fr; }
+  .compare-panel { border: none; box-shadow: none; }
+  .cat-tabs { display: none; }
+  .compare-toolbar { background: white; padding: 8px 0; }
+  .compare-table { font-size: 11px; }
+  .compare-table thead th, .compare-table tbody td { padding: 6px 8px; }
+}
+
+/* tooltip 用 title attribute, 不額外做 */
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">險種比較 <span class="tag">CompARE</span></h1>
+      <div class="page-subtitle" id="page-subtitle">同險種跨公司並排對照 ‧ 自由調整保額即時重算</div>
+    </div>
+    <div class="header-links">
+      <a href="./">建議書系統</a>
+    </div>
+  </div>
+
+  <!-- 險種類別 tabs -->
+  <div class="cat-tabs" id="catTabs"></div>
+
+  <!-- 主版面 -->
+  <div class="main-layout">
+
+    <!-- 左側商品選取 -->
+    <aside class="picker" id="picker">
+      <div class="picker-title">選要比的商品</div>
+      <div id="pickerBody">
+        <div class="picker-empty">載入中...</div>
+      </div>
+
+      <div class="picker-toggles">
+        <label>
+          <input type="checkbox" id="customerMode">
+          客戶模式 (隱藏代號)
+        </label>
+        <label>
+          <input type="checkbox" id="showStar" checked>
+          標記重點項目 ⭐
+        </label>
+      </div>
+    </aside>
+
+    <!-- 右側比較表 -->
+    <section class="compare-panel">
+      <div class="compare-toolbar">
+        <div class="compare-title" id="compareTitle">請先選 ≥ 2 個商品</div>
+        <div class="compare-actions">
+          <button class="btn" id="btnPrint" type="button">列印 / PDF</button>
+        </div>
+      </div>
+      <div class="compare-table-wrap">
+        <div class="empty-state" id="emptyState">勾選左側商品後,這裡會顯示對照表。</div>
+        <table class="compare-table" id="compareTable" style="display:none;"></table>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+ *  險種比較網站 compare.html v0.1 (A&H-9 Phase 2)
+ *  ─────────────────────────────────────────
+ *  資料源:
+ *    - shared.js (window.AHShared.{classifyItem, calcBenefitValue, ...})
+ *    - benefitsLib.json (全球商品給付定義)
+ *    - 5 家公司 JSON (transglobe/hontai/skl/fglife/fubon)
+ *  狀態:
+ *    - state.categoryKey:當前選的險種類別
+ *    - state.selected[code]:被勾選的商品 + 該商品的當前保額
+ *    - state.customerMode / state.showStar:UI toggle
+ *  ═══════════════════════════════════════════════════════════ */
+
+const App = (() => {
+
+  const state = {
+    categoryKey: '實支實付型',
+    selected: {},          // code → { cid, amount }
+    customerMode: false,
+    showStar: true,
+    db: {
+      companies: {},       // cid → company JSON
+      benefitsLib: null,   // 全球商品的給付定義
+    }
+  };
+
+  /* ─── 7 險種類別定義 ─────────────────────────────────
+   *  每個類別 hard-code 包含的商品 list (cid, code)
+   *  以及預設保額 (defaultAmount) — 跟建議書系統一致
+   * ─────────────────────────────────────────────── */
+  const CATEGORIES = [
+    { key: '實支實付型', products: [
+        { cid: 'quanqiu', code: 'XHD', defaultAmount: '計劃二' },
+        { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-15' },
+        { cid: 'fubon', code: 'HSV', defaultAmount: '計畫2' }
+      ]
+    },
+    { key: '實支實付型(自負額)', products: [
+        { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃3' }
+      ]
+    },
+    { key: '手術險', products: [
+        { cid: 'quanqiu', code: 'NIR', defaultAmount: '計劃四' },
+        { cid: 'xinguang', code: 'YHA', defaultAmount: 1500 },
+        { cid: 'xinguang', code: 'H2D', defaultAmount: 1500 }
+      ]
+    },
+    { key: '定額日額', products: [
+        { cid: 'hongtai', code: 'HI', defaultAmount: 3 }
+      ]
+    },
+    { key: '重大傷病', products: [
+        { cid: 'quanqiu', code: 'DCF', defaultAmount: 100 },
+        { cid: 'quanqiu', code: 'XDE', defaultAmount: 100 },
+        { cid: 'hongtai', code: 'NDD', defaultAmount: 100 },
+        { cid: 'xinguang', code: 'M4D', defaultAmount: 100 }
+      ]
+    },
+    { key: '癌症險(單筆金)', products: [
+        { cid: 'quanqiu', code: 'XCF', defaultAmount: 100 },
+        { cid: 'hongtai', code: 'FCA', defaultAmount: 100 },
+        { cid: 'xinguang', code: 'C2D', defaultAmount: 100 },
+        { cid: 'farglory', code: 'CJ2', defaultAmount: 100 },
+        { cid: 'farglory', code: 'RQ1', defaultAmount: 100 }
+      ]
+    },
+    { key: '癌症險(療程型)', products: [
+        { cid: 'quanqiu', code: 'XCG', defaultAmount: 3 },
+        { cid: 'farglory', code: 'XCD', defaultAmount: 3 }
+      ]
+    }
+  ];
+
+  /* ─── 每個 cls.key 的中文標題 (比建議書系統的更人話) ─── */
+  const CLS_TITLE = {
+    daily: '住院日額',
+    icu_daily: '加護病房日額',
+    reimburse: '雜費限額 / 實支實付',
+    surgery: '住院手術',
+    opsurg: '門診手術',
+    critical: '一次金 / 主保險金',
+    death: '身故 / 喪葬',
+    disability: '失能',
+    burn: '重大燒燙傷',
+    dislocation: '脫臼 / 骨折',
+    transplant: '器官移植',
+    maturity: '滿期 / 祝壽',
+    elderly: '老年提前給付',
+    chemo: '化學 / 放射治療',
+    targeting: '標靶治療',
+    reconstruct: '義乳重建',
+    special: '特定處置',
+    opd: '門診',
+    waiver: '豁免保費',
+    other: '其他給付'
+  };
+
+  /* ─── cls.key 顯示順序 (依各類別最常見項目排前面) ─── */
+  const CLS_ORDER_BY_CATEGORY = {
+    '實支實付型': ['daily','icu_daily','reimburse','surgery','opsurg','transplant','opd','other'],
+    '實支實付型(自負額)': ['daily','icu_daily','reimburse','opsurg','other'],
+    '手術險': ['surgery','daily','icu_daily','death','maturity','other','waiver'],
+    '定額日額': ['daily','icu_daily','other'],
+    '重大傷病': ['critical','daily','maturity','other'],
+    '癌症險(單筆金)': ['critical'],
+    '癌症險(療程型)': ['critical','daily','surgery','opsurg','chemo','targeting','transplant','reconstruct','other']
+  };
+
+  /* ─── 列模板 (ROW_TEMPLATES) ─────────────────────────────
+   *  進階分類:對特定類別寫死「列定義」,每列指定各商品的 item 怎麼挑
+   *
+   *  結構:
+   *    類別 → [{ rowTitle, matches: { 商品code: 'item name 關鍵字 (regex)' } }]
+   *
+   *  運作:
+   *    1. renderTable 看到該類別有 template → 不走 cls.key 自動歸位
+   *    2. 對每列:依 matches[code] 找到對應 item,呼叫 calcBenefitValue
+   *    3. matches 內沒寫到的商品 → 該 cell 顯示 '—'
+   *    4. item 沒數字(只有 note)→ 顯示「依條款」+ tooltip
+   *
+   *  維護成本:商品條款變動時,要手動更新對應的 item 名稱關鍵字
+   *  ───────────────────────────────────────────── */
+  const ROW_TEMPLATES = {
+    '實支實付型': [
+      { rowTitle: '住院日額', matches: {
+          XHD: '住院日額\\(每日\\)',
+          U5D: '⑥ 住院費用補償保險金',
+          HSV: 'ⓐ 住院日額'
+        }
+      },
+      { rowTitle: '每日病房費', matches: {
+          U5D: '① 每日病房費用',
+          HSV: 'ⓑ-1 每日病房費用'
+        }
+      },
+      { rowTitle: '加護病房日額', matches: {
+          XHD: '加護病房日額',
+          HSV: '③ 加護病房/燒燙傷日額'
+        }
+      },
+      { rowTitle: '住院雜費限額', matches: {
+          XHD: '住院實支\\(雜費限額\\)',
+          U5D: '② 醫院各項雜費',
+          HSV: 'ⓑ-2 住院醫療費用限額'
+        }
+      },
+      { rowTitle: '手術費用限額', matches: {
+          U5D: '③ 重大手術',
+          HSV: 'ⓑ-4 每次手術費用限額'
+          // XHD 的「重大手術慰問」是另外的慰問金性質,不放此列
+        }
+      },
+      { rowTitle: '門診手術', matches: {
+          XHD: '門診手術',
+          U5D: '⑦ 門診手術費用',
+          HSV: '① 門診手術費用限額'
+        }
+      },
+      { rowTitle: '特定處置', matches: {
+          HSV: '② 特定處置費用限額'
+        }
+      },
+      { rowTitle: '加護病房雜費', matches: {
+          XHD: '加護病房雜費'
+        }
+      },
+      { rowTitle: '器官移植', matches: {
+          HSV: '心/肺/肝移植'  // 取最大的;⑤ 胰/腎也在 transplant cls
+        }
+      },
+      { rowTitle: '每年理賠總限額', matches: {
+          HSV: '⑥ 每年保險金給付總限額'
+        }
+      },
+      { rowTitle: '重大手術慰問金', matches: {
+          XHD: '重大手術慰問'
+        }
+      },
+      { rowTitle: '特定醫材補助', matches: {
+          XHD: '特定醫材補助'
+        }
+      },
+      { rowTitle: '附屬品費用', matches: {
+          U5D: '④ 附屬品費用'
+        }
+      },
+      { rowTitle: '住院前後門診', matches: {
+          U5D: '⑤ 住院前後門診'
+        }
+      },
+      { rowTitle: '住院關懷', matches: {
+          U5D: '⑧ 住院關懷'
+        }
+      }
+    ]
+  };
+
+
+  /* ═══ 載入 ═══════════════════════════════════════ */
+  async function load() {
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','benefitsLib.json'];
+    const results = await Promise.all(files.map(async (f) => {
+      const r = await fetch(f);
+      if (!r.ok) throw new Error('Failed to load ' + f);
+      return r.json();
+    }));
+    const [transglobe, hontai, skl, fglife, fubon, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon].forEach(c => { state.db.companies[c.id] = c; });
+    state.db.benefitsLib = blib;
+  }
+
+  /* ─── 在所有公司商品內找一個 product ─── */
+  function findProduct(cid, code) {
+    const c = state.db.companies[cid];
+    if (!c) return null;
+    return [...(c.mainProducts||[]), ...(c.riderProducts||[])].find(p => p.code === code) || null;
+  }
+
+  /* ─── 取得商品的 items (全球用 benefitsLib,其他用 product.claims) ─── */
+  function getItems(product) {
+    if (!product) return [];
+    const code = product.code;
+    if (state.db.benefitsLib && state.db.benefitsLib[code]) {
+      return state.db.benefitsLib[code].items || [];
+    }
+    // 走 shared.js 的 convertProductClaims 處理 amountUnit
+    const conv = window.AHShared.convertProductClaims(product);
+    return conv ? conv.items : [];
+  }
+
+  /* ─── 計算單一商品在某個 cls.key 下的「代表金額」+ 組成明細 ─── */
+  function evalProductCls(product, amount, clsKey) {
+    const items = getItems(product);
+    const classifyItem = window.AHShared.classifyItem;
+    const calc = window.AHShared.calcBenefitValue;
+
+    const matching = items.filter(it => classifyItem(it).key === clsKey);
+    if (matching.length === 0) return { kind: 'none' };
+
+    let maxVal = -Infinity;
+    let unit = '';
+    let star = false;
+    const rules = [];
+    const numericLines = [];
+
+    for (const it of matching) {
+      const result = calc(it, product, amount);
+      if (result && result.type === 'num') {
+        if (result.val > maxVal) { maxVal = result.val; unit = it.unit || ''; star = !!it.star; }
+        numericLines.push(it.name + ': ' + result.val.toLocaleString() + (it.unit ? ' ' + it.unit : ''));
+      } else if (result && result.type === 'text') {
+        rules.push(it.name + ': ' + (result.text || ''));
+      } else if (it.note) {
+        rules.push(it.name + ': ' + it.note);
+      } else {
+        rules.push(it.name);
+      }
+    }
+
+    if (numericLines.length > 0) {
+      return {
+        kind: 'num',
+        val: maxVal,
+        unit,
+        star,
+        tooltip: numericLines.join('\n')
+      };
+    }
+    // 沒任何數字 → 顯示「依條款」 + tooltip 帶前 3 筆
+    return {
+      kind: 'rule',
+      tooltip: rules.slice(0, 3).map(r => r.length > 80 ? r.slice(0,80) + '…' : r).join('\n')
+    };
+  }
+
+  /* ─── 用 ROW_TEMPLATES 模板計算某商品某列的值 ───
+   *  輸入:
+   *    product, amount — 同 evalProductCls
+   *    code — 商品 code (查 matches[code])
+   *    rowDef — { rowTitle, matches: { code: pattern } }
+   *  輸出:
+   *    同 evalProductCls (kind: 'num'/'rule'/'none')
+   * ─────────────────────────────────────────── */
+  function evalProductForRow(product, amount, code, rowDef) {
+    const pattern = rowDef.matches[code];
+    if (!pattern) return { kind: 'none' };
+
+    const items = getItems(product);
+    const calc = window.AHShared.calcBenefitValue;
+    const rx = new RegExp(pattern);
+    const matching = items.filter(it => rx.test(it.name));
+    if (matching.length === 0) return { kind: 'none' };
+
+    let maxVal = -Infinity;
+    let unit = '';
+    let star = false;
+    const numericLines = [];
+    const rules = [];
+
+    for (const it of matching) {
+      const result = calc(it, product, amount);
+      if (result && result.type === 'num') {
+        if (result.val > maxVal) { maxVal = result.val; unit = it.unit || ''; star = !!it.star; }
+        numericLines.push(it.name + ': ' + result.val.toLocaleString() + (it.unit ? ' ' + it.unit : ''));
+      } else if (result && result.type === 'text') {
+        rules.push(it.name + ': ' + (result.text || ''));
+      } else if (it.note) {
+        rules.push(it.name + ': ' + it.note);
+      } else {
+        rules.push(it.name);
+      }
+    }
+
+    if (numericLines.length > 0) {
+      return { kind: 'num', val: maxVal, unit, star, tooltip: numericLines.join('\n') };
+    }
+    return {
+      kind: 'rule',
+      tooltip: rules.slice(0, 3).map(r => r.length > 80 ? r.slice(0,80) + '…' : r).join('\n')
+    };
+  }
+
+  /* ═══ 渲染 ═══════════════════════════════════════ */
+
+  function renderCatTabs() {
+    const wrap = document.getElementById('catTabs');
+    wrap.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'cat-tab' + (cat.key === state.categoryKey ? ' active' : '');
+      btn.innerHTML = `${cat.key} <span class="badge">${cat.products.length}</span>`;
+      btn.onclick = () => switchCategory(cat.key);
+      wrap.appendChild(btn);
+    });
+  }
+
+  function switchCategory(catKey) {
+    state.categoryKey = catKey;
+    // 切換類別時:預設勾選該類別所有商品,並套用 defaultAmount
+    state.selected = {};
+    const cat = CATEGORIES.find(c => c.key === catKey);
+    cat.products.forEach(pp => {
+      state.selected[pp.code] = { cid: pp.cid, amount: pp.defaultAmount };
+    });
+    renderCatTabs();
+    renderPicker();
+    renderTable();
+  }
+
+  function renderPicker() {
+    const body = document.getElementById('pickerBody');
+    body.innerHTML = '';
+    const cat = CATEGORIES.find(c => c.key === state.categoryKey);
+    // 依公司分組
+    const byCompany = {};
+    cat.products.forEach(pp => {
+      if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
+      byCompany[pp.cid].push(pp);
+    });
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon'];
+    cidOrder.forEach(cid => {
+      if (!byCompany[cid]) return;
+      const company = state.db.companies[cid];
+      if (!company) return;
+      const div = document.createElement('div');
+      div.className = 'picker-company';
+      const colorVar = `--c-${cid}`;
+      div.innerHTML = `<div class="picker-company-name" style="--company-color: var(${colorVar})">${company.shortName || company.name}</div>`;
+      byCompany[cid].forEach(pp => {
+        const product = findProduct(pp.cid, pp.code);
+        if (!product) return;
+        const label = document.createElement('label');
+        label.className = 'picker-item';
+        const checked = !!state.selected[pp.code] ? 'checked' : '';
+        label.innerHTML = `
+          <input type="checkbox" data-code="${pp.code}" data-cid="${pp.cid}" ${checked}>
+          <span>${product.name.length > 16 ? product.name.slice(0,16) + '…' : product.name}</span>
+          <span class="code">${pp.code}</span>
+        `;
+        label.querySelector('input').onchange = (e) => {
+          const code = e.target.dataset.code;
+          const cid2 = e.target.dataset.cid;
+          if (e.target.checked) {
+            const def = cat.products.find(x => x.code === code);
+            state.selected[code] = { cid: cid2, amount: def ? def.defaultAmount : 100 };
+          } else {
+            delete state.selected[code];
+          }
+          renderTable();
+        };
+        div.appendChild(label);
+      });
+      body.appendChild(div);
+    });
+  }
+
+  function renderTable() {
+    const titleEl = document.getElementById('compareTitle');
+    const empty = document.getElementById('emptyState');
+    const table = document.getElementById('compareTable');
+    const selectedCodes = Object.keys(state.selected);
+
+    if (selectedCodes.length === 0) {
+      titleEl.textContent = '請先勾選商品';
+      empty.style.display = '';
+      table.style.display = 'none';
+      return;
+    }
+
+    titleEl.textContent = `${state.categoryKey} ‧ ${selectedCodes.length} 個商品對照`;
+    empty.style.display = 'none';
+    table.style.display = '';
+
+    // 取所有選中商品 + 評估每個 cls.key 在表上的呈現
+    const cols = selectedCodes.map(code => {
+      const sel = state.selected[code];
+      const product = findProduct(sel.cid, code);
+      const company = state.db.companies[sel.cid];
+      return { code, sel, product, company };
+    });
+
+    // 取要顯示的列定義:優先使用 ROW_TEMPLATES,沒有則 fallback 到 cls.key 自動歸位
+    const template = ROW_TEMPLATES[state.categoryKey];
+    let rowDefs;  // 統一格式:[{ rowTitle, evaluator(col) → result }]
+    if (template) {
+      // 用模板 — 過濾掉「所有 col 都 none」的列
+      rowDefs = template
+        .map(t => ({
+          rowTitle: t.rowTitle,
+          evaluator: (col) => evalProductForRow(col.product, col.sel.amount, col.code, t)
+        }))
+        .filter(rd => cols.some(col => rd.evaluator(col).kind !== 'none'));
+    } else {
+      // 用 cls.key 自動歸位
+      const clsOrder = CLS_ORDER_BY_CATEGORY[state.categoryKey] || ['daily','icu_daily','reimburse','surgery','opsurg','critical','death','disability','other'];
+      const presentCls = new Set();
+      cols.forEach(col => {
+        getItems(col.product).forEach(it => {
+          presentCls.add(window.AHShared.classifyItem(it).key);
+        });
+      });
+      const rowKeys = clsOrder.filter(k => presentCls.has(k));
+      // 加上「order 沒列到、但確實存在」的 cls.key,丟到最後
+      presentCls.forEach(k => { if (!rowKeys.includes(k)) rowKeys.push(k); });
+      rowDefs = rowKeys.map(k => ({
+        rowTitle: CLS_TITLE[k] || k,
+        evaluator: (col) => evalProductCls(col.product, col.sel.amount, k)
+      }));
+    }
+
+    // ── header ──
+    let html = '<thead><tr><th>給付項目</th>';
+    cols.forEach(col => {
+      const colorVar = `--c-${col.sel.cid}`;
+      const company = col.company || {};
+      const p = col.product || {};
+      // 保額輸入欄:plan 用 select,其他用 number input
+      let amtField;
+      if (p.amountMode === 'plan') {
+        const opts = Object.keys((p.rateTable||{})).map(plan => `<option ${plan===String(col.sel.amount)?'selected':''}>${plan}</option>`).join('') || `<option>${col.sel.amount}</option>`;
+        amtField = `<select data-code="${col.code}">${opts}</select>`;
+      } else {
+        amtField = `<input type="number" min="1" data-code="${col.code}" value="${col.sel.amount}">`;
+      }
+      const unit = p.amountUnit || '';
+      const linkTpl = company.linkTemplate || {};
+      const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
+
+      html += `<th class="th-product" style="--th-color: var(${colorVar})">
+        <div class="th-company">${company.shortName || company.name || ''}</div>
+        <span class="th-code">${col.code}</span>
+        <div class="th-name">${p.name || col.code}</div>
+        <div class="th-amt" data-print-amt="${col.sel.amount} ${unit}">${amtField}<span class="unit">${unit}</span></div>
+        <div class="th-actions">
+          ${linkTpl.dm ? `<a class="th-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
+          ${linkTpl.clause ? `<a class="th-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
+          ${linkTpl.rate ? `<a class="th-link" href="${linkUrls('rate')}" target="_blank">費率</a>` : ''}
+        </div>
+      </th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    // ── rows (統一用 rowDefs) ──
+    rowDefs.forEach(rd => {
+      html += `<tr><td>${rd.rowTitle}</td>`;
+      cols.forEach(col => {
+        const r = rd.evaluator(col);
+        if (r.kind === 'num') {
+          const starCls = (state.showStar && r.star) ? ' star' : '';
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          html += `<td><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
+        } else if (r.kind === 'rule') {
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          html += `<td><span class="cell-rule" title="${tt}">依條款</span></td>`;
+        } else {
+          html += `<td><span class="cell-none">—</span></td>`;
+        }
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody>';
+    table.innerHTML = html;
+
+    // 綁定保額輸入即時重算
+    table.querySelectorAll('.th-amt input, .th-amt select').forEach(el => {
+      el.addEventListener('change', (e) => {
+        const code = e.target.dataset.code;
+        if (state.selected[code]) {
+          state.selected[code].amount = e.target.value;
+          renderTable();
+        }
+      });
+      // input 也綁 input 事件,輸入時即時重算 (number input)
+      if (el.tagName === 'INPUT') {
+        el.addEventListener('input', (e) => {
+          const code = e.target.dataset.code;
+          if (state.selected[code]) {
+            state.selected[code].amount = e.target.value;
+            renderTable();
+          }
+        });
+      }
+    });
+  }
+
+  /* ═══ Bind ═══════════════════════════════════════ */
+
+  function bindGlobals() {
+    document.getElementById('customerMode').addEventListener('change', e => {
+      state.customerMode = e.target.checked;
+      document.body.classList.toggle('customer-mode', state.customerMode);
+    });
+    document.getElementById('showStar').addEventListener('change', e => {
+      state.showStar = e.target.checked;
+      renderTable();
+    });
+    document.getElementById('btnPrint').addEventListener('click', () => window.print());
+  }
+
+  /* ═══ Init ═══════════════════════════════════════ */
+
+  async function init() {
+    try {
+      await load();
+      renderCatTabs();
+      switchCategory(state.categoryKey);
+      bindGlobals();
+    } catch (e) {
+      document.getElementById('pickerBody').innerHTML = '<div class="picker-empty">載入失敗:' + e.message + '</div>';
+      console.error(e);
+    }
+  }
+
+  return { init, state, CATEGORIES };
+})();
+
+// Expose for debugging / testing
+window.App = App;
+
+document.addEventListener('DOMContentLoaded', App.init);
+</script>
+
+</body>
+</html>
