@@ -698,6 +698,48 @@ body {
   font-family: 'Bebas Neue', sans-serif;
 }
 
+/* ─── v1.16:條款認定範圍(健保 2-2-7 / 3-3-4-3)── */
+.cell-bool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: help;
+}
+.cell-bool-yes {
+  color: #1f7a4d;
+  background: #e6f4ec;
+  border: 1.5px solid #4caf7a;
+}
+.cell-bool-no {
+  color: #b04545;
+  background: #fbecec;
+  border: 1.5px solid #d97676;
+}
+/* 條款範圍列整列底色淡藍灰,跟金額類給付區分 */
+.compare-table tbody tr.row-clause-scope td {
+  background: #f4f7fa !important;
+  border-top: 2px solid #dce3ec;
+}
+.compare-table tbody tr.row-clause-scope td:first-child {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  padding: 10px 12px;
+}
+.compare-table tbody tr.row-clause-scope .row-clause-sub {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--gray);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
 /* ─── 整合表內:保費列 + CP 列(底部 4 列) ─── */
 .compare-table tbody tr.row-fee-divider td {
   background: linear-gradient(180deg, #fff8f5 0%, #fff5ef 100%);
@@ -2829,6 +2871,34 @@ const App = (() => {
     '癌症險(療程型)': 'critical'
   };
 
+  /* ─── v1.16 — 健保支付標準引用範圍(實支實付類條款手術範圍認定) ───
+   *
+   * 業務員實際比較重點:該商品條款對「手術」的認定範圍引用了哪幾節:
+   *   - 2-2-7  = 健保支付標準「第二部 西醫 / 第二章 特定診療 / 第七節 手術」
+   *   - 3-3-4-3 = 「第三部 牙醫 / 第三章 牙科處置及手術 / 第四節 口腔顎面外科 / 第三項 開刀房手術」
+   *
+   * 兩節都認 = 西醫手術 + 牙科口腔顎面外科手術 都涵蓋,範圍最廣;
+   * 只認 2-2-7 = 只涵蓋西醫手術,牙科口腔顎面外科手術(植牙/智齒/顎面骨折等)不理賠;
+   * 只認 3-3-4-3 = 罕見;
+   * 兩節都未引用 = 條款用其他標準定義手術範圍。
+   *
+   * 值:true = 條款明文引用,false = 條款明確不引用,null = 未確認(顯示「依條款」)
+   * 來源:逐家比對條款定義條 / 名詞定義章節
+   */
+  const SURGERY_CLAUSE_SCOPE = {
+    // 實支實付型(9 商品)
+    XHD:    { has227: true,  has3343: true,  source: '條款「門診手術」定義條:2-2-7 或 3-3-4-3 列舉之手術' },
+    U5D:    { has227: null,  has3343: null },
+    HXB:    { has227: null,  has3343: null },
+    HSV:    { has227: null,  has3343: null },
+    '1HS':  { has227: null,  has3343: null },
+    NBHSR:  { has227: null,  has3343: null },
+    CV4:    { has227: null,  has3343: null },
+    RSN:    { has227: null,  has3343: null },
+    MAHUGA: { has227: null,  has3343: null }
+    // 自負額類 / 手術險另外確認後再加
+  };
+
   /* ─── 取得「住院日額」的數值 (給性價比 日額 CP) ─── */
   function getDailyValue(product, amount) {
     const items = getItems(product);
@@ -3107,6 +3177,40 @@ const App = (() => {
       }));
     }
 
+    /* ─── v1.16:實支實付型尾巴附加「健保支付標準引用範圍」兩列 ─────
+     * 這兩列不算金額,顯示 ✓ / ✗ / 依條款,讓業務員看到該商品的手術認定範圍。
+     * - 2-2-7 = 健保第二部第二章第七節(住院手術)
+     * - 3-3-4-3 = 健保第三部第三章第四節第三項(門診手術)
+     * 兩節都引用 = 範圍最廣;只引用一節 = 部分手術會被歸為「處置」。
+     * ─────────────────────────────────────────────────────── */
+    if (state.categoryKey === '實支實付型') {
+      const makeScopeEvaluator = (flagKey) => (col) => {
+        const info = SURGERY_CLAUSE_SCOPE[col.code];
+        if (!info || info[flagKey] === null || info[flagKey] === undefined) {
+          // 還沒確認:走 rule kind 顯示「依條款」
+          return { kind: 'rule', tooltip: '尚未從條款確認此商品是否引用該節' };
+        }
+        // bool kind:true → ✓、false → ✗
+        return {
+          kind: 'bool',
+          val: info[flagKey],
+          tooltip: info.source || ''
+        };
+      };
+      rowDefs.push({
+        rowTitle: '健保 2-2-7 西醫手術',
+        rowSub: '第二部西醫 ‧ 第二章特定診療 ‧ 第七節 手術',
+        isClauseScope: true,
+        evaluator: makeScopeEvaluator('has227')
+      });
+      rowDefs.push({
+        rowTitle: '健保 3-3-4-3 牙醫口腔顎面外科',
+        rowSub: '第三部牙醫 ‧ 第三章牙科處置及手術 ‧ 第四節口腔顎面外科 ‧ 第三項 開刀房手術',
+        isClauseScope: true,
+        evaluator: makeScopeEvaluator('has3343')
+      });
+    }
+
     // 客戶條件
     const ageRaw = parseInt(document.getElementById('clientAge').value, 10);
     const age = Number.isFinite(ageRaw) && ageRaw >= 0 ? ageRaw : 35;
@@ -3232,12 +3336,28 @@ const App = (() => {
           nonEmptyCount++;
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
           cellsHtml += `<td colspan="2"><span class="cell-rule" title="${tt}">依條款</span></td>`;
+        } else if (r.kind === 'bool') {
+          // v1.16:條款認定範圍 ✓ / ✗
+          nonEmptyCount++;
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          if (r.val === true) {
+            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-yes" title="${tt}">✓</span></td>`;
+          } else {
+            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-no" title="${tt}">✗</span></td>`;
+          }
         } else {
           cellsHtml += `<td colspan="2"><span class="cell-none">—</span></td>`;
         }
       });
-      const rowCls = nonEmptyCount === 0 ? ' class="row-all-empty"' : '';
-      html += `<tr${rowCls}><td>${rd.rowTitle}</td>${cellsHtml}</tr>`;
+      const extraCls = [];
+      if (nonEmptyCount === 0) extraCls.push('row-all-empty');
+      if (rd.isClauseScope) extraCls.push('row-clause-scope');
+      const rowCls = extraCls.length ? ` class="${extraCls.join(' ')}"` : '';
+      // v1.16:條款範圍列加副標
+      const titleHtml = rd.rowSub
+        ? `<strong>${rd.rowTitle}</strong><div class="row-clause-sub">${rd.rowSub}</div>`
+        : rd.rowTitle;
+      html += `<tr${rowCls}><td>${titleHtml}</td>${cellsHtml}</tr>`;
     });
 
     // ─── 分隔:當年保費 ───
