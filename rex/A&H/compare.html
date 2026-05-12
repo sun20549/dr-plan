@@ -630,7 +630,11 @@ body {
   font-size: 13px;
   position: sticky;
   left: 0;
-  background: inherit;
+  /* v1.13:不能用 inherit — 偶數列 <tr> 沒設背景,sticky 浮在上面時會變透明,
+     導致水平滾動時右側 td 的數字穿透左欄文字。改用實心白底覆蓋。
+     odd 列也會被這條覆蓋(原本 odd 有半透明米色,改為左欄一律白),視覺上一致更好讀。 */
+  background: #fff;
+  z-index: 1;          /* 蓋過同列其他 td */
   border-right: 1px solid var(--border);
 }
 
@@ -1842,7 +1846,7 @@ const App = (() => {
     customerMode: false,
     showStar: true,
     client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
-    ui: { fullAgeExpanded: true, hideEmpty: false },    // 全年齡表預設展開、空欄預設顯示
+    ui: { fullAgeExpanded: false, hideEmpty: false },   // v1.13:全年齡表預設收起、空欄預設顯示
     db: {
       companies: {},       // cid → company JSON
       benefitsLib: null,   // 全球商品的給付定義
@@ -1859,18 +1863,18 @@ const App = (() => {
         { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-30' },
         { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃50' },
         { cid: 'fubon', code: 'HSV', defaultAmount: '計畫3' },
-        { cid: 'fubon', code: 'HSY', defaultAmount: '計劃1' },
         { cid: 'nanshan', code: '1HS', defaultAmount: 'C型' },
-        { cid: 'mli', code: 'NBHSR', defaultAmount: 'C' },
+        { cid: 'mli', code: 'NBHSR', defaultAmount: 'E' },        // v1.13:預設 C → E
         { cid: 'cathay', code: 'CV4', defaultAmount: 'M30' },
         { cid: 'farglory', code: 'RSN', defaultAmount: '計劃二' },
-        { cid: 'kgi', code: 'MAHUGA', defaultAmount: '2單位' }
+        { cid: 'kgi', code: 'MAHUGA', defaultAmount: '3單位' }     // v1.13:預設 2單位 → 3單位
       ]
     },
     { key: '實支實付型(自負額)', products: [
         { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' },
         { cid: 'quanqiu', code: 'XHP', defaultAmount: '計劃4X' },
         { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD10-30' },
+        { cid: 'fubon', code: 'HSY', defaultAmount: '計劃1' },     // v1.13:HSY 是自負額商品(理賠項目自帶「自負額」),從實支實付型搬來
         { cid: 'cathay', code: 'WV4', defaultAmount: '計劃別2' },
         { cid: 'nanshan', code: '1HSD', defaultAmount: 'A型' }
       ]
@@ -2774,6 +2778,8 @@ const App = (() => {
         amtField = `<input type="number" min="1" data-code="${col.code}" value="${col.sel.amount}">`;
       }
       const unit = p.amountUnit || '';
+      // v1.13:若選擇值字串已內含 unit 字(如「2單位」「計劃一」),外面就不再重複顯示 unit
+      const showUnitOutside = unit && !String(col.sel.amount).includes(unit);
       const linkTpl = company.linkTemplate || {};
       const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
 
@@ -2794,7 +2800,7 @@ const App = (() => {
         <div class="${companyClass}">${company.shortName || company.name || ''}</div>
         <span class="th-code">${col.code}${newBadge}</span>
         <div class="th-name">${p.name || col.code}</div>
-        <div class="th-amt" data-print-amt="${col.sel.amount} ${unit}">${amtField}<span class="unit">${unit}</span></div>
+        <div class="th-amt" data-print-amt="${col.sel.amount}${showUnitOutside ? ' '+unit : ''}">${amtField}${showUnitOutside ? `<span class="unit">${unit}</span>` : ''}</div>
         <div class="th-actions">
           ${linkTpl.dm ? `<a class="th-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
           ${linkTpl.clause ? `<a class="th-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
