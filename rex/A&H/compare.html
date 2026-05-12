@@ -3081,6 +3081,29 @@ const App = (() => {
     const maxCpP = Math.max(...cpData.map(d => d.cpPrimary), 0);
     const maxCpD = Math.max(...cpData.map(d => d.cpDaily), 0);
 
+    // v1.14b — 依「主打 CP」由高到低排序(各 tab 自動用該 tab 的主打 CP:
+    //   實支實付/自負額 → 住院雜費限額 CP、手術險 → 住院手術 CP、
+    //   定額日額 → 住院日額 CP、4 個重大傷病/癌症 → 一次金 CP)
+    // cpPrimary = 0(無法計算/無對應給付項)一律推到最右邊
+    // tiebreaker:同 cpPrimary 用 cpDaily 降序
+    {
+      const order = cols.map((_, i) => i).sort((a, b) => {
+        const A = cpData[a], B = cpData[b];
+        // 0/負 推到最後
+        const aZero = !(A.cpPrimary > 0);
+        const bZero = !(B.cpPrimary > 0);
+        if (aZero !== bZero) return aZero ? 1 : -1;
+        // 主打 CP 降序
+        if (B.cpPrimary !== A.cpPrimary) return B.cpPrimary - A.cpPrimary;
+        // tiebreaker:日額 CP 降序
+        return B.cpDaily - A.cpDaily;
+      });
+      const colsSorted = order.map(i => cols[i]);
+      const cpDataSorted = order.map(i => cpData[i]);
+      cols.length = 0; cols.push(...colsSorted);
+      cpData.length = 0; cpData.push(...cpDataSorted);
+    }
+
     // 比較範圍註記
     const compareRangeNote = `比較範圍: ${age}–${endAge} 歲, 共 ${endAge - age + 1} 年`;
 
