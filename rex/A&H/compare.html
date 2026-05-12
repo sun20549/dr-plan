@@ -720,6 +720,42 @@ body {
   background: #fbecec;
   border: 1.5px solid #d97676;
 }
+
+/* v1.17:條款限制層級色塊 — 整條款限制(嚴,橘紅警示)/ 僅門診手術(寬,中性藍) */
+.cell-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: help;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.cell-badge-whole {
+  color: #a8390e;
+  background: #fdecd9;
+  border: 1.5px solid #e8895a;
+}
+.cell-badge-whole::before {
+  content: '●';
+  font-size: 9px;
+  margin-right: 5px;
+  color: #d05a2a;
+}
+.cell-badge-outpt {
+  color: #1e4d80;
+  background: #e3eff8;
+  border: 1.5px solid #6ba1d4;
+}
+.cell-badge-outpt::before {
+  content: '○';
+  font-size: 9px;
+  margin-right: 5px;
+  color: #4a7faf;
+}
 /* 條款範圍列整列底色淡藍灰,跟金額類給付區分 */
 .compare-table tbody tr.row-clause-scope td {
   background: #f4f7fa !important;
@@ -2871,31 +2907,71 @@ const App = (() => {
     '癌症險(療程型)': 'critical'
   };
 
-  /* ─── v1.16 — 健保支付標準引用範圍(實支實付類條款手術範圍認定) ───
+  /* ─── v1.16/v1.17 — 健保支付標準引用範圍(實支實付類條款手術範圍認定) ───
    *
-   * 業務員實際比較重點:該商品條款對「手術」的認定範圍引用了哪幾節:
+   * 業務員實際比較重點:該商品條款對「手術」的認定範圍引用了哪幾節 + 限制寫在哪一層:
    *   - 2-2-7  = 健保支付標準「第二部 西醫 / 第二章 特定診療 / 第七節 手術」
    *   - 3-3-4-3 = 「第三部 牙醫 / 第三章 牙科處置及手術 / 第四節 口腔顎面外科 / 第三項 開刀房手術」
+   *
+   * v1.17 新增 restriction 欄位(條款限制層級):
+   *   - 'whole'  = 整體手術定義就限制(連住院手術都受限,範圍最嚴)
+   *   - 'outpt'  = 只有「門診手術費用保險金」這個給付項目單獨限制(住院手術依正常醫療判斷)
+   *   - null     = 未確認
    *
    * 兩節都認 = 西醫手術 + 牙科口腔顎面外科手術 都涵蓋,範圍最廣;
    * 只認 2-2-7 = 只涵蓋西醫手術,牙科口腔顎面外科手術(植牙/智齒/顎面骨折等)不理賠;
    * 只認 3-3-4-3 = 罕見;
    * 兩節都未引用 = 條款用其他標準定義手術範圍。
    *
-   * 值:true = 條款明文引用,false = 條款明確不引用,null = 未確認(顯示「依條款」)
+   * has227 / has3343:true = 條款明文引用,false = 條款明確排除,null = 未確認
    * 來源:逐家比對條款定義條 / 名詞定義章節
    */
   const SURGERY_CLAUSE_SCOPE = {
-    // 實支實付型(9 商品)
-    XHD:    { has227: true,  has3343: true,  source: '條款「門診手術」定義條:2-2-7 或 3-3-4-3 列舉之手術' },
-    U5D:    { has227: null,  has3343: null },
-    HXB:    { has227: null,  has3343: null },
-    HSV:    { has227: null,  has3343: null },
-    '1HS':  { has227: null,  has3343: null },
-    NBHSR:  { has227: null,  has3343: null },
-    CV4:    { has227: null,  has3343: null },
-    RSN:    { has227: null,  has3343: null },
-    MAHUGA: { has227: null,  has3343: null }
+    // 實支實付型(9 商品)— v1.17:8 家已從條款補完,凱基 MAHUGA 條款未收到
+    XHD: {
+      restriction: 'outpt',
+      has227: true, has3343: true,
+      source: '「門診手術」定義:列舉之手術(2-2-7 或 3-3-4-3 列舉之手術);整體手術定義條款尚未確認,故標為「僅門診」'
+    },
+    U5D: {
+      restriction: 'outpt',
+      has227: true, has3343: false,
+      source: '名詞定義條第十:「門診手術」係指…第二部第二章第七節所列舉之手術,不包含其他部、章或節內所列舉者'
+    },
+    HXB: {
+      restriction: 'outpt',
+      has227: true, has3343: true,
+      source: '「門診手術費用保險金」條款:項目以下列情形為限 — 一、2-2-7 或 3-3-4-3 所列之手術;二、附表二「一般處置項目表」'
+    },
+    HSV: {
+      restriction: 'outpt',
+      has227: true, has3343: true,
+      source: '附表二「手術項目給付比率表」優先;非附表內手術屬 2-2-7 或 3-3-4-3 所列舉者,由公司協議比照附表二程度相當之手術項目給付'
+    },
+    '1HS': {
+      restriction: 'outpt',
+      has227: true, has3343: true,
+      source: '附表三「手術項目表」優先;非附表三、但屬 2-2-7 或 3-3-4-3 所列舉之手術者,仍按限額給付門診手術費用保險金'
+    },
+    NBHSR: {
+      restriction: 'whole',
+      has227: true, has3343: false,
+      source: '本附約所稱「手術」係指…第二部第二章第七節所列舉之手術,不包括該支付標準其他部、章或節內所列舉者(整體手術定義)'
+    },
+    CV4: {
+      restriction: 'whole',
+      has227: true, has3343: true,
+      source: '名詞定義條第九:「手術」指…2-2-7 或 3-3-4-3 列舉之手術,不包括其他部、章或節(整體手術定義)'
+    },
+    RSN: {
+      restriction: 'whole',
+      has227: true, has3343: false,
+      source: '名詞定義條第八:「手術」係指…第二部第二章第七節列舉之手術,不包括該支付標準其他部、章或節內所列舉者(整體手術定義)'
+    },
+    MAHUGA: {
+      restriction: null,
+      has227: null, has3343: null
+    }
     // 自負額類 / 手術險另外確認後再加
   };
 
@@ -3177,26 +3253,59 @@ const App = (() => {
       }));
     }
 
-    /* ─── v1.16:實支實付型尾巴附加「健保支付標準引用範圍」兩列 ─────
-     * 這兩列不算金額,顯示 ✓ / ✗ / 依條款,讓業務員看到該商品的手術認定範圍。
-     * - 2-2-7 = 健保第二部第二章第七節(住院手術)
-     * - 3-3-4-3 = 健保第三部第三章第四節第三項(門診手術)
-     * 兩節都引用 = 範圍最廣;只引用一節 = 部分手術會被歸為「處置」。
+    /* ─── v1.16 / v1.17:實支實付型尾巴附加「條款手術範圍認定」三列 ─────
+     * 業務員實際比較重點:該商品條款對「手術」的認定範圍引用了哪幾節 + 限制寫在哪一層。
+     * 三列顯示:
+     *   1. 手術範圍限制(v1.17 新)— 整條款限制(嚴) / 僅門診手術 / 依條款
+     *   2. 健保 2-2-7 西醫手術 — ✓ / ✗ / 依條款
+     *   3. 健保 3-3-4-3 牙醫口腔顎面外科 — ✓ / ✗ / 依條款
+     * 整條款限制 = 連住院手術都受 2-2-7 / 3-3-4-3 限制;
+     * 僅門診手術 = 只有「門診手術費用保險金」這個給付項目受限,住院手術依正常醫療判斷。
      * ─────────────────────────────────────────────────────── */
     if (state.categoryKey === '實支實付型') {
+      // v1.17:條款限制層級
+      const restrictionEvaluator = (col) => {
+        const info = SURGERY_CLAUSE_SCOPE[col.code];
+        if (!info || !info.restriction) {
+          return { kind: 'rule', tooltip: '尚未從條款確認此商品的手術範圍限制層級' };
+        }
+        // v1.17:用新 kind 'badge' 顯示色塊
+        if (info.restriction === 'whole') {
+          return {
+            kind: 'badge',
+            val: 'whole',
+            label: '整條款限制',
+            tooltip: '整體手術定義就限制 2-2-7 / 3-3-4-3 — 連住院手術都受限,範圍最嚴。' + (info.source ? '\n條款依據:' + info.source : '')
+          };
+        } else if (info.restriction === 'outpt') {
+          return {
+            kind: 'badge',
+            val: 'outpt',
+            label: '僅門診手術',
+            tooltip: '只有「門診手術費用保險金」單獨限制,住院手術依正常醫療判斷,範圍較寬。' + (info.source ? '\n條款依據:' + info.source : '')
+          };
+        }
+        return { kind: 'rule', tooltip: '未確認' };
+      };
+      // 2-2-7 / 3-3-4-3 各節引用判定
       const makeScopeEvaluator = (flagKey) => (col) => {
         const info = SURGERY_CLAUSE_SCOPE[col.code];
         if (!info || info[flagKey] === null || info[flagKey] === undefined) {
-          // 還沒確認:走 rule kind 顯示「依條款」
           return { kind: 'rule', tooltip: '尚未從條款確認此商品是否引用該節' };
         }
-        // bool kind:true → ✓、false → ✗
         return {
           kind: 'bool',
           val: info[flagKey],
           tooltip: info.source || ''
         };
       };
+
+      rowDefs.push({
+        rowTitle: '手術範圍限制',
+        rowSub: '整條款限制(嚴)/ 僅門診手術(寬)',
+        isClauseScope: true,
+        evaluator: restrictionEvaluator
+      });
       rowDefs.push({
         rowTitle: '健保 2-2-7 西醫手術',
         rowSub: '第二部西醫 ‧ 第二章特定診療 ‧ 第七節 手術',
@@ -3345,6 +3454,12 @@ const App = (() => {
           } else {
             cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-no" title="${tt}">✗</span></td>`;
           }
+        } else if (r.kind === 'badge') {
+          // v1.17:條款限制層級 — 橘紅(整條款限制)/ 中性藍(僅門診)
+          nonEmptyCount++;
+          const tt = (r.tooltip || '').replace(/"/g,'&quot;');
+          const badgeCls = r.val === 'whole' ? 'cell-badge-whole' : 'cell-badge-outpt';
+          cellsHtml += `<td colspan="2"><span class="cell-badge ${badgeCls}" title="${tt}">${r.label}</span></td>`;
         } else {
           cellsHtml += `<td colspan="2"><span class="cell-none">—</span></td>`;
         }
