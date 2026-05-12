@@ -318,6 +318,18 @@ body {
   border-radius: 50%;
   background: var(--company-color, var(--gray));
 }
+/* v1.11 — 有 logo 時不顯示圓點,logo 載入失敗時 fallback */
+.picker-company-name.has-logo::before { display: none; }
+.picker-company-name.has-logo.no-logo::before { display: inline-block; }
+.picker-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 3px;
+  background: white;
+  padding: 1px;
+  border: 1px solid var(--border);
+}
 
 .picker-item {
   display: flex;
@@ -493,6 +505,22 @@ body {
   height: 6px;
   border-radius: 50%;
   background: var(--th-color, var(--gray));
+}
+/* v1.11 — 有 logo 時不顯示圓點(logo 就是視覺主角) */
+.th-company.has-logo::before { display: none; }
+.th-product.th-logo-failed .th-company::before { display: inline-block; }  /* 載入失敗 fallback 圓點 */
+
+/* v1.11 — 公司 logo 樣式 */
+.th-logo {
+  display: block;
+  margin: 0 auto 6px;
+  height: 28px;
+  max-width: 80px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  background: white;
+  padding: 2px 4px;
 }
 
 /* v1.10 — 新商品標籤(琥珀色 chip) */
@@ -2609,7 +2637,12 @@ const App = (() => {
       const div = document.createElement('div');
       div.className = 'picker-company';
       const colorVar = `--c-${cid}`;
-      div.innerHTML = `<div class="picker-company-name" style="--company-color: var(${colorVar})">${company.shortName || company.name}</div>`;
+      // v1.11 — picker 公司標題加 logo(有就 logo、沒有 fallback 用 CSS ::before 圓點)
+      const logoHtml = company.logoUrl
+        ? `<img class="picker-logo" src="${company.logoUrl}" alt="${company.shortName||''}" onerror="this.style.display='none';this.parentElement.classList.add('no-logo')">`
+        : '';
+      const headerCls = company.logoUrl ? 'picker-company-name has-logo' : 'picker-company-name';
+      div.innerHTML = `<div class="${headerCls}" style="--company-color: var(${colorVar})">${logoHtml}<span>${company.shortName || company.name}</span></div>`;
       byCompany[cid].forEach(pp => {
         const product = findProduct(pp.cid, pp.code);
         if (!product) return;
@@ -2748,9 +2781,17 @@ const App = (() => {
       const NEW_CODES = ['HSY', 'WV4', 'MAHUGA', '1HSD'];
       const newBadge = NEW_CODES.includes(col.code) ? '<span class="th-new-badge">新</span>' : '';
 
+      // v1.11 — 公司 logo:有 logoUrl 就用 <img>、沒有就 fallback 圓點(由 .th-company 的 ::before 處理)
+      const hasLogo = !!(company.logoUrl);
+      const logoHtml = hasLogo
+        ? `<img class="th-logo" src="${company.logoUrl}" alt="${company.shortName || company.name || ''}" onerror="this.style.display='none';this.parentElement.classList.add('th-logo-failed')">`
+        : '';
+      const companyClass = hasLogo ? 'th-company has-logo' : 'th-company';
+
       // 公司 th 用 colspan="2",讓下方男/女兩格對齊
       html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
-        <div class="th-company">${company.shortName || company.name || ''}</div>
+        ${logoHtml}
+        <div class="${companyClass}">${company.shortName || company.name || ''}</div>
         <span class="th-code">${col.code}${newBadge}</span>
         <div class="th-name">${p.name || col.code}</div>
         <div class="th-amt" data-print-amt="${col.sel.amount} ${unit}">${amtField}<span class="unit">${unit}</span></div>
