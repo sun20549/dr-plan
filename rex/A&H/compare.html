@@ -34,6 +34,7 @@
   --c-xinguang: #E60012;
   --c-farglory: #2B7DC4;
   --c-fubon: #0D6E3F;
+  --c-nanshan: #C24A6C;
 }
 
 * { box-sizing: border-box; }
@@ -1736,11 +1737,15 @@ const App = (() => {
     { key: '實支實付型', products: [
         { cid: 'quanqiu', code: 'XHD', defaultAmount: '計劃二' },
         { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-15' },
-        { cid: 'fubon', code: 'HSV', defaultAmount: '計畫2' }
+        { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃30' },
+        { cid: 'fubon', code: 'HSV', defaultAmount: '計畫2' },
+        { cid: 'nanshan', code: '1HS', defaultAmount: 'A型' }
       ]
     },
     { key: '實支實付型(自負額)', products: [
-        { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' }
+        { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' },
+        { cid: 'quanqiu', code: 'XHP', defaultAmount: '計劃4X' },
+        { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD15-30' }
       ]
     },
     { key: '手術險', products: [
@@ -1833,36 +1838,46 @@ const App = (() => {
       { rowTitle: '住院日額', matches: {
           XHD: '住院日額\\(每日\\)',
           U5D: '⑥ 住院費用補償',
-          HSV: 'ⓐ 住院日額'
+          HSV: 'ⓐ 住院日額',
+          HXB: '⑥ 住院日額',
+          '1HS': '⑤ 住院費用補償'
         }
       },
       { rowTitle: '每日病房費', matches: {
           U5D: '① 每日病房費用',
-          HSV: 'ⓑ-1 每日病房費用'
+          HSV: 'ⓑ-1 每日病房費用',
+          HXB: '① 每日病房費用',
+          '1HS': '① 每日病房費用'
         }
       },
       { rowTitle: '加護病房日額', matches: {
           XHD: '加護病房日額',
           U5D: '加護病房日額',
-          HSV: '③ 加護病房/燒燙傷日額'
+          HSV: '③ 加護病房/燒燙傷日額',
+          HXB: '⑤ 加護病房費用'
         }
       },
       { rowTitle: '住院雜費限額', matches: {
           XHD: '住院實支\\(雜費限額\\)',
           U5D: '② 醫院雜費',
-          HSV: 'ⓑ-2 住院醫療費用限額'
+          HSV: 'ⓑ-2 住院醫療費用限額',
+          HXB: '② 住院雜費與手術費用',
+          '1HS': '② 醫院各項雜費及手術費'
         }
       },
       { rowTitle: '手術費用限額', matches: {
           U5D: '③ 重大手術',
           HSV: 'ⓑ-4 每次手術費用限額'
           // XHD 的「重大手術慰問」是另外的慰問金性質,不放此列
+          // HXB 手術費已含在雜費限額內、1HS 同樣
         }
       },
       { rowTitle: '門診手術', matches: {
           XHD: '門診手術',
           U5D: '⑦ 門診手術費用',
-          HSV: '① 門診手術費用限額'
+          HSV: '① 門診手術費用限額',
+          HXB: '④ 門診手術費用',
+          '1HS': '④ 門診手術費用'
         }
       },
       { rowTitle: '特定處置', matches: {
@@ -1894,11 +1909,74 @@ const App = (() => {
         }
       },
       { rowTitle: '住院前後門診', matches: {
-          U5D: '⑤ 住院前後門診'
+          U5D: '⑤ 住院前後門診',
+          HXB: '③ 住院前後門診',
+          '1HS': '③ 住院前後門診'
         }
       },
       { rowTitle: '住院關懷', matches: {
           U5D: '⑧ 住院關懷'
+        }
+      }
+    ],
+    /* 自負額類:給付項目少,寫死 row 比 cls.key 自動歸位更整齊 */
+    '實支實付型(自負額)': [
+      { rowTitle: '住院日額(限額)', matches: {
+          XHO: '^住院日額\\(限額\\)',
+          XHP: '^每日病房費用\\(限額\\)',
+          A2A3: '^每日病房費用\\(限額\\)'
+        }
+      },
+      { rowTitle: '住院日額(自負)', matches: {
+          XHO: '^住院日額\\(自負額\\)',
+          XHP: '^每日病房費用\\(自負額\\)',
+          A2A3: '^每日病房費用\\(自負額\\)'
+        }
+      },
+      { rowTitle: '加護病房日額(限額)', matches: {
+          XHO: '^加護病房日額\\(限額\\)'
+        }
+      },
+      { rowTitle: '住院雜費限額', matches: {
+          XHO: '住院實支\\(雜費限額\\)',
+          XHP: '^住院雜費限額',
+          A2A3: '^住院雜費及外科手術費用限額'
+        }
+      },
+      { rowTitle: '住院雜費(自負)', matches: {
+          XHO: '住院實支\\(雜費自負額\\)',
+          XHP: '^住院雜費\\(自負額\\)',
+          A2A3: '^住院雜費\\(自負額\\)'
+        }
+      },
+      { rowTitle: '加護病房雜費(限額)', matches: {
+          XHO: '^加護病房雜費\\(限額\\)'
+        }
+      },
+      { rowTitle: '門診手術(限額)', matches: {
+          XHO: '^門診手術\\(限額\\)',
+          XHP: '^門診手術\\(限額\\)',
+          A2A3: '^門診手術\\(限額\\)'
+        }
+      },
+      { rowTitle: '門診手術(自負)', matches: {
+          XHO: '^門診手術\\(自負額\\)',
+          XHP: '^門診手術\\(自負額\\)',
+          A2A3: '^門診手術\\(自負額\\)'
+        }
+      },
+      { rowTitle: '住院照護日額', matches: {
+          XHO: '住院照護',
+          XHP: '住院照護日額'
+        }
+      },
+      { rowTitle: '特定醫材補助', matches: {
+          A2A3: '特定醫材補助'
+        }
+      },
+      { rowTitle: '義齒/義肢/眼鏡等限額', matches: {
+          XHO: '義齒.*義肢',
+          XHP: '義齒.*義肢'
         }
       }
     ]
@@ -1907,14 +1985,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -2142,7 +2220,9 @@ const App = (() => {
   /* ─── 取得該類別「主打給付項」 (用於性價比 主打項 CP) ─── */
   const PRIMARY_ROW_BY_CATEGORY = {
     '實支實付型': '住院雜費限額',         // 跟 ROW_TEMPLATES 內 rowTitle 對齊
-    '實支實付型(自負額)': null,              // 用 cls.key reimburse 抓
+    '實支實付型(自負額)': '住院雜費限額',  // v1.5: 也用 ROW_TEMPLATES 抓,因為 classifyItem 會把
+                                          //       「住院雜費限額」/「住院雜費及外科手術費用限額」誤歸到 surgery,
+                                          //       直接用 ROW_TEMPLATES regex 才穩
     '手術險': null,                          // surgery cls
     '定額日額': null,                        // daily cls
     '重大傷病(終身)': null,                  // critical cls

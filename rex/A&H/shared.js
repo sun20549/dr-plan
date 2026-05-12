@@ -73,6 +73,14 @@
     if (calc.type === 'note') {
       return { type: 'text', text: calc.text };
     }
+    if (calc.type === 'text') {
+      // v1.5: 純文字描述(例如 1HS 的健康促進回饋金 0~10%、防疫保健回饋金 2%)
+      return { type: 'text', text: calc.value || calc.text || '' };
+    }
+    if (calc.type === 'fixed') {
+      // v1.5: 不依計劃別/保額的固定金額(例如新光 A2A3 特定醫材補助 5,000)
+      return calc.value != null ? { type: 'num', val: calc.value } : null;
+    }
     if (calc.type === 'plan') {
       const v = calc.planMap[amount];
       return v != null ? { type: 'num', val: v } : null;
