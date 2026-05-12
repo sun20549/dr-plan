@@ -510,7 +510,8 @@ body {
 }
 
 .th-amt input, .th-amt select {
-  width: 84px;
+  width: auto;
+  min-width: 110px;        /* v1.7:避免長計劃名(如 HSD25-30)被截 */
   padding: 5px 8px;
   font-size: 13px;
   font-weight: 700;
@@ -2463,7 +2464,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
