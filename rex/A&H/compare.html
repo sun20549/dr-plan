@@ -98,11 +98,11 @@ body {
 .tb-btn.primary { background: var(--orange); border-color: var(--orange); }
 .tb-btn.primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
 
-/* ─── 容器 ─── */
+/* ─── 容器(v1.6 全螢幕) ─── */
 .container {
-  max-width: 1280px;
+  max-width: none;       /* v1.5 = 1280px → v1.6 全螢幕 */
   margin: 0 auto;
-  padding: 24px 20px 80px;
+  padding: 24px 32px 80px;
 }
 
 /* ─── 頁面標題列 (副標) ─── */
@@ -827,6 +827,28 @@ body {
   color: #c4c8d0;
   background: #fafbfc !important;
   font-style: italic;
+}
+
+/* v1.6:首/續雙值費率格(M4D / RQ1)— 主值大、續值小且淡 */
+.compare-table tbody tr.row-fee-detail td.fee-cell.fee-dual {
+  line-height: 1.25;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.compare-table tbody tr.row-fee-detail td.fee-cell.fee-dual .fee-first {
+  display: block;
+  font-weight: 700;
+}
+.compare-table tbody tr.row-fee-detail td.fee-cell.fee-dual .fee-renew {
+  display: block;
+  font-size: 11px;
+  color: #8a8e98;
+  font-weight: 500;
+  margin-top: 1px;
+}
+.compare-table tbody tr.row-fee-detail.client-row td.fee-cell.fee-dual .fee-renew {
+  color: var(--orange-dark);
+  opacity: 0.7;
 }
 
 /* 費率明細列不要被 zebra/hover 干擾 */
@@ -1735,27 +1757,27 @@ const App = (() => {
    * ─────────────────────────────────────────────── */
   const CATEGORIES = [
     { key: '實支實付型', products: [
-        { cid: 'quanqiu', code: 'XHD', defaultAmount: '計劃二' },
-        { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-15' },
-        { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃30' },
-        { cid: 'fubon', code: 'HSV', defaultAmount: '計畫2' },
-        { cid: 'nanshan', code: '1HS', defaultAmount: 'A型' }
+        { cid: 'quanqiu', code: 'XHD', defaultAmount: '計劃四' },
+        { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-30' },
+        { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃50' },
+        { cid: 'fubon', code: 'HSV', defaultAmount: '計畫3' },
+        { cid: 'nanshan', code: '1HS', defaultAmount: 'C型' }
       ]
     },
     { key: '實支實付型(自負額)', products: [
         { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' },
         { cid: 'quanqiu', code: 'XHP', defaultAmount: '計劃4X' },
-        { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD15-30' }
+        { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD10-30' }
       ]
     },
     { key: '手術險', products: [
         { cid: 'quanqiu', code: 'NIR', defaultAmount: '計劃四' },
-        { cid: 'xinguang', code: 'YHA', defaultAmount: 1500 },
-        { cid: 'xinguang', code: 'H2D', defaultAmount: 1500 }
+        { cid: 'xinguang', code: 'YHA', defaultAmount: 2000 },
+        { cid: 'xinguang', code: 'H2D', defaultAmount: 2000 }
       ]
     },
     { key: '定額日額', products: [
-        { cid: 'hongtai', code: 'HI', defaultAmount: 3 }
+        { cid: 'hongtai', code: 'HI', defaultAmount: 10 }
       ]
     },
     { key: '重大傷病(終身)', products: [
@@ -2114,7 +2136,11 @@ const App = (() => {
    *  HSV 等年齡只有 5 歲間距 → 找 ≤ age 的最大 key
    *  回傳 null = 查不到
    * ─────────────────────────────────────────── */
-  function lookupPremium(product, amount, age, gender) {
+  // v1.6 新增 rateMode 參數:
+  //   'firstYear' (預設) → 原行為:rates → 退路 firstYearRates → rateTable
+  //   'renewal'           → 只讀 renewalRates,給 M4D / RQ1 等首/續分表商品用
+  //                         (沒有 renewalRates 或找不到該歲,回 null;不退到首年表)
+  function lookupPremium(product, amount, age, gender, rateMode) {
     if (!product) return null;
     const g = gender === 'F' ? 'F' : 'M';
     const ageStr = String(age);
@@ -2174,8 +2200,13 @@ const App = (() => {
         // 每 10 萬為一單位,amount 是「萬數」,所以 ÷ 10
         units = Number(amount) / 10;
       } else if (unit.includes('百')) {
-        // 「百元」單位(類似 YHA / H2D 等),amount × 100
-        units = Number(amount) * 100;
+        // v1.6 修正:「百元」單位(YHA / H2D 條款明文「以百元為單位」)。
+        // 條款語意:保費 = 表定費率 × (保險金額 ÷ 100)
+        //   ↓
+        // amount 是「保險金額」(元),例如 2000 表示日額 2,000 元保額
+        // units = amount / 100 (而非 × 100,v1.5 之前算反導致 6,300 萬 bug)
+        // 對 DM 範例驗證:YHA 30 男日額 2,000 = 359 × (2000/100) = 7,180 ✓
+        units = Number(amount) / 100;
       } else if (unit.includes('萬')) {
         // 「萬元」單位,amount 直接是萬數
         units = Number(amount);
@@ -2185,6 +2216,14 @@ const App = (() => {
       const fee = ratePerUnit * units;
       // 費率資料常含小數,結果取整;且不允許負數
       return fee > 0 ? Math.round(fee) : 0;
+    }
+
+    // v1.6:rateMode='renewal' 專路 — 只查 renewalRates(M4D / RQ1)
+    // 找不到不退路,直接回 null(避免被首年表錯誤遮蓋)
+    if (rateMode === 'renewal') {
+      if (!product.renewalRates) return null;
+      const v = readRates(product.renewalRates);
+      return (v !== null && v !== undefined) ? v : null;
     }
 
     // 主路徑:product.rates
@@ -2348,11 +2387,23 @@ const App = (() => {
   function calcCumulativePremium(product, amount, startAge, endAge, gender) {
     if (!product) return { total: 0, avg: 0, years: 0, missing: [] };
     const end = endAge !== undefined && endAge !== null ? endAge : (product.maxAgeContinuous || 80);
+    // v1.6:有 renewalRates 的商品(M4D / RQ1)用「首年→續年」鏈計算
+    //   startAge → 取 firstYear 費率(首次投保情境)
+    //   startAge+1 .. end → 取 renewal 費率(逐年續保)
+    // 其他商品(沒有 renewalRates)維持原行為:全段都走 lookupPremium 預設路徑
+    const hasRenewal = !!product.renewalRates;
     let total = 0;
     let cnt = 0;
     const missing = [];
     for (let a = startAge; a <= end; a++) {
-      const fee = lookupPremium(product, amount, a, gender);
+      let fee;
+      if (hasRenewal) {
+        fee = (a === startAge)
+          ? lookupPremium(product, amount, a, gender)               // 首年
+          : lookupPremium(product, amount, a, gender, 'renewal');   // 續年
+      } else {
+        fee = lookupPremium(product, amount, a, gender);
+      }
       if (fee !== null && fee > 0) {
         total += fee;
         cnt++;
@@ -2661,18 +2712,36 @@ const App = (() => {
           const maxAge = col.product?.maxAgeContinuous || 80;
           const outOfRange = a > maxAge;
           const cid = col.sel.cid;
+          // v1.6:有 renewalRates 的商品(M4D / RQ1)同格顯示「首年 / 續年」
+          const hasRenewal = !!col.product?.renewalRates;
           let feeM = null, feeF = null;
+          let feeMr = null, feeFr = null;  // 續年(只用於 hasRenewal)
           if (!outOfRange) {
             feeM = lookupPremium(col.product, col.sel.amount, a, 'M');
             feeF = lookupPremium(col.product, col.sel.amount, a, 'F');
+            if (hasRenewal) {
+              feeMr = lookupPremium(col.product, col.sel.amount, a, 'M', 'renewal');
+              feeFr = lookupPremium(col.product, col.sel.amount, a, 'F', 'renewal');
+            }
           }
           const mCls = (isClientAge && gender === 'M' && !outOfRange) ? 'client-cell' : '';
           const fCls = (isClientAge && gender === 'F' && !outOfRange) ? 'client-cell' : '';
           const oorCls = outOfRange ? 'out-of-range' : '';
-          const mDisp = outOfRange ? '—' : (feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—');
-          const fDisp = outOfRange ? '—' : (feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—');
-          html += `<td class="fee-cell male-col ${mCls} ${oorCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
-          html += `<td class="fee-cell female-col ${fCls} ${oorCls}">${fDisp}</td>`;
+          const fmt = (n) => (n !== null && n > 0) ? n.toLocaleString() : '—';
+          let mDisp, fDisp;
+          if (outOfRange) {
+            mDisp = fDisp = '—';
+          } else if (hasRenewal) {
+            // 首/續雙值:第一行是首年(主),第二行是續年(淡色小字)
+            mDisp = `<span class="fee-first">${fmt(feeM)}</span><span class="fee-renew">續 ${fmt(feeMr)}</span>`;
+            fDisp = `<span class="fee-first">${fmt(feeF)}</span><span class="fee-renew">續 ${fmt(feeFr)}</span>`;
+          } else {
+            mDisp = fmt(feeM);
+            fDisp = fmt(feeF);
+          }
+          const dualCls = hasRenewal ? 'fee-dual' : '';
+          html += `<td class="fee-cell male-col ${mCls} ${oorCls} ${dualCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
+          html += `<td class="fee-cell female-col ${fCls} ${oorCls} ${dualCls}">${fDisp}</td>`;
         });
         html += '</tr>';
       }
