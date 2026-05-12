@@ -884,28 +884,48 @@ body.customer-mode .cp-wrap .cp-bar { display: none; }
   border-left: 2px solid var(--company-color, #d8dde6);
 }
 
-/* 客戶當前年齡列(整列淡橘背景) */
-.compare-table tbody tr.row-fee-detail.client-row td.age-cell {
-  background: var(--orange) !important;
-  color: white;
+/* v1.15:刻度感 — 每 5 歲細虛線、每 10 歲實線稍粗
+ * tick-minor:5/15/25/... → 細虛線
+ * tick-major:0/10/20/... → 主刻度,實線粗 + 字體加粗顯眼
+ * 注意:border-top 畫在這列上方,跟「結束於上一列」視覺對齊
+ */
+.compare-table tbody tr.row-fee-detail.tick-minor td {
+  border-top: 1px dashed #e3e6ec;
 }
-.compare-table tbody tr.row-fee-detail.client-row td.fee-cell {
-  background: var(--orange-light) !important;
+.compare-table tbody tr.row-fee-detail.tick-major td {
+  border-top: 2px solid #cfd4dc;
+}
+/* 0 歲是第一列,不畫上方分隔線(避免跟 thead 撞線) */
+.compare-table tbody tr.row-fee-detail.tick-major:first-of-type td {
+  border-top: none;
+}
+/* 年齡欄主刻度視覺加強 */
+.compare-table tbody tr.row-fee-detail.tick-major td.age-cell {
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 13px;
+  background: #f4f6fa !important;
+}
+.compare-table tbody tr.row-fee-detail.tick-minor td.age-cell {
+  color: #4a5160;
   font-weight: 700;
-  color: var(--orange-dark);
-  font-size: 14px;
 }
-.compare-table tbody tr.row-fee-detail.client-row td.fee-cell.client-cell {
-  background: var(--orange) !important;
-  color: white;
+/* 非刻度年齡欄字體淡一點、小一點(主刻度 / 次刻度 / 一般) */
+.compare-table tbody tr.row-fee-detail:not(.tick-major):not(.tick-minor) td.age-cell {
+  color: #8a90a0;
+  font-weight: 500;
+  font-size: 11px;
 }
 
-/* 範圍內(現年→上限)極淡橘 */
-.compare-table tbody tr.row-fee-detail.in-range-row:not(.client-row) td.fee-cell {
-  background: rgba(255,237,224,0.5) !important;
+/* hover 一整列(微微加深,提升可讀性) */
+.compare-table tbody tr.row-fee-detail:hover td.fee-cell.male-col {
+  background: rgba(61,143,204,0.18);
 }
-.compare-table tbody tr.row-fee-detail.in-range-row:not(.client-row) td.age-cell {
-  background: #fff5ec !important;
+.compare-table tbody tr.row-fee-detail:hover td.fee-cell.female-col {
+  background: rgba(232,90,122,0.18);
+}
+.compare-table tbody tr.row-fee-detail:hover td.age-cell {
+  background: #eaeef5 !important;
 }
 
 /* 超出該家公司續保上限 */
@@ -913,6 +933,9 @@ body.customer-mode .cp-wrap .cp-bar { display: none; }
   color: #c4c8d0;
   background: #fafbfc !important;
   font-style: italic;
+}
+.compare-table tbody tr.row-fee-detail:hover td.fee-cell.out-of-range {
+  background: #fafbfc !important;  /* hover 也不變色 */
 }
 
 /* v1.6:首/續雙值費率格(M4D / RQ1)— 主值大、續值小且淡 */
@@ -926,23 +949,17 @@ body.customer-mode .cp-wrap .cp-bar { display: none; }
   font-weight: 700;
 }
 .compare-table tbody tr.row-fee-detail td.fee-cell.fee-dual .fee-renew {
+.compare-table tbody tr.row-fee-detail td.fee-cell.fee-dual .fee-renew {
   display: block;
   font-size: 11px;
   color: #8a8e98;
   font-weight: 500;
   margin-top: 1px;
 }
-.compare-table tbody tr.row-fee-detail.client-row td.fee-cell.fee-dual .fee-renew {
-  color: var(--orange-dark);
-  opacity: 0.7;
-}
 
-/* 費率明細列不要被 zebra/hover 干擾 */
+/* 費率明細列不要被 zebra 干擾(hover 規則已在上方刻度線區塊重設) */
 .compare-table tbody tr.row-fee-detail:nth-child(odd) td {
   /* 覆寫 tbody zebra */
-}
-.compare-table tbody tr.row-fee-detail:hover td {
-  /* 不要 hover 橘色覆寫掉淡藍/淡粉 */
 }
 
 /* 全年齡保費表 section */
@@ -1368,36 +1385,47 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
 }
 
 /* 客戶當前年齡列 → 整列淡橘 */
-.full-age-table tr.client-row .age-cell {
-  background: var(--orange) !important;
-  color: white;
-  z-index: 3;                 /* 蓋過其他 sticky,避免被遮 */
+/* v1.15:刻度感(獨立 full-age-table — 目前已隱藏,保持邏輯一致)
+ * tick-minor:5/15/25/... → 細虛線
+ * tick-major:0/10/20/... → 主刻度,實線粗 + 字體加粗
+ */
+.full-age-table tr.tick-minor td {
+  border-top: 1px dashed #e3e6ec;
 }
-.full-age-table tr.client-row .fee-cell {
-  background: var(--orange-light) !important;
+.full-age-table tr.tick-major td {
+  border-top: 2px solid #cfd4dc;
+}
+.full-age-table tr.tick-major:first-child td {
+  border-top: none;
+}
+.full-age-table tr.tick-major .age-cell {
+  color: var(--navy);
+  font-weight: 800;
+  background: #f4f6fa;
+}
+.full-age-table tr.tick-minor .age-cell {
+  color: #4a5160;
   font-weight: 700;
-  color: var(--orange-dark);
-  font-size: 14px;
 }
-/* 客戶當前年齡 + 性別 → 該格深橘 + 白字 */
-.full-age-table tr.client-row .fee-cell.client-cell {
-  background: var(--orange) !important;
-  color: white;
+.full-age-table tr:not(.tick-major):not(.tick-minor) .age-cell {
+  color: #8a90a0;
+  font-weight: 500;
+  font-size: 11px;
 }
 
-/* 範圍內(現年→上限)→ 極淡橘 */
-.full-age-table tr.in-range-row:not(.client-row) .fee-cell {
-  background: rgba(255,237,224,0.5) !important;
-}
-.full-age-table tr.in-range-row:not(.client-row) .age-cell {
-  background: #fff5ec;
-}
+/* hover 整列加深(資訊揭露用) */
+.full-age-table tr:hover .fee-cell.male-col   { background: rgba(61,143,204,0.18); }
+.full-age-table tr:hover .fee-cell.female-col { background: rgba(232,90,122,0.18); }
+.full-age-table tr:hover .age-cell            { background: #eaeef5; }
 
 /* 超出該家公司續保上限 → 灰色 dash */
 .full-age-table .fee-cell.out-of-range {
   color: #c4c8d0;
   background: #fafbfc !important;
   font-style: italic;
+}
+.full-age-table tr:hover .fee-cell.out-of-range {
+  background: #fafbfc !important;
 }
 
 
@@ -3248,14 +3276,16 @@ const App = (() => {
       html += '</tr>';
 
       // 各年齡費率列
+      // v1.15:純粹資訊揭露用,不再標當前年齡。每 5 歲一組(細虛線)、每 10 歲一組(實線粗)
       const tableMaxAge = Math.max(...cols.map(c => (c.product?.maxAgeContinuous || 80)));
       for (let a = 0; a <= tableMaxAge; a++) {
-        const isClientAge = a === age;
-        const isInRange = a >= age;
+        // 刻度標記:每 5 歲 / 每 10 歲(用於分界線 & 年齡欄主刻度樣式)
+        const isMajor = a % 10 === 0;       // 10 倍數 = 主刻度
+        const isMinor = a % 5 === 0 && !isMajor;  // 5 倍數(非 10 倍) = 次刻度
         const cls = [
           'row-fee-detail',
-          isClientAge ? 'client-row' : '',
-          isInRange   ? 'in-range-row' : ''
+          isMajor ? 'tick-major' : '',
+          isMinor ? 'tick-minor' : ''
         ].filter(Boolean).join(' ');
 
         html += `<tr class="${cls}"><td class="age-cell">${a}<span class="age-unit">歲</span></td>`;
@@ -3275,8 +3305,6 @@ const App = (() => {
               feeFr = lookupPremium(col.product, col.sel.amount, a, 'F', 'renewal');
             }
           }
-          const mCls = (isClientAge && gender === 'M' && !outOfRange) ? 'client-cell' : '';
-          const fCls = (isClientAge && gender === 'F' && !outOfRange) ? 'client-cell' : '';
           const oorCls = outOfRange ? 'out-of-range' : '';
           const fmt = (n) => (n !== null && n > 0) ? n.toLocaleString() : '—';
           let mDisp, fDisp;
@@ -3291,8 +3319,8 @@ const App = (() => {
             fDisp = fmt(feeF);
           }
           const dualCls = hasRenewal ? 'fee-dual' : '';
-          html += `<td class="fee-cell male-col ${mCls} ${oorCls} ${dualCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
-          html += `<td class="fee-cell female-col ${fCls} ${oorCls} ${dualCls}">${fDisp}</td>`;
+          html += `<td class="fee-cell male-col ${oorCls} ${dualCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
+          html += `<td class="fee-cell female-col ${oorCls} ${dualCls}">${fDisp}</td>`;
         });
         html += '</tr>';
       }
@@ -3376,11 +3404,11 @@ const App = (() => {
     // ── tbody ──
     let tbodyHtml = '<tbody>';
     for (let age = 0; age <= tableMaxAge; age++) {
-      const isClientAge = age === clientAge;
-      const isInRange = age >= clientAge;
+      const isMajor = age % 10 === 0;
+      const isMinor = age % 5 === 0 && !isMajor;
       const cls = [
-        isClientAge ? 'client-row' : '',
-        isInRange   ? 'in-range-row' : ''
+        isMajor ? 'tick-major' : '',
+        isMinor ? 'tick-minor' : ''
       ].filter(Boolean).join(' ');
 
       tbodyHtml += `<tr class="${cls}">`;
@@ -3397,16 +3425,14 @@ const App = (() => {
           feeF = lookupPremium(col.product, col.sel.amount, age, 'F');
         }
 
-        const mCls = (isClientAge && clientGender === 'M' && !outOfRange) ? 'client-cell' : '';
-        const fCls = (isClientAge && clientGender === 'F' && !outOfRange) ? 'client-cell' : '';
         const oorCls = outOfRange ? 'out-of-range' : '';
 
         const mDisp = outOfRange ? '—' : (feeM !== null && feeM > 0 ? feeM.toLocaleString() : '—');
         const fDisp = outOfRange ? '—' : (feeF !== null && feeF > 0 ? feeF.toLocaleString() : '—');
 
         // col-start 標在男欄,讓 CSS 畫公司分隔線
-        tbodyHtml += `<td class="fee-cell male-col col-start ${mCls} ${oorCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
-        tbodyHtml += `<td class="fee-cell female-col ${fCls} ${oorCls}">${fDisp}</td>`;
+        tbodyHtml += `<td class="fee-cell male-col col-start ${oorCls}" style="--company-color: var(--c-${cid});">${mDisp}</td>`;
+        tbodyHtml += `<td class="fee-cell female-col ${oorCls}">${fDisp}</td>`;
       });
 
       tbodyHtml += '</tr>';
