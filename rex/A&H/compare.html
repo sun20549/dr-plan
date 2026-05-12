@@ -486,7 +486,34 @@ body {
   z-index: 3;
 }
 
-.th-product { min-width: 160px; max-width: 220px; }
+.th-product {
+  min-width: 160px;
+  max-width: 220px;
+  vertical-align: top;        /* v1.15b:卡頂部對齊,讓 row 高度被撐高時頂部不會被推到中間 */
+}
+/* v1.15b:用 wrapper 把卡內容做成 flex column,th-amt + th-actions 釘到卡底部
+ * 解決:商品名換行時下拉跟商品名互相擠壓的問題,讓每張卡的下拉橫向對齊。
+ * 為什麼用 wrapper:<th> 直接 display:flex 會破 table layout(colspan 失效)。
+ * height:100% 讓 wrapper 撐滿 cell 高度(由 table row 的最高 cell 決定)。
+ */
+.th-product-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 130px;          /* 保底,避免內容超短時下拉貼太上面 */
+}
+.th-product-wrap .th-name {
+  /* v1.15b:固定 min-height 容納 3 行(13px × 1.35 line-height × 3 ≈ 53px)
+   * 配合 flex:1 0 auto,讓 1-2 行的卡也預留空間,3 行的卡剛好不溢出。
+   * 結果:所有卡的 th-amt 都對齊在同一條線(因為 name 佔位一致)。
+   */
+  flex: 1 0 auto;
+  min-height: 54px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
 
 .th-company {
   font-size: 11px;
@@ -3171,16 +3198,19 @@ const App = (() => {
       const companyClass = hasLogo ? 'th-company has-logo' : 'th-company';
 
       // 公司 th 用 colspan="2",讓下方男/女兩格對齊
+      // v1.15b:內容包一層 .th-product-wrap (flex column),讓 th-amt + th-actions 釘到卡底部
       html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
-        ${logoHtml}
-        <div class="${companyClass}">${company.shortName || company.name || ''}</div>
-        <span class="th-code">${col.code}${newBadge}</span>
-        <div class="th-name">${p.name || col.code}</div>
-        <div class="th-amt" data-print-amt="${col.sel.amount}${showUnitOutside ? ' '+unit : ''}">${amtField}${showUnitOutside ? `<span class="unit">${unit}</span>` : ''}</div>
-        <div class="th-actions">
-          ${linkTpl.dm ? `<a class="th-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
-          ${linkTpl.clause ? `<a class="th-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
-          ${linkTpl.rate ? `<a class="th-link" href="${linkUrls('rate')}" target="_blank">費率</a>` : ''}
+        <div class="th-product-wrap">
+          ${logoHtml}
+          <div class="${companyClass}">${company.shortName || company.name || ''}</div>
+          <span class="th-code">${col.code}${newBadge}</span>
+          <div class="th-name">${p.name || col.code}</div>
+          <div class="th-amt" data-print-amt="${col.sel.amount}${showUnitOutside ? ' '+unit : ''}">${amtField}${showUnitOutside ? `<span class="unit">${unit}</span>` : ''}</div>
+          <div class="th-actions">
+            ${linkTpl.dm ? `<a class="th-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
+            ${linkTpl.clause ? `<a class="th-link" href="${linkUrls('clause')}" target="_blank">條款</a>` : ''}
+            ${linkTpl.rate ? `<a class="th-link" href="${linkUrls('rate')}" target="_blank">費率</a>` : ''}
+          </div>
         </div>
       </th>`;
     });
