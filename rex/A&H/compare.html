@@ -35,6 +35,8 @@
   --c-farglory: #2B7DC4;
   --c-fubon: #0D6E3F;
   --c-nanshan: #C24A6C;
+  --c-mli: #7A2D2F;
+  --c-cathay: #6B8E23;
 }
 
 * { box-sizing: border-box; }
@@ -1762,7 +1764,10 @@ const App = (() => {
         { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-30' },
         { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃50' },
         { cid: 'fubon', code: 'HSV', defaultAmount: '計畫3' },
-        { cid: 'nanshan', code: '1HS', defaultAmount: 'C型' }
+        { cid: 'nanshan', code: '1HS', defaultAmount: 'C型' },
+        { cid: 'mli', code: 'NBHSR', defaultAmount: 'C' },
+        { cid: 'cathay', code: 'CV4', defaultAmount: 'M30' },
+        { cid: 'farglory', code: 'RSN', defaultAmount: '計劃二' }
       ]
     },
     { key: '實支實付型(自負額)', products: [
@@ -1863,14 +1868,20 @@ const App = (() => {
           U5D: '⑥ 住院費用補償',
           HSV: 'ⓐ 住院日額',
           HXB: '⑥ 住院日額',
-          '1HS': '⑤ 住院費用補償'
+          '1HS': '⑤ 住院費用補償',
+          NBHSR: '⑤ 住院日額',
+          CV4: '③ 住院日額',
+          RSN: '⑤ 住院日額'
         }
       },
       { rowTitle: '每日病房費', matches: {
           U5D: '① 每日病房費用',
           HSV: 'ⓑ-1 每日病房費用',
           HXB: '① 每日病房費用',
-          '1HS': '① 每日病房費用'
+          '1HS': '① 每日病房費用',
+          NBHSR: '① 每日病房費用',
+          CV4: '① 每日住院經常費用',
+          RSN: '① 每日病房費用'
         }
       },
       { rowTitle: '加護病房日額', matches: {
@@ -1885,14 +1896,18 @@ const App = (() => {
           U5D: '② 醫院雜費',
           HSV: 'ⓑ-2 住院醫療費用限額',
           HXB: '② 住院雜費與手術費用',
-          '1HS': '② 醫院各項雜費及手術費'
+          '1HS': '② 醫院各項雜費及手術費',
+          NBHSR: '② 住院醫療及手術費用限額',
+          CV4: '② 每次住院醫療費用',
+          RSN: '② 住院醫療費用限額'
         }
       },
       { rowTitle: '手術費用限額', matches: {
           U5D: '③ 重大手術',
-          HSV: 'ⓑ-4 每次手術費用限額'
+          HSV: 'ⓑ-4 每次手術費用限額',
+          RSN: '③ 住院手術費用限額'
           // XHD 的「重大手術慰問」是另外的慰問金性質,不放此列
-          // HXB 手術費已含在雜費限額內、1HS 同樣
+          // HXB 手術費已含在雜費限額內、1HS / NBHSR / CV4 同樣
         }
       },
       { rowTitle: '門診手術', matches: {
@@ -1900,11 +1915,16 @@ const App = (() => {
           U5D: '⑦ 門診手術費用',
           HSV: '① 門診手術費用限額',
           HXB: '④ 門診手術費用',
-          '1HS': '④ 門診手術費用'
+          '1HS': '④ 門診手術費用',
+          NBHSR: '③ 門診手術費用\\(實支限額\\)',
+          CV4: '④ 門診手術費用',
+          RSN: '④ 門診手術費用限額'
         }
       },
       { rowTitle: '特定處置', matches: {
-          HSV: '② 特定處置費用限額'
+          HSV: '② 特定處置費用限額',
+          NBHSR: '④ 門診特定處置\\(實支限額\\)',
+          CV4: '⑤ 門診特定處置費用'
         }
       },
       { rowTitle: '加護病房雜費', matches: {
@@ -1916,11 +1936,15 @@ const App = (() => {
         }
       },
       { rowTitle: '每年理賠總限額', matches: {
-          HSV: '⑥ 每年保險金給付總限額'
+          HSV: '⑥ 每年保險金給付總限額',
+          NBHSR: '⑥ 每年保險金給付總限額',
+          CV4: '⑧ 每年保險金給付總限額',
+          RSN: '⑥ 每年保險金給付總限額'
         }
       },
       { rowTitle: '重大手術慰問金', matches: {
-          XHD: '重大手術慰問'
+          XHD: '重大手術慰問',
+          CV4: '⑥ 重大住院慰問金'
         }
       },
       { rowTitle: '特定醫材補助', matches: {
@@ -1939,6 +1963,11 @@ const App = (() => {
       },
       { rowTitle: '住院關懷', matches: {
           U5D: '⑧ 住院關懷'
+        }
+      },
+      { rowTitle: '健康促進回饋', matches: {
+          '1HS': '⑥ 健康促進回饋金',
+          CV4: '⑦ 健康促進保費折減'
         }
       }
     ],
@@ -2008,14 +2037,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -2464,7 +2493,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
