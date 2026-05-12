@@ -1695,26 +1695,332 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
 .vertical-explainer strong { color: var(--orange-dark); }
 
 
+/* ════════════════════════════════════════════════════════════════
+   v1.14 列印樣式 — 完整重做
+   重點:
+   - A4 橫向(landscape),9 商品並排才放得下
+   - 列印模式自動套用客戶模式精簡顯示
+   - 強制印背景色(公司彩色頂條/特殊列底色都要看得到)
+   - 整列不被斷頁切到上下兩頁、thead 多頁時重複
+   - 左欄取消 sticky(列印無滾動,sticky 無用)
+   - 全年齡費率表列印時隱藏(資訊量太大)
+   - 加印頁眉:公司 logo + 類別 + 客戶資料
+   ════════════════════════════════════════════════════════════════ */
+@page {
+  size: A4 landscape;
+  margin: 10mm 8mm;
+}
+
 @media print {
-  body { background: white; }
-  .container { max-width: none; padding: 0; }
-  .toolbar { display: none; }
-  .picker, .header-links, .compare-actions, .th-actions, .th-amt input, .th-amt select, .cat-tabs { display: none !important; }
-  .th-amt::after { content: attr(data-print-amt); font-size: 12px; font-family: 'Bebas Neue', sans-serif; }
+  /* 全頁:強制印背景色 + 縮小留白 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  html, body {
+    background: white;
+    font-size: 10px;
+  }
+  .container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ─── 隱藏 UI 元素 ─── */
+  .toolbar,
+  .picker,
+  .picker-reopen-rail,
+  .cat-tabs,
+  .header-links,
+  .compare-actions,
+  .compare-toolbar .compare-actions,
+  .th-actions,
+  .th-amt input,
+  .th-amt select,
+  #btnHideEmpty,
+  #btnFullAge,
+  .fee-disclaimer,
+  .row-fee-section-header,
+  .row-fee-subhead,
+  .row-fee-detail {
+    display: none !important;
+  }
+
+  /* 全年齡費率區(整段藏) */
+  .full-age-section,
+  #fullAgeSection {
+    display: none !important;
+  }
+
+  /* ─── 列印頁眉(以前隱藏、列印時顯示) ─── */
+  .print-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 6px 0;
+    margin-bottom: 6px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .print-header .ph-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .print-header .ph-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .print-header .ph-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .print-header .ph-brand {
+    line-height: 1.25;
+  }
+  .print-header .ph-brand .ph-name {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .print-header .ph-brand .ph-sub {
+    font-size: 9px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+  .print-header .ph-right {
+    text-align: right;
+    line-height: 1.4;
+  }
+  .print-header .ph-cat {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .print-header .ph-meta {
+    font-size: 10px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+  .print-header .ph-meta strong {
+    color: var(--orange-dark);
+    font-weight: 700;
+  }
+
+  /* page-intro / 標題列在列印時藏掉(改用 print-header 取代) */
+  .page-intro {
+    display: none !important;
+  }
+
+  /* ─── 主版面:單欄、無框 ─── */
   .main-layout {
-    grid-template-columns: 1fr;
+    display: block;
+    grid-template-columns: none;
     border: none;
     box-shadow: none;
     border-radius: 0;
     padding: 0;
+    background: white;
   }
-  .compare-panel { border: 1px solid #ccc; box-shadow: none; }
-  .compare-toolbar { background: white !important; color: var(--navy); }
-  .compare-title { color: var(--navy); }
-  .compare-table { font-size: 11px; }
-  .compare-table thead th, .compare-table tbody td { padding: 6px 8px; }
-  .cell-val { font-size: 14px; }
-  .page-intro h1 { font-size: 18px; }
+  .compare-panel {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .compare-toolbar {
+    background: white !important;
+    color: var(--navy);
+    padding: 0 0 4px 0;
+    border: none;
+    min-height: 0;
+  }
+  .compare-title {
+    color: var(--navy) !important;
+    font-size: 12px;
+  }
+  .compare-range-note {
+    color: var(--gray) !important;
+    font-size: 9px;
+  }
+
+  /* ─── 主比較表:緊湊 + 不斷列 ─── */
+  .compare-table {
+    font-size: 9px;
+    border-collapse: collapse;  /* 列印改回 collapse 邊框較乾淨 */
+    table-layout: auto;
+    width: 100%;
+  }
+  .compare-table thead {
+    /* 多頁時 thead 在每頁頂端重複 */
+    display: table-header-group;
+  }
+  .compare-table thead th {
+    position: static !important;       /* 列印取消 sticky */
+    padding: 8px 4px !important;
+    font-size: 9px;
+    background: white !important;
+    border-bottom: 1.5px solid var(--orange) !important;
+  }
+  /* 公司色頂條保留(避免 print-color-adjust 沒生效時還能看到) */
+  .compare-table thead th.th-product {
+    border-top: 2.5px solid var(--th-color, var(--gray)) !important;
+    padding-top: 6px !important;
+  }
+  .compare-table thead th:first-child {
+    position: static !important;
+    background: var(--gray-bg) !important;
+    min-width: 80px;
+  }
+  .th-product {
+    min-width: 80px !important;
+    max-width: 110px !important;
+  }
+  .th-name {
+    font-size: 9px;
+    line-height: 1.2;
+    max-height: 2.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .th-code {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+  .th-new-badge {
+    display: none;  /* 列印不必標「新」 */
+  }
+  .th-logo {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .th-amt::after {
+    content: attr(data-print-amt);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--orange-dark);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  /* tbody:取消 hover、取消 sticky 左欄、列不斷頁 */
+  .compare-table tbody tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .compare-table tbody td {
+    padding: 4px 6px !important;
+    font-size: 9px;
+    background: white !important;
+  }
+  .compare-table tbody td:first-child {
+    position: static !important;
+    z-index: auto;
+    background: var(--gray-bg) !important;
+    font-size: 10px !important;
+    padding: 5px 6px !important;
+  }
+  /* 主要儲存格數值縮小 */
+  .cell-val {
+    font-size: 11px !important;
+    letter-spacing: 0.5px;
+  }
+  .cell-unit {
+    font-size: 8px !important;
+  }
+  .cell-none {
+    font-size: 10px !important;
+    color: #c8c8c8 !important;
+  }
+  .cell-rule {
+    font-size: 8px !important;
+  }
+
+  /* 保費三列 + CP 兩列要看得清楚 — 強制套底色 */
+  .compare-table tbody tr.row-fee-divider td {
+    background: #fff5ef !important;
+    padding: 7px 6px !important;
+  }
+  .compare-table tbody tr.row-fee-divider td:first-child {
+    background: #ffe4d4 !important;
+    color: var(--orange-dark) !important;
+  }
+  .compare-table tbody tr.row-fee-avg td {
+    background: #fffaf5 !important;
+    padding: 6px !important;
+  }
+  .compare-table tbody tr.row-fee-avg td:first-child {
+    background: #fff0e2 !important;
+  }
+  .compare-table tbody tr.row-fee-zero td {
+    background: #fff5ec !important;
+  }
+  .compare-table tbody tr.row-fee-zero td:first-child {
+    background: #ffe9d8 !important;
+  }
+  .compare-table tbody tr.row-cp td {
+    background: rgba(248,245,240,0.6) !important;
+    padding: 5px 6px !important;
+  }
+  .compare-table tbody tr.row-cp td:first-child {
+    background: var(--gray-bg) !important;
+  }
+  .cell-fee {
+    font-size: 12px !important;
+  }
+  .cell-fee-avg {
+    font-size: 11px !important;
+  }
+  .cell-fee-sub {
+    font-size: 8px !important;
+  }
+  .row-cp-sub,
+  .row-fee-sub {
+    font-size: 7.5px !important;
+  }
+  .cell-cp {
+    font-size: 12px !important;
+  }
+  .cp-bar {
+    height: 3px !important;
+  }
+  /* 偶數欄淡灰底也要印出來 */
+  .compare-table tbody td.td-product-even,
+  .compare-table thead th.th-product:nth-of-type(even) {
+    background: rgba(248,245,240,0.55) !important;
+  }
+
+  /* 表格底部加版本資訊 / 列印日期(自動由 JS 寫入) */
+  .print-footer {
+    display: block !important;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #ddd;
+    font-size: 8px;
+    color: var(--gray);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* 螢幕顯示時隱藏列印專用元素 */
+.print-header,
+.print-footer {
+  display: none;
 }
 
 </style>
@@ -1737,6 +2043,23 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
 </div>
 
 <div class="container">
+
+  <!-- v1.14 列印頁眉(螢幕隱藏、列印時顯示) -->
+  <div class="print-header" id="printHeader">
+    <div class="ph-left">
+      <div class="ph-logo">
+        <img src="https://sun20549.github.io/dr-plan/images/img_01_44039bd1b179.png" alt="鼎綸恩宇" onerror="this.parentElement.innerHTML='DL';">
+      </div>
+      <div class="ph-brand">
+        <div class="ph-name">鼎綸恩宇</div>
+        <div class="ph-sub">INSURANCE COMPARE</div>
+      </div>
+    </div>
+    <div class="ph-right">
+      <div class="ph-cat" id="phCat">險種比較</div>
+      <div class="ph-meta" id="phMeta"></div>
+    </div>
+  </div>
 
   <!-- 頁面介紹 -->
   <div class="page-intro">
@@ -1821,6 +2144,9 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
     </section>
 
   </div>
+
+  <!-- v1.14 列印頁腳(螢幕隱藏、列印時顯示) -->
+  <div class="print-footer" id="printFooter"></div>
 
 </div>
 
@@ -3082,7 +3408,28 @@ const App = (() => {
       state.showStar = e.target.checked;
       renderTable();
     });
-    document.getElementById('btnPrint').addEventListener('click', () => window.print());
+    // v1.14 — 列印頁眉頁腳更新
+    function updatePrintHeaderFooter() {
+      const phCat = document.getElementById('phCat');
+      const phMeta = document.getElementById('phMeta');
+      const phFooter = document.getElementById('printFooter');
+      if (!phCat || !phMeta || !phFooter) return;
+      const cat = state.categoryKey || '險種比較';
+      const ageRaw = parseInt(document.getElementById('clientAge').value, 10);
+      const age = Number.isFinite(ageRaw) && ageRaw >= 0 ? ageRaw : 35;
+      const gen = state.client.gender === 'F' ? '女' : '男';
+      const count = Object.keys(state.selected || {}).length;
+      phCat.textContent = `${cat} ‧ ${count} 個商品對照`;
+      phMeta.textContent = `客戶資料:${age} 歲 / ${gen} ‧ ※ 保費為平均年繳估算,假設費率不變`;
+      const now = new Date();
+      const ymd = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+      phFooter.textContent = `鼎綸恩宇 ‧ 險種比較系統 ‧ 列印日期:${ymd}`;
+    }
+    document.getElementById('btnPrint').addEventListener('click', () => {
+      updatePrintHeaderFooter();
+      window.print();
+    });
+    window.addEventListener('beforeprint', updatePrintHeaderFooter);
 
     // 客戶資料卡
     const ageInput = document.getElementById('clientAge');
