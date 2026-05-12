@@ -37,6 +37,7 @@
   --c-nanshan: #C24A6C;
   --c-mli: #7A2D2F;
   --c-cathay: #6B8E23;
+  --c-kgi: #5B8FB9;
 }
 
 * { box-sizing: border-box; }
@@ -1764,16 +1765,20 @@ const App = (() => {
         { cid: 'xinguang', code: 'U5D', defaultAmount: 'HS-30' },
         { cid: 'xinguang', code: 'HXB', defaultAmount: '計劃50' },
         { cid: 'fubon', code: 'HSV', defaultAmount: '計畫3' },
+        { cid: 'fubon', code: 'HSY', defaultAmount: '計劃1' },
         { cid: 'nanshan', code: '1HS', defaultAmount: 'C型' },
         { cid: 'mli', code: 'NBHSR', defaultAmount: 'C' },
         { cid: 'cathay', code: 'CV4', defaultAmount: 'M30' },
-        { cid: 'farglory', code: 'RSN', defaultAmount: '計劃二' }
+        { cid: 'farglory', code: 'RSN', defaultAmount: '計劃二' },
+        { cid: 'kgi', code: 'MAHUGA', defaultAmount: '2單位' }
       ]
     },
     { key: '實支實付型(自負額)', products: [
         { cid: 'quanqiu', code: 'XHO', defaultAmount: '計劃4A' },
         { cid: 'quanqiu', code: 'XHP', defaultAmount: '計劃4X' },
-        { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD10-30' }
+        { cid: 'xinguang', code: 'A2A3', defaultAmount: 'HSD10-30' },
+        { cid: 'cathay', code: 'WV4', defaultAmount: '計劃別2' },
+        { cid: 'nanshan', code: '1HSD', defaultAmount: 'A型' }
       ]
     },
     { key: '手術險', products: [
@@ -1871,7 +1876,8 @@ const App = (() => {
           '1HS': '⑤ 住院費用補償',
           NBHSR: '⑤ 住院日額',
           CV4: '③ 住院日額',
-          RSN: '⑤ 住院日額'
+          RSN: '⑤ 住院日額',
+          MAHUGA: '③ 住院日額'
         }
       },
       { rowTitle: '每日病房費', matches: {
@@ -1881,7 +1887,9 @@ const App = (() => {
           '1HS': '① 每日病房費用',
           NBHSR: '① 每日病房費用',
           CV4: '① 每日住院經常費用',
-          RSN: '① 每日病房費用'
+          RSN: '① 每日病房費用',
+          MAHUGA: '① 每日病房費用',
+          HSY: '① 每日病房費用\\(限額\\)'
         }
       },
       { rowTitle: '加護病房日額', matches: {
@@ -1899,7 +1907,9 @@ const App = (() => {
           '1HS': '② 醫院各項雜費及手術費',
           NBHSR: '② 住院醫療及手術費用限額',
           CV4: '② 每次住院醫療費用',
-          RSN: '② 住院醫療費用限額'
+          RSN: '② 住院醫療費用限額',
+          MAHUGA: '② 住院醫療費用',
+          HSY: '③ 住院醫療費用暨住院手術費用\\(限額\\)'
         }
       },
       { rowTitle: '手術費用限額', matches: {
@@ -1907,7 +1917,7 @@ const App = (() => {
           HSV: 'ⓑ-4 每次手術費用限額',
           RSN: '③ 住院手術費用限額'
           // XHD 的「重大手術慰問」是另外的慰問金性質,不放此列
-          // HXB 手術費已含在雜費限額內、1HS / NBHSR / CV4 同樣
+          // HXB 手術費已含在雜費限額內、1HS / NBHSR / CV4 / MAHUGA / HSY 同樣
         }
       },
       { rowTitle: '門診手術', matches: {
@@ -1918,13 +1928,17 @@ const App = (() => {
           '1HS': '④ 門診手術費用',
           NBHSR: '③ 門診手術費用\\(實支限額\\)',
           CV4: '④ 門診手術費用',
-          RSN: '④ 門診手術費用限額'
+          RSN: '④ 門診手術費用限額',
+          MAHUGA: '⑤ 門診手術費用',
+          HSY: '⑤ 門診手術費用\\(限額\\)'
         }
       },
       { rowTitle: '特定處置', matches: {
           HSV: '② 特定處置費用限額',
           NBHSR: '④ 門診特定處置\\(實支限額\\)',
-          CV4: '⑤ 門診特定處置費用'
+          CV4: '⑤ 門診特定處置費用',
+          MAHUGA: '⑥ 特定處置費用',
+          HSY: '⑦ 特定處置費用\\(限額\\)'
         }
       },
       { rowTitle: '加護病房雜費', matches: {
@@ -1939,12 +1953,19 @@ const App = (() => {
           HSV: '⑥ 每年保險金給付總限額',
           NBHSR: '⑥ 每年保險金給付總限額',
           CV4: '⑧ 每年保險金給付總限額',
-          RSN: '⑥ 每年保險金給付總限額'
+          RSN: '⑥ 每年保險金給付總限額',
+          MAHUGA: '⑦ 每年保險金給付總限額',
+          HSY: '⑨ 每年保險金給付總限額'
         }
       },
       { rowTitle: '重大手術慰問金', matches: {
           XHD: '重大手術慰問',
           CV4: '⑥ 重大住院慰問金'
+        }
+      },
+      { rowTitle: '住院關懷金', matches: {
+          U5D: '⑧ 住院關懷',
+          MAHUGA: '④ 住院關懷'
         }
       },
       { rowTitle: '特定醫材補助', matches: {
@@ -1961,10 +1982,6 @@ const App = (() => {
           '1HS': '③ 住院前後門診'
         }
       },
-      { rowTitle: '住院關懷', matches: {
-          U5D: '⑧ 住院關懷'
-        }
-      },
       { rowTitle: '健康促進回饋', matches: {
           '1HS': '⑥ 健康促進回饋金',
           CV4: '⑦ 健康促進保費折減'
@@ -1976,13 +1993,17 @@ const App = (() => {
       { rowTitle: '住院日額(限額)', matches: {
           XHO: '^住院日額\\(限額\\)',
           XHP: '^每日病房費用\\(限額\\)',
-          A2A3: '^每日病房費用\\(限額\\)'
+          A2A3: '^每日病房費用\\(限額\\)',
+          WV4: '① 每日住院經常費用\\(限額\\)',
+          '1HSD': '① 每日病房費用\\(限額\\)'
         }
       },
       { rowTitle: '住院日額(自負)', matches: {
           XHO: '^住院日額\\(自負額\\)',
           XHP: '^每日病房費用\\(自負額\\)',
-          A2A3: '^每日病房費用\\(自負額\\)'
+          A2A3: '^每日病房費用\\(自負額\\)',
+          WV4: '② 每日住院經常費用\\(自負額\\)',
+          '1HSD': '② 每日病房費用\\(自負額\\)'
         }
       },
       { rowTitle: '加護病房日額(限額)', matches: {
@@ -1992,13 +2013,17 @@ const App = (() => {
       { rowTitle: '住院雜費限額', matches: {
           XHO: '住院實支\\(雜費限額\\)',
           XHP: '^住院雜費限額',
-          A2A3: '^住院雜費及外科手術費用限額'
+          A2A3: '^住院雜費及外科手術費用限額',
+          WV4: '③ 每次住院醫療費用\\(限額\\)',
+          '1HSD': '③ 醫院各項雜費及手術費\\(限額\\)'
         }
       },
       { rowTitle: '住院雜費(自負)', matches: {
           XHO: '住院實支\\(雜費自負額\\)',
           XHP: '^住院雜費\\(自負額\\)',
-          A2A3: '^住院雜費\\(自負額\\)'
+          A2A3: '^住院雜費\\(自負額\\)',
+          WV4: '④ 每次住院醫療費用\\(自負額\\)',
+          '1HSD': '④ 醫院各項雜費及手術費\\(自負額\\)'
         }
       },
       { rowTitle: '加護病房雜費(限額)', matches: {
@@ -2008,13 +2033,17 @@ const App = (() => {
       { rowTitle: '門診手術(限額)', matches: {
           XHO: '^門診手術\\(限額\\)',
           XHP: '^門診手術\\(限額\\)',
-          A2A3: '^門診手術\\(限額\\)'
+          A2A3: '^門診手術\\(限額\\)',
+          WV4: '⑤ 門診手術費用\\(限額\\)',
+          '1HSD': '⑤ 門診手術費用\\(限額\\)'
         }
       },
       { rowTitle: '門診手術(自負)', matches: {
           XHO: '^門診手術\\(自負額\\)',
           XHP: '^門診手術\\(自負額\\)',
-          A2A3: '^門診手術\\(自負額\\)'
+          A2A3: '^門診手術\\(自負額\\)',
+          WV4: '⑥ 門診手術費用\\(自負額\\)',
+          '1HSD': '⑥ 門診手術費用\\(自負額\\)'
         }
       },
       { rowTitle: '住院照護日額', matches: {
@@ -2024,6 +2053,19 @@ const App = (() => {
       },
       { rowTitle: '特定醫材補助', matches: {
           A2A3: '特定醫材補助'
+        }
+      },
+      { rowTitle: '特定手術關懷金', matches: {
+          '1HSD': '⑦ 特定手術關懷保險金'
+        }
+      },
+      { rowTitle: '健康促進回饋', matches: {
+          WV4: '⑦ 健康促進保費折減',
+          '1HSD': '⑧ 健康促進回饋金'
+        }
+      },
+      { rowTitle: '防疫保健回饋', matches: {
+          '1HSD': '⑨ 防疫保健回饋金'
         }
       },
       { rowTitle: '義齒/義肢/眼鏡等限額', matches: {
@@ -2037,14 +2079,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -2493,7 +2535,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
