@@ -439,12 +439,24 @@ body {
   position: sticky;
   top: 0;
   background: white;
-  padding: 12px;
+  padding: 14px 10px 10px;
   text-align: center;
   font-weight: 700;
   border-bottom: 2px solid var(--orange);
   vertical-align: top;
   z-index: 2;
+}
+
+/* v1.10 — 公司色頂條:讓眼睛快速辨認公司 */
+.compare-table thead th.th-product {
+  border-top: 3px solid var(--th-color, var(--gray));
+  padding-top: 12px;
+}
+
+/* v1.10 — 偶數公司欄套淡灰背景,公司之間視覺分組更明顯 */
+.compare-table thead th.th-product:nth-of-type(even),
+.compare-table tbody td.td-product-even {
+  background: rgba(248,245,240,0.55);
 }
 
 .compare-table thead th:first-child {
@@ -467,20 +479,35 @@ body {
 .th-company {
   font-size: 11px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--th-color, var(--navy));
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
   margin-bottom: 4px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 .th-company::before {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--th-color, var(--gray));
+}
+
+/* v1.10 — 新商品標籤(琥珀色 chip) */
+.th-new-badge {
+  display: inline-block;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #854F0B;
+  background: #FAEEDA;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  letter-spacing: 0;
+  vertical-align: 1px;
 }
 
 .th-name {
@@ -726,6 +753,29 @@ body {
   font-size: 11px;
 }
 
+/* v1.10 — CP 值 mini bar(視覺化相對排名) */
+.cp-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 56px;
+}
+.cp-bar {
+  width: 50px;
+  height: 3px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.cp-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--orange);
+  border-radius: 2px;
+}
+body.customer-mode .cp-wrap .cp-bar { display: none; }
+
 /* ════════════════════════════════════════════════════════════
  * v1.1 — 費率明細整合進主表(0-80 歲費率,接在 CP 列之後)
  * 主表 thead/上半部每家公司 1 個 td/th colspan=2,
@@ -878,9 +928,24 @@ body {
   background: var(--gray-bg);
 }
 
-/* ─── 客戶模式 (隱藏代號) ─── */
+/* ─── 客戶模式 (v1.10 擴充:隱藏代號/CP值/累計/全年齡表/新標籤) ─── */
 body.customer-mode .th-code,
 body.customer-mode .picker-item .code { display: none; }
+/* 客戶模式藏 CP 值、累計總費、全年齡費率區、新商品標籤、隱藏空欄按鈕 */
+body.customer-mode .compare-table tbody tr.row-cp,
+body.customer-mode .cell-fee-sub,
+body.customer-mode .compare-table tbody tr.row-fee-section-header,
+body.customer-mode .compare-table tbody tr.row-fee-subhead,
+body.customer-mode .compare-table tbody tr.row-fee-detail,
+body.customer-mode .th-new-badge,
+body.customer-mode #btnFullAge,
+body.customer-mode #btnHideEmpty { display: none !important; }
+/* 客戶模式下:CP 計算說明也藏(zero 平均那列),只留客戶當年保費 */
+body.customer-mode .compare-table tbody tr.row-fee-zero { display: none; }
+body.customer-mode .fee-disclaimer { display: none; }
+
+/* v1.10 — 隱藏空欄按鈕觸發的全列藏起來 */
+body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
 
 /* ─── 客戶資料卡 (年齡/性別輸入) ─── */
 .client-info {
@@ -1703,6 +1768,7 @@ body.customer-mode .picker-item .code { display: none; }
       <div class="compare-toolbar">
         <div class="compare-title" id="compareTitle">請先選 ≥ 2 個商品</div>
         <div class="compare-actions">
+          <button class="btn" id="btnHideEmpty" type="button">👁️ 隱藏空欄</button>
           <button class="btn" id="btnFullAge" type="button">📊 全年齡保費表</button>
           <button class="btn" id="btnPrint" type="button">🖨️ 列印</button>
         </div>
@@ -1748,7 +1814,7 @@ const App = (() => {
     customerMode: false,
     showStar: true,
     client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
-    ui: { fullAgeExpanded: true },    // 全年齡表預設展開
+    ui: { fullAgeExpanded: true, hideEmpty: false },    // 全年齡表預設展開、空欄預設顯示
     db: {
       companies: {},       // cid → company JSON
       benefitsLib: null,   // 全球商品的給付定義
@@ -2678,10 +2744,14 @@ const App = (() => {
       const linkTpl = company.linkTemplate || {};
       const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
 
+      // v1.10 — 新商品 badge:v1.9 新增的 4 個商品
+      const NEW_CODES = ['HSY', 'WV4', 'MAHUGA', '1HSD'];
+      const newBadge = NEW_CODES.includes(col.code) ? '<span class="th-new-badge">新</span>' : '';
+
       // 公司 th 用 colspan="2",讓下方男/女兩格對齊
       html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
         <div class="th-company">${company.shortName || company.name || ''}</div>
-        <span class="th-code">${col.code}</span>
+        <span class="th-code">${col.code}${newBadge}</span>
         <div class="th-name">${p.name || col.code}</div>
         <div class="th-amt" data-print-amt="${col.sel.amount} ${unit}">${amtField}<span class="unit">${unit}</span></div>
         <div class="th-actions">
@@ -2694,22 +2764,27 @@ const App = (() => {
     html += '</tr></thead><tbody>';
 
     // 給付明細列 — 每家 1 個 td colspan=2
+    // v1.10 — 全列都是空(—)時加 row-all-empty class,配合「隱藏空欄」按鈕
     rowDefs.forEach(rd => {
-      html += `<tr><td>${rd.rowTitle}</td>`;
+      let cellsHtml = '';
+      let nonEmptyCount = 0;
       cols.forEach(col => {
         const r = rd.evaluator(col);
         if (r.kind === 'num') {
+          nonEmptyCount++;
           const starCls = (state.showStar && r.star) ? ' star' : '';
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<td colspan="2"><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
         } else if (r.kind === 'rule') {
+          nonEmptyCount++;
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          html += `<td colspan="2"><span class="cell-rule" title="${tt}">依條款</span></td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-rule" title="${tt}">依條款</span></td>`;
         } else {
-          html += `<td colspan="2"><span class="cell-none">—</span></td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-none">—</span></td>`;
         }
       });
-      html += '</tr>';
+      const rowCls = nonEmptyCount === 0 ? ' class="row-all-empty"' : '';
+      html += `<tr${rowCls}><td>${rd.rowTitle}</td>${cellsHtml}</tr>`;
     });
 
     // ─── 分隔:當年保費 ───
@@ -2737,19 +2812,27 @@ const App = (() => {
     });
     html += '</tr>';
 
-    // ─── CP 兩列(只用「客戶→上限」平均保費當分母)───
+    // ─── CP 兩列(只用「客戶→上限」平均保費當分母,v1.10 加 mini bar)───
     const primaryLabel = cpData[0]?.primary?.label || '主打項';
     html += `<tr class="row-cp"><td><strong>${primaryLabel} CP</strong><div class="row-cp-sub">${primaryLabel} ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpPrimary > 0 && d.cpPrimary === maxCpP;
-      html += `<td colspan="2">${d.cpPrimary > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+      const pct = maxCpP > 0 ? Math.min(100, Math.round((d.cpPrimary / maxCpP) * 100)) : 0;
+      const cpHtml = d.cpPrimary > 0
+        ? `<div class="cp-wrap"><span class="cell-cp${isBest?' best':''}">${d.cpPrimary.toFixed(1)}</span><div class="cp-bar"><span style="width:${pct}%"></span></div></div>`
+        : '<span class="cell-none">—</span>';
+      html += `<td colspan="2">${cpHtml}</td>`;
     });
     html += '</tr>';
 
     html += `<tr class="row-cp"><td><strong>住院日額 CP</strong><div class="row-cp-sub">日額 ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpDaily > 0 && d.cpDaily === maxCpD;
-      html += `<td colspan="2">${d.cpDaily > 0 ? `<span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span>` : '<span class="cell-none">—</span>'}</td>`;
+      const pct = maxCpD > 0 ? Math.min(100, Math.round((d.cpDaily / maxCpD) * 100)) : 0;
+      const cpHtml = d.cpDaily > 0
+        ? `<div class="cp-wrap"><span class="cell-cp${isBest?' best':''}">${d.cpDaily.toFixed(2)}</span><div class="cp-bar"><span style="width:${pct}%"></span></div></div>`
+        : '<span class="cell-none">—</span>';
+      html += `<td colspan="2">${cpHtml}</td>`;
     });
     html += '</tr>';
 
@@ -2982,6 +3065,17 @@ const App = (() => {
       btnFullAge.classList.toggle('active', state.ui.fullAgeExpanded);
       btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';
       renderTable();
+    });
+
+    // v1.10 — 隱藏空欄(把整列全部「—」的列藏起來)
+    const btnHideEmpty = document.getElementById('btnHideEmpty');
+    btnHideEmpty.classList.toggle('active', state.ui.hideEmpty);
+    btnHideEmpty.textContent = state.ui.hideEmpty ? '👁️ 顯示空欄' : '👁️ 隱藏空欄';
+    btnHideEmpty.addEventListener('click', () => {
+      state.ui.hideEmpty = !state.ui.hideEmpty;
+      btnHideEmpty.classList.toggle('active', state.ui.hideEmpty);
+      btnHideEmpty.textContent = state.ui.hideEmpty ? '👁️ 顯示空欄' : '👁️ 隱藏空欄';
+      document.body.classList.toggle('hide-empty', state.ui.hideEmpty);
     });
 
     // 左側面板收合 / 展開
