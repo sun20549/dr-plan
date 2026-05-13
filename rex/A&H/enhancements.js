@@ -730,21 +730,33 @@
   }
 
   // ═══════════════════════════════════════════════════════════
-  //  Phase 2.1:走勢圖期間滑桿(20/30/40/50/60 年)
-  //  策略:滑桿值對映到隱藏的 .chart-range-toggle 按鈕,
-  //       觸發 click() 後讓主檔 IIFE 自己處理 chartYears 變更
+  //  Phase 2.2:走勢圖期間滑桿 + 自製 hover tooltip + 型總額移除
   // ═══════════════════════════════════════════════════════════
+
   function bindChartRangeSlider() {
     const slider = document.getElementById('chartRangeSlider');
     const valEl  = document.getElementById('chartRangeValue');
-    if (!slider || !valEl) return;
+    if (!slider || !valEl) {
+      setTimeout(bindChartRangeSlider, 300);
+      return;
+    }
     const stops = [20, 30, 40, 50, 60];
 
     function applyRange(idx) {
       const years = stops[idx];
       valEl.textContent = '未來 ' + years + ' 年';
       const btn = document.querySelector('.chart-range-toggle[data-range="' + years + '"]');
-      if (btn) btn.click();
+      if (!btn) {
+        console.warn('[enhancements] slider 找不到對應 ' + years + ' 年按鈕');
+        return;
+      }
+      // 用 dispatchEvent 觸發 (比 .click() 更可靠,確保主檔 onclick 接到)
+      try {
+        btn.click();
+        btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      } catch (e) {
+        console.error('[enhancements] btn click failed:', e);
+      }
     }
 
     slider.addEventListener('input', function() {
@@ -765,13 +777,107 @@
     });
   }
 
-  function verifyChartTooltip() {
+  // ═══════════════════════════════════════════════════════════
+  //  自製 hover tooltip - 直接讀 #yearlyFeeGrid 的當年保費,
+  //  不依賴主檔 onmousemove (可能被覆寫或快取殘留)
+  // ═══════════════════════════════════════════════════════════
+  function bindCustomTooltip() {
     const svg = document.getElementById('rateChart');
     const tooltip = document.getElementById('chartTooltip');
-    if (!svg || !tooltip) return;
-    if (!svg.onmousemove) {
-      console.warn('[enhancements] rateChart 缺 mousemove handler');
+    const wrap = svg && svg.parentElement;
+    if (!svg || !tooltip || !wrap) {
+      setTimeout(bindCustomTooltip, 400);
+      return;
     }
+
+    // 已綁過就跳過
+    if (svg._enhBound) return;
+    svg._enhBound = true;
+
+    // 從 yearlyFeeGrid 解析年齡 -> 保費
+    function readYearlyData() {
+      const grid = document.getElementById('yearlyFeeGrid');
+      if (!grid) return null;
+      const cells = grid.querySelectorAll('.yearly-fee-cell');
+      const data = [];
+      cells.forEach(cell => {
+        const ageEl = cell.querySelector('.yf-age');
+        const feeEl = cell.querySelector('.yf-fee');
+        if (!ageEl || !feeEl) return;
+        const age = parseInt((ageEl.textContent || '').replace(/[^0-9]/g, ''), 10);
+        const fee = parseInt((feeEl.textContent || '').replace(/[^0-9]/g, ''), 10);
+        if (!isNaN(age) && !isNaN(fee)) {
+          data.push({ age, fee });
+        }
+      });
+      return data.length > 0 ? data : null;
+    }
+
+    function handleMove(e) {
+      const W = 1200;
+      const rect = svg.getBoundingClientRect();
+      const xRel = e.clientX - rect.left;
+      const xVB = xRel * (W / rect.width);
+
+      const data = readYearlyData();
+      if (!data || data.length === 0) {
+        tooltip.classList.remove('show');
+        return;
+      }
+
+      // 估算 padL/padR (與主檔一致:padL=60, padR=20)
+      const padL = 60, padR = 20;
+      const innerW = W - padL - padR;
+      // 找最近年齡
+      let nearestIdx = 0, minDist = Infinity;
+      data.forEach((d, i) => {
+        const px = padL + (innerW * i / Math.max(1, data.length - 1));
+        const dist = Math.abs(px - xVB);
+        if (dist < minDist) { minDist = dist; nearestIdx = i; }
+      });
+
+      if (xVB < padL - 10 || xVB > W - padR + 10) {
+        tooltip.classList.remove('show');
+        return;
+      }
+
+      const item = data[nearestIdx];
+      tooltip.innerHTML = '<div class="tt-age">' + item.age + ' 歲</div>' +
+        '<div class="tt-row"><span class="tt-label">當年總保費</span><span class="tt-val">' +
+        item.fee.toLocaleString() + ' 元</span></div>';
+      tooltip.classList.add('show');
+
+      // 定位
+      const wrapRect = wrap.getBoundingClientRect();
+      const ttRect = tooltip.getBoundingClientRect();
+      const ttW = ttRect.width || 160;
+      const ttH = ttRect.height || 60;
+      let ttX = (e.clientX - wrapRect.left) + 14;
+      let ttY = (e.clientY - wrapRect.top) - 8;
+      if (ttX + ttW > wrapRect.width - 5) ttX = (e.clientX - wrapRect.left) - ttW - 14;
+      if (ttY + ttH > wrapRect.height - 5) ttY = wrapRect.height - ttH - 5;
+      if (ttY < 5) ttY = 5;
+      tooltip.style.left = ttX + 'px';
+      tooltip.style.top  = ttY + 'px';
+    }
+
+    function handleLeave() {
+      tooltip.classList.remove('show');
+    }
+
+    svg.addEventListener('mousemove', handleMove);
+    svg.addEventListener('mouseleave', handleLeave);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  徹底移除「跨商品累計」徽章及任何 type-total 區塊
+  //  (CSS hide 之外,直接從 DOM 移除以避免佔位)
+  // ═══════════════════════════════════════════════════════════
+  function purgeTypeTotal() {
+    document.querySelectorAll('.type-total').forEach(el => el.remove());
+    // 同時隱藏累計核保警告區
+    const agg = document.getElementById('aggregateCheck');
+    if (agg) agg.style.display = 'none';
   }
 
   function startWhenReady() {
@@ -786,9 +892,17 @@
     }
     setupObserver();
     bindChartRangeSlider();
+    bindCustomTooltip();
     annotateRiderRows();
     renderAnalysis();
-    setTimeout(verifyChartTooltip, 1500);
+    purgeTypeTotal();
+
+    // 持續監看 benefitsCard,每次重渲染後立即清掉 type-total
+    const benefitsCard = document.getElementById('benefitsCard');
+    if (benefitsCard) {
+      const benefitsObs = new MutationObserver(() => purgeTypeTotal());
+      benefitsObs.observe(benefitsCard, { childList: true, subtree: true });
+    }
   }
 
   if (document.readyState === 'loading') {
