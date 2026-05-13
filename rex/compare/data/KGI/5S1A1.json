@@ -6,18 +6,18 @@
     "company": "凱基人壽",
     "product_name": "全民小額",
     "currency": "USD",
-    "period": 6,
+    "period": 74,
     "engine": "twlife_v1",
     "base_sex": "M",
     "base_age": 11,
     "base_sa": 50000,
-    "base_premium": 21.0,
+    "base_premium": 4166.67,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-batch-final",
     "needs_revalidation": true,
-    "notes": " [校準 base_sa: 500000→50000, 從 max_death 反推]"
+    "notes": "[校準 base_sa: 500000→50000, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=0.28, 期=74] [v5: 異常 bp=0.28→4166.67=sa/12]"
   },
   "schedule": [
     {

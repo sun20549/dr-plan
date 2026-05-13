@@ -6,18 +6,18 @@
     "company": "凱基人壽",
     "product_name": "恆給利",
     "currency": "USD",
-    "period": 6,
+    "period": 52,
     "engine": "twlife_v1",
     "base_sex": "M",
     "base_age": 1,
-    "base_sa": 4096096,
-    "base_premium": 50.0,
+    "base_sa": 3072072,
+    "base_premium": 256006.0,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-batch-final",
     "needs_revalidation": true,
-    "notes": " [校準 base_sa: 500000→4096096, 從 max_death 反推]"
+    "notes": "[校準 base_sa: 500000→4096096, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=1.94, 期=52] [v5: 異常 bp=1.94→256006.0=sa/12]"
   },
   "schedule": [
     {

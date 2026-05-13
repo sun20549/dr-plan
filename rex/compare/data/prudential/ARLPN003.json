@@ -6,17 +6,18 @@
     "company": "保誠人壽",
     "product_name": "享扶利終身壽險",
     "currency": "USD",
-    "period": 6,
+    "period": 1,
     "engine": "prudential_v2",
     "base_sex": "M",
     "base_age": 40,
     "base_sa": 500000,
-    "base_premium": 354222.0,
+    "base_premium": 41666.67,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-decrypt",
-    "needs_revalidation": true
+    "needs_revalidation": true,
+    "notes": "[v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=354222.0, 期=1] [v4: bp=354,222異常, 改用 sa/12=41666.67]"
   },
   "schedule": [
     {
