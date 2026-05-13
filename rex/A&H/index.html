@@ -3503,6 +3503,7 @@ const INSURANCE_DB = {
       icon: "🛡️",
       highlights: ["重大傷病一次金保障 300+ 項疾病", "保障終身，期滿仍可領祝壽金"],
       items: [
+        { name: "身故保險金/喪葬費用保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", note: "滿 15 歲後生效；未滿 15 歲身故僅退還所繳保費" },
         { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "第二保單年度起，首年按 20%" },
         { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元" },
         { name: "加倍關懷住院保險金", calc: { type: "ratioWan", ratio: 0.01 }, unit: "元/天", note: "同次住院 5 日(含)以上，每年最多 5 次" },
@@ -3538,7 +3539,8 @@ const INSURANCE_DB = {
         { name: "加護病房雜費限額", calc: { type: "plan", planMap: { "計劃一": 200000, "計劃二": 400000, "計劃三": 600000, "計劃四": 800000, "計劃五": 1000000 } }, unit: "元/次" },
         { name: "門診手術或門診特定診療", calc: { type: "plan", planMap: { "計劃一": 30000, "計劃二": 60000, "計劃三": 90000, "計劃四": 120000, "計劃五": 150000 } }, unit: "元/次", note: "同年度最多 8 次" },
         { name: "特定醫材補助保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" },
-        { name: "重大手術慰問保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" }
+        { name: "重大手術慰問保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" },
+        { name: "義齒/義肢/眼鏡/助聽器限額", calc: { type: "plan", planMap: { "計劃一": 8000, "計劃二": 8000, "計劃三": 8000, "計劃四": 8000, "計劃五": 8000 } }, unit: "元", note: "限意外傷害事故所致，且裝設以一次為限" }
       ]
     },
     "NIR": {
@@ -3546,10 +3548,11 @@ const INSURANCE_DB = {
       icon: "💊",
       highlights: ["住院日額補貼，連續未理賠保額自動增值最高 50%"],
       items: [
-        { name: "住院日額(含雜費補助)", calc: { type: "plan", planMap: { "計劃一": 1500, "計劃二": 3000, "計劃三": 4500, "計劃四": 6000, "HI-30": 5000 } }, unit: "元/天", note: "住院日額+住院雜費補助金合計，最高 365 日", star: true },
+        { name: "住院日額", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 5000 } }, unit: "元/天", note: "住院日額+住院雜費補助金合計，最高 365 日", star: true },
         { name: "加護病房日額補助", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 30 日" },
         { name: "外科手術定額(最高 3 倍)", calc: { type: "plan", planMap: { "計劃一": 22500, "計劃二": 45000, "計劃三": 67500, "計劃四": 90000, "HI-30": 90000 } }, unit: "元", note: "同次住院最高 3 倍" },
         { name: "重大手術額外金", calc: { type: "plan", planMap: { "計劃一": 7500, "計劃二": 15000, "計劃三": 22500, "計劃四": 30000, "HI-30": 30000 } }, unit: "元", note: "手術項目基數超 200% 時加給" },
+        { name: "住院雜費補助金日額", calc: { type: "plan", planMap: { "計劃一": 500, "計劃二": 1000, "計劃三": 1500, "計劃四": 2000 } }, unit: "元/天", note: "最高 30 日" },
         { name: "健康增值(連續 5 年未理賠)", calc: { type: "note", text: "保額自動增加 50%(每 2 年起階段增值)" }, star: true },
         { name: "保險費豁免", calc: { type: "note", text: "因疾病或意外失能時免繳保費" } }
       ]
@@ -3618,7 +3621,8 @@ const INSURANCE_DB = {
         { name: "傷害住院日額(每日)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", star: true, note: "最高 90 日" },
         { name: "加護病房/燒燙傷中心(每日加計)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", note: "最高 30 日" },
         { name: "傷害醫療保險金(每次最高)", calc: { type: "ratio", ratio: 1.0 }, unit: "元", note: "實支實付" },
-        { name: "加護病房/燒燙傷醫療金(每次)", calc: { type: "ratio", ratio: 2.0 }, unit: "元", note: "提高為 2 倍" }
+        { name: "加護病房/燒燙傷醫療金(每次)", calc: { type: "ratio", ratio: 2.0 }, unit: "元", note: "提高為 2 倍" },
+        { name: "骨折未住院給付", calc: { type: "note", text: "依骨折日數表給付：完全骨折 = 日數×2.5%、不完全骨折 = 半數、龜裂 = 四分之一" }, note: "未住院但確有骨折時適用" }
       ]
     }
   }
