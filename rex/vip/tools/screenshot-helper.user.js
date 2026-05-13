@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         📸 對帳單截圖助手 ・ 投資型專區
 // @namespace    https://rex1688.com/rex/vip/
-// @version      3.0.1
+// @version      3.1.0
 // @description  拖曳選取 / 自動定位 / 教學模式 ・ 自動命名 + 直接存到 vip/assets/img/cases/
 // @author       鼎綸恩宇 ・ Cowork
 // @match        *://*.chubblife.com.tw/*
@@ -354,7 +354,9 @@
     <h3>📸 對帳單截圖 v3 <button class="close" id="vsf-close">✕</button></h3>
     <div class="row">▸ 案例編號</div>
     <input type="text" id="vsf-case" placeholder="例：u0033" maxlength="6" autocomplete="off">
-    <div class="filename" id="vsf-filename">u0033-1.jpg</div>
+    <div class="row">▸ 建置月份</div>
+    <input type="month" id="vsf-date" style="font-size:14px; letter-spacing:1px;">
+    <div class="filename" id="vsf-filename">u0033-202605-1.jpg</div>
 
     <button class="action btn-auto" id="vsf-auto" disabled>🤖 自動定位 + 截圖 (Alt+A)</button>
     <div class="learn-status empty" id="vsf-learn">尚未教學此網站 ・ 先用「教學模式」標出對帳單位置</div>
@@ -372,6 +374,7 @@
 
   // ─── 元素 ───
   const caseInput = panel.querySelector('#vsf-case');
+  const dateInput = panel.querySelector('#vsf-date');
   const filenameEl = panel.querySelector('#vsf-filename');
   const statusEl = panel.querySelector('#vsf-status');
   const autoBtn = panel.querySelector('#vsf-auto');
@@ -384,18 +387,34 @@
 
   // ─── 通用 ───
   function getCaseId() { return (caseInput.value || '').trim().toLowerCase(); }
-  function getNextIndex(cid) { return (counters[cid] || 0) + 1; }
+  function getYearMonth() {
+    const v = dateInput.value;
+    return v ? v.replace('-', '') : null;
+  }
+  function getCounterKey() {
+    const cid = getCaseId();
+    const ym = getYearMonth();
+    return ym ? `${cid}-${ym}` : cid;
+  }
+  function getNextIndex() { return (counters[getCounterKey()] || 0) + 1; }
   function updateFilename() {
     const cid = getCaseId();
+    const ym = getYearMonth();
     if (!/^[a-z]\d{4}$/.test(cid)) {
       filenameEl.textContent = '請輸入案例編號';
       badgeEl.textContent = '—';
       return;
     }
-    const idx = getNextIndex(cid);
-    filenameEl.textContent = `${cid}-${idx}.jpg`;
-    badgeEl.textContent = `${cid.toUpperCase()} #${idx}`;
+    const idx = getNextIndex();
+    filenameEl.textContent = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
+    badgeEl.textContent = ym ? `${cid.toUpperCase()} ${ym} #${idx}` : `${cid.toUpperCase()} #${idx}`;
   }
+  // 預設本月
+  (function initDate() {
+    const t = new Date();
+    dateInput.value = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0');
+  })();
+  dateInput.addEventListener('change', updateFilename);
   function updateUi(needsReauth = false) {
     // dirHandle 狀態
     if (dirHandle) {
@@ -460,7 +479,7 @@
   caseInput.addEventListener('change', () => {
     const cid = caseInput.value.trim().toLowerCase();
     localStorage.setItem('vip-shot-last-case', cid);
-    if (cid && dirHandle && /^[a-z]\d{4}$/.test(cid)) probeExisting(cid);
+    if (cid && dirHandle && /^[a-z]\d{4}$/.test(cid)) probeExisting();
   });
   updateFilename();
 
@@ -487,29 +506,33 @@
       await saveDirHandle(h);
       updateUi();
       toast('✓ 資料夾已連結 ・ 下次自動記住', 'ok', 3000);
-      const cid = getCaseId();
-      if (cid && /^[a-z]\d{4}$/.test(cid)) await probeExisting(cid);
+      if (/^[a-z]\d{4}$/.test(getCaseId())) await probeExisting();
     } catch (e) {
       if (e.name !== 'AbortError') toast('連結失敗：' + e.message, 'err');
     }
   });
 
-  async function probeExisting(cid) {
+  async function probeExisting() {
     if (!dirHandle) return;
+    const cid = getCaseId();
+    const ym = getYearMonth();
+    if (!/^[a-z]\d{4}$/.test(cid)) return;
+    const prefix = ym ? `${cid}-${ym}-` : `${cid}-`;
+    const key = getCounterKey();
     let maxN = 0;
     for (let i = 1; i <= 20; i++) {
       let found = false;
       for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
-        try { await dirHandle.getFileHandle(`${cid}-${i}.${ext}`); found = true; break; } catch (e) {}
+        try { await dirHandle.getFileHandle(`${prefix}${i}.${ext}`); found = true; break; } catch (e) {}
       }
       if (!found) break;
       maxN = i;
     }
     if (maxN > 0) {
-      counters[cid] = maxN;
+      counters[key] = maxN;
       localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
       updateFilename();
-      toast(`${cid} 已有 ${maxN} 張 ・ 新截圖從 ${maxN + 1} 開始`, 'warn', 3500);
+      toast(`${prefix}* 已有 ${maxN} 張 ・ 從第 ${maxN + 1} 開始`, 'warn', 3500);
     }
   }
 
@@ -693,9 +716,10 @@
   // ─── 擷取並儲存 ───
   async function captureAndSave(x, y, w, h, fullPage = false) {
     const cid = getCaseId();
+    const ym = getYearMonth();
     if (!/^[a-z]\d{4}$/.test(cid)) { toast('案例編號格式錯誤', 'err'); return; }
-    const idx = getNextIndex(cid);
-    const fname = `${cid}-${idx}.jpg`;
+    const idx = getNextIndex();
+    const fname = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
 
     showLoading(fullPage ? '截取整頁中...' : `擷取區域中...`);
 
@@ -725,7 +749,7 @@
           const fh = await dirHandle.getFileHandle(fname, { create: true });
           const writable = await fh.createWritable();
           await writable.write(blob); await writable.close();
-          counters[cid] = idx;
+          counters[getCounterKey()] = idx;
           localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
           updateFilename();
           toast(`✓ <strong>${fname}</strong> 已存到 cases 資料夾<br>${sizeKB}KB ・ ${Math.round(w) || canvas.width}×${Math.round(h) || canvas.height}`, 'ok', 3500);

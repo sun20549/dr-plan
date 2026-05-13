@@ -629,35 +629,92 @@ async function probeImage(url) {
 
 async function detectCaseScreenshots(caseId, container) {
   if (!caseId || !container) return;
-  const found = [];
-  const base = 'assets/img/cases/' + caseId.toLowerCase();
+  const baseId = caseId.toLowerCase();
+  const baseUrl = 'assets/img/cases/' + baseId;
+  const groups = []; // [{ key, label, files: [...] }]
+
+  // 1. 探測「無日期」舊格式：u0033-1.jpg, u0033-2.jpg ...
+  const legacyFiles = [];
   for (let i = 1; i <= SCREENSHOT_MAX; i++) {
     let hit = null;
     for (const ext of SCREENSHOT_EXTS) {
-      const url = `${base}-${i}.${ext}`;
-      // 用 HEAD 探測會被 CORS 擋；改用 Image() 載入測試
+      const url = `${baseUrl}-${i}.${ext}`;
       if (await probeImage(url)) { hit = url; break; }
     }
-    if (!hit) break; // 連續找不到就停
-    found.push(hit);
+    if (!hit) break;
+    legacyFiles.push(hit);
   }
-  if (found.length === 0) {
+  if (legacyFiles.length > 0) {
+    groups.push({ key: '0000', label: null, files: legacyFiles });
+  }
+
+  // 2. 探測「年月」格式：u0033-YYYYMM-N.{ext}
+  // 從現在往前 36 個月，連續 12 個月沒圖就停
+  const now = new Date();
+  let emptyStreak = 0;
+  for (let m = 0; m < 36; m++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - m, 1);
+    const yyyymm = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0');
+    const monthFiles = [];
+    for (let i = 1; i <= SCREENSHOT_MAX; i++) {
+      let hit = null;
+      for (const ext of SCREENSHOT_EXTS) {
+        const url = `${baseUrl}-${yyyymm}-${i}.${ext}`;
+        if (await probeImage(url)) { hit = url; break; }
+      }
+      if (!hit) break;
+      monthFiles.push(hit);
+    }
+    if (monthFiles.length === 0) {
+      emptyStreak++;
+      if (emptyStreak >= 12) break;
+    } else {
+      emptyStreak = 0;
+      const label = `${d.getFullYear()} / ${String(d.getMonth() + 1).padStart(2, '0')}`;
+      groups.push({ key: yyyymm, label, files: monthFiles });
+    }
+  }
+
+  if (groups.length === 0) {
     container.hidden = true;
     return;
   }
-  // 注入內容
+
+  // 月份分組已從新到舊排序（探測順序就是新→舊）
+  // legacy 沒日期，預設在最底（key=0000）
+  // 重新排序：最新月份 → 最舊月份 → 無日期
+  groups.sort((a, b) => b.key.localeCompare(a.key));
+
   container.hidden = false;
   const grid = container.querySelector('.screenshots-grid');
   if (!grid) return;
-  grid.innerHTML = found.map((src, idx) => `
-    <div class="screenshot-card" data-lb-src="${src}" data-lb-index="${idx}">
-      <span class="ss-tag">${idx + 1} / ${found.length}</span>
-      <img src="${src}" loading="lazy" alt="案例 ${caseId} 對帳單第 ${idx + 1} 張">
-    </div>
-  `).join('');
-  // bind click → lightbox
+
+  // 攤平所有檔案供 lightbox 翻頁
+  const allFiles = groups.flatMap(g => g.files);
+  let globalIdx = 0;
+
+  grid.innerHTML = groups.map((g, gIdx) => {
+    const isLatest = gIdx === 0 && g.label;
+    const header = g.label
+      ? `<div class="screenshot-month-header">
+           <span class="month-icon">📅</span>
+           <span class="month-label">${g.label}</span>
+           ${isLatest ? '<span class="month-badge">最新</span>' : ''}
+           <span class="month-count">${g.files.length} 張</span>
+         </div>`
+      : '';
+    const cards = g.files.map(src => {
+      const idx = globalIdx++;
+      return `<div class="screenshot-card" data-lb-index="${idx}">
+        <span class="ss-tag">${(g.files.indexOf(src) + 1)} / ${g.files.length}</span>
+        <img src="${src}" loading="lazy" alt="案例 ${caseId} 對帳單">
+      </div>`;
+    }).join('');
+    return `<div class="screenshot-month-group">${header}<div class="screenshot-month-grid">${cards}</div></div>`;
+  }).join('');
+
   grid.querySelectorAll('.screenshot-card').forEach(card => {
-    card.addEventListener('click', () => openLightbox(found, parseInt(card.dataset.lbIndex, 10)));
+    card.addEventListener('click', () => openLightbox(allFiles, parseInt(card.dataset.lbIndex, 10)));
   });
 }
 

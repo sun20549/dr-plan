@@ -1659,6 +1659,79 @@ a, button {
   .screenshot-card::after { font-size: 10px; bottom: 10px; right: 10px; }
 }
 
+/* ───── V3.34 案例頁對帳單 年月分組顯示 ───── */
+.screenshot-month-group {
+  margin-bottom: 32px;
+}
+.screenshot-month-group:last-child {
+  margin-bottom: 0;
+}
+.screenshot-month-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--bg-cream) 0%, rgba(232,160,32,0.1) 100%);
+  border-left: 5px solid var(--gold);
+  border-radius: 0 12px 12px 0;
+  box-shadow: var(--shadow-sm);
+}
+.month-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.month-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: var(--navy);
+  letter-spacing: 3px;
+  font-weight: 900;
+  line-height: 1;
+}
+.month-badge {
+  background: linear-gradient(135deg, var(--green) 0%, #1a6b3a 100%);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(46,139,87,0.4);
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+.month-count {
+  margin-left: auto;
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+.screenshot-month-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+/* 最新月份的圖加金色邊框，舊月份維持淺色 */
+.screenshot-month-group:first-child .screenshot-card {
+  border-color: var(--gold);
+}
+.screenshot-month-group:not(:first-child) .screenshot-card {
+  border-color: var(--border);
+  border-width: 2px;
+  opacity: 0.92;
+}
+.screenshot-month-group:not(:first-child) .screenshot-card:hover {
+  opacity: 1;
+  border-color: var(--orange);
+}
+@media (max-width: 720px) {
+  .month-label { font-size: 22px; letter-spacing: 2px; }
+  .screenshot-month-header { padding: 10px 16px; gap: 10px; }
+  .month-count { font-size: 11px; }
+}
+
 /* ───── V3.33 案例頁精簡：隱藏 Hero 模板假資料 ───── */
 .hero-case-title,
 .hero-case-subtitle {

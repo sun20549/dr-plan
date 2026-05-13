@@ -494,9 +494,14 @@
         <input type="text" class="case-input" id="caseInput"
                placeholder="例如：u0033" maxlength="6"
                autocomplete="off" spellcheck="false">
+        <div class="input-label" style="margin-top:12px;">
+          <span>▸ 建置月份</span>
+        </div>
+        <input type="month" class="case-input" id="dateInput"
+               style="font-size:14px; letter-spacing:1px;">
         <div class="filename-preview" id="filenamePreview">
           <span class="label">下一張將存為</span>
-          <span id="nextFilename">u0033-1.jpg</span>
+          <span id="nextFilename">u0033-202605-1.jpg</span>
         </div>
       </div>
 
@@ -575,6 +580,7 @@ const savedQuality = localStorage.getItem(QUALITY_KEY);
 
 // ─── 元素 ───
 const caseInput = document.getElementById('caseInput');
+const dateInput = document.getElementById('dateInput');
 const nextFilenameEl = document.getElementById('nextFilename');
 const indexHintEl = document.getElementById('indexHint');
 const pasteZone = document.getElementById('pasteZone');
@@ -605,51 +611,73 @@ function toast(msg, type = 'ok', duration = 2400) {
 }
 
 // ─── Case input 處理 ───
-function getCaseId() {
-  return caseInput.value.trim().toLowerCase();
+function getCaseId() { return caseInput.value.trim().toLowerCase(); }
+function getYearMonth() {
+  const v = dateInput.value; // 'YYYY-MM'
+  if (!v) return null;
+  return v.replace('-', ''); // 'YYYYMM'
 }
-function getNextIndex(caseId) {
-  return (counters[caseId] || 0) + 1;
+function getCounterKey() {
+  const cid = getCaseId();
+  const ym = getYearMonth();
+  return ym ? `${cid}-${ym}` : cid;
+}
+function getNextIndex() {
+  return (counters[getCounterKey()] || 0) + 1;
 }
 function updateFilenamePreview() {
   const cid = getCaseId();
+  const ym = getYearMonth();
   if (!cid) {
     nextFilenameEl.textContent = '請先輸入案例編號';
     indexHintEl.textContent = '— / —';
     return;
   }
-  const nextIdx = getNextIndex(cid);
-  nextFilenameEl.textContent = `${cid}-${nextIdx}.jpg`;
-  indexHintEl.textContent = `第 ${nextIdx} 張`;
+  const nextIdx = getNextIndex();
+  if (ym) {
+    nextFilenameEl.textContent = `${cid}-${ym}-${nextIdx}.jpg`;
+    indexHintEl.textContent = `${ym} 第 ${nextIdx} 張`;
+  } else {
+    nextFilenameEl.textContent = `${cid}-${nextIdx}.jpg`;
+    indexHintEl.textContent = `(無日期) 第 ${nextIdx} 張`;
+  }
 }
 caseInput.addEventListener('input', updateFilenamePreview);
+dateInput.addEventListener('change', updateFilenamePreview);
+
+// 預設本月
+const today = new Date();
+dateInput.value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
 
 // 自動探測既存檔案數，初始化計數器
-async function probeExisting(caseId) {
-  if (!dirHandle || !caseId) return;
+async function probeExisting() {
+  if (!dirHandle) return;
+  const cid = getCaseId();
+  const ym = getYearMonth();
+  if (!cid) return;
+  const prefix = ym ? `${cid}-${ym}-` : `${cid}-`;
+  const key = getCounterKey();
   let maxN = 0;
   for (let i = 1; i <= 20; i++) {
     let found = false;
     for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
       try {
-        await dirHandle.getFileHandle(`${caseId}-${i}.${ext}`);
+        await dirHandle.getFileHandle(`${prefix}${i}.${ext}`);
         found = true; break;
-      } catch (e) { /* not found */ }
+      } catch (e) {}
     }
     if (!found) break;
     maxN = i;
   }
   if (maxN > 0) {
-    counters[caseId] = maxN;
+    counters[key] = maxN;
     saveCounters();
     updateFilenamePreview();
-    toast(`偵測到 ${caseId} 已有 ${maxN} 張，新貼上會從 ${maxN + 1} 開始`, 'warn', 3500);
+    toast(`偵測到 ${prefix}* 已有 ${maxN} 張，新貼上從第 ${maxN + 1} 開始`, 'warn', 3500);
   }
 }
-caseInput.addEventListener('change', () => {
-  const cid = getCaseId();
-  if (cid && dirHandle) probeExisting(cid);
-});
+caseInput.addEventListener('change', probeExisting);
+dateInput.addEventListener('change', probeExisting);
 
 // ─── 連結資料夾（File System Access API） ───
 async function connectFolder() {
@@ -682,6 +710,7 @@ folderBtn.addEventListener('click', connectFolder);
 // ─── 處理貼上 / 拖放圖片 ───
 function handleImageBlob(blob) {
   const cid = getCaseId();
+  const ym = getYearMonth();
   if (!cid) {
     toast('請先輸入案例編號', 'err');
     caseInput.focus();
@@ -692,17 +721,15 @@ function handleImageBlob(blob) {
     caseInput.focus();
     return;
   }
-  const idx = getNextIndex(cid);
-  const fname = `${cid}-${idx}.jpg`;
-  // 壓縮成 JPEG
+  const idx = getNextIndex();
+  const fname = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
+  const key = getCounterKey();
   compressToJpeg(blob, qualitySlider.value / 100).then(jpegBlob => {
     addPreviewItem(fname, jpegBlob, cid, idx);
-    // 更新計數器
-    counters[cid] = idx;
+    counters[key] = idx;
     saveCounters();
     addRecent(cid);
     updateFilenamePreview();
-    // 直接存檔
     if (dirHandle) {
       saveToDirHandle(fname, jpegBlob).then(() => {
         markItemSaved(fname);
@@ -712,7 +739,6 @@ function handleImageBlob(blob) {
         toast(`存檔失敗：${err.message}`, 'err');
       });
     } else {
-      // 下載到 Downloads
       downloadBlob(fname, jpegBlob);
       markItemSaved(fname, '已下載');
       toast(`✓ ${fname} 已下載 ・ 請拖到 cases 資料夾`, 'warn', 4000);

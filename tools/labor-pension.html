@@ -67,6 +67,17 @@
     position: relative; z-index: 1; gap: 24px;
   }
   .logo-area { display: flex; align-items: center; gap: 18px; }
+  .logo-area > img {
+    width: 72px; height: 72px;
+    object-fit: contain;
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 0 0 1px rgba(255,255,255,0.15);
+  }
   .logo-icon {
     width: 72px; height: 72px;
     background: var(--orange); border-radius: 16px;
@@ -190,9 +201,10 @@
 
   /* ── INTRO ── */
   .intro-card {
-    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+    border: 2px solid var(--orange);
     border-radius: 16px; padding: 22px 26px;
-    color: #fff; position: relative; overflow: hidden;
+    color: var(--navy); position: relative; overflow: hidden;
     display: flex; align-items: center; gap: 18px;
     margin-bottom: 28px;
   }
@@ -200,22 +212,24 @@
     content: ''; position: absolute;
     top: -50px; right: -50px;
     width: 200px; height: 200px; border-radius: 50%;
-    background: rgba(232,160,32,0.15);
+    background: rgba(232,160,32,0.18);
     filter: blur(40px);
   }
   .intro-icon {
     width: 56px; height: 56px;
-    background: var(--gold); border-radius: 14px;
+    background: var(--orange); border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
+    color: #fff;
     font-size: 28px; flex-shrink: 0;
-    box-shadow: 0 8px 24px rgba(232,160,32,0.4);
+    box-shadow: 0 8px 24px rgba(240,90,40,0.35);
     position: relative; z-index: 1;
   }
   .intro-text {
     font-size: 13px; line-height: 1.7;
+    color: var(--navy);
     position: relative; z-index: 1;
   }
-  .intro-text strong { color: var(--gold); font-weight: 900; }
+  .intro-text strong { color: var(--orange); font-weight: 900; }
   .intro-text .intro-title {
     font-size: 17px; font-weight: 900;
     margin-bottom: 4px; letter-spacing: 1px;
@@ -1448,7 +1462,7 @@
   <div class="header">
     <div class="header-inner">
       <div class="logo-area">
-        <div class="logo-icon">DL</div>
+        <img src="../images/img_01_44039bd1b179.png" alt="鼎綸恩宇 logo">
         <div class="logo-text">
           <div class="brand">鼎綸恩宇</div>
           <div class="sub">Insurance Brokers ®</div>
