@@ -729,6 +729,60 @@
     }
   }
 
+  // ═══════════════════════════════════════════════════════════
+  //  Phase 2.1:走勢圖期間滑桿(20/30/40/50/60 年)
+  //  策略:滑桿值對映到隱藏的 .chart-range-toggle 按鈕,
+  //       觸發 click() 後讓主檔 IIFE 自己處理 chartYears 變更
+  // ═══════════════════════════════════════════════════════════
+  function bindChartRangeSlider() {
+    const slider = document.getElementById('chartRangeSlider');
+    const valEl  = document.getElementById('chartRangeValue');
+    if (!slider || !valEl) return;
+    const stops = [20, 30, 40, 50, 60];
+
+    function applyRange(idx) {
+      const years = stops[idx];
+      valEl.textContent = `未來 ${years} 年`;
+      // 觸發對應隱藏按鈕的 click(主檔事件處理會更新 chartYears 並重 recompute)
+      const btn = document.querySelector(`.chart-range-toggle[data-range="${years}"]`);
+      if (btn) btn.click();
+    }
+
+    slider.addEventListener('input', () => {
+      const idx = parseInt(slider.value, 10);
+      applyRange(idx);
+    });
+
+    // 還原使用者上次選擇(localStorage)
+    try {
+      const saved = parseInt(localStorage.getItem('rexAH_chartRange') || '0', 10);
+      if (saved >= 0 && saved <= 4) {
+        slider.value = saved;
+        valEl.textContent = `未來 ${stops[saved]} 年`;
+      }
+    } catch (e) {}
+
+    slider.addEventListener('change', () => {
+      try { localStorage.setItem('rexAH_chartRange', slider.value); } catch (e) {}
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  Phase 2.1:強化 hover tooltip
+  //  主檔 drawChartTo 已內建 svg.onmousemove = handleMove,
+  //  但若被 enhancements 流程或快取影響沒接上,加個 sanity check:
+  //  recompute 後 200ms 檢查 svg.onmousemove 是否為 null,是的話印 warn
+  // ═══════════════════════════════════════════════════════════
+  function verifyChartTooltip() {
+    const svg = document.getElementById('rateChart');
+    const tooltip = document.getElementById('chartTooltip');
+    if (!svg || !tooltip) return;
+    // 主檔的 mousemove 是直接 onmousemove= 設定,讀得到
+    if (!svg.onmousemove) {
+      console.warn('[enhancements] rateChart 缺 mousemove handler,tooltip 不會跟著鼠標走。可能是主檔 drawChart 還沒跑或被覆蓋。');
+    }
+  }
+
   function startWhenReady() {
     // 等 INSURANCE_DB.benefitsLib 載入完成(fetch 是 async)
     const ready = window.INSURANCE_DB && window.INSURANCE_DB.benefitsLib && window.AHShared;
@@ -742,9 +796,12 @@
       return;
     }
     setupObserver();
+    bindChartRangeSlider();
     // 首次嘗試渲染(可能還沒有 rows)
     annotateRiderRows();
     renderAnalysis();
+    // 第一次 recompute 完成後驗證 tooltip
+    setTimeout(verifyChartTooltip, 1500);
   }
 
   // DOMContentLoaded 之後啟動;若已經載完就直接跑
