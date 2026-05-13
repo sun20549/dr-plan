@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         📸 對帳單截圖助手 ・ 投資型專區
 // @namespace    https://rex1688.com/rex/vip/
-// @version      3.0.0
+// @version      3.0.1
 // @description  拖曳選取 / 自動定位 / 教學模式 ・ 自動命名 + 直接存到 vip/assets/img/cases/
 // @author       鼎綸恩宇 ・ Cowork
 // @match        *://*.chubblife.com.tw/*
+// @match        *://*.chubblife-vul.com.tw/*
 // @match        *://*.chubb.com/*
 // @match        *://*.kgilife.com.tw/*
 // @match        *://*.yuantalife.com/*

@@ -67,6 +67,8 @@
   --c-kgi: #5B8FB9;
   --c-yuanta: #B8312C;
   --c-prudential: #003F87;
+  --c-tbl: #00754A;
+  --c-allianz: #0070BA;
 }
 
 * { box-sizing: border-box; }
@@ -2607,7 +2609,9 @@ const App = (() => {
         { cid: 'mli', code: 'NBHSR', defaultAmount: 'E' },        // v1.13:預設 C → E
         { cid: 'cathay', code: 'CV4', defaultAmount: 'M30' },
         { cid: 'farglory', code: 'RSN', defaultAmount: '計劃二' },
-        { cid: 'kgi', code: 'MAHUGA', defaultAmount: '3單位' }     // v1.13:預設 2單位 → 3單位
+        { cid: 'kgi', code: 'MAHUGA', defaultAmount: '3單位' },    // v1.13:預設 2單位 → 3單位
+        { cid: 'tbl', code: '1Z', defaultAmount: '一單位' },        // v1.21:臺銀新金安心
+        { cid: 'allianz', code: 'HMRA', defaultAmount: 1000 }     // v1.21:安聯一年定期
       ]
     },
     { key: '實支實付型(自負額)', products: [
@@ -2645,7 +2649,11 @@ const App = (() => {
     { key: '重大傷病(一年期)', products: [
         { cid: 'quanqiu', code: 'XDE', defaultAmount: 100 },
         { cid: 'hongtai', code: 'NDD', defaultAmount: 100 },
-        { cid: 'xinguang', code: 'M4D', defaultAmount: 100 }
+        { cid: 'xinguang', code: 'M4D', defaultAmount: 100 },
+        { cid: 'kgi', code: 'MAJIEA', defaultAmount: 100 },
+        { cid: 'xinguang', code: 'MYA', defaultAmount: 100 },
+        { cid: 'mli', code: 'NGODCR', defaultAmount: 100 },
+        { cid: 'fglife', code: 'RN1', defaultAmount: 100 }
       ]
     },
     { key: '癌症險(單筆金)', products: [
@@ -2741,7 +2749,9 @@ const App = (() => {
           CV4: '① 每日住院經常費用',
           RSN: '① 每日病房費用',
           MAHUGA: '① 每日病房費用',
-          HSY: '① 每日病房費用\\(限額\\)'
+          HSY: '① 每日病房費用\\(限額\\)',
+          '1Z': '① 每日病房費用\\(限額\\)',
+          HMRA: '① 每日病房費用\\(限額\\)'
         }
       },
       { rowTitle: '加護病房日額', matches: {
@@ -2761,13 +2771,16 @@ const App = (() => {
           CV4: '② 每次住院醫療費用',
           RSN: '② 住院醫療費用限額',
           MAHUGA: '② 住院醫療費用',
-          HSY: '③ 住院醫療費用暨住院手術費用\\(限額\\)'
+          HSY: '③ 住院醫療費用暨住院手術費用\\(限額\\)',
+          '1Z': '② 住院醫療費用\\(限額\\)',
+          HMRA: '② 住院醫療費用\\(限額\\)'
         }
       },
       { rowTitle: '手術費用限額', matches: {
           U5D: '③ 重大手術',
           HSV: 'ⓑ-4 每次手術費用限額',
-          RSN: '③ 住院手術費用限額'
+          RSN: '③ 住院手術費用限額',
+          HMRA: '③ 每次手術費用\\(限額\\)'
           // XHD 的「重大手術慰問」是另外的慰問金性質,不放此列
           // HXB 手術費已含在雜費限額內、1HS / NBHSR / CV4 / MAHUGA / HSY 同樣
         }
@@ -2782,7 +2795,8 @@ const App = (() => {
           CV4: '④ 門診手術費用',
           RSN: '④ 門診手術費用限額',
           MAHUGA: '⑤ 門診手術費用',
-          HSY: '⑤ 門診手術費用\\(限額\\)'
+          HSY: '⑤ 門診手術費用\\(限額\\)',
+          '1Z': '⑥ 門診手術費用\\(限額\\)'
         }
       },
       { rowTitle: '特定處置', matches: {
@@ -3137,14 +3151,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','prudential.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','prudential.json','tbl.json','allianz.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -3474,6 +3488,16 @@ const App = (() => {
       restriction: 'outpt',
       has227: true, has3343: true,
       source: '第十七條【門診手術費用保險金的給付】第三項:被保險人所接受之門診手術,若非屬於 2-2-7 或 3-3-4-3 者,本公司不負給付本條保險金之責任'
+    },
+    '1Z': {
+      restriction: 'outpt',
+      has227: true, has3343: false,
+      source: '臺銀 1Z 條款:門診手術依附表三「特定手術項目表」,該表多屬 2-2-7 範圍;牙醫口腔顎面外科(3-3-4-3)不在附表三內'
+    },
+    HMRA: {
+      restriction: 'whole',
+      has227: true, has3343: false,
+      source: '安聯 HMRA 條款第六條:每次手術費用保險金按附表一限額 × 附表二手術倍數給付;附表二項目均為 2-2-7 範圍'
     }
     // 自負額類 / 手術險另外確認後再加
   };
@@ -3662,7 +3686,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta','prudential'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta','prudential','tbl','allianz'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
@@ -4312,7 +4336,6 @@ const App = (() => {
   }
 
   /* ═══ Init ═══════════════════════════════════════ */
-
   async function init() {
     try {
       await load();
@@ -4320,6 +4343,7 @@ const App = (() => {
       switchCategory(state.categoryKey);
       bindGlobals();
     } catch (e) {
+      document.getElementById('pickerBody').innerHTML = '<div class="picker-empty">載入失敗:' + e.message + '</div>';
       console.error(e);
     }
   }
