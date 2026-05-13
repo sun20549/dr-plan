@@ -7,8 +7,8 @@
     "period": 2,
     "engine": "prudential_v2",
     "base_sex": "M",
-    "base_age": 35,
-    "base_sa": 59999999,
+    "base_age": 42,
+    "base_sa": 50000,
     "base_premium": 47659949,
     "base_premium_gross": 48881999,
     "discount": 0.025,
@@ -17,7 +17,9 @@
     "mid_dividend_rate": 0.055,
     "dividend_option": "儲存生息",
     "source_file": "台灣_吉享紅分紅終身還本保險_試算表_全通路版_Final_ver4_2026_01.xlsm",
-    "extracted_at": "2026-05-06"
+    "extracted_at": "2026-05-06",
+    "notes": "base 已對齊業務員填值(42 歲男 SA 50000 2 年期),但 Excel 在「儲存生息」紅利模式下無法算 schedule(全 -----)。建議業務員把 R26 改為「購買增額繳清保險」再重抽,或請至少填一個算得出的組合",
+    "needs_revalidation": true
   },
   "schedule": [
     {

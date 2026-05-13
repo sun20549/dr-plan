@@ -1,0 +1,98 @@
+{
+  "id": "yuanta",
+  "name": "元大人壽",
+  "shortName": "元大",
+  "color": "#B8312C",
+  "logoUrl": "",
+  "linkTemplate": {
+    "dm": "元大人壽/{code}/DM.pdf",
+    "clause": "元大人壽/{code}/條款.pdf",
+    "rate": "元大人壽/{code}/費率.pdf"
+  },
+  "mainProducts": [
+    {
+      "code": "JO",
+      "name": "親愛貝比終身醫療健康保險",
+      "category": "婦嬰險",
+      "amountMode": "wan",
+      "amountUnit": "萬元",
+      "amountSuggestions": [50, 100, 150, 200, 300],
+      "defaultAmount": 100,
+      "startAge": 0,
+      "maxAge": 0,
+      "maxAgeContinuous": 111,
+      "premiumPeriod": "20年期",
+      "rates": {
+        "20年期": {
+          "M": {"0": 626},
+          "F": {"0": 626}
+        }
+      },
+      "firstYearRates": {
+        "M": {"0": 626},
+        "F": {"0": 626}
+      },
+      "claims": {
+        "title": "親愛貝比終身醫療健康保險(JO)給付項目",
+        "source": "元大親愛貝比終身醫療健康保險條款(JO 2023.01)",
+        "items": [
+          {
+            "name": "① 身故 / 喪葬保險金",
+            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "note": "16足歲後身故 → 給付 max(保險金額, 年繳保費總額, 保價金);15足歲前身故 → 退還所繳保險費",
+            "unit": "元"
+          },
+          {
+            "name": "② 特定疾病保險金",
+            "calc": {"type": "ratioWan", "ratio": 2.0},
+            "note": "第22保單年度前一次給付;金額=保險金額×2×保障倍數(1~2,依保單年度遞增)",
+            "unit": "元",
+            "star": true
+          },
+          {
+            "name": "③ 癌症(初期/輕度)保險金",
+            "calc": {"type": "ratioWan", "ratio": 0.1},
+            "note": "保險金額×10%×保障倍數(1~2);一次給付",
+            "unit": "元"
+          },
+          {
+            "name": "④ 癌症(重度)保險金",
+            "calc": {"type": "ratioWan", "ratio": 0.5},
+            "note": "保險金額×50%×保障倍數(1~2);一次給付",
+            "unit": "元"
+          },
+          {
+            "name": "⑤ 住院醫療日額",
+            "calc": {"type": "ratioWan", "ratio": 0.002},
+            "note": "保險金額×0.2%×保障倍數;最高365日/次,90日(特定情況);保障倍數第6~10年×1.25/11~15×1.5/16~20×1.75/21+×2",
+            "unit": "元/日"
+          },
+          {
+            "name": "⑥ 住院手術醫療保險金",
+            "calc": {"type": "ratioWan", "ratio": 0.01},
+            "note": "住院給付日額×5×保障倍數=保險金額×1%×保障倍數;每次手術",
+            "unit": "元/次"
+          },
+          {
+            "name": "⑦ 第1~6級失能保險金",
+            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "note": "保險金額×保障倍數(1~2);累計上限為保險金額之2倍",
+            "unit": "元"
+          },
+          {
+            "name": "⑧ 意外重大燒燙傷保險金",
+            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "note": "保險金額×保障倍數(1~2);意外傷害發生180日內致重大燒燙傷",
+            "unit": "元"
+          },
+          {
+            "name": "⑨ 祝壽保險金",
+            "calc": {"type": "note", "text": "111年期滿給付"},
+            "note": "第111保單年度屆滿仍生存 → max(保險金額, 年繳保費總額, 保價金);PDF 試算示例 116.6萬"
+          }
+        ]
+      }
+    }
+  ],
+  "riderProducts": []
+}

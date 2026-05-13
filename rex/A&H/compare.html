@@ -65,6 +65,7 @@
   --c-mli: #7A2D2F;
   --c-cathay: #6B8E23;
   --c-kgi: #5B8FB9;
+  --c-yuanta: #B8312C;
 }
 
 * { box-sizing: border-box; }
@@ -2649,6 +2650,11 @@ const App = (() => {
         { cid: 'quanqiu', code: 'XCG', defaultAmount: 3 },
         { cid: 'farglory', code: 'XCD', defaultAmount: 3 }
       ]
+    },
+    { key: '婦嬰險', products: [
+        { cid: 'yuanta', code: 'JO', defaultAmount: 100 },
+        { cid: 'nanshan', code: 'LCA', defaultAmount: 100 }
+      ]
     }
   ];
 
@@ -2927,20 +2933,105 @@ const App = (() => {
           HSY: '⑨ 每年保險金給付總限額'
         }
       }
+    ],
+    /* v1.19 — 婦嬰險(終身)類:JO(元大親愛貝比)+ LCA(南山寵愛佳人) */
+    '婦嬰險': [
+      { rowTitle: '身故 / 喪葬', matches: {
+          JO: '① 身故 / 喪葬保險金',
+          LCA: '① 身故/喪葬保險金'
+        }
+      },
+      { rowTitle: '完全失能', matches: {
+          LCA: '② 完全失能保險金'
+        }
+      },
+      { rowTitle: '生存 / 繳費期滿金', matches: {
+          LCA: '③ 繳費期滿生存保險金'
+        }
+      },
+      { rowTitle: '祝壽 / 滿期保險金', matches: {
+          JO: '⑨ 祝壽保險金',
+          LCA: '④ 祝壽保險金'
+        }
+      },
+      { rowTitle: '特定疾病(一次給付)', matches: {
+          JO: '② 特定疾病保險金'
+        }
+      },
+      { rowTitle: '癌症(初期/輕度)', matches: {
+          JO: '③ 癌症\\(初期/輕度\\)保險金'
+        }
+      },
+      { rowTitle: '癌症(重度)', matches: {
+          JO: '④ 癌症\\(重度\\)保險金'
+        }
+      },
+      { rowTitle: '住院醫療日額', matches: {
+          JO: '⑤ 住院醫療日額'
+        }
+      },
+      { rowTitle: '住院手術醫療', matches: {
+          JO: '⑥ 住院手術醫療保險金'
+        }
+      },
+      { rowTitle: '意外失能(1~6級)', matches: {
+          JO: '⑦ 第1~6級失能保險金'
+        }
+      },
+      { rowTitle: '意外重大燒燙傷', matches: {
+          JO: '⑧ 意外重大燒燙傷保險金'
+        }
+      },
+      { rowTitle: '乳房重建手術', matches: {
+          LCA: '⑤ 癌症乳房重建手術保險金'
+        }
+      },
+      { rowTitle: '特定手術醫療', matches: {
+          LCA: '⑥ 特定手術醫療保險金'
+        }
+      },
+      { rowTitle: '紅斑性狼瘡腎病變', matches: {
+          LCA: '⑦ 嚴重全身性紅斑性狼瘡腎病變'
+        }
+      },
+      { rowTitle: '嚴重類風濕性關節炎', matches: {
+          LCA: '⑧ 嚴重類風濕性關節炎'
+        }
+      },
+      { rowTitle: '皮膚移植手術', matches: {
+          LCA: '⑨ 皮膚移植手術醫療'
+        }
+      },
+      { rowTitle: '婦女關懷生育津貼', matches: {
+          LCA: '⑩ 婦女關懷生育津貼'
+        }
+      },
+      { rowTitle: '妊娠期特定併發症', matches: {
+          LCA: '⑪ 妊娠期特定併發症'
+        }
+      },
+      { rowTitle: '嬰兒先天性重大缺損', matches: {
+          LCA: '⑫ 嬰兒先天性重大缺損保險金'
+        }
+      },
+      { rowTitle: '豁免保費', matches: {
+          LCA: '⑬ 二至六級失能豁免保險費'
+        }
+      }
     ]
   };
 
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -3458,7 +3549,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
@@ -4061,8 +4152,6 @@ const App = (() => {
       document.getElementById('genderM').classList.remove('active');
       renderTable();
     });
-
-    // 全年齡保費表(工具列按鈕 — 預設展開狀態)
     const btnFullAge = document.getElementById('btnFullAge');
     btnFullAge.classList.toggle('active', state.ui.fullAgeExpanded);
     btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';

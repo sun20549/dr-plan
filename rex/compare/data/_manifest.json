@@ -2597,7 +2597,7 @@
     "currency": "USD",
     "period": 6,
     "engine": "twlife_v2_full",
-    "declared_rate": 4.15
+    "declared_rate": 0.0415
   },
   {
     "key": "NUIW5203",
@@ -2657,7 +2657,7 @@
     "currency": "USD",
     "period": 6,
     "engine": "twlife_v2_full",
-    "declared_rate": 4.2,
+    "declared_rate": 0.042,
     "needs_revalidation": true,
     "revalidation_note": "base_sa=12000 太小,Excel 應重抽用 41歲男+USD 50000基準"
   },
@@ -2677,27 +2677,25 @@
     "key": "NUPW0102",
     "path": "twlife/NUPW0102.json",
     "company": "台灣人壽",
+    "plan_code": "NUPW0102",
+    "product_code": "NUPW0102",
     "product_name": "台灣人壽美紅旺美元分紅終身壽險",
     "currency": "USD",
     "period": 6,
     "engine": "prudential_v2",
-    "declared_rate": 0,
-    "plan_code": "NUPW0102",
-    "product_code": "NUPW0102"
+    "declared_rate": 0.0405
   },
   {
     "key": "NUPW0202",
     "path": "twlife/NUPW0202.json",
     "company": "台灣人壽",
+    "plan_code": "NUPW0202",
+    "product_code": "NUPW0202",
     "product_name": "台灣人壽美世長紅美元分紅終身壽險",
     "currency": "USD",
     "period": 6,
     "engine": "prudential_v2",
-    "declared_rate": 0,
-    "plan_code": "NUPW0202",
-    "product_code": "NUPW0202",
-    "needs_revalidation": true,
-    "revalidation_note": ".xlsm 巨集需 Excel 環境才能觸發,LibreOffice headless 跑不了。請業務員手動填好 41 歲男 USD 50000 後另存,再給 Cowork 抽。"
+    "declared_rate": 0.0405
   },
   {
     "key": "NUPW0401",
@@ -2833,7 +2831,9 @@
     "engine": "prudential_v2",
     "declared_rate": 0,
     "plan_code": "吉享紅",
-    "product_code": "吉享紅"
+    "product_code": "吉享紅",
+    "needs_revalidation": true,
+    "revalidation_note": "Excel SA=59,999,999 看起來是預設極大值,業務員需重填合理 SA"
   },
   {
     "key": "四海飛揚",
@@ -2858,6 +2858,18 @@
     "period": 2,
     "engine": "twlife_v2_full",
     "declared_rate": 2.5
+  },
+  {
+    "key": "多美富",
+    "path": "twlife/多美富.json",
+    "company": "台灣人壽",
+    "plan_code": "多美富",
+    "product_code": "多美富",
+    "product_name": "台灣人壽多美富美元養老保險",
+    "currency": "USD",
+    "period": 2,
+    "engine": "prudential_v2",
+    "declared_rate": 0.0405
   },
   {
     "key": "年年添利",
@@ -3025,7 +3037,9 @@
     "engine": "twlife_v1",
     "declared_rate": 0.042,
     "plan_code": "美鑫樂退",
-    "product_code": "美鑫樂退"
+    "product_code": "美鑫樂退",
+    "needs_revalidation": true,
+    "revalidation_note": "已填 .xlsm 無法用 LibreOffice headless 轉換,目前 JSON 為前次批次抽結果。需業務員提供轉好的 xls 版"
   },
   {
     "key": "臻美滿",
