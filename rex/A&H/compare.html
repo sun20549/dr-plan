@@ -4320,7 +4320,6 @@ const App = (() => {
       switchCategory(state.categoryKey);
       bindGlobals();
     } catch (e) {
-      document.getElementById('pickerBody').innerHTML = '<div class="picker-empty">載入失敗:' + e.message + '</div>';
       console.error(e);
     }
   }
