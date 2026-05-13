@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>截圖助手 ・ 安裝引導</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --orange-deep: #D04618;
+    --navy: #0D2A3A;
+    --navy-deep: #061827;
+    --gold: #E8A020;
+    --green: #2E8B57;
+    --red: #C8203A;
+    --bg-cream: #FAF7F2;
+    --border: #EAE5DC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: linear-gradient(135deg, #0D2A3A 0%, #061827 100%);
+    min-height: 100vh;
+    color: var(--navy);
+    padding: 24px 16px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    padding: 36px 40px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '📸';
+    position: absolute;
+    right: 0; top: -20px;
+    font-size: 200px; opacity: 0.1;
+  }
+  .header h1 {
+    font-size: 30px; font-weight: 900; letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .header p { font-size: 14px; opacity: 0.92; letter-spacing: 0.5px; }
+  .header .tag {
+    display: inline-block; background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 11px; letter-spacing: 2px;
+    padding: 4px 12px; border-radius: 14px;
+    margin-top: 12px; font-weight: 700;
+  }
+
+  .body { padding: 36px 40px; }
+
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1.5px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .step-mini {
+    flex: 1; min-width: 120px; text-align: center;
+    font-size: 11px; color: #888; letter-spacing: 1.5px;
+    position: relative;
+  }
+  .step-mini .num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg-cream);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px;
+    color: var(--navy);
+  }
+
+  .step {
+    background: var(--bg-cream);
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    border-left: 5px solid var(--orange);
+  }
+  .step-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .step-num {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(240,90,40,0.35);
+  }
+  .step-title { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+  .step-time {
+    font-size: 11px; color: #888; letter-spacing: 1.5px;
+    margin-left: auto; background: #fff; padding: 4px 10px;
+    border-radius: 12px; border: 1px solid var(--border);
+  }
+  .step-body { font-size: 14px; color: #4a5560; line-height: 1.8; }
+  .step-body p { margin-bottom: 8px; }
+  .step-body code {
+    background: #fff; padding: 2px 8px; border-radius: 4px;
+    font-family: 'Courier New', monospace; font-size: 12px;
+    border: 1px solid var(--border); color: var(--orange-deep);
+  }
+  .step-body a {
+    color: var(--orange); font-weight: 700;
+    text-decoration: none; border-bottom: 1.5px solid var(--orange);
+  }
+  .step-body a:hover { color: var(--orange-deep); }
+
+  .install-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+    color: #fff !important;
+    padding: 14px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 900; letter-spacing: 1.5px;
+    box-shadow: 0 8px 24px rgba(240,90,40,0.4);
+    border-bottom: none !important;
+    transition: all 0.25s;
+    margin-top: 12px;
+  }
+  .install-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(240,90,40,0.55); }
+
+  .ghost-btn {
+    display: inline-block; padding: 10px 20px;
+    background: #fff; color: var(--navy) !important;
+    border: 1.5px solid var(--border);
+    border-radius: 50px; text-decoration: none;
+    font-size: 13px; font-weight: 700;
+    transition: all 0.2s;
+    margin-top: 8px; margin-right: 8px;
+    border-bottom: none !important;
+  }
+  .ghost-btn:hover { border-color: var(--orange); color: var(--orange) !important; }
+
+  .code-box {
+    background: #1A2832; color: #E8EEF2;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    margin-top: 12px;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-box pre { white-space: pre-wrap; word-break: break-all; }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.1); color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 12px; border-radius: 6px;
+    font-size: 11px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--orange); border-color: var(--orange); }
+
+  .info-card {
+    background: rgba(232,160,32,0.08);
+    border-left: 4px solid var(--gold);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 16px 0;
+    font-size: 13px; line-height: 1.7;
+  }
+  .info-card strong { color: var(--gold); }
+  .danger-card {
+    background: rgba(200,32,58,0.06);
+    border-left: 4px solid var(--red);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 16px 0;
+    font-size: 13px; line-height: 1.7;
+  }
+  .danger-card strong { color: var(--red); }
+  .success-card {
+    background: rgba(46,139,87,0.08);
+    border-left: 4px solid var(--green);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 16px 0;
+    font-size: 13px; line-height: 1.7;
+  }
+  .success-card strong { color: var(--green); }
+
+  .preview-fab {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #F05A28, #D04618);
+    color: #fff; padding: 12px 20px; border-radius: 50px;
+    font-size: 14px; font-weight: 900; letter-spacing: 1px;
+    box-shadow: 0 8px 28px rgba(240,90,40,0.5);
+    margin: 8px 0;
+  }
+  .preview-fab .badge {
+    background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-family: 'Bebas Neue', monospace;
+  }
+
+  .shortcut {
+    display: inline-block;
+    background: var(--navy); color: #fff;
+    padding: 4px 12px; border-radius: 8px;
+    font-family: 'Bebas Neue', monospace;
+    letter-spacing: 1.5px; font-size: 14px;
+    margin: 0 4px;
+  }
+
+  .roadmap {
+    background: linear-gradient(135deg, var(--navy), #1a4a5a);
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .roadmap::before {
+    content: '🚀';
+    position: absolute;
+    right: 24px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px; opacity: 0.12;
+  }
+  .roadmap h3 {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 1.5px; margin-bottom: 14px;
+    color: var(--gold);
+  }
+  .roadmap ol {
+    padding-left: 22px; line-height: 2;
+    font-size: 13px;
+  }
+  .roadmap ol li::marker { color: var(--gold); font-weight: 900; }
+  .roadmap strong { color: var(--gold); }
+
+  .footer {
+    background: var(--bg-cream);
+    padding: 18px 40px;
+    font-size: 11px; color: #888;
+    text-align: center; letter-spacing: 0.5px;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--orange); text-decoration: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📸 對帳單截圖助手</h1>
+    <p>3 步驟安裝 ・ 之後每張對帳單只要 1 個熱鍵</p>
+    <span class="tag">PRIVATE TOOL ・ Tampermonkey 使用者腳本</span>
+  </div>
+
+  <div class="body">
+
+    <!-- 進度指示 -->
+    <div class="stepper">
+      <div class="step-mini"><div class="num">1</div>裝 Tampermonkey</div>
+      <div class="step-mini"><div class="num">2</div>裝這個腳本</div>
+      <div class="step-mini"><div class="num">3</div>連結資料夾</div>
+      <div class="step-mini"><div class="num">✓</div>開始截圖</div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-head">
+        <div class="step-num">1</div>
+        <div class="step-title">安裝 Tampermonkey 瀏覽器套件</div>
+        <div class="step-time">1 分鐘</div>
+      </div>
+      <div class="step-body">
+        <p>Tampermonkey 是 Chrome / Edge 上最熱門的使用者腳本管理工具，讓我們可以在任何網頁注入自訂功能（在這個案例中就是「截圖按鈕」）。</p>
+        <a class="install-btn" href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo" target="_blank">
+          ⬇ 從 Chrome 商店安裝 Tampermonkey
+        </a>
+        <a class="ghost-btn" href="https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd" target="_blank">Edge 用戶按這</a>
+        <div class="info-card" style="margin-top:14px;">
+          <strong>💡 為什麼用 Tampermonkey 不用直接寫 Chrome 擴充功能？</strong><br>
+          擴充功能要過 Chrome 商店審查（要付 5 美元 + 審查時間），Tampermonkey 一秒安裝、可隨時改腳本，最適合內部工具。
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-head">
+        <div class="step-num">2</div>
+        <div class="step-title">安裝截圖助手腳本</div>
+        <div class="step-time">30 秒</div>
+      </div>
+      <div class="step-body">
+        <p><strong>方法 A（推薦）：</strong>點下方按鈕，Tampermonkey 會自動彈出「安裝」對話框，按「安裝」即可。</p>
+        <a class="install-btn" href="screenshot-helper.user.js">
+          ⬇ 一鍵安裝腳本
+        </a>
+        <p style="margin-top:18px;"><strong>方法 B（手動）：</strong>如果方法 A 沒反應，<a href="screenshot-helper.user.js" target="_blank">先用瀏覽器打開腳本檔案</a>，全選複製內容，然後到 Tampermonkey 面板按「新增腳本」，貼上後 Ctrl+S 儲存。</p>
+        <div class="info-card">
+          <strong>📋 預設套用在哪些網站？</strong>
+          <ul style="margin-left: 20px; margin-top: 8px;">
+            <li>安達人壽 (chubblife.com.tw / chubb.com)</li>
+            <li>凱基人壽 (kgilife.com.tw)</li>
+            <li>元大人壽 (yuantalife.com / yuantalife.com.tw)</li>
+            <li>法巴人壽 (bnpparibascardif.com.tw / cardif.com.tw)</li>
+          </ul>
+          如果上面網址不對（經代網用不同網域），告訴我實際網址，我修改 <code>@match</code> 規則。
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-head">
+        <div class="step-num">3</div>
+        <div class="step-title">連結 cases 資料夾（一次設定，永久記住）</div>
+        <div class="step-time">10 秒</div>
+      </div>
+      <div class="step-body">
+        <p>到任何一個支援的網站（也可以是 <a href="../paste-tool.html">paste-tool.html</a>），右下角會出現一個 <span class="preview-fab">📸 截圖此頁 <span class="badge">—</span></span> 浮動按鈕。</p>
+        <p>點開後選 <strong>「📁 連結 cases 資料夾」</strong>，導到：</p>
+        <div class="code-box">
+          <pre>C:\Users\sun20\OneDrive\文件\GitHub\dr-plan\rex\vip\assets\img\cases\</pre>
+          <button class="copy-btn" data-copy="C:\\Users\\sun20\\OneDrive\\文件\\GitHub\\dr-plan\\rex\\vip\\assets\\img\\cases\\">複製</button>
+        </div>
+        <p>同意瀏覽器「允許寫入」提示後，**未來每次都會自動記住**，不用再點。</p>
+        <div class="success-card">
+          <strong>✨ 連結後超強功能</strong>：輸入案例編號時會**自動偵測資料夾裡已有幾張**，新截圖會接續編號（例：u0033 已有 3 張，新貼會自動命名為 u0033-4.jpg）。
+        </div>
+      </div>
+    </div>
+
+    <!-- 使用方式 -->
+    <div class="step" style="border-left-color: var(--green);">
+      <div class="step-head">
+        <div class="step-num" style="background: linear-gradient(135deg, var(--green), #1a6b3a);">✓</div>
+        <div class="step-title">開始截圖（之後每張 5 秒）</div>
+      </div>
+      <div class="step-body">
+        <p><strong>標準流程：</strong></p>
+        <ol style="margin-left: 24px; line-height: 2;">
+          <li>到經代網，登入</li>
+          <li>導到 U0033 的對帳單頁面</li>
+          <li>按右下角 <span class="preview-fab">📸 截圖此頁</span> 或快捷鍵 <span class="shortcut">Alt + S</span></li>
+          <li>面板跳出 → 輸入 <code>u0033</code>（會記住上次）</li>
+          <li>按「📸 擷取整頁畫面」→ 約 1-2 秒後存好 → 跳通知</li>
+          <li>導到下一案，重複</li>
+        </ol>
+        <div class="info-card">
+          <strong>⌨ 鍵盤快捷鍵</strong><br>
+          <span class="shortcut">Alt + S</span> 開啟截圖面板（不用滑鼠）
+        </div>
+        <p style="margin-top:14px;"><strong>多張對帳單的案例：</strong>同一個 case 連續按多次截圖，會自動編號 u0033-1.jpg、u0033-2.jpg、u0033-3.jpg...</p>
+      </div>
+    </div>
+
+    <!-- 常見問題 -->
+    <div class="step" style="border-left-color: var(--gold);">
+      <div class="step-head">
+        <div class="step-num" style="background: linear-gradient(135deg, var(--gold), #d68b15);">?</div>
+        <div class="step-title">疑難排解</div>
+      </div>
+      <div class="step-body">
+        <p><strong>Q: 按了截圖按鈕沒反應？</strong><br>
+        A: 看右下角是否有出現浮動按鈕；沒有的話開瀏覽器 DevTools (F12) → Console，看有沒有錯誤訊息。</p>
+
+        <p style="margin-top:12px;"><strong>Q: 截圖結果空白 / 只截到一半？</strong><br>
+        A: 經代網用了 iframe，html2canvas 無法穿透 iframe。臨時解法：用 Windows 內建 <span class="shortcut">Win+Shift+S</span> 截 iframe 內容，搭配 <a href="../paste-tool.html">paste-tool.html</a> 貼上存檔。</p>
+
+        <p style="margin-top:12px;"><strong>Q: 「📁 連結資料夾」按了沒反應？</strong><br>
+        A: 必須是 Chrome 或 Edge 桌面版（Firefox / Safari 不支援 File System Access API），自動降級為下載到 Downloads 資料夾，再手動拖到 cases 資料夾。</p>
+
+        <p style="margin-top:12px;"><strong>Q: 按鈕被經代網的東西擋到了？</strong><br>
+        A: 腳本 z-index 已設最高 (2147483647)，理論上不會被擋。若還是有，請截圖告訴我，我針對該頁加調整。</p>
+
+        <div class="danger-card">
+          <strong>⚠ 法律免責</strong><br>
+          這個工具僅在你本人帳號內、本人權限範圍內的頁面執行截圖。請確保<strong>遵守各經代網的使用條款</strong>，且截圖內容已適度處理個資（個人姓名、身分證號等）後才可上傳到公開網站。<br>
+          這個工具不會自動上傳任何資料，所有處理都在你本機完成。
+        </div>
+      </div>
+    </div>
+
+    <!-- 路線圖 -->
+    <div class="roadmap">
+      <h3>🚀 下一步：升級為「完全無人值守批次模式」</h3>
+      <ol>
+        <li>你開啟一家經代網（例如安達），登入</li>
+        <li>導到「客戶列表」頁面</li>
+        <li>按 F12 開 DevTools，把客戶列表那一段 HTML 結構（不含個資）複製給我</li>
+        <li>我寫該家專屬腳本 → 它會<strong>自動點開每位客戶 → 截圖 → 下一位</strong>，跑 70 位約 5-10 分鐘</li>
+        <li>4 家做完後，你每月真正只要 <strong>登入 4 次 + 按 4 次按鈕</strong>，總時間 ~30 分鐘</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    投資型專區 ・ 截圖助手 ・
+    <a href="../index.html">回到主頁</a> ｜
+    <a href="../paste-tool.html">paste-tool（貼上版本）</a> ｜
+    <a href="screenshot-helper.user.js">查看腳本原始碼</a>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.dataset.copy;
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.textContent;
+        btn.textContent = '✓ 已複製';
+        setTimeout(() => btn.textContent = old, 1500);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
