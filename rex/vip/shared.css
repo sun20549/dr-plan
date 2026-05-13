@@ -896,3 +896,681 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* ═══════════════════════════════════════════
+   ✨ V3 美化升級層（2026/05 ・全站精修版）
+   作者：Cowork ・ Claude
+   原則：1) 不動 SPA 路由 2) 向下相容既有 class 3) 全純 CSS+少量 vanilla JS
+   ═══════════════════════════════════════════ */
+
+/* ───── V3.0 設計 Token 擴充（深色模式變數準備） ───── */
+:root {
+  --shadow-sm: 0 2px 6px rgba(13,42,58,0.06);
+  --shadow-md: 0 8px 24px rgba(13,42,58,0.08);
+  --shadow-lg: 0 20px 48px rgba(13,42,58,0.12);
+  --shadow-gold: 0 12px 32px rgba(232,160,32,0.28);
+  --shadow-orange: 0 12px 32px rgba(240,90,40,0.32);
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --grad-warm: linear-gradient(135deg, #F05A28 0%, #E8A020 100%);
+  --grad-deep: linear-gradient(135deg, #0D2A3A 0%, #061827 100%);
+  --grad-teal: linear-gradient(135deg, #1A6B72 0%, #0F4D52 100%);
+  --grad-shimmer: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+}
+
+/* 深色模式變數（自動偵測 prefers-color-scheme，可由 body[data-theme=dark] 強制覆蓋） */
+@media (prefers-color-scheme: dark) {
+  :root.dark-auto {
+    --bg-cream: #0F1B24;
+    --light: #1A2832;
+    --navy: #E8EEF2;
+    --border: #2A3744;
+  }
+}
+body[data-theme="dark"] {
+  --bg-cream: #0F1B24;
+  --light: #1A2832;
+  --border: #2A3744;
+  background: #0A141C !important;
+}
+body[data-theme="dark"] .page { background: #0F1B24; box-shadow: 0 20px 80px rgba(0,0,0,0.6); }
+body[data-theme="dark"] .info-card,
+body[data-theme="dark"] .feature-list li,
+body[data-theme="dark"] .stat-card,
+body[data-theme="dark"] .data-table { background: #1A2832; color: #E8EEF2; border-color: #2A3744; }
+body[data-theme="dark"] .data-table tbody td { color: #E8EEF2; }
+body[data-theme="dark"] .block-title,
+body[data-theme="dark"] .section-title,
+body[data-theme="dark"] .feat-text strong { color: #F5DBA7; }
+body[data-theme="dark"] .content { background: #0F1B24; }
+body[data-theme="dark"] .info-card-highlight { background: linear-gradient(135deg, rgba(240,90,40,0.18) 0%, rgba(26,40,50,1) 100%); }
+
+/* ───── V3.1 SCROLL REVEAL（資料屬性驅動，無 framework） ───── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s var(--ease-out-quint), transform 0.85s var(--ease-out-quint);
+  will-change: opacity, transform;
+}
+[data-reveal="left"] { transform: translateX(-28px); }
+[data-reveal="right"] { transform: translateX(28px); }
+[data-reveal="scale"] { transform: scale(0.92); }
+[data-reveal="fade"] { transform: none; }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translate(0,0) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ───── V3.2 COUNT-UP 數字計數動畫 ───── */
+[data-countup] {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───── V3.3 玻璃擬態 ───── */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.glass-light {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* ───── V3.4 全站案例卡 / 商品卡 / 鑽石卡 進階懸浮 ───── */
+.case-card-diamond,
+.case-card-gold,
+.case-card-std,
+.case-diamond,
+.product-card,
+.k-card,
+.knowledge-card,
+.res-card,
+.qn-item {
+  position: relative;
+  isolation: isolate;
+}
+
+/* 鑽石卡金光暈再強化 */
+.case-card-diamond,
+.case-diamond {
+  background-image: linear-gradient(135deg, var(--navy) 0%, #1A4A5A 50%, #0F3645 100%) !important;
+}
+.case-card-diamond::after,
+.case-diamond::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(232,160,32,0.45) 25%, transparent 50%, rgba(232,160,32,0.45) 75%, transparent 100%);
+  filter: blur(14px);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.6s var(--ease-out-quint);
+  animation: orbitGlow 8s linear infinite;
+}
+.case-card-diamond:hover::after,
+.case-diamond:hover::after {
+  opacity: 1;
+}
+@keyframes orbitGlow {
+  to { transform: rotate(360deg); }
+}
+
+/* 卡片群通用上浮陰影深化 */
+.case-card-gold:hover,
+.case-card-std:hover,
+.product-card:hover,
+.knowledge-card:hover,
+.res-card:hover,
+.profile-card:hover,
+.audience-card:hover,
+.feat-card:hover,
+.benefit-card:hover,
+.month-card:hover,
+.idx-card:hover {
+  transform: translateY(-5px) !important;
+}
+
+/* ───── V3.5 SVG 迷你圖表元件（內嵌到案例頁） ───── */
+.mini-chart-block {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-cream) 100%);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 26px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.mini-chart-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad-warm);
+}
+.mini-chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 720px) {
+  .mini-chart-grid { grid-template-columns: 1fr; }
+}
+.mini-chart-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  transition: all 0.3s var(--ease-out-quint);
+}
+.mini-chart-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--orange);
+}
+.mini-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.mini-chart-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 1px;
+}
+.mini-chart-subtitle {
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.mini-chart-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: var(--orange);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.mini-chart-value.green { color: var(--green); }
+.mini-chart-value.teal { color: var(--teal); }
+.mini-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.mini-chart-svg .bar-rect {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform-origin: bottom;
+}
+.mini-chart-svg .bar-rect:hover {
+  opacity: 0.85;
+}
+.mini-chart-svg .line-path {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mini-chart-svg .area-fill {
+  opacity: 0.18;
+}
+.mini-chart-svg .axis-line {
+  stroke: #E0DAC9;
+  stroke-width: 1;
+  stroke-dasharray: 3,3;
+}
+.mini-chart-svg .data-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  fill: #888;
+  letter-spacing: 0.5px;
+}
+.mini-chart-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 10px;
+  color: #888;
+  margin-top: 8px;
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+.mini-chart-legend .legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.mini-chart-note {
+  font-size: 10px;
+  color: #aaa;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+/* SVG bar animation on reveal */
+.mini-chart-svg .bar-rect {
+  transform-origin: bottom center;
+  animation: barRise 1.2s var(--ease-out-quint) backwards;
+}
+.mini-chart-svg .bar-rect:nth-child(1) { animation-delay: 0.05s; }
+.mini-chart-svg .bar-rect:nth-child(2) { animation-delay: 0.1s; }
+.mini-chart-svg .bar-rect:nth-child(3) { animation-delay: 0.15s; }
+.mini-chart-svg .bar-rect:nth-child(4) { animation-delay: 0.2s; }
+.mini-chart-svg .bar-rect:nth-child(5) { animation-delay: 0.25s; }
+.mini-chart-svg .bar-rect:nth-child(6) { animation-delay: 0.3s; }
+.mini-chart-svg .bar-rect:nth-child(7) { animation-delay: 0.35s; }
+.mini-chart-svg .bar-rect:nth-child(8) { animation-delay: 0.4s; }
+.mini-chart-svg .bar-rect:nth-child(9) { animation-delay: 0.45s; }
+.mini-chart-svg .bar-rect:nth-child(10) { animation-delay: 0.5s; }
+.mini-chart-svg .bar-rect:nth-child(11) { animation-delay: 0.55s; }
+.mini-chart-svg .bar-rect:nth-child(12) { animation-delay: 0.6s; }
+@keyframes barRise {
+  from { transform: scaleY(0); opacity: 0.3; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+/* 線圖描繪動畫 */
+.mini-chart-svg .line-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: lineDraw 1.6s var(--ease-out-quint) 0.2s forwards;
+}
+@keyframes lineDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ───── V3.6 TAB 切換動畫升級（products/） ───── */
+.tab-pane {
+  animation: tabSlideIn 0.45s var(--ease-out-quint);
+}
+.tab-pane.fade-leave {
+  animation: tabSlideOut 0.2s ease-in;
+}
+@keyframes tabSlideIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes tabSlideOut {
+  to { opacity: 0; transform: translateY(-6px); }
+}
+.tab-bar button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.tab-bar button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grad-warm);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+.tab-bar button.active::before { opacity: 1; }
+.tab-bar button.active {
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-1px);
+}
+
+/* ───── V3.7 RWD 強化（小螢幕表格） ───── */
+@media (max-width: 720px) {
+  .data-table { font-size: 11px; }
+  .data-table thead th, .data-table tbody td { padding: 8px 6px; }
+  /* 大型表格小螢幕橫向滾動 */
+  .table-scroll-mobile {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -10px;
+    padding: 0 10px;
+  }
+  .table-scroll-mobile .data-table { min-width: 560px; }
+  .table-scroll-mobile::after {
+    content: '← 左右滑動 →';
+    display: block;
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+  .hero-case { padding: 24px 20px 28px !important; }
+  .hero-case-grid { grid-template-columns: 1fr !important; }
+  .hero-case-amount { font-size: 60px !important; }
+}
+
+/* ───── V3.8 搜尋元件樣式（cases/index.html 用） ───── */
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+}
+.search-box input {
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 25px;
+  padding: 10px 16px 10px 38px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+  font-family: inherit;
+  transition: all 0.25s;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 4px 14px rgba(240,90,40,0.18);
+}
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ───── V3.9 主題切換按鈕（floating，右上） ───── */
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(13,42,58,0.85);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 998;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s var(--ease-out-quint);
+  box-shadow: var(--shadow-md);
+}
+.theme-toggle:hover {
+  transform: rotate(15deg) scale(1.05);
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+/* ───── V3.10 列印優化擴充 ───── */
+@media print {
+  body { background: #fff !important; -webkit-print-color-adjust: exact; }
+  .page { box-shadow: none !important; max-width: 100% !important; }
+  .float-cta, .back-link, .theme-toggle, .spa-home-btn, #spa-loader, #spa-progress { display: none !important; }
+  .hero, .hero-case, .product-hero, .allianz-hero, .subpage-header {
+    background: linear-gradient(135deg, #0D2A3A, #1a4a5a) !important;
+    color: #fff !important;
+  }
+  .section, .content { padding: 24px 32px !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  a { color: inherit; text-decoration: none; }
+  .mini-chart-svg .bar-rect, .mini-chart-svg .line-path { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; }
+  .case-card-diamond, .case-diamond, .case-card-gold, .case-card-std {
+    page-break-inside: avoid;
+  }
+  .section-block { page-break-inside: avoid; }
+}
+
+/* ───── V3.11 「鑽石/金/標準」案例分級徽章脈動 ───── */
+.case-tier-badge,
+.hero-case-tag,
+.case-d-tag {
+  position: relative;
+  overflow: hidden;
+}
+.case-tier-badge::after,
+.hero-case-tag::after,
+.case-d-tag::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grad-shimmer);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  animation: shimmerSlide 3.5s linear infinite;
+  pointer-events: none;
+}
+@keyframes shimmerSlide {
+  to { background-position: -100% 0; }
+}
+
+/* ───── V3.12 統計大數字加底光 ───── */
+.hero-stat-value,
+.summary-stat-value {
+  text-shadow: 0 0 24px rgba(232,160,32,0.35);
+}
+
+/* ───── V3.13 預設 a 點擊高亮抑制 ───── */
+a, button {
+  -webkit-tap-highlight-color: rgba(240,90,40,0.15);
+}
+
+/* ───── V3.14 整頁淡入（SPA 切換補強） ───── */
+#spa-content .page {
+  animation: fadeUp 0.55s var(--ease-out-quint);
+}
+
+/* ───── V3.15 hero/section 標題 gradient text 工具 ───── */
+.text-gradient-warm {
+  background: var(--grad-warm);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ───── V3.16 parallax 工具類（不依賴 JS，CSS background-attachment） ───── */
+.parallax-bg {
+  background-attachment: fixed !important;
+}
+@media (max-width: 900px) {
+  .parallax-bg { background-attachment: scroll !important; }
+}
+
+/* ───── V3.17 footer-mini 強化（多列版） ───── */
+.footer-rich {
+  background: linear-gradient(180deg, rgba(232,160,32,0.04) 0%, var(--navy-deep) 100%);
+  padding: 36px 56px 28px !important;
+  text-align: left !important;
+}
+.footer-rich .footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 24px;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+.footer-rich .footer-col h4 {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  font-weight: 900;
+}
+.footer-rich .footer-col a {
+  display: block;
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.footer-rich .footer-col a:hover { color: var(--gold); }
+.footer-rich .footer-line { text-align: center; }
+@media (max-width: 720px) {
+  .footer-rich { padding: 28px 20px 20px !important; }
+  .footer-rich .footer-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* ───── V3.18 知識/資源/FAQ 觸發互動加強 ───── */
+.faq-item summary {
+  position: relative;
+}
+.faq-item summary:focus { outline: none; }
+.faq-item summary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(240,90,40,0.3);
+}
+.faq-item[open] {
+  animation: faqOpen 0.4s var(--ease-out-quint);
+}
+@keyframes faqOpen {
+  from { transform: translateY(2px); opacity: 0.7; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ───── V3.19 標籤 / 徽章自動排版 ───── */
+.tag-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* ───── V3.20 Hero 上方數字計數時的小提示 ───── */
+[data-countup]::after {
+  content: '';
+}
+
+/* ───── V3.21 商品卡保險公司色點 ───── */
+.product-card[data-brand="kgi"]::before,
+.product-card[data-brand="yuanta"]::before,
+.product-card[data-brand="bnp"]::before,
+.product-card[data-brand="chubb"]::before,
+.product-card[data-brand="allianz"]::before {
+  background: var(--grad-warm) !important;
+}
+
+/* ───── V3.22 平滑滾動 + 鎖定 viewport 偏移（避免 anchor 被 hero 蓋住） ───── */
+:where(section[id]) {
+  scroll-margin-top: 24px;
+}
+
+/* ───── V3.23 文字工具類 ───── */
+.font-display { font-family: 'Playfair Display', serif; font-style: italic; }
+.font-num { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+.text-gold { color: var(--gold); }
+.text-orange { color: var(--orange); }
+.text-teal { color: var(--teal); }
+.text-navy { color: var(--navy); }
+.text-muted { color: #8a8f95; }
+
+/* ───── V3.24 高品質 hover 微交互（資源卡圖示自動修正） ───── */
+.res-card .res-icon-wrap {
+  transition: all 0.35s var(--ease-spring);
+}
+.res-card:hover .res-icon-wrap {
+  transform: rotate(-6deg) scale(1.1);
+}
+
+/* ───── V3.25 強化首頁 hero stats 卡片懸浮 ───── */
+.hero-stat {
+  transition: background 0.3s ease, transform 0.3s var(--ease-out-quint);
+}
+.hero-stat:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-2px);
+}
+.hero-stat:hover .hero-stat-value {
+  text-shadow: 0 0 32px rgba(232,160,32,0.6);
+}
+
+/* ───── V3.26 鑽石卡 動態金線邊框 ───── */
+.case-card-diamond .case-amount,
+.case-diamond .case-d-amount,
+.case-diamond .case-amount {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(232,160,32,0.4));
+}
+
+/* ───── V3.27 product-card 進階：浮現「了解更多」遮罩 ───── */
+.product-card .product-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(13,42,58,0.92) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: 900;
+}
+.product-card:hover .product-overlay { opacity: 1; }
+
+/* ───── V3.28 進場 stagger（卡片網格） ───── */
+.products-grid > *,
+.case-diamond-row > *,
+.case-gold-row > *,
+.case-std-row > *,
+.diamond-grid > *,
+.knowledge-grid > *,
+.resources-grid > *,
+.quicknav-grid > * {
+  animation: fadeUp 0.7s var(--ease-out-quint) backwards;
+}
+.products-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.products-grid > *:nth-child(2) { animation-delay: 0.1s; }
+.products-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.products-grid > *:nth-child(4) { animation-delay: 0.2s; }
+.products-grid > *:nth-child(5) { animation-delay: 0.25s; }
+.products-grid > *:nth-child(6) { animation-delay: 0.3s; }
+.case-diamond-row > *:nth-child(1),
+.case-gold-row > *:nth-child(1),
+.case-std-row > *:nth-child(1) { animation-delay: 0.05s; }
+.case-diamond-row > *:nth-child(2),
+.case-gold-row > *:nth-child(2),
+.case-std-row > *:nth-child(2) { animation-delay: 0.1s; }
+.case-diamond-row > *:nth-child(3),
+.case-gold-row > *:nth-child(3),
+.case-std-row > *:nth-child(3) { animation-delay: 0.15s; }
+.case-diamond-row > *:nth-child(4),
+.case-gold-row > *:nth-child(4),
+.case-std-row > *:nth-child(4) { animation-delay: 0.2s; }
+
+/* ───── V3.29 案例頁專屬 chart-section 包裝 ───── */
+.case-projection-section {
+  margin-top: 16px;
+}
+.case-projection-section .block-title { margin-bottom: 4px; }
+
+/* ───── V3.30 高 z-index 層級規範 ───── */
+/* loader: 9999, progress: 10000, theme-toggle: 998, float-cta: 999, home-btn: 998 */
+
+/* End V3 layer */

@@ -1029,6 +1029,37 @@ body {
       line-height:1.5;
     }
     /* === /v4.8 === */
+
+    /* === Toast 元件 (取代原生 alert) === */
+    .toast-container {
+      position: fixed; top: 20px; right: 20px; z-index: 99999;
+      max-width: 380px; display: flex; flex-direction: column; gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #fff; padding: 14px 18px;
+      border-left: 4px solid var(--orange);
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      font-size: 14px; line-height: 1.5;
+      color: var(--navy);
+      animation: toast-in .35s cubic-bezier(.2,.9,.4,1.2), toast-out .4s 5.4s forwards;
+      pointer-events: auto;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    .toast.success { border-left-color: var(--teal); }
+    .toast.warning { border-left-color: #f59e0b; background: #fffbeb; }
+    .toast.error   { border-left-color: #dc2626; background: #fef2f2; color: #991b1b; font-weight: 600; }
+    .toast .toast-msg { white-space: pre-wrap; font-family: inherit; margin: 0; }
+    @keyframes toast-in {
+      from { transform: translateX(110%); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+    @keyframes toast-out {
+      to { opacity: 0; transform: translateX(20px); }
+    }
+    /* === /Toast === */
 </style>
 </head>
 <body>
@@ -1120,12 +1151,18 @@ body {
             <option value="1">1 年(躉繳)</option>
             <option value="2">2 年</option>
             <option value="3">3 年</option>
+            <option value="4">4 年</option>
             <option value="5">5 年</option>
             <option value="6">6 年</option>
+            <option value="7">7 年</option>
             <option value="8">8 年</option>
+            <option value="9">9 年</option>
             <option value="10">10 年</option>
             <option value="12">12 年</option>
+            <option value="15">15 年</option>
             <option value="20">20 年</option>
+            <option value="25">25 年</option>
+            <option value="30">30 年</option>
           </select>
         </div>
         <div class="field">
@@ -1265,9 +1302,29 @@ body {
 
 <script>
 // ============================================================
+// Toast (取代原生 alert,不阻塞 UI)
+// ============================================================
+window.showToast = function(msg, type, duration) {
+  type = type || 'info';
+  duration = duration || 6000;
+  var c = document.querySelector('.toast-container');
+  if (!c) { c = document.createElement('div'); c.className = 'toast-container'; document.body.appendChild(c); }
+  var t = document.createElement('div');
+  t.className = 'toast ' + type;
+  var pre = document.createElement('pre');
+  pre.className = 'toast-msg';
+  pre.textContent = String(msg);
+  t.appendChild(pre);
+  c.appendChild(t);
+  // 點 toast 提早關
+  t.addEventListener('click', function(){ t.remove(); });
+  setTimeout(function(){ if (t.parentElement) t.remove(); }, duration);
+};
+
+// ============================================================
 // 精算資料庫(從 Excel 完整抽取)
 // ============================================================
-window.INSURANCE_DBS = {}; 
+window.INSURANCE_DBS = {};
 /* INSURANCE_DBS 已外部化 */
 window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
@@ -6547,7 +6604,7 @@ async function goStep3(mode) {
   if (mode === 'all') codes = state.filteredProducts.map(p => p.plan_code);
   else codes = Array.from(state.selectedCodes);
   
-  if (codes.length === 0) { alert('請至少選擇一個商品'); return; }
+  if (codes.length === 0) { showToast('請至少選擇一個商品', 'warning'); return; }
 
   // === Lazy-load:計算前先把所有要用的商品 DB 預載到快取(容錯模式)===
   const loadResults = await Promise.allSettled(codes.map(code => window.loadProductDB(code)));
@@ -6559,11 +6616,11 @@ async function goStep3(mode) {
     }
   });
   if (failedCodes.length === codes.length) {
-    alert('所有選定商品都載入失敗,請檢查 GitHub data/ 目錄是否完整部署:\n' + failedCodes.join(', '));
+    showToast('所有選定商品都載入失敗,請檢查 data/ 目錄是否完整部署:\n' + failedCodes.join(', '), 'error', 9000);
     return;
   }
   if (failedCodes.length > 0) {
-    alert(`以下 ${failedCodes.length} 個商品載入失敗,將從比較中跳過:\n${failedCodes.join(', ')}\n\n其他 ${codes.length - failedCodes.length} 個商品將正常顯示。`);
+    showToast(`${failedCodes.length} 個商品載入失敗(已跳過):${failedCodes.join(', ')}。其他 ${codes.length - failedCodes.length} 個正常顯示。`, 'warning', 7000);
     codes = codes.filter(c => !failedCodes.includes(c));
   }
 
@@ -6629,7 +6686,7 @@ const PRINT_PRODUCTS_PER_PAGE = 6;
 function printCompareTable() {
   const u = state.user;
   const items = state.compareList;
-  if (items.length === 0) { alert('沒有可列印的商品'); return; }
+  if (items.length === 0) { showToast('沒有可列印的商品', 'warning'); return; }
 
   // === 共用資訊 ===
   const today = new Date();
@@ -7244,7 +7301,7 @@ function updateSortStatus() {
 function jumpToYear(policyYear) {
   const tr = document.querySelector(`#compare-table tr.year-row[data-year="${policyYear}"]`);
   if (!tr) {
-    alert(`Y${policyYear} 超出商品年限`);
+    showToast(`Y${policyYear} 超出商品年限`, 'warning');
     return;
   }
   // 容器不再有自己的捲動；用 window 捲動
@@ -7265,7 +7322,7 @@ function jumpToYear(policyYear) {
 function jumpToAge(insAge) {
   const policyYear = insAge - state.user.age + 1;
   if (policyYear <= 0) {
-    alert(`目標年齡 ${insAge} 歲 早於目前年齡 ${state.user.age} 歲`);
+    showToast(`目標年齡 ${insAge} 歲 早於目前年齡 ${state.user.age} 歲`, 'warning');
     return;
   }
   jumpToYear(policyYear);

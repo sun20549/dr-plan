@@ -1,0 +1,582 @@
+{
+  "meta": {
+    "plan_code": "FVW1",
+    "company": "第一金人壽",
+    "product_name": "第一美富美元利率變動型終身壽險",
+    "currency": "USD",
+    "period": 1,
+    "base_sa": 10000,
+    "base_premium": 1320,
+    "base_premium_gross": 1320,
+    "base_age": 20,
+    "base_sex": "M",
+    "discount": 0,
+    "discount_method": "simple",
+    "declared_rate": 0.0425,
+    "predicted_rate": 0.0175,
+    "engine": "twlife_v1",
+    "premium_mode": "lump_sum",
+    "is_lump_sum_demo": true,
+    "sa_decay": true,
+    "sa_decay_start_y": 4,
+    "db_pattern": "stepped",
+    "step_up_year": 3
+  },
+  "schedule": [
+    {
+      "y": 1,
+      "cum_prem": 1320,
+      "cv_basic": 815.0,
+      "cv_total": 842.15,
+      "death_benefit": 2337.62,
+      "sa_basic": 2280.6
+    },
+    {
+      "y": 2,
+      "cum_prem": 1320,
+      "cv_basic": 884.0,
+      "cv_total": 939.94,
+      "death_benefit": 2826.75,
+      "sa_basic": 2320.5
+    },
+    {
+      "y": 3,
+      "cum_prem": 1320,
+      "cv_basic": 952.0,
+      "cv_total": 1038.12,
+      "death_benefit": 10751.92,
+      "sa_basic": 10000.0
+    },
+    {
+      "y": 4,
+      "cum_prem": 1320,
+      "cv_basic": 1023.0,
+      "cv_total": 1140.93,
+      "death_benefit": 10771.76,
+      "sa_basic": 9779.0
+    },
+    {
+      "y": 5,
+      "cum_prem": 1320,
+      "cv_basic": 1142.0,
+      "cv_total": 1293.51,
+      "death_benefit": 10791.93,
+      "sa_basic": 9563.0
+    },
+    {
+      "y": 6,
+      "cum_prem": 1320,
+      "cv_basic": 1158.0,
+      "cv_total": 1344.68,
+      "death_benefit": 10812.39,
+      "sa_basic": 9352.0
+    },
+    {
+      "y": 7,
+      "cum_prem": 1320,
+      "cv_basic": 1186.0,
+      "cv_total": 1409.78,
+      "death_benefit": 10832.41,
+      "sa_basic": 9145.0
+    },
+    {
+      "y": 8,
+      "cum_prem": 1320,
+      "cv_basic": 1203.0,
+      "cv_total": 1465.74,
+      "death_benefit": 10852.93,
+      "sa_basic": 8943.0
+    },
+    {
+      "y": 9,
+      "cum_prem": 1320,
+      "cv_basic": 1220.0,
+      "cv_total": 1523.61,
+      "death_benefit": 10873.27,
+      "sa_basic": 8745.0
+    },
+    {
+      "y": 10,
+      "cum_prem": 1320,
+      "cv_basic": 1238.0,
+      "cv_total": 1584.74,
+      "death_benefit": 10894.34,
+      "sa_basic": 8552.0
+    },
+    {
+      "y": 11,
+      "cum_prem": 1320,
+      "cv_basic": 1255.0,
+      "cv_total": 1646.67,
+      "death_benefit": 10915.24,
+      "sa_basic": 8363.0
+    },
+    {
+      "y": 12,
+      "cum_prem": 1320,
+      "cv_basic": 1273.0,
+      "cv_total": 1712.04,
+      "death_benefit": 10936.07,
+      "sa_basic": 8178.0
+    },
+    {
+      "y": 13,
+      "cum_prem": 1320,
+      "cv_basic": 1291.0,
+      "cv_total": 1779.66,
+      "death_benefit": 10957.33,
+      "sa_basic": 7997.0
+    },
+    {
+      "y": 14,
+      "cum_prem": 1320,
+      "cv_basic": 1309.0,
+      "cv_total": 1849.58,
+      "death_benefit": 10979.42,
+      "sa_basic": 7821.0
+    },
+    {
+      "y": 15,
+      "cum_prem": 1320,
+      "cv_basic": 1326.0,
+      "cv_total": 1920.44,
+      "death_benefit": 11000.81,
+      "sa_basic": 7648.0
+    },
+    {
+      "y": 16,
+      "cum_prem": 1320,
+      "cv_basic": 1344.0,
+      "cv_total": 1995.17,
+      "death_benefit": 11022.18,
+      "sa_basic": 7479.0
+    },
+    {
+      "y": 17,
+      "cum_prem": 1320,
+      "cv_basic": 1362.0,
+      "cv_total": 2072.44,
+      "death_benefit": 11043.6,
+      "sa_basic": 7313.0
+    },
+    {
+      "y": 18,
+      "cum_prem": 1320,
+      "cv_basic": 1380.0,
+      "cv_total": 2152.33,
+      "death_benefit": 11066.24,
+      "sa_basic": 7152.0
+    },
+    {
+      "y": 19,
+      "cum_prem": 1320,
+      "cv_basic": 1397.0,
+      "cv_total": 2233.31,
+      "death_benefit": 11088.15,
+      "sa_basic": 6994.0
+    },
+    {
+      "y": 20,
+      "cum_prem": 1320,
+      "cv_basic": 1415.0,
+      "cv_total": 2318.64,
+      "death_benefit": 11110.05,
+      "sa_basic": 6839.0
+    },
+    {
+      "y": 21,
+      "cum_prem": 1320,
+      "cv_basic": 1432.0,
+      "cv_total": 2405.16,
+      "death_benefit": 11132.45,
+      "sa_basic": 6688.0
+    },
+    {
+      "y": 22,
+      "cum_prem": 1320,
+      "cv_basic": 1450.0,
+      "cv_total": 2496.27,
+      "death_benefit": 11155.15,
+      "sa_basic": 6540.0
+    },
+    {
+      "y": 23,
+      "cum_prem": 1320,
+      "cv_basic": 1467.0,
+      "cv_total": 2588.68,
+      "death_benefit": 11177.85,
+      "sa_basic": 6396.0
+    },
+    {
+      "y": 24,
+      "cum_prem": 1320,
+      "cv_basic": 1484.0,
+      "cv_total": 2684.14,
+      "death_benefit": 11200.14,
+      "sa_basic": 6254.0
+    },
+    {
+      "y": 25,
+      "cum_prem": 1320,
+      "cv_basic": 1501.0,
+      "cv_total": 2782.76,
+      "death_benefit": 11223.42,
+      "sa_basic": 6116.0
+    },
+    {
+      "y": 26,
+      "cum_prem": 1320,
+      "cv_basic": 1518.0,
+      "cv_total": 2884.64,
+      "death_benefit": 11246.79,
+      "sa_basic": 5981.0
+    },
+    {
+      "y": 27,
+      "cum_prem": 1320,
+      "cv_basic": 1534.0,
+      "cv_total": 2987.92,
+      "death_benefit": 11269.45,
+      "sa_basic": 5849.0
+    },
+    {
+      "y": 28,
+      "cum_prem": 1320,
+      "cv_basic": 1550.0,
+      "cv_total": 3094.56,
+      "death_benefit": 11292.37,
+      "sa_basic": 5719.0
+    },
+    {
+      "y": 29,
+      "cum_prem": 1320,
+      "cv_basic": 1566.0,
+      "cv_total": 3204.67,
+      "death_benefit": 11315.78,
+      "sa_basic": 5593.0
+    },
+    {
+      "y": 30,
+      "cum_prem": 1320,
+      "cv_basic": 1582.0,
+      "cv_total": 3318.34,
+      "death_benefit": 11339.86,
+      "sa_basic": 5469.0
+    },
+    {
+      "y": 31,
+      "cum_prem": 1320,
+      "cv_basic": 1598.0,
+      "cv_total": 3435.7,
+      "death_benefit": 11363.51,
+      "sa_basic": 5349.0
+    },
+    {
+      "y": 32,
+      "cum_prem": 1320,
+      "cv_basic": 1614.0,
+      "cv_total": 3556.86,
+      "death_benefit": 11387.19,
+      "sa_basic": 5230.0
+    },
+    {
+      "y": 33,
+      "cum_prem": 1320,
+      "cv_basic": 1629.0,
+      "cv_total": 3679.66,
+      "death_benefit": 11411.75,
+      "sa_basic": 5115.0
+    },
+    {
+      "y": 34,
+      "cum_prem": 1320,
+      "cv_basic": 1645.0,
+      "cv_total": 3808.7,
+      "death_benefit": 11435.22,
+      "sa_basic": 5002.0
+    },
+    {
+      "y": 35,
+      "cum_prem": 1320,
+      "cv_basic": 1660.0,
+      "cv_total": 3939.51,
+      "death_benefit": 11459.02,
+      "sa_basic": 4891.0
+    },
+    {
+      "y": 36,
+      "cum_prem": 1320,
+      "cv_basic": 1675.0,
+      "cv_total": 4074.49,
+      "death_benefit": 11482.94,
+      "sa_basic": 4783.0
+    },
+    {
+      "y": 37,
+      "cum_prem": 1320,
+      "cv_basic": 1689.0,
+      "cv_total": 4211.26,
+      "death_benefit": 11507.55,
+      "sa_basic": 4677.0
+    },
+    {
+      "y": 38,
+      "cum_prem": 1320,
+      "cv_basic": 1703.0,
+      "cv_total": 4352.32,
+      "death_benefit": 11532.54,
+      "sa_basic": 4574.0
+    },
+    {
+      "y": 39,
+      "cum_prem": 1320,
+      "cv_basic": 1718.0,
+      "cv_total": 4500.42,
+      "death_benefit": 11556.99,
+      "sa_basic": 4473.0
+    },
+    {
+      "y": 40,
+      "cum_prem": 1320,
+      "cv_basic": 1732.0,
+      "cv_total": 4650.52,
+      "death_benefit": 11580.99,
+      "sa_basic": 4374.0
+    },
+    {
+      "y": 41,
+      "cum_prem": 1320,
+      "cv_basic": 1745.0,
+      "cv_total": 4802.56,
+      "death_benefit": 11606.39,
+      "sa_basic": 4277.0
+    },
+    {
+      "y": 42,
+      "cum_prem": 1320,
+      "cv_basic": 1757.0,
+      "cv_total": 4956.48,
+      "death_benefit": 11630.85,
+      "sa_basic": 4183.0
+    },
+    {
+      "y": 43,
+      "cum_prem": 1320,
+      "cv_basic": 1770.0,
+      "cv_total": 5117.98,
+      "death_benefit": 11656.06,
+      "sa_basic": 4090.0
+    },
+    {
+      "y": 44,
+      "cum_prem": 1320,
+      "cv_basic": 1782.0,
+      "cv_total": 5281.5,
+      "death_benefit": 11682.39,
+      "sa_basic": 4000.0
+    },
+    {
+      "y": 45,
+      "cum_prem": 1320,
+      "cv_basic": 1794.0,
+      "cv_total": 5449.99,
+      "death_benefit": 11706.96,
+      "sa_basic": 3912.0
+    },
+    {
+      "y": 46,
+      "cum_prem": 1320,
+      "cv_basic": 1804.0,
+      "cv_total": 5617.37,
+      "death_benefit": 11732.89,
+      "sa_basic": 3825.0
+    },
+    {
+      "y": 47,
+      "cum_prem": 1320,
+      "cv_basic": 1814.0,
+      "cv_total": 5789.73,
+      "death_benefit": 11758.2,
+      "sa_basic": 3741.0
+    },
+    {
+      "y": 48,
+      "cum_prem": 1320,
+      "cv_basic": 1824.0,
+      "cv_total": 5967.18,
+      "death_benefit": 11783.09,
+      "sa_basic": 3658.0
+    },
+    {
+      "y": 49,
+      "cum_prem": 1320,
+      "cv_basic": 1832.0,
+      "cv_total": 6143.19,
+      "death_benefit": 11808.73,
+      "sa_basic": 3577.0
+    },
+    {
+      "y": 50,
+      "cum_prem": 1320,
+      "cv_basic": 1840.0,
+      "cv_total": 6324.27,
+      "death_benefit": 11835.32,
+      "sa_basic": 3498.0
+    },
+    {
+      "y": 51,
+      "cum_prem": 1320,
+      "cv_basic": 1845.0,
+      "cv_total": 6499.99,
+      "death_benefit": 11860.53,
+      "sa_basic": 3421.0
+    },
+    {
+      "y": 52,
+      "cum_prem": 1320,
+      "cv_basic": 1850.0,
+      "cv_total": 6680.54,
+      "death_benefit": 11885.92,
+      "sa_basic": 3345.0
+    },
+    {
+      "y": 53,
+      "cum_prem": 1320,
+      "cv_basic": 1854.0,
+      "cv_total": 6862.36,
+      "death_benefit": 11912.72,
+      "sa_basic": 3271.0
+    },
+    {
+      "y": 54,
+      "cum_prem": 1320,
+      "cv_basic": 1856.0,
+      "cv_total": 7041.51,
+      "death_benefit": 11938.38,
+      "sa_basic": 3199.0
+    },
+    {
+      "y": 55,
+      "cum_prem": 1320,
+      "cv_basic": 1858.0,
+      "cv_total": 7225.33,
+      "death_benefit": 11964.74,
+      "sa_basic": 3128.0
+    },
+    {
+      "y": 56,
+      "cum_prem": 1320,
+      "cv_basic": 1859.0,
+      "cv_total": 7409.95,
+      "death_benefit": 11990.08,
+      "sa_basic": 3059.0
+    },
+    {
+      "y": 57,
+      "cum_prem": 1320,
+      "cv_basic": 1859.0,
+      "cv_total": 7595.2,
+      "death_benefit": 12016.48,
+      "sa_basic": 2991.0
+    },
+    {
+      "y": 58,
+      "cum_prem": 1320,
+      "cv_basic": 1857.0,
+      "cv_total": 7776.7,
+      "death_benefit": 12045.23,
+      "sa_basic": 2925.0
+    },
+    {
+      "y": 59,
+      "cum_prem": 1320,
+      "cv_basic": 1855.0,
+      "cv_total": 7962.53,
+      "death_benefit": 12070.04,
+      "sa_basic": 2861.0
+    },
+    {
+      "y": 60,
+      "cum_prem": 1320,
+      "cv_basic": 1851.0,
+      "cv_total": 8144.0,
+      "death_benefit": 12098.8,
+      "sa_basic": 2797.0
+    },
+    {
+      "y": 61,
+      "cum_prem": 1320,
+      "cv_basic": 1846.0,
+      "cv_total": 8325.05,
+      "death_benefit": 12124.65,
+      "sa_basic": 2736.0
+    },
+    {
+      "y": 62,
+      "cum_prem": 1320,
+      "cv_basic": 1841.0,
+      "cv_total": 8510.06,
+      "death_benefit": 12151.51,
+      "sa_basic": 2675.0
+    },
+    {
+      "y": 63,
+      "cum_prem": 1320,
+      "cv_basic": 1834.0,
+      "cv_total": 8689.65,
+      "death_benefit": 12178.02,
+      "sa_basic": 2616.0
+    },
+    {
+      "y": 64,
+      "cum_prem": 1320,
+      "cv_basic": 1826.0,
+      "cv_total": 8868.03,
+      "death_benefit": 12207.05,
+      "sa_basic": 2558.0
+    },
+    {
+      "y": 65,
+      "cum_prem": 1320,
+      "cv_basic": 1817.0,
+      "cv_total": 9044.93,
+      "death_benefit": 12232.06,
+      "sa_basic": 2502.0
+    },
+    {
+      "y": 66,
+      "cum_prem": 1320,
+      "cv_basic": 1807.0,
+      "cv_total": 9220.03,
+      "death_benefit": 12258.94,
+      "sa_basic": 2446.0
+    },
+    {
+      "y": 67,
+      "cum_prem": 1320,
+      "cv_basic": 1796.0,
+      "cv_total": 9393.0,
+      "death_benefit": 12290.1,
+      "sa_basic": 2392.0
+    },
+    {
+      "y": 68,
+      "cum_prem": 1320,
+      "cv_basic": 1784.0,
+      "cv_total": 9563.5,
+      "death_benefit": 12317.3,
+      "sa_basic": 2340.0
+    },
+    {
+      "y": 69,
+      "cum_prem": 1320,
+      "cv_basic": 1771.0,
+      "cv_total": 9731.16,
+      "death_benefit": 12342.7,
+      "sa_basic": 2288.0
+    }
+  ],
+  "extraction_note": "資料來源:第一金人壽官方建議書 PDF(備查文號 1140000014,114年4月1日備查)+ 經代通路試算表 xlsx(2026/03/06 版,FVW1)。PDF 試算條件:20歲男性、躉繳、基本保險金額 10,000 美元(底格)、首期保費 1,320 美元、無折扣(投保金額未達 10萬美元門檻)、宣告利率假設 4.25%(預定利率 1.75%)、增值回饋分享金給付方式『購買增額繳清保險』。Schedule 涵蓋 Y1-Y69(20-88 歲)。Y69 之後 PDF 未列(110 歲祝壽終止由保單條款規定)。★商品設計特性(★PDF 第 6 頁警語):『部分保單年度有基本保險金額對應之身故/完全失能保險金給付逐年遞減之特性,當宣告利率低於一定水準時,可能會發生身故/完全失能保險金【含累計增加保險金額】低於基本保險金額之情形。』★db_pattern: stepped(Y1=2280, Y2=2320, Y3=10000 觸頂),step_up_year=3。Y3 之後 sa_basic 單調遞減 → sa_decay=true,sa_decay_start_y=4。但 cv_total(C+E+H)仍逐年遞增,長期持有 IRR 為正。★折扣表:躉繳投保金額級距(10萬→1% / 20萬→2% / 30萬→2.5%)。本檔 base 為 1萬 → 0% 折扣。schema 暫無 discount_table 欄位,先記在這。★保額限額(xlsx 真值):15足歲(不含)以下 10,000~350,000 美元;15足歲(含)以上~80歲 10,000~8,000,000 美元。注意 max_age=80(比 FVX1 的 88 低 8 歲,屬商品差異)。★預定附加費用率 15%~24%(顯著高於 FVX1 的 6%~8%),因此初期解約金占已繳保費比率較低(Y1 男 20 歲約 58%,Y5 約 76%,長期才回到 76% 以上)。★cv_basic 對應 PDF C 欄;cv_total 對應 J 欄;death_benefit 對應 I 欄。★cum_prem 全年皆等於 1,320(躉繳一次性,不遞增)。",
+  "source_file": "d-第一美富美元利率變動型終身壽險-20260510002406.pdf + 第一金人壽第一美富美元利率變動型終身壽險_FVW1_20260306-試算表20260311.xls",
+  "extracted_at": "2026-05-09T16:34:59.249815"
+}

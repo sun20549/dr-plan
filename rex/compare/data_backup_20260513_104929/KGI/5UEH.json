@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "product_id": "5UEH",
+    "company": "凱基人壽",
+    "product_name": "美利固得美元養老保險-定期給付型",
+    "currency": "USD",
+    "period": 1,
+    "engine": "twlife_v1",
+    "product_type": "interest_variable",
+    "product_subtype": "endowment",
+    "base_sex": "M",
+    "base_age": 20,
+    "base_sa": 41207,
+    "base_premium": 40000,
+    "base_premium_gross": 41026,
+    "discount": 0.025009,
+    "declared_rate": 0.0,
+    "guaranteed_rate": 0.0415,
+    "min_sa": 3000,
+    "max_sa": 8000000,
+    "min_age": 0,
+    "max_age": 88,
+    "dividend_option": "以繳清保險方式增加保險金額",
+    "calc_method": "保額",
+    "premium_mode": "lump_sum",
+    "protection_period": 12,
+    "type_for_step1": "美元利率變動型養老保險",
+    "source_file": "5UEH.pdf + 5UEH.xlsx (2026-05-09 校正)",
+    "extracted_at": "2026-05-08",
+    "updated_at": "2026-05-09",
+    "extraction_note": "Y8 cv_total 51,152 為內插(PDF 印刷空白,Y7=50124, Y9=52180 中位數);base_premium=40000 對應 cum_prem(實繳),原始 41,026 折減 2.5%(PDF M20+4萬保費情境)。校正紀錄:guaranteed_rate 4.10%→4.15%(對齊 xlsx 險種基本資料);min_sa/max_sa/max_age 由業界預設(10K/5M/75)改為 DM 真值 3000/8000000/88。discount 0.025009 是當前試算情境反推值,商品實際門檻折扣表為:躉繳$20K→1%/$40K→2.5%/$120K→3.5%(待擴充 schema 後存入 discount_table) Y12 校正:cv_basic/cv_total 從 61275 修為 58856(對齊 PDF B 欄 年度末現金價值);61275 為 D 欄滿期金,撐到 12 年期滿才會領到。"
+  },
+  "schedule": [
+    {
+      "y": 1,
+      "age": 20,
+      "cum_prem": 40000,
+      "cv_basic": 29529,
+      "cv_total": 29529,
+      "death_benefit": 74803
+    },
+    {
+      "y": 2,
+      "age": 21,
+      "cum_prem": 40000,
+      "cv_basic": 30740,
+      "cv_total": 30740,
+      "death_benefit": 77877
+    },
+    {
+      "y": 3,
+      "age": 22,
+      "cum_prem": 40000,
+      "cv_basic": 42241,
+      "cv_total": 42241,
+      "death_benefit": 81075
+    },
+    {
+      "y": 4,
+      "age": 23,
+      "cum_prem": 40000,
+      "cv_basic": 44203,
+      "cv_total": 44203,
+      "death_benefit": 84408
+    },
+    {
+      "y": 5,
+      "age": 24,
+      "cum_prem": 40000,
+      "cv_basic": 46016,
+      "cv_total": 46016,
+      "death_benefit": 87870
+    },
+    {
+      "y": 6,
+      "age": 25,
+      "cum_prem": 40000,
+      "cv_basic": 47907,
+      "cv_total": 47907,
+      "death_benefit": 91480
+    },
+    {
+      "y": 7,
+      "age": 26,
+      "cum_prem": 40000,
+      "cv_basic": 50124,
+      "cv_total": 50124,
+      "death_benefit": 95238
+    },
+    {
+      "y": 8,
+      "age": 27,
+      "cum_prem": 40000,
+      "cv_basic": 51152,
+      "cv_total": 51152,
+      "death_benefit": 98040
+    },
+    {
+      "y": 9,
+      "age": 28,
+      "cum_prem": 40000,
+      "cv_basic": 52180,
+      "cv_total": 52180,
+      "death_benefit": 99144
+    },
+    {
+      "y": 10,
+      "age": 29,
+      "cum_prem": 40000,
+      "cv_basic": 54319,
+      "cv_total": 54319,
+      "death_benefit": 103207
+    },
+    {
+      "y": 11,
+      "age": 30,
+      "cum_prem": 40000,
+      "cv_basic": 56544,
+      "cv_total": 56544,
+      "death_benefit": 107435
+    },
+    {
+      "y": 12,
+      "age": 31,
+      "cum_prem": 40000,
+      "cv_basic": 58856,
+      "cv_total": 58856,
+      "death_benefit": 111828,
+      "maturity_benefit": 61275
+    }
+  ],
+  "key_milestones": {
+    "y1": {
+      "age": 20,
+      "cum_prem": 40000,
+      "cv_total": 29529,
+      "death_benefit": 74803,
+      "cv_to_prem_ratio": 0.7382,
+      "irr": -0.261775
+    },
+    "y6": {
+      "age": 25,
+      "cum_prem": 40000,
+      "cv_total": 47907,
+      "death_benefit": 91480,
+      "cv_to_prem_ratio": 1.1977,
+      "irr": 0.03052
+    },
+    "y10": {
+      "age": 29,
+      "cum_prem": 40000,
+      "cv_total": 54319,
+      "death_benefit": 103207,
+      "cv_to_prem_ratio": 1.358,
+      "irr": 0.031072
+    },
+    "y12": {
+      "age": 31,
+      "cum_prem": 40000,
+      "cv_total": 58856,
+      "death_benefit": 111828,
+      "cv_to_prem_ratio": 1.4714,
+      "irr": 0.032708,
+      "maturity_benefit": 61275,
+      "irr_at_maturity": 0.03618,
+      "maturity_to_prem_ratio": 1.5319
+    }
+  }
+}

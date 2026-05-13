@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>客戶成交案例 ・ 投資型專區</title>
+<meta name="description" content="完整 70+ 筆客戶成交案例 ・ 累計成交額 2.5 億+ ・ 鑽石/黃金/標準級分類">
+<meta property="og:type" content="website">
+<meta property="og:title" content="客戶成交案例 ・ 鼎綸恩宇投資型專區">
+<meta property="og:description" content="完整 70+ 筆真實成交紀錄 ・ 累計 2.5 億+ ・ 依金額分級展示">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared.css">
 <style>
@@ -452,18 +458,18 @@
   <div class="content">
 
     <!-- 統計總覽 -->
-    <div class="summary-banner">
+    <div class="summary-banner" data-reveal="fade">
       <div class="summary-stat">
         <div class="summary-stat-label">總成交件數</div>
-        <div class="summary-stat-value">73<span class="unit">筆</span></div>
+        <div class="summary-stat-value"><span data-countup="73" data-countup-duration="1800">0</span><span class="unit">筆</span></div>
       </div>
       <div class="summary-stat">
         <div class="summary-stat-label">累計總保費</div>
-        <div class="summary-stat-value">2.5<span class="unit">億+</span></div>
+        <div class="summary-stat-value"><span data-countup="2.5" data-countup-duration="1800">0.0</span><span class="unit">億+</span></div>
       </div>
       <div class="summary-stat">
         <div class="summary-stat-label">最高單筆</div>
-        <div class="summary-stat-value">2,500<span class="unit">萬</span></div>
+        <div class="summary-stat-value"><span data-countup="2500" data-countup-duration="2000">0</span><span class="unit">萬</span></div>
       </div>
       <div class="summary-stat">
         <div class="summary-stat-label">資料區間</div>
@@ -472,7 +478,10 @@
     </div>
 
     <!-- 篩選列 -->
-    <div class="filter-bar">
+    <div class="filter-bar" data-reveal>
+      <div class="search-box">
+        <input type="search" id="caseSearch" placeholder="搜尋案例編號（如 U0033、F2040）" aria-label="搜尋案例">
+      </div>
       <span class="filter-label">▸ 金額篩選</span>
       <button class="filter-tab active" data-filter="all">全部 <span class="count">73</span></button>
       <button class="filter-tab" data-filter="diamond">千萬以上 <span class="count">4</span></button>
@@ -795,6 +804,39 @@
       document.getElementById('tableView').classList.toggle('hidden', view !== 'table');
     });
   });
+
+  // ─── 案例搜尋功能 ───
+  const searchInput = document.getElementById('caseSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      const allCards = document.querySelectorAll('.case-diamond, .case-gold, .case-std');
+      const tableRows = document.querySelectorAll('#tableView tbody tr');
+      let visibleCount = 0;
+      allCards.forEach(card => {
+        const id = (card.querySelector('.case-d-id, .case-g-id, .case-std-id')?.textContent || '').toLowerCase();
+        const amount = (card.querySelector('.case-d-amount, .case-g-amount, .case-std-amount')?.textContent || '').toLowerCase();
+        const match = !q || id.includes(q) || amount.includes(q);
+        card.style.display = match ? '' : 'none';
+        if (match) visibleCount++;
+      });
+      tableRows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = (!q || text.includes(q)) ? '' : 'none';
+      });
+      // 若搜尋有結果，自動恢復隱藏的 grid 與 divider
+      if (q) {
+        document.querySelectorAll('#cardView > .tier-divider, #cardView > .diamond-grid, #cardView > .gold-grid, #cardView > .std-grid').forEach(el => {
+          el.classList.remove('hidden');
+        });
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.filter-tab[data-filter="all"]')?.classList.add('active');
+      }
+      // 更新統計顯示
+      const info = document.querySelector('.sort-info strong');
+      if (info) info.textContent = q ? visibleCount : '73';
+    });
+  }
 </script>
 
 </body>

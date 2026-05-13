@@ -39,9 +39,17 @@ ENGINE_PREFIX_MAP = {
 }
 
 
-def extract_meta(data, key):
-    """從單一商品 JSON 智能擷取 meta。"""
+def extract_meta(data, key, rel_path=""):
+    """從單一商品 JSON 智能擷取 meta。
+
+    v2 (2026-05-13):
+    - 加 path 欄位(子目錄部署需要)
+    - 加 plan_year 為 period 後備來源
+    - 保留現有 manifest 內 needs_revalidation / revalidation_note 標記
+    """
     item = {"key": key}
+    if rel_path:
+        item["path"] = rel_path
 
     src_outer = data if isinstance(data, dict) else {}
     src_meta = data.get("meta", {}) if isinstance(data, dict) and isinstance(data.get("meta"), dict) else {}
@@ -52,9 +60,20 @@ def extract_meta(data, key):
         elif f in src_meta and not isinstance(src_meta[f], (dict, list)):
             item[f] = src_meta[f]
 
+    # period 後備:從 plan_year 取(prudential_v1 用 plan_year 命名)
+    if "period" not in item:
+        py = src_outer.get("plan_year") or src_meta.get("plan_year")
+        if py:
+            item["period"] = py
+
     # plan_code / product_code 統一
     if "plan_code" in item and "product_code" not in item:
         item["product_code"] = item["plan_code"]
+    if "product_code" in item and "plan_code" not in item:
+        item["plan_code"] = item["product_code"]
+    if "plan_code" not in item:
+        item["plan_code"] = key
+        item["product_code"] = key
 
     # 引擎後備推斷
     if "engine" not in item:
@@ -84,9 +103,11 @@ def main():
         print("   請確認這個腳本跟 data/ 資料夾在同一層")
         return
 
+    # v2 (2026-05-13):遞迴讀子目錄,排除 manifest / index.html / sub-manifest / 中文檔名 之外都收
     json_files = sorted([
-        f for f in data_path.iterdir()
-        if f.suffix == ".json" and f.name != MANIFEST_FILE
+        f for f in data_path.rglob("*.json")
+        if f.name != MANIFEST_FILE
+        and not f.name.startswith("_")
     ])
 
     if not json_files:
@@ -94,6 +115,19 @@ def main():
         return
 
     print(f"✓ 找到 {len(json_files)} 個商品 JSON\n")
+
+    # 載入既有 manifest,保留 needs_revalidation / revalidation_note 等附加欄位
+    existing_extras = {}
+    if (data_path / MANIFEST_FILE).exists():
+        try:
+            old = json.load(open(data_path / MANIFEST_FILE, encoding="utf-8"))
+            for e in old:
+                k = e.get("key")
+                if k:
+                    extras = {kk: vv for kk, vv in e.items() if kk in ("needs_revalidation", "revalidation_note", "xlsm_url", "pdf_url", "is_estimated", "verified_at")}
+                    if extras: existing_extras[k] = extras
+        except Exception:
+            pass
 
     manifest = []
     for fp in json_files:
@@ -104,20 +138,27 @@ def main():
             manifest.append({"key": fp.stem, "_error": str(e)})
             continue
 
-        item = extract_meta(data, fp.stem)
+        # 計算相對於 data/ 的路徑(支援子目錄)
+        rel_path = str(fp.relative_to(data_path)).replace(os.sep, "/")
+        item = extract_meta(data, fp.stem, rel_path)
+        # 合併保留欄位
+        if fp.stem in existing_extras:
+            item.update(existing_extras[fp.stem])
         manifest.append(item)
 
         # 簡短報告
         company = item.get("company", "?")
         engine = item.get("engine", "?")
-        name = item.get("product_name", "?")
-        print(f"  ✓ {fp.stem:12s} {company:8s} {engine:15s} {name}")
+        name = (item.get("product_name") or "?")[:30]
+        flag = " ⚠️" if item.get("needs_revalidation") else ""
+        print(f"  ✓ {fp.stem:15s} {company:8s} {engine:15s} {name}{flag}")
 
     out_path = data_path / MANIFEST_FILE
     json.dump(manifest, open(out_path, "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
 
     print(f"\n✓ 寫入 {out_path} ({out_path.stat().st_size:,} bytes)")
+    print(f"   總條目: {len(manifest)}  / 警告需重抽: {sum(1 for x in manifest if x.get('needs_revalidation'))}")
     print("\n" + "=" * 50)
     print("✅ 完成!")
     print("=" * 50)

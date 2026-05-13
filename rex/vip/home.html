@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>投資型專區 ・ 鼎綸恩宇</title>
+<meta name="description" content="鼎綸恩宇投資型專區 ・ 70+ 客戶成交案例 ・ 累計成交額 2.5 億 ・ 凱基/元大/法巴/安達商品介紹">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
@@ -1587,6 +1588,149 @@
     transform: translateX(100%);
   }
 
+  /* ═══════════════════════════════════════════
+     V3 首頁專屬美化（2026/05）
+     ═══════════════════════════════════════════ */
+
+  /* Hero 趨勢 SVG 包裝 */
+  .hero-trend-svg {
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 200px;
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-trend-svg .trend-line {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(232,160,32,0.6));
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: trendDraw 2.4s var(--ease-out-quint) 0.3s forwards;
+  }
+  .hero-trend-svg .trend-fill {
+    fill: url(#trendGradient);
+    opacity: 0;
+    animation: trendFadeIn 1.2s ease 1.4s forwards;
+  }
+  .hero-trend-svg .trend-dot {
+    fill: var(--gold);
+    opacity: 0;
+    animation: trendDotPop 0.4s var(--ease-spring) backwards;
+    filter: drop-shadow(0 0 6px rgba(232,160,32,0.8));
+  }
+  .hero-trend-svg .trend-dot:nth-of-type(1) { animation-delay: 0.6s; }
+  .hero-trend-svg .trend-dot:nth-of-type(2) { animation-delay: 1.0s; }
+  .hero-trend-svg .trend-dot:nth-of-type(3) { animation-delay: 1.4s; }
+  .hero-trend-svg .trend-dot:nth-of-type(4) { animation-delay: 1.8s; }
+  .hero-trend-svg .trend-dot:nth-of-type(5) { animation-delay: 2.2s; }
+  @keyframes trendDraw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes trendFadeIn {
+    to { opacity: 0.4; }
+  }
+  @keyframes trendDotPop {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @media (max-width: 900px) {
+    .hero-trend-svg { display: none; }
+  }
+
+  /* Hero 統計卡 - 加上強化動畫 */
+  .hero-stats {
+    position: relative;
+  }
+  .hero-stats::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232,160,32,0.5), transparent);
+  }
+
+  /* 安聯區 - 主打商品強化 */
+  .allianz-section {
+    position: relative;
+  }
+  .allianz-section::before {
+    content: '★ 主打';
+    position: absolute;
+    top: 36px;
+    right: 56px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 900;
+    box-shadow: var(--shadow-orange);
+    animation: pulse-soft 2.4s ease-in-out infinite;
+    z-index: 3;
+  }
+  .allianz-card {
+    transition: all 0.4s var(--ease-out-quint);
+  }
+  .allianz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(13,42,58,0.16) !important;
+  }
+
+  /* CTA 區 - 立即諮詢按鈕更醒目 */
+  .cta-btn-primary {
+    position: relative;
+    animation: ctaGlow 2.5s ease-in-out infinite;
+    font-size: 16px !important;
+    padding: 18px 44px !important;
+  }
+  @keyframes ctaGlow {
+    0%, 100% { box-shadow: 0 10px 28px rgba(240,90,40,0.4); }
+    50% { box-shadow: 0 14px 40px rgba(240,90,40,0.65), 0 0 32px rgba(232,160,32,0.35); }
+  }
+  .cta-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    opacity: 0;
+    z-index: -1;
+    filter: blur(12px);
+    transition: opacity 0.3s ease;
+  }
+  .cta-btn-primary:hover::before { opacity: 0.6; }
+  @media (max-width: 720px) {
+    .cta-btn-primary { font-size: 14px !important; padding: 14px 32px !important; }
+    .allianz-section::before { right: 20px; top: 24px; font-size: 10px; padding: 4px 12px; }
+  }
+
+  /* 鑽石卡金色金額更精緻 */
+  .case-card-diamond .case-amount {
+    text-shadow: 0 0 24px rgba(232,160,32,0.35);
+  }
+
+  /* QN item 動畫 */
+  .qn-item {
+    animation: fadeUp 0.6s var(--ease-out-quint) backwards;
+  }
+  .qn-item:nth-child(1) { animation-delay: 0.05s; }
+  .qn-item:nth-child(2) { animation-delay: 0.1s; }
+  .qn-item:nth-child(3) { animation-delay: 0.15s; }
+  .qn-item:nth-child(4) { animation-delay: 0.2s; }
+  .qn-item:nth-child(5) { animation-delay: 0.25s; }
+
 </style>
 </head>
 <body>
@@ -1622,21 +1766,42 @@
       </p>
     </div>
 
-    <div class="hero-stats">
+    <!-- Hero 趨勢 SVG（純裝飾，象徵向上成長） -->
+    <svg class="hero-trend-svg" viewBox="0 0 320 200" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#E8A020" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#E8A020" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- 漸層底色 -->
+      <path class="trend-fill" d="M 0 165 L 60 145 L 120 130 L 180 95 L 240 70 L 310 30 L 310 200 L 0 200 Z"/>
+      <!-- 趨勢線 -->
+      <path class="trend-line" d="M 0 165 L 60 145 L 120 130 L 180 95 L 240 70 L 310 30"/>
+      <!-- 節點 -->
+      <circle class="trend-dot" cx="0" cy="165" r="3.5"/>
+      <circle class="trend-dot" cx="60" cy="145" r="3.5"/>
+      <circle class="trend-dot" cx="120" cy="130" r="3.5"/>
+      <circle class="trend-dot" cx="180" cy="95" r="3.5"/>
+      <circle class="trend-dot" cx="240" cy="70" r="3.5"/>
+      <circle class="trend-dot" cx="310" cy="30" r="5"/>
+    </svg>
+
+    <div class="hero-stats" data-reveal="fade">
       <div class="hero-stat">
-        <div class="hero-stat-value">70<span class="unit">+</span></div>
+        <div class="hero-stat-value"><span data-countup="70" data-countup-duration="1800">0</span><span class="unit">+</span></div>
         <div class="hero-stat-label">成交案例</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value orange">2.5<span class="unit">億+</span></div>
+        <div class="hero-stat-value orange"><span data-countup="2.5" data-countup-duration="1800">0.0</span><span class="unit">億+</span></div>
         <div class="hero-stat-label">累計成交金額</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value white">5<span class="unit">家</span></div>
+        <div class="hero-stat-value white"><span data-countup="5" data-countup-duration="1400">0</span><span class="unit">家</span></div>
         <div class="hero-stat-label">合作壽險公司</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">2026</div>
+        <div class="hero-stat-value"><span data-countup="2026" data-countup-duration="2000">0</span></div>
         <div class="hero-stat-label">最新更新</div>
       </div>
     </div>
@@ -1645,7 +1810,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- QUICK NAV -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="quicknav">
+  <section class="quicknav" data-reveal="fade">
     <div class="quicknav-grid">
       <a href="#cases" class="qn-item">
         <div class="qn-icon">💎</div>
@@ -1678,7 +1843,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 客戶案例 (依金額排序) -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section cases-section" id="cases">
+  <section class="section cases-section" id="cases" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">Top Cases ・ 真實成交</div>
       <h2 class="section-title">客戶<span class="accent">成交實績</span></h2>
@@ -1864,7 +2029,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 投資型商品專區 -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section products-section" id="products">
+  <section class="section products-section" id="products" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">Featured Products ・ 主推商品</div>
       <h2 class="section-title">投資型<span style="color:var(--gold);">商品專區</span></h2>
@@ -1967,7 +2132,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 安聯收益成長基金 -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section allianz-section" id="allianz">
+  <section class="section allianz-section" id="allianz" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">Spotlight Fund ・ 旗艦基金</div>
       <h2 class="section-title">安聯<span class="accent-teal">收益成長基金</span></h2>
@@ -2032,7 +2197,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 財商增益 -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section knowledge-section" id="knowledge">
+  <section class="section knowledge-section" id="knowledge" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">Financial Wisdom ・ 財商增益</div>
       <h2 class="section-title">投資<span class="accent">必懂知識</span></h2>
@@ -2072,7 +2237,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 投資工具與資源 -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section resources-section">
+  <section class="section resources-section" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">Tools & Resources ・ 實用資源</div>
       <h2 class="section-title">投資<span class="accent-teal">工具站</span></h2>
@@ -2113,7 +2278,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- 常見問題 FAQ -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="section faq-section" id="faq">
+  <section class="section faq-section" id="faq" data-reveal>
     <div class="section-head">
       <div class="section-eyebrow">FAQ ・ 常見問題</div>
       <h2 class="section-title">您可能想問的<span class="accent">問題</span></h2>
@@ -2196,7 +2361,7 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- CTA 立即諮詢 -->
   <!-- ═══════════════════════════════════════════ -->
-  <section class="cta-section">
+  <section class="cta-section" data-reveal="scale">
     <div class="cta-eyebrow">Start Your Journey</div>
     <h2 class="cta-title">為您的資產<br>找到<span class="accent">最佳配置</span></h2>
     <p class="cta-desc">專業顧問一對一諮詢 ・ 量身打造您的投資型保單規劃</p>
@@ -2209,10 +2374,33 @@
   <!-- ═══════════════════════════════════════════ -->
   <!-- FOOTER -->
   <!-- ═══════════════════════════════════════════ -->
-  <footer class="footer">
+  <footer class="footer footer-rich">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>鼎綸恩宇 ・ 投資型專區</h4>
+        <p style="color: rgba(255,255,255,0.55); font-size: 12px; line-height: 1.8; margin-bottom: 12px;">
+          深耕投資型保單規劃 ・ 累計協助超過 70 位客戶完成資產配置 ・ 累計成交額 2.5 億+
+        </p>
+        <p style="color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 0.5px;">
+          本頁案例金額均經適度去識別化處理 ・ 投資有風險，過往績效不代表未來表現
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>快速導覽</h4>
+        <a href="#cases">客戶案例</a>
+        <a href="#products">商品專區</a>
+        <a href="#allianz">安聯收益基金</a>
+        <a href="#knowledge">財商增益</a>
+        <a href="faq/index.html">常見問題</a>
+      </div>
+      <div class="footer-col">
+        <h4>聯絡資訊</h4>
+        <a href="tel:0925000049" style="color: var(--gold); font-weight: 700;">📞 0925-000-049</a>
+        <a href="#">📧 預約專業諮詢</a>
+        <a href="#">📍 全省服務據點</a>
+      </div>
+    </div>
     <div class="footer-line">© 2026 鼎綸恩宇 ・ 投資型專區 ・ 內部資源網</div>
-    <div class="footer-line">本頁案例金額均經適度去識別化處理 ・ 投資有風險，過往績效不代表未來表現</div>
-    <div class="footer-line"><a href="tel:0925000049">📞 0925-000-049</a></div>
   </footer>
 
 </div>

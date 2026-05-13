@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>安聯收益成長基金 ・ 投資型專區</title>
+<meta name="description" content="安聯收益成長基金 ・ 旗艦商品 ・ 三平衡型結構 ・ 年化配息率 8.7% ・ 月配息 USD AM 級別">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安聯收益成長基金 ・ 旗艦商品深度解析">
+<meta property="og:description" content="三平衡型結構 ・ 月配息 ・ 年化配息率 ~8.7% ・ 國內投資型保單最熱門配置標的">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared.css">
 <style>
@@ -355,10 +361,10 @@
     <h1 class="allianz-name">安聯<span class="accent">收益成長</span>基金</h1>
     <p class="allianz-en">Allianz Income and Growth Fund ・ AM (穩定月配息) USD</p>
 
-    <div class="allianz-quick-stats">
+    <div class="allianz-quick-stats" data-reveal="fade">
       <div class="a-stat">
         <div class="a-stat-label">基金規模</div>
-        <div class="a-stat-value">355<span class="u">億美元</span></div>
+        <div class="a-stat-value"><span data-countup="355" data-countup-duration="1800">0</span><span class="u">億美元</span></div>
       </div>
       <div class="a-stat">
         <div class="a-stat-label">配息頻率</div>
@@ -366,11 +372,11 @@
       </div>
       <div class="a-stat">
         <div class="a-stat-label">年化配息率</div>
-        <div class="a-stat-value green">8.7<span class="u">%</span></div>
+        <div class="a-stat-value green"><span data-countup="8.7" data-countup-duration="1800">0.0</span><span class="u">%</span></div>
       </div>
       <div class="a-stat">
         <div class="a-stat-label">成立年限</div>
-        <div class="a-stat-value">2007<span class="u">起</span></div>
+        <div class="a-stat-value"><span data-countup="2007" data-countup-duration="2000">0</span><span class="u">起</span></div>
       </div>
     </div>
   </header>
@@ -395,7 +401,7 @@
     </div>
 
     <!-- 三平衡型介紹 -->
-    <div class="section-block">
+    <div class="section-block" data-reveal>
       <h2 class="block-title">三平衡型結構</h2>
       <p class="block-subtitle">結合三大資產類別，創造穩定收益與成長動能</p>
 
@@ -425,7 +431,7 @@
     </div>
 
     <!-- 歷史績效 -->
-    <div class="section-block">
+    <div class="section-block" data-reveal>
       <h2 class="block-title">歷史績效表現</h2>
       <p class="block-subtitle">截至 2026/03/06 之累積總報酬率（含配息再投資，美元計價 AM 級別）</p>
 
@@ -471,40 +477,101 @@
       </div>
     </div>
 
-    <!-- 配息歷史 -->
-    <div class="section-block">
+    <!-- 配息歷史 SVG 互動圖 (V3 升級) -->
+    <div class="section-block" data-reveal>
       <h2 class="block-title">近 12 個月配息率</h2>
-      <p class="block-subtitle">月配息級別 AM (美元) 之每月年化配息率變化</p>
+      <p class="block-subtitle">月配息級別 AM (美元) 之每月年化配息率變化 ・ 滑鼠移到柱上可看數值</p>
 
-      <div class="dividend-chart">
-        <div class="chart-bars">
-          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
-          <div class="chart-bar" style="height: 84%;"><span class="chart-bar-value">8.5%</span></div>
-          <div class="chart-bar" style="height: 88%;"><span class="chart-bar-value">8.9%</span></div>
-          <div class="chart-bar" style="height: 90%;"><span class="chart-bar-value">9.1%</span></div>
-          <div class="chart-bar" style="height: 87%;"><span class="chart-bar-value">8.8%</span></div>
-          <div class="chart-bar" style="height: 85%;"><span class="chart-bar-value">8.6%</span></div>
-          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
-          <div class="chart-bar" style="height: 88%;"><span class="chart-bar-value">8.9%</span></div>
-          <div class="chart-bar" style="height: 91%;"><span class="chart-bar-value">9.2%</span></div>
-          <div class="chart-bar" style="height: 89%;"><span class="chart-bar-value">9.0%</span></div>
-          <div class="chart-bar" style="height: 87%;"><span class="chart-bar-value">8.8%</span></div>
-          <div class="chart-bar" style="height: 86%;"><span class="chart-bar-value">8.7%</span></div>
+      <div class="mini-chart-block" style="margin-top: 12px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 14px; gap:16px; flex-wrap: wrap;">
+          <div>
+            <div style="font-size:13px; font-weight:900; color:var(--navy); letter-spacing:1px;">年化配息率走勢</div>
+            <div style="font-size:11px; color:#888; letter-spacing:1px; margin-top:4px;">2025/04 - 2026/03 ・ MONTHLY DIVIDEND YIELD</div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="text-align:right;">
+              <div style="font-size:10px; color:#888; letter-spacing:1px;">12 個月平均</div>
+              <div style="font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--orange); line-height:1;">
+                <span data-countup="8.81" data-countup-duration="1600">0.00</span>%
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px; color:#888; letter-spacing:1px;">最高</div>
+              <div style="font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--green); line-height:1;">9.2%</div>
+            </div>
+          </div>
         </div>
-        <div class="chart-labels">
-          <span>2025/04</span>
-          <span>05</span>
-          <span>06</span>
-          <span>07</span>
-          <span>08</span>
-          <span>09</span>
-          <span>10</span>
-          <span>11</span>
-          <span>12</span>
-          <span>2026/01</span>
-          <span>02</span>
-          <span>03</span>
-        </div>
+
+        <!-- SVG 配息圖 -->
+        <svg class="dividend-svg" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet"
+             style="width:100%; height:auto;">
+          <defs>
+            <linearGradient id="divBarGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#F05A28"/>
+              <stop offset="100%" stop-color="#E8A020"/>
+            </linearGradient>
+            <linearGradient id="divBarGradH" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2E8B57"/>
+              <stop offset="100%" stop-color="#7FB069"/>
+            </linearGradient>
+          </defs>
+          <!-- 軸線 -->
+          <line class="axis-line" x1="40" y1="50" x2="624" y2="50"/>
+          <line class="axis-line" x1="40" y1="100" x2="624" y2="100"/>
+          <line class="axis-line" x1="40" y1="150" x2="624" y2="150"/>
+          <line class="axis-line" x1="40" y1="200" x2="624" y2="200"/>
+          <text class="data-label" x="36" y="54" text-anchor="end" fill="#aaa">9.5%</text>
+          <text class="data-label" x="36" y="104" text-anchor="end" fill="#aaa">9.0%</text>
+          <text class="data-label" x="36" y="154" text-anchor="end" fill="#aaa">8.5%</text>
+          <text class="data-label" x="36" y="204" text-anchor="end" fill="#aaa">8.0%</text>
+
+          <!-- 12 個月柱（依比例：基準 8.0%=200, 9.5%=50） -->
+          <g class="dividend-bars">
+            <g class="bar-group"><rect class="bar-rect" x="56" y="120" width="32" height="80" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="72" y="112" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.7</text>
+              <text class="data-label" x="72" y="226" text-anchor="middle" fill="#888">04月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="104" y="135" width="32" height="65" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="120" y="127" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.5</text>
+              <text class="data-label" x="120" y="226" text-anchor="middle" fill="#888">05月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="152" y="110" width="32" height="90" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="168" y="102" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.9</text>
+              <text class="data-label" x="168" y="226" text-anchor="middle" fill="#888">06月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="200" y="95" width="32" height="105" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="216" y="87" text-anchor="middle" fill="#0D2A3A" font-weight="900">9.1</text>
+              <text class="data-label" x="216" y="226" text-anchor="middle" fill="#888">07月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="248" y="115" width="32" height="85" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="264" y="107" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.8</text>
+              <text class="data-label" x="264" y="226" text-anchor="middle" fill="#888">08月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="296" y="130" width="32" height="70" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="312" y="122" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.6</text>
+              <text class="data-label" x="312" y="226" text-anchor="middle" fill="#888">09月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="344" y="120" width="32" height="80" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="360" y="112" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.7</text>
+              <text class="data-label" x="360" y="226" text-anchor="middle" fill="#888">10月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="392" y="110" width="32" height="90" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="408" y="102" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.9</text>
+              <text class="data-label" x="408" y="226" text-anchor="middle" fill="#888">11月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="440" y="80" width="32" height="120" rx="3" fill="url(#divBarGradH)"/>
+              <text class="data-label bar-label" x="456" y="72" text-anchor="middle" fill="#2E8B57" font-weight="900">9.2</text>
+              <text class="data-label" x="456" y="226" text-anchor="middle" fill="#888">12月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="488" y="100" width="32" height="100" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="504" y="92" text-anchor="middle" fill="#0D2A3A" font-weight="900">9.0</text>
+              <text class="data-label" x="504" y="226" text-anchor="middle" fill="#888">26/01</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="536" y="115" width="32" height="85" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="552" y="107" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.8</text>
+              <text class="data-label" x="552" y="226" text-anchor="middle" fill="#888">02月</text></g>
+            <g class="bar-group"><rect class="bar-rect" x="584" y="120" width="32" height="80" rx="3" fill="url(#divBarGrad)"/>
+              <text class="data-label bar-label" x="600" y="112" text-anchor="middle" fill="#0D2A3A" font-weight="900">8.7</text>
+              <text class="data-label" x="600" y="226" text-anchor="middle" fill="#888">03月</text></g>
+          </g>
+        </svg>
+
+        <style>
+          .dividend-svg .bar-group { cursor: pointer; transition: filter 0.2s; }
+          .dividend-svg .bar-group:hover { filter: brightness(1.1) drop-shadow(0 4px 12px rgba(240,90,40,0.5)); }
+          .dividend-svg .bar-label { opacity: 0; transition: opacity 0.2s; font-size: 11px; }
+          .dividend-svg .bar-group:hover .bar-label { opacity: 1; }
+        </style>
       </div>
 
       <div class="note-box">
@@ -512,39 +579,55 @@
       </div>
     </div>
 
-    <!-- 月報重點 -->
-    <div class="section-block">
+    <!-- 月報重點 - V3 摺疊面板 -->
+    <div class="section-block" data-reveal>
       <h2 class="block-title">最新月報重點</h2>
-      <p class="block-subtitle">基金經理人觀點與市場展望</p>
+      <p class="block-subtitle">基金經理人觀點與市場展望 ・ 點擊各區段展開或收合</p>
 
       <div class="monthly-report">
         <h3>2026 年 3 月份月報摘要</h3>
         <div class="date">資料日期：2026 / 03 / 06</div>
 
-        <div class="report-section">
-          <h4>本月績效回顧</h4>
-          <p>本月美國股市受 AI 題材延續推升，S&amp;P 500 指數上漲 2.8%，成長股表現優於價值股。基金組合中，科技權值股持股表現亮眼，可轉換債券亦受益於股市表現。固定收益部分，10 年期美債殖利率在 4.0-4.3% 區間震盪，高收益債信用利差維持低位。</p>
-        </div>
+        <details class="faq-item" open style="margin-top: 16px;">
+          <summary class="faq-q" style="background: linear-gradient(135deg, var(--bg-cream), #fff);">
+            <span class="faq-q-num">01</span>
+            <span class="faq-q-text">本月績效回顧</span>
+            <span class="faq-q-icon">+</span>
+          </summary>
+          <div class="faq-a">本月美國股市受 AI 題材延續推升，S&amp;P 500 指數上漲 2.8%，成長股表現優於價值股。基金組合中，科技權值股持股表現亮眼，可轉換債券亦受益於股市表現。固定收益部分，10 年期美債殖利率在 4.0-4.3% 區間震盪，高收益債信用利差維持低位。</div>
+        </details>
 
-        <div class="report-section">
-          <h4>持股調整</h4>
-          <p>本月小幅增加金融與工業類股權重，主因企業財報優於預期且通膨數據趨於穩定。減持部分前期漲幅較大之科技個股以實現獲利。可轉換債券部位維持中性，繼續關注利率走勢對債券評價之影響。</p>
-        </div>
+        <details class="faq-item">
+          <summary class="faq-q" style="background: linear-gradient(135deg, var(--bg-cream), #fff);">
+            <span class="faq-q-num">02</span>
+            <span class="faq-q-text">持股調整</span>
+            <span class="faq-q-icon">+</span>
+          </summary>
+          <div class="faq-a">本月小幅增加金融與工業類股權重，主因企業財報優於預期且通膨數據趨於穩定。減持部分前期漲幅較大之科技個股以實現獲利。可轉換債券部位維持中性，繼續關注利率走勢對債券評價之影響。</div>
+        </details>
 
-        <div class="report-section">
-          <h4>市場展望</h4>
-          <p>展望第二季，預期 Fed 仍將維持利率不變至年中，美國經濟軟著陸機率提升。基金將維持均衡配置，在股市中聚焦具盈利成長動能之優質公司，固定收益部分則採信用品質較高之高收益債券，避開違約風險較高之發行人。</p>
-        </div>
+        <details class="faq-item">
+          <summary class="faq-q" style="background: linear-gradient(135deg, var(--bg-cream), #fff);">
+            <span class="faq-q-num">03</span>
+            <span class="faq-q-text">市場展望</span>
+            <span class="faq-q-icon">+</span>
+          </summary>
+          <div class="faq-a">展望第二季，預期 Fed 仍將維持利率不變至年中，美國經濟軟著陸機率提升。基金將維持均衡配置，在股市中聚焦具盈利成長動能之優質公司，固定收益部分則採信用品質較高之高收益債券，避開違約風險較高之發行人。</div>
+        </details>
 
-        <div class="report-section">
-          <h4>風險提醒</h4>
-          <p>地緣政治風險、聯準會政策轉向時程、通膨僵固性等仍為主要不確定性。投資人應依自身風險承受度進行配置，並建議採長期定期定額方式參與。</p>
-        </div>
+        <details class="faq-item">
+          <summary class="faq-q" style="background: linear-gradient(135deg, var(--bg-cream), #fff);">
+            <span class="faq-q-num">04</span>
+            <span class="faq-q-text">風險提醒</span>
+            <span class="faq-q-icon">+</span>
+          </summary>
+          <div class="faq-a">地緣政治風險、聯準會政策轉向時程、通膨僵固性等仍為主要不確定性。投資人應依自身風險承受度進行配置，並建議採長期定期定額方式參與。</div>
+        </details>
       </div>
     </div>
 
     <!-- 為什麼選擇 -->
-    <div class="section-block">
+    <div class="section-block" data-reveal>
       <h2 class="block-title">為什麼選擇安聯收益成長</h2>
       <p class="block-subtitle">六大優勢使其成為國內投資型保單最熱門配置</p>
 

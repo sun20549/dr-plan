@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>投資型專區 ・ 鼎綸恩宇</title>
 <meta name="description" content="鼎綸恩宇投資型專區 ・ 70+ 客戶成交案例 ・ 凱基/元大/法巴/安達商品介紹 ・ 安聯收益成長基金分析">
+<meta name="theme-color" content="#0D2A3A">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="投資型專區 ・ 鼎綸恩宇 ・ 70+ 真實成交案例">
+<meta property="og:description" content="鼎綸恩宇投資型專區 ・ 累計 2.5 億+ 成交額 ・ 凱基/元大/法巴/安達/安聯完整商品介紹 ・ 70 筆客戶案例分享">
+<meta property="og:url" content="https://rex1688.com/rex/vip/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="鼎綸恩宇 ・ 投資型專區">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="投資型專區 ・ 鼎綸恩宇">
+<meta name="twitter:description" content="70+ 客戶成交案例 ・ 累計 2.5 億+ ・ 凱基/元大/法巴/安達商品介紹">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
@@ -199,6 +217,9 @@
 <!-- 浮動回首頁按鈕（首頁時隱藏） -->
 <a href="#/" class="spa-home-btn" id="spaHomeBtn" title="回到首頁">🏠</a>
 
+<!-- 主題切換 -->
+<button class="theme-toggle" id="themeToggle" title="切換深色/淺色模式" aria-label="切換主題">🌙</button>
+
 <script>
 /* ═══════════════════════════════════════════════════
    SPA 路由系統
@@ -347,6 +368,9 @@ async function loadPage(route) {
     // 重新執行 <script> 標籤（fetch 載入的 script 不會自動執行）
     executeScripts(contentEl);
 
+    // 套用 scroll reveal / count-up 動畫到新內容
+    applyEnhancements(contentEl);
+
     // 設定頁面標題
     document.title = ROUTE_TITLES[path] || '投資型專區';
 
@@ -470,6 +494,131 @@ function executeScripts(container) {
 /* === 路由監聽 === */
 window.addEventListener('hashchange', () => loadPage(location.hash));
 window.addEventListener('DOMContentLoaded', () => loadPage(location.hash || '#/'));
+
+/* ═══════════════════════════════════════════════════
+   V3 互動增強：scroll reveal + count-up + 主題切換
+   ═══════════════════════════════════════════════════ */
+
+/* ─── 滾動進場觀察器 ─── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+/* ─── 數字計數動畫 ─── */
+function animateCountUp(el) {
+  const targetRaw = el.dataset.countup;
+  if (!targetRaw) return;
+  const target = parseFloat(targetRaw);
+  const decimals = (targetRaw.split('.')[1] || '').length;
+  const duration = parseInt(el.dataset.countupDuration || '1600', 10);
+  const prefix = el.dataset.countupPrefix || '';
+  const suffix = el.dataset.countupSuffix || '';
+  const startTime = performance.now();
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  function tick(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeOut(progress);
+    const value = (target * eased).toFixed(decimals);
+    el.textContent = prefix + Number(value).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = prefix + Number(target).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+  }
+  el.textContent = prefix + '0' + (decimals ? '.' + '0'.repeat(decimals) : '') + suffix;
+  requestAnimationFrame(tick);
+}
+const countupObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCountUp(entry.target);
+      countupObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+
+/* ─── 套用到任意容器（被 SPA loadPage 呼叫） ─── */
+function applyEnhancements(root) {
+  if (!root) return;
+  // scroll reveal
+  root.querySelectorAll('[data-reveal]').forEach(el => {
+    revealObserver.observe(el);
+  });
+  // count-up
+  root.querySelectorAll('[data-countup]').forEach(el => {
+    countupObserver.observe(el);
+  });
+  // tab 切換動畫加強 (products 頁)
+  root.querySelectorAll('.tab-bar button').forEach(btn => {
+    if (btn.__enhanced) return;
+    btn.__enhanced = true;
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      if (!target) return;
+      const tabBar = btn.closest('.tab-bar');
+      const content = tabBar ? tabBar.nextElementSibling : null;
+      if (content) {
+        content.querySelectorAll('.tab-pane').forEach(p => {
+          if (p.id === target) {
+            p.classList.remove('fade-leave');
+          }
+        });
+      }
+    });
+  });
+  // 表格小螢幕橫滾包裝（只有大表格才包）
+  root.querySelectorAll('.data-table').forEach(table => {
+    if (table.dataset.wrapDone) return;
+    const cols = table.querySelectorAll('thead th').length;
+    if (cols >= 4 && !table.parentElement.classList.contains('table-scroll-mobile')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'table-scroll-mobile';
+      table.parentNode.insertBefore(wrap, table);
+      wrap.appendChild(table);
+    }
+    table.dataset.wrapDone = '1';
+  });
+  // FAQ 互斥開合（已在 home.html 有，這邊補對其他頁也有 .faq-item 的情況）
+  const faqs = root.querySelectorAll('.faq-item');
+  if (faqs.length > 0) {
+    faqs.forEach(faq => {
+      if (faq.__faqEnhanced) return;
+      faq.__faqEnhanced = true;
+      faq.addEventListener('toggle', function() {
+        if (this.open) {
+          faqs.forEach(other => { if (other !== this) other.removeAttribute('open'); });
+        }
+      });
+    });
+  }
+}
+
+/* ─── 主題切換（localStorage 持久化） ─── */
+(function() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  const saved = localStorage.getItem('vip-theme');
+  if (saved === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️';
+  }
+  btn.addEventListener('click', () => {
+    const cur = document.body.getAttribute('data-theme');
+    if (cur === 'dark') {
+      document.body.removeAttribute('data-theme');
+      localStorage.setItem('vip-theme', 'light');
+      btn.textContent = '🌙';
+    } else {
+      document.body.setAttribute('data-theme', 'dark');
+      localStorage.setItem('vip-theme', 'dark');
+      btn.textContent = '☀️';
+    }
+  });
+})();
 </script>
 
 </body>
