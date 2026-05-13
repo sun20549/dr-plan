@@ -734,47 +734,59 @@
   // ═══════════════════════════════════════════════════════════
 
   function bindChartRangeSlider() {
-    const slider = document.getElementById('chartRangeSlider');
-    const valEl  = document.getElementById('chartRangeValue');
-    if (!slider || !valEl) {
-      setTimeout(bindChartRangeSlider, 300);
-      return;
-    }
     const stops = [20, 30, 40, 50, 60];
+    console.log('[enhancements] bindChartRangeSlider 啟動');
 
     function applyRange(idx) {
       const years = stops[idx];
-      valEl.textContent = '未來 ' + years + ' 年';
+      const valEl = document.getElementById('chartRangeValue');
+      if (valEl) valEl.textContent = '未來 ' + years + ' 年';
       const btn = document.querySelector('.chart-range-toggle[data-range="' + years + '"]');
+      console.log('[enhancements] applyRange idx=' + idx + ' years=' + years + ' btn=', btn);
       if (!btn) {
-        console.warn('[enhancements] slider 找不到對應 ' + years + ' 年按鈕');
+        console.warn('[enhancements] 找不到 data-range="' + years + '"按鈕');
         return;
       }
-      // 用 dispatchEvent 觸發 (比 .click() 更可靠,確保主檔 onclick 接到)
       try {
         btn.click();
         btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
       } catch (e) {
-        console.error('[enhancements] btn click failed:', e);
+        console.error('[enhancements] click 失敗:', e);
       }
     }
 
-    slider.addEventListener('input', function() {
-      const idx = parseInt(slider.value, 10);
-      applyRange(idx);
-    });
-
-    try {
-      const saved = parseInt(localStorage.getItem('rexAH_chartRange') || '0', 10);
-      if (saved >= 0 && saved <= 4) {
-        slider.value = saved;
-        valEl.textContent = '未來 ' + stops[saved] + ' 年';
+    // ★ 用 document 級別事件委派,即使 slider 後續被 replace 也能接到
+    document.addEventListener('input', function(e) {
+      if (e.target && e.target.id === 'chartRangeSlider') {
+        const idx = parseInt(e.target.value, 10);
+        applyRange(idx);
       }
-    } catch (e) {}
-
-    slider.addEventListener('change', function() {
-      try { localStorage.setItem('rexAH_chartRange', slider.value); } catch (e) {}
     });
+
+    // 同時直接綁(立即生效,不等委派)
+    const slider = document.getElementById('chartRangeSlider');
+    if (slider) {
+      console.log('[enhancements] slider 元素存在,直接綁 input');
+      slider.addEventListener('input', function() {
+        applyRange(parseInt(slider.value, 10));
+      });
+
+      // 還原上次選擇
+      try {
+        const saved = parseInt(localStorage.getItem('rexAH_chartRange') || '0', 10);
+        if (saved >= 0 && saved <= 4) {
+          slider.value = saved;
+          const valEl = document.getElementById('chartRangeValue');
+          if (valEl) valEl.textContent = '未來 ' + stops[saved] + ' 年';
+        }
+      } catch (e) {}
+
+      slider.addEventListener('change', function() {
+        try { localStorage.setItem('rexAH_chartRange', slider.value); } catch (e) {}
+      });
+    } else {
+      console.warn('[enhancements] 找不到 #chartRangeSlider,只靠 document 委派');
+    }
   }
 
   // ═══════════════════════════════════════════════════════════

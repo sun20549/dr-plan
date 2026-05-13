@@ -849,6 +849,71 @@ body {
   padding: 1px 3px;
 }
 
+/* ─── v1.18b 自訂 tooltip(取代 HTML 預設 title)─── */
+[data-tt] {
+  position: relative;
+}
+[data-tt]::after {
+  content: attr(data-tt);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+  color: #f9fafb;
+  padding: 9px 14px;
+  border-radius: var(--r-md);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.55;
+  letter-spacing: 0.2px;
+  white-space: pre-line;
+  max-width: 360px;
+  width: max-content;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(13, 42, 58, 0.22), 0 2px 6px rgba(13, 42, 58, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0s linear 0.18s;
+  z-index: 1000;
+}
+[data-tt]::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border: 6px solid transparent;
+  border-top-color: #111827;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0s linear 0.18s;
+  z-index: 1000;
+}
+[data-tt]:hover::after,
+[data-tt]:hover::before,
+[data-tt]:focus::after,
+[data-tt]:focus::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition-delay: 0s, 0s, 0s;
+}
+/* cell-rule 的 tooltip 文字較多,加最大寬一些 + 比較強的對比 */
+.cell-rule[data-tt]::after {
+  max-width: 420px;
+}
+/* 表格內 cell-rule 加滑鼠互動提示 — hover 時文字變色 */
+.cell-rule:hover {
+  color: var(--orange-dark);
+  border-bottom-color: var(--orange);
+  background: rgba(240, 90, 40, 0.04);
+}
+
 .cell-none {
   font-size: 14px;
   color: #cbd2da;
@@ -3674,26 +3739,26 @@ const App = (() => {
           nonEmptyCount++;
           const starCls = (state.showStar && r.star) ? ' star' : '';
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          cellsHtml += `<td colspan="2"><span class="cell-val${starCls}" title="${tt}">${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-val${starCls}"${tt ? ` data-tt="${tt}"` : ''}>${r.val.toLocaleString()}</span>${r.unit ? `<span class="cell-unit">${r.unit}</span>` : ''}</td>`;
         } else if (r.kind === 'rule') {
           nonEmptyCount++;
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
-          cellsHtml += `<td colspan="2"><span class="cell-rule" title="${tt}">依條款</span></td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-rule"${tt ? ` data-tt="${tt}"` : ''}>依條款</span></td>`;
         } else if (r.kind === 'bool') {
           // v1.16:條款認定範圍 ✓ / ✗
           nonEmptyCount++;
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
           if (r.val === true) {
-            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-yes" title="${tt}">✓</span></td>`;
+            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-yes"${tt ? ` data-tt="${tt}"` : ''}>✓</span></td>`;
           } else {
-            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-no" title="${tt}">✗</span></td>`;
+            cellsHtml += `<td colspan="2"><span class="cell-bool cell-bool-no"${tt ? ` data-tt="${tt}"` : ''}>✗</span></td>`;
           }
         } else if (r.kind === 'badge') {
           // v1.17:條款限制層級 — 橘紅(整條款限制)/ 中性藍(僅門診)
           nonEmptyCount++;
           const tt = (r.tooltip || '').replace(/"/g,'&quot;');
           const badgeCls = r.val === 'whole' ? 'cell-badge-whole' : 'cell-badge-outpt';
-          cellsHtml += `<td colspan="2"><span class="cell-badge ${badgeCls}" title="${tt}">${r.label}</span></td>`;
+          cellsHtml += `<td colspan="2"><span class="cell-badge ${badgeCls}"${tt ? ` data-tt="${tt}"` : ''}>${r.label}</span></td>`;
         } else {
           cellsHtml += `<td colspan="2"><span class="cell-none">—</span></td>`;
         }
