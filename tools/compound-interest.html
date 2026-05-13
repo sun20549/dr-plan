@@ -72,6 +72,17 @@
   }
 
   .logo-area { display: flex; align-items: center; gap: 18px; }
+  .logo-area > img {
+    width: 72px; height: 72px;
+    object-fit: contain;
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 0 0 1px rgba(255,255,255,0.15);
+  }
   .logo-icon {
     width: 72px; height: 72px;
     background: var(--orange);
@@ -1181,7 +1192,7 @@
   <div class="header">
     <div class="header-inner">
       <div class="logo-area">
-        <div class="logo-icon">DL</div>
+        <img src="../images/img_01_44039bd1b179.png" alt="鼎綸恩宇 logo">
         <div class="logo-text">
           <div class="brand">鼎綸恩宇</div>
           <div class="sub">Insurance Brokers ®</div>
