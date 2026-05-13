@@ -7,9 +7,9 @@
     "period": 6,
     "engine": "twlife_v1",
     "base_sex": "M",
-    "base_age": 1,
-    "base_sa": 300000,
-    "base_premium": 44261,
+    "base_age": 36,
+    "base_sa": 940000,
+    "base_premium": 199867,
     "base_premium_gross": 45630,
     "discount": 0.03,
     "declared_rate": 0.038,
@@ -17,7 +17,9 @@
     "dividend_option": "現金給付",
     "source_file": "富邦人壽美好利外幣利率變動型增額終身壽險_FBP_20260101-試算表20260108.xlsx",
     "extracted_at": "2026-05-03",
-    "notes": "本商品為「增額終身壽險」:基本保額逐年遞增,Y1 起點 = base_sa × 0.17(因 1 歲投保 + 法規限制),Y4 超過 base_sa(1.06×),Y6(繳費期滿)達 1.69×,Y110 達 7.3×。base_sa 僅代表名義投保保額,實際身故保障隨保單年度大幅成長。另:本商品有「增值回饋分享金抵繳保費」設計,「實際自付保費」(cum_prem_net)會逐年遞減,但合約保費(cum_prem)固定 44261/年,以 cum_prem 為基準對齊驗證。"
+    "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=940000, prem=199867",
+    "needs_revalidation": false,
+    "verified_against": "Drew 2026-05-14"
   },
   "schedule": [
     {

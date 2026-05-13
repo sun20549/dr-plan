@@ -9,15 +9,16 @@
     "period": 1,
     "engine": "twlife_v1",
     "base_sex": "M",
-    "base_age": 1,
-    "base_sa": 11220,
-    "base_premium": 935.0,
+    "base_age": 36,
+    "base_sa": 2366000,
+    "base_premium": 199942,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-aia-batch2",
-    "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→146666, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=101.0, 期=1] [v5: 異常 bp=101.0→935.0=sa/12]"
+    "needs_revalidation": false,
+    "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=2366000, prem=199942",
+    "verified_against": "Drew 2026-05-14"
   },
   "schedule": [
     {

@@ -1573,22 +1573,37 @@ a, button {
 /* ───── V3.30 高 z-index 層級規範 ───── */
 /* loader: 9999, progress: 10000, theme-toggle: 998, float-cta: 999, home-btn: 998 */
 
-/* ───── V3.31 案例對帳單截圖區塊 + Lightbox ───── */
+/* ───── V3.31 案例對帳單截圖區塊 + Lightbox（V3.32 升級：置頂 + 放大） ───── */
 .case-screenshots-section {
-  margin-top: 16px;
+  margin-top: 0 !important;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 2px dashed rgba(232,160,32,0.35);
 }
 .case-screenshots-section[hidden] { display: none; }
+.case-screenshots-section .block-title {
+  font-size: 26px !important;
+  letter-spacing: 2px;
+}
+.case-screenshots-section .block-title::before {
+  height: 26px;
+  background: linear-gradient(135deg, var(--gold), var(--orange)) !important;
+}
+.case-screenshots-section .block-subtitle {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
 
 .screenshots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 18px;
 }
 .screenshot-card {
   background: #fff;
-  border: 2px solid var(--gold);
-  border-radius: var(--radius-md);
+  border: 3px solid var(--gold);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -1596,24 +1611,25 @@ a, button {
   box-shadow: var(--shadow-md);
 }
 .screenshot-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: var(--shadow-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(232,160,32,0.35);
   border-color: var(--orange);
 }
 .screenshot-card::after {
-  content: '🔍 點擊放大';
+  content: '🔍 點擊放大檢視';
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: rgba(13,42,58,0.78);
+  bottom: 14px;
+  right: 14px;
+  background: rgba(13,42,58,0.85);
   color: #fff;
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 12px;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 14px;
   letter-spacing: 1px;
   opacity: 0;
   transition: opacity 0.25s ease;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  font-weight: 700;
 }
 .screenshot-card:hover::after { opacity: 1; }
 .screenshot-card img {
@@ -1621,19 +1637,47 @@ a, button {
   height: auto;
   display: block;
   background: var(--bg-cream);
+  min-height: 180px;
 }
 .screenshot-card .ss-tag {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 14px;
+  left: 14px;
   background: linear-gradient(135deg, var(--gold), var(--orange));
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 1px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
+  letter-spacing: 1.5px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(232,160,32,0.4);
+}
+@media (max-width: 720px) {
+  .case-screenshots-section .block-title { font-size: 22px !important; }
+  .screenshot-card { border-width: 2px; }
+  .screenshot-card .ss-tag { font-size: 10px; padding: 4px 10px; top: 10px; left: 10px; }
+  .screenshot-card::after { font-size: 10px; bottom: 10px; right: 10px; }
+}
+
+/* ───── V3.33 案例頁精簡：隱藏 Hero 模板假資料 ───── */
+.hero-case-title,
+.hero-case-subtitle {
+  display: none !important;
+}
+/* hero-case-id-row 第 3 個 meta 是「客戶年齡」假資料 */
+.hero-case-id-row .meta:nth-of-type(3) {
+  display: none !important;
+}
+/* 重新調整 Hero 排版（少了 title/subtitle 後不留太多空白） */
+.hero-case .hero-case-grid {
+  align-items: flex-end !important;
+  min-height: 140px;
+}
+.hero-case-tag {
+  margin-bottom: 18px !important;
+}
+.hero-case-id-row {
+  margin-top: 14px !important;
 }
 
 .screenshots-empty {

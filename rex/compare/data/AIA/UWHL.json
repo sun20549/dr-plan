@@ -9,9 +9,9 @@
     "product_type": "whole_life_step_up",
     "step_up_year": 6,
     "base_sex": "M",
-    "base_age": 40,
-    "base_sa": 400000,
-    "base_premium": 22736.8,
+    "base_age": 36,
+    "base_sa": 3907000,
+    "base_premium": 199976,
     "base_premium_gross": 23440.0,
     "discount": 0.03,
     "discount_label": "銀行外幣帳戶自動轉帳 1% + 高保額(30 萬≦保額<60 萬) 2% = 3%",
@@ -21,7 +21,10 @@
     "source_file": "友邦人壽鑫柑保倍美元利率變動型終身保險_UWHL-V2_20260101-試算表20260107.xls",
     "extracted_at": "2026-05-03",
     "extraction_note": "原 Excel 公式 #VALUE!(LibreOffice 重算後仍無解),逐年表改由 FACTOR sheet 每千元基數表 × 保額手算,純保證部分(預定利率 2.0%);利變紅利由前端 declared_rate 推算。本商品為「保倍型」設計:Y1-Y5 死亡給付為累計實繳保費×1.06(極低保障期),Y6 起跳升至基本保額水準",
-    "schedule_includes_dividend": false
+    "schedule_includes_dividend": false,
+    "needs_revalidation": false,
+    "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=3907000, prem=199976",
+    "verified_against": "Drew 2026-05-14"
   },
   "schedule": [
     {

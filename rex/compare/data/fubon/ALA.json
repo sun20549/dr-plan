@@ -9,15 +9,15 @@
     "period": 6,
     "engine": "twlife_v1",
     "base_sex": "M",
-    "base_age": 1,
+    "base_age": 5,
     "base_sa": 300000,
     "base_premium": 25000.0,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-fubon-batch",
-    "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→200000, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=2.5, 期=6] [v5: 異常 bp=2.5→25000.0=sa/12]"
+    "needs_revalidation": false,
+    "notes": "[校準 base_sa: 500000→200000, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=2.5, 期=6] [v5: 異常 bp=2.5→25000.0=sa/12] [v6: 從 Excel input page 重讀,sheet=ROP]"
   },
   "schedule": [
     {

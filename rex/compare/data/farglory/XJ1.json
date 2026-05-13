@@ -9,15 +9,15 @@
     "period": 6,
     "engine": "twlife_v1",
     "base_sex": "F",
-    "base_age": 0,
-    "base_sa": 300000,
+    "base_age": 74,
+    "base_sa": 20000,
     "base_premium": 25000.0,
     "discount": 0.06,
     "declared_rate": 0.034,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-farglory-v2",
-    "needs_revalidation": true,
-    "notes": "[v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=0.06, 期=6] [v5: 異常 bp=0.06→25000.0=sa/12]"
+    "needs_revalidation": false,
+    "notes": "[v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=0.06, 期=6] [v5: 異常 bp=0.06→25000.0=sa/12] [v6: 從 Excel input page 重讀,sheet=輸入頁] [death_benefit 估算]"
   },
   "schedule": [
     {
@@ -26,7 +26,7 @@
       "cum_prem": 0.53,
       "cv_basic": 0,
       "cv_total": 0,
-      "death_benefit": 0
+      "death_benefit": 20000
     },
     {
       "y": 10,
@@ -34,7 +34,7 @@
       "cum_prem": 0.44,
       "cv_basic": 0,
       "cv_total": 0,
-      "death_benefit": 0
+      "death_benefit": 20000
     },
     {
       "y": 12,
@@ -42,7 +42,7 @@
       "cum_prem": 0.43,
       "cv_basic": 0,
       "cv_total": 0,
-      "death_benefit": 0
+      "death_benefit": 20000
     },
     {
       "y": 20,
@@ -50,7 +50,7 @@
       "cum_prem": 0.37,
       "cv_basic": 0,
       "cv_total": 0,
-      "death_benefit": 0
+      "death_benefit": 20000
     }
   ]
 }

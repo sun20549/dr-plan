@@ -7,17 +7,19 @@
     "period": 6,
     "engine": "twlife_v1",
     "base_sex": "M",
-    "base_age": 3,
-    "base_sa": 300000,
-    "base_premium": 4969,
+    "base_age": 36,
+    "base_sa": 2000000,
+    "base_premium": 95921,
     "base_premium_gross": 5070,
     "discount": 0.02,
     "declared_rate": 0.0415,
     "guaranteed_rate": 0.0225,
     "dividend_option": "儲存生息",
-    "notes": "本商品為 3 歲投保情境。Y1-Y5(age 3-7)基本保額 A 為 base_sa × 5/10/15/20/25%(法規:未滿 16 歲限制),Y6(age 8)達 100% = 300000。Y6 後 A 反而隨年齡衰減,Y50 = 164970, Y100 = 83610(保障型壽險特色)。本商品低保費高保障(每萬保費 ~169 USD),儲蓄成分較弱。因 16 歲前不能儲存生息,所以 Y1-Y13 回饋金抵繳次年保費(cum_prem_net 逐年遞減);Y14(age 16)一次購買增額繳清保險金額(incCum=49141);Y15+ 回饋金開始儲存生息。cum_prem 為合約面額(以 base_premium × period 對齊),cum_prem_net 為實際自付。",
+    "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=2000000, prem=95921",
     "source_file": "富邦人壽美利大心外幣利率變動型終身壽險_FAZ_20260101-試算表20260108.xlsx",
-    "extracted_at": "2026-05-03"
+    "extracted_at": "2026-05-03",
+    "needs_revalidation": false,
+    "verified_against": "Drew 2026-05-14"
   },
   "schedule": [
     {
