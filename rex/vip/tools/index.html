@@ -269,8 +269,8 @@
 
 <div class="container">
   <div class="header">
-    <h1>📸 對帳單截圖助手</h1>
-    <p>3 步驟安裝 ・ 之後每張對帳單只要 1 個熱鍵</p>
+    <h1>📸 對帳單截圖助手 v2</h1>
+    <p>拖曳選取區域 ・ 自動命名 ・ 直接存到 cases 資料夾</p>
     <span class="tag">PRIVATE TOOL ・ Tampermonkey 使用者腳本</span>
   </div>
 
@@ -358,20 +358,25 @@
         <div class="step-title">開始截圖（之後每張 5 秒）</div>
       </div>
       <div class="step-body">
-        <p><strong>標準流程：</strong></p>
+        <p><strong>標準流程（區域選取模式，推薦）：</strong></p>
         <ol style="margin-left: 24px; line-height: 2;">
-          <li>到經代網，登入</li>
-          <li>導到 U0033 的對帳單頁面</li>
-          <li>按右下角 <span class="preview-fab">📸 截圖此頁</span> 或快捷鍵 <span class="shortcut">Alt + S</span></li>
-          <li>面板跳出 → 輸入 <code>u0033</code>（會記住上次）</li>
-          <li>按「📸 擷取整頁畫面」→ 約 1-2 秒後存好 → 跳通知</li>
-          <li>導到下一案，重複</li>
+          <li>到經代網登入 → 導到 U0033 的對帳單頁面</li>
+          <li>先點右下角浮動按鈕 → 在面板輸入 <code>u0033</code></li>
+          <li>按 <span class="shortcut">Alt + S</span> → 畫面變暗 + 上方提示「拖曳選取對帳單區域」</li>
+          <li>滑鼠左鍵按住 → 拖曳框出想截的範圍（含對帳單表格） → 放開</li>
+          <li>2-3 秒後跳通知「✓ u0033-1.jpg 已存」</li>
+          <li>導到下一案，重複（不用再開面板，<strong>編號自動記住</strong>）</li>
         </ol>
         <div class="info-card">
           <strong>⌨ 鍵盤快捷鍵</strong><br>
-          <span class="shortcut">Alt + S</span> 開啟截圖面板（不用滑鼠）
+          <span class="shortcut">Alt + S</span> 拖曳選取區域（每次截不同範圍都用這個）<br>
+          <span class="shortcut">Alt + Shift + S</span> 截整頁（很少用，預備）<br>
+          <span class="shortcut">ESC</span> 取消選取
         </div>
-        <p style="margin-top:14px;"><strong>多張對帳單的案例：</strong>同一個 case 連續按多次截圖，會自動編號 u0033-1.jpg、u0033-2.jpg、u0033-3.jpg...</p>
+        <p style="margin-top:14px;"><strong>多張對帳單的案例：</strong>同一個 case 連續截多次，會自動編號 u0033-1.jpg、u0033-2.jpg、u0033-3.jpg...</p>
+        <div class="success-card">
+          <strong>💡 為什麼是「區域選取」不是「整頁」</strong>：經代網頁面通常有導覽列、廣告、不相干資訊，整頁截下來太雜。拖選只截對帳單核心區域，又乾淨又小（檔案 ~50-150KB）。
+        </div>
       </div>
     </div>
 
