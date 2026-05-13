@@ -135,76 +135,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark);
 }
 
-/* 公司篩選器 — 在 card-body 頂部,依使用者選擇的公司動態顯示 */
-.benefits-company-filter {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  margin-bottom: 14px;
-  background: #f5f7fa;
-  border: 1px solid #e2e8ec;
-  border-radius: 8px;
-}
-.benefits-company-filter .bcf-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #5a6772;
-  letter-spacing: 0.5px;
-  margin-right: 4px;
-}
-.benefits-company-filter .bcf-btn {
-  background: white;
-  border: 1.5px solid #d6dde3;
-  color: #4a5560;
-  padding: 6px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  line-height: 1.2;
-}
-.benefits-company-filter .bcf-btn:hover {
-  border-color: var(--orange);
-  color: var(--orange-dark);
-}
-.benefits-company-filter .bcf-btn.active {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: white;
-  box-shadow: 0 2px 6px rgba(240, 90, 40, 0.25);
-}
-.benefits-company-filter .bcf-btn .bcf-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.benefits-company-filter .bcf-btn.active .bcf-dot {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
-}
-.benefits-company-filter .bcf-btn .bcf-count {
-  font-size: 10px;
-  font-weight: 600;
-  opacity: 0.7;
-  margin-left: 2px;
-}
-@media (max-width: 767px) {
-  .benefits-company-filter {
-    padding: 8px 10px;
-    gap: 6px;
-  }
-  .benefits-company-filter .bcf-btn {
-    padding: 5px 10px;
-    font-size: 11px;
-  }
-}
-
 /* ── Person Block ── */
 .person-flow {
   display: grid; grid-template-columns: 1fr auto 1fr;
@@ -1398,19 +1328,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .benefits-simple-card.starred .bsc-value,
 .benefits-simple-card.is-primary .bsc-value {
   color: var(--orange-dark, #D85416);
-}
-
-/* 「依條款」/ ✓ 文字樣式 — 比數字小、灰色,提示「需查條款」 */
-.benefits-simple-card .bsc-rule-text {
-  font-size: 14px;
-  color: #6B7785;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.benefits-simple-card.starred .bsc-rule-text,
-.benefits-simple-card.is-primary .bsc-rule-text {
-  color: var(--orange-dark, #D85416);
-  opacity: 0.85;
 }
 
 /* Tooltip — 滑入卡片時顯示「組成明細」(限額/自負額/淨給付) */
@@ -2906,11 +2823,8 @@ tr
 /* 舊的 900px 規則已被上方新的響應式取代 */
 </style>
 
-<!-- v3_21: 共用純函式 (classifyItem / categorize5 / evalCalc / convertProductClaims) -->
-<!--        改動條款邏輯時請同步驗證 compare.html 也正常 -->
+<!-- v3_22 enhancements sidecar -->
 <script src="shared.js"></script>
-
-<!-- v3_22 enhancements -->
 <link rel="stylesheet" href="enhancements.css">
 <script src="enhancements.js" defer></script>
 </head>
@@ -3287,8 +3201,6 @@ tr
         </div>
       </div>
       <div class="card-body">
-        <!-- 公司篩選器 (依使用者選擇的公司動態產生 — renderBenefitsCompanyFilter) -->
-        <div class="benefits-company-filter no-print" id="benefitsCompanyFilter" style="display:none;"></div>
         <div style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.6;">
           📌 以下保障項目金額依您所選的保額自動計算。⭐ 為主要保障項目。實際給付以契約條款為準。
         </div>
@@ -3585,22 +3497,144 @@ const INSURANCE_DB = {
   //   plan     → 依計畫別查表 planMap
   //   unit     → 單位數 × perUnit
   //   note     → 純文字說明
-  benefitsLib: null   // v3_21: loaded via fetch in loadInsuranceData()
+  benefitsLib: {
+    "DCF": {
+      title: "重大傷病終身保障",
+      icon: "🛡️",
+      highlights: ["重大傷病一次金保障 300+ 項疾病", "保障終身，期滿仍可領祝壽金"],
+      items: [
+        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "第二保單年度起，首年按 20%" },
+        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元" },
+        { name: "加倍關懷住院保險金", calc: { type: "ratioWan", ratio: 0.01 }, unit: "元/天", note: "同次住院 5 日(含)以上，每年最多 5 次" },
+        { name: "祝壽保險金", calc: { type: "note", text: "滿期日當時保險金額(或保費總和×1.02)" } }
+      ]
+    },
+    "XTK": {
+      title: "定期壽險(身故/失能保障)",
+      icon: "👨‍👩‍👧",
+      highlights: ["提供身故/喪葬費用保險金，符合 15 歲以下喪葬費 69 萬限額規範"],
+      items: [
+        { name: "身故/喪葬費用保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
+        { name: "完全失能保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元" }
+      ]
+    },
+    "XDE": {
+      title: "重大傷病一次金",
+      icon: "💼",
+      highlights: ["持健保重大傷病卡即可申請，300+ 項疾病涵蓋"],
+      items: [
+        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
+        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "另加給，共可領 120% 保額" }
+      ]
+    },
+    "XHD": {
+      title: "實支實付醫療(雜費型)",
+      icon: "🏥",
+      highlights: ["住院雜費收據實報實銷，門診手術涵蓋 145 項處置"],
+      items: [
+        { name: "住院日額(每日)", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "計劃五": 5000 } }, unit: "元/天" },
+        { name: "加護病房日額(每日)", calc: { type: "plan", planMap: { "計劃一": 2000, "計劃二": 4000, "計劃三": 6000, "計劃四": 8000, "計劃五": 10000 } }, unit: "元/天" },
+        { name: "住院實支(雜費限額)", calc: { type: "plan", planMap: { "計劃一": 100000, "計劃二": 200000, "計劃三": 300000, "計劃四": 400000, "計劃五": 500000 } }, unit: "元/次", star: true },
+        { name: "加護病房雜費限額", calc: { type: "plan", planMap: { "計劃一": 200000, "計劃二": 400000, "計劃三": 600000, "計劃四": 800000, "計劃五": 1000000 } }, unit: "元/次" },
+        { name: "門診手術或門診特定診療", calc: { type: "plan", planMap: { "計劃一": 30000, "計劃二": 60000, "計劃三": 90000, "計劃四": 120000, "計劃五": 150000 } }, unit: "元/次", note: "同年度最多 8 次" },
+        { name: "特定醫材補助保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" },
+        { name: "重大手術慰問保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" }
+      ]
+    },
+    "NIR": {
+      title: "健康保險附約(定額醫療)",
+      icon: "💊",
+      highlights: ["住院日額補貼，連續未理賠保額自動增值最高 50%"],
+      items: [
+        { name: "住院日額(含雜費補助)", calc: { type: "plan", planMap: { "計劃一": 1500, "計劃二": 3000, "計劃三": 4500, "計劃四": 6000, "HI-30": 5000 } }, unit: "元/天", note: "住院日額+住院雜費補助金合計，最高 365 日", star: true },
+        { name: "加護病房日額補助", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 30 日" },
+        { name: "外科手術定額(最高 3 倍)", calc: { type: "plan", planMap: { "計劃一": 22500, "計劃二": 45000, "計劃三": 67500, "計劃四": 90000, "HI-30": 90000 } }, unit: "元", note: "同次住院最高 3 倍" },
+        { name: "重大手術額外金", calc: { type: "plan", planMap: { "計劃一": 7500, "計劃二": 15000, "計劃三": 22500, "計劃四": 30000, "HI-30": 30000 } }, unit: "元", note: "手術項目基數超 200% 時加給" },
+        { name: "健康增值(連續 5 年未理賠)", calc: { type: "note", text: "保額自動增加 50%(每 2 年起階段增值)" }, star: true },
+        { name: "保險費豁免", calc: { type: "note", text: "因疾病或意外失能時免繳保費" } }
+      ]
+    },
+    "XHO": {
+      title: "自負額實支實付(住院升等)",
+      icon: "🏨",
+      highlights: ["搭配主實支：住院 50 萬雜費，門診 6 萬手術", "★ 屬「自負額型」，實際給付 = 限額 - 自負額"],
+      items: [
+        { name: "住院日額(限額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 2000, "計劃3": 3000, "計劃4": 4000, "計劃4A": 4000, "計劃5": 5000 } }, unit: "元/天" },
+        { name: "住院日額(自負額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 1000, "計劃3": 1000, "計劃4": 1000, "計劃4A": 1000, "計劃5": 1000 } }, unit: "元/天", note: "被保人自行負擔" },
+        { name: "加護病房日額(限額)", calc: { type: "plan", planMap: { "計劃1": 2000, "計劃2": 4000, "計劃3": 6000, "計劃4": 8000, "計劃4A": 8000, "計劃5": 10000 } }, unit: "元/天" },
+        { name: "加護病房日額(自負額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 1000, "計劃3": 1000, "計劃4": 1000, "計劃4A": 1000, "計劃5": 1000 } }, unit: "元/天", note: "被保人自行負擔" },
+        { name: "住院實支(雜費限額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 200000, "計劃3": 300000, "計劃4": 400000, "計劃4A": 400000, "計劃5": 500000 } }, unit: "元/次", star: true },
+        { name: "住院實支(雜費自負額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 100000, "計劃3": 100000, "計劃4": 100000, "計劃4A": 100000, "計劃5": 100000 } }, unit: "元/次", note: "被保人自行負擔" },
+        { name: "加護病房雜費(限額)", calc: { type: "plan", planMap: { "計劃1": 200000, "計劃2": 400000, "計劃3": 600000, "計劃4": 800000, "計劃4A": 800000, "計劃5": 1000000 } }, unit: "元/次" },
+        { name: "加護病房雜費(自負額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 100000, "計劃3": 100000, "計劃4": 100000, "計劃4A": 100000, "計劃5": 100000 } }, unit: "元/次", note: "被保人自行負擔" },
+        { name: "門診手術(限額)", calc: { type: "plan", planMap: { "計劃1": 7500, "計劃2": 15000, "計劃3": 22500, "計劃4": 30000, "計劃4A": 30000, "計劃5": 37500 } }, unit: "元/次", note: "同年度最多 10 次" },
+        { name: "門診手術(自負額)", calc: { type: "plan", planMap: { "計劃1": 15000, "計劃2": 15000, "計劃3": 15000, "計劃4": 15000, "計劃4A": 15000, "計劃5": 15000 } }, unit: "元/次", note: "被保人自行負擔" },
+        { name: "義齒/義肢/眼鏡/助聽器限額", calc: { type: "plan", planMap: { "計劃1": 11000, "計劃2": 11000, "計劃3": 11000, "計劃4": 11000, "計劃4A": 11000, "計劃5": 11000 } }, unit: "元", note: "限意外傷害，裝設一次為限" },
+        { name: "住院照護保險金(每日)", calc: { type: "plan", planMap: { "計劃1": 500, "計劃2": 1000, "計劃3": 1500, "計劃4": 2000, "計劃4A": 1000, "計劃5": 2500 } }, unit: "元/天", note: "同年度最高 180 日" }
+      ]
+    },
+    "XCF": {
+      title: "癌症一次金",
+      icon: "🎗️",
+      highlights: ["初次罹癌一次給付，治療方式可彈性運用", "★ 首年罹癌減半給付，續年起 100%"],
+      items: [
+        { name: "初次罹患低侵襲性癌症 (首年)", calc: { type: "ratioWan", ratio: 0.1 }, unit: "元", note: "投保當年度，終身限一次" },
+        { name: "初次罹患低侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "續保年度，終身限一次" },
+        { name: "初次罹患侵襲性癌症 (首年)", calc: { type: "ratioWan", ratio: 0.5 }, unit: "元", note: "投保當年度，終身限一次" },
+        { name: "初次罹患侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "續保年度，終身限一次" },
+        { name: "初次罹患特定部位癌症 (續年)", calc: { type: "ratioWan", ratio: 0.5 }, unit: "元", note: "胃/結腸/肝/胰/肺/腦癌，終身限一次" }
+      ]
+    },
+    "XCG": {
+      title: "癌症療程型(住院/手術/化放療)",
+      icon: "💉",
+      highlights: ["癌症住院、手術、化放療、標靶按次給付"],
+      items: [
+        { name: "癌症住院醫療(每日)", calc: { type: "unit", perUnit: 1000 }, unit: "元/天", note: "同次住院最多 180 日" },
+        { name: "癌症住院照護(每日)", calc: { type: "unit", perUnit: 1000 }, unit: "元/天", note: "同次住院最多 60 日" },
+        { name: "癌症住院手術金", calc: { type: "unit", perUnit: 30000 }, unit: "元", star: true, note: "同年度最多 5 次" },
+        { name: "癌症門診手術金", calc: { type: "unit", perUnit: 3000 }, unit: "元", note: "同年度最多 10 次" },
+        { name: "癌症化學/放射線治療(每次)", calc: { type: "unit", perUnit: 1000 }, unit: "元" },
+        { name: "骨髓移植手術", calc: { type: "unit", perUnit: 100000 }, unit: "元", note: "終身 1 次" },
+        { name: "義乳重建手術", calc: { type: "unit", perUnit: 30000 }, unit: "元", note: "每側終身 1 次" },
+        { name: "癌症標靶治療", calc: { type: "unit", perUnit: 100000 }, unit: "元", star: true, note: "每單位終身 10 萬上限" }
+      ]
+    },
+    "XAB": {
+      title: "意外傷害險",
+      icon: "🚑",
+      highlights: ["意外身故、失能(殘廢)、重大燒燙傷"],
+      items: [
+        { name: "意外身故/喪葬費用", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", note: "滿 16 歲後生效" },
+        { name: "意外失能保險金 (最高)", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "依失能比例給付" },
+        { name: "重大燒燙傷保險金", calc: { type: "ratioWan", ratio: 0.25 }, unit: "元" }
+      ]
+    },
+    "XMBN": {
+      title: "意外醫療(實支+日額)",
+      icon: "🩹",
+      highlights: ["意外住院日額 + 醫療收據實支實付"],
+      items: [
+        { name: "傷害住院日額(每日)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", star: true, note: "最高 90 日" },
+        { name: "加護病房/燒燙傷中心(每日加計)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", note: "最高 30 日" },
+        { name: "傷害醫療保險金(每次最高)", calc: { type: "ratio", ratio: 1.0 }, unit: "元", note: "實支實付" },
+        { name: "加護病房/燒燙傷醫療金(每次)", calc: { type: "ratio", ratio: 2.0 }, unit: "元", note: "提高為 2 倍" }
+      ]
+    }
+  }
 };
 
 async function loadInsuranceData() {
-  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json', 'benefitsLib.json'];
+  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json'];
   const results = await Promise.all(files.map(async (f) => {
     const res = await fetch(f);
     if (!res.ok) throw new Error('Failed to load ' + f + ': ' + res.status + ' ' + res.statusText);
     return res.json();
   }));
-  const [transglobe, hontai, skl, fglife, fubon, benefitsLib] = results;
+  const [transglobe, hontai, skl, fglife, fubon] = results;
 
   // Companies in original order: quanqiu, hongtai, xinguang, farglory, fubon
   INSURANCE_DB.companies.push(transglobe, hontai, skl, fglife, fubon);
-  // v3_21: benefitsLib 改成 fetch 載入 (原本內嵌在 HTML)
-  INSURANCE_DB.benefitsLib = benefitsLib;
 }
 
 </script>
@@ -3620,7 +3654,6 @@ const App = (() => {
     lastAge: null,    // 最近一次 recompute 時的保險年齡(用於商品列表顯示超齡警告)
     lastJob: 1,       // 最近一次的職業等級(核保用)
     benefitsMode: 'simple',   // 'simple' | 'detail' — 理賠卡片顯示模式
-    benefitsCompanyFilter: 'all',   // 'all' | companyId — 理賠卡片公司篩選 (詳細/簡易模式皆適用)
     // ── 責任曲線調整 ──
     curve: {
       enabled: false,           // 是否啟用
@@ -5952,105 +5985,107 @@ const App = (() => {
   }
 
   // ── 理賠項目卡片 ──
-  // v3_21: convertProductClaims / calcBenefitValue 已移至 shared.js (window.AHShared)
-  //        以下為 alias, 保持原 IIFE 內所有呼叫處不變
-  const convertProductClaims = window.AHShared.convertProductClaims;
-  const calcBenefitValue = window.AHShared.calcBenefitValue;
-
-  /**
-   * 公司篩選器 — 依「使用者實際選擇的公司」動態產生 pill 按鈕
-   * 只計入「非豁免、有 rows」的公司;若僅 1 家公司則隱藏整列(沒必要篩選)
-   */
-  function renderBenefitsCompanyFilter(rows) {
-    const bar = document.getElementById('benefitsCompanyFilter');
-    if (!bar) return;
-
-    // 收集每家公司在當前 rows 中的項目數(只算非豁免)
-    const counts = {};   // cid → count
-    const order = [];    // 維持出現順序
-    rows.forEach(r => {
-      if (r.isWaiver) return;
-      const cid = r.companyId;
-      if (!cid) return;
-      if (counts[cid] === undefined) { counts[cid] = 0; order.push(cid); }
-      counts[cid]++;
+  /** 把 product.claims 結構轉成 benefitsLib 期待的格式 */
+  function convertProductClaims(product) {
+    if (!product.claims || !Array.isArray(product.claims.items)) return null;
+    const items = product.claims.items.map(it => {
+      // it.calc.type 可能是: 'ratio'(乘以保額元數)、'ratioWan'(乘以保額萬)、
+      //                     'plan'(計畫對應金額)、'unit'(單位 × perUnit)、'note'(純文字)
+      // 大部分宏泰商品保額單位是「萬元」(amountUnit='萬元'),理賠金額計算時要乘 10000
+      // 但 WRA/WRB 保額已是「元」(amountUnit='元'),不再乘 10000
+      // 為了讓 calcBenefitValue 正確,我們把「ratio」根據商品 amountUnit 自動分流:
+      //   amountUnit === '元'  → 保留 ratio(直接乘元)
+      //   amountUnit === '萬元' → 改成 ratioWan(乘 10000 後再乘 ratio)
+      let calc = it.calc;
+      if (calc && calc.type === 'ratio') {
+        if (product.amountUnit === '萬元' || product.amountUnit === '萬') {
+          // 保額是萬,改用 ratioWan
+          calc = { type: 'ratioWan', ratio: calc.ratio };
+        }
+        // 否則保留(amountUnit='元' 時直接 ratio)
+      }
+      return { name: it.name, calc, unit: it.unit, note: it.note };
     });
+    return { title: product.claims.title || '理賠項目', items };
+  }
 
-    // 0 或 1 家 → 隱藏(沒篩選意義)
-    if (order.length < 2) {
-      bar.style.display = 'none';
-      bar.innerHTML = '';
-      // 重設篩選為 all,避免 stale state
-      if (state.benefitsCompanyFilter !== 'all') state.benefitsCompanyFilter = 'all';
-      return;
+  /** 計算單項理賠金額 */
+  function calcBenefitValue(item, product, amount) {
+    const calc = item.calc;
+    if (!calc) return null;
+    if (calc.type === 'note') {
+      return { type: 'text', text: calc.text };
     }
-
-    // 若目前選中的公司不在列表中,重設為 all
-    if (state.benefitsCompanyFilter !== 'all' && !order.includes(state.benefitsCompanyFilter)) {
-      state.benefitsCompanyFilter = 'all';
+    if (calc.type === 'plan') {
+      // 計畫別:planMap[amount] 直接是金額
+      const v = calc.planMap[amount];
+      return v != null ? { type: 'num', val: v } : null;
     }
-
-    // 組 HTML
-    const totalCount = order.reduce((s, cid) => s + counts[cid], 0);
-    const activeCid = state.benefitsCompanyFilter;
-    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    let html = `<span class="bcf-label">📍 篩選公司</span>`;
-    html += `<button type="button" class="bcf-btn ${activeCid === 'all' ? 'active' : ''}" data-cid="all">
-      全部 <span class="bcf-count">(${order.length} 家)</span>
-    </button>`;
-    order.forEach(cid => {
-      const co = state.db.companies.find(c => c.id === cid) || { name: cid, shortName: cid, color: '#888' };
-      const isActive = activeCid === cid;
-      html += `<button type="button" class="bcf-btn ${isActive ? 'active' : ''}" data-cid="${escapeHtml(cid)}">
-        <span class="bcf-dot" style="background:${escapeHtml(co.color || '#888')};"></span>
-        ${escapeHtml(co.shortName || co.name || cid)}
-      </button>`;
-    });
-
-    bar.innerHTML = html;
-    bar.style.display = '';
+    if (calc.type === 'unit') {
+      // 單位數 × perUnit
+      const numAmount = parseFloat(amount) || 0;
+      return { type: 'num', val: numAmount * calc.perUnit };
+    }
+    if (calc.type === 'ratioWan') {
+      // (保額×10000) × ratio
+      const numAmount = parseFloat(amount) || 0;
+      return { type: 'num', val: numAmount * 10000 * calc.ratio };
+    }
+    if (calc.type === 'ratio') {
+      // 保額(已是元) × ratio
+      const numAmount = parseFloat(amount) || 0;
+      return { type: 'num', val: numAmount * calc.ratio };
+    }
+    return null;
   }
 
   function renderBenefits(rows) {
     const wrap = $('#benefitsCard');
     const sec = $('#benefitsSection');
     if (!wrap || !sec) return;
-    if (rows.length === 0) {
-      wrap.style.display = 'none';
-      // 同時清空篩選器(避免下次有資料時殘留)
-      const bar = document.getElementById('benefitsCompanyFilter');
-      if (bar) { bar.style.display = 'none'; bar.innerHTML = ''; }
-      return;
-    }
+    if (rows.length === 0) { wrap.style.display = 'none'; return; }
     const lib = state.db.benefitsLib || {};
-
-    // ── 公司篩選器 (2026/05 新增) ──
-    // 依「使用者選擇的公司」動態渲染篩選按鈕,僅當有選擇 ≥2 家公司時才顯示
-    // 點擊單一公司 → 該模式下只顯示該公司的理賠卡片;點擊「全部」→ 跨公司整合呈現(原行為)
-    renderBenefitsCompanyFilter(rows);
-
-    // 套用篩選 — 注意:篩選器 UI 仍顯示所有選擇的公司,但 rows 在此被篩選
-    const filterCid = state.benefitsCompanyFilter;
-    if (filterCid && filterCid !== 'all') {
-      rows = rows.filter(r => r.companyId === filterCid);
-      if (rows.length === 0) {
-        // 該公司被篩掉所有 rows(理論上不會,但防呆),顯示空狀態
-        sec.innerHTML = `<div class="benefit-card"><div class="benefit-card-body" style="color:var(--gray);font-size:12px;text-align:center;padding:24px;">
-          所選公司沒有理賠資料。
-        </div></div>`;
-        wrap.style.display = '';
-        return;
-      }
-    }
 
     // ── 任務D(v3.27):跨公司按類型整合 ──
     // 1) 第一個區塊:每類型一張卡,內含所有公司+商品的相關理賠
     // 2) 豁免保費附約獨立顯示在最後
     const ins = getCurrentInsured();
 
-    // v3_21: classifyItem 已移至 shared.js (window.AHShared.classifyItem)
-    const classifyItem = window.AHShared.classifyItem;
+    // 分類函式(沿用既有邏輯)
+    const classifyItem = (it) => {
+      const name = String(it.name || '');
+      const note = String(it.note || '');
+      const text = name + ' ' + note;
+      if (/豁免/.test(text)) return { key: 'waiver', icon: '🛡️', title: '豁免保費' };
+      if (/重大燒燙傷|燒燙傷.*保險金/.test(text)) return { key: 'burn', icon: '🔥', title: '重大燒燙傷' };
+      if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折定額' };
+      if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '重大器官 / 移植' };
+      // ★ 含「癌症」或「重大傷病」字眼但同時含「日額/每日/手術/化學/放射」, 不該歸 critical
+      //   優先判斷子類型, 才歸 critical 一次金
+      const isCancer = /重大傷病|癌症|罹癌|罹患/.test(text);
+      if (isCancer) {
+        if (/住院.*手術|手術.*醫療/.test(text)) return { key: 'surgery', icon: '⚕️', title: '癌症住院手術' };
+        if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '癌症門診手術' };
+        if (/標靶/.test(text)) return { key: 'targeting', icon: '🎯', title: '癌症標靶治療' };
+        if (/化學|放射/.test(text)) return { key: 'chemo', icon: '💉', title: '化學/放射治療' };
+        if (/(住院|每日|日額)/.test(text) && !/手術|處置/.test(text)) return { key: 'daily', icon: '🏥', title: '癌症住院日額' };
+        if (/義乳/.test(text)) return { key: 'reconstruct', icon: '💗', title: '義乳重建手術' };
+        // 純「重大傷病/癌症一次金」歸 critical
+        return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
+      }
+      if (/喪葬|身故/.test(text)) return { key: 'death', icon: '🕊️', title: '身故 / 喪葬' };
+      if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
+      if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
+      if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
+      if (/加護|燒燙傷.*日額|燒燙傷中心/.test(text) && /日額|每日/.test(text)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
+      if (/(住院|每日|日額).*保險金|住院.*日額/.test(text) && !/手術|處置|門診|實支/.test(text)) return { key: 'daily', icon: '🏥', title: '住院日額' };
+      if (/實支|病房費用|住院醫療費用|住院.*醫療.*費/.test(text)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
+      if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '門診手術' };
+      if (/特定處置/.test(text)) return { key: 'special', icon: '⚙️', title: '特定處置' };
+      if (/手術/.test(text)) return { key: 'surgery', icon: '⚕️', title: '住院手術' };
+      if (/門診/.test(text)) return { key: 'opd', icon: '🏨', title: '門診' };
+      return { key: 'other', icon: '📋', title: '其他給付' };
+    };
 
     // 類型顯示順序(從客戶最關心的往下)
     const TYPE_ORDER = [
@@ -6092,8 +6127,39 @@ const App = (() => {
       // 把 product.category 字串 → 4 大類 + 子分類
       // ★ 重點: 壽險+意外身故失能 合併到「人身/失能保障」, 但用 subTitle 區分
       //         重大傷病+癌症 合併到「重大傷病/癌症」, 但用 subTitle 區分
-      // v3_21: categorize5 已移至 shared.js (window.AHShared.categorize5)
-      const categorize5 = window.AHShared.categorize5;
+      const categorize5 = (product) => {
+        const cat = String(product.category || '');
+        const code = String(product.code || '');
+        const name = String(product.name || '');
+        const fullText = cat + ' ' + name;
+
+        // ★ 豁免保費類 — 不顯示在簡易卡 (邏輯上不是給付項目)
+        if (/豁免/.test(fullText)) return { mainKey: 'other', mainTitle: '其他', subTitle: null };
+
+        // ★ 意外/傷害類優先判斷 (因為會跟「醫療」「定額」字眼撞)
+        // 意外身故/失能/燒燙傷類 → 意外醫療大類 (排第一格)
+        // 意外醫療(實支/日額) → 意外醫療大類
+        if (/意外|傷害|骨折/.test(fullText) || /5DD|R1D|L6D|MRE|XHQ|RHG|TMR|ADG/.test(code)) {
+          return { mainKey: 'accident', mainTitle: '意外醫療', subTitle: null };
+        }
+
+        // ① 人身/失能保障 (壽險身故/失能 — 此大類只剩「一般身故/失能」)
+        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能保障', subTitle: null };
+
+        // ② 重大傷病
+        if (/重大傷病|重疾/.test(cat) && !/癌症/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病', subTitle: null };
+
+        // ③ 癌症 — 拆兩個子組
+        if (/癌症療程/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: null };
+        if (/癌症一次金|癌症/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險', subTitle: null };
+
+        // ④ 住院醫療 (實支實付 / 定額)
+        if (/實支實付|自負額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '實支實付型' };
+        if (/定額醫療|住院日額|定額|手術/.test(cat) || /HSV|YHA|H2D/.test(code)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額型' };
+
+        // 兜底
+        return { mainKey: 'other', mainTitle: '其他保障', subTitle: null };
+      };
 
       // 5 大類顯示順序與 icon
       const MAIN_CATEGORIES = [
@@ -6170,21 +6236,18 @@ const App = (() => {
       });
 
       // 各大類 + 各子組的「白名單」
-      // 2026/05 擴充: 簡易模式下 per-company 篩選後,若白名單太窄會把該家公司重要項目藏掉
-      // (例: 宏泰 HI 加護病房 20,000元/日、富邦 HSV 多筆雜費實支實付/門診手術…)
-      // 改為較寬鬆的白名單,讓單一公司視角下能看到該家完整的醫療保障輪廓
       const ALLOWED_CARDS = {
         // 人身/失能保障 — 只剩一般身故/失能 (XTK)
         'life':                        ['death','disability'],
-        // 住院醫療 — 兩個子類都加上 icu_daily,讓加護病房日額不被吃掉
-        'medical_實支實付型':          ['daily','reimburse','opsurg','surgery','icu_daily'],
-        'medical_定額型':              ['daily','surgery','reimburse','opsurg','icu_daily'],
+        // 住院醫療
+        'medical_實支實付型':          ['daily','reimburse','opsurg'],
+        'medical_定額型':              ['daily','surgery'],
         // 重大傷病
         'critical':                    ['critical'],
         // 癌症: 含單筆金 + 療程型 (cls 都不同, 直接同行排)
-        'cancer':                      ['critical','daily','surgery','chemo','targeting','reconstruct','transplant'],
-        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額/手術
-        'accident':                    ['death','disability','reimburse','daily','surgery','dislocation'],
+        'cancer':                      ['critical','daily','surgery'],
+        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額
+        'accident':                    ['death','disability','reimburse','daily'],
         // 其他
         other:                          null,
       };
@@ -6194,15 +6257,15 @@ const App = (() => {
         // 人身/失能保障 (XTK 一般身故/失能)
         'life':                  { death: '一般身故/喪葬', disability: '完全失能' },
         // 住院醫療 - 實支實付型
-        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術', surgery: '住院手術', icu_daily: '加護病房日額' },
+        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術' },
         // 住院醫療 - 定額型
-        'medical:定額型':       { daily: '住院日額', surgery: '住院手術', reimburse: '雜費限額', opsurg: '門診手術', icu_daily: '加護病房日額' },
+        'medical:定額型':       { daily: '住院日額', surgery: '住院手術' },
         // 重大傷病
         'critical':              { critical: '重大傷病金' },
         // 癌症
-        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術', chemo: '化放療', targeting: '標靶治療', reconstruct: '義乳重建', transplant: '骨髓移植' },
+        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術' },
         // 意外醫療
-        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額', surgery: '意外手術', dislocation: '骨折/脫臼' },
+        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額' },
       };
 
       // 各大類的「主要保障 cls.key」
@@ -6280,29 +6343,7 @@ const App = (() => {
             unitTxt = unit;
           }
         } else {
-          // ── 2026/05 改:沒有可計算金額時(全為 text/note 規則),改顯示「依條款」
-          //    並把該類所有 text 規則彙總到 tooltip,讓使用者 hover 看細節
-          //    原本顯示 ✓ 對使用者太不友善,看不出來 card 的意義
-          const textItems = items.filter(x => x.result && x.result.type === 'text');
-          const noteItems = items.filter(x => !x.result && x.item.note);
-          if (textItems.length > 0 || noteItems.length > 0) {
-            displayText = '<span class="bsc-rule-text">依條款</span>';
-            // 彙總前 3 筆規則描述當 tooltip
-            const tipLines = [];
-            textItems.slice(0, 3).forEach(x => {
-              const code = x.row.product.code;
-              const ruleText = (x.result && x.result.text) ? x.result.text : (x.item.note || '');
-              if (ruleText) tipLines.push(`${code}: ${String(ruleText).slice(0, 60)}`);
-            });
-            noteItems.slice(0, 3 - tipLines.length).forEach(x => {
-              const code = x.row.product.code;
-              tipLines.push(`${code}: ${String(x.item.note).slice(0, 60)}`);
-            });
-            if (tipLines.length > 0) tooltip = tipLines.join(' | ');
-          } else {
-            // 真的無資料才用 ✓
-            displayText = '<span class="bsc-rule-text">✓</span>';
-          }
+          displayText = '✓';
         }
 
         const title = titleOverride || cls.title;
@@ -7481,38 +7522,23 @@ const App = (() => {
     renderProductSection();
   }
 
-  /** v3.30:理賠卡片簡易/詳細切換 + 公司篩選器 */
+  /** v3.30:理賠卡片簡易/詳細切換 */
   function bindBenefitsModeEvents() {
     const sw = document.getElementById('benefitsModeSwitch');
-    if (sw) {
-      sw.addEventListener('click', (e) => {
-        const btn = e.target.closest('.bms-btn');
-        if (!btn) return;
-        const mode = btn.dataset.mode;
-        if (!mode || mode === state.benefitsMode) return;
-        state.benefitsMode = mode;
-        // 更新按鈕 active 狀態
-        sw.querySelectorAll('.bms-btn').forEach(b => {
-          b.classList.toggle('active', b.dataset.mode === mode);
-        });
-        // 觸發重新計算渲染
-        recompute();
+    if (!sw) return;
+    sw.addEventListener('click', (e) => {
+      const btn = e.target.closest('.bms-btn');
+      if (!btn) return;
+      const mode = btn.dataset.mode;
+      if (!mode || mode === state.benefitsMode) return;
+      state.benefitsMode = mode;
+      // 更新按鈕 active 狀態
+      sw.querySelectorAll('.bms-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
       });
-    }
-
-    // 2026/05 新增:公司篩選器點擊事件 (event delegation,因按鈕為動態渲染)
-    const filterBar = document.getElementById('benefitsCompanyFilter');
-    if (filterBar) {
-      filterBar.addEventListener('click', (e) => {
-        const btn = e.target.closest('.bcf-btn');
-        if (!btn) return;
-        const cid = btn.dataset.cid;
-        if (!cid || cid === state.benefitsCompanyFilter) return;
-        state.benefitsCompanyFilter = cid;
-        // 重新觸發 renderBenefits (透過 recompute 完整流程,確保資料一致)
-        recompute();
-      });
-    }
+      // 觸發重新計算渲染
+      recompute();
+    });
   }
 
   /** 複製試算結果到剪貼簿(純文字,可貼到 LINE / 郵件給客戶)*/
@@ -7655,4 +7681,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadInsuranceData();
   } catch (err) {
     console.error('保險資料載入失敗:', err);
-    alert('保險資料載入失敗,請確認 JSON 檔案 (transglobe.json / hontai.json / skl.json / fglife.json) 是否與本 HTML 放在同一資料夾。\n\n錯誤訊息:' + err.messag
+    alert('保險資料載入失敗,請確認 JSON 檔案 (transglobe.json / hontai.json / skl.json / fglife.json) 是否與本 HTML 放在同一資料夾。\n\n錯誤訊息:' + err.message);
+    return;
+  }
+  App.init();
+});
+
+</script>
+
+</body>
+</html>
