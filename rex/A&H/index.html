@@ -3144,9 +3144,19 @@ tr
           <button class="chart-toggle" data-mode="byProduct">依商品分</button>
           <span class="cc-divider"></span>
           <span class="cc-label">期間:</span>
-          <button class="chart-range-toggle active" data-range="20">未來 20 年</button>
-          <button class="chart-range-toggle" data-range="30">未來 30 年</button>
-          <button class="chart-range-toggle" data-range="60">未來 60 年</button>
+          <!-- 隱藏的 toggle 按鈕,給主檔的事件處理綁定 — 由 enhancements.js 的滑桿觸發 -->
+          <button class="chart-range-toggle active" data-range="20" style="display:none;">20</button>
+          <button class="chart-range-toggle" data-range="30" style="display:none;">30</button>
+          <button class="chart-range-toggle" data-range="40" style="display:none;">40</button>
+          <button class="chart-range-toggle" data-range="50" style="display:none;">50</button>
+          <button class="chart-range-toggle" data-range="60" style="display:none;">60</button>
+          <div class="chart-range-slider-wrap">
+            <div class="crs-stops">
+              <input type="range" id="chartRangeSlider" min="0" max="4" step="1" value="0">
+              <div class="crs-ticks"><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span></div>
+            </div>
+            <span class="crs-value" id="chartRangeValue">未來 20 年</span>
+          </div>
           <span style="margin-left:auto;font-size:11px;color:var(--gray);">📌 主約期滿後不繳費,附約逐年依年齡計算</span>
         </div>
         <!-- 通膨換算控制(獨立一行,內含 preset 按鈕) -->

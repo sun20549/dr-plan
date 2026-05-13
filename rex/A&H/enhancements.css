@@ -1,15 +1,19 @@
 /* ═══════════════════════════════════════════════════════════
- *  enhancements.css — 保險建議書系統 v3_21 加值功能
- *  Phase 2 (2026/05/13):
+ *  enhancements.css — 保險建議書系統 v3_23 加值功能
+ *  Phase 2 + 2.1 (2026/05/13):
  *    1. 需求分析輸入面板
  *    2. 責任缺口分析卡片
  *    3. 保費佔收入比警示
  *    4. 理賠合計顯示
  *    5. 稅務節稅提醒
  *    6. 首/續年費率對比、保證續保、年齡文件提醒
+ *    2.1 — 隱藏跨商品累計 / 美化理賠卡片 / 走勢圖滑桿
  *
  *  延用主檔 CSS 變數:--orange / --teal / --navy / --gold / --gray ...
  * ═══════════════════════════════════════════════════════════ */
+
+/* ── Phase 2.1:隱藏跨商品累計檢查 ── */
+#aggregateCheck { display: none !important; }
 
 /* ── 共用容器:Phase 2 新卡片 ── */
 .x-card {
@@ -337,9 +341,206 @@
 .xrb.natural          { background: #fff3cd; color: #856404; border:1px solid #ffe69c; }
 .xrb.level            { background: #d1ecf1; color: #0c5460; border:1px solid #9fd5e2; }
 
+/* ═══════════════════════════════════════════════════════════
+ * Phase 2.1 (2026/05/14) — UI 精修
+ * ═══════════════════════════════════════════════════════════ */
+
+/* ── 美化「建議保障內容」卡片 ── */
+/* 5 大類大標頭 — 加強層次感 */
+#benefitsCard .bsc-main-title,
+#benefitsCard .benefits-main-title {
+  background: linear-gradient(135deg, #f8f5f0 0%, #fff 100%);
+  border-left: 5px solid var(--orange);
+  padding: 8px 14px;
+  margin: 18px 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--navy);
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+/* 詳細模式給付類型卡片 — 加寬間距、減弱邊框 */
+#benefitsCard .benefits-detail-card,
+#benefitsCard .benefits-simple-card {
+  background: #fff;
+  border: 1px solid #e8ecef;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(13,42,58,0.04);
+  transition: box-shadow .2s, transform .15s;
+}
+#benefitsCard .benefits-detail-card:hover,
+#benefitsCard .benefits-simple-card:hover {
+  box-shadow: 0 4px 12px rgba(13,42,58,0.08);
+}
+/* 卡片標題 (icon + 給付類型) */
+#benefitsCard .bsc-title,
+#benefitsCard .bdc-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* 主要保障 ★ 標記 — 改成更顯眼的金底 */
+#benefitsCard .benefits-simple-card.is-primary,
+#benefitsCard .benefits-simple-card.starred {
+  background: linear-gradient(135deg, #fffbf2 0%, #fff 100%);
+  border-left: 4px solid var(--gold);
+}
+/* 數字大小 + 字距 */
+#benefitsCard .bsc-value,
+#benefitsCard .bdc-value {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy);
+  font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
+  letter-spacing: 0.8px;
+}
+/* 單位字 */
+#benefitsCard .bsc-unit,
+#benefitsCard .bdc-unit {
+  font-size: 11px;
+  color: var(--gray);
+  margin-left: 3px;
+  font-weight: 600;
+}
+/* 「依條款」灰色小字 — 已存在,只是再加強對比 */
+#benefitsCard .bsc-rule-text {
+  font-size: 12px;
+  color: #8a99a6;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+/* 詳細模式公司分組塊 — 上方淡色 banner */
+#benefitsCard .bdc-company-group {
+  background: #fafbfc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 6px 0 8px;
+  font-size: 11px;
+  color: #5a6772;
+  letter-spacing: 0.5px;
+  border-left: 3px solid;
+}
+/* note 文字(限額條件等)— 改成淡灰字 */
+#benefitsCard .bsc-note,
+#benefitsCard .bdc-note {
+  font-size: 10px;
+  color: #8a99a6;
+  margin-top: 4px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+}
+/* tooltip 內容(主檔自有的 tooltip)— 加強對比 */
+#benefitsCard [title]:hover {
+  cursor: help;
+}
+/* 行動裝置簡化 */
+@media (max-width: 720px) {
+  #benefitsCard .bsc-main-title,
+  #benefitsCard .benefits-main-title {
+    font-size: 13px;
+    padding: 6px 10px;
+    margin: 12px 0 8px;
+  }
+  #benefitsCard .benefits-detail-card,
+  #benefitsCard .benefits-simple-card {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  #benefitsCard .bsc-value,
+  #benefitsCard .bdc-value {
+    font-size: 15px;
+  }
+}
+
+/* ── 走勢圖期間滑桿 ── */
+.chart-range-slider-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px 4px 8px;
+  background: rgba(111, 66, 193, 0.06);
+  border: 1px solid rgba(111, 66, 193, 0.18);
+  border-radius: 16px;
+}
+.chart-range-slider-wrap .crs-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6f42c1;
+  white-space: nowrap;
+}
+.chart-range-slider-wrap input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 160px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #c9b8e6, #8b5cf6);
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+}
+.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #6f42c1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(111,66,193,0.35);
+  transition: transform .12s;
+}
+.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.chart-range-slider-wrap input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #6f42c1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(111,66,193,0.35);
+}
+.chart-range-slider-wrap .crs-value {
+  font-size: 13px;
+  font-weight: 800;
+  color: #6f42c1;
+  font-family: 'Bebas Neue','Noto Sans TC',sans-serif;
+  min-width: 56px;
+  text-align: right;
+  letter-spacing: 0.5px;
+}
+.chart-range-slider-wrap .crs-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 160px;
+  margin-top: 2px;
+  font-size: 9px;
+  color: var(--gray);
+  pointer-events: none;
+}
+.crs-stops {
+  position: relative;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 /* ── 列印模式 ── */
 @media print {
   #needsInputCard { display: none !important; }
+  .chart-range-slider-wrap { display: none !important; }
   .x-card { box-shadow: none; border: 1px solid #999; page-break-inside: avoid; }
   .x-card-header { background: #0D2A3A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .pir-bar, .gap-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -354,6 +555,8 @@
   .x-card-header { font-size: 13px; padding: 10px 14px; }
   .x-card-body { padding: 12px 14px; }
   .pir-value { font-size: 16px; }
+  .chart-range-slider-wrap input[type="range"] { width: 120px; }
+  .chart-range-slider-wrap .crs-stops { width: 120px; }
 }
 @media (max-width: 480px) {
   .needs-grid { grid-template-columns: 1fr; }
