@@ -148,3 +148,35 @@
 **修改檔案總計**：1 (index.html) + 1 (home.html) + 1 (shared.css) + 1 (cases/index.html) + 69 (cases/*.html) + 6 (products/*.html) + 1 (allianz/index.html) + 8 (knowledge/resources/faq) = **88 個檔案**
 
 部署後若有任何 SPA 路由跳轉問題、圖表顯示異常或樣式衝突，請保留具體頁面網址回報，我可以快速定位修正。
+
+---
+
+## V3.1 補強：真實對帳單截圖整合（2026/05/13 第二輪）
+
+### 新功能：案例對帳單自動偵測 + Lightbox
+
+- ✅ **每個案例頁加入「真實對帳單佐證」區塊**（隱藏狀態，有圖才顯示）
+- ✅ **自動探測機制**：載入頁面時，JS 會試探 `assets/img/cases/{caseId}-1.jpg`、`-2.jpg`...直到找不到為止
+- ✅ 支援 `.jpg` / `.jpeg` / `.png` / `.webp` 四種格式
+- ✅ **金色精緻邊框 + hover 浮起**，每張圖右上角自動編號徽章
+- ✅ **點擊放大 Lightbox**：左右切換、ESC 關閉、鍵盤方向鍵導覽、計數器顯示
+- ✅ 新增 `assets/img/cases/README.md` 說明檔名規則
+- ✅ 圖檔懶載入（`loading="lazy"`）
+
+### 使用方式（給用戶）
+
+1. 從 Google Sites 把對帳單截圖下載下來
+2. 依檔名規則命名（小寫案例編號 + 序號）：
+   - `u0033-1.jpg`、`u0033-2.jpg`、`u0033-3.jpg`（多張依序）
+   - `k3007-1.jpg`、`f2040-1.jpg`...依此類推
+3. 丟進 `vip/assets/img/cases/` 資料夾
+4. `git push` 後對應案例頁就自動顯示「真實對帳單佐證」區塊與該圖
+
+**完全不用改任何 HTML 程式碼**，丟新圖、改圖、刪圖都會自動同步。
+
+### 注意事項
+
+- 圖檔建議壓縮到 200KB 以下（用 [TinyPNG](https://tinypng.com) 或 [Squoosh](https://squoosh.app)）
+- 個資（身分證、姓名、電話）請先打碼
+- 每個案例最多顯示 8 張
+- 圖檔不在的案例頁，該區塊整個隱藏（不會留空白）

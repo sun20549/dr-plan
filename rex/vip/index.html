@@ -220,6 +220,15 @@
 <!-- 主題切換 -->
 <button class="theme-toggle" id="themeToggle" title="切換深色/淺色模式" aria-label="切換主題">🌙</button>
 
+<!-- 對帳單 Lightbox -->
+<div id="case-lightbox" role="dialog" aria-modal="true" aria-label="對帳單放大檢視">
+  <button class="lb-close" aria-label="關閉">✕</button>
+  <button class="lb-nav lb-prev" aria-label="上一張">‹</button>
+  <img alt="對帳單" id="lb-image">
+  <button class="lb-nav lb-next" aria-label="下一張">›</button>
+  <div class="lb-counter" id="lb-counter">1 / 1</div>
+</div>
+
 <script>
 /* ═══════════════════════════════════════════════════
    SPA 路由系統
@@ -595,7 +604,97 @@ function applyEnhancements(root) {
       });
     });
   }
+  // 案例截圖自動探測（每個 .case-screenshots-section[data-case-id]）
+  root.querySelectorAll('.case-screenshots-section[data-case-id]').forEach(el => {
+    if (el.__ssEnhanced) return;
+    el.__ssEnhanced = true;
+    if (typeof detectCaseScreenshots === 'function') {
+      detectCaseScreenshots(el.dataset.caseId, el);
+    }
+  });
 }
+
+/* ─── 案例對帳單自動探測 + Lightbox ─── */
+const SCREENSHOT_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
+const SCREENSHOT_MAX = 8; // 每案最多探測 8 張
+
+async function probeImage(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+}
+
+async function detectCaseScreenshots(caseId, container) {
+  if (!caseId || !container) return;
+  const found = [];
+  const base = 'assets/img/cases/' + caseId.toLowerCase();
+  for (let i = 1; i <= SCREENSHOT_MAX; i++) {
+    let hit = null;
+    for (const ext of SCREENSHOT_EXTS) {
+      const url = `${base}-${i}.${ext}`;
+      // 用 HEAD 探測會被 CORS 擋；改用 Image() 載入測試
+      if (await probeImage(url)) { hit = url; break; }
+    }
+    if (!hit) break; // 連續找不到就停
+    found.push(hit);
+  }
+  if (found.length === 0) {
+    container.hidden = true;
+    return;
+  }
+  // 注入內容
+  container.hidden = false;
+  const grid = container.querySelector('.screenshots-grid');
+  if (!grid) return;
+  grid.innerHTML = found.map((src, idx) => `
+    <div class="screenshot-card" data-lb-src="${src}" data-lb-index="${idx}">
+      <span class="ss-tag">${idx + 1} / ${found.length}</span>
+      <img src="${src}" loading="lazy" alt="案例 ${caseId} 對帳單第 ${idx + 1} 張">
+    </div>
+  `).join('');
+  // bind click → lightbox
+  grid.querySelectorAll('.screenshot-card').forEach(card => {
+    card.addEventListener('click', () => openLightbox(found, parseInt(card.dataset.lbIndex, 10)));
+  });
+}
+
+/* Lightbox */
+const lbEl = document.getElementById('case-lightbox');
+const lbImg = document.getElementById('lb-image');
+const lbCounter = document.getElementById('lb-counter');
+let lbImages = [];
+let lbIdx = 0;
+function openLightbox(images, idx) {
+  lbImages = images;
+  lbIdx = idx;
+  updateLightbox();
+  lbEl.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lbEl.classList.remove('show');
+  document.body.style.overflow = '';
+}
+function updateLightbox() {
+  if (lbImages.length === 0) return;
+  lbImg.src = lbImages[lbIdx];
+  lbCounter.textContent = `${lbIdx + 1} / ${lbImages.length}`;
+}
+function nextLb() { lbIdx = (lbIdx + 1) % lbImages.length; updateLightbox(); }
+function prevLb() { lbIdx = (lbIdx - 1 + lbImages.length) % lbImages.length; updateLightbox(); }
+lbEl.querySelector('.lb-close').addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+lbEl.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); nextLb(); });
+lbEl.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); prevLb(); });
+lbEl.addEventListener('click', e => { if (e.target === lbEl) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (!lbEl.classList.contains('show')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextLb();
+  if (e.key === 'ArrowLeft') prevLb();
+});
 
 /* ─── 主題切換（localStorage 持久化） ─── */
 (function() {

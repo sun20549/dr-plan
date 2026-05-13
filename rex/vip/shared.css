@@ -1573,4 +1573,162 @@ a, button {
 /* ───── V3.30 高 z-index 層級規範 ───── */
 /* loader: 9999, progress: 10000, theme-toggle: 998, float-cta: 999, home-btn: 998 */
 
+/* ───── V3.31 案例對帳單截圖區塊 + Lightbox ───── */
+.case-screenshots-section {
+  margin-top: 16px;
+}
+.case-screenshots-section[hidden] { display: none; }
+
+.screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+.screenshot-card {
+  background: #fff;
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.35s var(--ease-out-quint);
+  box-shadow: var(--shadow-md);
+}
+.screenshot-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-gold);
+  border-color: var(--orange);
+}
+.screenshot-card::after {
+  content: '🔍 點擊放大';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(13,42,58,0.78);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(4px);
+}
+.screenshot-card:hover::after { opacity: 1; }
+.screenshot-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--bg-cream);
+}
+.screenshot-card .ss-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.screenshots-empty {
+  display: none;
+}
+
+/* Lightbox 蓋層 */
+#case-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(6,24,39,0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  backdrop-filter: blur(8px);
+  padding: 40px 20px;
+  cursor: zoom-out;
+}
+#case-lightbox.show {
+  display: flex;
+  animation: fadeUp 0.3s ease-out;
+}
+#case-lightbox img {
+  max-width: 95vw;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  background: #fff;
+}
+#case-lightbox .lb-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s;
+}
+#case-lightbox .lb-close:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: rotate(90deg);
+}
+#case-lightbox .lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s;
+}
+#case-lightbox .lb-nav:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+#case-lightbox .lb-prev { left: 24px; }
+#case-lightbox .lb-next { right: 24px; }
+#case-lightbox .lb-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.8);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+@media (max-width: 720px) {
+  #case-lightbox .lb-nav { width: 44px; height: 44px; font-size: 22px; }
+  #case-lightbox .lb-prev { left: 12px; }
+  #case-lightbox .lb-next { right: 12px; }
+}
+
 /* End V3 layer */
