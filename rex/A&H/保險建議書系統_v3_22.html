@@ -135,6 +135,76 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark);
 }
 
+/* 公司篩選器 — 在 card-body 頂部,依使用者選擇的公司動態顯示 */
+.benefits-company-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  background: #f5f7fa;
+  border: 1px solid #e2e8ec;
+  border-radius: 8px;
+}
+.benefits-company-filter .bcf-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5a6772;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+.benefits-company-filter .bcf-btn {
+  background: white;
+  border: 1.5px solid #d6dde3;
+  color: #4a5560;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+.benefits-company-filter .bcf-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange-dark);
+}
+.benefits-company-filter .bcf-btn.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+  box-shadow: 0 2px 6px rgba(240, 90, 40, 0.25);
+}
+.benefits-company-filter .bcf-btn .bcf-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.benefits-company-filter .bcf-btn.active .bcf-dot {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+.benefits-company-filter .bcf-btn .bcf-count {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+@media (max-width: 767px) {
+  .benefits-company-filter {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .benefits-company-filter .bcf-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
+
 /* ── Person Block ── */
 .person-flow {
   display: grid; grid-template-columns: 1fr auto 1fr;
@@ -817,10 +887,11 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 
 /* ── 理賠項目卡片 ── */
+/* 簡易模式:2 欄 masonry 堆疊版面, 矮卡會自動填到高卡旁的空白 */
 .benefits-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  display: block;
+  column-count: 2;
+  column-gap: 14px;
 }
 .benefit-card {
   border: 1px solid var(--border);
@@ -829,6 +900,8 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  break-inside: avoid;
+  margin-bottom: 14px;
 }
 .benefit-card.main { border-color: var(--accent); border-width: 2px; }
 .benefit-card-header {
@@ -886,15 +959,16 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   display: grid;
   /* 名稱(自動撐開) / 數值(剛好夠 6 位數) / 單位(緊湊) */
   grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 4px 8px;
-  padding: 7px 0;
-  border-bottom: 1px dashed #eee;
+  gap: 4px 10px;
+  padding: 9px 0;                              /* 行距加大 */
+  border-bottom: 1px dashed #eef2f5;           /* 虛線改更淡 */
   align-items: baseline;
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.6;                            /* 增加行高 */
 }
 .benefit-item:last-child { border-bottom: none; }
 .benefit-item.starred {
-  background: linear-gradient(90deg, transparent, var(--accent-bg) 50%, transparent);
+  background: linear-gradient(90deg, transparent, #FFF4E6 50%, transparent);  /* 改淡橘背景 */
   padding-left: 4px;
   padding-right: 4px;
   margin-left: -4px;
@@ -902,32 +976,36 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 .bi-name {
   color: var(--navy);
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 600;
-  /* 中文整字保持完整,只在英文/數字/長行真的超出時斷字 */
   word-break: normal;
   overflow-wrap: break-word;
-  min-width: 0; /* 允許 grid 內收縮 */
+  min-width: 0;
 }
-.bi-name .bi-star { color: var(--gold); margin-right: 3px; }
+.bi-name .bi-star { color: var(--orange-dark, #D85416); margin-right: 3px; }  /* 星號改深橘 */
 .bi-note {
   display: block;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--gray);
-  margin-top: 2px;
+  margin-top: 3px;
   font-weight: 400;
+  line-height: 1.5;
 }
 .bi-value-cell {
   text-align: right;
   white-space: nowrap;
 }
 .bi-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px;
-  color: var(--accent);
-  font-weight: 600;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  color: var(--navy);                          /* 改深藍, 不再用品牌色強調 */
+  font-weight: 700;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;          /* 等寬數字 */
+}
+.benefit-item.starred .bi-value {
+  color: var(--orange-dark, #D85416);          /* 主要保障才用橘色強調 */
 }
 .bi-value-note {
   font-family: 'Noto Sans TC', sans-serif;
@@ -1045,24 +1123,27 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   line-height: 1.4;
 }
 
-/* 跨商品累計(類型卡頭右側) v3.29:橫向排列、數字大、單位緊跟在後 */
+/* 跨商品累計(類型卡頭右側) v3.29 → 2026/05 改淡橘底降低視覺重量 */
 .type-total {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 6px 12px;
-  background: var(--navy);
-  border-radius: 8px;
-  color: white;
+  padding: 6px 14px;
+  background: #FFF4E6;                      /* 淡橘底取代黑底 */
+  border: 1px solid #FFD8A8;
+  border-radius: 6px;
+  color: var(--orange-dark, #B8470F);
   flex-shrink: 0;
   margin-left: auto;
 }
 .type-total .tt-label {
   font-size: 9.5px;
   letter-spacing: 1.5px;
-  opacity: 0.7;
-  margin-bottom: 1px;
+  opacity: 0.85;
+  margin-bottom: 2px;
   white-space: nowrap;
+  color: #8B5A2B;
+  font-weight: 600;
 }
 .type-total .tt-row {
   display: flex;
@@ -1071,16 +1152,17 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   white-space: nowrap;
 }
 .type-total .tt-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 26px;
-  color: var(--gold);
-  letter-spacing: 1px;
-  line-height: 1;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, sans-serif;
+  font-size: 22px;
+  color: var(--orange-dark, #B8470F);        /* 深橘 */
+  letter-spacing: 0;
+  line-height: 1.1;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 .type-total .tt-unit {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
+  font-size: 11.5px;
+  color: #8B5A2B;
   font-weight: 500;
 }
 
@@ -1206,79 +1288,254 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 .bm-hidden-list .benefit-item { font-size: 11px; opacity: 0.85; }
 
 /* ─────────── v3.30 簡易模式:理賠儀表板(摘要卡格)─────────── */
+/* ─────────── 2026/05 視覺重構:減少躁動、統一色調、加大留白 ─────────── */
 .benefits-simple-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 12px;
 }
+
+/* ── 5 大類分組外框 ── 統一淡灰底,左色條低調區分 ── */
+.benefits-main-cat {
+  background: #F7F9FB;
+  border-radius: 12px;
+  padding: 16px 18px 18px;
+  margin-bottom: 14px;
+  border: none;
+  border-left: 3px solid #B8C5D1;  /* 統一淡灰品牌色, 不再多彩 */
+  break-inside: avoid;             /* ★ Masonry: 大類不被切兩半 */
+  page-break-inside: avoid;
+}
+.benefits-main-cat .bmc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 0;
+  border-bottom: none;  /* 拿掉虛線 */
+}
+.benefits-main-cat .bmc-icon {
+  font-size: 22px;
+  line-height: 1;
+  opacity: 0.85;
+}
+.benefits-main-cat .bmc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 1.5px;
+}
+.benefits-main-cat .bmc-grid {
+  /* ★ 卡片密度提高: minmax 從 170px → 140px, 同寬度可塞更多卡 */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.benefits-main-cat .benefits-simple-card {
+  padding: 14px 10px 10px;       /* 卡片內距縮小 */
+  background: white;
+}
+
+/* 子組(住院醫療底下分實支實付型/定額型)— 用淡背景色塊代替純文字 */
+.benefits-main-cat .bmc-subsection { margin-top: 4px; }
+.benefits-main-cat .bmc-subsection + .bmc-subsection { margin-top: 16px; }
+.benefits-main-cat .bmc-subtitle {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6B7C8A;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  background: #E8EEF3;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* ─────────── 簡易卡片(整體重構)─────────── */
 .benefits-simple-card {
   position: relative;
   background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 14px 12px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 10px 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  transition: box-shadow 0.15s, border-color 0.15s;
+  gap: 3px;
+  box-shadow: 0 1px 3px rgba(20, 40, 60, 0.04);
+  transition: box-shadow 0.2s, transform 0.15s;
 }
 .benefits-simple-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(20, 40, 60, 0.08);
+  transform: translateY(-1px);
 }
-.benefits-simple-card.waiver {
-  background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
-  border-color: var(--orange-light);
-}
+
 .benefits-simple-card .bsc-icon {
-  font-size: 32px;
+  font-size: 22px;
   line-height: 1;
   margin-bottom: 2px;
+  opacity: 0.7;
 }
+
 .benefits-simple-card .bsc-title {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--navy);
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.benefits-simple-card .bsc-value {
+  font-family: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 19px;
+  color: var(--navy);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.benefits-simple-card.starred .bsc-value,
+.benefits-simple-card.is-primary .bsc-value {
+  color: var(--orange-dark, #D85416);
+}
+
+/* 「依條款」/ ✓ 文字樣式 — 比數字小、灰色,提示「需查條款」 */
+.benefits-simple-card .bsc-rule-text {
+  font-size: 14px;
+  color: #6B7785;
+  font-weight: 600;
   letter-spacing: 0.5px;
 }
-.benefits-simple-card .bsc-value {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  color: var(--accent);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 1px;
-  margin-top: 4px;
+.benefits-simple-card.starred .bsc-rule-text,
+.benefits-simple-card.is-primary .bsc-rule-text {
+  color: var(--orange-dark, #D85416);
+  opacity: 0.85;
 }
+
+/* Tooltip — 滑入卡片時顯示「組成明細」(限額/自負額/淨給付) */
+.benefits-simple-card.has-tooltip {
+  cursor: help;
+}
+.benefits-simple-card.has-tooltip::before {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 42, 58, 0.95);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  letter-spacing: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.benefits-simple-card.has-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(13, 42, 58, 0.95);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+}
+.benefits-simple-card.has-tooltip:hover::before,
+.benefits-simple-card.has-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+/* 卡片右上角小提示圖示 */
+.benefits-simple-card.has-tooltip {
+  position: relative;
+}
+.benefits-simple-card.has-tooltip > .bsc-icon::after {
+  content: 'ⓘ';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  color: #B8C5D1;
+  font-style: normal;
+  opacity: 0.7;
+}
+
 .benefits-simple-card .bsc-value-text {
   font-size: 11.5px;
   color: var(--navy);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-top: 6px;
 }
 .benefits-simple-card .bsc-sub {
   font-size: 10.5px;
   color: var(--gray);
-  line-height: 1.3;
+  line-height: 1.4;
 }
+
+/* 數字右邊的單位(inline) — 改深灰, 不搶眼 */
+.benefits-simple-card .bsc-unit-inline {
+  font-size: 12px;
+  color: #8895A2;
+  font-weight: 500;
+  margin-left: 3px;
+  letter-spacing: 0;
+  font-family: inherit;
+}
+.benefits-simple-card .bsc-count {
+  font-size: 10px;
+  color: #A8B2BC;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* 公司標籤(全球/宏泰等):改低調淡灰風格, 不再搶眼; 左邊保留小色點作為公司辨識 */
 .benefits-simple-card .bsc-comps {
   display: flex;
   gap: 3px;
-  margin-top: 6px;
+  margin-top: 8px;
   flex-wrap: wrap;
   justify-content: center;
 }
 .benefits-simple-card .bsc-comp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px 2px 6px;
+  border-radius: 3px;
+  color: #6B7C8A !important;                        /* 改深淡灰字 */
+  background: #F2F5F8 !important;                   /* 改淡灰底, 蓋掉 inline style 公司色 */
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+/* 左邊用偽元素小色點顯示原公司色 (CSS 變數 --company-color 由 JS 設) */
+.benefits-simple-card .bsc-comp-chip::before {
+  content: '';
   display: inline-block;
-  padding: 1px 7px;
-  border-radius: 8px;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--company-color, #B8C5D1);
+}
+
+/* 豁免卡保留淡橘背景, 但縮一點 */
+.benefits-simple-card.waiver {
+  background: linear-gradient(180deg, #fffaf3 0%, #ffffff 100%);
 }
 
 /* ─────────── 響應式設計 ─────────── */
@@ -2113,9 +2370,8 @@ tr
 
   /* 走勢圖列印時的額外輸出 */
   .chart-print-extra {
-    margin-top: 16px;
-    page-break-inside: avoid;
-    break-inside: avoid;
+    /* ★ 2026/05: 列印時隱藏「依公司分」「依商品分」, 只保留總保費 */
+    display: none !important;
   }
   .chart-print-title {
     font-size: 12pt;
@@ -2406,17 +2662,143 @@ tr
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  /* 列印時把要保人/被保險人壓縮、移除中間圓圈 */
-  .relation-arrow {
-    width: 80px !important;
-    height: 80px !important;
-    padding: 6px !important;
+  /* 列印改用簡潔的表格式呈現 — 把粉紅圓圈拆掉、被保人/要保人並排 */
+  #personCard .person-flow {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    gap: 14px !important;
+    align-items: stretch !important;
   }
+  /* 列印時把要保人/被保險人壓縮 */
   .person-card { padding: 8px 12px !important; }
-  .person-card-title { font-size: 10pt !important; }
+  .person-card-title { font-size: 10pt !important; padding: 4px 10px !important; }
+  /* 圓圈關係:列印時改成方塊文字 */
+  .relation-arrow {
+    width: auto !important;
+    height: auto !important;
+    min-width: 90px !important;
+    border-radius: 6px !important;
+    background: #fef0f0 !important;
+    border: 1px solid #f5d8d8 !important;
+    padding: 8px 10px !important;
+    align-self: center !important;
+  }
+  .relation-arrow .ra-label {
+    font-size: 9pt !important;
+    margin-bottom: 4px !important;
+    color: #0D2A3A !important;
+  }
+  .relation-arrow select {
+    font-size: 10pt !important;
+    padding: 2px 4px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #0D2A3A !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+  /* 沒有要保人時,圓圈跟要保人卡都不顯示 */
+  #proposerCard[style*="none"] { display: none !important; }
+  #proposerCard[style*="none"] ~ .relation-arrow,
+  #personCard:has(#proposerCard[style*="none"]) .relation-arrow {
+    display: none !important;
+  }
+  /* 沒要保人時被保險人占滿一整行 */
+  #personCard:has(#proposerCard[style*="none"]) .person-flow {
+    grid-template-columns: 1fr !important;
+  }
+  /* form 內排版緊湊 */
+  .person-card form { gap: 4px !important; margin-top: 2px !important; }
+  .person-card .form-row {
+    grid-template-columns: 60px 1fr !important;
+    gap: 6px !important;
+  }
+  .person-card .form-label { font-size: 9pt !important; }
+  .person-card .form-control { font-size: 10pt !important; padding: 2px 4px !important; }
 
   /* ──────── 試算結果卡 ──────── */
   #resultCard {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  /* ★ 列印時表格 wrapper 不要橫向 scroll, 完整顯示, 並佔滿頁寬 */
+  #resultCard > div[style*="overflow-x"] {
+    overflow: visible !important;
+    width: 100% !important;
+  }
+  /* 列印時表格寬度填滿 */
+  #resultCard .result-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+  /* notice-text 不要被頁尾切斷, 緊跟在表格下 */
+  #resultCard .notice-text {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    font-size: 8.5pt !important;
+    margin-top: 6px !important;
+    line-height: 1.5 !important;
+  }
+  /* tfoot 應繳保費合計 — 確保不被截斷, 文字大小縮小避免溢位 */
+  .result-table tfoot {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .result-table tfoot tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  /* 「複製給客戶」按鈕列印時隱藏 */
+  #copySummaryBtn { display: none !important; }
+  /* 分期係數註解列印時也隱藏(空間有限) */
+  .sb-mode-note { display: none !important; }
+
+  /* ★ 2026/05: summary-bar 列印優化 — 半年/季/月繳堆疊、縮小、靠右 */
+  .summary-bar {
+    padding: 10px 14px !important;
+    align-items: flex-start !important;
+  }
+  .summary-bar .sb-label { font-size: 11pt !important; }
+  .summary-bar .sb-value { font-size: 22pt !important; margin-top: 2px !important; }
+  .summary-bar .sb-value #totalAnnual { font-size: 22pt !important; }
+  .summary-bar .sb-value .sb-yuan { font-size: 14pt !important; }
+  /* 半年/季/月繳區塊改成直向堆疊在右上角 */
+  .summary-bar .sb-mode {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    font-size: 8.5pt !important;
+    align-items: flex-end !important;
+  }
+  .summary-bar .sb-mode-item {
+    padding: 2px 8px !important;
+    min-width: 0 !important;
+    width: auto !important;
+    background: rgba(255,255,255,0.18) !important;
+    border-radius: 3px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+  }
+  .summary-bar .sb-mode-item .v {
+    font-size: 9pt !important;
+    margin-left: 4px !important;
+  }
+
+  /* ──────── 建議保障內容(理賠項目一覽)─ 列印時從新頁開始 ──────── */
+  /* 大區塊前強制換頁, 不要被前面的卡片切斷 */
+  #benefitsCard {
+    page-break-before: always !important;
+    break-before: page !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+  /* 5 大類分組外框 — 每個大類盡量不切斷 */
+  .benefits-main-cat {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
@@ -2523,6 +2905,14 @@ tr
 /* ── Responsive ── */
 /* 舊的 900px 規則已被上方新的響應式取代 */
 </style>
+
+<!-- v3_21: 共用純函式 (classifyItem / categorize5 / evalCalc / convertProductClaims) -->
+<!--        改動條款邏輯時請同步驗證 compare.html 也正常 -->
+<script src="shared.js"></script>
+
+<!-- v3_22 enhancements -->
+<link rel="stylesheet" href="enhancements.css">
+<script src="enhancements.js" defer></script>
 </head>
 <body>
 
@@ -2537,6 +2927,7 @@ tr
       </div>
     </div>
     <div class="toolbar-right">
+      <a class="tb-btn" href="compare.html">📊 險種比較</a>
       <button class="tb-btn primary" onclick="window.print()">🖨️ 列印</button>
       <button class="tb-btn success" onclick="App.exportPDF()">📄 PDF</button>
     </div>
@@ -2839,7 +3230,8 @@ tr
           <button class="chart-toggle" data-mode="byProduct">依商品分</button>
           <span class="cc-divider"></span>
           <span class="cc-label">期間:</span>
-          <button class="chart-range-toggle active" data-range="30">未來 30 年</button>
+          <button class="chart-range-toggle active" data-range="20">未來 20 年</button>
+          <button class="chart-range-toggle" data-range="30">未來 30 年</button>
           <button class="chart-range-toggle" data-range="60">未來 60 年</button>
           <span style="margin-left:auto;font-size:11px;color:var(--gray);">📌 主約期滿後不繳費,附約逐年依年齡計算</span>
         </div>
@@ -2895,6 +3287,8 @@ tr
         </div>
       </div>
       <div class="card-body">
+        <!-- 公司篩選器 (依使用者選擇的公司動態產生 — renderBenefitsCompanyFilter) -->
+        <div class="benefits-company-filter no-print" id="benefitsCompanyFilter" style="display:none;"></div>
         <div style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.6;">
           📌 以下保障項目金額依您所選的保額自動計算。⭐ 為主要保障項目。實際給付以契約條款為準。
         </div>
@@ -3191,137 +3585,22 @@ const INSURANCE_DB = {
   //   plan     → 依計畫別查表 planMap
   //   unit     → 單位數 × perUnit
   //   note     → 純文字說明
-  benefitsLib: {
-    "DCF": {
-      title: "重大傷病終身保障",
-      icon: "🛡️",
-      highlights: ["重大傷病一次金保障 300+ 項疾病", "保障終身，期滿仍可領祝壽金"],
-      items: [
-        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "第二保單年度起，首年按 20%" },
-        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元" },
-        { name: "加倍關懷住院保險金", calc: { type: "ratioWan", ratio: 0.01 }, unit: "元/天", note: "同次住院 5 日(含)以上，每年最多 5 次" },
-        { name: "祝壽保險金", calc: { type: "note", text: "滿期日當時保險金額(或保費總和×1.02)" } }
-      ]
-    },
-    "XTK": {
-      title: "定期壽險(身故/失能保障)",
-      icon: "👨‍👩‍👧",
-      highlights: ["提供身故/喪葬費用保險金，符合 15 歲以下喪葬費 69 萬限額規範"],
-      items: [
-        { name: "身故/喪葬費用保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
-        { name: "完全失能保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元" }
-      ]
-    },
-    "XDE": {
-      title: "重大傷病一次金",
-      icon: "💼",
-      highlights: ["持健保重大傷病卡即可申請，300+ 項疾病涵蓋"],
-      items: [
-        { name: "重大傷病保險金", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true },
-        { name: "特定重大傷病保險金", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "另加給，共可領 120% 保額" }
-      ]
-    },
-    "XHD": {
-      title: "實支實付醫療(雜費型)",
-      icon: "🏥",
-      highlights: ["住院雜費收據實報實銷，門診手術涵蓋 145 項處置"],
-      items: [
-        { name: "日額保險金/病房費(每日)", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "計劃五": 5000 } }, unit: "元/天" },
-        { name: "加護病房病房費(每日)", calc: { type: "plan", planMap: { "計劃一": 2000, "計劃二": 4000, "計劃三": 6000, "計劃四": 8000, "計劃五": 10000 } }, unit: "元/天" },
-        { name: "住院醫療特定費用(雜費)", calc: { type: "plan", planMap: { "計劃一": 100000, "計劃二": 200000, "計劃三": 300000, "計劃四": 400000, "計劃五": 500000 } }, unit: "元/次", star: true },
-        { name: "加護病房雜費限額", calc: { type: "plan", planMap: { "計劃一": 200000, "計劃二": 400000, "計劃三": 600000, "計劃四": 800000, "計劃五": 1000000 } }, unit: "元/次" },
-        { name: "門診手術或門診特定診療", calc: { type: "plan", planMap: { "計劃一": 30000, "計劃二": 60000, "計劃三": 90000, "計劃四": 120000, "計劃五": 150000 } }, unit: "元/次", note: "同年度最多 8 次" },
-        { name: "特定醫材補助保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" },
-        { name: "重大手術慰問保險金", calc: { type: "plan", planMap: { "計劃一": 10000, "計劃二": 20000, "計劃三": 30000, "計劃四": 40000, "計劃五": 50000 } }, unit: "元", note: "同年度最多 3 次" }
-      ]
-    },
-    "NIR": {
-      title: "健康保險附約(定額醫療)",
-      icon: "💊",
-      highlights: ["住院日額補貼，連續未理賠保額自動增值最高 50%"],
-      items: [
-        { name: "住院日額保險金", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 365 日", star: true },
-        { name: "加護病房日額補助", calc: { type: "plan", planMap: { "計劃一": 1000, "計劃二": 2000, "計劃三": 3000, "計劃四": 4000, "HI-30": 3000 } }, unit: "元/天", note: "最高 30 日" },
-        { name: "外科手術定額", calc: { type: "plan", planMap: { "計劃一": 7500, "計劃二": 15000, "計劃三": 22500, "計劃四": 30000, "HI-30": 30000 } }, unit: "元", note: "同次住院最高 3 倍" },
-        { name: "重大手術額外金", calc: { type: "plan", planMap: { "計劃一": 7500, "計劃二": 15000, "計劃三": 22500, "計劃四": 30000, "HI-30": 30000 } }, unit: "元", note: "手術項目基數超 200% 時加給" },
-        { name: "住院雜費補助(每日)", calc: { type: "plan", planMap: { "計劃一": 500, "計劃二": 1000, "計劃三": 1500, "計劃四": 2000, "HI-30": 2000 } }, unit: "元/天", note: "最高 30 日" },
-        { name: "健康增值(連續 5 年未理賠)", calc: { type: "note", text: "保額自動增加 50%(每 2 年起階段增值)" }, star: true },
-        { name: "保險費豁免", calc: { type: "note", text: "因疾病或意外失能時免繳保費" } }
-      ]
-    },
-    "XHO": {
-      title: "自負額實支實付(住院升等)",
-      icon: "🏨",
-      highlights: ["搭配主實支：住院 50 萬雜費，門診 6 萬手術"],
-      items: [
-        { name: "每日病房費限額", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 2000, "計劃3": 3000, "計劃4": 4000, "計劃4A": 4000, "計劃5": 5000 } }, unit: "元/天", note: "自負 1,000 元" },
-        { name: "加護病房病房費限額", calc: { type: "plan", planMap: { "計劃1": 2000, "計劃2": 4000, "計劃3": 6000, "計劃4": 8000, "計劃4A": 8000, "計劃5": 10000 } }, unit: "元/天" },
-        { name: "住院醫療特定費用", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 200000, "計劃3": 300000, "計劃4": 400000, "計劃4A": 400000, "計劃5": 500000 } }, unit: "元/次", star: true, note: "自負 10 萬" },
-        { name: "加護病房雜費限額", calc: { type: "plan", planMap: { "計劃1": 200000, "計劃2": 400000, "計劃3": 600000, "計劃4": 800000, "計劃4A": 800000, "計劃5": 1000000 } }, unit: "元/次" },
-        { name: "門診手術費限額", calc: { type: "plan", planMap: { "計劃1": 7500, "計劃2": 15000, "計劃3": 22500, "計劃4": 30000, "計劃4A": 30000, "計劃5": 37500 } }, unit: "元/次", note: "同年度最多 10 次" },
-        { name: "住院照護保險金(每日)", calc: { type: "plan", planMap: { "計劃1": 500, "計劃2": 1000, "計劃3": 1500, "計劃4": 2000, "計劃4A": 1000, "計劃5": 2500 } }, unit: "元/天" }
-      ]
-    },
-    "XCF": {
-      title: "癌症一次金",
-      icon: "🎗️",
-      highlights: ["初次罹癌一次給付，治療方式可彈性運用"],
-      items: [
-        { name: "初次罹患低侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 0.2 }, unit: "元", note: "首年減半" },
-        { name: "初次罹患侵襲性癌症 (續年)", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "首年減半" },
-        { name: "初次罹患特定部位癌症 (續年)", calc: { type: "ratioWan", ratio: 0.5 }, unit: "元", note: "胃/結腸/肝/胰/肺/腦癌" }
-      ]
-    },
-    "XCG": {
-      title: "癌症療程型(住院/手術/化放療)",
-      icon: "💉",
-      highlights: ["癌症住院、手術、化放療、標靶按次給付"],
-      items: [
-        { name: "癌症住院醫療(每日)", calc: { type: "unit", perUnit: 1000 }, unit: "元/天", note: "同次住院最多 180 日" },
-        { name: "癌症住院照護(每日)", calc: { type: "unit", perUnit: 1000 }, unit: "元/天", note: "同次住院最多 60 日" },
-        { name: "癌症住院手術金", calc: { type: "unit", perUnit: 30000 }, unit: "元", star: true, note: "同年度最多 5 次" },
-        { name: "癌症門診手術金", calc: { type: "unit", perUnit: 3000 }, unit: "元", note: "同年度最多 10 次" },
-        { name: "癌症化學/放射線治療(每次)", calc: { type: "unit", perUnit: 1000 }, unit: "元" },
-        { name: "骨髓移植手術", calc: { type: "unit", perUnit: 100000 }, unit: "元", note: "終身 1 次" },
-        { name: "義乳重建手術", calc: { type: "unit", perUnit: 30000 }, unit: "元", note: "每側終身 1 次" },
-        { name: "癌症標靶治療", calc: { type: "unit", perUnit: 100000 }, unit: "元", star: true, note: "每單位終身 10 萬上限" }
-      ]
-    },
-    "XAB": {
-      title: "意外傷害險",
-      icon: "🚑",
-      highlights: ["意外身故、失能(殘廢)、重大燒燙傷"],
-      items: [
-        { name: "意外身故/喪葬費用", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", note: "滿 16 歲後生效" },
-        { name: "意外失能保險金 (最高)", calc: { type: "ratioWan", ratio: 1.0 }, unit: "元", star: true, note: "依失能比例給付" },
-        { name: "重大燒燙傷保險金", calc: { type: "ratioWan", ratio: 0.25 }, unit: "元" }
-      ]
-    },
-    "XMBN": {
-      title: "意外醫療(實支+日額)",
-      icon: "🩹",
-      highlights: ["意外住院日額 + 醫療收據實支實付"],
-      items: [
-        { name: "傷害住院日額(每日)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", star: true, note: "最高 90 日" },
-        { name: "加護病房/燒燙傷中心(每日加計)", calc: { type: "ratio", ratio: 0.05 }, unit: "元/天", note: "最高 30 日" },
-        { name: "傷害醫療保險金(每次最高)", calc: { type: "ratio", ratio: 1.0 }, unit: "元", note: "實支實付" },
-        { name: "加護病房/燒燙傷醫療金(每次)", calc: { type: "ratio", ratio: 2.0 }, unit: "元", note: "提高為 2 倍" }
-      ]
-    }
-  }
+  benefitsLib: null   // v3_21: loaded via fetch in loadInsuranceData()
 };
 
 async function loadInsuranceData() {
-  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json'];
+  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json', 'benefitsLib.json'];
   const results = await Promise.all(files.map(async (f) => {
     const res = await fetch(f);
     if (!res.ok) throw new Error('Failed to load ' + f + ': ' + res.status + ' ' + res.statusText);
     return res.json();
   }));
-  const [transglobe, hontai, skl, fglife, fubon] = results;
+  const [transglobe, hontai, skl, fglife, fubon, benefitsLib] = results;
 
   // Companies in original order: quanqiu, hongtai, xinguang, farglory, fubon
   INSURANCE_DB.companies.push(transglobe, hontai, skl, fglife, fubon);
+  // v3_21: benefitsLib 改成 fetch 載入 (原本內嵌在 HTML)
+  INSURANCE_DB.benefitsLib = benefitsLib;
 }
 
 </script>
@@ -3341,6 +3620,7 @@ const App = (() => {
     lastAge: null,    // 最近一次 recompute 時的保險年齡(用於商品列表顯示超齡警告)
     lastJob: 1,       // 最近一次的職業等級(核保用)
     benefitsMode: 'simple',   // 'simple' | 'detail' — 理賠卡片顯示模式
+    benefitsCompanyFilter: 'all',   // 'all' | companyId — 理賠卡片公司篩選 (詳細/簡易模式皆適用)
     // ── 責任曲線調整 ──
     curve: {
       enabled: false,           // 是否啟用
@@ -3682,10 +3962,65 @@ const App = (() => {
       }
     }
 
+    // === 3) 未滿 15 歲身故金額累計檢查 (《保險法》第 107 條 — 法定上限 69 萬) ===
+    // 計算所有含「身故/喪葬」給付項目的累計金額(壽險、意外險都算)
+    if (age < 15) {
+      const lib = db.benefitsLib || {};
+      let deathTotal = 0;
+      const deathProducts = [];
+      Object.entries(selections).forEach(([cid, sel]) => {
+        const c = db.companies.find(co => co.id === cid);
+        if (!c) return;
+        const collect = (sel_item, productList) => {
+          if (!sel_item) return;
+          const p = productList.find(p => p.code === sel_item.code);
+          if (!p) return;
+          // XAB 類「滿 16 歲後生效」的不算入
+          if (p.code === 'XAB') return;
+          const benefitData = lib[p.code];
+          if (!benefitData || !benefitData.items) return;
+          // 找含「身故/喪葬」字眼的 item
+          benefitData.items.forEach(item => {
+            const text = String(item.name || '') + ' ' + String(item.note || '');
+            if (!/喪葬|身故/.test(text)) return;
+            // 用 ratio 估算金額
+            const amt = parseFloat(sel_item.amount) || 0;
+            if (item.calc && item.calc.type === 'ratioWan' && amt > 0) {
+              const value = amt * 10000 * item.calc.ratio;
+              deathTotal += value;
+              deathProducts.push(`${p.code}(${item.name})`);
+            } else if (item.calc && item.calc.type === 'plan' && item.calc.planMap) {
+              const value = item.calc.planMap[sel_item.amount] || 0;
+              if (value > 0) {
+                deathTotal += value;
+                deathProducts.push(`${p.code}(${item.name})`);
+              }
+            }
+          });
+        };
+        if (sel.main) collect(sel.main, c.mainProducts);
+        sel.riders.forEach(r => collect(r, c.riderProducts));
+      });
+
+      if (deathTotal > 690000) {
+        issues.push({
+          type: 'minor_death_limit',
+          severity: 'block',
+          msg: `🚫 未滿 15 歲身故金額累計 ${deathTotal.toLocaleString()} 元,超過《保險法》第 107 條法定上限 690,000 元`,
+          detail: `已選商品身故給付:${deathProducts.join('、')}|請降低保額或刪除部分商品`
+        });
+      } else if (deathTotal > 690000 * 0.8) {
+        issues.push({
+          type: 'minor_death_warn',
+          severity: 'warn',
+          msg: `⚠️ 未滿 15 歲身故金額累計 ${deathTotal.toLocaleString()} 元,接近《保險法》107 條上限 690,000 元`,
+          detail: `已選商品身故給付:${deathProducts.join('、')}`
+        });
+      }
+    }
+
     return issues;
   }
-
-  /** 是否有 block 等級的違規 */
   function hasBlockingIssue(product, age, jobLevel, period, amount) {
     return underwriteCheck(product, age, jobLevel, period, amount).some(i => i.severity === 'block');
   }
@@ -4939,7 +5274,7 @@ const App = (() => {
 
   // ── 走勢圖 ──
   let chartMode = 'total';
-  let chartYears = 30;  // 預設未來 30 年,可切換到 60
+  let chartYears = 20;  // 預設未來 20 年,可切換到 30 / 60
   let inflationEnabled = false;
   let inflationRate = 2.0;  // 預設 2%(央行政策目標 + 接近近 10 年實際)
 
@@ -5617,95 +5952,105 @@ const App = (() => {
   }
 
   // ── 理賠項目卡片 ──
-  /** 把 product.claims 結構轉成 benefitsLib 期待的格式 */
-  function convertProductClaims(product) {
-    if (!product.claims || !Array.isArray(product.claims.items)) return null;
-    const items = product.claims.items.map(it => {
-      // it.calc.type 可能是: 'ratio'(乘以保額元數)、'ratioWan'(乘以保額萬)、
-      //                     'plan'(計畫對應金額)、'unit'(單位 × perUnit)、'note'(純文字)
-      // 大部分宏泰商品保額單位是「萬元」(amountUnit='萬元'),理賠金額計算時要乘 10000
-      // 但 WRA/WRB 保額已是「元」(amountUnit='元'),不再乘 10000
-      // 為了讓 calcBenefitValue 正確,我們把「ratio」根據商品 amountUnit 自動分流:
-      //   amountUnit === '元'  → 保留 ratio(直接乘元)
-      //   amountUnit === '萬元' → 改成 ratioWan(乘 10000 後再乘 ratio)
-      let calc = it.calc;
-      if (calc && calc.type === 'ratio') {
-        if (product.amountUnit === '萬元' || product.amountUnit === '萬') {
-          // 保額是萬,改用 ratioWan
-          calc = { type: 'ratioWan', ratio: calc.ratio };
-        }
-        // 否則保留(amountUnit='元' 時直接 ratio)
-      }
-      return { name: it.name, calc, unit: it.unit, note: it.note };
-    });
-    return { title: product.claims.title || '理賠項目', items };
-  }
+  // v3_21: convertProductClaims / calcBenefitValue 已移至 shared.js (window.AHShared)
+  //        以下為 alias, 保持原 IIFE 內所有呼叫處不變
+  const convertProductClaims = window.AHShared.convertProductClaims;
+  const calcBenefitValue = window.AHShared.calcBenefitValue;
 
-  /** 計算單項理賠金額 */
-  function calcBenefitValue(item, product, amount) {
-    const calc = item.calc;
-    if (!calc) return null;
-    if (calc.type === 'note') {
-      return { type: 'text', text: calc.text };
+  /**
+   * 公司篩選器 — 依「使用者實際選擇的公司」動態產生 pill 按鈕
+   * 只計入「非豁免、有 rows」的公司;若僅 1 家公司則隱藏整列(沒必要篩選)
+   */
+  function renderBenefitsCompanyFilter(rows) {
+    const bar = document.getElementById('benefitsCompanyFilter');
+    if (!bar) return;
+
+    // 收集每家公司在當前 rows 中的項目數(只算非豁免)
+    const counts = {};   // cid → count
+    const order = [];    // 維持出現順序
+    rows.forEach(r => {
+      if (r.isWaiver) return;
+      const cid = r.companyId;
+      if (!cid) return;
+      if (counts[cid] === undefined) { counts[cid] = 0; order.push(cid); }
+      counts[cid]++;
+    });
+
+    // 0 或 1 家 → 隱藏(沒篩選意義)
+    if (order.length < 2) {
+      bar.style.display = 'none';
+      bar.innerHTML = '';
+      // 重設篩選為 all,避免 stale state
+      if (state.benefitsCompanyFilter !== 'all') state.benefitsCompanyFilter = 'all';
+      return;
     }
-    if (calc.type === 'plan') {
-      // 計畫別:planMap[amount] 直接是金額
-      const v = calc.planMap[amount];
-      return v != null ? { type: 'num', val: v } : null;
+
+    // 若目前選中的公司不在列表中,重設為 all
+    if (state.benefitsCompanyFilter !== 'all' && !order.includes(state.benefitsCompanyFilter)) {
+      state.benefitsCompanyFilter = 'all';
     }
-    if (calc.type === 'unit') {
-      // 單位數 × perUnit
-      const numAmount = parseFloat(amount) || 0;
-      return { type: 'num', val: numAmount * calc.perUnit };
-    }
-    if (calc.type === 'ratioWan') {
-      // (保額×10000) × ratio
-      const numAmount = parseFloat(amount) || 0;
-      return { type: 'num', val: numAmount * 10000 * calc.ratio };
-    }
-    if (calc.type === 'ratio') {
-      // 保額(已是元) × ratio
-      const numAmount = parseFloat(amount) || 0;
-      return { type: 'num', val: numAmount * calc.ratio };
-    }
-    return null;
+
+    // 組 HTML
+    const totalCount = order.reduce((s, cid) => s + counts[cid], 0);
+    const activeCid = state.benefitsCompanyFilter;
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    let html = `<span class="bcf-label">📍 篩選公司</span>`;
+    html += `<button type="button" class="bcf-btn ${activeCid === 'all' ? 'active' : ''}" data-cid="all">
+      全部 <span class="bcf-count">(${order.length} 家)</span>
+    </button>`;
+    order.forEach(cid => {
+      const co = state.db.companies.find(c => c.id === cid) || { name: cid, shortName: cid, color: '#888' };
+      const isActive = activeCid === cid;
+      html += `<button type="button" class="bcf-btn ${isActive ? 'active' : ''}" data-cid="${escapeHtml(cid)}">
+        <span class="bcf-dot" style="background:${escapeHtml(co.color || '#888')};"></span>
+        ${escapeHtml(co.shortName || co.name || cid)}
+      </button>`;
+    });
+
+    bar.innerHTML = html;
+    bar.style.display = '';
   }
 
   function renderBenefits(rows) {
     const wrap = $('#benefitsCard');
     const sec = $('#benefitsSection');
     if (!wrap || !sec) return;
-    if (rows.length === 0) { wrap.style.display = 'none'; return; }
+    if (rows.length === 0) {
+      wrap.style.display = 'none';
+      // 同時清空篩選器(避免下次有資料時殘留)
+      const bar = document.getElementById('benefitsCompanyFilter');
+      if (bar) { bar.style.display = 'none'; bar.innerHTML = ''; }
+      return;
+    }
     const lib = state.db.benefitsLib || {};
+
+    // ── 公司篩選器 (2026/05 新增) ──
+    // 依「使用者選擇的公司」動態渲染篩選按鈕,僅當有選擇 ≥2 家公司時才顯示
+    // 點擊單一公司 → 該模式下只顯示該公司的理賠卡片;點擊「全部」→ 跨公司整合呈現(原行為)
+    renderBenefitsCompanyFilter(rows);
+
+    // 套用篩選 — 注意:篩選器 UI 仍顯示所有選擇的公司,但 rows 在此被篩選
+    const filterCid = state.benefitsCompanyFilter;
+    if (filterCid && filterCid !== 'all') {
+      rows = rows.filter(r => r.companyId === filterCid);
+      if (rows.length === 0) {
+        // 該公司被篩掉所有 rows(理論上不會,但防呆),顯示空狀態
+        sec.innerHTML = `<div class="benefit-card"><div class="benefit-card-body" style="color:var(--gray);font-size:12px;text-align:center;padding:24px;">
+          所選公司沒有理賠資料。
+        </div></div>`;
+        wrap.style.display = '';
+        return;
+      }
+    }
 
     // ── 任務D(v3.27):跨公司按類型整合 ──
     // 1) 第一個區塊:每類型一張卡,內含所有公司+商品的相關理賠
     // 2) 豁免保費附約獨立顯示在最後
     const ins = getCurrentInsured();
 
-    // 分類函式(沿用既有邏輯)
-    const classifyItem = (it) => {
-      const name = String(it.name || '');
-      const note = String(it.note || '');
-      const text = name + ' ' + note;
-      if (/豁免/.test(text)) return { key: 'waiver', icon: '🛡️', title: '豁免保費' };
-      if (/重大燒燙傷|燒燙傷.*保險金/.test(text)) return { key: 'burn', icon: '🔥', title: '重大燒燙傷' };
-      if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折定額' };
-      if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '重大器官 / 移植' };
-      if (/重大傷病|癌症|罹癌|罹患/.test(text)) return { key: 'critical', icon: '🎗️', title: '重大傷病 / 癌症' };
-      if (/喪葬|身故/.test(text)) return { key: 'death', icon: '🕊️', title: '身故 / 喪葬' };
-      if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
-      if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
-      if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      if (/加護|燒燙傷.*日額|燒燙傷中心/.test(text) && /日額|每日/.test(text)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
-      if (/(住院|每日|日額).*保險金|住院.*日額/.test(text) && !/手術|處置|門診|實支/.test(text)) return { key: 'daily', icon: '🏥', title: '住院日額' };
-      if (/實支|病房費用|住院醫療費用|住院.*醫療.*費/.test(text)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
-      if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '門診手術' };
-      if (/特定處置/.test(text)) return { key: 'special', icon: '⚙️', title: '特定處置' };
-      if (/手術/.test(text)) return { key: 'surgery', icon: '🔪', title: '住院手術' };
-      if (/門診/.test(text)) return { key: 'opd', icon: '🏨', title: '門診' };
-      return { key: 'other', icon: '📋', title: '其他給付' };
-    };
+    // v3_21: classifyItem 已移至 shared.js (window.AHShared.classifyItem)
+    const classifyItem = window.AHShared.classifyItem;
 
     // 類型顯示順序(從客戶最關心的往下)
     const TYPE_ORDER = [
@@ -5742,102 +6087,332 @@ const App = (() => {
     let html = '';
 
     // ── v3.30 簡易模式:類型儀表板(摘要式)──
+    // ── 2026/05 改:4 大類分組(人身/醫療/重大傷病癌症/意外醫療)──
     if (state.benefitsMode === 'simple') {
-      // 為每個類型計算「最高代表值」與「值範圍」(min~max)
-      const summaryCards = [];
-      TYPE_ORDER.forEach(key => {
-        const g = groups[key];
-        if (!g || g.items.length === 0) return;
+      // 把 product.category 字串 → 4 大類 + 子分類
+      // ★ 重點: 壽險+意外身故失能 合併到「人身/失能保障」, 但用 subTitle 區分
+      //         重大傷病+癌症 合併到「重大傷病/癌症」, 但用 subTitle 區分
+      // v3_21: categorize5 已移至 shared.js (window.AHShared.categorize5)
+      const categorize5 = window.AHShared.categorize5;
 
-        // 每商品取最高一筆當代表(同類型內)
-        const perRowMax = new Map();
-        g.items.forEach(x => {
-          if (x.result && x.result.type === 'num') {
-            const cur = perRowMax.get(x.row);
-            if (!cur || x.result.val > cur.val) {
-              perRowMax.set(x.row, { val: x.result.val, unit: x.item.unit || '' });
-            }
-          }
-        });
-        const numVals = [...perRowMax.values()];
+      // 5 大類顯示順序與 icon
+      const MAIN_CATEGORIES = [
+        { key: 'life',     title: '人身/失能保障', icon: '🛡️', color: '#5C6BC0' },
+        { key: 'medical',  title: '住院醫療',      icon: '🏥', color: '#26A69A' },
+        { key: 'critical', title: '重大傷病',      icon: '🎗️', color: '#EF5350' },
+        { key: 'cancer',   title: '癌症險',        icon: '🌸', color: '#EC407A' },
+        { key: 'accident', title: '意外醫療',      icon: '⚡', color: '#FFA726' },
+      ];
 
-        // 列出涉及的公司
-        const cidSet = new Set();
-        g.items.forEach(x => cidSet.add(x.row.companyId));
+      // 大類分組:mainKey → { subKey: [{ row, items[], maxByItem }] }
+      // 對每個 row 算它在每張小卡(classifyItem 細分後)的最高給付,然後把 row 歸到 5 大類
+      // 同 row 同 mainKey 的多筆給付彙總顯示
+      const mainGroups = {};  // mainKey → [{ row, mainTitle, subTitle, items: [{cls, value, unit}] }]
 
-        // 互斥型(失能/脫臼/燒燙傷):顯示「最高 X」
-        // 累積型(身故/重大傷病/實支等):顯示「累計 X」
-        const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
-        let displayText = '', subText = '';
-        if (numVals.length > 0) {
-          const sameUnit = numVals.every(v => v.unit === numVals[0].unit);
-          const unit = sameUnit ? numVals[0].unit : '';
-          if (NO_TOTAL_KEYS.has(key) || numVals.length === 1) {
-            // 顯示最高一筆
-            const max = Math.max(...numVals.map(v => v.val));
-            displayText = max.toLocaleString();
-            subText = unit;
-            if (numVals.length > 1) subText += ` (最高,共 ${numVals.length} 筆)`;
-          } else if (sameUnit && /^元(\/[次日年])?$/.test(unit)) {
-            // 累計
-            const sum = numVals.reduce((s, v) => s + v.val, 0);
-            displayText = sum.toLocaleString();
-            subText = `${unit} (累計 ${numVals.length} 筆)`;
-          } else {
-            const max = Math.max(...numVals.map(v => v.val));
-            displayText = max.toLocaleString();
-            subText = unit;
-          }
-        } else {
-          // 沒有金額型(全是 note 文字)
-          displayText = '✓';
-          subText = `${g.items.length} 項說明`;
-        }
-
-        summaryCards.push({
-          meta: g.meta,
-          displayText, subText,
-          itemCount: g.items.length,
-          companies: [...cidSet]
+      // 先按 row 收集
+      const rowToInfo = new Map();   // row → { mainKey, mainTitle, subTitle }
+      const rowToItems = new Map();  // row → [{ cls, value, unit, itemName }]
+      rows.forEach(r => {
+        const benefitData = lib[r.product.code] || convertProductClaims(r.product);
+        if (!benefitData || !benefitData.items) return;
+        const meta = categorize5(r.product);
+        rowToInfo.set(r, meta);
+        rowToItems.set(r, []);
+        benefitData.items.forEach(item => {
+          const cls = classifyItem(item);
+          // 這 item 的計算結果
+          const result = calcBenefitValue(item, r.product, r.amount);
+          rowToItems.get(r).push({ cls, item, result });
         });
       });
 
-      if (summaryCards.length === 0) {
+      // 依 mainKey 分組(★ disability 項目強制歸到 accident 大類,壽險不應有失能)
+      const mainData = {};  // mainKey → { rows: [], totalsByCls, allItems, cidSet }
+      rowToInfo.forEach((meta, r) => {
+        if (!mainData[meta.mainKey]) {
+          mainData[meta.mainKey] = {
+            mainTitle: meta.mainTitle,
+            rows: [],
+            allItems: [],
+            cidSet: new Set(),
+          };
+        }
+        mainData[meta.mainKey].rows.push({ row: r, subTitle: meta.subTitle });
+        mainData[meta.mainKey].cidSet.add(r.companyId);
+      });
+      // 確保 accident 大類存在 (即使沒有 row.product.category 是意外, 還是可能有 disability item 要歸進來)
+      const ensureMain = (key, title) => {
+        if (!mainData[key]) {
+          mainData[key] = { mainTitle: title, rows: [], allItems: [], cidSet: new Set() };
+        }
+        return mainData[key];
+      };
+
+      // 把 item 分發到正確的 mainKey
+      const insuredAge = (ins && ins.age != null) ? ins.age : null;
+      rowToInfo.forEach((meta, r) => {
+        const items = rowToItems.get(r) || [];
+        items.forEach(({cls, item, result}) => {
+          // ★ 法令限制: 未滿 16 歲被保人, XAB 不給付意外身故
+          if (cls.key === 'death' && insuredAge !== null && insuredAge < 16) {
+            const codeNeedsCheck = String(r.product.code || '');
+            const noteText = String(item.note || '');
+            if (codeNeedsCheck === 'XAB' || /滿.*16.*生效|滿十六歲/.test(noteText)) {
+              return;
+            }
+          }
+
+          let targetKey = meta.mainKey;
+          let targetSubTitle = meta.subTitle;
+          const data = ensureMain(targetKey, meta.mainTitle);
+          data.allItems.push({ cls, item, result, row: r, subTitleOverride: targetSubTitle });
+        });
+      });
+
+      // 各大類 + 各子組的「白名單」
+      // 2026/05 擴充: 簡易模式下 per-company 篩選後,若白名單太窄會把該家公司重要項目藏掉
+      // (例: 宏泰 HI 加護病房 20,000元/日、富邦 HSV 多筆雜費實支實付/門診手術…)
+      // 改為較寬鬆的白名單,讓單一公司視角下能看到該家完整的醫療保障輪廓
+      const ALLOWED_CARDS = {
+        // 人身/失能保障 — 只剩一般身故/失能 (XTK)
+        'life':                        ['death','disability'],
+        // 住院醫療 — 兩個子類都加上 icu_daily,讓加護病房日額不被吃掉
+        'medical_實支實付型':          ['daily','reimburse','opsurg','surgery','icu_daily'],
+        'medical_定額型':              ['daily','surgery','reimburse','opsurg','icu_daily'],
+        // 重大傷病
+        'critical':                    ['critical'],
+        // 癌症: 含單筆金 + 療程型 (cls 都不同, 直接同行排)
+        'cancer':                      ['critical','daily','surgery','chemo','targeting','reconstruct','transplant'],
+        // 意外醫療: 意外身故/失能 排第一格 (death/disability), 後面接實支/日額/手術
+        'accident':                    ['death','disability','reimburse','daily','surgery','dislocation'],
+        // 其他
+        other:                          null,
+      };
+
+      // cls.key → 顯示標題覆寫
+      const TITLE_OVERRIDE = {
+        // 人身/失能保障 (XTK 一般身故/失能)
+        'life':                  { death: '一般身故/喪葬', disability: '完全失能' },
+        // 住院醫療 - 實支實付型
+        'medical:實支實付型':   { reimburse: '雜費限額', daily: '住院日額', opsurg: '門診手術', surgery: '住院手術', icu_daily: '加護病房日額' },
+        // 住院醫療 - 定額型
+        'medical:定額型':       { daily: '住院日額', surgery: '住院手術', reimburse: '雜費限額', opsurg: '門診手術', icu_daily: '加護病房日額' },
+        // 重大傷病
+        'critical':              { critical: '重大傷病金' },
+        // 癌症
+        'cancer':                { critical: '癌症單筆金', daily: '癌症日額', surgery: '癌症手術', chemo: '化放療', targeting: '標靶治療', reconstruct: '義乳重建', transplant: '骨髓移植' },
+        // 意外醫療
+        'accident':              { death: '意外身故', disability: '意外失能', reimburse: '意外實支實付', daily: '意外日額', surgery: '意外手術', dislocation: '骨折/脫臼' },
+      };
+
+      // 各大類的「主要保障 cls.key」
+      const PRIMARY_CLS = {
+        life:     'death',
+        medical:  'reimburse',
+        critical: 'critical',
+        cancer:   'critical',
+        accident: 'disability',     // 意外失能金額最大, 設為主要保障
+      };
+
+      const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
+        const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
+
+        // ── 計算每個 row 的「淨給付」+ 收集 tooltip 用的明細 ──
+        const perRowMax = new Map();
+        const rowItemBuckets = new Map();  // row → { limit, deduct, unit }
+        items.forEach(x => {
+          if (!x.result || x.result.type !== 'num') return;
+          const isDeduct = !!(x.item.note && /被保人自行負擔/.test(x.item.note));
+          if (!rowItemBuckets.has(x.row)) {
+            rowItemBuckets.set(x.row, { limit: 0, deduct: 0, unit: '' });
+          }
+          const b = rowItemBuckets.get(x.row);
+          if (isDeduct) {
+            if (x.result.val > b.deduct) b.deduct = x.result.val;
+          } else {
+            if (x.result.val > b.limit) {
+              b.limit = x.result.val;
+              b.unit = x.item.unit || '';
+            }
+          }
+        });
+        rowItemBuckets.forEach((b, row) => {
+          const net = Math.max(0, b.limit - b.deduct);
+          if (net > 0) perRowMax.set(row, { val: net, unit: b.unit, limit: b.limit, deduct: b.deduct, row });
+        });
+
+        const numVals = [...perRowMax.values()];
+        const cidSet = new Set();
+        items.forEach(x => cidSet.add(x.row.companyId));
+
+        // 組成 tooltip 內容(滑入卡片時 hover 顯示)
+        let tooltip = '';
+        if (numVals.length > 1 && numVals[0].unit && /^元(\/[次日年天])?$/.test(numVals[0].unit)) {
+          const lines = numVals.map(v => {
+            const code = v.row.product.code;
+            if (v.deduct > 0) {
+              return `${code}: ${v.limit.toLocaleString()} − 自負 ${v.deduct.toLocaleString()} = ${v.val.toLocaleString()}`;
+            }
+            return `${code}: ${v.val.toLocaleString()}`;
+          });
+          const sum = numVals.reduce((s, v) => s + v.val, 0);
+          tooltip = lines.join(' | ') + ' = ' + sum.toLocaleString() + (numVals[0].unit || '');
+        } else if (numVals.length === 1 && numVals[0].deduct > 0) {
+          const v = numVals[0];
+          tooltip = `${v.row.product.code}: 限額 ${v.limit.toLocaleString()} − 自負 ${v.deduct.toLocaleString()} = ${v.val.toLocaleString()}${v.unit}`;
+        }
+
+        let displayText = '', unitTxt = '';
+        if (numVals.length > 0) {
+          const sameUnit = numVals.every(v => v.unit === numVals[0].unit);
+          const unit = sameUnit ? numVals[0].unit : '';
+          if (NO_TOTAL_KEYS.has(cls.key) || numVals.length === 1) {
+            const max = Math.max.apply(null, numVals.map(v => v.val));
+            displayText = max.toLocaleString();
+            unitTxt = unit;
+          } else if (sameUnit && /^元(\/[次日年天])?$/.test(unit)) {
+            const sum = numVals.reduce((s, v) => s + v.val, 0);
+            displayText = sum.toLocaleString();
+            unitTxt = unit;
+          } else {
+            const max = Math.max.apply(null, numVals.map(v => v.val));
+            displayText = max.toLocaleString();
+            unitTxt = unit;
+          }
+        } else {
+          // ── 2026/05 改:沒有可計算金額時(全為 text/note 規則),改顯示「依條款」
+          //    並把該類所有 text 規則彙總到 tooltip,讓使用者 hover 看細節
+          //    原本顯示 ✓ 對使用者太不友善,看不出來 card 的意義
+          const textItems = items.filter(x => x.result && x.result.type === 'text');
+          const noteItems = items.filter(x => !x.result && x.item.note);
+          if (textItems.length > 0 || noteItems.length > 0) {
+            displayText = '<span class="bsc-rule-text">依條款</span>';
+            // 彙總前 3 筆規則描述當 tooltip
+            const tipLines = [];
+            textItems.slice(0, 3).forEach(x => {
+              const code = x.row.product.code;
+              const ruleText = (x.result && x.result.text) ? x.result.text : (x.item.note || '');
+              if (ruleText) tipLines.push(`${code}: ${String(ruleText).slice(0, 60)}`);
+            });
+            noteItems.slice(0, 3 - tipLines.length).forEach(x => {
+              const code = x.row.product.code;
+              tipLines.push(`${code}: ${String(x.item.note).slice(0, 60)}`);
+            });
+            if (tipLines.length > 0) tooltip = tipLines.join(' | ');
+          } else {
+            // 真的無資料才用 ✓
+            displayText = '<span class="bsc-rule-text">✓</span>';
+          }
+        }
+
+        const title = titleOverride || cls.title;
+
+        const compChips = [...cidSet].map(cid => {
+          const co = getCompanyInfo(cid);
+          return `<span class="bsc-comp-chip" style="--company-color:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
+        }).join('');
+
+        const valueLine = displayText + (unitTxt ? `<span class="bsc-unit-inline">${unitTxt}</span>` : '');
+
+        const isPrimary = (PRIMARY_CLS[mainKey] === cls.key);
+        const cardClass = 'benefits-simple-card' + (isPrimary ? ' starred' : '') + (tooltip ? ' has-tooltip' : '');
+        const tooltipAttr = tooltip ? ` data-tip="${tooltip.replace(/"/g, '&quot;')}"` : '';
+
+        return `<div class="${cardClass}"${tooltipAttr}>
+          <div class="bsc-icon">${cls.icon}</div>
+          <div class="bsc-title">${title}</div>
+          <div class="bsc-value">${valueLine}</div>
+          <div class="bsc-comps">${compChips}</div>
+        </div>`;
+      };
+
+      // 以 5 大類 + 各子分類渲染
+      const renderCardsForMain = (mainKey, mainConf) => {
+        const data = mainData[mainKey];
+        if (!data || data.allItems.length === 0) return '';
+
+        // 渲染指定 itemList(已過白名單)成卡片
+        const renderCardsFromItems = (allItems, subKey) => {
+          // 取得該 subKey 的白名單
+          const allowKey = subKey ? `${mainKey}_${subKey}` : mainKey;
+          const allow = ALLOWED_CARDS[allowKey] !== undefined
+            ? ALLOWED_CARDS[allowKey]
+            : ALLOWED_CARDS[mainKey];
+
+          // 同 cls.key 的 item 聚合
+          const subGroups = {};
+          allItems.forEach(({cls, item, result, row}) => {
+            // 過白名單
+            if (allow !== null && allow !== undefined && allow.indexOf(cls.key) === -1) return;
+            if (!subGroups[cls.key]) subGroups[cls.key] = { meta: cls, items: [] };
+            subGroups[cls.key].items.push({ item, result, row });
+          });
+
+          // 取得標題覆寫表
+          const overrideKey = subKey ? `${mainKey}:${subKey}` : mainKey;
+          const overrideMap = TITLE_OVERRIDE[overrideKey] || TITLE_OVERRIDE[mainKey] || {};
+
+          let cardsHtml = '';
+          // 用白名單順序渲染 (而非 TYPE_ORDER), 確保使用者要的順序
+          const renderOrder = (allow && allow.length > 0) ? allow : TYPE_ORDER;
+          renderOrder.forEach(key => {
+            const g = subGroups[key];
+            if (!g || g.items.length === 0) return;
+            const titleOverride = overrideMap[key] || null;
+            cardsHtml += renderSubCard(g.meta, g.items, mainKey, subKey, titleOverride);
+          });
+          return cardsHtml;
+        };
+
+        let bodyHtml = '';
+        if (mainKey === 'medical') {
+          // 把 allItems 按 row.subTitle 分: 實支實付型 / 定額型
+          const subGrouped = {};
+          data.allItems.forEach(it => {
+            const sub = (it.subTitleOverride !== undefined ? it.subTitleOverride
+                       : (rowToInfo.get(it.row) || {}).subTitle) || '其他';
+            if (!subGrouped[sub]) subGrouped[sub] = [];
+            subGrouped[sub].push(it);
+          });
+          const subOrder = ['實支實付型', '定額型', '其他'];
+          subOrder.forEach(sub => {
+            const items = subGrouped[sub];
+            if (!items || items.length === 0) return;
+            const cards = renderCardsFromItems(items, sub);
+            if (!cards) return;
+            bodyHtml += `<div class="bmc-subsection">
+              <div class="bmc-subtitle">${sub}</div>
+              <div class="benefits-simple-grid bmc-grid">${cards}</div>
+            </div>`;
+          });
+        } else {
+          const cards = renderCardsFromItems(data.allItems, null);
+          if (!cards) return '';
+          bodyHtml = `<div class="benefits-simple-grid bmc-grid">${cards}</div>`;
+        }
+
+        if (!bodyHtml) return '';
+
+        return `<div class="benefits-main-cat" style="border-left:4px solid ${mainConf.color};">
+          <div class="bmc-header">
+            <span class="bmc-icon">${mainConf.icon}</span>
+            <span class="bmc-title">${mainConf.title}</span>
+          </div>
+          ${bodyHtml}
+        </div>`;
+      };
+
+      let mainHtml = '';
+      MAIN_CATEGORIES.forEach(mc => {
+        mainHtml += renderCardsForMain(mc.key, mc);
+      });
+
+      if (!mainHtml) {
         html = `<div class="benefit-card"><div class="benefit-card-body" style="color:var(--gray);font-size:12px;text-align:center;padding:24px;">
           所選商品的理賠項目資料尚未建立。
         </div></div>`;
       } else {
-        html += `<div class="benefits-simple-grid">`;
-        summaryCards.forEach(card => {
-          const compChips = card.companies.map(cid => {
-            const co = getCompanyInfo(cid);
-            return `<span class="bsc-comp-chip" style="background:${co.color};">${co.shortName || co.name.charAt(0)}</span>`;
-          }).join('');
-          html += `<div class="benefits-simple-card">
-            <div class="bsc-icon">${card.meta.icon}</div>
-            <div class="bsc-title">${card.meta.title}</div>
-            <div class="bsc-value">${card.displayText}</div>
-            <div class="bsc-sub">${card.subText}</div>
-            <div class="bsc-comps">${compChips}</div>
-          </div>`;
-        });
-        html += `</div>`;
-
-        // 豁免也要在簡易視圖底下顯示
-        if (waiverRows.length > 0) {
-          html += `<div class="benefits-simple-grid" style="margin-top:14px;">`;
-          waiverRows.forEach(r => {
-            const co = getCompanyInfo(r.companyId);
-            html += `<div class="benefits-simple-card waiver">
-              <div class="bsc-icon">🛡️</div>
-              <div class="bsc-title">豁免保費</div>
-              <div class="bsc-value-text">後續保費由保險公司代繳</div>
-              <div class="bsc-sub">年繳 ${r.fee.toLocaleString()} 元</div>
-              <div class="bsc-comps"><span class="bsc-comp-chip" style="background:${co.color};">${co.shortName || ''}</span></div>
-            </div>`;
-          });
-          html += `</div>`;
-        }
+        html = mainHtml;
       }
 
       sec.innerHTML = html;
@@ -5873,7 +6448,7 @@ const App = (() => {
         const entries = [...perRowMax.values()];
         if (entries.length >= 2) {  // 至少 2 個商品才有意義加總
           const firstUnit = entries[0].unit;
-          if (entries.every(e => e.unit === firstUnit) && /^元(\/[次日年])?$/.test(firstUnit)) {
+          if (entries.every(e => e.unit === firstUnit) && /^元(\/[次日年天])?$/.test(firstUnit)) {
             groupTotal = { val: entries.reduce((s, e) => s + e.val, 0), unit: firstUnit };
           }
         }
@@ -6906,23 +7481,38 @@ const App = (() => {
     renderProductSection();
   }
 
-  /** v3.30:理賠卡片簡易/詳細切換 */
+  /** v3.30:理賠卡片簡易/詳細切換 + 公司篩選器 */
   function bindBenefitsModeEvents() {
     const sw = document.getElementById('benefitsModeSwitch');
-    if (!sw) return;
-    sw.addEventListener('click', (e) => {
-      const btn = e.target.closest('.bms-btn');
-      if (!btn) return;
-      const mode = btn.dataset.mode;
-      if (!mode || mode === state.benefitsMode) return;
-      state.benefitsMode = mode;
-      // 更新按鈕 active 狀態
-      sw.querySelectorAll('.bms-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.mode === mode);
+    if (sw) {
+      sw.addEventListener('click', (e) => {
+        const btn = e.target.closest('.bms-btn');
+        if (!btn) return;
+        const mode = btn.dataset.mode;
+        if (!mode || mode === state.benefitsMode) return;
+        state.benefitsMode = mode;
+        // 更新按鈕 active 狀態
+        sw.querySelectorAll('.bms-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.mode === mode);
+        });
+        // 觸發重新計算渲染
+        recompute();
       });
-      // 觸發重新計算渲染
-      recompute();
-    });
+    }
+
+    // 2026/05 新增:公司篩選器點擊事件 (event delegation,因按鈕為動態渲染)
+    const filterBar = document.getElementById('benefitsCompanyFilter');
+    if (filterBar) {
+      filterBar.addEventListener('click', (e) => {
+        const btn = e.target.closest('.bcf-btn');
+        if (!btn) return;
+        const cid = btn.dataset.cid;
+        if (!cid || cid === state.benefitsCompanyFilter) return;
+        state.benefitsCompanyFilter = cid;
+        // 重新觸發 renderBenefits (透過 recompute 完整流程,確保資料一致)
+        recompute();
+      });
+    }
   }
 
   /** 複製試算結果到剪貼簿(純文字,可貼到 LINE / 郵件給客戶)*/
