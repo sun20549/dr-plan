@@ -18,7 +18,7 @@
     "product_code": "澳利樂",
     "base_premium": 25000.0,
     "needs_revalidation": true,
-    "notes": "[v5: 異常 bp=0→25000.0=sa/12]"
+    "notes": "[v5: 異常 bp=0→25000.0=sa/12] [schedule 用 base 估算]"
   },
   "gp_table": {
     "0100M": 927.7,
@@ -2775,5 +2775,167 @@
         "death_benefit": 23.0
       }
     ]
-  }
+  },
+  "schedule": [
+    {
+      "y": 1,
+      "age": 41,
+      "cum_prem": 25000.0,
+      "cv_basic": 10000.0,
+      "cv_total": 10000.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 2,
+      "age": 42,
+      "cum_prem": 50000.0,
+      "cv_basic": 20800.0,
+      "cv_total": 20800.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 3,
+      "age": 43,
+      "cum_prem": 75000.0,
+      "cv_basic": 32400.0,
+      "cv_total": 32400.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 4,
+      "age": 44,
+      "cum_prem": 100000.0,
+      "cv_basic": 44800.0,
+      "cv_total": 44800.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 5,
+      "age": 45,
+      "cum_prem": 125000.0,
+      "cv_basic": 58000.0,
+      "cv_total": 58000.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 6,
+      "age": 46,
+      "cum_prem": 150000.0,
+      "cv_basic": 72000.0,
+      "cv_total": 72000.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 7,
+      "age": 47,
+      "cum_prem": 150000.0,
+      "cv_basic": 74400.0,
+      "cv_total": 74400.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 8,
+      "age": 48,
+      "cum_prem": 150000.0,
+      "cv_basic": 76800.0,
+      "cv_total": 76800.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 9,
+      "age": 49,
+      "cum_prem": 150000.0,
+      "cv_basic": 79200.0,
+      "cv_total": 79200.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 10,
+      "age": 50,
+      "cum_prem": 150000.0,
+      "cv_basic": 81600.0,
+      "cv_total": 81600.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 11,
+      "age": 51,
+      "cum_prem": 150000.0,
+      "cv_basic": 84000.0,
+      "cv_total": 84000.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 12,
+      "age": 52,
+      "cum_prem": 150000.0,
+      "cv_basic": 86400.0,
+      "cv_total": 86400.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 13,
+      "age": 53,
+      "cum_prem": 150000.0,
+      "cv_basic": 88800.0,
+      "cv_total": 88800.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 14,
+      "age": 54,
+      "cum_prem": 150000.0,
+      "cv_basic": 91200.0,
+      "cv_total": 91200.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 15,
+      "age": 55,
+      "cum_prem": 150000.0,
+      "cv_basic": 93600.0,
+      "cv_total": 93600.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 16,
+      "age": 56,
+      "cum_prem": 150000.0,
+      "cv_basic": 96000.0,
+      "cv_total": 96000.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 17,
+      "age": 57,
+      "cum_prem": 150000.0,
+      "cv_basic": 98400.0,
+      "cv_total": 98400.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 18,
+      "age": 58,
+      "cum_prem": 150000.0,
+      "cv_basic": 100800.0,
+      "cv_total": 100800.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 19,
+      "age": 59,
+      "cum_prem": 150000.0,
+      "cv_basic": 103200.0,
+      "cv_total": 103200.0,
+      "death_benefit": 300000
+    },
+    {
+      "y": 20,
+      "age": 60,
+      "cum_prem": 150000.0,
+      "cv_basic": 105600.0,
+      "cv_total": 105600.0,
+      "death_benefit": 300000
+    }
+  ]
 }
