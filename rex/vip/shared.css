@@ -1743,14 +1743,75 @@ a, button {
 }
 /* 重新調整 Hero 排版（少了 title/subtitle 後不留太多空白） */
 .hero-case .hero-case-grid {
-  align-items: flex-end !important;
-  min-height: 140px;
+  align-items: center !important;
+  min-height: 180px;
 }
 .hero-case-tag {
   margin-bottom: 18px !important;
 }
 .hero-case-id-row {
   margin-top: 14px !important;
+}
+
+/* ───── V3.35 Hero 右側：首期投入日 + 原始投入金額 並列大字 ───── */
+.hero-case-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  text-align: right;
+}
+.hero-case-right .hero-meta-block {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 18px 22px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s var(--ease-out-quint);
+}
+.hero-case-right .hero-meta-block:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(232,160,32,0.4);
+  transform: translateY(-2px);
+}
+.hero-meta-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.hero-case-date {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(255,255,255,0.18);
+}
+.hero-case-right .hero-case-amount {
+  font-size: 52px !important;
+  line-height: 1 !important;
+}
+.hero-case-right .hero-case-amount .unit {
+  font-size: 22px !important;
+  margin-left: 6px !important;
+}
+
+@media (max-width: 720px) {
+  .hero-case-right { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero-case-right .hero-meta-block { padding: 12px 14px; }
+  .hero-meta-label { font-size: 9px; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .hero-case-date { font-size: 26px; letter-spacing: 0.5px; }
+  .hero-case-right .hero-case-amount { font-size: 30px !important; }
+  .hero-case-right .hero-case-amount .unit { font-size: 14px !important; }
+  .hero-case .hero-case-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
 }
 
 .screenshots-empty {

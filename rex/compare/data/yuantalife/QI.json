@@ -28,10 +28,10 @@
   },
   "extraction_note": "依 2026/05/10 元大人壽 PDF 試算建議書(d-金美寶, YTL-QI-0010, 文宣字第P114179號) Y1-Y91 全表逐欄抽取。公式 J=B+D+G 與 K=C+D+H 全部 91 年零誤差驗證通過。商品設計特性:Y1-Y3 sa_basic (B欄) 採『保險費總和』約 USD 177-183K,Y4 起跳變至 USD 584,450(=base_sa × 當年度保險金額係數),為條款附表一規定的 stepped DB 模式。屬 db_pattern='stepped' 商品(類似新光 P2A/WZA/P3A/JZA),系統內部已支援。高保費折扣 5 級(躉繳):≥USD 15K→0.5% / 30K→1% / 45K→1.5% / 60K→2% / 150K→2.8%,另自動轉帳折扣 1%(本 case 已合併在 base_premium 之 2% 折扣中)。免體檢額度:0-70歲 USD 300萬以下 / 71-76歲 USD 50萬以下。祝壽保險金:保險年齡達 111 歲生存給付。預定利率 1.75%、本月宣告利率假設 4.30%。",
   "meta": {
-    "base_sa": 584450,
-    "base_age": 20,
+    "base_sa": 697100,
+    "base_age": 36,
     "base_sex": "M",
-    "base_premium": 99999,
+    "base_premium": 199998,
     "base_premium_gross": 102045,
     "discount": 0.02,
     "currency": "USD",
@@ -39,7 +39,10 @@
     "is_lump_sum_demo": true,
     "schedule_includes_dividend": true,
     "guaranteed_rate": 0.0175,
-    "declared_rate_assumed": 0.043
+    "declared_rate_assumed": 0.043,
+    "period": 1,
+    "needs_revalidation": false,
+    "verified_against": "Drew 2026-05-14 美元利變躉繳"
   },
   "schedule": [
     {

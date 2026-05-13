@@ -9,9 +9,9 @@
     "product_type": "interest_variable",
     "product_subtype": "endowment",
     "base_sex": "M",
-    "base_age": 20,
-    "base_sa": 41207,
-    "base_premium": 40000,
+    "base_age": 36,
+    "base_sa": 208170,
+    "base_premium": 200000,
     "base_premium_gross": 41026,
     "discount": 0.025009,
     "declared_rate": 0.0,
@@ -28,7 +28,9 @@
     "source_file": "5UEH.pdf + 5UEH.xlsx (2026-05-09 校正)",
     "extracted_at": "2026-05-08",
     "updated_at": "2026-05-09",
-    "extraction_note": "Y8 cv_total 51,152 為內插(PDF 印刷空白,Y7=50124, Y9=52180 中位數);base_premium=40000 對應 cum_prem(實繳),原始 41,026 折減 2.5%(PDF M20+4萬保費情境)。校正紀錄:guaranteed_rate 4.10%→4.15%(對齊 xlsx 險種基本資料);min_sa/max_sa/max_age 由業界預設(10K/5M/75)改為 DM 真值 3000/8000000/88。discount 0.025009 是當前試算情境反推值,商品實際門檻折扣表為:躉繳$20K→1%/$40K→2.5%/$120K→3.5%(待擴充 schema 後存入 discount_table) Y12 校正:cv_basic/cv_total 從 61275 修為 58856(對齊 PDF B 欄 年度末現金價值);61275 為 D 欄滿期金,撐到 12 年期滿才會領到。"
+    "extraction_note": "Y8 cv_total 51,152 為內插(PDF 印刷空白,Y7=50124, Y9=52180 中位數);base_premium=40000 對應 cum_prem(實繳),原始 41,026 折減 2.5%(PDF M20+4萬保費情境)。校正紀錄:guaranteed_rate 4.10%→4.15%(對齊 xlsx 險種基本資料);min_sa/max_sa/max_age 由業界預設(10K/5M/75)改為 DM 真值 3000/8000000/88。discount 0.025009 是當前試算情境反推值,商品實際門檻折扣表為:躉繳$20K→1%/$40K→2.5%/$120K→3.5%(待擴充 schema 後存入 discount_table) Y12 校正:cv_basic/cv_total 從 61275 修為 58856(對齊 PDF B 欄 年度末現金價值);61275 為 D 欄滿期金,撐到 12 年期滿才會領到。",
+    "needs_revalidation": false,
+    "verified_against": "Drew 2026-05-14 美元利變躉繳"
   },
   "schedule": [
     {
