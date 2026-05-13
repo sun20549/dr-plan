@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>對帳單截圖上傳工具 ・ 投資型專區</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --orange-deep: #D04618;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --navy-deep: #061827;
+    --gold: #E8A020;
+    --green: #2E8B57;
+    --red: #C8203A;
+    --bg-cream: #FAF7F2;
+    --border: #EAE5DC;
+    --shadow-md: 0 8px 24px rgba(13,42,58,0.08);
+    --shadow-lg: 0 20px 48px rgba(13,42,58,0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: linear-gradient(135deg, #0D2A3A 0%, #061827 100%);
+    min-height: 100vh;
+    color: var(--navy);
+    padding: 24px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    padding: 32px 36px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '📎';
+    position: absolute;
+    right: -10px; top: -10px;
+    font-size: 180px;
+    opacity: 0.08;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0.85;
+  }
+  .header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border-radius: 14px;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* BODY */
+  .body {
+    padding: 28px 36px 36px;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 24px;
+  }
+  @media (max-width: 800px) {
+    .body { grid-template-columns: 1fr; padding: 24px; }
+    .header { padding: 24px; }
+  }
+
+  /* LEFT 控制區 */
+  .control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .input-group {
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .input-label {
+    font-size: 11px;
+    color: #6b7680;
+    letter-spacing: 2px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .case-input {
+    width: 100%;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 900;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 3px;
+    color: var(--navy);
+    text-transform: lowercase;
+    transition: all 0.25s;
+  }
+  .case-input:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 4px rgba(240,90,40,0.15);
+  }
+  .case-input::placeholder {
+    color: #c4bea5;
+    letter-spacing: 1.5px;
+  }
+
+  .filename-preview {
+    margin-top: 10px;
+    background: #fff;
+    border: 1.5px dashed var(--orange);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--orange);
+    letter-spacing: 1.5px;
+  }
+  .filename-preview .label {
+    display: block;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 10px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .folder-btn {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a5a 100%);
+    color: #fff;
+    border: none;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .folder-btn:hover {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(240,90,40,0.3);
+  }
+  .folder-btn.connected {
+    background: linear-gradient(135deg, var(--green) 0%, #1a6b3a 100%);
+  }
+  .folder-status {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .folder-status.ok { color: var(--green); font-weight: 700; }
+
+  .options {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: #6b7680;
+  }
+  .options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .options input[type="range"] {
+    flex: 1;
+    accent-color: var(--orange);
+  }
+  .quality-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--orange);
+    min-width: 32px;
+  }
+
+  .recent-cases {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .recent-cases h4 {
+    font-size: 11px;
+    color: #6b7680;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: 900;
+  }
+  .recent-chip {
+    display: inline-block;
+    background: var(--bg-cream);
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    margin: 3px 4px 3px 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .recent-chip:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: #fff;
+  }
+  .recent-chip .x {
+    margin-left: 6px;
+    color: #ccc;
+    font-size: 12px;
+  }
+  .recent-chip:hover .x { color: var(--red); }
+
+  /* RIGHT 貼上區 */
+  .paste-zone {
+    background: linear-gradient(135deg, var(--bg-cream) 0%, #fff 100%);
+    border: 3px dashed var(--orange);
+    border-radius: 18px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .paste-zone:hover, .paste-zone.dragging {
+    background: linear-gradient(135deg, #FDE8DF 0%, #fff 100%);
+    border-color: var(--orange-deep);
+    transform: scale(1.01);
+  }
+  .paste-zone .pz-icon {
+    font-size: 56px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+  .paste-zone .pz-text {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .paste-zone .pz-shortcut {
+    background: var(--navy);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 2px;
+  }
+  .paste-zone .pz-hint {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+
+  /* PREVIEW LIST */
+  .preview-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 460px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .preview-item {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    transition: all 0.25s;
+    animation: slideIn 0.3s ease-out;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .preview-item:hover {
+    border-color: var(--orange);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .preview-item.saved {
+    background: rgba(46,139,87,0.06);
+    border-color: var(--green);
+  }
+  .preview-item.saved::before {
+    content: '✓';
+    position: absolute;
+    color: var(--green);
+  }
+  .preview-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--bg-cream);
+  }
+  .preview-info {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #6b7680;
+  }
+  .preview-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+  }
+  .preview-status {
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .preview-status.ok { color: var(--green); font-weight: 900; }
+  .preview-status.err { color: var(--red); font-weight: 900; }
+  .preview-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .preview-btn {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-1px);
+  }
+  .preview-btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+  /* TOAST */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toast {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-lg);
+    animation: toastIn 0.3s ease-out;
+    border-left: 4px solid var(--green);
+    min-width: 240px;
+  }
+  .toast.err { border-left-color: var(--red); }
+  .toast.warn { border-left-color: var(--gold); }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .toast.fade { animation: toastOut 0.3s ease-in forwards; }
+  @keyframes toastOut {
+    to { opacity: 0; transform: translateX(20px); }
+  }
+
+  /* HELP */
+  .help-section {
+    background: rgba(232,160,32,0.08);
+    border-left: 4px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #6b6253;
+    margin-top: 8px;
+  }
+  .help-section strong { color: var(--gold); }
+  .help-section code {
+    background: rgba(232,160,32,0.18);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--bg-cream);
+    padding: 18px 36px;
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    letter-spacing: 0.5px;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--orange); text-decoration: none; font-weight: 700; }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .btn-row button {
+    flex: 1;
+    min-width: 80px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>📎 對帳單截圖上傳工具</h1>
+    <p>貼上即存檔 ・ 自動命名 ・ 不必離開瀏覽器</p>
+    <span class="badge">PRIVATE TOOL ・ 100% 本地處理</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- LEFT 控制區 -->
+    <div class="control-panel">
+      <div class="input-group">
+        <div class="input-label">
+          <span>▸ 案例編號</span>
+          <span id="indexHint" style="font-family:'Bebas Neue',sans-serif; color:var(--orange); font-size:14px; letter-spacing:1px;">— / —</span>
+        </div>
+        <input type="text" class="case-input" id="caseInput"
+               placeholder="例如：u0033" maxlength="6"
+               autocomplete="off" spellcheck="false">
+        <div class="filename-preview" id="filenamePreview">
+          <span class="label">下一張將存為</span>
+          <span id="nextFilename">u0033-1.jpg</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>▸ 儲存方式</span>
+        </div>
+        <button class="folder-btn" id="folderBtn">
+          <span id="folderBtnText">📁 連結 cases 資料夾</span>
+        </button>
+        <div class="folder-status" id="folderStatus">
+          連結後可直接存到磁碟，免下載再拖檔。<br>
+          <span style="opacity:0.7;">（Chrome / Edge 才支援）</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>▸ JPEG 品質</span>
+          <span class="quality-val" id="qualityVal">85</span>
+        </div>
+        <input type="range" id="qualitySlider" min="60" max="100" value="85" style="width:100%;">
+      </div>
+
+      <div class="recent-cases" id="recentCases" style="display:none;">
+        <h4>▸ 最近案例</h4>
+        <div id="recentList"></div>
+      </div>
+
+      <div class="help-section">
+        <strong>💡 使用步驟</strong><br>
+        1. 在輸入框打 case 編號（例如 <code>u0033</code>）<br>
+        2. 從保險公司網站截圖 → <code>Ctrl+V</code> 貼到右邊<br>
+        3. 工具自動命名 + 存到 cases 資料夾<br>
+        4. 全部貼完 → GitHub Desktop 推送
+      </div>
+    </div>
+
+    <!-- RIGHT 貼上區 -->
+    <div>
+      <div class="paste-zone" id="pasteZone" tabindex="0">
+        <div class="pz-icon">📋</div>
+        <div class="pz-text">按 <span class="pz-shortcut">Ctrl + V</span> 貼上對帳單截圖</div>
+        <div class="pz-hint">或將圖片檔拖曳到這裡 ・ 支援 JPG / PNG / WebP</div>
+      </div>
+
+      <div class="preview-list" id="previewList"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    投資型專區 ・ 對帳單上傳工具 ・ <a href="index.html">回到首頁</a>　|
+    <a href="#" id="clearAllBtn">清空所有預覽</a>　|
+    <a href="#" id="resetCounterBtn">重置編號計數器</a>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+'use strict';
+
+// ─── 狀態 ───
+let dirHandle = null;              // 已連結的資料夾 handle
+const sessionItems = [];           // 本次貼上的圖（preview list）
+const QUALITY_KEY = 'paste-tool-quality';
+const RECENT_KEY = 'paste-tool-recent';
+const COUNTER_KEY = 'paste-tool-counters'; // {u0033: 3, k3007: 2, ...}
+
+// 載入持久化資料
+let counters = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+const savedQuality = localStorage.getItem(QUALITY_KEY);
+
+// ─── 元素 ───
+const caseInput = document.getElementById('caseInput');
+const nextFilenameEl = document.getElementById('nextFilename');
+const indexHintEl = document.getElementById('indexHint');
+const pasteZone = document.getElementById('pasteZone');
+const previewList = document.getElementById('previewList');
+const folderBtn = document.getElementById('folderBtn');
+const folderBtnText = document.getElementById('folderBtnText');
+const folderStatus = document.getElementById('folderStatus');
+const qualitySlider = document.getElementById('qualitySlider');
+const qualityVal = document.getElementById('qualityVal');
+const recentCasesEl = document.getElementById('recentCases');
+const recentListEl = document.getElementById('recentList');
+const toastContainer = document.getElementById('toastContainer');
+
+// 初始化 quality
+if (savedQuality) qualitySlider.value = savedQuality;
+qualityVal.textContent = qualitySlider.value;
+
+// ─── Toast ───
+function toast(msg, type = 'ok', duration = 2400) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type !== 'ok' ? ' ' + type : '');
+  el.textContent = msg;
+  toastContainer.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('fade');
+    setTimeout(() => el.remove(), 300);
+  }, duration);
+}
+
+// ─── Case input 處理 ───
+function getCaseId() {
+  return caseInput.value.trim().toLowerCase();
+}
+function getNextIndex(caseId) {
+  return (counters[caseId] || 0) + 1;
+}
+function updateFilenamePreview() {
+  const cid = getCaseId();
+  if (!cid) {
+    nextFilenameEl.textContent = '請先輸入案例編號';
+    indexHintEl.textContent = '— / —';
+    return;
+  }
+  const nextIdx = getNextIndex(cid);
+  nextFilenameEl.textContent = `${cid}-${nextIdx}.jpg`;
+  indexHintEl.textContent = `第 ${nextIdx} 張`;
+}
+caseInput.addEventListener('input', updateFilenamePreview);
+
+// 自動探測既存檔案數，初始化計數器
+async function probeExisting(caseId) {
+  if (!dirHandle || !caseId) return;
+  let maxN = 0;
+  for (let i = 1; i <= 20; i++) {
+    let found = false;
+    for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
+      try {
+        await dirHandle.getFileHandle(`${caseId}-${i}.${ext}`);
+        found = true; break;
+      } catch (e) { /* not found */ }
+    }
+    if (!found) break;
+    maxN = i;
+  }
+  if (maxN > 0) {
+    counters[caseId] = maxN;
+    saveCounters();
+    updateFilenamePreview();
+    toast(`偵測到 ${caseId} 已有 ${maxN} 張，新貼上會從 ${maxN + 1} 開始`, 'warn', 3500);
+  }
+}
+caseInput.addEventListener('change', () => {
+  const cid = getCaseId();
+  if (cid && dirHandle) probeExisting(cid);
+});
+
+// ─── 連結資料夾（File System Access API） ───
+async function connectFolder() {
+  if (!window.showDirectoryPicker) {
+    toast('此瀏覽器不支援直接存檔，將改用下載方式', 'warn', 4000);
+    folderStatus.innerHTML = '⚠ 瀏覽器不支援，將以「下載」方式提供檔案';
+    return;
+  }
+  try {
+    dirHandle = await window.showDirectoryPicker({
+      id: 'vip-cases',
+      mode: 'readwrite',
+      startIn: 'documents'
+    });
+    folderBtn.classList.add('connected');
+    folderBtnText.textContent = `📁 已連結：${dirHandle.name}`;
+    folderStatus.classList.add('ok');
+    folderStatus.innerHTML = `✓ 已連結資料夾「${dirHandle.name}」<br>Ctrl+V 將直接存檔`;
+    toast('資料夾已連結，現在可以直接貼上存檔', 'ok');
+    const cid = getCaseId();
+    if (cid) probeExisting(cid);
+  } catch (e) {
+    if (e.name !== 'AbortError') {
+      toast('資料夾連結失敗：' + e.message, 'err');
+    }
+  }
+}
+folderBtn.addEventListener('click', connectFolder);
+
+// ─── 處理貼上 / 拖放圖片 ───
+function handleImageBlob(blob) {
+  const cid = getCaseId();
+  if (!cid) {
+    toast('請先輸入案例編號', 'err');
+    caseInput.focus();
+    return;
+  }
+  if (!/^[a-z]\d{4}$/.test(cid)) {
+    toast('案例編號格式須為一字母+四數字（例如 u0033）', 'err');
+    caseInput.focus();
+    return;
+  }
+  const idx = getNextIndex(cid);
+  const fname = `${cid}-${idx}.jpg`;
+  // 壓縮成 JPEG
+  compressToJpeg(blob, qualitySlider.value / 100).then(jpegBlob => {
+    addPreviewItem(fname, jpegBlob, cid, idx);
+    // 更新計數器
+    counters[cid] = idx;
+    saveCounters();
+    addRecent(cid);
+    updateFilenamePreview();
+    // 直接存檔
+    if (dirHandle) {
+      saveToDirHandle(fname, jpegBlob).then(() => {
+        markItemSaved(fname);
+        toast(`✓ ${fname} 已存到資料夾`, 'ok');
+      }).catch(err => {
+        markItemError(fname, err.message);
+        toast(`存檔失敗：${err.message}`, 'err');
+      });
+    } else {
+      // 下載到 Downloads
+      downloadBlob(fname, jpegBlob);
+      markItemSaved(fname, '已下載');
+      toast(`✓ ${fname} 已下載 ・ 請拖到 cases 資料夾`, 'warn', 4000);
+    }
+  });
+}
+
+function compressToJpeg(blob, quality = 0.85) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      // 等比例縮放：寬度超過 1800 才縮
+      let { width, height } = img;
+      const MAX_W = 1800;
+      if (width > MAX_W) {
+        height = Math.round(height * MAX_W / width);
+        width = MAX_W;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(b => resolve(b), 'image/jpeg', quality);
+    };
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+async function saveToDirHandle(filename, blob) {
+  const fileHandle = await dirHandle.getFileHandle(filename, { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(blob);
+  await writable.close();
+}
+
+function downloadBlob(filename, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// ─── Preview list 管理 ───
+function addPreviewItem(filename, blob, caseId, idx) {
+  const id = filename;
+  const url = URL.createObjectURL(blob);
+  const item = document.createElement('div');
+  item.className = 'preview-item';
+  item.dataset.filename = filename;
+  item.innerHTML = `
+    <img class="preview-thumb" src="${url}" alt="${filename}">
+    <div class="preview-info">
+      <div class="preview-name">${filename}</div>
+      <div>${(blob.size / 1024).toFixed(0)} KB ・ 案例 ${caseId.toUpperCase()} 第 ${idx} 張</div>
+      <div class="preview-status">處理中…</div>
+    </div>
+    <div class="preview-actions">
+      <button class="preview-btn" data-action="download" title="重新下載">⬇</button>
+      <button class="preview-btn danger" data-action="remove" title="從列表移除（不會刪檔）">✕</button>
+    </div>
+  `;
+  previewList.insertBefore(item, previewList.firstChild);
+  sessionItems.unshift({ filename, blob, caseId, idx, url });
+
+  item.querySelector('[data-action="download"]').addEventListener('click', e => {
+    e.stopPropagation();
+    downloadBlob(filename, blob);
+  });
+  item.querySelector('[data-action="remove"]').addEventListener('click', e => {
+    e.stopPropagation();
+    item.remove();
+    URL.revokeObjectURL(url);
+  });
+}
+
+function markItemSaved(filename, label = '已存檔') {
+  const item = previewList.querySelector(`[data-filename="${filename}"]`);
+  if (!item) return;
+  item.classList.add('saved');
+  const status = item.querySelector('.preview-status');
+  if (status) {
+    status.textContent = '✓ ' + label;
+    status.className = 'preview-status ok';
+  }
+}
+function markItemError(filename, msg) {
+  const item = previewList.querySelector(`[data-filename="${filename}"]`);
+  if (!item) return;
+  const status = item.querySelector('.preview-status');
+  if (status) {
+    status.textContent = '✗ ' + msg;
+    status.className = 'preview-status err';
+  }
+}
+
+// ─── 持久化 ───
+function saveCounters() {
+  localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
+}
+function saveRecent() {
+  localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, 12)));
+}
+function addRecent(caseId) {
+  recent = recent.filter(r => r !== caseId);
+  recent.unshift(caseId);
+  saveRecent();
+  renderRecent();
+}
+function renderRecent() {
+  if (recent.length === 0) {
+    recentCasesEl.style.display = 'none';
+    return;
+  }
+  recentCasesEl.style.display = 'block';
+  recentListEl.innerHTML = recent.slice(0, 12).map(cid =>
+    `<span class="recent-chip" data-cid="${cid}">${cid.toUpperCase()} (${counters[cid] || 0})<span class="x" data-remove="${cid}" title="從清單移除">×</span></span>`
+  ).join('');
+  recentListEl.querySelectorAll('.recent-chip').forEach(chip => {
+    chip.addEventListener('click', e => {
+      if (e.target.dataset.remove) {
+        recent = recent.filter(r => r !== e.target.dataset.remove);
+        saveRecent();
+        renderRecent();
+      } else {
+        caseInput.value = chip.dataset.cid;
+        updateFilenamePreview();
+        if (dirHandle) probeExisting(chip.dataset.cid);
+      }
+    });
+  });
+}
+renderRecent();
+
+// ─── Quality slider ───
+qualitySlider.addEventListener('input', () => {
+  qualityVal.textContent = qualitySlider.value;
+  localStorage.setItem(QUALITY_KEY, qualitySlider.value);
+});
+
+// ─── Paste 事件（全域） ───
+document.addEventListener('paste', e => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  let imageFound = false;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      const blob = item.getAsFile();
+      if (blob) {
+        handleImageBlob(blob);
+        imageFound = true;
+      }
+    }
+  }
+  if (imageFound) e.preventDefault();
+});
+
+// ─── 拖放 ───
+['dragover', 'dragenter'].forEach(ev =>
+  pasteZone.addEventListener(ev, e => {
+    e.preventDefault();
+    pasteZone.classList.add('dragging');
+  })
+);
+['dragleave', 'drop'].forEach(ev =>
+  pasteZone.addEventListener(ev, e => {
+    e.preventDefault();
+    pasteZone.classList.remove('dragging');
+  })
+);
+pasteZone.addEventListener('drop', e => {
+  e.preventDefault();
+  const files = e.dataTransfer.files;
+  for (const file of files) {
+    if (file.type.startsWith('image/')) handleImageBlob(file);
+  }
+});
+
+// ─── 點擊 paste zone 時 focus，方便接 Ctrl+V ───
+pasteZone.addEventListener('click', () => {
+  toast('已就緒 ・ 按 Ctrl+V 貼上圖片', 'ok', 1500);
+  pasteZone.focus();
+});
+
+// ─── Footer 動作 ───
+document.getElementById('clearAllBtn').addEventListener('click', e => {
+  e.preventDefault();
+  if (!confirm('清空預覽列表？（已存到資料夾的檔案不會被刪除）')) return;
+  sessionItems.forEach(it => URL.revokeObjectURL(it.url));
+  sessionItems.length = 0;
+  previewList.innerHTML = '';
+  toast('已清空預覽', 'ok');
+});
+document.getElementById('resetCounterBtn').addEventListener('click', e => {
+  e.preventDefault();
+  const cid = getCaseId();
+  if (!cid) {
+    if (!confirm('要重置全部案例的計數器嗎？')) return;
+    counters = {};
+    saveCounters();
+    toast('全部計數器已重置', 'warn');
+  } else {
+    if (!confirm(`重置 ${cid} 的計數器？下一張會從 ${cid}-1.jpg 開始`)) return;
+    delete counters[cid];
+    saveCounters();
+    toast(`${cid} 計數器已重置`, 'warn');
+  }
+  renderRecent();
+  updateFilenamePreview();
+});
+
+// 預設 focus 到 input
+caseInput.focus();
+updateFilenamePreview();
+</script>
+</body>
+</html>

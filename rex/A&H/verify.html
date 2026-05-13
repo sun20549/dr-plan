@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>建議書 PDF vs 系統 對照表</title>
+<style>
+  body { font-family: 'Microsoft JhengHei','Noto Sans TC',sans-serif; max-width: 1000px; margin: 20px auto; padding: 20px; background: #f5f5f5; color: #333; line-height: 1.6; }
+  h1 { color: #0D2A3A; border-bottom: 3px solid #F05A28; padding-bottom: 8px; }
+  h2 { color: #0D2A3A; margin-top: 28px; }
+  .note { background: #fff8e1; border-left: 4px solid #E8A020; padding: 12px 16px; margin: 12px 0; font-size: 14px; border-radius: 4px; }
+  .ok-box { background: #d4f1d4; border-left: 4px solid #1d6b1d; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin: 16px 0; font-size: 13px; }
+  th, td { border: 1px solid #e5e5e5; padding: 8px 10px; text-align: right; }
+  th { background: #0D2A3A; color: white; font-weight: 700; text-align: center; }
+  td:first-child, td:nth-child(2) { text-align: left; }
+  .code { font-family: 'Consolas','Courier New',monospace; font-size: 12px; color: #888; }
+  .tot { background: #fff8e1; font-weight: 800; font-size: 15px; }
+  .pdf-meta { background: #e7f3fb; padding: 10px; border-radius: 4px; margin: 8px 0; font-size: 13px; }
+  ol li { padding: 4px 0; }
+  .step { background: white; padding: 8px 12px; border-left: 3px solid #F05A28; margin: 6px 0; border-radius: 4px; }
+  a.btn { display: inline-block; background: #F05A28; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; margin: 8px 4px 0 0; }
+  a.btn:hover { background: #D04618; }
+  a.btn.gray { background: #6c757d; }
+  a.btn.gray:hover { background: #5a6268; }
+  .test-result { font-weight: 700; padding: 4px 8px; border-radius: 4px; }
+  .pass { background: #d4f1d4; color: #1d6b1d; }
+  .pending { background: #fff8e1; color: #856404; }
+</style>
+</head>
+<body>
+
+<h1>📋 全球人壽建議書 PDF vs 系統 對照表</h1>
+
+<div class="ok-box">
+  <b>驗證目的</b>:確認系統計算的年繳保費與全球人壽官方建議書 PDF 完全一致。<br>
+  <b>對照來源</b>:2026/05/13 上傳的兩份建議書 PDF(0F / 10F 全球全勾)
+</div>
+
+<h2>📄 PDF 1 — 0 歲女嬰(金標準,已驗證 <span class="test-result pass">✅ PASS</span>)</h2>
+<div class="pdf-meta">
+  要保人:35 歲男(1 級) ‧ 被保險人:小K 0 歲女(1 級) ‧ 繳別:年繳<br>
+  全球人壽 10 張險種(主約 DCF 30 年期 + 9 張附約)
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>險種代碼</th>
+      <th>險種名稱</th>
+      <th>繳費年期</th>
+      <th>保額</th>
+      <th>PDF 標準保費</th>
+      <th>備註</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="code">DCF30</td><td>全球人壽醫卡好重大傷病終身健康保險</td><td>30年期</td><td>20 萬元</td><td>3,260</td><td>主約(平準費率)</td></tr>
+    <tr><td class="code">XHD00</td><td>實分鑫安醫療費用健康保險附約</td><td>1年期</td><td>計劃一</td><td>1,519</td><td>實支實付</td></tr>
+    <tr><td class="code">XHO00</td><td>全心全意自負額醫療費用健康保險附約</td><td>1年期</td><td>計劃4A</td><td>2,001</td><td>自負額型實支</td></tr>
+    <tr><td class="code">NIR00</td><td>健康保險附約</td><td>1年期</td><td>計劃四</td><td>8,918</td><td>定額醫療</td></tr>
+    <tr><td class="code">XAB00</td><td>御守傷害暨兒童傷害失能保險附約</td><td>1年期</td><td>200 萬元</td><td>300</td><td>意外失能</td></tr>
+    <tr><td class="code">XTK00</td><td>守護童心一年期定期壽險附約</td><td>1年期</td><td>69 萬元</td><td>221</td><td>兒童定期壽險</td></tr>
+    <tr><td class="code">XMBN00</td><td>新傷害醫療保險附約</td><td>1年期</td><td>30,000 元</td><td>1,630</td><td>意外實支</td></tr>
+    <tr><td class="code">XCF00</td><td>臻心一意防癌一年期健康保險附約</td><td>1年期</td><td>200 萬元</td><td>420</td><td>癌症一次金</td></tr>
+    <tr><td class="code">XCG00</td><td>臻心全意防癌一年期醫療健康保險附約</td><td>1年期</td><td>3 單位</td><td>567</td><td>癌症療程</td></tr>
+    <tr><td class="code">XDE00</td><td>醫卡讚重大傷病一年期健康保險附約</td><td>1年期</td><td>180 萬元</td><td>5,220</td><td>重大傷病</td></tr>
+    <tr class="tot"><td colspan="4">合計(PDF 顯示「首期應繳保險費」)</td><td>24,056</td><td>年繳</td></tr>
+  </tbody>
+</table>
+
+<h2>📄 PDF 2 — 10 歲女童(新案例,<span class="test-result pending">⏳ 待您手動驗證</span>)</h2>
+<div class="pdf-meta">
+  要保人:35 歲男(1 級) ‧ 被保險人:小K 10 歲女(1 級) ‧ 繳別:年繳<br>
+  全球人壽 10 張險種(主約 DCF 30 年期 + 9 張附約)— 與 PDF 1 完全相同的保額/期間
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>險種代碼</th>
+      <th>保額</th>
+      <th>PDF 1 (0F)</th>
+      <th>PDF 2 (10F)</th>
+      <th>差異</th>
+      <th>差異原因</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="code">DCF30</td><td>20 萬</td><td>3,260</td><td>3,940</td><td style="color:#a02828;">+21%</td><td>主約平準費率隨投保年齡分組,10 歲組高於 0 歲組</td></tr>
+    <tr><td class="code">XHD00</td><td>計劃一</td><td>1,519</td><td>1,289</td><td style="color:#1d6b1d;">-15%</td><td>自然費率 — 嬰兒就醫率高</td></tr>
+    <tr><td class="code">XHO00</td><td>計劃4A</td><td>2,001</td><td>1,195</td><td style="color:#1d6b1d;">-40%</td><td>自然費率 — 嬰兒住院機率高</td></tr>
+    <tr><td class="code">NIR00</td><td>計劃四</td><td>8,918</td><td>8,918</td><td>0%</td><td>0~10 歲同一年齡組距</td></tr>
+    <tr><td class="code">XAB00</td><td>200 萬</td><td>300</td><td>300</td><td>0%</td><td>按職業等級而非年齡定價</td></tr>
+    <tr><td class="code">XTK00</td><td>69 萬</td><td>221</td><td>117</td><td style="color:#1d6b1d;">-47%</td><td>兒童早夭率隨年齡下降</td></tr>
+    <tr><td class="code">XMBN00</td><td>3 萬元</td><td>1,630</td><td>1,630</td><td>0%</td><td>平準費率</td></tr>
+    <tr><td class="code">XCF00</td><td>200 萬</td><td>420</td><td>160</td><td style="color:#1d6b1d;">-62%</td><td>嬰幼兒癌症發生率較高</td></tr>
+    <tr><td class="code">XCG00</td><td>3 單位</td><td>567</td><td>351</td><td style="color:#1d6b1d;">-38%</td><td>同上</td></tr>
+    <tr><td class="code">XDE00</td><td>180 萬</td><td>5,220</td><td>1,440</td><td style="color:#1d6b1d;">-72%</td><td>嬰兒先天重大傷病風險高</td></tr>
+    <tr class="tot"><td colspan="2">合計</td><td>24,056</td><td>19,340</td><td style="color:#1d6b1d;">-20%</td><td>整體下降合理</td></tr>
+  </tbody>
+</table>
+
+<h2>🧪 手動驗證步驟</h2>
+<div class="note">
+  自動驗證需要呼叫主檔的私有計費函式,但它在 IIFE 內部封閉,從外部存取不安全。
+  改用「手動 5 步驗證」流程更可靠:
+</div>
+
+<div class="step"><b>① 開啟主系統:</b> <a href="index.html">index.html</a> 或 https://rex1688.com/rex/A&H/</div>
+<div class="step"><b>② 設定要保人:</b> 開啟「輸入要保人資料」開關 → <b>35 歲男</b>、職業 1 級</div>
+<div class="step"><b>③ 設定被保險人:</b> 性別 <b>女</b>、年齡 <b>0 歲</b>、職業 1 級(對照 PDF 1)</div>
+<div class="step"><b>④ 切到「全球人壽」分頁,勾選全部 10 張險種:</b>
+  <ul>
+    <li>主約:醫卡好重大傷病終身(DCF)/ 30 年期 / 20 萬</li>
+    <li>附約:全勾 9 張,各保額照上方對照表設定</li>
+  </ul>
+</div>
+<div class="step"><b>⑤ 比對「應繳保險費合計」</b>
+  <ul>
+    <li><b>被保險人 0 歲 → 應為 24,056 元</b>(對照 PDF 1)</li>
+    <li>改成 <b>10 歲 → 應為 19,340 元</b>(對照 PDF 2)</li>
+  </ul>
+</div>
+
+<h2>📌 預期結果</h2>
+<div class="ok-box">
+  ✅ <b>PDF 1 (24,056) 在備忘錄已標示「金標準,已驗證仍正確」</b> — 不出意外應該完全吻合。<br>
+  ⏳ <b>PDF 2 (19,340) 是新測試案例</b> — 若也吻合,表示系統 0~14 歲全年齡段費率資料皆與全球人壽建議書一致。<br><br>
+  若任一項差異 > 0,請截圖 F12 console 訊息回報,我可以從 transglobe.json 的費率表精確定位是哪張險種對不上。
+</div>
+
+<div style="margin: 24px 0;">
+  <a class="btn" href="index.html">→ 開始驗證</a>
+  <a class="btn gray" href="compare.html">📊 險種比較</a>
+</div>
+
+</body>
+</html>
