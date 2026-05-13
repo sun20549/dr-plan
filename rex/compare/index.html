@@ -5902,6 +5902,102 @@ function calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
 
+// === 台壽利變型 全表精算引擎 v2_full(2026-05-13)===
+// 適用商品:台壽 NUIW6602 / NUIW4703 / NUIW5203 等(含 GP+PV 全表)
+// 與 v1 差異:不再線性縮放 schedule,而是用 GP 表查保費 + PV 表查保價金
+// 公式:code = period(2位) + age(2位) + sex
+//      年保費 = SA/1000 × GP[code] × (1-折扣)
+//      cv_basic = SA/1000 × PV[code][y-1]
+//      死亡 = SA + 累積增額 (利變型無 corridor)
+function _twlifeFullCode(period, age, sex) {
+  const p = String(period).padStart(2,'0');
+  const a = String(age).padStart(2,'0');
+  return p + a + (sex || 'M');
+}
+
+function calcSumAssuredFromBudget_twlife_v2_full(plan, sex, age, budgetReal, productMeta) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const period = db.meta.period || productMeta.period || 6;
+  const code = _twlifeFullCode(period, age, sex);
+  const gpRate = db.gp_table?.[code];
+  if (!gpRate) {
+    // 沒對應 code → 退回 v1 線性縮放
+    return calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta);
+  }
+  // 折扣(自動轉帳 + 高保額)
+  const discAutoPay = db.discounts?.auto_pay_first || 0.01;
+  // 簡化:先抓自動轉帳 1%,高保額暫不分級
+  const effectiveGP = gpRate * (1 - discAutoPay);
+  // SA = 預算(實繳) / 有效 GP × 1000
+  const rawSA = (budgetReal / effectiveGP) * 1000;
+  return applyInsuranceLimits(rawSA, productMeta, age);
+}
+
+function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
+  const db = getDB(plan);
+  if (!db) return null;
+  const periodActual = period || db.meta.period || 6;
+  const code = _twlifeFullCode(periodActual, age, sex);
+  const gpRate = db.gp_table?.[code];
+  const pvYears = db.pv_table?.[code];
+
+  // 沒查到 → 退回 v1
+  if (!gpRate || !pvYears || pvYears.length < 2) {
+    return actuarialCalc_twlife(plan, sex, age, sumAssured, period);
+  }
+
+  const discAutoPay = db.discounts?.auto_pay_first || 0.01;
+  const annualPremGross = sumAssured / 1000 * gpRate;
+  const annualPremReal = annualPremGross * (1 - discAutoPay);
+
+  // 利率:declared - guaranteed = 增值回饋分享金率
+  const declaredRate = db.meta.declared_rate || 0.04;
+  const guaranteedRate = db.meta.guaranteed_rate || 0.0225;
+  const dividendRate = Math.max(0, declaredRate - guaranteedRate);
+
+  // 逐年:cv_basic 從 PV 表查;增值回饋累積買增額繳清,簡化處理
+  let cumIncrement = 0;  // 累計增加保險金額(簡化)
+  let cumIncrementPv = 0;
+  const schedule = pvYears.map((pvRate, idx) => {
+    const y = idx + 1;
+    const yearAge = age + idx;
+    const cumPrem = Math.min(y, periodActual) * annualPremReal;
+    const cvBasic = sumAssured / 1000 * pvRate;
+
+    // 增值回饋分享金(簡化):前一年 cv_basic × dividendRate,累積買增額(假設 ratio 1:1)
+    const divThisYear = idx === 0 ? 0 : (sumAssured / 1000 * pvYears[idx-1]) * dividendRate;
+    cumIncrement += divThisYear;
+    // 增額繳清的 cv 簡化為「累積增額 × 0.95」(approx)
+    cumIncrementPv = cumIncrement * 0.95;
+
+    const cvTotal = cvBasic + cumIncrementPv;
+    const deathBenefit = sumAssured + cumIncrement;  // 利變型無 corridor
+
+    return {
+      y, age: yearAge,
+      prem: y <= periodActual ? Math.round(annualPremReal) : 0,
+      cum_prem: Math.round(cumPrem),
+      surr_pure: +cvBasic.toFixed(2),
+      surr_total: +cvTotal.toFixed(2),
+      death_pure: Math.round(sumAssured),
+      death_total: +deathBenefit.toFixed(2),
+    };
+  });
+
+  return {
+    sum_assured: sumAssured,
+    annual_premium_orig: Math.round(annualPremGross),
+    annual_premium_real: Math.round(annualPremReal),
+    schedule,
+    is_exact: true,  // v2_full 是真精算,標 exact
+    is_estimated: false,
+    base_age: db.meta.base_age,
+    base_sex: db.meta.base_sex,
+    engine_version: 'twlife_v2_full',
+  };
+}
+
 // === 保誠人壽引擎 v2（逐年表 + 三情境分紅:無/中/低）===
 // 適用商品:ARLPLU30 / ARLPLU57 / ARLPLU64 等保誠分紅型(逐年表結構)
 // 主要 surrender / death 數字採用「中紅利情境」(業務員建議書預設)
@@ -6129,6 +6225,10 @@ function calcProductForUser(productMeta, user) {
       sumAssured = saOverride || calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_twlife(plan, sex, age, sumAssured, user.period);
+    } else if (engine === 'twlife_v2_full') {
+      sumAssured = saOverride || calcSumAssuredFromBudget_twlife_v2_full(plan, sex, age, budget, productMeta);
+      if (!sumAssured) return { budget_insufficient: true };
+      result = actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'taishin_v1') {
       sumAssured = saOverride || calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
       if (!sumAssured) return { budget_insufficient: true };

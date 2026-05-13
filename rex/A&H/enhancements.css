@@ -1,563 +1,159 @@
-/* ═══════════════════════════════════════════════════════════
- *  enhancements.css — 保險建議書系統 v3_23 加值功能
- *  Phase 2 + 2.1 (2026/05/13):
- *    1. 需求分析輸入面板
- *    2. 責任缺口分析卡片
- *    3. 保費佔收入比警示
- *    4. 理賠合計顯示
- *    5. 稅務節稅提醒
- *    6. 首/續年費率對比、保證續保、年齡文件提醒
- *    2.1 — 隱藏跨商品累計 / 美化理賠卡片 / 走勢圖滑桿
- *
- *  延用主檔 CSS 變數:--orange / --teal / --navy / --gold / --gray ...
- * ═══════════════════════════════════════════════════════════ */
+/* enhancements.css — Phase 2 + 2.1 */
 
-/* ── Phase 2.1:隱藏跨商品累計檢查 ── */
+/* 1. 隱藏跨商品累計 */
+.type-total { display: none !important; }
 #aggregateCheck { display: none !important; }
 
-/* ── 共用容器:Phase 2 新卡片 ── */
-.x-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(13,42,58,0.06);
-  margin-bottom: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-.x-card-header {
-  background: linear-gradient(135deg, #0D2A3A 0%, #143847 100%);
-  color: #fff;
-  padding: 12px 18px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.x-card-header .xh-icon {
-  font-size: 18px;
-  margin-right: 6px;
-}
-.x-card-header.gold  { background: linear-gradient(135deg, #B8860B, #E8A020); }
-.x-card-header.teal  { background: linear-gradient(135deg, #1A6B72, #258891); }
-.x-card-header.coral { background: linear-gradient(135deg, #D04618, #F05A28); }
-.x-card-body {
-  padding: 16px 18px;
-}
+/* 2. 共用容器 */
+.x-card { background:#fff; border-radius:14px; box-shadow:0 2px 10px rgba(13,42,58,0.06); margin-bottom:16px; overflow:hidden; border:1px solid var(--border); }
+.x-card-header { background:linear-gradient(135deg,#0D2A3A 0%,#143847 100%); color:#fff; padding:12px 18px; font-size:14px; font-weight:700; letter-spacing:1px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.x-card-header .xh-icon { font-size:18px; margin-right:6px; }
+.x-card-header.gold  { background:linear-gradient(135deg,#B8860B,#E8A020); }
+.x-card-header.teal  { background:linear-gradient(135deg,#1A6B72,#258891); }
+.x-card-header.coral { background:linear-gradient(135deg,#D04618,#F05A28); }
+.x-card-body { padding:16px 18px; }
 
-/* ── 1. 需求分析輸入面板 ── */
-#needsInputCard .x-card-header .toggle-btn {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all .15s;
-}
-#needsInputCard .x-card-header .toggle-btn:hover {
-  background: rgba(255,255,255,0.25);
-}
-.needs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px 18px;
-}
-.needs-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.needs-field label {
-  font-size: 12px;
-  color: var(--gray);
-  font-weight: 600;
-}
-.needs-field input,
-.needs-field select {
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: inherit;
-}
-.needs-field input:focus,
-.needs-field select:focus {
-  outline: 2px solid var(--orange);
-  outline-offset: -1px;
-}
-.needs-hint {
-  font-size: 11px;
-  color: var(--gray);
-  margin-top: 10px;
-  padding: 8px 10px;
-  background: var(--orange-light);
-  border-radius: 6px;
-  border-left: 3px solid var(--orange);
-}
+/* 3. 需求分析輸入 */
+#needsInputCard .x-card-header .toggle-btn { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; padding:4px 12px; border-radius:6px; font-size:12px; cursor:pointer; }
+#needsInputCard .x-card-header .toggle-btn:hover { background:rgba(255,255,255,0.25); }
+.needs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px 18px; }
+.needs-field { display:flex; flex-direction:column; gap:4px; }
+.needs-field label { font-size:12px; color:var(--gray); font-weight:600; }
+.needs-field input, .needs-field select { padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:inherit; }
+.needs-field input:focus, .needs-field select:focus { outline:2px solid var(--orange); outline-offset:-1px; }
+.needs-hint { font-size:11px; color:var(--gray); margin-top:10px; padding:8px 10px; background:var(--orange-light); border-radius:6px; border-left:3px solid var(--orange); }
 
-/* ── 2. 責任缺口分析卡片 ── */
-.gap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-}
-.gap-item {
-  background: var(--gray-bg);
-  border-radius: 10px;
-  padding: 14px 14px 12px;
-  border-left: 4px solid var(--teal);
-  position: relative;
-}
-.gap-item.danger { border-left-color: var(--red); background: #fff5f5; }
-.gap-item.warn   { border-left-color: var(--gold); background: #fffaf0; }
-.gap-item.ok     { border-left-color: var(--green); background: #f0fdf4; }
-.gap-icon {
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-.gap-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
-}
-.gap-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 12px;
-  padding: 3px 0;
-}
-.gap-row .gr-label { color: var(--gray); }
-.gap-row .gr-val { font-weight: 700; color: var(--navy); }
-.gap-row.gap-result {
-  margin-top: 6px;
-  padding-top: 8px;
-  border-top: 1px dashed #ccc;
-  font-size: 13px;
-}
-.gap-row.gap-result .gr-val.is-gap   { color: var(--red); }
-.gap-row.gap-result .gr-val.is-ok    { color: var(--green); }
-.gap-bar-wrap {
-  margin-top: 8px;
-  height: 6px;
-  background: #e5e5e5;
-  border-radius: 3px;
-  overflow: hidden;
-}
-.gap-bar {
-  height: 100%;
-  border-radius: 3px;
-  transition: width .35s ease;
-}
-.gap-bar.ok    { background: var(--green); }
-.gap-bar.warn  { background: var(--gold); }
-.gap-bar.danger{ background: var(--red); }
-.gap-tag {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-.gap-tag.danger { background: var(--red);   color: #fff; }
-.gap-tag.warn   { background: var(--gold);  color: #fff; }
-.gap-tag.ok     { background: var(--green); color: #fff; }
+/* 4. 責任缺口 */
+.gap-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.gap-item { background:var(--gray-bg); border-radius:10px; padding:14px 14px 12px; border-left:4px solid var(--teal); position:relative; }
+.gap-item.danger { border-left-color:var(--red); background:#fff5f5; }
+.gap-item.warn   { border-left-color:var(--gold); background:#fffaf0; }
+.gap-item.ok     { border-left-color:var(--green); background:#f0fdf4; }
+.gap-icon { font-size:18px; margin-bottom:4px; }
+.gap-title { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px; letter-spacing:0.5px; }
+.gap-row { display:flex; justify-content:space-between; align-items:baseline; font-size:12px; padding:3px 0; }
+.gap-row .gr-label { color:var(--gray); }
+.gap-row .gr-val { font-weight:700; color:var(--navy); }
+.gap-row.gap-result { margin-top:6px; padding-top:8px; border-top:1px dashed #ccc; font-size:13px; }
+.gap-row.gap-result .gr-val.is-gap { color:var(--red); }
+.gap-row.gap-result .gr-val.is-ok  { color:var(--green); }
+.gap-bar-wrap { margin-top:8px; height:6px; background:#e5e5e5; border-radius:3px; overflow:hidden; }
+.gap-bar { height:100%; border-radius:3px; transition:width .35s ease; }
+.gap-bar.ok     { background:var(--green); }
+.gap-bar.warn   { background:var(--gold); }
+.gap-bar.danger { background:var(--red); }
+.gap-tag { position:absolute; top:10px; right:12px; font-size:10px; padding:2px 8px; border-radius:10px; font-weight:700; letter-spacing:0.5px; }
+.gap-tag.danger { background:var(--red); color:#fff; }
+.gap-tag.warn   { background:var(--gold); color:#fff; }
+.gap-tag.ok     { background:var(--green); color:#fff; }
 
-/* ── 3. 保費佔收入比 ── */
-.pir-wrap {
-  background: linear-gradient(135deg, #fafafa, #f0f0f0);
-  border-radius: 12px;
-  padding: 14px 18px;
-  margin-bottom: 14px;
-  border: 1px solid var(--border);
-}
-.pir-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.pir-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--navy);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.pir-value {
-  font-size: 18px;
-  font-weight: 900;
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 1px;
-}
-.pir-value.ok     { color: var(--green); }
-.pir-value.warn   { color: var(--gold); }
-.pir-value.danger { color: var(--red); }
-.pir-bar-wrap {
-  position: relative;
-  height: 14px;
-  background: #e5e5e5;
-  border-radius: 7px;
-  overflow: hidden;
-}
-.pir-bar {
-  position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  border-radius: 7px;
-  transition: width .4s ease, background .25s;
-}
-.pir-bar.ok     { background: linear-gradient(90deg, var(--green), #4ade80); }
-.pir-bar.warn   { background: linear-gradient(90deg, var(--gold), #fbbf24); }
-.pir-bar.danger { background: linear-gradient(90deg, var(--red), #f87171); }
-.pir-marker {
-  position: absolute;
-  top: -3px;
-  width: 1px;
-  height: 20px;
-  background: rgba(0,0,0,0.25);
-}
-.pir-marker::after {
-  content: attr(data-label);
-  position: absolute;
-  top: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9px;
-  color: var(--gray);
-  white-space: nowrap;
-}
-.pir-msg {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--gray);
-  line-height: 1.6;
-}
-.pir-msg.ok      { color: var(--green); }
-.pir-msg.warn    { color: #a87000; }
-.pir-msg.danger  { color: var(--red); font-weight: 600; }
+/* 5. 保費佔比 */
+.pir-wrap { background:linear-gradient(135deg,#fafafa,#f0f0f0); border-radius:12px; padding:14px 18px; margin-bottom:14px; border:1px solid var(--border); }
+.pir-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px; }
+.pir-title { font-size:13px; font-weight:700; color:var(--navy); }
+.pir-value { font-size:18px; font-weight:900; font-family:"Bebas Neue",sans-serif; letter-spacing:1px; }
+.pir-value.ok     { color:var(--green); }
+.pir-value.warn   { color:var(--gold); }
+.pir-value.danger { color:var(--red); }
+.pir-bar-wrap { position:relative; height:14px; background:#e5e5e5; border-radius:7px; overflow:hidden; }
+.pir-bar { position:absolute; top:0; left:0; height:100%; border-radius:7px; transition:width .4s ease; }
+.pir-bar.ok     { background:linear-gradient(90deg,var(--green),#4ade80); }
+.pir-bar.warn   { background:linear-gradient(90deg,var(--gold),#fbbf24); }
+.pir-bar.danger { background:linear-gradient(90deg,var(--red),#f87171); }
+.pir-marker { position:absolute; top:-3px; width:1px; height:20px; background:rgba(0,0,0,0.25); }
+.pir-marker::after { content:attr(data-label); position:absolute; top:22px; left:50%; transform:translateX(-50%); font-size:9px; color:var(--gray); white-space:nowrap; }
+.pir-msg { margin-top:14px; font-size:12px; color:var(--gray); line-height:1.6; }
+.pir-msg.ok     { color:var(--green); }
+.pir-msg.warn   { color:#a87000; }
+.pir-msg.danger { color:var(--red); font-weight:600; }
 
-/* ── 4. 理賠合計 ── */
-.claims-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  margin-top: 12px;
-}
-.claims-cell {
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  text-align: center;
-}
-.claims-cell .cc-icon { font-size: 16px; }
-.claims-cell .cc-label {
-  font-size: 11px;
-  color: var(--gray);
-  margin: 4px 0;
-}
-.claims-cell .cc-val {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--navy);
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 1px;
-}
-.claims-cell .cc-unit {
-  font-size: 10px;
-  color: var(--gray);
-  margin-left: 2px;
-}
+/* 6. 理賠合計 */
+.claims-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:12px; }
+.claims-cell { background:#fff; border-radius:8px; padding:10px 12px; border:1px solid var(--border); text-align:center; }
+.claims-cell .cc-icon { font-size:16px; }
+.claims-cell .cc-label { font-size:11px; color:var(--gray); margin:4px 0; }
+.claims-cell .cc-val { font-size:16px; font-weight:800; color:var(--navy); font-family:"Bebas Neue",sans-serif; letter-spacing:1px; }
+.claims-cell .cc-unit { font-size:10px; color:var(--gray); margin-left:2px; }
 
-/* ── 5. 稅務 / 文件提醒(tips 條) ── */
-.tip-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
-  background: linear-gradient(90deg, #fff8e1, #fff);
-  border-left: 4px solid var(--gold);
-  border-radius: 6px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-.tip-row.danger {
-  background: linear-gradient(90deg, #fee, #fff);
-  border-left-color: var(--red);
-}
-.tip-row.info {
-  background: linear-gradient(90deg, var(--blue-soft), #fff);
-  border-left-color: #3D8FCC;
-}
-.tip-row .tip-icon {
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.tip-row .tip-body {
-  flex: 1;
-}
-.tip-row .tip-title {
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 2px;
-}
-.tip-row .tip-text {
-  color: #444;
-}
-.tip-row .tip-text b {
-  color: var(--orange-dark);
-}
+/* 7. 提示條 */
+.tip-row { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; background:linear-gradient(90deg,#fff8e1,#fff); border-left:4px solid var(--gold); border-radius:6px; margin-bottom:8px; font-size:12px; line-height:1.6; }
+.tip-row.danger { background:linear-gradient(90deg,#fee,#fff); border-left-color:var(--red); }
+.tip-row.info   { background:linear-gradient(90deg,var(--blue-soft),#fff); border-left-color:#3D8FCC; }
+.tip-row .tip-icon { font-size:18px; flex-shrink:0; }
+.tip-row .tip-body { flex:1; }
+.tip-row .tip-title { font-weight:700; color:var(--navy); margin-bottom:2px; }
+.tip-row .tip-text { color:#444; }
+.tip-row .tip-text b { color:var(--orange-dark); }
 
-/* ── 6. 險種小標籤(保證/非保證、首/續年費)── */
-.x-rider-badges {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-.x-rider-badges .xrb {
-  font-size: 9px;
-  padding: 1px 6px;
-  border-radius: 8px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
-.xrb.guaranteed       { background: #d4f1d4; color: #1d6b1d; border:1px solid #95d495; }
-.xrb.non-guaranteed   { background: #ffe4e1; color: #a02828; border:1px solid #f5a5a5; }
-.xrb.natural          { background: #fff3cd; color: #856404; border:1px solid #ffe69c; }
-.xrb.level            { background: #d1ecf1; color: #0c5460; border:1px solid #9fd5e2; }
+/* 8. 險種小標籤 */
+.x-rider-badges { display:inline-flex; gap:4px; margin-left:6px; vertical-align:middle; }
+.x-rider-badges .xrb { font-size:9px; padding:1px 6px; border-radius:8px; font-weight:700; letter-spacing:0.3px; }
+.xrb.guaranteed     { background:#d4f1d4; color:#1d6b1d; border:1px solid #95d495; }
+.xrb.non-guaranteed { background:#ffe4e1; color:#a02828; border:1px solid #f5a5a5; }
+.xrb.natural        { background:#fff3cd; color:#856404; border:1px solid #ffe69c; }
+.xrb.level          { background:#d1ecf1; color:#0c5460; border:1px solid #9fd5e2; }
 
-/* ═══════════════════════════════════════════════════════════
- * Phase 2.1 (2026/05/14) — UI 精修
- * ═══════════════════════════════════════════════════════════ */
+/* 9. 美化建議保障內容 */
+#benefitsCard .benefits-main-cat { margin-bottom:22px !important; padding-bottom:6px; }
+#benefitsCard .benefits-main-cat .bmc-header { background:linear-gradient(135deg,#fafbfc 0%,#fff 100%); padding:10px 14px !important; border-radius:6px; margin-bottom:12px !important; border-bottom:2px solid rgba(0,0,0,0.04); }
+#benefitsCard .benefits-main-cat .bmc-title { font-size:14px !important; letter-spacing:1.2px; font-weight:800 !important; }
+#benefitsCard .benefits-main-cat .bmc-subtitle { background:rgba(0,0,0,0.025); padding:5px 10px; border-radius:4px; font-size:11px !important; margin:8px 0 6px !important; letter-spacing:1px; color:#6a7785 !important; font-weight:700 !important; }
+#benefitsCard .benefits-simple-card { background:#fff !important; border:1px solid #ebeef1 !important; border-radius:10px !important; padding:14px 14px 12px !important; box-shadow:0 1px 3px rgba(13,42,58,0.04); transition:box-shadow .2s, transform .15s; }
+#benefitsCard .benefits-simple-card:hover { box-shadow:0 4px 12px rgba(13,42,58,0.08); transform:translateY(-1px); }
+#benefitsCard .benefits-simple-card.starred, #benefitsCard .benefits-simple-card.is-primary { background:linear-gradient(135deg,#fffbf2 0%,#fff 100%) !important; border-left:4px solid var(--gold) !important; }
+#benefitsCard .benefits-simple-card .bsc-icon { font-size:20px !important; margin-bottom:4px; }
+#benefitsCard .benefits-simple-card .bsc-title { font-size:12px !important; color:#5a6772 !important; letter-spacing:0.5px; font-weight:600 !important; margin-bottom:6px !important; }
+#benefitsCard .benefits-simple-card .bsc-value { font-size:18px !important; font-weight:800 !important; color:var(--navy) !important; letter-spacing:0.5px; line-height:1.2; }
+#benefitsCard .benefits-simple-card .bsc-unit-inline { font-size:11px; color:var(--gray); margin-left:2px; font-weight:600; }
+#benefitsCard .benefits-simple-card .bsc-rule-text { font-size:13px; color:#8a99a6; font-weight:600; }
+#benefitsCard .benefits-simple-card .bsc-comps { margin-top:6px; padding-top:6px; border-top:1px dashed rgba(0,0,0,0.06); }
+#benefitsCard .benefits-simple-card .bsc-comp-chip { font-size:10px !important; padding:1px 7px !important; margin-right:3px; letter-spacing:0.3px; }
+#benefitsCard .benefit-card { background:#fff; border:1px solid #e8ecef !important; border-radius:12px !important; margin-bottom:14px !important; overflow:hidden; box-shadow:0 1px 4px rgba(13,42,58,0.04); }
+#benefitsCard .benefit-card-header { background:linear-gradient(135deg,#f8fafc 0%,#fff 100%); padding:12px 16px !important; border-bottom:2px solid #f0f3f5; }
+#benefitsCard .benefit-card-icon { font-size:22px !important; }
+#benefitsCard .benefit-card-title { font-size:14px !important; font-weight:800 !important; color:var(--navy); letter-spacing:0.5px; }
+#benefitsCard .bc-typect { background:var(--orange-light); color:var(--orange-dark); font-size:10px; padding:1px 8px; border-radius:8px; margin-left:8px; letter-spacing:0.3px; font-weight:700; }
+#benefitsCard .benefit-card-meta { font-size:11px; color:#8a99a6; margin-top:2px; letter-spacing:0.3px; }
+#benefitsCard .benefit-card-body { padding:12px 16px !important; }
+#benefitsCard .bi-comp-band { background:linear-gradient(90deg,rgba(0,0,0,0.025),transparent); padding:7px 12px !important; border-radius:6px !important; margin:10px 0 6px !important; border-left:3px solid var(--comp-color,var(--teal)); display:flex; align-items:center; gap:8px; font-size:12px; }
+#benefitsCard .bi-comp-name { font-weight:700; color:var(--navy); letter-spacing:0.5px; }
+#benefitsCard .bi-comp-sub { font-size:10px; color:var(--gray); letter-spacing:0.3px; margin-left:auto; }
+#benefitsCard .bi-comp-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+#benefitsCard [title]:hover { cursor:help; }
 
-/* ── 美化「建議保障內容」卡片 ── */
-/* 5 大類大標頭 — 加強層次感 */
-#benefitsCard .bsc-main-title,
-#benefitsCard .benefits-main-title {
-  background: linear-gradient(135deg, #f8f5f0 0%, #fff 100%);
-  border-left: 5px solid var(--orange);
-  padding: 8px 14px;
-  margin: 18px 0 10px;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--navy);
-  border-radius: 4px;
-  letter-spacing: 1px;
-}
-/* 詳細模式給付類型卡片 — 加寬間距、減弱邊框 */
-#benefitsCard .benefits-detail-card,
-#benefitsCard .benefits-simple-card {
-  background: #fff;
-  border: 1px solid #e8ecef;
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 4px rgba(13,42,58,0.04);
-  transition: box-shadow .2s, transform .15s;
-}
-#benefitsCard .benefits-detail-card:hover,
-#benefitsCard .benefits-simple-card:hover {
-  box-shadow: 0 4px 12px rgba(13,42,58,0.08);
-}
-/* 卡片標題 (icon + 給付類型) */
-#benefitsCard .bsc-title,
-#benefitsCard .bdc-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-/* 主要保障 ★ 標記 — 改成更顯眼的金底 */
-#benefitsCard .benefits-simple-card.is-primary,
-#benefitsCard .benefits-simple-card.starred {
-  background: linear-gradient(135deg, #fffbf2 0%, #fff 100%);
-  border-left: 4px solid var(--gold);
-}
-/* 數字大小 + 字距 */
-#benefitsCard .bsc-value,
-#benefitsCard .bdc-value {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--navy);
-  font-family: 'Bebas Neue', 'Noto Sans TC', sans-serif;
-  letter-spacing: 0.8px;
-}
-/* 單位字 */
-#benefitsCard .bsc-unit,
-#benefitsCard .bdc-unit {
-  font-size: 11px;
-  color: var(--gray);
-  margin-left: 3px;
-  font-weight: 600;
-}
-/* 「依條款」灰色小字 — 已存在,只是再加強對比 */
-#benefitsCard .bsc-rule-text {
-  font-size: 12px;
-  color: #8a99a6;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-/* 詳細模式公司分組塊 — 上方淡色 banner */
-#benefitsCard .bdc-company-group {
-  background: #fafbfc;
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin: 6px 0 8px;
-  font-size: 11px;
-  color: #5a6772;
-  letter-spacing: 0.5px;
-  border-left: 3px solid;
-}
-/* note 文字(限額條件等)— 改成淡灰字 */
-#benefitsCard .bsc-note,
-#benefitsCard .bdc-note {
-  font-size: 10px;
-  color: #8a99a6;
-  margin-top: 4px;
-  line-height: 1.5;
-  letter-spacing: 0.2px;
-}
-/* tooltip 內容(主檔自有的 tooltip)— 加強對比 */
-#benefitsCard [title]:hover {
-  cursor: help;
-}
-/* 行動裝置簡化 */
-@media (max-width: 720px) {
-  #benefitsCard .bsc-main-title,
-  #benefitsCard .benefits-main-title {
-    font-size: 13px;
-    padding: 6px 10px;
-    margin: 12px 0 8px;
-  }
-  #benefitsCard .benefits-detail-card,
-  #benefitsCard .benefits-simple-card {
-    padding: 10px 12px;
-    margin-bottom: 8px;
-  }
-  #benefitsCard .bsc-value,
-  #benefitsCard .bdc-value {
-    font-size: 15px;
-  }
-}
+/* 10. 走勢圖滑桿 */
+.chart-range-slider-wrap { display:inline-flex; align-items:center; gap:10px; padding:4px 12px 4px 8px; background:rgba(111,66,193,0.06); border:1px solid rgba(111,66,193,0.18); border-radius:16px; }
+.chart-range-slider-wrap input[type="range"] { -webkit-appearance:none; appearance:none; width:160px; height:4px; border-radius:2px; background:linear-gradient(90deg,#c9b8e6,#8b5cf6); outline:none; cursor:pointer; margin:0; }
+.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#fff; border:2px solid #6f42c1; cursor:pointer; box-shadow:0 2px 6px rgba(111,66,193,0.35); }
+.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+.chart-range-slider-wrap input[type="range"]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid #6f42c1; cursor:pointer; box-shadow:0 2px 6px rgba(111,66,193,0.35); }
+.chart-range-slider-wrap .crs-value { font-size:13px; font-weight:800; color:#6f42c1; font-family:"Bebas Neue","Noto Sans TC",sans-serif; min-width:64px; text-align:right; letter-spacing:0.5px; }
+.chart-range-slider-wrap .crs-ticks { display:flex; justify-content:space-between; width:160px; margin-top:2px; font-size:9px; color:var(--gray); pointer-events:none; }
+.crs-stops { position:relative; width:160px; display:flex; flex-direction:column; gap:2px; }
 
-/* ── 走勢圖期間滑桿 ── */
-.chart-range-slider-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 4px 12px 4px 8px;
-  background: rgba(111, 66, 193, 0.06);
-  border: 1px solid rgba(111, 66, 193, 0.18);
-  border-radius: 16px;
-}
-.chart-range-slider-wrap .crs-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #6f42c1;
-  white-space: nowrap;
-}
-.chart-range-slider-wrap input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 160px;
-  height: 4px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #c9b8e6, #8b5cf6);
-  outline: none;
-  cursor: pointer;
-  margin: 0;
-}
-.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid #6f42c1;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(111,66,193,0.35);
-  transition: transform .12s;
-}
-.chart-range-slider-wrap input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-}
-.chart-range-slider-wrap input[type="range"]::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid #6f42c1;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(111,66,193,0.35);
-}
-.chart-range-slider-wrap .crs-value {
-  font-size: 13px;
-  font-weight: 800;
-  color: #6f42c1;
-  font-family: 'Bebas Neue','Noto Sans TC',sans-serif;
-  min-width: 56px;
-  text-align: right;
-  letter-spacing: 0.5px;
-}
-.chart-range-slider-wrap .crs-ticks {
-  display: flex;
-  justify-content: space-between;
-  width: 160px;
-  margin-top: 2px;
-  font-size: 9px;
-  color: var(--gray);
-  pointer-events: none;
-}
-.crs-stops {
-  position: relative;
-  width: 160px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* ── 列印模式 ── */
+/* 11. 列印 */
 @media print {
-  #needsInputCard { display: none !important; }
-  .chart-range-slider-wrap { display: none !important; }
-  .x-card { box-shadow: none; border: 1px solid #999; page-break-inside: avoid; }
-  .x-card-header { background: #0D2A3A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .pir-bar, .gap-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .tip-row { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #needsInputCard { display:none !important; }
+  .chart-range-slider-wrap { display:none !important; }
+  .x-card { box-shadow:none; border:1px solid #999; page-break-inside:avoid; }
+  .x-card-header { background:#0D2A3A !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .pir-bar, .gap-bar { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .tip-row { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 }
 
-/* ── 手機 RWD ── */
-@media (max-width: 720px) {
-  .needs-grid { grid-template-columns: 1fr 1fr; }
-  .gap-grid { grid-template-columns: 1fr; }
-  .claims-summary { grid-template-columns: repeat(2, 1fr); }
-  .x-card-header { font-size: 13px; padding: 10px 14px; }
-  .x-card-body { padding: 12px 14px; }
-  .pir-value { font-size: 16px; }
-  .chart-range-slider-wrap input[type="range"] { width: 120px; }
-  .chart-range-slider-wrap .crs-stops { width: 120px; }
+/* 12. 手機 */
+@media (max-width:720px) {
+  .needs-grid { grid-template-columns:1fr 1fr; }
+  .gap-grid { grid-template-columns:1fr; }
+  .claims-summary { grid-template-columns:repeat(2,1fr); }
+  .x-card-header { font-size:13px; padding:10px 14px; }
+  .x-card-body { padding:12px 14px; }
+  .pir-value { font-size:16px; }
+  .chart-range-slider-wrap input[type="range"] { width:120px; }
+  .chart-range-slider-wrap .crs-stops { width:120px; }
+  #benefitsCard .benefits-main-cat .bmc-title { font-size:13px !important; }
+  #benefitsCard .benefits-simple-card { padding:10px 12px !important; }
+  #benefitsCard .benefits-simple-card .bsc-value { font-size:15px !important; }
+  #benefitsCard .benefit-card-title { font-size:13px !important; }
 }
-@media (max-width: 480px) {
-  .needs-grid { grid-template-columns: 1fr; }
-}
+@media (max-width:480px) { .needs-grid { grid-template-columns:1fr; } }
