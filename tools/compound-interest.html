@@ -232,18 +232,20 @@
 
   /* ── 名言 ── */
   .quote-card {
-    background: var(--navy); color: #fff;
+    background: linear-gradient(135deg, var(--teal) 0%, #134a52 100%);
+    color: #fff;
     border-radius: 14px; padding: 18px 24px;
     margin-bottom: 28px;
     position: relative; overflow: hidden;
     text-align: center;
+    box-shadow: 0 8px 24px rgba(26,107,114,0.15);
   }
   .quote-card::before {
     content: ''; position: absolute;
     top: -30px; left: -30px;
     width: 150px; height: 150px;
     border-radius: 50%;
-    background: rgba(232,160,32,0.15);
+    background: rgba(232,160,32,0.2);
     filter: blur(40px);
   }
   .quote-card-text {

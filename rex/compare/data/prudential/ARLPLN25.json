@@ -5,19 +5,20 @@
     "product_code": "ARLPLN25",
     "company": "保誠人壽",
     "product_name": "金寶貝",
-    "currency": "USD",
+    "currency": "TWD",
     "period": 1,
     "engine": "prudential_v2",
     "base_sex": "M",
-    "base_age": 40,
-    "base_sa": 39500,
-    "base_premium": 3291.67,
+    "base_age": 36,
+    "base_sa": 1623959,
+    "base_premium": 200000,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-batch-dec",
-    "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→641400, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=130482.0, 期=1] [v4: bp=130,482異常, 改用 sa/12=3291.67]"
+    "needs_revalidation": false,
+    "notes": "[校準 base_sa: 500000→641400, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=130482.0, 期=1] [v4: bp=130,482異常, 改用 sa/12=3291.67]",
+    "verified_against": "Drew 2026-05-14 台幣利變非還本"
   },
   "schedule": [
     {
