@@ -893,11 +893,14 @@
   }
 
   function startWhenReady() {
-    const ready = window.INSURANCE_DB && window.INSURANCE_DB.benefitsLib && window.AHShared;
-    if (!ready) {
+    // 主檔用 const INSURANCE_DB 宣告,不會掛到 window 上,所以只能檢查 AHShared (來自 shared.js)
+    // injectCards 內部不依賴 INSURANCE_DB,renderAnalysis 自己有 try/catch 保護
+    if (!window.AHShared) {
+      console.log('[enhancements] 等待 shared.js (window.AHShared) 載入...');
       setTimeout(startWhenReady, 200);
       return;
     }
+    console.log('[enhancements] startWhenReady 通過,開始注入卡片');
     if (!injectCards()) {
       setTimeout(startWhenReady, 200);
       return;
