@@ -66,6 +66,7 @@
   --c-cathay: #6B8E23;
   --c-kgi: #5B8FB9;
   --c-yuanta: #B8312C;
+  --c-prudential: #003F87;
 }
 
 * { box-sizing: border-box; }
@@ -2625,7 +2626,12 @@ const App = (() => {
       ]
     },
     { key: '定額日額', products: [
-        { cid: 'hongtai', code: 'HI', defaultAmount: 10 }
+        { cid: 'hongtai', code: 'HI', defaultAmount: 10 },
+        { cid: 'prudential', code: 'AHINTR1', defaultAmount: 1000 },
+        { cid: 'cathay', code: 'B93', defaultAmount: 1000 },
+        { cid: 'cathay', code: 'CQ4', defaultAmount: 1000 },
+        { cid: 'fubon', code: 'HJK', defaultAmount: 1000 },
+        { cid: 'fubon', code: 'HKR5', defaultAmount: 1000 }
       ]
     },
     { key: '重大傷病(終身)', products: [
@@ -2934,6 +2940,109 @@ const App = (() => {
         }
       }
     ],
+    /* v1.20 — 定額日額類:HI / AHINTR1 / B93 / CQ4 / HJK / HKR5 */
+    '定額日額': [
+      { rowTitle: '住院醫療日額', matches: {
+          HI: '住院日額\\(每日\\)',
+          AHINTR1: '① 住院醫療日額',
+          B93: '① 住院醫療日額',
+          CQ4: '① 住院醫療日額',
+          HJK: '① 住院醫療日額',
+          HKR5: '① 住院醫療日額'
+        }
+      },
+      { rowTitle: '長期住院日額(31日起)', matches: {
+          B93: '② 長期住院日額',
+          CQ4: '② 長期住院日額',
+          HJK: '② 長期住院日額',
+          HKR5: '② 長期住院日額'
+        }
+      },
+      { rowTitle: '出院療養保險金', matches: {
+          AHINTR1: '④ 出院養護',
+          CQ4: '③ 出院療養',
+          HJK: '③ 出院療養',
+          HKR5: '③ 出院療養',
+          HI: '出院療養金'
+        }
+      },
+      { rowTitle: '住院日額加值(65歲前)', matches: {
+          AHINTR1: '⑤ 住院日額加值'
+        }
+      },
+      { rowTitle: '住院前後門診', matches: {
+          HJK: '④ 住院前後門診',
+          HKR5: '④ 住院前後門診'
+        }
+      },
+      { rowTitle: '加護病房日額', matches: {
+          HI: '加護病房日額',
+          AHINTR1: '② 加護病房日額',
+          B93: '③ 加護病房日額',
+          CQ4: '④ 加護病房日額',
+          HJK: '⑤ 加護病房日額',
+          HKR5: '⑤ 加護病房日額'
+        }
+      },
+      { rowTitle: '燒燙傷病房日額', matches: {
+          AHINTR1: '③ 燒燙傷病房日額',
+          B93: '④ 燒燙傷病房日額',
+          CQ4: '⑤ 燒燙傷病房日額',
+          HJK: '⑥ 燒燙傷病房日額',
+          HKR5: '⑥ 燒燙傷病房日額'
+        }
+      },
+      { rowTitle: '住院看護保險金', matches: {
+          HKR5: '⑦ 住院看護'
+        }
+      },
+      { rowTitle: '住院手術醫療', matches: {
+          AHINTR1: '⑥ 住院手術醫療',
+          B93: '⑤ 住院手術醫療',
+          HKR5: '⑧ 住院手術醫療'
+        }
+      },
+      { rowTitle: '手術療養保險金', matches: {
+          AHINTR1: '⑦ 手術療養',
+          HKR5: '⑨ 手術療養'
+        }
+      },
+      { rowTitle: '門診外科手術', matches: {
+          AHINTR1: '⑧ 門診外科手術',
+          B93: '⑥ 門診外科手術',
+          HKR5: '⑩ 門診外科手術'
+        }
+      },
+      { rowTitle: '意外創傷縫合', matches: {
+          B93: '⑦ 意外創傷縫合'
+        }
+      },
+      { rowTitle: '特定處置', matches: {
+          AHINTR1: '⑨ 特定處置',
+          B93: '⑧ 特定處置'
+        }
+      },
+      { rowTitle: '重大疾病住院加值', matches: {
+          CQ4: '⑥ 重大疾病住院加值'
+        }
+      },
+      { rowTitle: '癌症住院加值', matches: {
+          HJK: '⑦ 癌症住院加值'
+        }
+      },
+      { rowTitle: '特定重大疾病保險金', matches: {
+          HKR5: '⑪ 特定重大疾病'
+        }
+      },
+      { rowTitle: '無理賠增額', matches: {
+          HKR5: '⑫ 無理賠增額'
+        }
+      },
+      { rowTitle: '累積理賠上限', matches: {
+          HKR5: '⑬ 累積理賠上限'
+        }
+      }
+    ],
     /* v1.19 — 婦嬰險(終身)類:JO(元大親愛貝比)+ LCA(南山寵愛佳人) */
     '婦嬰險': [
       { rowTitle: '身故 / 喪葬', matches: {
@@ -3024,14 +3133,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','prudential.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -3549,7 +3658,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta','prudential'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];
@@ -4152,6 +4261,8 @@ const App = (() => {
       document.getElementById('genderM').classList.remove('active');
       renderTable();
     });
+
+    // 全年齡保費表(工具列按鈕 — 預設展開狀態)
     const btnFullAge = document.getElementById('btnFullAge');
     btnFullAge.classList.toggle('active', state.ui.fullAgeExpanded);
     btnFullAge.textContent = state.ui.fullAgeExpanded ? '📊 收合全年齡表' : '📊 全年齡保費表';
