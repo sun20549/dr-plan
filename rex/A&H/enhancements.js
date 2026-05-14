@@ -889,13 +889,18 @@
     if (agg) agg.style.display = 'none';
   }
 
+  let _startTryCount = 0;
   function startWhenReady() {
-    // 主檔用 const INSURANCE_DB 宣告,不會掛到 window 上,所以只能檢查 AHShared (來自 shared.js)
-    // injectCards 內部不依賴 INSURANCE_DB,renderAnalysis 自己有 try/catch 保護
-    if (!window.AHShared) {
-      console.log('[enhancements] 等待 shared.js (window.AHShared) 載入...');
+    // AHShared (shared.js) 不是必須的,只有 detail mode 內 calcBenefitValue 才用到。
+    // 等 max 15 次(3 秒)後不論如何都往下跑,讓 chips / observer 至少能啟動
+    if (!window.AHShared && _startTryCount < 15) {
+      _startTryCount++;
+      if (_startTryCount === 1) console.log('[enhancements] 等待 shared.js...');
       setTimeout(startWhenReady, 200);
       return;
+    }
+    if (!window.AHShared) {
+      console.warn('[enhancements] shared.js 未載入,detail 模式金額計算會失效,但 chips/observer 仍啟動');
     }
     console.log('[enhancements] startWhenReady 通過,開始注入卡片');
     if (!injectCards()) {

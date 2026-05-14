@@ -5942,9 +5942,22 @@ function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
   const gpRate = db.gp_table?.[code];
   const pvYears = db.pv_table?.[code];
 
-  // 沒查到 → 退回 v1
-  if (!gpRate || !pvYears || pvYears.length < 2) {
+  // 沒 gp → 退回 v1
+  if (!gpRate) {
     return actuarialCalc_twlife(plan, sex, age, sumAssured, period);
+  }
+  // 有 gp 但無 pv → 從現有 schedule 反推 pv 序列(v2_gp_only 模式)
+  let pvYearsToUse = pvYears;
+  if (!pvYearsToUse || pvYearsToUse.length < 2) {
+    const baseSched = db.schedule_at_base || db.schedule || [];
+    if (baseSched.length < 2) {
+      return actuarialCalc_twlife(plan, sex, age, sumAssured, period);
+    }
+    const baseSA = db.meta.base_sa || 1000;
+    pvYearsToUse = baseSched.map(r => {
+      const cv = r.cv_total || r.surr_total || r.surr_pure || 0;
+      return cv / baseSA * 1000;
+    });
   }
 
   const discAutoPay = db.discounts?.auto_pay_first || 0.01;
@@ -5959,14 +5972,14 @@ function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
   // 逐年:cv_basic 從 PV 表查;增值回饋累積買增額繳清,簡化處理
   let cumIncrement = 0;  // 累計增加保險金額(簡化)
   let cumIncrementPv = 0;
-  const schedule = pvYears.map((pvRate, idx) => {
+  const schedule = pvYearsToUse.map((pvRate, idx) => {
     const y = idx + 1;
     const yearAge = age + idx;
     const cumPrem = Math.min(y, periodActual) * annualPremReal;
     const cvBasic = sumAssured / 1000 * pvRate;
 
     // 增值回饋分享金(簡化):前一年 cv_basic × dividendRate,累積買增額(假設 ratio 1:1)
-    const divThisYear = idx === 0 ? 0 : (sumAssured / 1000 * pvYears[idx-1]) * dividendRate;
+    const divThisYear = idx === 0 ? 0 : (sumAssured / 1000 * pvYearsToUse[idx-1]) * dividendRate;
     cumIncrement += divThisYear;
     // 增額繳清的 cv 簡化為「累積增額 × 0.95」(approx)
     cumIncrementPv = cumIncrement * 0.95;
