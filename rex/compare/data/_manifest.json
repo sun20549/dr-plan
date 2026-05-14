@@ -2920,11 +2920,12 @@
     "period": 10,
     "engine": "prudential_v2",
     "declared_rate": 0,
-    "base_sa": 100000,
-    "base_age": 3,
-    "base_premium": 10474,
+    "base_sa": 1842000,
+    "base_age": 36,
+    "base_premium": 199943,
     "plan_code": "PAE",
-    "product_code": "PAE"
+    "product_code": "PAE",
+    "verified_against": "Drew 2026-05-14 台幣利變還本 10年"
   },
   {
     "key": "PAF",
@@ -6668,5 +6669,19 @@
     "verified_against": "Drew 2026-05-14 美元利變非還本 15年",
     "needs_extraction": true,
     "path": "fubon/15RPISWLB.json"
+  },
+  {
+    "key": "P8TISN",
+    "name": "P8TISN",
+    "company": "pca",
+    "engine": "twlife_v1",
+    "plan_year": 8,
+    "base_sa": 2870000,
+    "base_premium": 199886,
+    "base_age": 36,
+    "currency": "TWD",
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 8年",
+    "needs_extraction": true,
+    "path": "pca/P8TISN.json"
   }
 ]
