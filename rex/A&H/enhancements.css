@@ -786,3 +786,42 @@
     color: var(--navy);
   }
 }
+
+/* ── Phase 10:隱藏險種規劃內的「保證/非保證/自然/平準」小標籤 ── */
+.x-rider-badges { display: none !important; }
+
+/* ── Phase 11:給付項目 note 條款顯示優化(整段條款好閱讀) ── */
+.pd-item-note {
+  font-size: 12px !important;
+  color: #4a5560 !important;
+  line-height: 1.7 !important;
+  padding: 8px 12px !important;
+  margin-top: 6px !important;
+  background: #f8f9fa;
+  border-left: 3px solid #e0e0e0;
+  border-radius: 4px;
+  text-align: justify;
+  letter-spacing: 0.2px;
+  font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+}
+.pd-item-note:empty { display: none; }
+/* 公司專屬色系 - note 左邊條改用該公司色 */
+.pd-style-quanqiu    .pd-item-note { border-left-color: #1A6B72; }
+.pd-style-xinguang   .pd-item-note { border-left-color: #E60012; }
+.pd-style-hongtai    .pd-item-note { border-left-color: #6F4FB8; }
+.pd-style-farglory   .pd-item-note { border-left-color: #2B7DC4; }
+.pd-style-fubon      .pd-item-note { border-left-color: #0D6E3F; }
+.pd-style-prudential .pd-item-note { border-left-color: #003F87; }
+
+/* 商品卡片間留更大空間,模仿 PDF 一段一段 */
+.pd-product {
+  margin-bottom: 18px !important;
+}
+.pd-items {
+  padding: 10px 16px 14px !important;
+}
+.pd-item {
+  padding: 12px 0 !important;
+  border-bottom: 1px dashed #e8ecef !important;
+}
+.pd-item:last-child { border-bottom: none !important; }

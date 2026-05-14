@@ -817,7 +817,7 @@
     const observer = new MutationObserver(() => {
       // 主檔每次 recompute 都會更新 #totalAnnual,所以這就是我們的觸發點
       try {
-        annotateRiderRows();
+        /* phase10 skip */ //annotateRiderRows();
         renderAnalysis();
       } catch (e) {
         console.error('[enhancements] render error:', e);
@@ -830,7 +830,7 @@
     if (resultCard) {
       const styleObs = new MutationObserver(() => {
         try {
-          annotateRiderRows();
+          /* phase10 skip */ //annotateRiderRows();
           renderAnalysis();
         } catch (e) {
           console.error('[enhancements] style error:', e);
@@ -1033,7 +1033,7 @@
     try { bindCustomTooltip(); } catch(e) { console.error('[enhancements] bindCustomTooltip 失敗:', e); }
     try { injectBenefitsFilter(); } catch(e) { console.error('[enhancements] injectBenefitsFilter 失敗:', e); }
     try { setupBenefitsDetailOverride(); } catch(e) { console.error('[enhancements] setupBenefitsDetailOverride 失敗:', e); }
-    try { annotateRiderRows(); } catch(e) { console.error('[enhancements] annotateRiderRows 失敗:', e); }
+    /* Phase 10: 取消標籤渲染 — annotateRiderRows() */ 
     try { renderAnalysis(); } catch(e) { console.error('[enhancements] renderAnalysis 失敗:', e); }
     try { purgeTypeTotal(); } catch(e) { console.error('[enhancements] purgeTypeTotal 失敗:', e); }
 
