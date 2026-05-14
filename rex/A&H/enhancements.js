@@ -148,6 +148,27 @@
     warn:   15    // < 15% : 警示;>= 15% : 危險
   };
 
+
+  // ═══════════════════════════════════════════════════════════
+  //  Phase 6:用 Function constructor 繞過 strict mode 拿主檔的 const INSURANCE_DB
+  //  主檔以 `const INSURANCE_DB = {...}` 宣告,在 strict mode 不會掛 window
+  //  Function('return INSURANCE_DB')() 在非 strict 環境執行可拿到全域 const
+  // ═══════════════════════════════════════════════════════════
+  function getInsuranceDB() {
+    if (window.INSURANCE_DB) return window.INSURANCE_DB;
+    try {
+      var db = (new Function('return typeof INSURANCE_DB !== "undefined" ? INSURANCE_DB : null'))();
+      if (db) {
+        window.INSURANCE_DB = db;   // 順便掛上去,後續就不用再呼叫
+        console.log('[enhancements] 已從全域抓到 INSURANCE_DB,companies:', db.companies && db.companies.length);
+        return db;
+      }
+    } catch (e) {
+      console.error('[enhancements] getInsuranceDB 失敗:', e);
+    }
+    return null;
+  }
+
   // ── 工具函式 ──
   const $  = sel => document.querySelector(sel);
   const $$ = sel => document.querySelectorAll(sel);
@@ -349,9 +370,8 @@
       surgery: 0           // 住院手術
     };
 
-    if (!window.INSURANCE_DB || !window.AHShared) return agg;
-
-    const db = window.INSURANCE_DB;
+    const db = getInsuranceDB();
+    if (!db || !window.AHShared) return agg;
     const benefitsLib = db.benefitsLib || {};
     const categorize5 = window.AHShared.categorize5;
     const classifyItem = window.AHShared.classifyItem;
@@ -1054,7 +1074,7 @@
     if (!wrap) return;
     const tbody = document.getElementById('resultTbody');
     if (!tbody) { wrap.innerHTML = ''; return; }
-    const db = window.INSURANCE_DB;
+    const db = getInsuranceDB();
     if (!db) { wrap.innerHTML = ''; return; }
     
     // ★ 改用 row 內的 product code 反查公司 (不依賴 group-header,
@@ -1120,7 +1140,7 @@
   function collectSelectionsFromDOM() {
     const tbody = document.getElementById('resultTbody');
     if (!tbody) return [];
-    const db = window.INSURANCE_DB;
+    const db = getInsuranceDB();
     if (!db) return [];
     const out = [];
     let currentCompany = null;
@@ -1195,7 +1215,7 @@
       filtered = rows.filter(r => r.companyId === activeFilterCompanyId);
     }
     
-    const benefitsLib = (window.INSURANCE_DB || {}).benefitsLib || {};
+    const __db = getInsuranceDB(); const benefitsLib = (__db && __db.benefitsLib) || {};
     const calc = window.AHShared && window.AHShared.calcBenefitValue;
     const conv = window.AHShared && window.AHShared.convertProductClaims;
     if (!calc) return;
