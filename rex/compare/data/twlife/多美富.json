@@ -19,176 +19,890 @@
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-nupw-extractor",
     "notes": "[death_benefit 估算]",
-    "verified_against": "v1.5 多輪校準 (內部估算)"
+    "verified_against": "v1.5 多輪校準 (內部估算)",
+    "schedule_synth": true,
+    "schedule_synth_note": "v55b: 異常 schedule 重合成"
   },
   "schedule": [
     {
       "y": 1,
-      "age": 42,
+      "age": 36,
       "cum_prem": 24534.0,
-      "cv_basic": 16940.5,
-      "cv_total": 16940.5,
-      "death_benefit": 245340.0,
-      "increment_amount": 31621.8,
-      "pv_basic": 22587.0,
-      "pv_total": 23656.5,
+      "cv_basic": 15732.43,
+      "cv_total": 16560.45,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 0.92,
-          "db_with_dividend": 0.0
+          "cv_total": 16560.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 15732.43,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 15732.43,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 2,
-      "age": 43,
+      "age": 37,
       "cum_prem": 49068.0,
-      "cv_basic": 36436.5,
-      "cv_total": 36436.5,
-      "death_benefit": 490680.0,
-      "increment_amount": 68014.8,
-      "pv_basic": 48582.0,
-      "pv_total": 0.0,
+      "cv_basic": 44283.87,
+      "cv_total": 46614.6,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 0.99,
-          "db_with_dividend": 0.0
+          "cv_total": 46614.6,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 44283.87,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 44283.87,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 3,
-      "age": 44,
+      "age": 38,
       "cum_prem": 49068.0,
-      "cv_basic": 50302.0,
-      "cv_total": 50302.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 70777.0,
-      "pv_basic": 50555.0,
-      "pv_total": 0.0,
+      "cv_basic": 46077.37,
+      "cv_total": 48502.49,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.03,
-          "db_with_dividend": 0.0
+          "cv_total": 48502.49,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 46077.37,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 46077.37,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 4,
-      "age": 45,
+      "age": 39,
       "cum_prem": 49068.0,
-      "cv_basic": 52339.0,
-      "cv_total": 52339.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 73642.8,
-      "pv_basic": 52602.0,
-      "pv_total": 0.0,
+      "cv_basic": 47943.5,
+      "cv_total": 50466.84,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.07,
-          "db_with_dividend": 0.0
+          "cv_total": 50466.84,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 47943.5,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 47943.5,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 5,
-      "age": 46,
+      "age": 40,
       "cum_prem": 49068.0,
-      "cv_basic": 54454.0,
-      "cv_total": 54454.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 76618.5,
-      "pv_basic": 54727.5,
-      "pv_total": 0.0,
+      "cv_basic": 49885.21,
+      "cv_total": 52510.75,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.12,
-          "db_with_dividend": 0.0
+          "cv_total": 52510.75,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 49885.21,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 49885.21,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 6,
-      "age": 47,
+      "age": 41,
       "cum_prem": 49068.0,
-      "cv_basic": 56650.0,
-      "cv_total": 56650.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 79708.3,
-      "pv_basic": 56934.5,
-      "pv_total": 0.0,
+      "cv_basic": 51905.56,
+      "cv_total": 54637.43,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.16,
-          "db_with_dividend": 0.0
+          "cv_total": 54637.43,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 51905.56,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 51905.56,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 7,
-      "age": 48,
+      "age": 42,
       "cum_prem": 49068.0,
-      "cv_basic": 59225.5,
-      "cv_total": 59225.5,
-      "death_benefit": 490680.0,
-      "increment_amount": 82915.7,
-      "pv_basic": 59225.5,
-      "pv_total": 0.0,
+      "cv_basic": 54007.74,
+      "cv_total": 56850.25,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.21,
-          "db_with_dividend": 0.0
+          "cv_total": 56850.25,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 54007.74,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 54007.74,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 8,
-      "age": 49,
+      "age": 43,
       "cum_prem": 49068.0,
-      "cv_basic": 61603.5,
-      "cv_total": 61603.5,
-      "death_benefit": 490680.0,
-      "increment_amount": 86244.9,
-      "pv_basic": 61603.5,
-      "pv_total": 0.0,
+      "cv_basic": 56195.05,
+      "cv_total": 59152.69,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.26,
-          "db_with_dividend": 0.0
+          "cv_total": 59152.69,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 56195.05,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 56195.05,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 9,
-      "age": 50,
+      "age": 44,
       "cum_prem": 49068.0,
-      "cv_basic": 64071.0,
-      "cv_total": 64071.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 89699.4,
-      "pv_basic": 64071.0,
-      "pv_total": 0.0,
+      "cv_basic": 58470.95,
+      "cv_total": 61548.37,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 1.31,
-          "db_with_dividend": 0.0
+          "cv_total": 61548.37,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 58470.95,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 58470.95,
+          "db_with_dividend": 50000
         }
       }
     },
     {
       "y": 10,
-      "age": 51,
+      "age": 45,
       "cum_prem": 49068.0,
-      "cv_basic": 0.0,
-      "cv_total": 0.0,
-      "death_benefit": 490680.0,
-      "increment_amount": 80016.0,
-      "pv_basic": 0.0,
-      "pv_total": 0.0,
+      "cv_basic": 60839.02,
+      "cv_total": 64041.08,
+      "death_benefit": 50000,
       "scenarios": {
         "mid": {
-          "cv_total": 0.0,
-          "db_with_dividend": 0.0
+          "cv_total": 64041.08,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 60839.02,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 60839.02,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 49068.0,
+      "cv_basic": 63303.01,
+      "cv_total": 66634.74,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 66634.74,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 63303.01,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 63303.01,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 49068.0,
+      "cv_basic": 65866.78,
+      "cv_total": 69333.45,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 69333.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 65866.78,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 65866.78,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 49068.0,
+      "cv_basic": 68534.38,
+      "cv_total": 72141.45,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 72141.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 68534.38,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 68534.38,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 49068.0,
+      "cv_basic": 71310.02,
+      "cv_total": 75063.18,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 75063.18,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 71310.02,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 71310.02,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 49068.0,
+      "cv_basic": 74198.08,
+      "cv_total": 78103.24,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 78103.24,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 74198.08,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 74198.08,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 49068.0,
+      "cv_basic": 77203.1,
+      "cv_total": 81266.42,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 81266.42,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 77203.1,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 77203.1,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 49068.0,
+      "cv_basic": 80329.83,
+      "cv_total": 84557.71,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 84557.71,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 80329.83,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 80329.83,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 49068.0,
+      "cv_basic": 83583.19,
+      "cv_total": 87982.3,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 87982.3,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 83583.19,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 83583.19,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 49068.0,
+      "cv_basic": 86968.3,
+      "cv_total": 91545.58,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 91545.58,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 86968.3,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 86968.3,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 49068.0,
+      "cv_basic": 90490.52,
+      "cv_total": 95253.18,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 95253.18,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 90490.52,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 90490.52,
+          "db_with_dividend": 50000
+        }
+      }
+    }
+  ],
+  "schedule_at_base": [
+    {
+      "y": 1,
+      "age": 36,
+      "cum_prem": 24534.0,
+      "cv_basic": 15732.43,
+      "cv_total": 16560.45,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 16560.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 15732.43,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 15732.43,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 2,
+      "age": 37,
+      "cum_prem": 49068.0,
+      "cv_basic": 44283.87,
+      "cv_total": 46614.6,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 46614.6,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 44283.87,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 44283.87,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 3,
+      "age": 38,
+      "cum_prem": 49068.0,
+      "cv_basic": 46077.37,
+      "cv_total": 48502.49,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 48502.49,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 46077.37,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 46077.37,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 4,
+      "age": 39,
+      "cum_prem": 49068.0,
+      "cv_basic": 47943.5,
+      "cv_total": 50466.84,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 50466.84,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 47943.5,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 47943.5,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 5,
+      "age": 40,
+      "cum_prem": 49068.0,
+      "cv_basic": 49885.21,
+      "cv_total": 52510.75,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 52510.75,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 49885.21,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 49885.21,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 6,
+      "age": 41,
+      "cum_prem": 49068.0,
+      "cv_basic": 51905.56,
+      "cv_total": 54637.43,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 54637.43,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 51905.56,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 51905.56,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 7,
+      "age": 42,
+      "cum_prem": 49068.0,
+      "cv_basic": 54007.74,
+      "cv_total": 56850.25,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 56850.25,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 54007.74,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 54007.74,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 8,
+      "age": 43,
+      "cum_prem": 49068.0,
+      "cv_basic": 56195.05,
+      "cv_total": 59152.69,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 59152.69,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 56195.05,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 56195.05,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 9,
+      "age": 44,
+      "cum_prem": 49068.0,
+      "cv_basic": 58470.95,
+      "cv_total": 61548.37,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 61548.37,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 58470.95,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 58470.95,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 10,
+      "age": 45,
+      "cum_prem": 49068.0,
+      "cv_basic": 60839.02,
+      "cv_total": 64041.08,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 64041.08,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 60839.02,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 60839.02,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 49068.0,
+      "cv_basic": 63303.01,
+      "cv_total": 66634.74,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 66634.74,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 63303.01,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 63303.01,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 49068.0,
+      "cv_basic": 65866.78,
+      "cv_total": 69333.45,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 69333.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 65866.78,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 65866.78,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 49068.0,
+      "cv_basic": 68534.38,
+      "cv_total": 72141.45,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 72141.45,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 68534.38,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 68534.38,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 49068.0,
+      "cv_basic": 71310.02,
+      "cv_total": 75063.18,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 75063.18,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 71310.02,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 71310.02,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 49068.0,
+      "cv_basic": 74198.08,
+      "cv_total": 78103.24,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 78103.24,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 74198.08,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 74198.08,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 49068.0,
+      "cv_basic": 77203.1,
+      "cv_total": 81266.42,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 81266.42,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 77203.1,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 77203.1,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 49068.0,
+      "cv_basic": 80329.83,
+      "cv_total": 84557.71,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 84557.71,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 80329.83,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 80329.83,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 49068.0,
+      "cv_basic": 83583.19,
+      "cv_total": 87982.3,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 87982.3,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 83583.19,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 83583.19,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 49068.0,
+      "cv_basic": 86968.3,
+      "cv_total": 91545.58,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 91545.58,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 86968.3,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 86968.3,
+          "db_with_dividend": 50000
+        }
+      }
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 49068.0,
+      "cv_basic": 90490.52,
+      "cv_total": 95253.18,
+      "death_benefit": 50000,
+      "scenarios": {
+        "mid": {
+          "cv_total": 95253.18,
+          "db_with_dividend": 50000
+        },
+        "low": {
+          "cv_total": 90490.52,
+          "db_with_dividend": 50000
+        },
+        "none": {
+          "cv_total": 90490.52,
+          "db_with_dividend": 50000
         }
       }
     }
