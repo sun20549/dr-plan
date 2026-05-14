@@ -615,64 +615,98 @@ function applyEnhancements(root) {
 }
 
 /* ─── 案例對帳單自動探測 + Lightbox ─── */
-const SCREENSHOT_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
-const SCREENSHOT_MAX = 8; // 每案最多探測 8 張
+const SCREENSHOT_EXTS = ['jpg', 'png'];   // 標準格式 + 截圖預設
+const SCREENSHOT_MAX = 6;                  // 每月最多 6 張
+const LOOKBACK_MONTHS = 24;                // 回查 24 個月
 
+// HEAD 請求（只問檔頭、不下載 body）→ 比 Image() 快 10 倍
 async function probeImage(url) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = url;
+  try {
+    const res = await fetch(url, { method: 'HEAD', cache: 'force-cache' });
+    return res.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+// 並發控制：一次最多 12 個 in-flight 請求（避免被瀏覽器/CDN 擋）
+async function parallelLimit(items, fn, limit = 12) {
+  const results = new Array(items.length);
+  let idx = 0;
+  const workers = Array(Math.min(limit, items.length)).fill(0).map(async () => {
+    while (idx < items.length) {
+      const i = idx++;
+      results[i] = await fn(items[i], i);
+    }
   });
+  await Promise.all(workers);
+  return results;
 }
 
 async function detectCaseScreenshots(caseId, container) {
   if (!caseId || !container) return;
   const baseId = caseId.toLowerCase();
   const baseUrl = 'assets/img/cases/' + baseId;
-  const groups = []; // [{ key, label, files: [...] }]
 
-  // 1. 探測「無日期」舊格式：u0033-1.jpg, u0033-2.jpg ...
-  const legacyFiles = [];
+  // 建立所有探測 URL（平行送）
+  // 格式：[{ key: 'YYYYMM' or 'legacy', idx, urls: [候選網址陣列] }]
+  const probes = [];
+  // Legacy
   for (let i = 1; i <= SCREENSHOT_MAX; i++) {
-    let hit = null;
-    for (const ext of SCREENSHOT_EXTS) {
-      const url = `${baseUrl}-${i}.${ext}`;
-      if (await probeImage(url)) { hit = url; break; }
-    }
-    if (!hit) break;
-    legacyFiles.push(hit);
+    probes.push({
+      key: 'legacy',
+      idx: i,
+      urls: SCREENSHOT_EXTS.map(e => `${baseUrl}-${i}.${e}`)
+    });
   }
-  if (legacyFiles.length > 0) {
-    groups.push({ key: '0000', label: null, files: legacyFiles });
-  }
-
-  // 2. 探測「年月」格式：u0033-YYYYMM-N.{ext}
-  // 從現在往前 36 個月，連續 12 個月沒圖就停
+  // 年月格式：往前 24 個月
   const now = new Date();
-  let emptyStreak = 0;
-  for (let m = 0; m < 36; m++) {
+  for (let m = 0; m < LOOKBACK_MONTHS; m++) {
     const d = new Date(now.getFullYear(), now.getMonth() - m, 1);
     const yyyymm = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0');
-    const monthFiles = [];
     for (let i = 1; i <= SCREENSHOT_MAX; i++) {
-      let hit = null;
-      for (const ext of SCREENSHOT_EXTS) {
-        const url = `${baseUrl}-${yyyymm}-${i}.${ext}`;
-        if (await probeImage(url)) { hit = url; break; }
-      }
-      if (!hit) break;
-      monthFiles.push(hit);
+      probes.push({
+        key: yyyymm,
+        idx: i,
+        urls: SCREENSHOT_EXTS.map(e => `${baseUrl}-${yyyymm}-${i}.${e}`)
+      });
     }
-    if (monthFiles.length === 0) {
-      emptyStreak++;
-      if (emptyStreak >= 12) break;
-    } else {
-      emptyStreak = 0;
-      const label = `${d.getFullYear()} / ${String(d.getMonth() + 1).padStart(2, '0')}`;
-      groups.push({ key: yyyymm, label, files: monthFiles });
+  }
+
+  // 平行探測（限制 12 個併發，避免一次送太多被擋）
+  const results = await parallelLimit(probes, async p => {
+    for (const url of p.urls) {
+      if (await probeImage(url)) return { key: p.key, idx: p.idx, url };
     }
+    return null;
+  }, 12);
+
+  // 依 key 分組
+  const groupMap = new Map();
+  for (const r of results) {
+    if (!r) continue;
+    if (!groupMap.has(r.key)) groupMap.set(r.key, []);
+    groupMap.get(r.key).push(r);
+  }
+
+  // 每組只取「從 1 開始連續」的張數（避免有 -3 沒 -2 的詭異情況）
+  const groups = [];
+  for (const [key, files] of groupMap) {
+    files.sort((a, b) => a.idx - b.idx);
+    const consecutive = [];
+    let expected = 1;
+    for (const f of files) {
+      if (f.idx === expected) {
+        consecutive.push(f.url);
+        expected++;
+      } else break;
+    }
+    if (consecutive.length === 0) continue;
+    let label = null;
+    if (key !== 'legacy') {
+      label = `${key.slice(0, 4)} / ${key.slice(4)}`;
+    }
+    groups.push({ key: key === 'legacy' ? '0000' : key, label, files: consecutive });
   }
 
   if (groups.length === 0) {
