@@ -6,18 +6,23 @@
     "company": "保誠人壽",
     "product_name": "鑫發達外幣",
     "currency": "USD",
-    "period": 1,
+    "period": 12,
     "engine": "prudential_v2",
     "base_sex": "M",
-    "base_age": 40,
-    "base_sa": 23100,
-    "base_premium": 98490.0,
+    "base_age": 36,
+    "base_sa": 314566,
+    "base_premium": 200000,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-final",
-    "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→888133, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=98490.0, 期=1]"
+    "needs_revalidation": false,
+    "notes": "[校準 base_sa: 500000→888133, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=98490.0, 期=1]",
+    "verified_against": "Drew 2026-05-14 美元利變 12年",
+    "cross_verified": [
+      "美元利變非還本 12年 sa=314566 prem=200000",
+      "美元利變非還本 8年 sa=217034 prem=200000"
+    ]
   },
   "schedule": [
     {

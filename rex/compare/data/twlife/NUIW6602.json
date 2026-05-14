@@ -4,11 +4,11 @@
     "company": "台灣人壽",
     "product_name": "台灣人壽美鑫美利美元利率變動型終身壽險",
     "currency": "USD",
-    "period": 6,
+    "period": 20,
     "engine": "twlife_v2_full",
     "base_sex": "M",
     "base_age": 36,
-    "base_sa": 3367618,
+    "base_sa": 9144955,
     "declared_rate": 0.042,
     "guaranteed_rate": 0.0225,
     "unit_size": 1000,
@@ -17,9 +17,14 @@
     "plan_code": "NUIW6602",
     "product_code": "NUIW6602",
     "base_premium": 200000,
-    "needs_revalidation": true,
+    "needs_revalidation": false,
     "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=3367618, prem=200000 [schedule 用 base 估算]",
-    "verified_against": "Drew 2026-05-14"
+    "verified_against": "Drew 2026-05-14 美元利變 20年",
+    "verified_against_20y": "Drew 2026-05-14 美元利變非還本 20年 (sa=9144955 prem=200000)",
+    "cross_verified": [
+      "美元利變(預定利率) 6年 sa=3367618 prem=200000",
+      "美元利變非還本 8年 sa=4350137 prem=200000"
+    ]
   },
   "gp_table": {
     "0600F": 20.6,

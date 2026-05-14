@@ -4,12 +4,12 @@
     "company": "全球人壽",
     "product_name": "豪美樂利利率變動型美元終身壽險(定額給付型)(FKD)",
     "currency": "USD",
-    "period": 12,
+    "period": 3,
     "engine": "twlife_v1",
     "base_sex": "M",
     "base_age": 36,
-    "base_sa": 1633000,
-    "base_premium": 199879,
+    "base_sa": 775000,
+    "base_premium": 199914,
     "discount": 0.038513,
     "declared_rate": 0.043,
     "source_file": "全球__FKD_豪美樂利美元利變試算表_20260101__1_.xls",
@@ -21,7 +21,12 @@
     "db_pattern": "stepped",
     "needs_revalidation": false,
     "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=1633000, prem=199879",
-    "verified_against": "Drew 2026-05-14"
+    "verified_against": "Drew 2026-05-14 美元利變 3年",
+    "cross_verified": [
+      "美元利變(預定利率) 6年 sa=1633000 prem=199879",
+      "美元利變非還本 12年 sa=3000000 prem=195252",
+      "美元利變非還本 8年 sa=2133000 prem=199927"
+    ]
   },
   "schedule": [
     {

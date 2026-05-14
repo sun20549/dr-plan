@@ -10,7 +10,7 @@
     "engine": "prudential_v2",
     "base_sex": "M",
     "base_age": 36,
-    "base_sa": 1623959,
+    "base_sa": 2484876,
     "base_premium": 200000,
     "discount": 0,
     "declared_rate": 0.04,
@@ -18,7 +18,11 @@
     "extracted_by": "cowork-pru-batch-dec",
     "needs_revalidation": false,
     "notes": "[校準 base_sa: 500000→641400, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=85239.0, 期=1]",
-    "verified_against": "Drew 2026-05-14 台幣利變非還本"
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 10年",
+    "cross_verified": [
+      "台幣利變(預定利率) 6年 sa=1623959 prem=200000",
+      "台幣利變非還本 20年 sa=4509386 prem=200000"
+    ]
   },
   "schedule": [
     {

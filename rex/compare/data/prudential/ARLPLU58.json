@@ -6,18 +6,20 @@
     "company": "保誠人壽",
     "product_name": "愛得利外幣",
     "currency": "USD",
-    "period": 1,
+    "period": 20,
     "engine": "prudential_v2",
     "base_sex": "M",
-    "base_age": 40,
-    "base_sa": 12900,
-    "base_premium": 76062.0,
+    "base_age": 36,
+    "base_sa": 320464,
+    "base_premium": 200000,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-decrypt",
-    "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→596666, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=76062.0, 期=1]"
+    "needs_revalidation": false,
+    "notes": "[校準 base_sa: 500000→596666, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=76062.0, 期=1]",
+    "verified_against": "Drew 2026-05-14 美元利變非還本 10年",
+    "verified_against_20y": "Drew 2026-05-14 美元利變非還本 20年 (sa=493022 prem=200000)"
   },
   "schedule": [
     {

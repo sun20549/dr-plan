@@ -3,7 +3,7 @@
     "company": "新光人壽",
     "plan_code": "P3A",
     "product_name": "美鑽傳世外幣利率變動型終身壽險(定期給付型)",
-    "period": 6,
+    "period": 2,
     "currency": "USD",
     "currency_unit": "萬元",
     "type": "美元利率變動型終身壽險(定期給付型)",
@@ -39,7 +39,7 @@
     "extraction_note_discount": "高保費折扣區間以年繳化保險費(美元)為門檻;PDF 範例另含『匯款轉帳 1%』『有效契約 1%』動態折扣,本 metadata 僅記錄高保費折扣",
     "base_age": 36,
     "base_sex": "M",
-    "base_sa": 4734852,
+    "base_sa": 1726586,
     "base_premium": 200000,
     "base_premium_net": 37422.7,
     "premium_per_unit": 1370,
@@ -48,7 +48,11 @@
     "sa_decay": true,
     "needs_revalidation": false,
     "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=4734852, prem=200000",
-    "verified_against": "Drew 2026-05-14"
+    "verified_against": "Drew 2026-05-14 美元利變 2年",
+    "cross_verified": [
+      "美元利變(預定利率) 6年 sa=4734852 prem=200000",
+      "美元利變非還本 8年 sa=5000000 prem=171360"
+    ]
   },
   "schedule": [
     {

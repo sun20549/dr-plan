@@ -6,20 +6,23 @@
     "company": "新光人壽",
     "product_name": "美富長鴻外幣利率變動型終身壽險(定期給付型)",
     "currency": "USD",
-    "period": 6,
+    "period": 10,
     "engine": "twlife_v1",
     "base_sex": "M",
     "base_age": 36,
     "base_sa": 500000,
-    "base_premium": 129980,
+    "base_premium": 81286,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-14",
     "extracted_by": "cowork-from-drew",
-    "verified_against": "Drew 2026-05-14",
-    "needs_revalidation": true,
+    "verified_against": "Drew 2026-05-14 美元利變非還本 10年",
+    "needs_revalidation": false,
     "revalidation_note": "從 Drew 抓 base,但 schedule 缺(需 Excel 抽 schedule)",
-    "notes": "[schedule 用 base 估算]"
+    "notes": "[schedule 用 base 估算]",
+    "cross_verified": [
+      "美元利變(預定利率) 6年 sa=500000 prem=129980"
+    ]
   },
   "schedule": [
     {

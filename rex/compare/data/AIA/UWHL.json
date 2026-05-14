@@ -4,14 +4,14 @@
     "company": "友邦人壽",
     "product_name": "友邦人壽鑫柑保倍美元利率變動型終身保險",
     "currency": "USD",
-    "period": 6,
+    "period": 20,
     "engine": "twlife_v1",
     "product_type": "whole_life_step_up",
     "step_up_year": 6,
     "base_sex": "M",
     "base_age": 36,
-    "base_sa": 3907000,
-    "base_premium": 199976,
+    "base_sa": 6161000,
+    "base_premium": 199975,
     "base_premium_gross": 23440.0,
     "discount": 0.03,
     "discount_label": "銀行外幣帳戶自動轉帳 1% + 高保額(30 萬≦保額<60 萬) 2% = 3%",
@@ -24,7 +24,11 @@
     "schedule_includes_dividend": false,
     "needs_revalidation": false,
     "notes": "v7 校準對齊 Drew(36 歲男 USD 200k 6年): SA=3907000, prem=199976",
-    "verified_against": "Drew 2026-05-14"
+    "verified_against": "Drew 2026-05-14 美元利變非還本 10年",
+    "verified_against_20y": "Drew 2026-05-14 美元利變非還本 20年 (sa=10000000 prem=195901)",
+    "cross_verified": [
+      "美元利變(預定利率) 6年 sa=3907000 prem=199976"
+    ]
   },
   "schedule": [
     {
