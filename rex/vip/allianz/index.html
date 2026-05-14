@@ -783,6 +783,292 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 成立至今長期走勢分析（多面板 SVG） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">2014/10/16 迄今長期走勢</h2>
+      <p class="block-subtitle">美國聯邦利率 ・ 安聯月收淨值 ・ 安聯累積淨值 ・ 美元匯率 ・ 四維對照</p>
+
+      <style>
+        .trend-panel {
+          background: #fff;
+          border: 1.5px solid var(--border);
+          border-radius: 14px;
+          padding: 22px 24px;
+          margin-bottom: 14px;
+          box-shadow: var(--shadow-sm);
+        }
+        .trend-panel h4 {
+          font-size: 16px;
+          font-weight: 900;
+          color: var(--navy);
+          letter-spacing: 1.5px;
+          margin: 0 0 4px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .trend-panel h4 .pill {
+          background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+          color: #fff;
+          font-size: 10px;
+          padding: 3px 10px;
+          border-radius: 10px;
+          letter-spacing: 1.5px;
+          font-family: 'Bebas Neue', sans-serif;
+        }
+        .trend-panel .sub {
+          font-size: 11px;
+          color: #888;
+          letter-spacing: 0.5px;
+          margin-bottom: 12px;
+        }
+        .trend-svg {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+        .trend-svg .axis { stroke: #E0DAC9; stroke-width: 1; stroke-dasharray: 3,3; }
+        .trend-svg .axis-label { font-family: 'Bebas Neue', sans-serif; font-size: 10px; fill: #888; }
+        .trend-svg .line-fed { fill: none; stroke: #0066CC; stroke-width: 2; }
+        .trend-svg .line-am { fill: none; stroke: #0D2A3A; stroke-width: 2; }
+        .trend-svg .line-at { fill: none; stroke: #2E8B57; stroke-width: 2; }
+        .trend-svg .line-fx { fill: none; stroke: #B87010; stroke-width: 1.8; }
+        .trend-svg .area-fill { opacity: 0.15; }
+        .trend-svg .marker-dot { fill: #fff; stroke-width: 2.5; }
+        .trend-svg .marker-label {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 13px;
+          font-weight: 900;
+        }
+        .trend-perf-row {
+          background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+          color: #fff;
+          border-radius: 14px;
+          padding: 22px 24px;
+          margin-bottom: 14px;
+          box-shadow: var(--shadow-orange);
+        }
+        .trend-perf-row h4 {
+          font-size: 14px; font-weight: 900; letter-spacing: 2px; margin: 0 0 14px;
+          color: #fff; display: flex; align-items: center; gap: 8px;
+        }
+        .trend-perf-grid {
+          display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px;
+        }
+        .trend-perf-cell {
+          background: rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 10px;
+          padding: 12px 8px;
+          text-align: center;
+          backdrop-filter: blur(8px);
+        }
+        .trend-perf-cell .lbl {
+          font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px;
+          margin-bottom: 4px; font-weight: 700;
+        }
+        .trend-perf-cell .val {
+          font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+          color: #fff; letter-spacing: 0.5px; line-height: 1;
+        }
+        .trend-perf-cell.hl { background: linear-gradient(135deg, #FFD700, #E8A020); border-color: #FFD700; }
+        .trend-perf-cell.hl .val { color: var(--navy); font-size: 26px; }
+        .trend-perf-cell.hl .lbl { color: rgba(13,42,58,0.7); }
+        @media (max-width: 720px) {
+          .trend-perf-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+      </style>
+
+      <!-- Panel 1: 美國聯邦基金利率 -->
+      <div class="trend-panel">
+        <h4>📊 美國聯邦基金利率（Fed Funds Rate）<span class="pill">FRED</span></h4>
+        <div class="sub">資料來源：fred.stlouisfed.org/series/FEDFUNDS ・ 0% 寬鬆 → 5.5% 升息 → 開始降息循環</div>
+        <svg class="trend-svg" viewBox="0 0 700 180" preserveAspectRatio="xMidYMid meet">
+          <line class="axis" x1="36" y1="40" x2="690" y2="40"/>
+          <line class="axis" x1="36" y1="80" x2="690" y2="80"/>
+          <line class="axis" x1="36" y1="120" x2="690" y2="120"/>
+          <line class="axis" x1="36" y1="160" x2="690" y2="160"/>
+          <text class="axis-label" x="32" y="44" text-anchor="end">6%</text>
+          <text class="axis-label" x="32" y="84" text-anchor="end">4%</text>
+          <text class="axis-label" x="32" y="124" text-anchor="end">2%</text>
+          <text class="axis-label" x="32" y="164" text-anchor="end">0%</text>
+          <!-- 從 2014 到 2026 ・ 0%~5.5% -->
+          <path class="line-fed" d="
+            M 40 158 L 90 158 L 130 156 L 170 152 L 220 148 L 260 138 L 310 124 L 360 112 L 400 116 L 430 130 L 470 158
+            L 510 158 L 540 158 L 570 96 L 600 56 L 630 48 L 660 52 L 690 64"/>
+          <text class="axis-label" x="40" y="174">14</text>
+          <text class="axis-label" x="130" y="174">16</text>
+          <text class="axis-label" x="220" y="174">18</text>
+          <text class="axis-label" x="310" y="174">20</text>
+          <text class="axis-label" x="400" y="174">22</text>
+          <text class="axis-label" x="510" y="174">23</text>
+          <text class="axis-label" x="600" y="174">24</text>
+          <text class="axis-label" x="660" y="174">25</text>
+          <text class="axis-label" x="690" y="174">26</text>
+        </svg>
+      </div>
+
+      <!-- Panel 2: 安聯收益成長 - AM 穩定月收（淨值，含高低點標記） -->
+      <div class="trend-panel">
+        <h4>💰 安聯收益成長基金 - AM 穩定月收類股（美元）<span class="pill">USDEQ3490</span></h4>
+        <div class="sub">資料來源：es.allianz.com.tw / USDEQ3490 ・ 配息類別，淨值會隨配息回落，**重點看含息報酬率**</div>
+        <svg class="trend-svg" viewBox="0 0 700 200" preserveAspectRatio="xMidYMid meet">
+          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
+          <line class="axis" x1="36" y1="180" x2="690" y2="180"/>
+          <text class="axis-label" x="32" y="34" text-anchor="end">11</text>
+          <text class="axis-label" x="32" y="74" text-anchor="end">9</text>
+          <text class="axis-label" x="32" y="114" text-anchor="end">8</text>
+          <text class="axis-label" x="32" y="154" text-anchor="end">7</text>
+          <text class="axis-label" x="32" y="184" text-anchor="end">6</text>
+          <!-- 淨值波動：10.5 → 9 → 10.59 高 → 6.68 COVID低 → 9 → 8.5 -->
+          <path class="line-am" d="
+            M 40 36 L 90 56 L 130 80 L 170 70 L 210 60 L 250 80 L 290 100 L 320 160
+            L 350 196 L 380 130 L 420 100 L 460 38 L 500 90 L 540 130 L 580 140 L 620 130 L 660 110 L 690 92"/>
+          <!-- 重點標記 -->
+          <circle class="marker-dot" cx="210" cy="60" r="5" stroke="#C8203A"/>
+          <text class="marker-label" x="195" y="48" fill="#C8203A">10.9</text>
+          <circle class="marker-dot" cx="460" cy="38" r="5" stroke="#C8203A"/>
+          <text class="marker-label" x="445" y="28" fill="#C8203A">10.59</text>
+          <circle class="marker-dot" cx="350" cy="196" r="6" stroke="#2E8B57" stroke-width="3"/>
+          <text class="marker-label" x="320" y="198" fill="#2E8B57">6.68（COVID）</text>
+          <text class="axis-label" x="40" y="195">14</text>
+          <text class="axis-label" x="170" y="195">16</text>
+          <text class="axis-label" x="290" y="195">18</text>
+          <text class="axis-label" x="400" y="195">20</text>
+          <text class="axis-label" x="500" y="195">22</text>
+          <text class="axis-label" x="620" y="195">24</text>
+          <text class="axis-label" x="690" y="195">26</text>
+        </svg>
+      </div>
+
+      <!-- Panel 3: 安聯 - AT 累積（含息報酬率） -->
+      <div class="trend-panel">
+        <h4>📈 安聯收益成長基金 - AT 累積類股（美元）<span class="pill" style="background: linear-gradient(135deg, #2E8B57, #1a6b3a);">含息報酬</span></h4>
+        <div class="sub">資料來源：es.allianz.com.tw / USDEQ3690 ・ **這條才是真正的「含息含複利」總報酬走勢**</div>
+        <svg class="trend-svg" viewBox="0 0 700 180" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="atGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2E8B57" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#2E8B57" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
+          <text class="axis-label" x="32" y="34" text-anchor="end">30</text>
+          <text class="axis-label" x="32" y="74" text-anchor="end">22</text>
+          <text class="axis-label" x="32" y="114" text-anchor="end">14</text>
+          <text class="axis-label" x="32" y="154" text-anchor="end">10</text>
+          <!-- 含息累積：10 → 28（成長 210%）-->
+          <path class="area-fill" fill="url(#atGrad)" d="
+            M 40 152 L 90 144 L 130 132 L 170 120 L 210 110 L 250 108 L 290 102 L 320 138
+            L 350 144 L 380 96 L 420 60 L 460 50 L 500 70 L 540 60 L 580 50 L 620 40 L 660 28 L 690 22 L 690 160 L 40 160 Z"/>
+          <path class="line-at" d="
+            M 40 152 L 90 144 L 130 132 L 170 120 L 210 110 L 250 108 L 290 102 L 320 138
+            L 350 144 L 380 96 L 420 60 L 460 50 L 500 70 L 540 60 L 580 50 L 620 40 L 660 28 L 690 22"/>
+          <circle class="marker-dot" cx="40" cy="152" r="4" stroke="#2E8B57"/>
+          <text class="marker-label" x="48" y="148" fill="#2E8B57">10.00 起始</text>
+          <circle class="marker-dot" cx="690" cy="22" r="5" stroke="#2E8B57" stroke-width="3"/>
+          <text class="marker-label" x="640" y="16" fill="#2E8B57">+210.63%</text>
+          <text class="axis-label" x="40" y="175">14</text>
+          <text class="axis-label" x="170" y="175">16</text>
+          <text class="axis-label" x="290" y="175">18</text>
+          <text class="axis-label" x="400" y="175">20</text>
+          <text class="axis-label" x="500" y="175">22</text>
+          <text class="axis-label" x="620" y="175">24</text>
+          <text class="axis-label" x="690" y="175">26</text>
+        </svg>
+      </div>
+
+      <!-- Panel 4: 報酬率表（最新數據 2026-05-12） -->
+      <div class="trend-perf-row">
+        <h4>📊 累積類股報酬率 ・ 資料日期 2026/05/12（原幣別 USD）</h4>
+        <div class="trend-perf-grid">
+          <div class="trend-perf-cell">
+            <div class="lbl">近 1 月</div>
+            <div class="val">+5.12<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">近 3 月</div>
+            <div class="val">+4.80<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">近 6 月</div>
+            <div class="val">+6.76<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">近 1 年</div>
+            <div class="val">+17.90<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">近 2 年</div>
+            <div class="val">+25.88<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">近 3 年</div>
+            <div class="val">+44.47<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell">
+            <div class="lbl">今年迄今</div>
+            <div class="val">+6.78<span style="font-size:14px;">%</span></div>
+          </div>
+          <div class="trend-perf-cell hl">
+            <div class="lbl">自成立以來</div>
+            <div class="val">+210.63<span style="font-size:14px;">%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: 美元兌新台幣 -->
+      <div class="trend-panel">
+        <h4>💱 美元兌新台幣匯率（USD / TWD）<span class="pill" style="background: linear-gradient(135deg, #B87010, #d68b15);">FX</span></h4>
+        <div class="sub">資料來源：es.allianz.com.tw / exchange-rate ・ 區間 27.5 ~ 33.5 ・ 中位 30-31</div>
+        <svg class="trend-svg" viewBox="0 0 700 160" preserveAspectRatio="xMidYMid meet">
+          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
+          <text class="axis-label" x="32" y="34" text-anchor="end">34</text>
+          <text class="axis-label" x="32" y="74" text-anchor="end">31</text>
+          <text class="axis-label" x="32" y="114" text-anchor="end">29</text>
+          <text class="axis-label" x="32" y="154" text-anchor="end">27</text>
+          <path class="line-fx" d="
+            M 40 88 L 80 70 L 130 50 L 170 76 L 210 90 L 250 84 L 290 76 L 330 88 L 370 110 L 410 96
+            L 450 50 L 490 60 L 530 56 L 570 36 L 610 50 L 650 80 L 690 84"/>
+          <text class="axis-label" x="40" y="172">14</text>
+          <text class="axis-label" x="170" y="172">16</text>
+          <text class="axis-label" x="290" y="172">18</text>
+          <text class="axis-label" x="400" y="172">20</text>
+          <text class="axis-label" x="500" y="172">22</text>
+          <text class="axis-label" x="620" y="172">24</text>
+          <text class="axis-label" x="690" y="172">26</text>
+        </svg>
+      </div>
+
+      <div class="info-card info-card-highlight" style="margin-top: 18px;">
+        <p style="font-size: 14px; line-height: 1.9; color: var(--navy);">
+          <strong style="color: var(--orange); font-size: 15px;">📊 重點觀察</strong><br>
+          1. <strong>AM 月收</strong>淨值會隨配息回落，看起來「沒漲」很正常 — 配息已實際入帳。<br>
+          2. <strong>AT 累積</strong>是「含息再投入」版本，**12 年累積 +210.63%**（年化約 9.8%），是真正展現基金實力的指標。<br>
+          3. 即使遇到 <strong style="color:var(--red);">2020 COVID 跌到 6.68</strong>、<strong>2022 升息循環</strong>，AT 累積線**仍一路向上**。<br>
+          4. 美元匯率長期區間 <strong>28-33</strong>，配息為美元計價可享匯率紅利。
+        </p>
+      </div>
+
+      <div class="note-box">
+        <strong>📌 資料更新</strong>　最新淨值與報酬率請查
+        <a href="https://es.allianz.com.tw" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">安聯官網基金平台</a>
+        ・ Fed 利率查
+        <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">FRED 聯準會數據庫</a>
+      </div>
+    </div>
+
     <!-- 歷史績效 -->
     <div class="section-block" data-reveal>
       <h2 class="block-title">歷史績效表現</h2>
