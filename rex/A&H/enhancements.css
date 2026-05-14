@@ -501,3 +501,31 @@
   padding-top: 20px;
   border-top: 2px dashed #ddd;
 }
+
+/* ── Phase 7:詳細模式強制單欄(模仿 PDF 直式排版,不分兩欄) ── */
+#benefitsSection {
+  column-count: 1 !important;
+  -moz-column-count: 1 !important;
+  -webkit-column-count: 1 !important;
+  display: block !important;
+}
+#benefitsSection > .pd-co-section,
+#benefitsSection > .pd-product {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.pd-product {
+  width: 100% !important;
+  display: block !important;
+}
+.pd-items {
+  display: block !important;
+}
+.pd-item {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+}

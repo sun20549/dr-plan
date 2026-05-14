@@ -1005,16 +1005,23 @@
 
   let _startTryCount = 0;
   function startWhenReady() {
-    // AHShared (shared.js) 不是必須的,只有 detail mode 內 calcBenefitValue 才用到。
-    // 等 max 15 次(3 秒)後不論如何都往下跑,讓 chips / observer 至少能啟動
-    if (!window.AHShared && _startTryCount < 15) {
+    // 主檔 loadInsuranceData 是 async fetch,公司資料一開始是空的
+    // 等 companies.length > 0 + AHShared 才繼續(max 50 次 = 10 秒)
+    var db = getInsuranceDB();
+    var dbReady = db && db.companies && db.companies.length > 0;
+    if ((!window.AHShared || !dbReady) && _startTryCount < 50) {
       _startTryCount++;
-      if (_startTryCount === 1) console.log('[enhancements] 等待 shared.js...');
+      if (_startTryCount === 1) console.log('[enhancements] 等待 shared.js + companies fetch...');
       setTimeout(startWhenReady, 200);
       return;
     }
     if (!window.AHShared) {
-      console.warn('[enhancements] shared.js 未載入,detail 模式金額計算會失效,但 chips/observer 仍啟動');
+      console.warn('[enhancements] shared.js 仍未載入,detail 模式可能失效');
+    }
+    if (!dbReady) {
+      console.warn('[enhancements] companies 仍空,chip 不會顯示');
+    } else {
+      console.log('[enhancements] companies 已載入:', db.companies.length, '家');
     }
     console.log('[enhancements] startWhenReady 通過,開始注入卡片');
     if (!injectCards()) {
