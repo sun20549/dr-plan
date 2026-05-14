@@ -529,3 +529,31 @@
   display: grid !important;
   grid-template-columns: 1fr auto !important;
 }
+
+/* ── Phase 8:修 NLA 排版 — 名稱欄至少 180px,金額欄不要吃掉所有空間 ── */
+.pd-item {
+  grid-template-columns: minmax(180px, 1fr) minmax(80px, auto) !important;
+  align-items: start !important;
+}
+.pd-item-name {
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  min-width: 0;
+}
+.pd-item-val {
+  text-align: right !important;
+  white-space: normal !important;
+  word-break: keep-all !important;
+  max-width: 60% !important;
+}
+.pd-val-text {
+  display: inline-block;
+  text-align: right;
+  white-space: normal !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: 1.4;
+  font-size: 12px !important;
+  color: #5a6772 !important;
+}
