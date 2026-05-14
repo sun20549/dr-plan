@@ -737,10 +737,14 @@ async function detectCaseScreenshots(caseId, container) {
            <span class="month-count">${g.files.length} 張</span>
          </div>`
       : '';
-    const cards = g.files.map(src => {
+    const cards = g.files.map((src, fIdx) => {
       const idx = globalIdx++;
+      const dateText = g.label || '無日期';
       return `<div class="screenshot-card" data-lb-index="${idx}">
-        <span class="ss-tag">${(g.files.indexOf(src) + 1)} / ${g.files.length}</span>
+        <div class="ss-header">
+          <span class="ss-tag">${fIdx + 1} / ${g.files.length}</span>
+          <span class="ss-date">${dateText}</span>
+        </div>
         <img src="${src}" loading="lazy" alt="案例 ${caseId} 對帳單">
       </div>`;
     }).join('');

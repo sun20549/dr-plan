@@ -10,14 +10,16 @@
     "engine": "prudential_v2",
     "base_sex": "M",
     "base_age": 40,
-    "base_sa": 199000,
+    "base_sa": 500000,
     "base_premium": 16583.33,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-batch-dec",
     "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→2960333, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=453123.0, 期=1] [v4: bp=453,123異常, 改用 sa/12=16583.33]"
+    "notes": "[校準 base_sa: 500000→2960333, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=453123.0, 期=1] [v4: bp=453,123異常, 改用 sa/12=16583.33]",
+    "extracted_from_excel": "保誠 民富傳家(ARLPLR1)_V1.0_20260331 (1).xls",
+    "verified_against": "Excel 2026-05-14 全表抽取"
   },
   "schedule": [
     {
