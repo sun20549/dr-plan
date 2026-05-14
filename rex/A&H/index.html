@@ -3634,6 +3634,17 @@ const INSURANCE_DB = {
         { name: "加護病房/燒燙傷醫療金(每次)", calc: { type: "ratio", ratio: 2.0 }, unit: "元", note: "提高為 2 倍" },
         { name: "骨折未住院給付", calc: { type: "note", text: "依骨折日數表給付：完全骨折 = 日數×2.5%、不完全骨折 = 半數、龜裂 = 四分之一" }, note: "未住院但確有骨折時適用" }
       ]
+    },
+    "MIR": {
+      title: "住院醫療保險附約(定額型)",
+      icon: "🏨",
+      highlights: ["住院日額補貼(最高 365 日)", "外科手術定額最高 3 倍給付"],
+      items: [
+        { name: "住院日額保險金", calc: { type: "plan", planMap: { "MI-05": 750, "MI-10": 1000, "MI-15": 1500, "MI-20": 2000, "MI-25": 2500, "MI-30": 3000, "MI-35": 3500, "MI-40": 4000, "MI-45": 4500, "MI-50": 5000 } }, unit: "元/天", note: "給付日數最高可達 365 日", star: true },
+        { name: "加護病房日額補助保險金", calc: { type: "plan", planMap: { "MI-05": 1500, "MI-10": 2000, "MI-15": 3000, "MI-20": 4000, "MI-25": 5000, "MI-30": 6000, "MI-35": 7000, "MI-40": 8000, "MI-45": 9000, "MI-50": 10000 } }, unit: "元/天", note: "給付日數最高可達 30 日" },
+        { name: "燒燙傷病房日額補助保險金", calc: { type: "plan", planMap: { "MI-05": 1500, "MI-10": 2000, "MI-15": 3000, "MI-20": 4000, "MI-25": 5000, "MI-30": 6000, "MI-35": 7000, "MI-40": 8000, "MI-45": 9000, "MI-50": 10000 } }, unit: "元/天", note: "給付日數最高可達 60 日" },
+        { name: "外科手術定額保險金", calc: { type: "plan", planMap: { "MI-05": 11250, "MI-10": 15000, "MI-15": 22500, "MI-20": 30000, "MI-25": 37500, "MI-30": 45000, "MI-35": 52500, "MI-40": 60000, "MI-45": 67500, "MI-50": 75000 } }, unit: "元", note: "最高給付 3 倍" }
+      ]
     }
   }
 };
@@ -7696,7 +7707,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (err) {
     console.error('保險資料載入失敗:', err);
     alert('保險資料載入失敗,請確認 JSON 檔案 (transglobe.json / hontai.json / skl.json / fglife.json) 是否與本 HTML 放在同一資料夾。\n\n錯誤訊息:' + err.message);
-        return;
+    return;
   }
   App.init();
 });
