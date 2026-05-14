@@ -881,68 +881,80 @@
         }
       </style>
 
+      <!-- 共用時間軸：2014 Oct → 2026 May，年位置 50, 113, 220, 327, 433, 540, 647, 690 -->
+
       <!-- Panel 1: 美國聯邦基金利率 -->
       <div class="trend-panel">
         <h4>📊 美國聯邦基金利率（Fed Funds Rate）<span class="pill">FRED</span></h4>
         <div class="sub">資料來源：fred.stlouisfed.org/series/FEDFUNDS ・ 0% 寬鬆 → 5.5% 升息 → 開始降息循環</div>
         <svg class="trend-svg" viewBox="0 0 700 180" preserveAspectRatio="xMidYMid meet">
-          <line class="axis" x1="36" y1="40" x2="690" y2="40"/>
-          <line class="axis" x1="36" y1="80" x2="690" y2="80"/>
-          <line class="axis" x1="36" y1="120" x2="690" y2="120"/>
-          <line class="axis" x1="36" y1="160" x2="690" y2="160"/>
-          <text class="axis-label" x="32" y="44" text-anchor="end">6%</text>
-          <text class="axis-label" x="32" y="84" text-anchor="end">4%</text>
-          <text class="axis-label" x="32" y="124" text-anchor="end">2%</text>
-          <text class="axis-label" x="32" y="164" text-anchor="end">0%</text>
-          <!-- 從 2014 到 2026 ・ 0%~5.5% -->
-          <path class="line-fed" d="
-            M 40 158 L 90 158 L 130 156 L 170 152 L 220 148 L 260 138 L 310 124 L 360 112 L 400 116 L 430 130 L 470 158
-            L 510 158 L 540 158 L 570 96 L 600 56 L 630 48 L 660 52 L 690 64"/>
-          <text class="axis-label" x="40" y="174">14</text>
-          <text class="axis-label" x="130" y="174">16</text>
-          <text class="axis-label" x="220" y="174">18</text>
-          <text class="axis-label" x="310" y="174">20</text>
-          <text class="axis-label" x="400" y="174">22</text>
-          <text class="axis-label" x="510" y="174">23</text>
-          <text class="axis-label" x="600" y="174">24</text>
-          <text class="axis-label" x="660" y="174">25</text>
-          <text class="axis-label" x="690" y="174">26</text>
+          <!-- 水平刻度 -->
+          <line class="axis" x1="40" y1="40" x2="690" y2="40"/>
+          <line class="axis" x1="40" y1="80" x2="690" y2="80"/>
+          <line class="axis" x1="40" y1="120" x2="690" y2="120"/>
+          <line class="axis" x1="40" y1="160" x2="690" y2="160"/>
+          <!-- 垂直年度引導線（淡） -->
+          <line class="axis" x1="50" y1="40" x2="50" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="113" y1="40" x2="113" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="220" y1="40" x2="220" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="327" y1="40" x2="327" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="433" y1="40" x2="433" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="540" y1="40" x2="540" y2="160" stroke-opacity="0.5"/>
+          <line class="axis" x1="647" y1="40" x2="647" y2="160" stroke-opacity="0.5"/>
+          <text class="axis-label" x="36" y="44" text-anchor="end">6%</text>
+          <text class="axis-label" x="36" y="84" text-anchor="end">4%</text>
+          <text class="axis-label" x="36" y="124" text-anchor="end">2%</text>
+          <text class="axis-label" x="36" y="164" text-anchor="end">0%</text>
+          <!-- 數據點：x 對齊時間軸 -->
+          <path class="line-fed" d="M 50 158 L 80 157 L 113 150 L 167 135 L 220 112 L 250 110 L 273 125 L 327 158 L 380 158 L 433 154 L 460 110 L 490 70 L 540 53 L 570 60 L 590 70 L 647 73 L 690 78"/>
+          <text class="axis-label" x="50" y="174" text-anchor="middle">2014</text>
+          <text class="axis-label" x="113" y="174" text-anchor="middle">2016</text>
+          <text class="axis-label" x="220" y="174" text-anchor="middle">2018</text>
+          <text class="axis-label" x="327" y="174" text-anchor="middle">2020</text>
+          <text class="axis-label" x="433" y="174" text-anchor="middle">2022</text>
+          <text class="axis-label" x="540" y="174" text-anchor="middle">2024</text>
+          <text class="axis-label" x="647" y="174" text-anchor="middle">2026</text>
         </svg>
       </div>
 
-      <!-- Panel 2: 安聯收益成長 - AM 穩定月收（淨值，含高低點標記） -->
+      <!-- Panel 2: 安聯收益成長 - AM 穩定月收 -->
       <div class="trend-panel">
         <h4>💰 安聯收益成長基金 - AM 穩定月收類股（美元）<span class="pill">USDEQ3490</span></h4>
         <div class="sub">資料來源：es.allianz.com.tw / USDEQ3490 ・ 配息類別，淨值會隨配息回落，**重點看含息報酬率**</div>
         <svg class="trend-svg" viewBox="0 0 700 200" preserveAspectRatio="xMidYMid meet">
-          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
-          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
-          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
-          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
-          <line class="axis" x1="36" y1="180" x2="690" y2="180"/>
-          <text class="axis-label" x="32" y="34" text-anchor="end">11</text>
-          <text class="axis-label" x="32" y="74" text-anchor="end">9</text>
-          <text class="axis-label" x="32" y="114" text-anchor="end">8</text>
-          <text class="axis-label" x="32" y="154" text-anchor="end">7</text>
-          <text class="axis-label" x="32" y="184" text-anchor="end">6</text>
-          <!-- 淨值波動：10.5 → 9 → 10.59 高 → 6.68 COVID低 → 9 → 8.5 -->
-          <path class="line-am" d="
-            M 40 36 L 90 56 L 130 80 L 170 70 L 210 60 L 250 80 L 290 100 L 320 160
-            L 350 196 L 380 130 L 420 100 L 460 38 L 500 90 L 540 130 L 580 140 L 620 130 L 660 110 L 690 92"/>
-          <!-- 重點標記 -->
-          <circle class="marker-dot" cx="210" cy="60" r="5" stroke="#C8203A"/>
-          <text class="marker-label" x="195" y="48" fill="#C8203A">10.9</text>
-          <circle class="marker-dot" cx="460" cy="38" r="5" stroke="#C8203A"/>
-          <text class="marker-label" x="445" y="28" fill="#C8203A">10.59</text>
-          <circle class="marker-dot" cx="350" cy="196" r="6" stroke="#2E8B57" stroke-width="3"/>
-          <text class="marker-label" x="320" y="198" fill="#2E8B57">6.68（COVID）</text>
-          <text class="axis-label" x="40" y="195">14</text>
-          <text class="axis-label" x="170" y="195">16</text>
-          <text class="axis-label" x="290" y="195">18</text>
-          <text class="axis-label" x="400" y="195">20</text>
-          <text class="axis-label" x="500" y="195">22</text>
-          <text class="axis-label" x="620" y="195">24</text>
-          <text class="axis-label" x="690" y="195">26</text>
+          <line class="axis" x1="40" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="40" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="40" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="40" y1="150" x2="690" y2="150"/>
+          <line class="axis" x1="40" y1="180" x2="690" y2="180"/>
+          <line class="axis" x1="50" y1="30" x2="50" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="113" y1="30" x2="113" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="220" y1="30" x2="220" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="327" y1="30" x2="327" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="433" y1="30" x2="433" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="540" y1="30" x2="540" y2="180" stroke-opacity="0.5"/>
+          <line class="axis" x1="647" y1="30" x2="647" y2="180" stroke-opacity="0.5"/>
+          <text class="axis-label" x="36" y="34" text-anchor="end">11</text>
+          <text class="axis-label" x="36" y="74" text-anchor="end">9</text>
+          <text class="axis-label" x="36" y="114" text-anchor="end">8</text>
+          <text class="axis-label" x="36" y="154" text-anchor="end">7</text>
+          <text class="axis-label" x="36" y="184" text-anchor="end">6</text>
+          <!-- 淨值：10.5(2014) → 10.9(2018相對高) → 6.68(2020 COVID) → 10.59(2022年初高) → 8.8(2026) -->
+          <path class="line-am" d="M 50 45 L 80 60 L 113 75 L 167 75 L 210 33 L 245 60 L 273 99 L 327 159 L 380 105 L 415 75 L 433 42 L 490 120 L 520 129 L 590 105 L 647 111 L 690 96"/>
+          <!-- 重點標記（x 對齊時間軸） -->
+          <circle class="marker-dot" cx="210" cy="33" r="5" stroke="#C8203A"/>
+          <text class="marker-label" x="195" y="22" fill="#C8203A">10.9</text>
+          <circle class="marker-dot" cx="433" cy="42" r="5" stroke="#C8203A"/>
+          <text class="marker-label" x="418" y="32" fill="#C8203A">10.59</text>
+          <circle class="marker-dot" cx="327" cy="159" r="6" stroke="#2E8B57" stroke-width="3"/>
+          <text class="marker-label" x="297" y="160" fill="#2E8B57">6.68（COVID）</text>
+          <text class="axis-label" x="50" y="195" text-anchor="middle">2014</text>
+          <text class="axis-label" x="113" y="195" text-anchor="middle">2016</text>
+          <text class="axis-label" x="220" y="195" text-anchor="middle">2018</text>
+          <text class="axis-label" x="327" y="195" text-anchor="middle">2020</text>
+          <text class="axis-label" x="433" y="195" text-anchor="middle">2022</text>
+          <text class="axis-label" x="540" y="195" text-anchor="middle">2024</text>
+          <text class="axis-label" x="647" y="195" text-anchor="middle">2026</text>
         </svg>
       </div>
 
@@ -957,32 +969,35 @@
               <stop offset="100%" stop-color="#2E8B57" stop-opacity="0"/>
             </linearGradient>
           </defs>
-          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
-          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
-          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
-          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
-          <text class="axis-label" x="32" y="34" text-anchor="end">30</text>
-          <text class="axis-label" x="32" y="74" text-anchor="end">22</text>
-          <text class="axis-label" x="32" y="114" text-anchor="end">14</text>
-          <text class="axis-label" x="32" y="154" text-anchor="end">10</text>
-          <!-- 含息累積：10 → 28（成長 210%）-->
-          <path class="area-fill" fill="url(#atGrad)" d="
-            M 40 152 L 90 144 L 130 132 L 170 120 L 210 110 L 250 108 L 290 102 L 320 138
-            L 350 144 L 380 96 L 420 60 L 460 50 L 500 70 L 540 60 L 580 50 L 620 40 L 660 28 L 690 22 L 690 160 L 40 160 Z"/>
-          <path class="line-at" d="
-            M 40 152 L 90 144 L 130 132 L 170 120 L 210 110 L 250 108 L 290 102 L 320 138
-            L 350 144 L 380 96 L 420 60 L 460 50 L 500 70 L 540 60 L 580 50 L 620 40 L 660 28 L 690 22"/>
-          <circle class="marker-dot" cx="40" cy="152" r="4" stroke="#2E8B57"/>
-          <text class="marker-label" x="48" y="148" fill="#2E8B57">10.00 起始</text>
-          <circle class="marker-dot" cx="690" cy="22" r="5" stroke="#2E8B57" stroke-width="3"/>
-          <text class="marker-label" x="640" y="16" fill="#2E8B57">+210.63%</text>
-          <text class="axis-label" x="40" y="175">14</text>
-          <text class="axis-label" x="170" y="175">16</text>
-          <text class="axis-label" x="290" y="175">18</text>
-          <text class="axis-label" x="400" y="175">20</text>
-          <text class="axis-label" x="500" y="175">22</text>
-          <text class="axis-label" x="620" y="175">24</text>
-          <text class="axis-label" x="690" y="175">26</text>
+          <line class="axis" x1="40" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="40" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="40" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="40" y1="150" x2="690" y2="150"/>
+          <line class="axis" x1="50" y1="30" x2="50" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="113" y1="30" x2="113" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="220" y1="30" x2="220" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="327" y1="30" x2="327" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="433" y1="30" x2="433" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="540" y1="30" x2="540" y2="155" stroke-opacity="0.5"/>
+          <line class="axis" x1="647" y1="30" x2="647" y2="155" stroke-opacity="0.5"/>
+          <text class="axis-label" x="36" y="34" text-anchor="end">30</text>
+          <text class="axis-label" x="36" y="74" text-anchor="end">22</text>
+          <text class="axis-label" x="36" y="114" text-anchor="end">14</text>
+          <text class="axis-label" x="36" y="154" text-anchor="end">10</text>
+          <!-- 含息累積：10 → 31.06（+210.63%） -->
+          <path class="area-fill" fill="url(#atGrad)" d="M 50 150 L 80 144 L 113 138 L 167 126 L 220 114 L 273 108 L 327 132 L 380 108 L 433 84 L 480 96 L 540 84 L 590 54 L 647 36 L 690 24 L 690 155 L 50 155 Z"/>
+          <path class="line-at" d="M 50 150 L 80 144 L 113 138 L 167 126 L 220 114 L 273 108 L 327 132 L 380 108 L 433 84 L 480 96 L 540 84 L 590 54 L 647 36 L 690 24"/>
+          <circle class="marker-dot" cx="50" cy="150" r="4" stroke="#2E8B57"/>
+          <text class="marker-label" x="58" y="146" fill="#2E8B57">10.00 起始</text>
+          <circle class="marker-dot" cx="690" cy="24" r="5" stroke="#2E8B57" stroke-width="3"/>
+          <text class="marker-label" x="640" y="18" fill="#2E8B57">+210.63%</text>
+          <text class="axis-label" x="50" y="175" text-anchor="middle">2014</text>
+          <text class="axis-label" x="113" y="175" text-anchor="middle">2016</text>
+          <text class="axis-label" x="220" y="175" text-anchor="middle">2018</text>
+          <text class="axis-label" x="327" y="175" text-anchor="middle">2020</text>
+          <text class="axis-label" x="433" y="175" text-anchor="middle">2022</text>
+          <text class="axis-label" x="540" y="175" text-anchor="middle">2024</text>
+          <text class="axis-label" x="647" y="175" text-anchor="middle">2026</text>
         </svg>
       </div>
 
@@ -1030,24 +1045,30 @@
         <h4>💱 美元兌新台幣匯率（USD / TWD）<span class="pill" style="background: linear-gradient(135deg, #B87010, #d68b15);">FX</span></h4>
         <div class="sub">資料來源：es.allianz.com.tw / exchange-rate ・ 區間 27.5 ~ 33.5 ・ 中位 30-31</div>
         <svg class="trend-svg" viewBox="0 0 700 160" preserveAspectRatio="xMidYMid meet">
-          <line class="axis" x1="36" y1="30" x2="690" y2="30"/>
-          <line class="axis" x1="36" y1="70" x2="690" y2="70"/>
-          <line class="axis" x1="36" y1="110" x2="690" y2="110"/>
-          <line class="axis" x1="36" y1="150" x2="690" y2="150"/>
-          <text class="axis-label" x="32" y="34" text-anchor="end">34</text>
-          <text class="axis-label" x="32" y="74" text-anchor="end">31</text>
-          <text class="axis-label" x="32" y="114" text-anchor="end">29</text>
-          <text class="axis-label" x="32" y="154" text-anchor="end">27</text>
-          <path class="line-fx" d="
-            M 40 88 L 80 70 L 130 50 L 170 76 L 210 90 L 250 84 L 290 76 L 330 88 L 370 110 L 410 96
-            L 450 50 L 490 60 L 530 56 L 570 36 L 610 50 L 650 80 L 690 84"/>
-          <text class="axis-label" x="40" y="172">14</text>
-          <text class="axis-label" x="170" y="172">16</text>
-          <text class="axis-label" x="290" y="172">18</text>
-          <text class="axis-label" x="400" y="172">20</text>
-          <text class="axis-label" x="500" y="172">22</text>
-          <text class="axis-label" x="620" y="172">24</text>
-          <text class="axis-label" x="690" y="172">26</text>
+          <line class="axis" x1="40" y1="30" x2="690" y2="30"/>
+          <line class="axis" x1="40" y1="70" x2="690" y2="70"/>
+          <line class="axis" x1="40" y1="110" x2="690" y2="110"/>
+          <line class="axis" x1="40" y1="150" x2="690" y2="150"/>
+          <line class="axis" x1="50" y1="30" x2="50" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="113" y1="30" x2="113" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="220" y1="30" x2="220" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="327" y1="30" x2="327" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="433" y1="30" x2="433" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="540" y1="30" x2="540" y2="150" stroke-opacity="0.5"/>
+          <line class="axis" x1="647" y1="30" x2="647" y2="150" stroke-opacity="0.5"/>
+          <text class="axis-label" x="36" y="34" text-anchor="end">34</text>
+          <text class="axis-label" x="36" y="74" text-anchor="end">31</text>
+          <text class="axis-label" x="36" y="114" text-anchor="end">29</text>
+          <text class="axis-label" x="36" y="154" text-anchor="end">27</text>
+          <!-- 匯率：2014 ~30.5 → 2016 ~32 → 2020 ~28 → 2024 ~32 → 2026 ~30 -->
+          <path class="line-fx" d="M 50 90 L 80 60 L 113 64 L 167 95 L 220 90 L 273 80 L 327 95 L 380 130 L 433 130 L 480 100 L 540 60 L 590 55 L 647 70 L 690 95"/>
+          <text class="axis-label" x="50" y="172" text-anchor="middle">2014</text>
+          <text class="axis-label" x="113" y="172" text-anchor="middle">2016</text>
+          <text class="axis-label" x="220" y="172" text-anchor="middle">2018</text>
+          <text class="axis-label" x="327" y="172" text-anchor="middle">2020</text>
+          <text class="axis-label" x="433" y="172" text-anchor="middle">2022</text>
+          <text class="axis-label" x="540" y="172" text-anchor="middle">2024</text>
+          <text class="axis-label" x="647" y="172" text-anchor="middle">2026</text>
         </svg>
       </div>
 
