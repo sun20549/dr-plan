@@ -784,102 +784,34 @@
     </div>
 
     <!-- ═══════════════════════════════════════════ -->
-    <!-- 成立至今長期走勢分析（多面板 SVG） -->
+    <!-- 月度績效實證（純圖模式 ・ 緊接十大持股後） -->
     <!-- ═══════════════════════════════════════════ -->
-    <div class="section-block" data-reveal>
-      <h2 class="block-title">2014/10/16 迄今長期走勢</h2>
-      <p class="block-subtitle">美國聯邦利率 ・ 安聯月收淨值 ・ 安聯累積淨值 ・ 美元匯率 ・ 四維對照</p>
+    <style>
+      .case-screenshots-section.bare-mode > .block-title,
+      .case-screenshots-section.bare-mode > .block-subtitle,
+      .case-screenshots-section.bare-mode .screenshot-month-header,
+      .case-screenshots-section.bare-mode .ss-header,
+      .case-screenshots-section.bare-mode > .note-box {
+        display: none !important;
+      }
+      .case-screenshots-section.bare-mode { margin-bottom: 24px; padding-bottom: 0; border-bottom: none; }
+      .case-screenshots-section.bare-mode .screenshot-card { border-color: var(--border); }
+    </style>
+    <div class="section-block case-screenshots-section bare-mode" data-case-id="allianz" data-reveal hidden>
+      <div class="screenshots-grid"></div>
+    </div>
 
-      <style>
-        .trend-panel {
-          background: #fff;
-          border: 1.5px solid var(--border);
-          border-radius: 14px;
-          padding: 22px 24px;
-          margin-bottom: 14px;
-          box-shadow: var(--shadow-sm);
-        }
-        .trend-panel h4 {
-          font-size: 16px;
-          font-weight: 900;
-          color: var(--navy);
-          letter-spacing: 1.5px;
-          margin: 0 0 4px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-        .trend-panel h4 .pill {
-          background: linear-gradient(135deg, var(--orange), var(--orange-deep));
-          color: #fff;
-          font-size: 10px;
-          padding: 3px 10px;
-          border-radius: 10px;
-          letter-spacing: 1.5px;
-          font-family: 'Bebas Neue', sans-serif;
-        }
-        .trend-panel .sub {
-          font-size: 11px;
-          color: #888;
-          letter-spacing: 0.5px;
-          margin-bottom: 12px;
-        }
-        .trend-svg {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-        .trend-svg .axis { stroke: #E0DAC9; stroke-width: 1; stroke-dasharray: 3,3; }
-        .trend-svg .axis-label { font-family: 'Bebas Neue', sans-serif; font-size: 10px; fill: #888; }
-        .trend-svg .line-fed { fill: none; stroke: #0066CC; stroke-width: 2; }
-        .trend-svg .line-am { fill: none; stroke: #0D2A3A; stroke-width: 2; }
-        .trend-svg .line-at { fill: none; stroke: #2E8B57; stroke-width: 2; }
-        .trend-svg .line-fx { fill: none; stroke: #B87010; stroke-width: 1.8; }
-        .trend-svg .area-fill { opacity: 0.15; }
-        .trend-svg .marker-dot { fill: #fff; stroke-width: 2.5; }
-        .trend-svg .marker-label {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 13px;
-          font-weight: 900;
-        }
-        .trend-perf-row {
-          background: linear-gradient(135deg, var(--orange), var(--orange-deep));
-          color: #fff;
-          border-radius: 14px;
-          padding: 22px 24px;
-          margin-bottom: 14px;
-          box-shadow: var(--shadow-orange);
-        }
-        .trend-perf-row h4 {
-          font-size: 14px; font-weight: 900; letter-spacing: 2px; margin: 0 0 14px;
-          color: #fff; display: flex; align-items: center; gap: 8px;
-        }
-        .trend-perf-grid {
-          display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px;
-        }
-        .trend-perf-cell {
-          background: rgba(255,255,255,0.12);
-          border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 10px;
-          padding: 12px 8px;
-          text-align: center;
-          backdrop-filter: blur(8px);
-        }
-        .trend-perf-cell .lbl {
-          font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px;
-          margin-bottom: 4px; font-weight: 700;
-        }
-        .trend-perf-cell .val {
-          font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-          color: #fff; letter-spacing: 0.5px; line-height: 1;
-        }
-        .trend-perf-cell.hl { background: linear-gradient(135deg, #FFD700, #E8A020); border-color: #FFD700; }
-        .trend-perf-cell.hl .val { color: var(--navy); font-size: 26px; }
-        .trend-perf-cell.hl .lbl { color: rgba(13,42,58,0.7); }
-        @media (max-width: 720px) {
-          .trend-perf-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-      </style>
+    <!-- 資料更新（保留長期走勢區段刪除後的官方連結） -->
+    <div class="section-block" data-reveal>
+      <div class="note-box">
+        <strong>📌 資料更新</strong>　最新淨值與報酬率請查
+        <a href="https://es.allianz.com.tw" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">安聯官網基金平台</a>
+        ・ Fed 利率查
+        <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">FRED 聯準會數據庫</a>
+      </div>
+    </div>
+
+    <!-- DELETE_START_MARKER --><div style="display:none;"><style>
 
       <!-- 共用時間軸：2014 Oct → 2026 May，年位置 50, 113, 220, 327, 433, 540, 647, 690 -->
 
@@ -1093,7 +1025,7 @@
         ・ Fed 利率查
         <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">FRED 聯準會數據庫</a>
       </div>
-    </div>
+    </div></div><!-- /DELETE_END_MARKER -->
 
     <!-- 歷史績效 -->
     <div class="section-block" data-reveal>
@@ -1291,17 +1223,6 @@
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- 月度績效實證（自動探測 assets/img/allianz/） -->
-    <!-- ═══════════════════════════════════════════ -->
-    <div class="section-block case-screenshots-section" data-case-id="allianz" data-reveal hidden>
-      <h2 class="block-title">月度績效實證</h2>
-      <p class="block-subtitle">每月最新基金月報截圖 ・ 依時間倒序排列 ・ 點擊放大檢視</p>
-      <div class="screenshots-grid"></div>
-      <div class="note-box">
-        <strong>📋 證據說明</strong>　以上為安聯基金官方月報擷取，包含當月績效、配息、資產配置與經理人觀點等。如需了解更多細節，歡迎預約一對一說明。
-      </div>
-    </div>
 
     <!-- ═══════════════════════════════════════════ -->
     <!-- 投資情境模擬器 -->
