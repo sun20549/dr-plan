@@ -20,7 +20,9 @@
     "needs_revalidation": true,
     "notes": "[v5: 異常 bp=0→141680.75=sa/12] [schedule 用 base 估算]",
     "_aliased_from": "NUIW5402",
-    "granular_sa": true
+    "granular_sa": true,
+    "schedule_synth": true,
+    "schedule_synth_note": "v54: 原 schedule 壞掉,用標準保本曲線合成 (y1=40% → y_period=95% → 後續用 declared_rate 複利)"
   },
   "gp_table": {
     "0100M": 1154.7,
@@ -12623,190 +12625,168 @@
       1464.88
     ]
   },
-  "schedule_at_base": {
-    "base_sex": "F",
-    "base_age": 89,
-    "base_sa": 1700169,
-    "declared_rate": 4.35,
-    "rows": [
-      {
-        "y": 1,
-        "age": 89,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 2,
-        "age": 90,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 3,
-        "age": 91,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 4,
-        "age": 92,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 5,
-        "age": 93,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 6,
-        "age": 94,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 7,
-        "age": 95,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 8,
-        "age": 96,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 9,
-        "age": 97,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 10,
-        "age": 98,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 11,
-        "age": 99,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 12,
-        "age": 100,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 13,
-        "age": 101,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 14,
-        "age": 102,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 15,
-        "age": 103,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 16,
-        "age": 104,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 17,
-        "age": 105,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 18,
-        "age": 106,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 19,
-        "age": 107,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 20,
-        "age": 108,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 21,
-        "age": 109,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      },
-      {
-        "y": 22,
-        "age": 110,
-        "cum_prem": 42.0,
-        "cv_basic": 42.0,
-        "cv_total": 42.0,
-        "death_benefit": 42.0
-      }
-    ]
-  },
+  "schedule_at_base": [
+    {
+      "y": 1,
+      "age": 36,
+      "cum_prem": 141680.75,
+      "cv_basic": 66176.72,
+      "cv_total": 69659.7,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 2,
+      "age": 37,
+      "cum_prem": 283361.5,
+      "cv_basic": 157029.5,
+      "cv_total": 165294.21,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 3,
+      "age": 38,
+      "cum_prem": 425042.25,
+      "cv_basic": 272558.34,
+      "cv_total": 286903.52,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 4,
+      "age": 39,
+      "cum_prem": 566723.0,
+      "cv_basic": 412763.25,
+      "cv_total": 434487.63,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 5,
+      "age": 40,
+      "cum_prem": 708403.75,
+      "cv_basic": 577644.22,
+      "cv_total": 608046.55,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 6,
+      "age": 41,
+      "cum_prem": 850084.5,
+      "cv_basic": 767201.26,
+      "cv_total": 807580.28,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 7,
+      "age": 42,
+      "cum_prem": 850084.5,
+      "cv_basic": 800574.52,
+      "cv_total": 842710.02,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 8,
+      "age": 43,
+      "cum_prem": 850084.5,
+      "cv_basic": 835399.51,
+      "cv_total": 879367.9,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 9,
+      "age": 44,
+      "cum_prem": 850084.5,
+      "cv_basic": 871739.39,
+      "cv_total": 917620.41,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 10,
+      "age": 45,
+      "cum_prem": 850084.5,
+      "cv_basic": 909660.05,
+      "cv_total": 957536.89,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 850084.5,
+      "cv_basic": 949230.26,
+      "cv_total": 999189.75,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 850084.5,
+      "cv_basic": 990521.78,
+      "cv_total": 1042654.5,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 850084.5,
+      "cv_basic": 1033609.48,
+      "cv_total": 1088009.97,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 850084.5,
+      "cv_basic": 1078571.49,
+      "cv_total": 1135338.41,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 850084.5,
+      "cv_basic": 1125489.35,
+      "cv_total": 1184725.63,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 850084.5,
+      "cv_basic": 1174448.13,
+      "cv_total": 1236261.19,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 850084.5,
+      "cv_basic": 1225536.63,
+      "cv_total": 1290038.56,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 850084.5,
+      "cv_basic": 1278847.47,
+      "cv_total": 1346155.23,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 850084.5,
+      "cv_basic": 1334477.34,
+      "cv_total": 1404712.99,
+      "death_benefit": 1700169
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 850084.5,
+      "cv_basic": 1392527.1,
+      "cv_total": 1465818.0,
+      "death_benefit": 1700169
+    }
+  ],
   "schedule": [
     {
       "y": 1,

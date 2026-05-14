@@ -6086,10 +6086,14 @@ function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
   if (!gpRate) {
     return actuarialCalc_twlife(plan, sex, age, sumAssured, period);
   }
-  // 有 gp 但無 pv → 從現有 schedule 反推 pv 序列(v2_gp_only 模式)
+  // 有 gp 但無 pv → 從現有 schedule 反推
+  // v53: 改用「cv per cum_prem」ratio,而非「cv per SA」
+  //   原因:cv 真實上跟「實繳保費」連動(保本對應 cum_prem),不是跟 SA。
+  //   按 SA 縮放對年輕人會 over-estimate(年輕人 SA 大但 prem 小 → cv 被放大太多)
   let pvYearsToUse = pvYears;
+  let pvByCumRatio = null;  // [{cv_to_cum_ratio per year}]
   if (!pvYearsToUse || pvYearsToUse.length < 2) {
-    const baseSched = db.schedule_at_base || db.schedule || [];
+    const baseSched = (db.schedule_at_base || db.schedule || []).filter(r => r && typeof r === 'object');
     if (baseSched.length < 2) {
       return actuarialCalc_twlife(plan, sex, age, sumAssured, period);
     }
@@ -6098,6 +6102,12 @@ function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
       const cv = r.cv_total || r.surr_total || r.surr_pure || 0;
       return cv / baseSA * 1000;
     });
+    // 同時建 cv-to-cumprem ratio,作 sanity 用
+    pvByCumRatio = baseSched.map(r => {
+      const cv = r.cv_total || r.surr_total || r.surr_pure || 0;
+      const cum = r.cum_prem || 0;
+      return cum > 0 ? cv / cum : null;
+    });
   }
 
   const discAutoPay = db.discounts?.auto_pay_first || 0.01;
@@ -6105,29 +6115,43 @@ function actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, period) {
   const annualPremReal = annualPremGross * (1 - discAutoPay);
 
   // 利率:declared - guaranteed = 增值回饋分享金率
-  // v52: 安全護欄 — 若 rate > 1 表示 JSON 存的是百分比沒÷100,clamp 之
-  let declaredRate = db.meta.declared_rate || 0.04;
-  let guaranteedRate = db.meta.guaranteed_rate || 0.0225;
-  if (declaredRate > 1) declaredRate = declaredRate / 100;
-  if (guaranteedRate > 1) guaranteedRate = guaranteedRate / 100;
-  // clamp 到 [0, 0.15] — 任何儲蓄險宣告利率不可能 >15%
+  // v52: 安全護欄
+  // - 若 rate > 1 表示 JSON 存的是百分比沒÷100
+  // - declared_rate 缺/=0 → dividendRate=0(不要瞎用 4% 複利)
+  // - clamp 到 [0, 0.15] — 任何儲蓄險宣告利率不可能 >15%
+  let declaredRate = db.meta.declared_rate;
+  let guaranteedRate = db.meta.guaranteed_rate;
+  if (typeof declaredRate === 'number' && declaredRate > 1) declaredRate /= 100;
+  if (typeof guaranteedRate === 'number' && guaranteedRate > 1) guaranteedRate /= 100;
+  if (typeof declaredRate !== 'number' || declaredRate <= 0) declaredRate = 0;
+  if (typeof guaranteedRate !== 'number' || guaranteedRate <= 0) guaranteedRate = 0.0225;
   declaredRate = Math.min(0.15, Math.max(0, declaredRate));
   guaranteedRate = Math.min(0.15, Math.max(0, guaranteedRate));
-  const dividendRate = Math.max(0, declaredRate - guaranteedRate);
+  // 只有當 declaredRate > guaranteedRate 才給分紅;宣告利率為 0 → 完全不算分紅
+  const dividendRate = declaredRate > guaranteedRate ? (declaredRate - guaranteedRate) : 0;
 
-  // 逐年:cv_basic 從 PV 表查;增值回饋累積買增額繳清,簡化處理
-  let cumIncrement = 0;  // 累計增加保險金額(簡化)
+  // 逐年:cv 用 cv-to-cum ratio 縮放(更穩定的方法)
+  // v53 改:cv 跟「累計繳費」連動,不是跟「SA」連動
+  // 原因:對年輕人,SA 相對 base 大很多倍(因為年輕保費低),但 cv 真實上跟「實際繳了多少錢」連動
+  // 用 cv-to-cum ratio 縮放可保證 cv ≈ cum_prem × base_cv_ratio,對所有年齡/SA 都合理
+  let cumIncrement = 0;
   let cumIncrementPv = 0;
   const schedule = pvYearsToUse.map((pvRate, idx) => {
     const y = idx + 1;
     const yearAge = age + idx;
     const cumPrem = Math.min(y, periodActual) * annualPremReal;
-    const cvBasic = sumAssured / 1000 * pvRate;
 
-    // 增值回饋分享金(簡化):前一年 cv_basic × dividendRate,累積買增額(假設 ratio 1:1)
-    const divThisYear = idx === 0 ? 0 : (sumAssured / 1000 * pvYearsToUse[idx-1]) * dividendRate;
+    // cv: 優先用 cv-to-cum ratio(穩定);若無 schedule 才退回 SA-based pvRate
+    let cvBasic;
+    if (pvByCumRatio && pvByCumRatio[idx] != null) {
+      cvBasic = cumPrem * pvByCumRatio[idx];
+    } else {
+      cvBasic = sumAssured / 1000 * pvRate;
+    }
+
+    // 增值回饋分享金:用前一年 cvBasic × dividendRate
+    const divThisYear = idx === 0 ? 0 : (cvBasic) * dividendRate;
     cumIncrement += divThisYear;
-    // 增額繳清的 cv 簡化為「累積增額 × 0.95」(approx)
     cumIncrementPv = cumIncrement * 0.95;
 
     const cvTotal = cvBasic + cumIncrementPv;

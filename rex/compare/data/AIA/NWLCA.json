@@ -20,7 +20,9 @@
     "notes": "[校準 base_sa: 500000→200000, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=16.5, 期=6] [v5: 異常 bp=16.5→3472.5=sa/12]",
     "verified_against": "Drew 2026-05-14 台幣利變非還本 3年",
     "unit_size": 1000,
-    "v2_full_format": "aia"
+    "v2_full_format": "aia",
+    "schedule_synth": true,
+    "schedule_synth_note": "v54: 原 schedule 壞掉,用標準保本曲線合成 (y1=40% → y_period=95% → 後續用 declared_rate 複利)"
   },
   "gp_table": {
     "0316M": 2410.0,
@@ -19758,6 +19760,168 @@
       "cv_basic": 0.0,
       "cv_total": 256608.0,
       "death_benefit": 300000.0
+    }
+  ],
+  "schedule_at_base": [
+    {
+      "y": 1,
+      "age": 36,
+      "cum_prem": 199299,
+      "cv_basic": 93089.24,
+      "cv_total": 97988.68,
+      "death_benefit": 720000
+    },
+    {
+      "y": 2,
+      "age": 37,
+      "cum_prem": 398598,
+      "cv_basic": 220889.73,
+      "cv_total": 232515.5,
+      "death_benefit": 720000
+    },
+    {
+      "y": 3,
+      "age": 38,
+      "cum_prem": 597897,
+      "cv_basic": 383401.45,
+      "cv_total": 403580.48,
+      "death_benefit": 720000
+    },
+    {
+      "y": 4,
+      "age": 39,
+      "cum_prem": 797196,
+      "cv_basic": 580624.42,
+      "cv_total": 611183.6,
+      "death_benefit": 720000
+    },
+    {
+      "y": 5,
+      "age": 40,
+      "cum_prem": 996495,
+      "cv_basic": 812558.63,
+      "cv_total": 855324.88,
+      "death_benefit": 720000
+    },
+    {
+      "y": 6,
+      "age": 41,
+      "cum_prem": 1195794,
+      "cv_basic": 1079204.08,
+      "cv_total": 1136004.3,
+      "death_benefit": 720000
+    },
+    {
+      "y": 7,
+      "age": 42,
+      "cum_prem": 1195794,
+      "cv_basic": 1122372.25,
+      "cv_total": 1181444.47,
+      "death_benefit": 720000
+    },
+    {
+      "y": 8,
+      "age": 43,
+      "cum_prem": 1195794,
+      "cv_basic": 1167267.14,
+      "cv_total": 1228702.25,
+      "death_benefit": 720000
+    },
+    {
+      "y": 9,
+      "age": 44,
+      "cum_prem": 1195794,
+      "cv_basic": 1213957.82,
+      "cv_total": 1277850.34,
+      "death_benefit": 720000
+    },
+    {
+      "y": 10,
+      "age": 45,
+      "cum_prem": 1195794,
+      "cv_basic": 1262516.14,
+      "cv_total": 1328964.35,
+      "death_benefit": 720000
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 1195794,
+      "cv_basic": 1313016.78,
+      "cv_total": 1382122.93,
+      "death_benefit": 720000
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 1195794,
+      "cv_basic": 1365537.45,
+      "cv_total": 1437407.85,
+      "death_benefit": 720000
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 1195794,
+      "cv_basic": 1420158.95,
+      "cv_total": 1494904.16,
+      "death_benefit": 720000
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 1195794,
+      "cv_basic": 1476965.31,
+      "cv_total": 1554700.33,
+      "death_benefit": 720000
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 1195794,
+      "cv_basic": 1536043.92,
+      "cv_total": 1616888.34,
+      "death_benefit": 720000
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 1195794,
+      "cv_basic": 1597485.68,
+      "cv_total": 1681563.87,
+      "death_benefit": 720000
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 1195794,
+      "cv_basic": 1661385.11,
+      "cv_total": 1748826.43,
+      "death_benefit": 720000
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 1195794,
+      "cv_basic": 1727840.51,
+      "cv_total": 1818779.48,
+      "death_benefit": 720000
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 1195794,
+      "cv_basic": 1796954.13,
+      "cv_total": 1891530.66,
+      "death_benefit": 720000
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 1195794,
+      "cv_basic": 1868832.3,
+      "cv_total": 1967191.89,
+      "death_benefit": 720000
     }
   ]
 }

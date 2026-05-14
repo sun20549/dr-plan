@@ -8,9 +8,9 @@
     "currency": "USD",
     "period": 1,
     "engine": "twlife_v2_full",
-    "base_sex": "F",
+    "base_sex": "M",
     "base_age": 30,
-    "base_sa": 3890,
+    "base_sa": 1027925,
     "base_premium": 85660.42,
     "discount": 0.06,
     "declared_rate": 0.034,
@@ -21,7 +21,9 @@
     "extracted_from_excel": "遠雄 美滿超多旺2美元利率變動型增額終身壽險(BI1)_試算表.xls",
     "verified_against": "v1.5 多輪校準 (內部估算)",
     "unit_size": 10000,
-    "v2_full_format": "farglory"
+    "v2_full_format": "farglory",
+    "schedule_synth": true,
+    "schedule_synth_note": "v55: 從 manifest 同步 + 合成 schedule"
   },
   "gp_table": {
     "0600M": 6436.0,
@@ -41501,6 +41503,168 @@
       "cv_basic": 0.0,
       "cv_total": 0.0,
       "increment_amount": 266141.0
+    }
+  ],
+  "schedule_at_base": [
+    {
+      "y": 1,
+      "age": 36,
+      "cum_prem": 85660.42,
+      "cv_basic": 77308.53,
+      "cv_total": 81377.4,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 2,
+      "age": 37,
+      "cum_prem": 85660.42,
+      "cv_basic": 79937.02,
+      "cv_total": 84144.23,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 3,
+      "age": 38,
+      "cum_prem": 85660.42,
+      "cv_basic": 82654.88,
+      "cv_total": 87005.13,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 4,
+      "age": 39,
+      "cum_prem": 85660.42,
+      "cv_basic": 85465.14,
+      "cv_total": 89963.31,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 5,
+      "age": 40,
+      "cum_prem": 85660.42,
+      "cv_basic": 88370.96,
+      "cv_total": 93022.06,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 6,
+      "age": 41,
+      "cum_prem": 85660.42,
+      "cv_basic": 91375.57,
+      "cv_total": 96184.81,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 7,
+      "age": 42,
+      "cum_prem": 85660.42,
+      "cv_basic": 94482.34,
+      "cv_total": 99455.1,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 8,
+      "age": 43,
+      "cum_prem": 85660.42,
+      "cv_basic": 97694.74,
+      "cv_total": 102836.57,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 9,
+      "age": 44,
+      "cum_prem": 85660.42,
+      "cv_basic": 101016.36,
+      "cv_total": 106333.01,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 10,
+      "age": 45,
+      "cum_prem": 85660.42,
+      "cv_basic": 104450.92,
+      "cv_total": 109948.33,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 85660.42,
+      "cv_basic": 108002.25,
+      "cv_total": 113686.58,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 85660.42,
+      "cv_basic": 111674.33,
+      "cv_total": 117551.92,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 85660.42,
+      "cv_basic": 115471.25,
+      "cv_total": 121548.69,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 85660.42,
+      "cv_basic": 119397.27,
+      "cv_total": 125681.34,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 85660.42,
+      "cv_basic": 123456.78,
+      "cv_total": 129954.51,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 85660.42,
+      "cv_basic": 127654.31,
+      "cv_total": 134372.96,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 85660.42,
+      "cv_basic": 131994.56,
+      "cv_total": 138941.64,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 85660.42,
+      "cv_basic": 136482.37,
+      "cv_total": 143665.66,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 85660.42,
+      "cv_basic": 141122.77,
+      "cv_total": 148550.29,
+      "death_benefit": 1027925
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 85660.42,
+      "cv_basic": 145920.95,
+      "cv_total": 153601.0,
+      "death_benefit": 1027925
     }
   ]
 }

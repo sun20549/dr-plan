@@ -19,7 +19,9 @@
     "needs_revalidation": true,
     "notes": "新光美鑽雙新(8 年期)",
     "unit_size": 1000,
-    "v2_full_format": "skl"
+    "v2_full_format": "skl",
+    "schedule_synth": true,
+    "schedule_synth_note": "v54: 原 schedule 壞掉,用標準保本曲線合成 (y1=40% → y_period=95% → 後續用 declared_rate 複利)"
   },
   "schedule": [
     {
@@ -1076,5 +1078,167 @@
     "0874F": 1049.0
   },
   "pv_table": {},
-  "cv_table": {}
+  "cv_table": {},
+  "schedule_at_base": [
+    {
+      "y": 1,
+      "age": 36,
+      "cum_prem": 2020,
+      "cv_basic": 899.53,
+      "cv_total": 946.88,
+      "death_benefit": 100000
+    },
+    {
+      "y": 2,
+      "age": 37,
+      "cum_prem": 4040,
+      "cv_basic": 2062.93,
+      "cv_total": 2171.5,
+      "death_benefit": 100000
+    },
+    {
+      "y": 3,
+      "age": 38,
+      "cum_prem": 6060,
+      "cv_basic": 3490.18,
+      "cv_total": 3673.88,
+      "death_benefit": 100000
+    },
+    {
+      "y": 4,
+      "age": 39,
+      "cum_prem": 8080,
+      "cv_basic": 5181.3,
+      "cv_total": 5454.0,
+      "death_benefit": 100000
+    },
+    {
+      "y": 5,
+      "age": 40,
+      "cum_prem": 10100,
+      "cv_basic": 7136.28,
+      "cv_total": 7511.88,
+      "death_benefit": 100000
+    },
+    {
+      "y": 6,
+      "age": 41,
+      "cum_prem": 12120,
+      "cv_basic": 9355.12,
+      "cv_total": 9847.5,
+      "death_benefit": 100000
+    },
+    {
+      "y": 7,
+      "age": 42,
+      "cum_prem": 14140,
+      "cv_basic": 11837.83,
+      "cv_total": 12460.88,
+      "death_benefit": 100000
+    },
+    {
+      "y": 8,
+      "age": 43,
+      "cum_prem": 16160,
+      "cv_basic": 14584.4,
+      "cv_total": 15352.0,
+      "death_benefit": 100000
+    },
+    {
+      "y": 9,
+      "age": 44,
+      "cum_prem": 16160,
+      "cv_basic": 15211.53,
+      "cv_total": 16012.14,
+      "death_benefit": 100000
+    },
+    {
+      "y": 10,
+      "age": 45,
+      "cum_prem": 16160,
+      "cv_basic": 15865.62,
+      "cv_total": 16700.66,
+      "death_benefit": 100000
+    },
+    {
+      "y": 11,
+      "age": 46,
+      "cum_prem": 16160,
+      "cv_basic": 16547.85,
+      "cv_total": 17418.79,
+      "death_benefit": 100000
+    },
+    {
+      "y": 12,
+      "age": 47,
+      "cum_prem": 16160,
+      "cv_basic": 17259.4,
+      "cv_total": 18167.79,
+      "death_benefit": 100000
+    },
+    {
+      "y": 13,
+      "age": 48,
+      "cum_prem": 16160,
+      "cv_basic": 18001.56,
+      "cv_total": 18949.01,
+      "death_benefit": 100000
+    },
+    {
+      "y": 14,
+      "age": 49,
+      "cum_prem": 16160,
+      "cv_basic": 18775.63,
+      "cv_total": 19763.82,
+      "death_benefit": 100000
+    },
+    {
+      "y": 15,
+      "age": 50,
+      "cum_prem": 16160,
+      "cv_basic": 19582.98,
+      "cv_total": 20613.66,
+      "death_benefit": 100000
+    },
+    {
+      "y": 16,
+      "age": 51,
+      "cum_prem": 16160,
+      "cv_basic": 20425.05,
+      "cv_total": 21500.05,
+      "death_benefit": 100000
+    },
+    {
+      "y": 17,
+      "age": 52,
+      "cum_prem": 16160,
+      "cv_basic": 21303.32,
+      "cv_total": 22424.55,
+      "death_benefit": 100000
+    },
+    {
+      "y": 18,
+      "age": 53,
+      "cum_prem": 16160,
+      "cv_basic": 22219.37,
+      "cv_total": 23388.81,
+      "death_benefit": 100000
+    },
+    {
+      "y": 19,
+      "age": 54,
+      "cum_prem": 16160,
+      "cv_basic": 23174.8,
+      "cv_total": 24394.52,
+      "death_benefit": 100000
+    },
+    {
+      "y": 20,
+      "age": 55,
+      "cum_prem": 16160,
+      "cv_basic": 24171.31,
+      "cv_total": 25443.49,
+      "death_benefit": 100000
+    }
+  ]
 }

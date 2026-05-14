@@ -7,11 +7,11 @@
     "extracted_at": "2026-05-05",
     "product_name": "鑫好美利率變動型美元終身壽險",
     "currency": "USD",
-    "period": 1,
-    "base_sex": "F",
-    "base_age": 50,
-    "base_sa": 1000000,
-    "base_premium": 759120,
+    "period": 20,
+    "base_sex": "M",
+    "base_age": 31,
+    "base_sa": 3000000,
+    "base_premium": 65340,
     "discount": 0.014,
     "declared_rate": 0.043,
     "guaranteed_rate": 0.0175,
@@ -21,7 +21,9 @@
     "unit_size": 1000,
     "v2_full_format": "skl_factor",
     "plan_code": "XH",
-    "_aliased_from": "XHM"
+    "_aliased_from": "XHM",
+    "schedule_synth": true,
+    "schedule_synth_note": "v55: 從 manifest 同步 + 合成 schedule"
   },
   "schedule": [
     {
@@ -568,543 +570,163 @@
   "schedule_at_base": [
     {
       "y": 1,
-      "age": 50,
-      "cum_prem": 759120.0,
-      "cv_basic": 549789.99,
-      "cv_total": 568482.85,
-      "death_benefit": 1202793.89,
-      "dividend_cum": 18692.86
+      "age": 36,
+      "cum_prem": 65340,
+      "cv_basic": 26536.21,
+      "cv_total": 27932.85,
+      "death_benefit": 3000000
     },
     {
       "y": 2,
-      "age": 51,
-      "cum_prem": 759120.0,
-      "cv_basic": 738024.73,
-      "cv_total": 776528.75,
-      "death_benefit": 1051650.0,
-      "dividend_cum": 38504.02
+      "age": 37,
+      "cum_prem": 130680,
+      "cv_basic": 56486.43,
+      "cv_total": 59459.4,
+      "death_benefit": 3000000
     },
     {
       "y": 3,
-      "age": 52,
-      "cum_prem": 759120.0,
-      "cv_basic": 750533.8,
-      "cv_total": 810020.81,
-      "death_benefit": 1078467.0,
-      "dividend_cum": 59487.01
+      "age": 38,
+      "cum_prem": 196020,
+      "cv_basic": 89850.67,
+      "cv_total": 94579.65,
+      "death_benefit": 3000000
     },
     {
       "y": 4,
-      "age": 53,
-      "cum_prem": 759120.0,
-      "cv_basic": 763255.54,
-      "cv_total": 844953.18,
-      "death_benefit": 1108461.68,
-      "dividend_cum": 81697.64
+      "age": 39,
+      "cum_prem": 261360,
+      "cv_basic": 126628.92,
+      "cv_total": 133293.6,
+      "death_benefit": 3000000
     },
     {
       "y": 5,
-      "age": 54,
-      "cum_prem": 759120.0,
-      "cv_basic": 776175.08,
-      "cv_total": 881366.4,
-      "death_benefit": 1155968.52,
-      "dividend_cum": 105191.32
+      "age": 40,
+      "cum_prem": 326700,
+      "cv_basic": 166821.19,
+      "cv_total": 175601.25,
+      "death_benefit": 3000000
     },
     {
       "y": 6,
-      "age": 55,
-      "cum_prem": 759120.0,
-      "cv_basic": 789247.1,
-      "cv_total": 919267.19,
-      "death_benefit": 1205411.2,
-      "dividend_cum": 130020.09
+      "age": 41,
+      "cum_prem": 392040,
+      "cv_basic": 210427.47,
+      "cv_total": 221502.6,
+      "death_benefit": 3000000
     },
     {
       "y": 7,
-      "age": 56,
-      "cum_prem": 759120.0,
-      "cv_basic": 810609.17,
-      "cv_total": 966854.9,
-      "death_benefit": 1256911.37,
-      "dividend_cum": 156245.73
+      "age": 42,
+      "cum_prem": 457380,
+      "cv_basic": 257447.77,
+      "cv_total": 270997.65,
+      "death_benefit": 3000000
     },
     {
       "y": 8,
-      "age": 57,
-      "cum_prem": 759120.0,
-      "cv_basic": 824181.8,
-      "cv_total": 1008111.16,
-      "death_benefit": 1310544.5,
-      "dividend_cum": 183929.36
+      "age": 43,
+      "cum_prem": 522720,
+      "cv_basic": 307882.08,
+      "cv_total": 324086.4,
+      "death_benefit": 3000000
     },
     {
       "y": 9,
-      "age": 58,
-      "cum_prem": 759120.0,
-      "cv_basic": 837933.03,
-      "cv_total": 1051066.33,
-      "death_benefit": 1366386.22,
-      "dividend_cum": 213133.3
+      "age": 44,
+      "cum_prem": 588060,
+      "cv_basic": 361730.41,
+      "cv_total": 380768.85,
+      "death_benefit": 3000000
     },
     {
       "y": 10,
-      "age": 59,
-      "cum_prem": 759120.0,
-      "cv_basic": 851857.57,
-      "cv_total": 1095781.02,
-      "death_benefit": 1424515.33,
-      "dividend_cum": 243923.45
+      "age": 45,
+      "cum_prem": 653400,
+      "cv_basic": 418992.75,
+      "cv_total": 441045.0,
+      "death_benefit": 3000000
     },
     {
       "y": 11,
-      "age": 60,
-      "cum_prem": 759120.0,
-      "cv_basic": 865899.87,
-      "cv_total": 1142246.62,
-      "death_benefit": 1484920.6,
-      "dividend_cum": 276346.75
+      "age": 46,
+      "cum_prem": 718740,
+      "cv_basic": 479669.11,
+      "cv_total": 504914.85,
+      "death_benefit": 3000000
     },
     {
       "y": 12,
-      "age": 61,
-      "cum_prem": 759120.0,
-      "cv_basic": 880417.71,
-      "cv_total": 1191013.23,
-      "death_benefit": 1429215.88,
-      "dividend_cum": 310595.52
+      "age": 47,
+      "cum_prem": 784080,
+      "cv_basic": 543759.48,
+      "cv_total": 572378.4,
+      "death_benefit": 3000000
     },
     {
       "y": 13,
-      "age": 62,
-      "cum_prem": 759120.0,
-      "cv_basic": 895121.81,
-      "cv_total": 1241782.8,
-      "death_benefit": 1490139.35,
-      "dividend_cum": 346660.99
+      "age": 48,
+      "cum_prem": 849420,
+      "cv_basic": 611263.87,
+      "cv_total": 643435.65,
+      "death_benefit": 3000000
     },
     {
       "y": 14,
-      "age": 63,
-      "cum_prem": 759120.0,
-      "cv_basic": 910005.31,
-      "cv_total": 1294622.7,
-      "death_benefit": 1553547.23,
-      "dividend_cum": 384617.39
+      "age": 49,
+      "cum_prem": 914760,
+      "cv_basic": 682182.27,
+      "cv_total": 718086.6,
+      "death_benefit": 3000000
     },
     {
       "y": 15,
-      "age": 64,
-      "cum_prem": 759120.0,
-      "cv_basic": 925058.77,
-      "cv_total": 1349597.85,
-      "death_benefit": 1619517.41,
-      "dividend_cum": 424539.08
+      "age": 50,
+      "cum_prem": 980100,
+      "cv_basic": 756514.69,
+      "cv_total": 796331.25,
+      "death_benefit": 3000000
     },
     {
       "y": 16,
-      "age": 65,
-      "cum_prem": 759120.0,
-      "cv_basic": 940190.72,
-      "cv_total": 1406651.31,
-      "death_benefit": 1687981.56,
-      "dividend_cum": 466460.59
+      "age": 51,
+      "cum_prem": 1045440,
+      "cv_basic": 834261.12,
+      "cv_total": 878169.6,
+      "death_benefit": 3000000
     },
     {
       "y": 17,
-      "age": 66,
-      "cum_prem": 759120.0,
-      "cv_basic": 955464.64,
-      "cv_total": 1465956.02,
-      "death_benefit": 1759147.23,
-      "dividend_cum": 510491.38
+      "age": 52,
+      "cum_prem": 1110780,
+      "cv_basic": 915421.57,
+      "cv_total": 963601.65,
+      "death_benefit": 3000000
     },
     {
       "y": 18,
-      "age": 67,
-      "cum_prem": 759120.0,
-      "cv_basic": 970861.98,
-      "cv_total": 1527563.95,
-      "death_benefit": 1833076.74,
-      "dividend_cum": 556701.97
+      "age": 53,
+      "cum_prem": 1176120,
+      "cv_basic": 999996.03,
+      "cv_total": 1052627.4,
+      "death_benefit": 3000000
     },
     {
       "y": 19,
-      "age": 68,
-      "cum_prem": 759120.0,
-      "cv_basic": 986361.57,
-      "cv_total": 1591525.96,
-      "death_benefit": 1909831.15,
-      "dividend_cum": 605164.39
+      "age": 54,
+      "cum_prem": 1241460,
+      "cv_basic": 1087984.51,
+      "cv_total": 1145246.85,
+      "death_benefit": 3000000
     },
     {
       "y": 20,
-      "age": 69,
-      "cum_prem": 759120.0,
-      "cv_basic": 1001938.91,
-      "cv_total": 1657885.27,
-      "death_benefit": 1989462.32,
-      "dividend_cum": 655946.36
-    },
-    {
-      "y": 21,
-      "age": 70,
-      "cum_prem": 759120.0,
-      "cv_basic": 1017484.13,
-      "cv_total": 1726540.34,
-      "death_benefit": 2071848.41,
-      "dividend_cum": 709056.21
-    },
-    {
-      "y": 22,
-      "age": 71,
-      "cum_prem": 759120.0,
-      "cv_basic": 1034727.7,
-      "cv_total": 1800573.13,
-      "death_benefit": 1890601.79,
-      "dividend_cum": 765845.43
-    },
-    {
-      "y": 23,
-      "age": 72,
-      "cum_prem": 759120.0,
-      "cv_basic": 1052197.35,
-      "cv_total": 1877661.96,
-      "death_benefit": 1971545.06,
-      "dividend_cum": 825464.61
-    },
-    {
-      "y": 24,
-      "age": 73,
-      "cum_prem": 759120.0,
-      "cv_basic": 1069885.55,
-      "cv_total": 1957911.96,
-      "death_benefit": 2055807.56,
-      "dividend_cum": 888026.41
-    },
-    {
-      "y": 25,
-      "age": 74,
-      "cum_prem": 759120.0,
-      "cv_basic": 1087783.27,
-      "cv_total": 2041427.64,
-      "death_benefit": 2143499.01,
-      "dividend_cum": 953644.37
-    },
-    {
-      "y": 26,
-      "age": 75,
-      "cum_prem": 759120.0,
-      "cv_basic": 1105908.04,
-      "cv_total": 2128366.48,
-      "death_benefit": 2234784.8,
-      "dividend_cum": 1022458.44
-    },
-    {
-      "y": 27,
-      "age": 76,
-      "cum_prem": 759120.0,
-      "cv_basic": 1124221.14,
-      "cv_total": 2218781.96,
-      "death_benefit": 2329721.06,
-      "dividend_cum": 1094560.82
-    },
-    {
-      "y": 28,
-      "age": 77,
-      "cum_prem": 759120.0,
-      "cv_basic": 1142707.94,
-      "cv_total": 2312778.03,
-      "death_benefit": 2428416.94,
-      "dividend_cum": 1170070.09
-    },
-    {
-      "y": 29,
-      "age": 78,
-      "cum_prem": 759120.0,
-      "cv_basic": 1161351.76,
-      "cv_total": 2410449.46,
-      "death_benefit": 2530971.93,
-      "dividend_cum": 1249097.7
-    },
-    {
-      "y": 30,
-      "age": 79,
-      "cum_prem": 759120.0,
-      "cv_basic": 1180133.53,
-      "cv_total": 2511892.98,
-      "death_benefit": 2637487.63,
-      "dividend_cum": 1331759.45
-    },
-    {
-      "y": 31,
-      "age": 80,
-      "cum_prem": 759120.0,
-      "cv_basic": 1199032.4,
-      "cv_total": 2617197.57,
-      "death_benefit": 2748057.45,
-      "dividend_cum": 1418165.17
-    },
-    {
-      "y": 32,
-      "age": 81,
-      "cum_prem": 759120.0,
-      "cv_basic": 1218024.87,
-      "cv_total": 2726448.8,
-      "death_benefit": 2862771.24,
-      "dividend_cum": 1508423.93
-    },
-    {
-      "y": 33,
-      "age": 82,
-      "cum_prem": 759120.0,
-      "cv_basic": 1237082.93,
-      "cv_total": 2839721.41,
-      "death_benefit": 2981707.48,
-      "dividend_cum": 1602638.48
-    },
-    {
-      "y": 34,
-      "age": 83,
-      "cum_prem": 759120.0,
-      "cv_basic": 1256173.21,
-      "cv_total": 2957073.2,
-      "death_benefit": 3104926.86,
-      "dividend_cum": 1700899.99
-    },
-    {
-      "y": 35,
-      "age": 84,
-      "cum_prem": 759120.0,
-      "cv_basic": 1275254.78,
-      "cv_total": 3078542.84,
-      "death_benefit": 3232469.98,
-      "dividend_cum": 1803288.06
-    },
-    {
-      "y": 36,
-      "age": 85,
-      "cum_prem": 759120.0,
-      "cv_basic": 1294278.5,
-      "cv_total": 3204141.75,
-      "death_benefit": 3364348.84,
-      "dividend_cum": 1909863.25
-    },
-    {
-      "y": 37,
-      "age": 86,
-      "cum_prem": 759120.0,
-      "cv_basic": 1313186.09,
-      "cv_total": 3333848.57,
-      "death_benefit": 3500541.0,
-      "dividend_cum": 2020662.48
-    },
-    {
-      "y": 38,
-      "age": 87,
-      "cum_prem": 759120.0,
-      "cv_basic": 1331910.04,
-      "cv_total": 3467609.16,
-      "death_benefit": 3640989.61,
-      "dividend_cum": 2135699.12
-    },
-    {
-      "y": 39,
-      "age": 88,
-      "cum_prem": 759120.0,
-      "cv_basic": 1350373.81,
-      "cv_total": 3605329.29,
-      "death_benefit": 3785595.76,
-      "dividend_cum": 2254955.48
-    },
-    {
-      "y": 40,
-      "age": 89,
-      "cum_prem": 759120.0,
-      "cv_basic": 1368491.18,
-      "cv_total": 3746870.02,
-      "death_benefit": 3934213.52,
-      "dividend_cum": 2378378.84
-    },
-    {
-      "y": 41,
-      "age": 90,
-      "cum_prem": 759120.0,
-      "cv_basic": 1386165.69,
-      "cv_total": 3892041.39,
-      "death_benefit": 4086643.46,
-      "dividend_cum": 2505875.7
-    },
-    {
-      "y": 42,
-      "age": 91,
-      "cum_prem": 759120.0,
-      "cv_basic": 1410418.21,
-      "cv_total": 4061120.14,
-      "death_benefit": 4061120.14,
-      "dividend_cum": 2650701.93
-    },
-    {
-      "y": 43,
-      "age": 92,
-      "cum_prem": 759120.0,
-      "cv_basic": 1435094.39,
-      "cv_total": 4237542.43,
-      "death_benefit": 4237542.43,
-      "dividend_cum": 2802448.04
-    },
-    {
-      "y": 44,
-      "age": 93,
-      "cum_prem": 759120.0,
-      "cv_basic": 1460201.52,
-      "cv_total": 4421626.03,
-      "death_benefit": 4421626.03,
-      "dividend_cum": 2961424.51
-    },
-    {
-      "y": 45,
-      "age": 94,
-      "cum_prem": 759120.0,
-      "cv_basic": 1485747.04,
-      "cv_total": 4613705.16,
-      "death_benefit": 4613705.16,
-      "dividend_cum": 3127958.12
-    },
-    {
-      "y": 46,
-      "age": 95,
-      "cum_prem": 759120.0,
-      "cv_basic": 1511738.46,
-      "cv_total": 4814123.59,
-      "death_benefit": 4814123.59,
-      "dividend_cum": 3302385.13
-    },
-    {
-      "y": 47,
-      "age": 96,
-      "cum_prem": 759120.0,
-      "cv_basic": 1538183.44,
-      "cv_total": 5023245.69,
-      "death_benefit": 5023245.69,
-      "dividend_cum": 3485062.25
-    },
-    {
-      "y": 48,
-      "age": 97,
-      "cum_prem": 759120.0,
-      "cv_basic": 1565089.73,
-      "cv_total": 5241446.41,
-      "death_benefit": 5241446.41,
-      "dividend_cum": 3676356.68
-    },
-    {
-      "y": 49,
-      "age": 98,
-      "cum_prem": 759120.0,
-      "cv_basic": 1592465.2,
-      "cv_total": 5469121.11,
-      "death_benefit": 5469121.11,
-      "dividend_cum": 3876655.91
-    },
-    {
-      "y": 50,
-      "age": 99,
-      "cum_prem": 759120.0,
-      "cv_basic": 1620317.83,
-      "cv_total": 5706678.4,
-      "death_benefit": 5706678.4,
-      "dividend_cum": 4086360.57
-    },
-    {
-      "y": 51,
-      "age": 100,
-      "cum_prem": 759120.0,
-      "cv_basic": 1648655.69,
-      "cv_total": 5954548.7,
-      "death_benefit": 5954548.7,
-      "dividend_cum": 4305893.01
-    },
-    {
-      "y": 52,
-      "age": 101,
-      "cum_prem": 759120.0,
-      "cv_basic": 1677486.99,
-      "cv_total": 6213176.98,
-      "death_benefit": 6213176.98,
-      "dividend_cum": 4535689.99
-    },
-    {
-      "y": 53,
-      "age": 102,
-      "cum_prem": 759120.0,
-      "cv_basic": 1706820.02,
-      "cv_total": 6483028.15,
-      "death_benefit": 6483028.15,
-      "dividend_cum": 4776208.13
-    },
-    {
-      "y": 54,
-      "age": 103,
-      "cum_prem": 759120.0,
-      "cv_basic": 1736663.18,
-      "cv_total": 6764589.65,
-      "death_benefit": 6764589.65,
-      "dividend_cum": 5027926.47
-    },
-    {
-      "y": 55,
-      "age": 104,
-      "cum_prem": 759120.0,
-      "cv_basic": 1767024.98,
-      "cv_total": 7058367.17,
-      "death_benefit": 7058367.17,
-      "dividend_cum": 5291342.19
-    },
-    {
-      "y": 56,
-      "age": 105,
-      "cum_prem": 759120.0,
-      "cv_basic": 1797914.03,
-      "cv_total": 7364888.78,
-      "death_benefit": 7364888.78,
-      "dividend_cum": 5566974.75
-    },
-    {
-      "y": 57,
-      "age": 106,
-      "cum_prem": 759120.0,
-      "cv_basic": 1829337.8,
-      "cv_total": 7684698.73,
-      "death_benefit": 7684698.73,
-      "dividend_cum": 5855360.93
-    },
-    {
-      "y": 58,
-      "age": 107,
-      "cum_prem": 759120.0,
-      "cv_basic": 1861304.82,
-      "cv_total": 8018369.04,
-      "death_benefit": 8018369.04,
-      "dividend_cum": 6157064.22
-    },
-    {
-      "y": 59,
-      "age": 108,
-      "cum_prem": 759120.0,
-      "cv_basic": 1893822.9,
-      "cv_total": 8366494.84,
-      "death_benefit": 8366494.84,
-      "dividend_cum": 6472671.94
-    },
-    {
-      "y": 60,
-      "age": 109,
-      "cum_prem": 759120.0,
-      "cv_basic": 1926900.0,
-      "cv_total": 8729695.2,
-      "death_benefit": 8729695.2,
-      "dividend_cum": 6802795.2
+      "age": 55,
+      "cum_prem": 1306800,
+      "cv_basic": 1179387.0,
+      "cv_total": 1241460.0,
+      "death_benefit": 3000000
     }
   ],
   "gp_table": {
