@@ -1639,6 +1639,172 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 客戶信任區（6 大面向的客觀證據） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">為什麼客戶可以放心？</h2>
+      <p class="block-subtitle">6 大面向的第三方獨立驗證 ・ 透明可查、市場驗證、監管嚴密</p>
+
+      <style>
+        .trust-grid {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+          margin-top: 18px;
+        }
+        .trust-card {
+          background: #fff;
+          border: 1.5px solid var(--border);
+          border-radius: 16px;
+          padding: 22px 24px;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s var(--ease-out-quint);
+        }
+        .trust-card:hover {
+          border-color: var(--orange);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-md);
+        }
+        .trust-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0;
+          width: 6px; height: 100%;
+          background: linear-gradient(180deg, var(--orange), var(--gold));
+        }
+        .trust-card .ticon {
+          width: 48px; height: 48px;
+          border-radius: 12px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 26px;
+          background: linear-gradient(135deg, var(--bg-cream), rgba(232,160,32,0.12));
+          margin-bottom: 12px;
+        }
+        .trust-card h4 {
+          font-size: 16px; font-weight: 900; color: var(--navy);
+          letter-spacing: 1px; margin: 0 0 8px;
+        }
+        .trust-card .tagline {
+          font-size: 12px; color: var(--orange);
+          letter-spacing: 1.5px; font-weight: 700;
+          margin-bottom: 10px;
+        }
+        .trust-card p {
+          font-size: 13px; color: #555; line-height: 1.8;
+          margin: 0 0 10px;
+        }
+        .trust-tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .trust-tag {
+          font-size: 11px; padding: 4px 10px; border-radius: 12px;
+          background: var(--bg-cream); color: var(--navy);
+          border: 1px solid var(--border); font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+        @media (max-width: 720px) {
+          .trust-grid { grid-template-columns: 1fr; }
+        }
+      </style>
+
+      <div class="trust-grid">
+
+        <!-- 1. 第三方平台收錄 -->
+        <div class="trust-card">
+          <div class="ticon">🌐</div>
+          <div class="tagline">第三方獨立平台</div>
+          <h4>全球財經媒體收錄</h4>
+          <p>Bloomberg、Morningstar、MoneyDJ、鉅亨網、Yahoo 股市、StockQ 等權威平台<strong>都收錄這檔基金</strong>，每日淨值、報酬率、持股全公開可查。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">Bloomberg ALLIGAM:LX</span>
+            <span class="trust-tag">Morningstar LU0820561818</span>
+            <span class="trust-tag">MoneyDJ TLZ64</span>
+            <span class="trust-tag">鉅亨 B20,073</span>
+          </div>
+        </div>
+
+        <!-- 2. 多家銀行通路 -->
+        <div class="trust-card">
+          <div class="ticon">🏦</div>
+          <div class="tagline">國內銀行通路</div>
+          <h4>10+ 家銀行同步販售</h4>
+          <p>國泰世華、玉山、第一銀、合作金庫、永豐、土地、兆豐、元大⋯<strong>幾乎所有國內主要銀行都通路販售</strong>。不是冷門基金，是市場主流核心配置。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">國泰世華</span>
+            <span class="trust-tag">玉山銀行</span>
+            <span class="trust-tag">第一銀行</span>
+            <span class="trust-tag">合作金庫</span>
+            <span class="trust-tag">永豐銀行</span>
+            <span class="trust-tag">元大</span>
+            <span class="trust-tag">兆豐 + more</span>
+          </div>
+        </div>
+
+        <!-- 3. 管理團隊 Voya -->
+        <div class="trust-card">
+          <div class="ticon">👔</div>
+          <div class="tagline">管理團隊</div>
+          <h4>Voya Investment Management</h4>
+          <p>2022 年 7 月起，由 <strong>Voya 投資管理</strong>（前 ING US）接手，<strong>原安聯團隊完整轉移</strong>。首席經理人 <strong>Michael Yee</strong> 從基金成立至今持續操盤，投資哲學與流程不變。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">Voya IM ・ 美國上市</span>
+            <span class="trust-tag">Michael Yee 首席</span>
+            <span class="trust-tag">團隊延續性 100%</span>
+          </div>
+        </div>
+
+        <!-- 4. 監管 -->
+        <div class="trust-card">
+          <div class="ticon">🛡️</div>
+          <div class="tagline">監管與法規</div>
+          <h4>盧森堡註冊 + 金管會核准</h4>
+          <p>基金註冊於<strong>盧森堡（歐洲最嚴格金融管轄區之一）</strong>，遵循 UCITS 規範。經<strong>金管會核准在台販售</strong>，並由保管銀行獨立保管資產 — 即使管理公司出狀況，您的資產仍受保護。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">UCITS 規範</span>
+            <span class="trust-tag">金管會核准</span>
+            <span class="trust-tag">RR3 風險等級</span>
+            <span class="trust-tag">第三方保管</span>
+          </div>
+        </div>
+
+        <!-- 5. 國民基金地位 -->
+        <div class="trust-card">
+          <div class="ticon">⭐</div>
+          <div class="tagline">市場驗證</div>
+          <h4>「國民基金」級別熱門</h4>
+          <p>在 <strong>PTT 基金版</strong>、<strong>Mobile01</strong>、各大財經媒體被列為「<strong>國民基金</strong>」。國內<strong>投資型保單最熱門連結標的之一</strong>，市場用腳投票證明它的價值。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">PTT Fund 板熱推</span>
+            <span class="trust-tag">投資型保單核心</span>
+            <span class="trust-tag">三平衡結構鼻祖</span>
+          </div>
+        </div>
+
+        <!-- 6. 透明可查 -->
+        <div class="trust-card">
+          <div class="ticon">📊</div>
+          <div class="tagline">資訊透明</div>
+          <h4>每月公開資訊揭露</h4>
+          <p>每月公告月報（含全部持股、配息來源、資產配置）。<strong>安聯官網可查 6 年歷史</strong>，<strong>鉅亨網可查成立至今全部紀錄</strong>。我們的網頁也每月同步更新真實月報截圖。</p>
+          <div class="trust-tag-row">
+            <span class="trust-tag">月報每月公告</span>
+            <span class="trust-tag">配息來源透明</span>
+            <span class="trust-tag">官網查 6 年</span>
+            <span class="trust-tag">鉅亨查全紀錄</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 重要法律警語（誠實揭露） -->
+      <div class="warning-box" style="margin-top: 20px;">
+        <strong>⚠ 重要風險揭露（依法揭露）</strong><br>
+        1. 本基金<strong>有相當比重投資於非投資等級之高風險債券</strong>（依官方名稱揭露）<br>
+        2. <strong>配息可能涉及本金</strong>，配息率非報酬率，投資人應留意配息來源是否健康<br>
+        3. 過往績效（如 +210.63% 累積、8.7% 配息率）<strong>不代表未來表現</strong><br>
+        4. 投資型保單連結之投資標的價值將隨市場波動，可能損失全部本金<br>
+        5. 購買前應審慎評估自身風險承受度，並詳閱<strong>公開說明書與投資人須知</strong>
+      </div>
+    </div>
+
     <!-- CTA -->
     <div class="info-card-dark" style="text-align:center; padding: 36px;">
       <h3 style="font-size:24px; font-weight:900; color:#fff; letter-spacing:2px; margin-bottom:10px;">想配置<span style="color:var(--gold);">安聯收益成長基金</span>嗎？</h3>

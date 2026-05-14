@@ -6021,8 +6021,17 @@ function actuarialCalc_twlife(plan, sex, age, sumAssured, period) {
 function calcSumAssuredFromBudget_twlife(plan, sex, age, budgetReal, productMeta) {
   const db = getDB(plan);
   if (!db) return null;
-  // 比例 = 預算 / 基準保費，保額 = 基準保額 × 比例
-  const ratio = budgetReal / db.meta.base_premium;
+  // v50: 用 schedule 真實年 1 prem 當錨點,避免 meta.base_premium 與 schedule 不一致
+  // (許多舊資料 base_premium 是「總繳/cum」,與 schedule[0].cum_prem 差 5x~800x)
+  const sched = db.schedule_at_base || db.schedule || [];
+  let trueAnnualBase = db.meta.base_premium;
+  if (sched.length > 0) {
+    // sched[0].cum_prem 應 = 第一年實繳保費(年繳商品)
+    const sched0Cum = sched[0].cum_prem || sched[0].prem || 0;
+    if (sched0Cum > 0) trueAnnualBase = sched0Cum;
+  }
+  if (!trueAnnualBase) return null;
+  const ratio = budgetReal / trueAnnualBase;
   const rawSA = db.meta.base_sa * ratio;
   return applyInsuranceLimits(rawSA, productMeta, age);
 }
