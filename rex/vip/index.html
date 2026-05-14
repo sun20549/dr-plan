@@ -614,12 +614,25 @@ function applyEnhancements(root) {
   });
 }
 
-/* ─── 案例對帳單自動探測 + Lightbox ─── */
-const SCREENSHOT_EXTS = ['jpg', 'png'];   // 標準格式 + 截圖預設
-const SCREENSHOT_MAX = 6;                  // 每月最多 6 張
-const LOOKBACK_MONTHS = 24;                // 回查 24 個月
+/* ─── 案例對帳單偵測（manifest 優先 / probe 備援） ─── */
+const SCREENSHOT_EXTS = ['jpg', 'png'];
+const SCREENSHOT_MAX = 6;
+const LOOKBACK_MONTHS = 24;
 
-// HEAD 請求（只問檔頭、不下載 body）→ 比 Image() 快 10 倍
+let _manifestCache = null;
+async function fetchManifest() {
+  if (_manifestCache !== null) return _manifestCache;
+  try {
+    const res = await fetch('assets/img/cases/manifest.json', { cache: 'force-cache' });
+    if (!res.ok) { _manifestCache = {}; return {}; }
+    _manifestCache = await res.json();
+    return _manifestCache;
+  } catch (e) {
+    _manifestCache = {};
+    return {};
+  }
+}
+
 async function probeImage(url) {
   try {
     const res = await fetch(url, { method: 'HEAD', cache: 'force-cache' });

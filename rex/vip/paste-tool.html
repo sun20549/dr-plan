@@ -495,13 +495,13 @@
                placeholder="例如：u0033" maxlength="6"
                autocomplete="off" spellcheck="false">
         <div class="input-label" style="margin-top:12px;">
-          <span>▸ 建置月份</span>
+          <span>▸ 建置日期</span>
         </div>
-        <input type="month" class="case-input" id="dateInput"
+        <input type="date" class="case-input" id="dateInput"
                style="font-size:14px; letter-spacing:1px;">
         <div class="filename-preview" id="filenamePreview">
           <span class="label">下一張將存為</span>
-          <span id="nextFilename">u0033-202605-1.jpg</span>
+          <span id="nextFilename">u0033-20260514-1.jpg</span>
         </div>
       </div>
 
@@ -557,7 +557,8 @@
     投資型專區 ・ 對帳單上傳工具 ・ <a href="index.html">回到首頁</a>　|
     <a href="tools/">📸 升級為截圖助手（Tampermonkey）</a>　|
     <a href="#" id="clearAllBtn">清空所有預覽</a>　|
-    <a href="#" id="resetCounterBtn">重置編號計數器</a>
+    <a href="#" id="resetCounterBtn">重置編號計數器</a>　|
+    <a href="#" id="rebuildManifestBtn" title="掃描資料夾重建 manifest.json">🔧 重建檔案清單</a>
   </div>
 </div>
 
@@ -612,31 +613,31 @@ function toast(msg, type = 'ok', duration = 2400) {
 
 // ─── Case input 處理 ───
 function getCaseId() { return caseInput.value.trim().toLowerCase(); }
-function getYearMonth() {
-  const v = dateInput.value; // 'YYYY-MM'
+function getYearMonthDay() {
+  const v = dateInput.value; // 'YYYY-MM-DD'
   if (!v) return null;
-  return v.replace('-', ''); // 'YYYYMM'
+  return v.replace(/-/g, ''); // 'YYYYMMDD'
 }
 function getCounterKey() {
   const cid = getCaseId();
-  const ym = getYearMonth();
-  return ym ? `${cid}-${ym}` : cid;
+  const ymd = getYearMonthDay();
+  return ymd ? `${cid}-${ymd}` : cid;
 }
 function getNextIndex() {
   return (counters[getCounterKey()] || 0) + 1;
 }
 function updateFilenamePreview() {
   const cid = getCaseId();
-  const ym = getYearMonth();
+  const ymd = getYearMonthDay();
   if (!cid) {
     nextFilenameEl.textContent = '請先輸入案例編號';
     indexHintEl.textContent = '— / —';
     return;
   }
   const nextIdx = getNextIndex();
-  if (ym) {
-    nextFilenameEl.textContent = `${cid}-${ym}-${nextIdx}.jpg`;
-    indexHintEl.textContent = `${ym} 第 ${nextIdx} 張`;
+  if (ymd) {
+    nextFilenameEl.textContent = `${cid}-${ymd}-${nextIdx}.jpg`;
+    indexHintEl.textContent = `${ymd.slice(0,4)}/${ymd.slice(4,6)}/${ymd.slice(6)} 第 ${nextIdx} 張`;
   } else {
     nextFilenameEl.textContent = `${cid}-${nextIdx}.jpg`;
     indexHintEl.textContent = `(無日期) 第 ${nextIdx} 張`;
@@ -645,17 +646,19 @@ function updateFilenamePreview() {
 caseInput.addEventListener('input', updateFilenamePreview);
 dateInput.addEventListener('change', updateFilenamePreview);
 
-// 預設本月
+// 預設今天
 const today = new Date();
-dateInput.value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+dateInput.value = today.getFullYear() + '-' +
+                  String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                  String(today.getDate()).padStart(2, '0');
 
 // 自動探測既存檔案數，初始化計數器
 async function probeExisting() {
   if (!dirHandle) return;
   const cid = getCaseId();
-  const ym = getYearMonth();
+  const ymd = getYearMonthDay();
   if (!cid) return;
-  const prefix = ym ? `${cid}-${ym}-` : `${cid}-`;
+  const prefix = ymd ? `${cid}-${ymd}-` : `${cid}-`;
   const key = getCounterKey();
   let maxN = 0;
   for (let i = 1; i <= 20; i++) {
@@ -708,9 +711,9 @@ async function connectFolder() {
 folderBtn.addEventListener('click', connectFolder);
 
 // ─── 處理貼上 / 拖放圖片 ───
-function handleImageBlob(blob) {
+async function handleImageBlob(blob) {
   const cid = getCaseId();
-  const ym = getYearMonth();
+  const ymd = getYearMonthDay();
   if (!cid) {
     toast('請先輸入案例編號', 'err');
     caseInput.focus();
@@ -722,28 +725,29 @@ function handleImageBlob(blob) {
     return;
   }
   const idx = getNextIndex();
-  const fname = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
+  const fname = ymd ? `${cid}-${ymd}-${idx}.jpg` : `${cid}-${idx}.jpg`;
   const key = getCounterKey();
-  compressToJpeg(blob, qualitySlider.value / 100).then(jpegBlob => {
-    addPreviewItem(fname, jpegBlob, cid, idx);
-    counters[key] = idx;
-    saveCounters();
-    addRecent(cid);
-    updateFilenamePreview();
-    if (dirHandle) {
-      saveToDirHandle(fname, jpegBlob).then(() => {
-        markItemSaved(fname);
-        toast(`✓ ${fname} 已存到資料夾`, 'ok');
-      }).catch(err => {
-        markItemError(fname, err.message);
-        toast(`存檔失敗：${err.message}`, 'err');
-      });
-    } else {
-      downloadBlob(fname, jpegBlob);
-      markItemSaved(fname, '已下載');
-      toast(`✓ ${fname} 已下載 ・ 請拖到 cases 資料夾`, 'warn', 4000);
+  const jpegBlob = await compressToJpeg(blob, qualitySlider.value / 100);
+  addPreviewItem(fname, jpegBlob, cid, idx);
+  counters[key] = idx;
+  saveCounters();
+  addRecent(cid);
+  updateFilenamePreview();
+  if (dirHandle) {
+    try {
+      await saveToDirHandle(fname, jpegBlob);
+      await updateManifest(cid, fname);
+      markItemSaved(fname);
+      toast(`✓ ${fname} 已存`, 'ok');
+    } catch (err) {
+      markItemError(fname, err.message);
+      toast(`存檔失敗：${err.message}`, 'err');
     }
-  });
+  } else {
+    downloadBlob(fname, jpegBlob);
+    markItemSaved(fname, '已下載');
+    toast(`✓ ${fname} 已下載 ・ 請拖到 cases 資料夾`, 'warn', 4000);
+  }
 }
 
 function compressToJpeg(blob, quality = 0.85) {
@@ -775,6 +779,58 @@ async function saveToDirHandle(filename, blob) {
   const writable = await fileHandle.createWritable();
   await writable.write(blob);
   await writable.close();
+}
+
+// ─── manifest.json 維護 ───
+// 格式: { "c0235": ["c0235-20250513-1.jpg", ...], "u0033": [...] }
+async function readManifest() {
+  if (!dirHandle) return {};
+  try {
+    const fh = await dirHandle.getFileHandle('manifest.json');
+    const f = await fh.getFile();
+    const text = await f.text();
+    return JSON.parse(text || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+async function writeManifest(data) {
+  if (!dirHandle) return;
+  const fh = await dirHandle.getFileHandle('manifest.json', { create: true });
+  const w = await fh.createWritable();
+  await w.write(JSON.stringify(data, null, 2));
+  await w.close();
+}
+async function updateManifest(caseId, filename) {
+  if (!dirHandle) return;
+  const m = await readManifest();
+  if (!m[caseId]) m[caseId] = [];
+  if (!m[caseId].includes(filename)) {
+    m[caseId].push(filename);
+    m[caseId].sort();  // 自然排序：時間先後
+  }
+  await writeManifest(m);
+}
+
+// 掃描資料夾重建 manifest（手動用）
+async function rebuildManifest() {
+  if (!dirHandle) { toast('請先連結資料夾', 'err'); return; }
+  toast('掃描中...', 'warn');
+  const m = {};
+  // 走訪所有檔案
+  for await (const [name, handle] of dirHandle.entries()) {
+    if (handle.kind !== 'file') continue;
+    if (!/\.(jpe?g|png|webp)$/i.test(name)) continue;
+    const match = name.match(/^([a-z]\d{4})/i);
+    if (!match) continue;
+    const cid = match[1].toLowerCase();
+    if (!m[cid]) m[cid] = [];
+    m[cid].push(name);
+  }
+  for (const k in m) m[k].sort();
+  await writeManifest(m);
+  const total = Object.values(m).reduce((s, arr) => s + arr.length, 0);
+  toast(`✓ 已重建 manifest，共 ${total} 張圖`, 'ok', 4000);
 }
 
 function downloadBlob(filename, blob) {
@@ -937,6 +993,10 @@ document.getElementById('clearAllBtn').addEventListener('click', e => {
   sessionItems.length = 0;
   previewList.innerHTML = '';
   toast('已清空預覽', 'ok');
+});
+document.getElementById('rebuildManifestBtn').addEventListener('click', e => {
+  e.preventDefault();
+  rebuildManifest();
 });
 document.getElementById('resetCounterBtn').addEventListener('click', e => {
   e.preventDefault();
