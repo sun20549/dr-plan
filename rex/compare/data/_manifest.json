@@ -348,11 +348,12 @@
     "period": 7,
     "engine": "twlife_v1",
     "declared_rate": 0.0425,
-    "base_sa": 500000,
-    "base_age": 40,
-    "base_premium": 20090.0,
+    "base_sa": 5568000,
+    "base_age": 36,
+    "base_premium": 199976,
     "plan_code": "USWLG",
-    "product_code": "USWLG"
+    "product_code": "USWLG",
+    "verified_against": "Drew 2026-05-14 美元利變非還本 7年"
   },
   {
     "key": "USWLH",
@@ -3256,11 +3257,12 @@
     "period": 7,
     "engine": "prudential_v2",
     "declared_rate": 0,
-    "base_sa": 300000,
-    "base_age": 2,
-    "base_premium": 7085,
+    "base_sa": 1000000,
+    "base_age": 36,
+    "base_premium": 43904,
     "plan_code": "PFH",
-    "product_code": "PFH"
+    "product_code": "PFH",
+    "verified_against": "Drew 2026-05-14 美元利變非還本 7年"
   },
   {
     "key": "PFI",
@@ -6899,5 +6901,19 @@
     "verified_against": "Drew 2026-05-14 台幣利變還本 2年",
     "needs_extraction": true,
     "path": "twlife/NTPC0102.json"
+  },
+  {
+    "key": "7PARWLSK",
+    "name": "7PARWLSK",
+    "company": "fubon",
+    "engine": "twlife_v1",
+    "plan_year": 7,
+    "base_sa": 2320107,
+    "base_premium": 200000,
+    "base_age": 36,
+    "currency": "USD",
+    "verified_against": "Drew 2026-05-14 美元利變非還本 7年",
+    "needs_extraction": true,
+    "path": "fubon/7PARWLSK.json"
   }
 ]
