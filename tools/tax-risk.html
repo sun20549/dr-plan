@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23F05A28"/><text x="16" y="23" text-anchor="middle" font-size="20" font-weight="900" fill="white" font-family="Noto Sans TC,sans-serif">鼎</text></svg>">
 <title>實質課稅 8 大態樣自我檢查 - 鼎綸恩宇</title>
+<meta name="description" content="國稅局實質課稅 8 大態樣自我檢查工具，避免保險規劃踩雷導致補稅，含重病投保、躉繳投保等高風險樣態檢核。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rex1688.com/tools/tax-risk.html">
+<meta property="og:title" content="實質課稅 8 大態樣自我檢查｜保險避雷指南">
+<meta property="og:description" content="國稅局實質課稅 8 大態樣自我檢查工具，避免保險規劃踩雷導致補稅，含重病投保、躉繳投保等高風險樣態檢核。">
+<meta property="og:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
+<meta property="og:site_name" content="鼎綸恩宇 Insurance Brokers">
+<meta property="og:locale" content="zh_TW">
+<link rel="canonical" href="https://rex1688.com/tools/tax-risk.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="實質課稅 8 大態樣自我檢查｜保險避雷指南">
+<meta name="twitter:description" content="國稅局實質課稅 8 大態樣自我檢查工具，避免保險規劃踩雷導致補稅，含重病投保、躉繳投保等高風險樣態檢核。">
+<meta name="twitter:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1280,7 +1293,82 @@
     .float-cta-icon { font-size: 22px; }
   }
 
-  </style>
+  
+  /* ── 推薦工具 ── */
+  .related-section { margin-bottom: 32px; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .related-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .related-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.1);
+    transform: translateY(-2px);
+  }
+  .related-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    flex-shrink: 0;
+  }
+  .related-card-icon.r1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .related-card-icon.r2 { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .related-card-icon.r3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .related-card-icon.r4 { background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%); }
+  .related-card-text { flex: 1; min-width: 0; }
+  .related-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy); margin-bottom: 3px;
+  }
+  .related-card-desc {
+    font-size: 10px; color: #888; line-height: 1.5;
+  }
+  @media (max-width: 600px) {
+    .related-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════ 響應式補強：iPad 直式 / 手機 ═══════ */
+  @media (max-width: 900px) {
+    .page { width: 100%; box-shadow: none; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+    .header-center { order: -1; }
+    .badge-area { width: 100%; align-items: center; }
+    .body { padding: 28px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; gap: 18px; }
+  }
+  @media (max-width: 600px) {
+    .header { padding: 18px 16px; }
+    .header-center .big-title { font-size: 24px; letter-spacing: 3px; }
+    .header-center .big-number { font-size: 88px; }
+    .header-center .big-number span { font-size: 44px; }
+    .header-center .sub-title { font-size: 18px; letter-spacing: 3px; }
+    .body { padding: 20px 14px; }
+    .tagline-bar { padding: 10px 14px; gap: 10px; }
+    .tagline-bar span { font-size: 11px; letter-spacing: 2px; }
+    .logo-area { gap: 12px; }
+    .logo-area > img { width: 60px; height: 60px; padding: 6px; }
+    .logo-text .brand { font-size: 18px; }
+    .logo-text .sub { font-size: 10px; }
+  }
+  @media (min-width: 1024px) and (max-width: 1200px) {
+    /* iPad 橫式：微調讓 page 不要太貼邊 */
+    body { padding: 20px 0; }
+  }
+</style>
 </head>
 <body>
 <!-- 漢堡按鈕 -->
@@ -1625,7 +1713,43 @@
       </div>
     </div>
 
-  <!-- FOOTER -->
+  
+    <!-- 推薦工具 -->
+    <div class="related-section">
+      <div class="section-title-icon">推薦下一步：相關規劃工具</div>
+      <div class="related-grid">
+        <a href="estate-tax.html" class="related-card">
+          <div class="related-card-icon r1">💼</div>
+          <div class="related-card-text">
+            <div class="related-card-title">遺產稅試算</div>
+            <div class="related-card-desc">2026 最新免稅額</div>
+          </div>
+        </a>
+        <a href="gift-tax.html" class="related-card">
+          <div class="related-card-icon r2">🎁</div>
+          <div class="related-card-text">
+            <div class="related-card-title">贈與稅試算</div>
+            <div class="related-card-desc">含分次贈與規劃</div>
+          </div>
+        </a>
+        <a href="legacy-planner.html" class="related-card">
+          <div class="related-card-icon r3">💎</div>
+          <div class="related-card-text">
+            <div class="related-card-title">傳承規劃模擬器</div>
+            <div class="related-card-desc">規劃前後稅負對比</div>
+          </div>
+        </a>
+        <a href="tax.html" class="related-card">
+          <div class="related-card-icon r4">$</div>
+          <div class="related-card-text">
+            <div class="related-card-title">綜合所得稅</div>
+            <div class="related-card-desc">5 段累進稅率秒算</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
   <div class="footer">
     <div class="footer-left">看清風險 ・ 安心傳承</div>
     <a href="tel:0925000049" class="footer-right">📱 0925-000-049</a>

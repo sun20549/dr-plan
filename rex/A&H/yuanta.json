@@ -3,7 +3,7 @@
   "name": "元大人壽",
   "shortName": "元大",
   "color": "#B8312C",
-  "logoUrl": "",
+  "logoUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2246%22%20fill%3D%22%23B8312C%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%223%22/%3E%3Ctext%20x%3D%2250%22%20y%3D%2265%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Noto%20Sans%20TC%2Csans-serif%22%20font-size%3D%2252%22%20font-weight%3D%22900%22%3E%E5%85%83%3C/text%3E%3C/svg%3E",
   "linkTemplate": {
     "dm": "元大人壽/{code}/DM.pdf",
     "clause": "元大人壽/{code}/條款.pdf",
@@ -16,7 +16,13 @@
       "category": "婦嬰險",
       "amountMode": "wan",
       "amountUnit": "萬元",
-      "amountSuggestions": [50, 100, 150, 200, 300],
+      "amountSuggestions": [
+        50,
+        100,
+        150,
+        200,
+        300
+      ],
       "defaultAmount": 100,
       "startAge": 0,
       "maxAge": 0,
@@ -24,13 +30,21 @@
       "premiumPeriod": "20年期",
       "rates": {
         "20年期": {
-          "M": {"0": 626},
-          "F": {"0": 626}
+          "M": {
+            "0": 626
+          },
+          "F": {
+            "0": 626
+          }
         }
       },
       "firstYearRates": {
-        "M": {"0": 626},
-        "F": {"0": 626}
+        "M": {
+          "0": 626
+        },
+        "F": {
+          "0": 626
+        }
       },
       "claims": {
         "title": "親愛貝比終身醫療健康保險(JO)給付項目",
@@ -38,56 +52,83 @@
         "items": [
           {
             "name": "① 身故 / 喪葬保險金",
-            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 1.0
+            },
             "note": "16足歲後身故 → 給付 max(保險金額, 年繳保費總額, 保價金);15足歲前身故 → 退還所繳保險費",
             "unit": "元"
           },
           {
             "name": "② 特定疾病保險金",
-            "calc": {"type": "ratioWan", "ratio": 2.0},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 2.0
+            },
             "note": "第22保單年度前一次給付;金額=保險金額×2×保障倍數(1~2,依保單年度遞增)",
             "unit": "元",
             "star": true
           },
           {
             "name": "③ 癌症(初期/輕度)保險金",
-            "calc": {"type": "ratioWan", "ratio": 0.1},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 0.1
+            },
             "note": "保險金額×10%×保障倍數(1~2);一次給付",
             "unit": "元"
           },
           {
             "name": "④ 癌症(重度)保險金",
-            "calc": {"type": "ratioWan", "ratio": 0.5},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 0.5
+            },
             "note": "保險金額×50%×保障倍數(1~2);一次給付",
             "unit": "元"
           },
           {
             "name": "⑤ 住院醫療日額",
-            "calc": {"type": "ratioWan", "ratio": 0.002},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 0.002
+            },
             "note": "保險金額×0.2%×保障倍數;最高365日/次,90日(特定情況);保障倍數第6~10年×1.25/11~15×1.5/16~20×1.75/21+×2",
             "unit": "元/日"
           },
           {
             "name": "⑥ 住院手術醫療保險金",
-            "calc": {"type": "ratioWan", "ratio": 0.01},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 0.01
+            },
             "note": "住院給付日額×5×保障倍數=保險金額×1%×保障倍數;每次手術",
             "unit": "元/次"
           },
           {
             "name": "⑦ 第1~6級失能保險金",
-            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 1.0
+            },
             "note": "保險金額×保障倍數(1~2);累計上限為保險金額之2倍",
             "unit": "元"
           },
           {
             "name": "⑧ 意外重大燒燙傷保險金",
-            "calc": {"type": "ratioWan", "ratio": 1.0},
+            "calc": {
+              "type": "ratioWan",
+              "ratio": 1.0
+            },
             "note": "保險金額×保障倍數(1~2);意外傷害發生180日內致重大燒燙傷",
             "unit": "元"
           },
           {
             "name": "⑨ 祝壽保險金",
-            "calc": {"type": "note", "text": "111年期滿給付"},
+            "calc": {
+              "type": "note",
+              "text": "111年期滿給付"
+            },
             "note": "第111保單年度屆滿仍生存 → max(保險金額, 年繳保費總額, 保價金);PDF 試算示例 116.6萬"
           }
         ]

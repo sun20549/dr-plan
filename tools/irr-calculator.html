@@ -8,6 +8,19 @@
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
 <title>IRR 內部報酬率試算器｜鼎綸恩宇</title>
+<meta name="description" content="IRR 內部報酬率試算工具，支援自訂多期現金流，考慮金錢時間價值，適用儲蓄險、年金險、投資項目真實報酬分析。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rex1688.com/tools/irr-calculator.html">
+<meta property="og:title" content="IRR 內部報酬率試算器｜算出真實年化報酬">
+<meta property="og:description" content="IRR 內部報酬率試算工具，支援自訂多期現金流，考慮金錢時間價值，適用儲蓄險、年金險、投資項目真實報酬分析。">
+<meta property="og:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
+<meta property="og:site_name" content="鼎綸恩宇 Insurance Brokers">
+<meta property="og:locale" content="zh_TW">
+<link rel="canonical" href="https://rex1688.com/tools/irr-calculator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IRR 內部報酬率試算器｜算出真實年化報酬">
+<meta name="twitter:description" content="IRR 內部報酬率試算工具，支援自訂多期現金流，考慮金錢時間價值，適用儲蓄險、年金險、投資項目真實報酬分析。">
+<meta name="twitter:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1105,7 +1118,51 @@
     .float-cta-icon { font-size: 22px; }
   }
 
-  </style>
+  
+  /* ── 推薦工具 ── */
+  .related-section { margin-bottom: 32px; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .related-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .related-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.1);
+    transform: translateY(-2px);
+  }
+  .related-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    flex-shrink: 0;
+  }
+  .related-card-icon.r1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .related-card-icon.r2 { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .related-card-icon.r3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .related-card-icon.r4 { background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%); }
+  .related-card-text { flex: 1; min-width: 0; }
+  .related-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy); margin-bottom: 3px;
+  }
+  .related-card-desc {
+    font-size: 10px; color: #888; line-height: 1.5;
+  }
+  @media (max-width: 600px) {
+    .related-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 <!-- 漢堡按鈕 -->
@@ -1517,6 +1574,42 @@
             美元/澳幣等外幣保單 IRR 通常較高,但須承擔<strong>匯率風險</strong>。新臺幣升值時,即使 IRR 高也可能換回後虧錢。建議外幣保單僅佔配置 20~30%。
           </div>
         </div>
+      </div>
+    </div>
+
+    
+    <!-- 推薦工具 -->
+    <div class="related-section">
+      <div class="section-title-icon">推薦下一步：相關規劃工具</div>
+      <div class="related-grid">
+        <a href="compound-interest.html" class="related-card">
+          <div class="related-card-icon r1">∞</div>
+          <div class="related-card-text">
+            <div class="related-card-title">複利計算機</div>
+            <div class="related-card-desc">看見時間的魔法</div>
+          </div>
+        </a>
+        <a href="retirement.html" class="related-card">
+          <div class="related-card-icon r2">🏖</div>
+          <div class="related-card-text">
+            <div class="related-card-title">退休金缺口試算</div>
+            <div class="related-card-desc">算出每月該存多少</div>
+          </div>
+        </a>
+        <a href="loan.html" class="related-card">
+          <div class="related-card-icon r3">💵</div>
+          <div class="related-card-text">
+            <div class="related-card-title">貸款試算</div>
+            <div class="related-card-desc">本息攤還每月計算</div>
+          </div>
+        </a>
+        <a href="legacy-planner.html" class="related-card">
+          <div class="related-card-icon r4">💎</div>
+          <div class="related-card-text">
+            <div class="related-card-title">傳承規劃模擬器</div>
+            <div class="related-card-desc">規劃前後稅負對比</div>
+          </div>
+        </a>
       </div>
     </div>
 

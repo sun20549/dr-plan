@@ -553,6 +553,124 @@ body {
   }
 }
 
+/* ============================================================
+   v33: 全面 RWD 強化 — phone / tablet portrait / tablet landscape
+   ============================================================ */
+
+/* iPad 直式 (768~1023px):form 雙欄,header 留橫向 */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .top-header .inner { padding:0 20px; }
+  .page-wrap { padding:0 20px 40px; margin:24px auto; }
+  .card { padding:28px 24px; border-radius:14px; }
+  .form-grid { grid-template-columns:1fr 1fr; gap:20px 24px; }
+  /* 第三 row 仍允許橫跨 */
+  .rate-row { grid-column:1 / -1; }
+  .page-title h2 { font-size:24px; }
+  /* product-table 字體微調 */
+  .product-table th, .product-table td { font-size:12.5px; padding:11px 12px; }
+  .product-table { table-layout: auto; }
+  /* summary-bar 雙列 */
+  .summary-bar { padding:12px 18px; font-size:13px; }
+  .summary-bar .info-tags { gap:14px; }
+  /* 比較表 step3 */
+  .compare-table-wrap { border-radius:10px; }
+}
+
+/* 手機 (≤767px) — 全面 mobile-first 改寫 */
+@media (max-width: 767px) {
+  /* Header */
+  .top-header { padding:14px 0; }
+  .top-header .inner { padding:0 14px; flex-direction:row; flex-wrap:wrap; gap:12px; }
+  .brand { flex:1; min-width:0; gap:10px; }
+  .brand-icon { width:40px; height:40px; font-size:22px; border-radius:10px; }
+  .brand-text h1 { font-size:18px; letter-spacing:0.5px; }
+  .brand-text p { font-size:9px; letter-spacing:1.5px; }
+  .step-indicator { gap:4px; }
+  .step-dot { width:26px; height:26px; font-size:13px; border-width:1.5px; }
+  .step-line { width:14px; }
+  /* Page wrap */
+  .page-wrap { padding:0 12px 40px; margin:16px auto; }
+  .page-wrap.step3-active { padding:0 8px 30px; }
+  .page-title { margin-bottom:18px; }
+  .page-title h2 { font-size:20px; letter-spacing:1px; }
+  .page-title h2::before, .page-title h2::after { width:18px; margin:0 8px; }
+  .page-title p { font-size:12px; margin-top:6px; }
+  /* Card */
+  .card { padding:18px 16px; border-radius:14px; box-shadow:0 4px 18px rgba(13,42,58,0.06); }
+  /* Form */
+  .form-grid { grid-template-columns:1fr; gap:16px; margin-bottom:20px; }
+  .field label { font-size:12.5px; margin-bottom:6px; }
+  .field input, .field select { padding:11px 12px; font-size:14px; border-radius:9px; }
+  .field .gender-group { gap:18px; padding:8px 0 4px; }
+  .rate-row { padding:14px 16px; flex-wrap:wrap; gap:10px; }
+  .rate-row .desc { font-size:12px; flex:1 1 100%; }
+  /* Buttons */
+  .btn-row { flex-direction:column; gap:10px; margin-top:8px; }
+  .btn { padding:13px 24px; font-size:14px; letter-spacing:1.5px; width:100%; }
+  /* Summary bar */
+  .summary-bar { padding:11px 14px; font-size:12.5px; flex-direction:column; align-items:flex-start; }
+  .summary-bar .info-tags { gap:10px 14px; flex-wrap:wrap; }
+  /* Toolbar */
+  .toolbar { gap:8px; }
+  .toolbar .info-text { font-size:12.5px; }
+  .btn-sm { padding:8px 14px; font-size:12px; }
+  /* Product table → 改可橫向滾動 + 縮字 */
+  .product-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:10px; }
+  .product-table { font-size:12px; min-width:520px; }
+  .product-table th, .product-table td { padding:10px 8px; font-size:12px; }
+  .product-table .company-tag { font-size:10.5px; padding:2px 7px; }
+  .product-table .code-tag { font-size:10.5px; padding:1px 6px; }
+}
+
+/* 手機直式更窄 (≤479px) */
+@media (max-width: 479px) {
+  .brand-text h1 { font-size:16px; }
+  .brand-text p { display:none; }  /* SAVINGS INSURANCE ANALYTICS 在窄螢幕隱藏 */
+  .step-dot { width:22px; height:22px; font-size:11px; }
+  .step-line { width:8px; }
+  .top-header .inner { padding:0 10px; gap:6px; }
+  .page-wrap { padding:0 8px 30px; margin:12px auto; }
+  .card { padding:14px 12px; border-radius:12px; }
+  .page-title h2 { font-size:17px; }
+  .page-title h2::before, .page-title h2::after { width:12px; margin:0 6px; }
+  .field input, .field select { padding:10px 12px; font-size:14px; }
+  .summary-bar { padding:10px 12px; font-size:11.5px; }
+}
+
+/* iPad 橫式 (1024-1279px):接近桌機,只微縮 padding */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .top-header .inner { padding:0 24px; }
+  .page-wrap { padding:0 24px 50px; }
+  .form-grid { gap:20px 28px; }
+}
+
+/* ============================================================
+   v33: 列印優化 — A4 + 邊距 + 顏色保留 + 商品色塊
+   ============================================================ */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm 10mm;
+  }
+  /* 強制顯示色彩(政府/公司列印機通常 default 黑白) */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  /* 公司 tag 強化 */
+  .company-tag, .accuracy-tag.exact, .accuracy-tag.estimated {
+    border:1px solid currentColor !important;
+  }
+  /* 防止 row 被切斷 */
+  .print-table tbody tr, .print-table thead tr { page-break-inside: avoid !important; }
+  .print-page-header { page-break-after: avoid !important; }
+  /* 隱藏 mobile 提示 */
+  .compare-table-wrap::before { display:none !important; }
+  /* 列印頁頁尾(可加日期) */
+  .print-page::after {
+    content: "rex1688.com/rex/compare · 列印日期 " attr(data-print-date);
+    display:block; text-align:center; font-size:9pt; color:#999;
+    margin-top:8mm; border-top:1px solid #ddd; padding-top:4mm;
+  }
+}
+
     /* ========== v4 改進 CSS ========== */
     /* 黏性表頭與首欄 */
     .compare-table-wrap { overflow-x:auto; overflow-y:visible; background:#fff; border-radius:12px;
@@ -1218,6 +1336,7 @@ body {
       </div>
     </div>
 
+    <div class="product-table-wrap">
     <table class="product-table">
       <thead>
         <tr>
@@ -1234,6 +1353,7 @@ body {
       </thead>
       <tbody id="product-tbody"></tbody>
     </table>
+    </div>
   </section>
 
   <!-- STEP 3 -->
@@ -6880,7 +7000,10 @@ function printCompareTable() {
 
   // === 共用函式:生成一頁的完整 HTML(包含 thead + 該年度區段的 tbody) ===
   function buildPageHtml(pageItems, yearChunk, pageNum) {
-    let html = `<div class="print-page">`;
+    // v33: 列印日期(出現在頁尾,經 ::after CSS 注入)
+    const _now = new Date();
+    const _printDate = `${_now.getFullYear()}/${String(_now.getMonth()+1).padStart(2,'0')}/${String(_now.getDate()).padStart(2,'0')}`;
+    let html = `<div class="print-page" data-print-date="${_printDate}">`;
     // === 頁首 ===
     html += `<div class="print-page-header">`;
     html += `<span class="page-num">第 ${pageNum} / ${totalPages} 頁</span>`;

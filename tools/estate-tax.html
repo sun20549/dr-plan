@@ -8,6 +8,19 @@
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
 <title>遺產稅試算｜鼎綸恩宇</title>
+<meta name="description" content="2026 年最新遺產稅試算工具，含免稅額 1,333 萬、配偶扣除額、直系卑親屬扣除額逐項計算，秒算應納稅額。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rex1688.com/tools/estate-tax.html">
+<meta property="og:title" content="遺產稅試算｜2026 最新版免費試算">
+<meta property="og:description" content="2026 年最新遺產稅試算工具，含免稅額 1,333 萬、配偶扣除額、直系卑親屬扣除額逐項計算，秒算應納稅額。">
+<meta property="og:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
+<meta property="og:site_name" content="鼎綸恩宇 Insurance Brokers">
+<meta property="og:locale" content="zh_TW">
+<link rel="canonical" href="https://rex1688.com/tools/estate-tax.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="遺產稅試算｜2026 最新版免費試算">
+<meta name="twitter:description" content="2026 年最新遺產稅試算工具，含免稅額 1,333 萬、配偶扣除額、直系卑親屬扣除額逐項計算，秒算應納稅額。">
+<meta name="twitter:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1421,7 +1434,51 @@
     .scenario-input { flex-direction: column; align-items: stretch; }
   }
 
-  </style>
+  
+  /* ── 推薦工具 ── */
+  .related-section { margin-bottom: 32px; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .related-card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .related-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(240,90,40,0.1);
+    transform: translateY(-2px);
+  }
+  .related-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    flex-shrink: 0;
+  }
+  .related-card-icon.r1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .related-card-icon.r2 { background: linear-gradient(135deg, var(--teal) 0%, #155a60 100%); }
+  .related-card-icon.r3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .related-card-icon.r4 { background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%); }
+  .related-card-text { flex: 1; min-width: 0; }
+  .related-card-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--navy); margin-bottom: 3px;
+  }
+  .related-card-desc {
+    font-size: 10px; color: #888; line-height: 1.5;
+  }
+  @media (max-width: 600px) {
+    .related-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 <!-- 漢堡按鈕 -->
@@ -2117,6 +2174,42 @@
         </div>
       </div>
 
+    </div>
+
+    
+    <!-- 推薦工具 -->
+    <div class="related-section">
+      <div class="section-title-icon">推薦下一步：相關規劃工具</div>
+      <div class="related-grid">
+        <a href="gift-tax.html" class="related-card">
+          <div class="related-card-icon r1">🎁</div>
+          <div class="related-card-text">
+            <div class="related-card-title">贈與稅試算</div>
+            <div class="related-card-desc">含分次贈與規劃</div>
+          </div>
+        </a>
+        <a href="legacy-planner.html" class="related-card">
+          <div class="related-card-icon r2">💎</div>
+          <div class="related-card-text">
+            <div class="related-card-title">傳承規劃模擬器</div>
+            <div class="related-card-desc">規劃前後稅負對比</div>
+          </div>
+        </a>
+        <a href="tax-risk.html" class="related-card">
+          <div class="related-card-icon r3">⚠</div>
+          <div class="related-card-text">
+            <div class="related-card-title">實質課稅 8 大態樣</div>
+            <div class="related-card-desc">保險規劃避雷檢查</div>
+          </div>
+        </a>
+        <a href="tax.html" class="related-card">
+          <div class="related-card-icon r4">$</div>
+          <div class="related-card-text">
+            <div class="related-card-title">綜合所得稅</div>
+            <div class="related-card-desc">5 段累進稅率秒算</div>
+          </div>
+        </a>
+      </div>
     </div>
 
     <!-- DISCLAIMER -->

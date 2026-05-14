@@ -697,6 +697,42 @@ body {
   padding: 2px 4px;
 }
 
+/* v1.23 — 亮點 badge:最便宜 / CP 最高 / 續保最高 */
+.th-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: center;
+  margin: 4px 0 2px;
+}
+.hl-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  cursor: help;
+  border: 1px solid transparent;
+}
+.hl-badge.hl-cheap {
+  color: #0F6E56;
+  background: #E1F5EE;
+  border-color: #5DCAA5;
+}
+.hl-badge.hl-bestcp {
+  color: #854F0B;
+  background: #FAEEDA;
+  border-color: #EF9F27;
+}
+.hl-badge.hl-longage {
+  color: #0C447C;
+  background: #E6F1FB;
+  border-color: #85B7EB;
+}
+body.customer-mode .th-highlights { display: none; }
+
 /* v1.10 — 新商品標籤(琥珀色 chip) */
 .th-new-badge {
   display: inline-block;
@@ -1369,8 +1405,28 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   align-items: center;
   gap: 7px;
   text-transform: uppercase;
+  justify-content: space-between;
 }
-.client-info-title::before { content: '👤'; font-size: 14px; }
+.client-info-title > span:first-child::before { content: '👤'; font-size: 14px; margin-right: 6px; }
+.btn-new-client {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gray-2);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  text-transform: none;
+}
+.btn-new-client:hover {
+  color: var(--orange-dark);
+  border-color: var(--orange);
+  background: var(--orange-light);
+}
 .client-info-row {
   display: flex;
   align-items: center;
@@ -2122,6 +2178,170 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
    - 全年齡費率表列印時隱藏(資訊量太大)
    - 加印頁眉:公司 logo + 類別 + 客戶資料
    ════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   v1.23 RWD — 手機 / iPad / 桌機 多斷點
+   ════════════════════════════════════════════════════════════════ */
+
+/* iPad landscape ~1024px */
+@media (max-width: 1024px) {
+  .container { padding: 20px 16px 60px; }
+  .toolbar { padding: 12px 18px; }
+  .brand-text .b-name { font-size: 15px; letter-spacing: 2px; }
+  .brand-text .b-sub { font-size: 9px; }
+  .tb-btn { padding: 6px 12px; font-size: 12px; }
+  .main-layout { gap: 14px; padding: 14px; }
+  .compare-table { font-size: 12px; }
+  .compare-table tbody td { padding: 11px 8px; }
+  .th-product { min-width: 140px; }
+}
+
+/* iPad portrait ~768px */
+@media (max-width: 768px) {
+  .container { padding: 16px 12px 60px; }
+  .toolbar-left { gap: 10px; }
+  .brand-logo { width: 38px; height: 38px; font-size: 18px; }
+  .page-intro h1 { font-size: 20px; letter-spacing: 1.5px; }
+  .page-intro h1::before { width: 3px; height: 22px; left: -10px; }
+  .page-intro .page-subtitle { font-size: 11px; }
+  .cat-tab { padding: 9px 14px; font-size: 12px; }
+  .main-layout {
+    grid-template-columns: 1fr;  /* picker 收起放上方 */
+    gap: 12px;
+    padding: 12px;
+  }
+  .picker {
+    position: static;
+    padding: 12px;
+    padding-right: 36px;
+  }
+  .compare-table thead th { padding: 12px 8px 10px; }
+  .th-product { min-width: 130px; max-width: 180px; }
+  .th-name { font-size: 12px; }
+  .cell-fee { font-size: 22px; }
+  .compare-table tbody td { padding: 10px 6px; font-size: 12px; }
+}
+
+/* 手機橫式 / 大手機 ~640px */
+@media (max-width: 640px) {
+  body { font-size: 13px; }
+  .toolbar {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .toolbar-left { gap: 8px; }
+  .brand-logo { width: 34px; height: 34px; font-size: 16px; border-radius: var(--r-sm); }
+  .brand-text .b-name { font-size: 14px; letter-spacing: 1.5px; }
+  .brand-text .b-sub { font-size: 8px; letter-spacing: 1px; }
+  .toolbar-right { width: 100%; justify-content: flex-end; gap: 6px; }
+  .tb-btn { padding: 5px 10px; font-size: 11px; }
+  .container { padding: 12px 8px 50px; }
+  .page-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .page-intro h1 { font-size: 18px; letter-spacing: 1px; }
+  .page-intro h1 .tag { font-size: 11px; padding: 2px 7px; }
+  .cat-tabs {
+    padding: 8px 6px 0;
+    gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+  }
+  .cat-tab {
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0;
+    flex-shrink: 0;
+  }
+  .cat-tab .badge {
+    padding: 1px 5px;
+    font-size: 9px;
+    margin-left: 4px;
+  }
+  .main-layout {
+    padding: 10px;
+    border-radius: 0 0 var(--r-md) var(--r-md);
+  }
+  .compare-toolbar { padding: 10px 12px; font-size: 12px; }
+  .compare-title { font-size: 13px; letter-spacing: 0.5px; }
+  .btn { padding: 5px 9px; font-size: 11px; }
+  .picker { padding: 10px; padding-right: 32px; }
+  .client-info { padding: 10px; }
+  .client-info-title { font-size: 11px; }
+  /* 表格保持原樣 + 橫向滑動 */
+  .compare-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -10px;
+    padding: 0 10px;
+  }
+  .compare-table { font-size: 11px; min-width: 580px; }
+  .th-product { min-width: 110px; max-width: 140px; padding: 8px 4px; }
+  .th-name { font-size: 11px; line-height: 1.3; min-height: 42px; }
+  .th-product-wrap .th-name { min-height: 42px; }
+  .th-amt input, .th-amt select { min-width: 80px; padding: 4px 6px; font-size: 11px; }
+  .th-amt .unit { font-size: 9px; }
+  .th-link { font-size: 9px; padding: 2px 5px; }
+  .cell-val { font-size: 15px; }
+  .cell-fee { font-size: 18px; letter-spacing: 0.5px; }
+  .cell-fee-avg, .cell-cp { font-size: 16px; }
+  .cell-badge { padding: 3px 7px; font-size: 10px; }
+  .cell-bool { width: 24px; height: 24px; font-size: 14px; }
+  .compare-table tbody td { padding: 9px 6px; font-size: 11px; }
+  .compare-table thead th:first-child,
+  .compare-table tbody td:first-child {
+    min-width: 110px;
+    font-size: 11px;
+  }
+  .hl-badge { font-size: 8px; padding: 1px 5px; }
+  /* tooltip 在手機上跳到下方 + 縮小,避免被工具列遮 */
+  [data-tt]::after {
+    bottom: auto;
+    top: calc(100% + 10px);
+    max-width: 240px;
+    font-size: 11px;
+    padding: 7px 11px;
+  }
+  [data-tt]::before {
+    bottom: auto;
+    top: calc(100% + 4px);
+    border-top-color: transparent;
+    border-bottom-color: #111827;
+  }
+}
+
+/* 手機直式 ~480px */
+@media (max-width: 480px) {
+  .toolbar { padding: 8px 10px; }
+  .brand-logo { width: 30px; height: 30px; }
+  .brand-text .b-name { font-size: 13px; letter-spacing: 1px; }
+  .brand-text .b-sub { display: none; }
+  .tb-btn {
+    padding: 5px 8px;
+    font-size: 10px;
+    gap: 3px;
+  }
+  .compare-actions { gap: 4px; flex-wrap: wrap; }
+  .compare-title { font-size: 12px; }
+  .compare-title::before { font-size: 13px; }
+  .compare-range-note { font-size: 9px; }
+  .cat-tab { padding: 7px 10px; font-size: 11px; }
+  .cat-tab .badge { display: none; }
+  .container { padding: 10px 6px 40px; }
+  .picker { padding: 10px 26px 10px 8px; }
+  .picker-title { font-size: 11px; }
+  .client-info-row { font-size: 11px; }
+  .gender-toggle button { padding: 4px 10px; font-size: 11px; }
+  .th-product { min-width: 100px; max-width: 130px; }
+  .cell-fee { font-size: 16px; }
+  .compare-table { min-width: 520px; }
+}
+
 @page {
   size: A4 landscape;
   margin: 10mm 8mm;
@@ -2157,11 +2377,27 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   .th-amt select,
   #btnHideEmpty,
   #btnFullAge,
+  #btnNewClient,
   .fee-disclaimer,
   .row-fee-section-header,
   .row-fee-subhead,
   .row-fee-detail {
     display: none !important;
+  }
+  /* v1.23 — 列印時的優化:tooltip / hover / 互動裝飾全藏 */
+  [data-tt]::after,
+  [data-tt]::before { display: none !important; }
+  .picker-collapse-btn { display: none !important; }
+  /* 亮點 badge 印出來(換成更素的樣式 — 移除 hover cursor) */
+  .hl-badge {
+    cursor: default !important;
+    border-width: 0.5px !important;
+    padding: 1px 5px !important;
+    font-size: 7.5px !important;
+  }
+  /* th-product 補回左邊一條公司色橫條(印出來辨識度高) */
+  .compare-table thead th.th-product {
+    background: white !important;
   }
 
   /* 全年齡費率區(整段藏) */
@@ -2327,10 +2563,21 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   }
   .th-amt::after {
     content: attr(data-print-amt);
+    display: inline-block;
     font-size: 10px;
     font-weight: 700;
     color: var(--orange-dark);
     font-family: 'Bebas Neue', sans-serif;
+    background: var(--orange-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #f0c5a8;
+    letter-spacing: 0.5px;
+  }
+  /* th-highlights 列印時保留(顯示亮點) */
+  .th-highlights {
+    margin: 3px 0 1px !important;
+    gap: 2px !important;
   }
 
   /* tbody:取消 hover、取消 sticky 左欄、列不斷頁 */
@@ -2431,6 +2678,25 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
     text-align: center;
     letter-spacing: 0.5px;
   }
+  /* v1.23 — 商品多時自動縮版:超過 8 個 col(th-product:nth-of-type(8)~) 時整體再縮 */
+  .compare-table thead th.th-product:nth-of-type(n+9) ~ th,
+  .compare-table:has(thead th.th-product:nth-of-type(10)) {
+    /* 9 個以上時整體字體稍縮 */
+    font-size: 8.5px;
+  }
+  /* 「依條款」改實心點 + 文字較淺,看得到但不喧賓奪主 */
+  .cell-rule {
+    color: #8a99a6 !important;
+    border-bottom-color: #ccc !important;
+    cursor: default !important;
+  }
+  /* CP best 標記列印強調(把 ⭐ 換成方框) */
+  .cell-cp.best {
+    font-weight: 800 !important;
+    background: rgba(240, 90, 40, 0.08) !important;
+    border-radius: 3px;
+    padding: 1px 3px;
+  }
 }
 
 /* 螢幕顯示時隱藏列印專用元素 */
@@ -2502,7 +2768,10 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
       <div class="picker-toggles">
         <!-- 客戶資料卡 -->
         <div class="client-info">
-          <div class="client-info-title">客戶資料</div>
+          <div class="client-info-title">
+            <span>客戶資料</span>
+            <button type="button" id="btnNewClient" class="btn-new-client" title="清除客戶資料,重設為 35 歲男">↻ 新客戶</button>
+          </div>
           <div class="client-info-row">
             <label>年齡</label>
             <input type="number" id="clientAge" min="0" max="80" value="35">
@@ -2582,12 +2851,28 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
 
 const App = (() => {
 
+  // v1.23 — 客戶資料持久化(localStorage)
+  const CLIENT_AGE_KEY = 'ah_client_age';
+  const CLIENT_GENDER_KEY = 'ah_client_gender';
+  const _loadClientAge = () => {
+    try {
+      const v = parseInt(localStorage.getItem(CLIENT_AGE_KEY), 10);
+      return (Number.isFinite(v) && v >= 0 && v <= 100) ? v : 35;
+    } catch(e) { return 35; }
+  };
+  const _loadClientGender = () => {
+    try {
+      const v = localStorage.getItem(CLIENT_GENDER_KEY);
+      return (v === 'M' || v === 'F') ? v : 'M';
+    } catch(e) { return 'M'; }
+  };
+
   const state = {
     categoryKey: '實支實付型',
     selected: {},          // code → { cid, amount }
     customerMode: false,
     showStar: true,
-    client: { age: 35, gender: 'M' },  // 客戶年齡性別 → 用於算保費
+    client: { age: _loadClientAge(), gender: _loadClientGender() },  // v1.23:從 localStorage 載入
     ui: { fullAgeExpanded: false, hideEmpty: false },   // v1.13:全年齡表預設收起、空欄預設顯示
     db: {
       companies: {},       // cid → company JSON
@@ -3898,6 +4183,28 @@ const App = (() => {
       cpData.length = 0; cpData.push(...cpDataSorted);
     }
 
+    // v1.23 — 亮點 badge:該類別內計算「最便宜 / CP最高 / 續保最高」
+    const _stats = cols.map((c, i) => ({
+      i,
+      fee: (cpData[i] && cpData[i].feeCurrent) || 0,
+      cp: (cpData[i] && cpData[i].cpPrimary) || 0,
+      maxAge: (c.product && c.product.maxAgeContinuous) || 0
+    }));
+    const _validFees = _stats.filter(s => s.fee > 0);
+    const _cheapestIdx = _validFees.length > 0
+      ? _validFees.reduce((m, s) => s.fee < m.fee ? s : m).i : -1;
+    const _bestCpIdx = _stats.reduce((m, s) => s.cp > m.cp ? s : m, {cp:0,i:-1}).i;
+    const _maxAgeVal = Math.max(..._stats.map(s => s.maxAge), 0);
+    const _longestAgeIdx = _maxAgeVal > 0
+      ? _stats.findIndex(s => s.maxAge === _maxAgeVal) : -1;
+    const highlightBadges = cols.map((_c, i) => {
+      const arr = [];
+      if (i === _cheapestIdx) arr.push('<span class="hl-badge hl-cheap" title="本類別當年保費最低">最便宜</span>');
+      if (i === _bestCpIdx && _stats[i].cp > 0) arr.push('<span class="hl-badge hl-bestcp" title="本類別 CP 值最高">CP 最高</span>');
+      if (i === _longestAgeIdx && _stats[i].maxAge > 0) arr.push(`<span class="hl-badge hl-longage" title="本類別續保至最高(${_stats[i].maxAge} 歲)">續保 ${_stats[i].maxAge}</span>`);
+      return arr.join('');
+    });
+
     // 比較範圍註記
     const compareRangeNote = `比較範圍: ${age}–${endAge} 歲, 共 ${endAge - age + 1} 年`;
 
@@ -3908,7 +4215,7 @@ const App = (() => {
     const showFee = state.ui.fullAgeExpanded;  // 控制下半費率區的顯示
 
     let html = '<thead><tr><th>給付項目</th>';
-    cols.forEach(col => {
+    cols.forEach((col, _colIdx) => {
       const colorVar = `--c-${col.sel.cid}`;
       const company = col.company || {};
       const p = col.product || {};
@@ -3937,6 +4244,10 @@ const App = (() => {
         : '';
       const companyClass = hasLogo ? 'th-company has-logo' : 'th-company';
 
+      // v1.23 — 亮點 badges(最便宜/CP最高/續保最高)
+      const hlBadges = highlightBadges[_colIdx];
+      const hlBlock = hlBadges ? `<div class="th-highlights">${hlBadges}</div>` : '';
+
       // 公司 th 用 colspan="2",讓下方男/女兩格對齊
       // v1.15b:內容包一層 .th-product-wrap (flex column),讓 th-amt + th-actions 釘到卡底部
       html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
@@ -3945,6 +4256,7 @@ const App = (() => {
           <div class="${companyClass}">${company.shortName || company.name || ''}</div>
           <span class="th-code">${col.code}${newBadge}</span>
           <div class="th-name">${p.name || col.code}</div>
+          ${hlBlock}
           <div class="th-amt" data-print-amt="${col.sel.amount}${showUnitOutside ? ' '+unit : ''}">${amtField}${showUnitOutside ? `<span class="unit">${unit}</span>` : ''}</div>
           <div class="th-actions">
             ${linkTpl.dm ? `<a class="th-link" href="${linkUrls('dm')}" target="_blank">DM</a>` : ''}
@@ -4311,7 +4623,6 @@ const App = (() => {
       btnHideEmpty.textContent = state.ui.hideEmpty ? '👁️ 顯示空欄' : '👁️ 隱藏空欄';
       document.body.classList.toggle('hide-empty', state.ui.hideEmpty);
     });
-
     // 左側面板收合 / 展開
     const layout = document.querySelector('.main-layout');
     const collapseBtn = document.getElementById('pickerCollapseBtn');
@@ -4336,6 +4647,7 @@ const App = (() => {
   }
 
   /* ═══ Init ═══════════════════════════════════════ */
+
   async function init() {
     try {
       await load();

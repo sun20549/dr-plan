@@ -1978,4 +1978,249 @@ a, button {
   #case-lightbox .lb-next { right: 12px; }
 }
 
+/* ───── V3.36 已驗證徽章（manifest 有對帳單的案例自動標記） ───── */
+.case-card-diamond.is-verified,
+.case-card-gold.is-verified,
+.case-card-std.is-verified,
+.case-diamond.is-verified,
+.case-gold.is-verified,
+.case-std.is-verified {
+  position: relative;
+}
+.verified-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: linear-gradient(135deg, #2E8B57 0%, #1a6b3a 100%);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(46,139,87,0.45);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  animation: verified-pulse 2.4s ease-in-out infinite;
+  border: 2px solid #fff;
+}
+.verified-badge::before {
+  content: '✓';
+  font-size: 12px;
+}
+@keyframes verified-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(46,139,87,0.45); }
+  50% { transform: scale(1.05); box-shadow: 0 6px 16px rgba(46,139,87,0.65); }
+}
+/* 案例表格列的徽章 */
+.case-table tbody tr.is-verified .id-cell::after {
+  content: ' ✓';
+  color: var(--green);
+  font-weight: 900;
+}
+
+/* ───── V3.37 iPad / 平板響應式（橫式 + 直式） ───── */
+/* iPad 直式 ~768px-1024px */
+@media (min-width: 721px) and (max-width: 1024px) {
+  .page { max-width: 100%; }
+  .content { padding: 36px 32px; }
+
+  /* Hero */
+  .hero-case { padding: 28px 32px; }
+  .hero-case-grid { gap: 24px; }
+  .hero-case-right { gap: 36px; }
+  .hero-case-date { font-size: 44px; letter-spacing: 2px; }
+  .hero-case-right .hero-case-amount { font-size: 54px !important; }
+
+  /* 案例卡片 */
+  .case-diamond-row { grid-template-columns: 1fr 1fr; }
+  .case-gold-row { grid-template-columns: repeat(2, 1fr); }
+  .case-std-row { grid-template-columns: repeat(3, 1fr); }
+  .diamond-grid { grid-template-columns: 1fr 1fr; }
+  .gold-grid { grid-template-columns: repeat(2, 1fr); }
+  .std-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* 商品 + 資源 */
+  .products-grid { grid-template-columns: 1fr 1fr; }
+  .resources-grid { grid-template-columns: 1fr 1fr; }
+  .knowledge-grid { grid-template-columns: 1fr 1fr; }
+  .knowledge-grid .knowledge-card:first-child { grid-column: 1 / -1; }
+
+  /* 安聯卡片 */
+  .allianz-card { grid-template-columns: 1fr; }
+
+  /* 首頁 hero */
+  .hero { padding: 44px 32px 56px; }
+  .hero-title { font-size: 54px; letter-spacing: 3px; }
+  .hero-title .hero-title-en { font-size: 60px; }
+  .hero-stats { grid-template-columns: repeat(5, 1fr); }
+  .hero-trend-svg { width: 220px; height: 140px; right: 32px; opacity: 0.4; }
+}
+
+/* iPad 橫式 ~1024-1366 — 維持桌機版面，但縮一點留邊 */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .page { max-width: 1000px; }
+  .hero-trend-svg { width: 280px; }
+}
+
+/* 手機橫式 480-720 */
+@media (min-width: 481px) and (max-width: 720px) {
+  .hero-case-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .hero-case-right { justify-content: flex-start; gap: 24px; }
+  .hero-case-date { font-size: 30px; }
+  .hero-case-right .hero-case-amount { font-size: 36px !important; }
+
+  .case-diamond-row { grid-template-columns: 1fr 1fr; }
+  .case-gold-row { grid-template-columns: 1fr 1fr; }
+  .case-std-row { grid-template-columns: 1fr 1fr; }
+  .diamond-grid { grid-template-columns: 1fr 1fr; }
+  .gold-grid { grid-template-columns: 1fr 1fr; }
+  .std-grid { grid-template-columns: 1fr 1fr; }
+
+  .hero-stats { grid-template-columns: repeat(5, 1fr) !important; }
+  .hero-trend-svg { display: none; }
+}
+
+/* 手機直式 <= 480 */
+@media (max-width: 480px) {
+  .page { box-shadow: none; }
+  .content { padding: 24px 16px; }
+  .hero-case { padding: 20px 16px 24px; }
+  .hero-case-tag { font-size: 10px; padding: 3px 10px; }
+
+  .hero-case-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .hero-case-right {
+    gap: 16px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .hero-case-right .hero-meta-block + .hero-meta-block::before {
+    display: none;
+  }
+  .hero-case-right .hero-meta-block { flex: 1; min-width: 130px; }
+  .hero-case-date { font-size: 22px !important; letter-spacing: 0.5px !important; }
+  .hero-case-right .hero-case-amount { font-size: 28px !important; letter-spacing: 0.5px !important; }
+  .hero-case-right .hero-case-amount .unit { font-size: 13px !important; }
+  .hero-meta-label { font-size: 9px; letter-spacing: 1.5px; margin-bottom: 4px; }
+  .hero-meta-label::after { width: 18px; }
+
+  .hero-case-id-row .meta { padding: 8px 14px; }
+  .hero-case-id-row .meta-value.lg { font-size: 20px; }
+
+  /* 案例列表 */
+  .case-diamond-row { grid-template-columns: 1fr; }
+  .case-gold-row { grid-template-columns: 1fr; }
+  .case-std-row { grid-template-columns: 1fr 1fr; }
+  .diamond-grid { grid-template-columns: 1fr; }
+  .gold-grid { grid-template-columns: 1fr; }
+  .std-grid { grid-template-columns: 1fr 1fr; }
+
+  /* 對帳單 */
+  .screenshot-month-header { padding: 10px 14px; gap: 8px; flex-wrap: wrap; }
+  .month-label { font-size: 18px; letter-spacing: 1px; }
+  .month-badge { font-size: 9px; padding: 3px 10px; }
+  .month-count { font-size: 10px; margin-left: 0; width: 100%; text-align: right; margin-top: 4px; }
+  .screenshot-card { border-width: 2px; border-radius: 12px; }
+  .ss-header { padding: 8px 12px; }
+  .screenshot-card .ss-tag { font-size: 10px; padding: 3px 8px; letter-spacing: 1px; }
+  .screenshot-card .ss-date { font-size: 11px; letter-spacing: 1px; }
+
+  /* 首頁 hero */
+  .hero { padding: 28px 18px 36px; }
+  .hero-title { font-size: 38px; letter-spacing: 2px; }
+  .hero-title .hero-title-en { font-size: 44px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .hero-stat-value { font-size: 32px; }
+  .hero-trend-svg { display: none; }
+
+  /* 商品 / 資源 */
+  .products-grid { grid-template-columns: 1fr; }
+  .resources-grid { grid-template-columns: 1fr 1fr; }
+  .knowledge-grid { grid-template-columns: 1fr; }
+  .allianz-card { grid-template-columns: 1fr; }
+
+  /* CTA */
+  .cta-title { font-size: 24px; letter-spacing: 1px; }
+  .cta-btn { font-size: 12px; padding: 12px 24px; }
+
+  /* nav-cases */
+  .nav-cases { grid-template-columns: 1fr !important; gap: 10px !important; }
+
+  /* Lightbox 手機優化 */
+  #case-lightbox img { max-width: 100vw; max-height: 75vh; }
+  #case-lightbox .lb-counter { bottom: 10px; font-size: 14px; padding: 5px 12px; }
+
+  /* Float CTA 縮小 */
+  .float-cta { padding: 10px 18px; font-size: 12px; }
+  .theme-toggle { top: 10px; right: 10px; width: 36px; height: 36px; font-size: 14px; }
+}
+
+/* ───── V3.38 列印優化 ───── */
+@media print {
+  body { background: #fff !important; }
+  .page { box-shadow: none !important; }
+  .float-cta, .theme-toggle, .spa-home-btn, #spa-loader, #spa-progress, .back-link, .nav-cases { display: none !important; }
+  .hero-case { padding: 20px 24px !important; page-break-after: avoid; }
+  .hero-case-date, .hero-case-right .hero-case-amount {
+    color: #0D2A3A !important;
+    -webkit-text-fill-color: #0D2A3A !important;
+    background: none !important;
+    filter: none !important;
+  }
+  .case-screenshots-section { page-break-inside: avoid; }
+  .screenshot-month-group { page-break-inside: avoid; }
+  .screenshot-card { page-break-inside: avoid; break-inside: avoid; border-width: 1px !important; }
+  .ss-header { background: #f5f5f5 !important; }
+  .screenshot-card img { max-height: 80vh; }
+  /* 隱藏不需印的 */
+  .case-screenshots-section [data-reveal] { opacity: 1 !important; transform: none !important; }
+  /* 每頁邊距 */
+  @page { margin: 12mm; }
+}
+
+/* ───── V3.39 觸控優化（行動裝置點擊熱區、無 hover 處理） ───── */
+@media (hover: none) {
+  /* 手機沒 hover，把 hover 效果改成 active */
+  .case-card-diamond:active, .case-card-gold:active, .case-card-std:active,
+  .case-diamond:active, .case-gold:active, .case-std:active,
+  .product-card:active, .knowledge-card:active, .res-card:active,
+  .screenshot-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s;
+  }
+  /* 預設展示 hover 視覺 */
+  .screenshot-card::after { opacity: 0.85; }
+}
+
+/* ───── V3.40 平板橫式（iPad landscape 1024-1366） ───── */
+@media (min-width: 1025px) and (max-width: 1366px) and (orientation: landscape) {
+  .hero-case-right { gap: 44px; }
+  .hero-case-date { font-size: 60px; }
+  .hero-case-right .hero-case-amount { font-size: 70px !important; }
+  /* 主頁 hero 縮小 trend SVG */
+  .hero-trend-svg { width: 260px; opacity: 0.45; }
+}
+
+/* ───── V3.41 hero 高度動態 ───── */
+@media (min-width: 481px) {
+  .hero-case { min-height: auto; }
+}
+
+/* ───── V3.42 對帳單最大顯示寬度（避免在 iPad 橫式太寬看不清楚） ───── */
+@media (min-width: 1025px) {
+  .screenshots-grid {
+    max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ───── V3.43 Lightbox 觸控滑動切換 ───── */
+#case-lightbox img {
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+}
+
 /* End V3 layer */

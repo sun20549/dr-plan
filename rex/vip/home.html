@@ -1800,11 +1800,47 @@
         <div class="hero-stat-value white"><span data-countup="5" data-countup-duration="1400">0</span><span class="unit">家</span></div>
         <div class="hero-stat-label">合作壽險公司</div>
       </div>
+      <div class="hero-stat" id="verifiedStatCard">
+        <div class="hero-stat-value" style="color: #4ade80;"><span data-countup="0" data-countup-duration="1600" id="verifiedCount">0</span><span class="unit">件</span></div>
+        <div class="hero-stat-label">✓ 已驗證對帳單</div>
+      </div>
       <div class="hero-stat">
         <div class="hero-stat-value"><span data-countup="2026" data-countup-duration="2000">0</span></div>
         <div class="hero-stat-label">最新更新</div>
       </div>
     </div>
+
+    <script>
+      // 從 manifest 讀已驗證案例數，並在案例卡片上標記
+      (async function() {
+        try {
+          const res = await fetch('assets/img/cases/manifest.json?t=' + Date.now(), { cache: 'no-cache' });
+          if (!res.ok) return;
+          const m = await res.json();
+          const ids = Object.keys(m).filter(k => Array.isArray(m[k]) && m[k].length > 0);
+          // 更新統計卡的 data-countup
+          const el = document.getElementById('verifiedCount');
+          if (el) {
+            el.setAttribute('data-countup', String(ids.length));
+            el.textContent = String(ids.length);
+          }
+          // 標記首頁案例卡片
+          ids.forEach(cid => {
+            const upper = cid.toUpperCase();
+            document.querySelectorAll('.case-card-diamond, .case-card-gold, .case-card-std').forEach(card => {
+              const idEl = card.querySelector('.case-id');
+              if (idEl && idEl.textContent.trim() === upper && !card.classList.contains('is-verified')) {
+                card.classList.add('is-verified');
+                const badge = document.createElement('span');
+                badge.className = 'verified-badge';
+                badge.textContent = '已驗證';
+                card.appendChild(badge);
+              }
+            });
+          });
+        } catch (e) { /* skip */ }
+      })();
+    </script>
   </section>
 
   <!-- ═══════════════════════════════════════════ -->

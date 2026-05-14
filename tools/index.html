@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+<link rel="shortcut icon" href="../images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon-180.png">
+<title>免費試算工具總覽｜複利・退休・遺贈稅・貸款・保額試算｜鼎綸恩宇</title>
+<meta name="description" content="鼎綸恩宇提供 13 款免費財務試算工具，涵蓋投資理財、保險規劃、稅務試算三大類，包含複利計算機、退休金缺口、遺產稅、贈與稅、貸款試算等實用工具。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rex1688.com/tools/">
+<meta property="og:title" content="鼎綸恩宇免費試算工具總覽｜13 款實用財務工具">
+<meta property="og:description" content="鼎綸恩宇提供 13 款免費財務試算工具，涵蓋投資理財、保險規劃、稅務試算三大類。">
+<meta property="og:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
+<meta property="og:site_name" content="鼎綸恩宇 Insurance Brokers">
+<meta property="og:locale" content="zh_TW">
+<link rel="canonical" href="https://rex1688.com/tools/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="鼎綸恩宇免費試算工具總覽｜13 款實用財務工具">
+<meta name="twitter:description" content="鼎綸恩宇提供 13 款免費財務試算工具，涵蓋投資理財、保險規劃、稅務試算三大類。">
+<meta name="twitter:image" content="https://rex1688.com/images/img_01_44039bd1b179.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F05A28;
+    --teal: #1A6B72;
+    --navy: #0D2A3A;
+    --light: #F8F5F0;
+    --gold: #E8A020;
+    --orange-light: #FDE8DF;
+    --teal-light: #D0EAEC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--navy);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background:
+      radial-gradient(ellipse at top right, rgba(240,90,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(26,107,114,0.22) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, #0a2334 100%);
+    padding: 36px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,90,40,0.08);
+    filter: blur(40px);
+  }
+  .header::after {
+    content: ''; position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(26,107,114,0.15);
+    filter: blur(40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-area { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+  .logo-area > img {
+    width: 80px; height: 80px;
+    object-fit: contain;
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    padding: 8px;
+    border-radius: 18px;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.25),
+      inset 0 1px 2px rgba(255,255,255,0.8),
+      0 0 0 1px rgba(255,255,255,0.15);
+  }
+  .logo-text { color: white; }
+  .logo-text .brand {
+    font-size: 24px; font-weight: 900;
+    letter-spacing: 2px; line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo-text .sub {
+    font-size: 11px; color: rgba(255,255,255,0.55);
+    margin-top: 4px; letter-spacing: 1.5px; font-style: italic;
+  }
+  .logo-text .sub.tag {
+    display: inline-block; margin-top: 8px;
+    padding: 3px 10px;
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 12px;
+    color: var(--gold);
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 2px; font-style: normal;
+    background: rgba(232,160,32,0.08);
+  }
+  .header-center {
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+  }
+  .header-center .main-title {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 12px; color: rgba(255,255,255,0.6);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 6px; font-weight: 500;
+  }
+  .header-center .big-title {
+    font-size: 34px; font-weight: 900; color: white;
+    letter-spacing: 6px; line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd9e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-center .sub-title {
+    margin-top: 8px; font-size: 13px;
+    color: rgba(255,255,255,0.65); letter-spacing: 2px;
+  }
+  .home-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all .2s;
+  }
+  .home-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+  }
+
+  /* ── TAGLINE BAR ── */
+  .tagline-bar {
+    background: var(--teal); padding: 12px 48px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    flex-wrap: wrap;
+  }
+  .tagline-bar span {
+    color: white; font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  }
+  .tagline-bar .dot { color: var(--orange); font-size: 18px; }
+
+  /* ── BODY ── */
+  .body { padding: 40px 48px 60px; }
+
+  .intro-text {
+    text-align: center;
+    margin-bottom: 36px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .intro-text strong { color: var(--orange); }
+
+  /* ── CATEGORY ── */
+  .category {
+    margin-bottom: 40px;
+  }
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--orange);
+  }
+  .cat-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    flex-shrink: 0;
+  }
+  .cat-icon.c1 { background: linear-gradient(135deg, var(--orange) 0%, #D04618 100%); }
+  .cat-icon.c2 { background: linear-gradient(135deg, var(--teal) 0%, #134a52 100%); }
+  .cat-icon.c3 { background: linear-gradient(135deg, var(--gold) 0%, #B47710 100%); }
+  .cat-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 2px;
+  }
+  .cat-sub {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .tool-card {
+    display: block;
+    background: #fff;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 14px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--orange);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .25s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(13,42,58,0.12);
+    border-color: var(--orange);
+  }
+  .tool-card:hover::before {
+    transform: scaleY(1);
+  }
+  .tool-card-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: var(--orange-light);
+    color: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 14px;
+    transition: all .25s;
+  }
+  .tool-card:hover .tool-card-icon {
+    background: var(--orange);
+    color: #fff;
+    transform: scale(1.08);
+  }
+  .tool-card-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .tool-card-desc {
+    font-size: 12.5px;
+    color: #666;
+    line-height: 1.6;
+  }
+  .tool-card-arrow {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tool-card-arrow::after {
+    content: '→';
+    transition: transform .25s ease;
+  }
+  .tool-card:hover .tool-card-arrow::after {
+    transform: translateX(4px);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a2334 100%);
+    color: rgba(255,255,255,0.65);
+    padding: 28px 48px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .footer a {
+    color: var(--gold);
+    text-decoration: none;
+    margin: 0 4px;
+  }
+  .footer-brand {
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  /* ── RESPONSIVE ── */
+  /* iPad 橫式 (1024px 以下) */
+  @media (max-width: 1100px) {
+    .page { box-shadow: none; }
+  }
+  /* iPad 直式 (768px 以下) */
+  @media (max-width: 900px) {
+    .header { padding: 28px 32px; }
+    .header-inner { flex-wrap: wrap; gap: 18px; }
+    .header-center { order: -1; flex-basis: 100%; }
+    .home-btn { margin-left: auto; }
+    .body { padding: 32px 32px 48px; }
+    .tagline-bar { padding: 12px 32px; gap: 14px; }
+    .card-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  }
+  /* 手機 (600px 以下) */
+  @media (max-width: 600px) {
+    .header { padding: 22px 20px; }
+    .header-inner { gap: 14px; justify-content: center; }
+    .logo-area { gap: 14px; }
+    .logo-area > img { width: 64px; height: 64px; padding: 6px; }
+    .logo-text .brand { font-size: 20px; }
+    .header-center .big-title { font-size: 26px; letter-spacing: 4px; }
+    .header-center .main-title { font-size: 10px; letter-spacing: 3px; }
+    .header-center .sub-title { font-size: 11px; }
+    .tagline-bar { padding: 10px 16px; gap: 8px; }
+    .tagline-bar span { font-size: 11px; letter-spacing: 2px; }
+    .body { padding: 24px 16px 40px; }
+    .card-grid { grid-template-columns: 1fr; gap: 12px; }
+    .cat-title { font-size: 18px; letter-spacing: 1px; }
+    .cat-icon { width: 40px; height: 40px; font-size: 20px; }
+    .tool-card { padding: 16px; }
+    .footer { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="../images/img_01_44039bd1b179.png" alt="鼎綸恩宇 logo">
+        <div class="logo-text">
+          <div class="brand">鼎綸恩宇</div>
+          <div class="sub">Insurance Brokers ®</div>
+          <div class="sub tag">免費工具</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="main-title">FREE FINANCIAL TOOLS</div>
+        <div class="big-title">免費試算工具</div>
+        <div class="sub-title">投資理財 ・ 保險規劃 ・ 稅務試算</div>
+      </div>
+
+      <a href="../index.html" class="home-btn">🏠 回首頁</a>
+    </div>
+  </div>
+
+  <!-- TAGLINE -->
+  <div class="tagline-bar">
+    <span>專業試算</span><span class="dot">◆</span>
+    <span>免費使用</span><span class="dot">◆</span>
+    <span>規劃無壓力</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <p class="intro-text">
+      共 <strong>13 款</strong>實用財務試算工具，涵蓋退休規劃、稅務試算、保險規劃三大領域。<br>
+      所有工具皆免費使用、無需註冊，幫您快速掌握財務全貌。
+    </p>
+
+    <!-- 投資理財 -->
+    <section class="category">
+      <div class="cat-header">
+        <div class="cat-icon c1">💰</div>
+        <div>
+          <div class="cat-title">投資理財</div>
+          <div class="cat-sub">INVESTMENT & WEALTH</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <a class="tool-card" href="compound-interest.html">
+          <div class="tool-card-icon">∞</div>
+          <div class="tool-card-title">複利計算機</div>
+          <div class="tool-card-desc">單筆＋定期定額試算，看見時間的魔法，比較單利 vs 複利。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="irr-calculator.html">
+          <div class="tool-card-icon">📈</div>
+          <div class="tool-card-title">IRR 內部報酬率</div>
+          <div class="tool-card-desc">自訂多期現金流，算出儲蓄險、年金險的真實年化報酬。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="retirement.html">
+          <div class="tool-card-icon">🏖</div>
+          <div class="tool-card-title">退休金缺口試算</div>
+          <div class="tool-card-desc">輸入退休年齡與支出，算出每月應補足的退休金額。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="education.html">
+          <div class="tool-card-icon">🎓</div>
+          <div class="tool-card-title">子女教育金</div>
+          <div class="tool-card-desc">依就學階段與留學規劃，試算每月該存多少教育金。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="loan.html">
+          <div class="tool-card-icon">💵</div>
+          <div class="tool-card-title">貸款試算</div>
+          <div class="tool-card-desc">房貸車貸試算，本息平均 vs 本金平均兩種攤還比較。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 保險規劃 -->
+    <section class="category">
+      <div class="cat-header">
+        <div class="cat-icon c2">🛡</div>
+        <div>
+          <div class="cat-title">保險規劃</div>
+          <div class="cat-sub">INSURANCE PLANNING</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <a class="tool-card" href="coverage.html">
+          <div class="tool-card-icon">🛡</div>
+          <div class="tool-card-title">保額需求分析</div>
+          <div class="tool-card-desc">壽險、醫療險、意外險建議保額，30 秒抓出保障缺口。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="bmi-calculator.html">
+          <div class="tool-card-icon">⚖</div>
+          <div class="tool-card-title">BMI 計算器</div>
+          <div class="tool-card-desc">身體質量指數試算、健康分級、理想體重區間。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="labor-pension.html">
+          <div class="tool-card-icon">🏛</div>
+          <div class="tool-card-title">勞保勞退試算</div>
+          <div class="tool-card-desc">2026 最新版，月領 vs 一次領退休金金額計算。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 稅務規劃 -->
+    <section class="category">
+      <div class="cat-header">
+        <div class="cat-icon c3">📊</div>
+        <div>
+          <div class="cat-title">稅務規劃</div>
+          <div class="cat-sub">TAX PLANNING</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <a class="tool-card" href="tax.html">
+          <div class="tool-card-icon">$</div>
+          <div class="tool-card-title">綜合所得稅</div>
+          <div class="tool-card-desc">免稅額、扣除額、5 段累進稅率，秒算應納稅額。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="estate-tax.html">
+          <div class="tool-card-icon">🏛</div>
+          <div class="tool-card-title">遺產稅試算</div>
+          <div class="tool-card-desc">2026 最新免稅額 1,333 萬，扣除額逐項計算。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="gift-tax.html">
+          <div class="tool-card-icon">🎁</div>
+          <div class="tool-card-title">贈與稅試算</div>
+          <div class="tool-card-desc">2026 最新免稅額 244 萬，附分次贈與規劃建議。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="tax-risk.html">
+          <div class="tool-card-icon">⚠</div>
+          <div class="tool-card-title">實質課稅 8 大態樣</div>
+          <div class="tool-card-desc">保險規劃避雷自我檢查，避免高風險樣態踩雷補稅。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+        <a class="tool-card" href="legacy-planner.html">
+          <div class="tool-card-icon">📜</div>
+          <div class="tool-card-title">傳承規劃模擬器</div>
+          <div class="tool-card-desc">整合遺產、贈與、保險傳承，比較規劃前後稅負差異。</div>
+          <div class="tool-card-arrow">開始試算</div>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">鼎綸恩宇 Insurance Brokers ®</div>
+    <div>
+      <a href="../index.html">回首頁</a> ・
+      <a href="https://rex1688.com/rex/">恩宇團隊</a>
+    </div>
+    <div style="margin-top:10px; color:rgba(255,255,255,0.4);">© 2026 鼎綸恩宇保險經紀人 . All rights reserved.</div>
+  </div>
+
+</div>
+
+</body>
+</html>

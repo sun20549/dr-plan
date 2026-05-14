@@ -23,6 +23,11 @@
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230D2A3A'/%3E%3Ctext x='90' y='110' font-family='sans-serif' font-size='62' font-weight='900' fill='%23E8A020' text-anchor='middle'%3EDL%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="投資型專區">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
@@ -612,6 +617,23 @@ function applyEnhancements(root) {
       detectCaseScreenshots(el.dataset.caseId, el);
     }
   });
+  // 動態更新該頁的 OG 分享圖：若案例有對帳單，OG 用第 1 張圖
+  (async () => {
+    const ssSection = root.querySelector('.case-screenshots-section[data-case-id]');
+    if (!ssSection) return;
+    const cid = ssSection.dataset.caseId;
+    try {
+      const m = await fetchManifest();
+      const files = m[cid];
+      if (files && files.length > 0) {
+        const firstImg = 'https://rex1688.com/rex/vip/assets/img/cases/' + files[0];
+        // 更新本頁 OG image
+        document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]').forEach(meta => {
+          meta.setAttribute('content', firstImg);
+        });
+      }
+    } catch (e) { /* skip */ }
+  })();
 }
 
 /* ─── 案例對帳單偵測（manifest 優先 / probe 備援） ─── */
@@ -818,6 +840,22 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') nextLb();
   if (e.key === 'ArrowLeft') prevLb();
 });
+
+// Lightbox 觸控滑動切換（手機友善）
+let _touchX = null;
+lbEl.addEventListener('touchstart', e => {
+  if (e.target === lbImg || lbImg.contains(e.target)) {
+    _touchX = e.touches[0].clientX;
+  }
+}, { passive: true });
+lbEl.addEventListener('touchend', e => {
+  if (_touchX === null) return;
+  const dx = e.changedTouches[0].clientX - _touchX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) nextLb(); else prevLb();
+  }
+  _touchX = null;
+}, { passive: true });
 
 /* ─── 主題切換（localStorage 持久化） ─── */
 (function() {

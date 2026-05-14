@@ -805,6 +805,43 @@
     });
   });
 
+  // ─── 從 manifest.json 標記已驗證案例 ───
+  (async function loadVerifiedBadges() {
+    try {
+      const res = await fetch('../assets/img/cases/manifest.json?t=' + Date.now(), { cache: 'no-cache' });
+      if (!res.ok) return;
+      const manifest = await res.json();
+      const verifiedIds = Object.keys(manifest).filter(k => Array.isArray(manifest[k]) && manifest[k].length > 0);
+      let verifiedCount = 0;
+      verifiedIds.forEach(cid => {
+        const upper = cid.toUpperCase();
+        // 卡片
+        document.querySelectorAll('.case-diamond, .case-gold, .case-std').forEach(card => {
+          const idEl = card.querySelector('.case-d-id, .case-g-id, .case-std-id');
+          if (idEl && idEl.textContent.trim() === upper && !card.classList.contains('is-verified')) {
+            card.classList.add('is-verified');
+            const badge = document.createElement('span');
+            badge.className = 'verified-badge';
+            badge.textContent = '已驗證';
+            card.appendChild(badge);
+            verifiedCount++;
+          }
+        });
+        // 表格列
+        document.querySelectorAll('#tableView tbody tr').forEach(row => {
+          const idCell = row.querySelector('.id-cell');
+          if (idCell && idCell.textContent.trim() === upper) row.classList.add('is-verified');
+        });
+      });
+      // 更新統計列「已驗證 N 件」
+      const sortInfo = document.querySelector('.sort-info');
+      if (sortInfo && verifiedCount > 0) {
+        sortInfo.insertAdjacentHTML('beforeend',
+          ` ・ <span style="color: var(--green); font-weight: 900;">✓ 已驗證 ${verifiedCount} 件</span>`);
+      }
+    } catch (e) { /* 沒 manifest 就跳過 */ }
+  })();
+
   // ─── 案例搜尋功能 ───
   const searchInput = document.getElementById('caseSearch');
   if (searchInput) {

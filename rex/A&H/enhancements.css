@@ -557,3 +557,232 @@
   font-size: 12px !important;
   color: #5a6772 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+ * Phase 9:RWD 響應式 + 列印優化
+ * ═══════════════════════════════════════════════════════════ */
+
+/* ── iPad 橫向 (1024px 以下) ── */
+@media (max-width: 1024px) {
+  .pd-co-banner { padding: 10px 14px; }
+  .pd-co-name { font-size: 15px; }
+  .pd-product-name { font-size: 13px; }
+  .pd-product-meta { font-size: 11px; gap: 12px; }
+  .pd-val-num { font-size: 16px; }
+  .pd-item { gap: 6px 14px; padding: 8px 0; }
+  .pd-item-name { font-size: 12px; }
+  .bcc-btn { font-size: 11px; padding: 4px 10px; }
+}
+
+/* ── iPad 直向 / 大手機橫向 (820px 以下) ── */
+@media (max-width: 820px) {
+  /* chip 排成兩列 */
+  #benefitsCompanyChips { gap: 4px; padding: 8px 12px; }
+  .bcc-btn { font-size: 11px; padding: 5px 10px; }
+  
+  /* 商品卡頭壓縮 */
+  .pd-product-head { padding: 10px 12px; }
+  .pd-product-meta { gap: 8px; line-height: 1.7; }
+  .pd-items { padding: 6px 12px 10px; }
+  
+  /* 給付項目仍維持 grid 兩欄,但給名稱欄更彈性 */
+  .pd-item {
+    grid-template-columns: minmax(140px, 1fr) minmax(70px, auto) !important;
+  }
+  
+  /* analysisCard 不顯示也沒差(已 hide 了) */
+}
+
+/* ── 手機直向 (640px 以下) ── */
+@media (max-width: 640px) {
+  /* toolbar logo 與字縮小 */
+  .toolbar { padding: 8px 12px !important; }
+  .brand-logo { width: 32px !important; height: 32px !important; }
+  .brand-text .b-name { font-size: 13px !important; }
+  .brand-text .b-sub { font-size: 9px !important; }
+  .tb-btn { padding: 5px 9px !important; font-size: 11px !important; }
+  
+  /* chip 改成上下排,每顆全寬 */
+  #benefitsCompanyChips {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .bcc-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+  
+  /* 商品卡片給付項目改成上下排(名稱上+金額下) */
+  .pd-item {
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+    padding: 10px 0 !important;
+  }
+  .pd-item-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .pd-item-val {
+    text-align: left !important;
+    max-width: none !important;
+    padding-left: 0;
+  }
+  .pd-val-num { font-size: 17px; }
+  .pd-val-text { font-size: 12px; line-height: 1.5; display: block; text-align: left; }
+  .pd-item-note { padding-left: 0; }
+  
+  /* 商品卡頭縮小 */
+  .pd-product-name { font-size: 13px; }
+  .pd-product-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .pd-co-banner { padding: 8px 10px; gap: 8px; }
+  .pd-co-name { font-size: 14px; letter-spacing: 0.5px; }
+  .pd-logo { width: 30px; height: 30px; }
+  
+  /* 投保人員表單 grid 改單欄 */
+  .person-flow { grid-template-columns: 1fr !important; }
+  .relation-arrow { display: none !important; }
+  
+  /* 結果表格字級縮小 */
+  #resultTable { font-size: 11px !important; }
+  #resultTable th, #resultTable td { padding: 6px 4px !important; }
+}
+
+/* ── 超小螢幕 (380px 以下) ── */
+@media (max-width: 380px) {
+  .pd-product-meta { font-size: 10px; }
+  .pd-val-num { font-size: 15px; }
+  .toolbar { padding: 6px 10px !important; }
+  .brand-text { display: none !important; }   /* 只留 logo */
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * 列印 (A4 直向) 優化
+ * ═══════════════════════════════════════════════════════════ */
+@media print {
+  /* 整體顏色保留 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* 隱藏不需要列印的元素 */
+  .toolbar,
+  .no-print,
+  #benefitsCompanyChips,
+  #benefitsModeSwitch,
+  #chartCard .chart-controls,
+  #chartCard .inflation-controls,
+  .chart-tooltip,
+  #curveCard,
+  #productCard,
+  #aggregateCheck,
+  #analysisCard,
+  #needsInputCard,
+  .picker-collapse-btn,
+  button {
+    display: none !important;
+  }
+  
+  /* 主內容區放寬 */
+  .container, .app {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* 卡片邊框淡化 */
+  .card, .x-card {
+    box-shadow: none !important;
+    border: 1px solid #999 !important;
+    page-break-inside: avoid;
+    margin-bottom: 8mm !important;
+  }
+  
+  /* 標頭顏色保留 */
+  .card-header, .x-card-header {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* === 詳細模式列印優化 === */
+  #benefitsSection {
+    column-count: 1 !important;
+  }
+  
+  /* 公司分節:每家獨立一頁 */
+  .pd-co-section {
+    page-break-before: auto;
+    page-break-inside: avoid;
+    margin-bottom: 10mm !important;
+    border-top: none !important;
+    padding-top: 0 !important;
+  }
+  .pd-co-section:not(:first-child) {
+    page-break-before: always;   /* 每家公司獨立一頁 */
+  }
+  
+  /* 公司 banner 列印漂亮 */
+  .pd-co-banner {
+    border-bottom: 2px solid #333 !important;
+    background: #f8f8f8 !important;
+    padding: 6mm 4mm !important;
+    border-radius: 0 !important;
+  }
+  
+  /* 商品卡片不要被切斷 */
+  .pd-product {
+    page-break-inside: avoid;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    margin-bottom: 4mm !important;
+  }
+  
+  /* 給付項目字級縮小適合 A4 */
+  .pd-item-name { font-size: 11pt !important; }
+  .pd-val-num { font-size: 13pt !important; }
+  .pd-val-text { font-size: 10pt !important; }
+  .pd-item-note { font-size: 9pt !important; }
+  
+  /* 走勢圖 SVG 縮小高度 */
+  .chart-svg { max-height: 80mm !important; }
+  
+  /* 列印頁面設定 */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+  @page :first {
+    margin-top: 8mm;
+  }
+  
+  /* 加列印頁尾(每家公司底部) */
+  .pd-co-section::after {
+    content: "鼎綸恩宇 ‧ " attr(data-cid) " ‧ 本建議書內容僅供參考,實際保障內容請以正式契約條款為準";
+    display: block;
+    text-align: center;
+    font-size: 8pt;
+    color: #888;
+    margin-top: 5mm;
+    padding-top: 3mm;
+    border-top: 1px dashed #999;
+    page-break-after: always;
+  }
+  
+  /* 走勢圖列印標題 */
+  .chart-print-title {
+    display: block !important;
+    font-size: 11pt;
+    font-weight: 700;
+    margin: 4mm 0 2mm;
+    color: var(--navy);
+  }
+}

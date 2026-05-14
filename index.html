@@ -1392,7 +1392,38 @@
     .tools-cat-desc { display: none; }
   }
 
-  </style>
+  
+  /* ═══════ 響應式補強：iPad 直式 / 手機 ═══════ */
+  @media (max-width: 900px) {
+    .page { width: 100%; box-shadow: none; }
+    .header { padding: 22px 24px; }
+    .header-inner { flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+    .header-center { order: -1; }
+    .badge-area { width: 100%; align-items: center; }
+    .body { padding: 28px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; gap: 18px; }
+  }
+  @media (max-width: 600px) {
+    .header { padding: 18px 16px; }
+    .header-center .big-title { font-size: 24px; letter-spacing: 3px; }
+    .header-center .big-number { font-size: 88px; }
+    .header-center .big-number span { font-size: 44px; }
+    .header-center .sub-title { font-size: 18px; letter-spacing: 3px; }
+    .body { padding: 20px 14px; }
+    .tagline-bar { padding: 10px 14px; gap: 10px; }
+    .tagline-bar span { font-size: 11px; letter-spacing: 2px; }
+    .logo-area { gap: 12px; }
+    .logo-area > img { width: 60px; height: 60px; padding: 6px; }
+    .logo-text .brand { font-size: 18px; }
+    .logo-text .sub { font-size: 10px; }
+  }
+  @media (min-width: 1024px) and (max-width: 1200px) {
+    /* iPad 橫式：微調讓 page 不要太貼邊 */
+    body { padding: 20px 0; }
+  }
+</style>
 </head>
 <body>
 <!-- 漢堡按鈕 -->
