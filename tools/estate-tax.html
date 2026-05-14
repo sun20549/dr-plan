@@ -1478,6 +1478,34 @@
   @media (max-width: 600px) {
     .related-grid { grid-template-columns: 1fr; }
   }
+
+  /* 加盟夥伴專區（業務專用） */
+  .sidebar-section-partner .sidebar-section-title {
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sidebar-partner-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.5);
+    border-radius: 10px;
+    color: var(--gold);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: none;
+  }
+  .sidebar-section-partner .sidebar-link {
+    color: #6a5a30;
+  }
+  .sidebar-section-partner .sidebar-link:hover {
+    background: rgba(232,160,32,0.08);
+    color: var(--gold);
+  }
 </style>
 </head>
 <body>
@@ -1528,6 +1556,20 @@
       <a href="coverage.html" class="sidebar-link"><span class="sidebar-link-icon">🛡️</span>DIME 保額分析</a>
       <a href="retirement.html" class="sidebar-link"><span class="sidebar-link-icon">🏖️</span>退休金缺口試算</a>
       <a href="legacy-planner.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span>傳承規劃模擬器</a>
+    </div>
+  
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section sidebar-section-partner">
+      <div class="sidebar-section-title">
+        加盟夥伴專區
+        <span class="sidebar-partner-badge">業務專用</span>
+      </div>
+      <a href="https://rex1688.com/rex/A&amp;H/" target="_blank" rel="noopener" class="sidebar-link"><span class="sidebar-link-icon">🏥</span>醫療險建議書系統</a>
+      <a href="https://rex1688.com/rex/A&amp;H/compare.html" target="_blank" rel="noopener" class="sidebar-link"><span class="sidebar-link-icon">💊</span>醫療險商品比較</a>
+      <a href="https://rex1688.com/rex/compare/" target="_blank" rel="noopener" class="sidebar-link"><span class="sidebar-link-icon">💰</span>儲蓄險商品比較</a>
+      <a href="https://rex1688.com/rex/income/" target="_blank" rel="noopener" class="sidebar-link"><span class="sidebar-link-icon">🏢</span>經紀人公司比較</a>
+      <a href="https://rex1688.com/rex/vip/" target="_blank" rel="noopener" class="sidebar-link"><span class="sidebar-link-icon">💹</span>投資型保單專區</a>
     </div>
   </nav>
   <div class="sidebar-footer">
