@@ -902,14 +902,14 @@
       setTimeout(startWhenReady, 200);
       return;
     }
-    setupObserver();
-    bindChartRangeSlider();
-    bindCustomTooltip();
-    injectBenefitsFilter();
-    setupBenefitsDetailOverride();
-    annotateRiderRows();
-    renderAnalysis();
-    purgeTypeTotal();
+    try { setupObserver(); } catch(e) { console.error('[enhancements] setupObserver 失敗:', e); }
+    try { bindChartRangeSlider(); } catch(e) { console.error('[enhancements] bindChartRangeSlider 失敗:', e); }
+    try { bindCustomTooltip(); } catch(e) { console.error('[enhancements] bindCustomTooltip 失敗:', e); }
+    try { injectBenefitsFilter(); } catch(e) { console.error('[enhancements] injectBenefitsFilter 失敗:', e); }
+    try { setupBenefitsDetailOverride(); } catch(e) { console.error('[enhancements] setupBenefitsDetailOverride 失敗:', e); }
+    try { annotateRiderRows(); } catch(e) { console.error('[enhancements] annotateRiderRows 失敗:', e); }
+    try { renderAnalysis(); } catch(e) { console.error('[enhancements] renderAnalysis 失敗:', e); }
+    try { purgeTypeTotal(); } catch(e) { console.error('[enhancements] purgeTypeTotal 失敗:', e); }
 
     // 持續監看 benefitsCard,每次重渲染後立即清掉 type-total
     const benefitsCard = document.getElementById('benefitsCard');
@@ -935,6 +935,14 @@
       setTimeout(injectBenefitsFilter, 500);
       return;
     }
+    // ★ 預設切到「詳細」模式 (PDF 風格)
+    const detailBtn = sw.querySelector('.bms-btn[data-mode="detail"]');
+    const simpleBtn = sw.querySelector('.bms-btn[data-mode="simple"]');
+    if (detailBtn && simpleBtn && simpleBtn.classList.contains('active')) {
+      detailBtn.click();
+    }
+    // 隱藏 簡易 / 詳細 切換 (因為兩種都用 PDF 風格)
+    sw.style.display = 'none';
     if (document.getElementById('benefitsCompanyChips')) {
       console.log('[enhancements] chips 已存在,跳過');
       return;
@@ -1046,10 +1054,6 @@
   function renderProposalDetail() {
     const section = document.getElementById('benefitsSection');
     if (!section) return;
-    const sw = document.getElementById('benefitsModeSwitch');
-    if (!sw) return;
-    const activeBtn = sw.querySelector('.bms-btn.active');
-    if (!activeBtn || activeBtn.dataset.mode !== 'detail') return;
     
     const rows = collectSelectionsFromDOM();
     if (rows.length === 0) return;
@@ -1140,26 +1144,22 @@
   
   function setupBenefitsDetailOverride() {
     const sw = document.getElementById('benefitsModeSwitch');
-    if (!sw) return;
-    sw.addEventListener('click', () => {
-      setTimeout(() => {
-        renderBenefitsFilterChips();
-        renderProposalDetail();
-      }, 200);
-    });
+    if (sw) {
+      sw.addEventListener('click', () => {
+        setTimeout(() => {
+          renderBenefitsFilterChips();
+          renderProposalDetail();
+        }, 200);
+      });
+    }
     const section = document.getElementById('benefitsSection');
     if (section) {
       const obs = new MutationObserver(() => {
-        const activeBtn = sw.querySelector('.bms-btn.active');
-        if (activeBtn && activeBtn.dataset.mode === 'detail') {
-          if (!section._enhDetailDrawing) {
-            section._enhDetailDrawing = true;
-            renderBenefitsFilterChips();
-            renderProposalDetail();
-            setTimeout(() => { section._enhDetailDrawing = false; }, 50);
-          }
-        } else {
+        if (!section._enhDetailDrawing) {
+          section._enhDetailDrawing = true;
           renderBenefitsFilterChips();
+          renderProposalDetail();
+          setTimeout(() => { section._enhDetailDrawing = false; }, 50);
         }
       });
       obs.observe(section, { childList: true });
