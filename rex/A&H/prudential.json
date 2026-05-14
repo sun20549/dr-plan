@@ -3,7 +3,7 @@
   "name": "保誠人壽",
   "shortName": "保誠",
   "color": "#003F87",
-  "logoUrl": "",
+  "logoUrl": "https://sun20549.github.io/dr-plan/images/img_12_6cd7756b6ea3.png",
   "linkTemplate": {
     "dm": "保誠人壽/{code}/DM.pdf",
     "clause": "保誠人壽/{code}/條款.pdf",
@@ -18,13 +18,13 @@
       "amountMode": "free",
       "amountUnit": "百元",
       "amountSuggestions": [
-        500,
-        1000,
-        1500,
-        2000,
-        3000
+        10,
+        20,
+        30,
+        50,
+        100
       ],
-      "defaultAmount": 1000,
+      "defaultAmount": 30,
       "startAge": 15,
       "maxAge": 60,
       "maxAgeContinuous": 75,
@@ -429,7 +429,13 @@
             "unit": "元/次"
           }
         ]
-      }
+      },
+      "periodOptions": [
+        "1年期"
+      ],
+      "defaultPeriod": "1年期",
+      "rateMode": "perUnit"
     }
-  ]
+  ],
+  "logoText": "保誠"
 }

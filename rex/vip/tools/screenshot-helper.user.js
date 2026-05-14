@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         📸 對帳單截圖助手 ・ 投資型專區
 // @namespace    https://rex1688.com/rex/vip/
-// @version      3.1.0
+// @version      3.2.0
 // @description  拖曳選取 / 自動定位 / 教學模式 ・ 自動命名 + 直接存到 vip/assets/img/cases/
 // @author       鼎綸恩宇 ・ Cowork
 // @match        *://*.chubblife.com.tw/*
@@ -354,9 +354,9 @@
     <h3>📸 對帳單截圖 v3 <button class="close" id="vsf-close">✕</button></h3>
     <div class="row">▸ 案例編號</div>
     <input type="text" id="vsf-case" placeholder="例：u0033" maxlength="6" autocomplete="off">
-    <div class="row">▸ 建置月份</div>
-    <input type="month" id="vsf-date" style="font-size:14px; letter-spacing:1px;">
-    <div class="filename" id="vsf-filename">u0033-202605-1.jpg</div>
+    <div class="row">▸ 建置日期</div>
+    <input type="date" id="vsf-date" style="font-size:14px; letter-spacing:1px;">
+    <div class="filename" id="vsf-filename">u0033-20260514-1.jpg</div>
 
     <button class="action btn-auto" id="vsf-auto" disabled>🤖 自動定位 + 截圖 (Alt+A)</button>
     <div class="learn-status empty" id="vsf-learn">尚未教學此網站 ・ 先用「教學模式」標出對帳單位置</div>
@@ -387,34 +387,63 @@
 
   // ─── 通用 ───
   function getCaseId() { return (caseInput.value || '').trim().toLowerCase(); }
-  function getYearMonth() {
-    const v = dateInput.value;
-    return v ? v.replace('-', '') : null;
+  function getYearMonthDay() {
+    const v = dateInput.value; // 'YYYY-MM-DD'
+    return v ? v.replace(/-/g, '') : null;
   }
   function getCounterKey() {
     const cid = getCaseId();
-    const ym = getYearMonth();
-    return ym ? `${cid}-${ym}` : cid;
+    const ymd = getYearMonthDay();
+    return ymd ? `${cid}-${ymd}` : cid;
   }
   function getNextIndex() { return (counters[getCounterKey()] || 0) + 1; }
   function updateFilename() {
     const cid = getCaseId();
-    const ym = getYearMonth();
+    const ymd = getYearMonthDay();
     if (!/^[a-z]\d{4}$/.test(cid)) {
       filenameEl.textContent = '請輸入案例編號';
       badgeEl.textContent = '—';
       return;
     }
     const idx = getNextIndex();
-    filenameEl.textContent = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
-    badgeEl.textContent = ym ? `${cid.toUpperCase()} ${ym} #${idx}` : `${cid.toUpperCase()} #${idx}`;
+    filenameEl.textContent = ymd ? `${cid}-${ymd}-${idx}.jpg` : `${cid}-${idx}.jpg`;
+    badgeEl.textContent = ymd ? `${cid.toUpperCase()} ${ymd.slice(4,6)}/${ymd.slice(6)} #${idx}` : `${cid.toUpperCase()} #${idx}`;
   }
-  // 預設本月
+  // 預設今天
   (function initDate() {
     const t = new Date();
-    dateInput.value = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0');
+    dateInput.value = t.getFullYear() + '-' +
+                      String(t.getMonth() + 1).padStart(2, '0') + '-' +
+                      String(t.getDate()).padStart(2, '0');
   })();
   dateInput.addEventListener('change', updateFilename);
+
+  // ─── manifest.json 維護 ───
+  async function readManifest() {
+    if (!dirHandle) return {};
+    try {
+      const fh = await dirHandle.getFileHandle('manifest.json');
+      const f = await fh.getFile();
+      return JSON.parse(await f.text() || '{}');
+    } catch (e) { return {}; }
+  }
+  async function writeManifest(data) {
+    if (!dirHandle) return;
+    const fh = await dirHandle.getFileHandle('manifest.json', { create: true });
+    const w = await fh.createWritable();
+    await w.write(JSON.stringify(data, null, 2));
+    await w.close();
+  }
+  async function updateManifest(caseId, filename) {
+    if (!dirHandle) return;
+    const m = await readManifest();
+    if (!m[caseId]) m[caseId] = [];
+    if (!m[caseId].includes(filename)) {
+      m[caseId].push(filename);
+      m[caseId].sort();
+    }
+    await writeManifest(m);
+  }
   function updateUi(needsReauth = false) {
     // dirHandle 狀態
     if (dirHandle) {
@@ -716,10 +745,10 @@
   // ─── 擷取並儲存 ───
   async function captureAndSave(x, y, w, h, fullPage = false) {
     const cid = getCaseId();
-    const ym = getYearMonth();
+    const ymd = getYearMonthDay();
     if (!/^[a-z]\d{4}$/.test(cid)) { toast('案例編號格式錯誤', 'err'); return; }
     const idx = getNextIndex();
-    const fname = ym ? `${cid}-${ym}-${idx}.jpg` : `${cid}-${idx}.jpg`;
+    const fname = ymd ? `${cid}-${ymd}-${idx}.jpg` : `${cid}-${idx}.jpg`;
 
     showLoading(fullPage ? '截取整頁中...' : `擷取區域中...`);
 
@@ -749,6 +778,8 @@
           const fh = await dirHandle.getFileHandle(fname, { create: true });
           const writable = await fh.createWritable();
           await writable.write(blob); await writable.close();
+          // 同步更新 manifest
+          try { await updateManifest(cid, fname); } catch (e) {}
           counters[getCounterKey()] = idx;
           localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
           updateFilename();

@@ -661,65 +661,71 @@ async function detectCaseScreenshots(caseId, container) {
   const baseId = caseId.toLowerCase();
   const baseUrl = 'assets/img/cases/' + baseId;
 
-  // 建立所有探測 URL（平行送）
-  // 格式：[{ key: 'YYYYMM' or 'legacy', idx, urls: [候選網址陣列] }]
-  const probes = [];
-  // Legacy
-  for (let i = 1; i <= SCREENSHOT_MAX; i++) {
-    probes.push({
-      key: 'legacy',
-      idx: i,
-      urls: SCREENSHOT_EXTS.map(e => `${baseUrl}-${i}.${e}`)
-    });
-  }
-  // 年月格式：往前 24 個月
-  const now = new Date();
-  for (let m = 0; m < LOOKBACK_MONTHS; m++) {
-    const d = new Date(now.getFullYear(), now.getMonth() - m, 1);
-    const yyyymm = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0');
+  // 1. 先讀 manifest.json — 秒查所有檔案
+  const manifest = await fetchManifest();
+  const manifestFiles = manifest[baseId] || [];
+
+  // 2. 若 manifest 沒記錄此案，備援 probe 舊格式（無日期 caseId-N.jpg）
+  let files = [];
+  if (manifestFiles.length > 0) {
+    files = manifestFiles.map(name => `${baseUrl.replace(baseId, '')}${name}`);
+  } else {
+    // Legacy probe 備援
     for (let i = 1; i <= SCREENSHOT_MAX; i++) {
-      probes.push({
-        key: yyyymm,
-        idx: i,
-        urls: SCREENSHOT_EXTS.map(e => `${baseUrl}-${yyyymm}-${i}.${e}`)
-      });
+      let hit = null;
+      for (const ext of SCREENSHOT_EXTS) {
+        if (await probeImage(`${baseUrl}-${i}.${ext}`)) { hit = `${baseUrl}-${i}.${ext}`; break; }
+      }
+      if (!hit) break;
+      files.push(hit);
     }
   }
 
-  // 平行探測（限制 12 個併發，避免一次送太多被擋）
-  const results = await parallelLimit(probes, async p => {
-    for (const url of p.urls) {
-      if (await probeImage(url)) return { key: p.key, idx: p.idx, url };
+  // 3. 從檔名解析（YYYYMMDD 或 YYYYMM 或無日期）
+  // 範例 c0235-20250513-1.jpg → { ymd: '20250513', idx: 1 }
+  //      c0235-202505-1.jpg → { ymd: '20250500' }（補 '00' 為日，仍可月分組）
+  //      c0235-1.jpg → { ymd: null }
+  const parsedFiles = files.map(url => {
+    const fname = url.split('/').pop();
+    let m;
+    if ((m = fname.match(/^[a-z]\d{4}-(\d{8})-(\d+)\./i))) {
+      return { url, ymd: m[1], idx: parseInt(m[2], 10) };
     }
-    return null;
-  }, 12);
+    if ((m = fname.match(/^[a-z]\d{4}-(\d{6})-(\d+)\./i))) {
+      return { url, ymd: m[1] + '00', idx: parseInt(m[2], 10) };
+    }
+    if ((m = fname.match(/^[a-z]\d{4}-(\d+)\./i))) {
+      return { url, ymd: null, idx: parseInt(m[1], 10) };
+    }
+    return { url, ymd: null, idx: 999 };
+  });
 
-  // 依 key 分組
+  // 4. 依年月分組（YYYYMM）顯示
   const groupMap = new Map();
-  for (const r of results) {
-    if (!r) continue;
-    if (!groupMap.has(r.key)) groupMap.set(r.key, []);
-    groupMap.get(r.key).push(r);
+  for (const f of parsedFiles) {
+    const key = f.ymd ? f.ymd.slice(0, 6) : 'legacy';
+    if (!groupMap.has(key)) groupMap.set(key, []);
+    groupMap.get(key).push(f);
   }
 
-  // 每組只取「從 1 開始連續」的張數（避免有 -3 沒 -2 的詭異情況）
   const groups = [];
-  for (const [key, files] of groupMap) {
-    files.sort((a, b) => a.idx - b.idx);
-    const consecutive = [];
-    let expected = 1;
-    for (const f of files) {
-      if (f.idx === expected) {
-        consecutive.push(f.url);
-        expected++;
-      } else break;
-    }
-    if (consecutive.length === 0) continue;
+  for (const [key, list] of groupMap) {
+    // 依日期 + 序號排序
+    list.sort((a, b) => {
+      const da = (a.ymd || '00000000') + String(a.idx).padStart(3, '0');
+      const db = (b.ymd || '00000000') + String(b.idx).padStart(3, '0');
+      return da.localeCompare(db);
+    });
     let label = null;
     if (key !== 'legacy') {
       label = `${key.slice(0, 4)} / ${key.slice(4)}`;
     }
-    groups.push({ key: key === 'legacy' ? '0000' : key, label, files: consecutive });
+    groups.push({
+      key: key === 'legacy' ? '0000' : key,
+      label,
+      files: list.map(f => f.url),
+      items: list,  // 含 ymd / idx 細節
+    });
   }
 
   if (groups.length === 0) {
@@ -750,15 +756,22 @@ async function detectCaseScreenshots(caseId, container) {
            <span class="month-count">${g.files.length} 張</span>
          </div>`
       : '';
-    const cards = g.files.map((src, fIdx) => {
+    const cards = g.items.map((item, fIdx) => {
       const idx = globalIdx++;
-      const dateText = g.label || '無日期';
+      // 用該圖的精確日期（YYYY/MM/DD）或月份
+      let dateText = '無日期';
+      if (item.ymd) {
+        const y = item.ymd.slice(0, 4);
+        const mo = item.ymd.slice(4, 6);
+        const d = item.ymd.slice(6, 8);
+        dateText = (d === '00') ? `${y}/${mo}` : `${y}/${mo}/${d}`;
+      }
       return `<div class="screenshot-card" data-lb-index="${idx}">
         <div class="ss-header">
-          <span class="ss-tag">${fIdx + 1} / ${g.files.length}</span>
+          <span class="ss-tag">${fIdx + 1} / ${g.items.length}</span>
           <span class="ss-date">${dateText}</span>
         </div>
-        <img src="${src}" loading="lazy" alt="案例 ${caseId} 對帳單">
+        <img src="${item.url}" loading="lazy" alt="案例 ${caseId} 對帳單">
       </div>`;
     }).join('');
     return `<div class="screenshot-month-group">${header}<div class="screenshot-month-grid">${cards}</div></div>`;

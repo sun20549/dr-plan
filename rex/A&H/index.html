@@ -3639,16 +3639,16 @@ const INSURANCE_DB = {
 };
 
 async function loadInsuranceData() {
-  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json'];
+  const files = ['transglobe.json', 'hontai.json', 'skl.json', 'fglife.json', 'fubon.json', 'prudential.json'];
   const results = await Promise.all(files.map(async (f) => {
     const res = await fetch(f);
     if (!res.ok) throw new Error('Failed to load ' + f + ': ' + res.status + ' ' + res.statusText);
     return res.json();
   }));
-  const [transglobe, hontai, skl, fglife, fubon] = results;
+  const [transglobe, hontai, skl, fglife, fubon, prudential] = results;
 
-  // Companies in original order: quanqiu, hongtai, xinguang, farglory, fubon
-  INSURANCE_DB.companies.push(transglobe, hontai, skl, fglife, fubon);
+  // Companies in original order: quanqiu, hongtai, xinguang, farglory, fubon, prudential
+  INSURANCE_DB.companies.push(transglobe, hontai, skl, fglife, fubon, prudential);
 }
 
 </script>
@@ -7696,7 +7696,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (err) {
     console.error('保險資料載入失敗:', err);
     alert('保險資料載入失敗,請確認 JSON 檔案 (transglobe.json / hontai.json / skl.json / fglife.json) 是否與本 HTML 放在同一資料夾。\n\n錯誤訊息:' + err.message);
-    return;
+        return;
   }
   App.init();
 });
