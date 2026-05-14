@@ -2824,20 +2824,8 @@ tr
 </style>
 
 <!-- v3_22 enhancements sidecar -->
-<script src="shared.js"></script>
-<script>
-(function(){
-  var v = '?v=' + (new Date().toISOString().slice(0,16).replace(/[-:T]/g,''));
-  var l = document.createElement('link');
-  l.rel = 'stylesheet';
-  l.href = 'enhancements.css' + v;
-  document.head.appendChild(l);
-  var s = document.createElement('script');
-  s.src = 'enhancements.js' + v;
-  s.defer = true;
-  document.head.appendChild(s);
-})();
-</script>
+<link rel="stylesheet" href="enhancements.css">
+<script src="enhancements.js" defer></script>
 </head>
 <body>
 

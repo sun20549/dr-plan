@@ -955,16 +955,30 @@
     if (!wrap) return;
     const tbody = document.getElementById('resultTbody');
     if (!tbody) { wrap.innerHTML = ''; return; }
-    const cids = new Set();
-    document.querySelectorAll('#resultTbody .group-header').forEach(tr => {
-      const txt = tr.textContent || '';
-      const nameMatch = txt.match(/([\u4e00-\u9fa5]+人壽|[\u4e00-\u9fa5]+保險)/);
-      if (nameMatch) cids.add(nameMatch[1]);
-    });
-    if (cids.size === 0) { wrap.innerHTML = ''; return; }
     const db = window.INSURANCE_DB;
-    const companies = (db && db.companies) || [];
-    const used = companies.filter(c => cids.has(c.name) || cids.has(c.shortName));
+    if (!db) { wrap.innerHTML = ''; return; }
+    
+    // ★ 改用 row 內的 product code 反查公司 (不依賴 group-header,
+    //   因為主檔單家公司時不會生成 group-header)
+    const usedCids = new Set();
+    document.querySelectorAll('#resultTbody tr').forEach(tr => {
+      if (tr.classList.contains('group-header') || tr.classList.contains('group-subtotal')) return;
+      const td = tr.querySelector('td:first-child');
+      if (!td) return;
+      const codeMatch = (td.textContent || '').match(/\(([A-Z0-9_]+)\)/);
+      if (!codeMatch) return;
+      const code = codeMatch[1];
+      // 反查 code 是哪家公司的
+      for (const c of (db.companies || [])) {
+        if ((c.mainProducts || []).some(p => p.code === code) || 
+            (c.riderProducts || []).some(p => p.code === code)) {
+          usedCids.add(c.id);
+          break;
+        }
+      }
+    });
+    if (usedCids.size === 0) { wrap.innerHTML = ''; return; }
+    const used = (db.companies || []).filter(c => usedCids.has(c.id));
     
     // 「📋 簡易」按鈕(切回主檔的 5 大類統整視圖)
     let html = '<button class="bcc-btn bcc-simple ' + (activeFilterCompanyId === 'simple' ? 'active' : '') + '" data-cid="simple">📋 簡易統整</button>';
