@@ -22,6 +22,100 @@
 (function () {
   'use strict';
 
+  // ═══════════════════════════════════════════════════════════
+  //  Phase 5:AHShared inline fallback
+  //  線上 shared.js 可能載入失敗或被截斷,在這裡內嵌一份 mini 版
+  //  確保 window.AHShared.calcBenefitValue 等函式可用
+  // ═══════════════════════════════════════════════════════════
+  if (!window.AHShared) {
+    console.log('[enhancements] window.AHShared 不存在,inline 載入 fallback');
+    (function(g) {
+      function convertProductClaims(product) {
+        if (!product.claims || !Array.isArray(product.claims.items)) return null;
+        var items = product.claims.items.map(function(it) {
+          var calc = it.calc;
+          if (calc && calc.type === 'ratio') {
+            var unit = product.amountUnit;
+            if (unit === '萬元' || unit === '萬' || unit === '10萬') {
+              calc = { type: 'ratioWan', ratio: calc.ratio };
+            } else if (unit === '百元') {
+              calc = { type: 'ratio', ratio: calc.ratio * 100 };
+            }
+          }
+          return { name: it.name, calc: calc, unit: it.unit, note: it.note };
+        });
+        return { title: product.claims.title || '理賠項目', items: items };
+      }
+      function calcBenefitValue(item, product, amount) {
+        var calc = item.calc;
+        if (!calc) return null;
+        if (calc.type === 'note') return { type: 'text', text: calc.text };
+        if (calc.type === 'text') return { type: 'text', text: calc.value || calc.text || '' };
+        if (calc.type === 'fixed') return calc.value != null ? { type: 'num', val: calc.value } : null;
+        if (calc.type === 'plan') {
+          var v = calc.planMap[amount];
+          return v != null ? { type: 'num', val: v } : null;
+        }
+        if (calc.type === 'unit') {
+          var n = parseFloat(amount) || 0;
+          return { type: 'num', val: n * calc.perUnit };
+        }
+        if (calc.type === 'ratioWan') {
+          var n2 = parseFloat(amount) || 0;
+          return { type: 'num', val: n2 * 10000 * calc.ratio };
+        }
+        if (calc.type === 'ratio') {
+          var n3 = parseFloat(amount) || 0;
+          return { type: 'num', val: n3 * calc.ratio };
+        }
+        return null;
+      }
+      function classifyItem(it) {
+        var name = String(it.name || ''); var note = String(it.note || ''); var text = name + ' ' + note;
+        if (/豁免/.test(text)) return { key: 'waiver', icon: '🛡️', title: '豁免保費' };
+        if (/重大燒燙傷/.test(text)) return { key: 'burn', icon: '🔥', title: '重大燒燙傷' };
+        if (/脫臼|骨折/.test(text)) return { key: 'dislocation', icon: '🦴', title: '脫臼 / 骨折' };
+        if (/移植|器官/.test(text)) return { key: 'transplant', icon: '🌟', title: '器官移植' };
+        var isCancer = /重大傷病|癌症|罹癌|罹患/.test(text);
+        if (isCancer) {
+          if (/手術.*醫療|住院.*手術/.test(text)) return { key: 'surgery', icon: '⚕️', title: '癌症住院手術' };
+          if (/門診.*手術/.test(text)) return { key: 'opsurg', icon: '🚪', title: '癌症門診手術' };
+          if (/標靶/.test(text)) return { key: 'targeting', icon: '🎯', title: '標靶治療' };
+          if (/化學|放射/.test(text)) return { key: 'chemo', icon: '💉', title: '化放療' };
+          if (/(住院|每日|日額)/.test(text) && !/手術/.test(text)) return { key: 'daily', icon: '🏥', title: '癌症日額' };
+          return { key: 'critical', icon: '🎗️', title: '重大傷病/癌症' };
+        }
+        if (/喪葬|身故/.test(text)) return { key: 'death', icon: '🕊️', title: '身故' };
+        if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能' };
+        if (/實支|病房費用|住院.*費/.test(text)) return { key: 'reimburse', icon: '💊', title: '實支' };
+        if (/(住院|每日|日額)/.test(text) && !/手術|處置|門診|實支/.test(text)) return { key: 'daily', icon: '🏥', title: '住院日額' };
+        if (/手術/.test(text)) return { key: 'surgery', icon: '⚕️', title: '手術' };
+        return { key: 'other', icon: '📋', title: '其他' };
+      }
+      function categorize5(product) {
+        var cat = String(product.category || ''); var code = String(product.code || ''); var name = String(product.name || '');
+        var t = cat + ' ' + name;
+        if (/豁免/.test(t)) return { mainKey: 'other', mainTitle: '其他' };
+        if (/意外|傷害|骨折/.test(t)) return { mainKey: 'accident', mainTitle: '意外醫療' };
+        if (/壽險|身故/.test(cat)) return { mainKey: 'life', mainTitle: '人身/失能' };
+        if (/重大傷病|重疾/.test(cat) && !/癌症/.test(cat)) return { mainKey: 'critical', mainTitle: '重大傷病' };
+        if (/癌症/.test(cat)) return { mainKey: 'cancer', mainTitle: '癌症險' };
+        if (/實支實付|自負額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '實支實付' };
+        if (/定額|手術|住院日額/.test(cat)) return { mainKey: 'medical', mainTitle: '住院醫療', subTitle: '定額' };
+        return { mainKey: 'other', mainTitle: '其他' };
+      }
+      g.AHShared = {
+        version: '1.0-inline-fallback',
+        convertProductClaims: convertProductClaims,
+        calcBenefitValue: calcBenefitValue,
+        classifyItem: classifyItem,
+        categorize5: categorize5
+      };
+      console.log('[enhancements] AHShared inline fallback 已設置');
+    })(window);
+  }
+
+
   // ── 設定常數 ──
   const LS_KEY = 'rexAH_needsInput_v1';
   const DEFAULT_INPUT = {
