@@ -430,6 +430,355 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 前十大投資部位（基金實際持有的世界級企業） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">前十大投資部位</h2>
+      <p class="block-subtitle">基金重倉持有的世界級企業 ・ 配置比例為基金月報截錄</p>
+
+      <style>
+        .holdings-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+          margin-top: 18px;
+        }
+        .holding-card {
+          background: linear-gradient(135deg, #fff 0%, var(--bg-cream) 100%);
+          border: 1.5px solid var(--border);
+          border-radius: 14px;
+          padding: 18px;
+          position: relative;
+          display: flex;
+          gap: 14px;
+          align-items: flex-start;
+          transition: all 0.3s var(--ease-out-quint);
+        }
+        .holding-card:hover {
+          border-color: var(--orange);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-md);
+        }
+        .holding-rank {
+          position: absolute;
+          top: 12px;
+          right: 14px;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 28px;
+          color: var(--gold);
+          letter-spacing: 1px;
+          opacity: 0.5;
+          line-height: 1;
+        }
+        .holding-logo {
+          width: 56px;
+          height: 56px;
+          border-radius: 12px;
+          background: #fff;
+          border: 1.5px solid var(--border);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          flex-shrink: 0;
+          position: relative;
+        }
+        .holding-logo img {
+          max-width: 80%;
+          max-height: 80%;
+          object-fit: contain;
+        }
+        .logo-fallback {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 18px;
+          font-weight: 900;
+          color: #fff;
+          background: linear-gradient(135deg, var(--navy), #1a4a5a);
+          border-radius: 10px;
+          margin: 4px;
+        }
+        .holding-info {
+          flex: 1;
+          min-width: 0;
+        }
+        .holding-name-en {
+          font-size: 13px;
+          font-weight: 900;
+          color: var(--navy);
+          letter-spacing: 0.5px;
+          line-height: 1.2;
+          margin-bottom: 2px;
+          padding-right: 40px;
+        }
+        .holding-name-zh {
+          font-size: 12px;
+          color: #6b7680;
+          margin-bottom: 8px;
+          letter-spacing: 0.5px;
+        }
+        .holding-meta {
+          display: flex;
+          gap: 6px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+        }
+        .h-pct {
+          background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+          color: #fff;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 14px;
+          padding: 3px 10px;
+          border-radius: 10px;
+          letter-spacing: 1px;
+        }
+        .h-tag {
+          font-size: 10px;
+          padding: 3px 9px;
+          border-radius: 10px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+        .h-tag.sector { background: var(--bg-cream); color: var(--navy); border: 1px solid var(--border); }
+        .h-tag.stock { background: rgba(46,139,87,0.1); color: var(--green); }
+        .h-tag.bond { background: rgba(232,160,32,0.15); color: #b87010; }
+        .holding-desc {
+          font-size: 12px;
+          color: #555;
+          line-height: 1.6;
+          margin: 0 0 8px;
+        }
+        .holding-cap {
+          font-size: 11px;
+          color: #888;
+          padding-top: 8px;
+          border-top: 1px dashed var(--border);
+        }
+        .holding-cap strong {
+          color: var(--orange);
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 14px;
+          letter-spacing: 1px;
+        }
+        @media (max-width: 720px) {
+          .holdings-grid { grid-template-columns: 1fr; }
+          .holding-logo { width: 48px; height: 48px; }
+        }
+      </style>
+
+      <div class="holdings-grid">
+
+        <div class="holding-card">
+          <span class="holding-rank">01</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/nvidia.com" alt="NVIDIA" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">NV</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">NVIDIA CORP</div>
+            <div class="holding-name-zh">輝達 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">2.91%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">全球 GPU 與 AI 晶片龍頭，主導 AI 訓練、資料中心與遊戲市場。</p>
+            <div class="holding-cap">世界市值排名 <strong>#1 ~ #2</strong> ・ 約 3.3 兆美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">02</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/apple.com" alt="Apple" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">AP</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">APPLE INC</div>
+            <div class="holding-name-zh">蘋果 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">2.22%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">全球科技消費品龍頭，iPhone、Mac、AirPods 與服務生態系。</p>
+            <div class="holding-cap">世界市值排名 <strong>#1 ~ #2</strong> ・ 約 3.4 兆美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">03</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/abc.xyz" alt="Alphabet" onerror="this.onerror=null;this.src='https://logo.clearbit.com/google.com';">
+            <div class="logo-fallback" style="display:none;">AL</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">ALPHABET INC-CL A</div>
+            <div class="holding-name-zh">字母（Google 母公司）・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">1.70%</span>
+              <span class="h-tag sector">通訊服務</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">全球最大搜尋引擎 Google、YouTube、Android、雲端與 AI。</p>
+            <div class="holding-cap">世界市值排名 <strong>#4 ~ #5</strong> ・ 約 2.0 兆美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">04</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">MS</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">MICROSOFT CORP</div>
+            <div class="holding-name-zh">微軟 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">1.39%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">Windows、Office 365、Azure 雲端 ・ OpenAI 重要投資者。</p>
+            <div class="holding-cap">世界市值排名 <strong>#3</strong> ・ 約 3.0 兆美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">05</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">AM</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">AMAZON.COM INC</div>
+            <div class="holding-name-zh">亞馬遜 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">1.28%</span>
+              <span class="h-tag sector">非必需消費</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">全球最大電商與雲端服務 AWS ・ Prime 會員、影音串流。</p>
+            <div class="holding-cap">世界市值排名 <strong>#4 ~ #5</strong> ・ 約 2.1 兆美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">06</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/westerndigital.com" alt="Western Digital" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">WD</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">WESTERN DIGITAL CORP</div>
+            <div class="holding-name-zh">西部數據 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">1.16%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag bond">可轉債 ・ 3.000% / 2028</span>
+            </div>
+            <p class="holding-desc">全球儲存裝置領導廠商 ・ HDD、SSD、企業儲存解決方案。</p>
+            <div class="holding-cap">世界市值排名 <strong>#400+</strong> ・ 約 280 億美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">07</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/jnj.com" alt="Johnson & Johnson" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">JJ</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">JOHNSON &amp; JOHNSON</div>
+            <div class="holding-name-zh">嬌生 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">1.06%</span>
+              <span class="h-tag sector">醫療製藥</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">全球最大製藥與醫材公司之一 ・ 連續 60 年配息穩定增長。</p>
+            <div class="holding-cap">世界市值排名 <strong>#22</strong> ・ 約 3,800 億美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">08</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/broadcom.com" alt="Broadcom" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">BC</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">BROADCOM INC</div>
+            <div class="holding-name-zh">博通 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">0.98%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag stock">股票</span>
+            </div>
+            <p class="holding-desc">半導體與基礎軟體大廠 ・ AI 網路晶片、VMware 企業軟體。</p>
+            <div class="holding-cap">世界市值排名 <strong>#9 ~ #10</strong> ・ 約 8,500 億美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">09</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/lumentum.com" alt="Lumentum" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">LU</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">LUMENTUM HOLDINGS INC</div>
+            <div class="holding-name-zh">魯門騰 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">0.87%</span>
+              <span class="h-tag sector">資訊科技</span>
+              <span class="h-tag bond">可轉債 ・ 0.500% / 2028</span>
+            </div>
+            <p class="holding-desc">光通訊與感測元件 ・ AI 資料中心光通訊、Apple Face ID 供應商。</p>
+            <div class="holding-cap">世界市值排名 <strong>#1000+</strong> ・ 約 30-50 億美元</div>
+          </div>
+        </div>
+
+        <div class="holding-card">
+          <span class="holding-rank">10</span>
+          <div class="holding-logo">
+            <img src="https://logo.clearbit.com/welltower.com" alt="Welltower" onerror="this.style.display='none';this.parentElement.querySelector('.logo-fallback').style.display='flex';">
+            <div class="logo-fallback" style="display:none;">WT</div>
+          </div>
+          <div class="holding-info">
+            <div class="holding-name-en">WELLTOWER OP LLC</div>
+            <div class="holding-name-zh">Welltower 醫療地產 ・ 美國</div>
+            <div class="holding-meta">
+              <span class="h-pct">0.86%</span>
+              <span class="h-tag sector">房地產</span>
+              <span class="h-tag bond">可轉債 ・ 3.125% / 2029</span>
+            </div>
+            <p class="holding-desc">北美最大健康照護 REIT ・ 老人住宅、醫療辦公、護理機構。</p>
+            <div class="holding-cap">世界市值排名 <strong>~#100</strong> ・ 約 950 億美元</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="info-card" style="margin-top: 18px;">
+        <p style="font-size: 13px; line-height: 1.9; color: var(--navy);">
+          <strong style="color: var(--orange);">▸ 投資邏輯：</strong>
+          前十大部位中，<strong>蘋果、輝達、微軟、Google、亞馬遜</strong>五家就佔全球科技與消費市值的核心地位；嬌生與 Welltower 提供醫療與房地產的防禦性，博通與 Lumentum 為 AI 基礎設施題材，西部數據可轉債提供下檔保護。<strong>單一基金讓你同時持有 10 家全球頂尖企業</strong>，這就是專業代操的優勢。
+        </p>
+      </div>
+
+      <div class="note-box">
+        <strong>📊 即時查詢</strong>　以上市值排名為示意參考（截至 2025/05 訓練資料）。最新即時排名請至
+        <a href="https://companiesmarketcap.com" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">companiesmarketcap.com</a>
+        查詢。
+      </div>
+    </div>
+
     <!-- 歷史績效 -->
     <div class="section-block" data-reveal>
       <h2 class="block-title">歷史績效表現</h2>
