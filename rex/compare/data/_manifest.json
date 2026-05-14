@@ -119,9 +119,10 @@
     "period": 6,
     "engine": "twlife_v1",
     "declared_rate": 0.04,
-    "base_sa": 41670,
-    "base_age": 1,
-    "base_premium": 3472.5
+    "base_sa": 720000,
+    "base_age": 36,
+    "base_premium": 199299,
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 3年"
   },
   {
     "key": "NWLS",
@@ -3748,11 +3749,12 @@
     "period": 12,
     "engine": "prudential_v2",
     "declared_rate": 0,
-    "base_sa": 100000,
-    "base_age": 40,
-    "base_premium": 8333.33,
+    "base_sa": 185510,
+    "base_age": 36,
+    "base_premium": 200000,
     "plan_code": "ACLPEU25",
-    "product_code": "ACLPEU25"
+    "product_code": "ACLPEU25",
+    "verified_against": "Drew 2026-05-14 美元利變還本 12年"
   },
   {
     "key": "ACLPEU26",
@@ -3917,11 +3919,12 @@
     "period": 3,
     "engine": "prudential_v2",
     "declared_rate": 0,
-    "base_sa": 1000000,
-    "base_age": 40,
-    "base_premium": 83333.33,
+    "base_sa": 693037,
+    "base_age": 36,
+    "base_premium": 200000,
     "plan_code": "ARLPLN11",
-    "product_code": "ARLPLN11"
+    "product_code": "ARLPLN11",
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 3年"
   },
   {
     "key": "ARLPLN16",
@@ -3934,9 +3937,10 @@
     "period": 1,
     "engine": "prudential_v2",
     "declared_rate": 0.04,
-    "base_sa": 129100,
-    "base_age": 40,
-    "base_premium": 10758.33
+    "base_sa": 682501,
+    "base_age": 36,
+    "base_premium": 200000,
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 3年"
   },
   {
     "key": "ARLPLN20",
@@ -3964,9 +3968,10 @@
     "period": 1,
     "engine": "prudential_v2",
     "declared_rate": 0.04,
-    "base_sa": 94900,
-    "base_age": 40,
-    "base_premium": 7908.33
+    "base_sa": 970319,
+    "base_age": 36,
+    "base_premium": 200000,
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 3年"
   },
   {
     "key": "ARLPLN25",
@@ -6649,5 +6654,19 @@
     "verified_against": "Drew 2026-05-14 美元利變還本 6年",
     "needs_extraction": true,
     "path": "fubon/FWD8.json"
+  },
+  {
+    "key": "15RPISWLB",
+    "name": "15RPISWLB",
+    "company": "fubon",
+    "engine": "twlife_v1",
+    "plan_year": 15,
+    "base_sa": 3000000,
+    "base_premium": 100123,
+    "base_age": 36,
+    "currency": "USD",
+    "verified_against": "Drew 2026-05-14 美元利變非還本 15年",
+    "needs_extraction": true,
+    "path": "fubon/15RPISWLB.json"
   }
 ]

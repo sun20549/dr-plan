@@ -685,12 +685,9 @@
     const resultCard = document.getElementById('resultCard');
     if (!personCard || !resultCard) return false;
 
-    // 1. 注入需求分析輸入卡片 — 在 personCard 之後
-    if (!document.getElementById('needsInputCard')) {
-      const needs = buildNeedsInputCard();
-      personCard.parentNode.insertBefore(needs, personCard.nextSibling);
-      bindNeedsInputEvents();
-    }
+    // 1. 需求分析輸入卡片 — 使用者要求拿掉,不再注入
+    // (原邏輯保留在 buildNeedsInputCard / bindNeedsInputEvents 函式內,
+    //  以後若要恢復取消註解即可)
 
     // 2. 注入分析結果卡片 — 在 resultCard 之後
     if (!document.getElementById('analysisCard')) {

@@ -9,15 +9,16 @@
     "period": 1,
     "engine": "prudential_v2",
     "base_sex": "M",
-    "base_age": 40,
-    "base_sa": 129100,
-    "base_premium": 10758.33,
+    "base_age": 36,
+    "base_sa": 682501,
+    "base_premium": 200000,
     "discount": 0,
     "declared_rate": 0.04,
     "extracted_at": "2026-05-13",
     "extracted_by": "cowork-pru-final",
     "needs_revalidation": true,
-    "notes": "[校準 base_sa: 500000→652866, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=303435.0, 期=1] [v4: bp=303,435異常, 改用 sa/12=10758.33]"
+    "notes": "[校準 base_sa: 500000→652866, 從 max_death 反推] [v2 校準: base_prem=Y2-Y1, base_sa=Y1_death] [v3 校準: 年繳=303435.0, 期=1] [v4: bp=303,435異常, 改用 sa/12=10758.33]",
+    "verified_against": "Drew 2026-05-14 台幣利變非還本 3年"
   },
   "schedule": [
     {
