@@ -712,13 +712,14 @@ async function detectCaseScreenshots(caseId, container) {
   const parsedFiles = files.map(url => {
     const fname = url.split('/').pop();
     let m;
-    if ((m = fname.match(/^[a-z]\d{4}-(\d{8})-(\d+)\./i))) {
+    // 不限定前綴格式（支援 allianz / case ID / 任意），只要中間有 -YYYYMMDD-N
+    if ((m = fname.match(/-(\d{8})-(\d+)\.\w+$/i))) {
       return { url, ymd: m[1], idx: parseInt(m[2], 10) };
     }
-    if ((m = fname.match(/^[a-z]\d{4}-(\d{6})-(\d+)\./i))) {
+    if ((m = fname.match(/-(\d{6})-(\d+)\.\w+$/i))) {
       return { url, ymd: m[1] + '00', idx: parseInt(m[2], 10) };
     }
-    if ((m = fname.match(/^[a-z]\d{4}-(\d+)\./i))) {
+    if ((m = fname.match(/-(\d+)\.\w+$/i))) {
       return { url, ymd: null, idx: parseInt(m[1], 10) };
     }
     return { url, ymd: null, idx: 999 };

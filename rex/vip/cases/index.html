@@ -842,26 +842,56 @@
     } catch (e) { /* 沒 manifest 就跳過 */ }
   })();
 
-  // ─── 案例搜尋功能 ───
+  // ─── 案例搜尋功能（防卡頓版） ───
   const searchInput = document.getElementById('caseSearch');
   if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const q = this.value.trim().toLowerCase();
-      const allCards = document.querySelectorAll('.case-diamond, .case-gold, .case-std');
-      const tableRows = document.querySelectorAll('#tableView tbody tr');
-      let visibleCount = 0;
-      allCards.forEach(card => {
-        const id = (card.querySelector('.case-d-id, .case-g-id, .case-std-id')?.textContent || '').toLowerCase();
-        const amount = (card.querySelector('.case-d-amount, .case-g-amount, .case-std-amount')?.textContent || '').toLowerCase();
-        const match = !q || id.includes(q) || amount.includes(q);
-        card.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
+    // 加 CSS class 來隱藏（比 inline style 快很多）
+    if (!document.getElementById('search-hidden-style')) {
+      const s = document.createElement('style');
+      s.id = 'search-hidden-style';
+      s.textContent = '.search-hidden { display: none !important; }';
+      document.head.appendChild(s);
+    }
+
+    // 快取卡片資料（只算一次，避免每打字都查 DOM）
+    let cardCache = null;
+    function buildCache() {
+      const cards = document.querySelectorAll('.case-diamond, .case-gold, .case-std');
+      cardCache = Array.from(cards).map(el => {
+        const idEl = el.querySelector('.case-d-id, .case-g-id, .case-std-id');
+        const amtEl = el.querySelector('.case-d-amount, .case-g-amount, .case-std-amount');
+        return {
+          el,
+          search: ((idEl?.textContent || '') + ' ' + (amtEl?.textContent || '')).toLowerCase()
+        };
       });
-      tableRows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = (!q || text.includes(q)) ? '' : 'none';
-      });
-      // 若搜尋有結果，自動恢復隱藏的 grid 與 divider
+    }
+
+    let rowCache = null;
+    function buildRowCache() {
+      const rows = document.querySelectorAll('#tableView tbody tr');
+      rowCache = Array.from(rows).map(el => ({ el, search: el.textContent.toLowerCase() }));
+    }
+
+    let searchTimer = null;
+    function runSearch(q) {
+      q = q.trim().toLowerCase();
+      if (!cardCache) buildCache();
+      if (!rowCache) buildRowCache();
+
+      let visible = 0;
+      // 卡片
+      for (const c of cardCache) {
+        const match = !q || c.search.includes(q);
+        c.el.classList.toggle('search-hidden', !match);
+        if (match) visible++;
+      }
+      // 表格列
+      for (const r of rowCache) {
+        const match = !q || r.search.includes(q);
+        r.el.classList.toggle('search-hidden', !match);
+      }
+      // 搜尋有結果就解除篩選器隱藏
       if (q) {
         document.querySelectorAll('#cardView > .tier-divider, #cardView > .diamond-grid, #cardView > .gold-grid, #cardView > .std-grid').forEach(el => {
           el.classList.remove('hidden');
@@ -869,9 +899,23 @@
         document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
         document.querySelector('.filter-tab[data-filter="all"]')?.classList.add('active');
       }
-      // 更新統計顯示
+      // 更新顯示筆數
       const info = document.querySelector('.sort-info strong');
-      if (info) info.textContent = q ? visibleCount : '73';
+      if (info) info.textContent = q ? visible : '73';
+    }
+
+    // Debounce：等使用者停止輸入 120ms 才搜尋（避免每打 1 個字就跑整個列表）
+    searchInput.addEventListener('input', function() {
+      const q = this.value;
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => runSearch(q), 120);
+    });
+    // Enter 立即搜尋
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        clearTimeout(searchTimer);
+        runSearch(this.value);
+      }
     });
   }
 </script>

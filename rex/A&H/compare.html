@@ -2918,7 +2918,9 @@ const App = (() => {
         { cid: 'tbl', code: 'HW', defaultAmount: 1000 },
         { cid: 'mli', code: 'HYSI', defaultAmount: 1000 },
         { cid: 'cathay', code: 'L67', defaultAmount: 1000 },
-        { cid: 'kgi', code: 'MAJIMC', defaultAmount: 1000 }
+        { cid: 'kgi', code: 'MAJIMC', defaultAmount: 1000 },
+        { cid: 'xinguang', code: 'NPA', defaultAmount: 1000 },
+        { cid: 'fubon', code: 'SJR1', defaultAmount: 1000 }
       ]
     },
     { key: '定額日額', products: [
@@ -4661,6 +4663,7 @@ const App = (() => {
       await load();
       renderCatTabs();
       switchCategory(state.categoryKey);
+      bindGlobals();
     } catch (e) {
       document.getElementById('pickerBody').innerHTML = '<div class="picker-empty">載入失敗:' + e.message + '</div>';
       console.error(e);

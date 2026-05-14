@@ -626,6 +626,209 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 月度績效實證（自動探測 assets/img/allianz/） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block case-screenshots-section" data-case-id="allianz" data-reveal hidden>
+      <h2 class="block-title">月度績效實證</h2>
+      <p class="block-subtitle">每月最新基金月報截圖 ・ 依時間倒序排列 ・ 點擊放大檢視</p>
+      <div class="screenshots-grid"></div>
+      <div class="note-box">
+        <strong>📋 證據說明</strong>　以上為安聯基金官方月報擷取，包含當月績效、配息、資產配置與經理人觀點等。如需了解更多細節，歡迎預約一對一說明。
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 投資情境模擬器 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">投資情境模擬</h2>
+      <p class="block-subtitle">假設年化報酬 7% / 配息率 8.5% ・ 試算您的退休金規模</p>
+
+      <div style="background: linear-gradient(135deg, var(--bg-cream), #fff); border: 1.5px solid var(--border); border-radius: 18px; padding: 28px; box-shadow: var(--shadow-md);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 24px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 900; color: #6b7680; letter-spacing: 1.5px; margin-bottom: 8px; display: block;">▸ 投入金額（萬元）</label>
+            <input type="range" id="simAmt" min="50" max="3000" step="50" value="500" style="width: 100%; accent-color: var(--orange);">
+            <div style="text-align: center; margin-top: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--orange); letter-spacing: 1px;">
+              <span id="simAmtOut">500</span><span style="font-size: 16px; color: #888; margin-left: 4px;">萬</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 900; color: #6b7680; letter-spacing: 1.5px; margin-bottom: 8px; display: block;">▸ 投資年數</label>
+            <input type="range" id="simYr" min="1" max="30" step="1" value="10" style="width: 100%; accent-color: var(--orange);">
+            <div style="text-align: center; margin-top: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--orange); letter-spacing: 1px;">
+              <span id="simYrOut">10</span><span style="font-size: 16px; color: #888; margin-left: 4px;">年</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px;">
+          <div style="background: linear-gradient(135deg, var(--navy), #1a4a5a); color: #fff; padding: 22px 18px; border-radius: 14px; text-align: center; box-shadow: var(--shadow-md);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 2px; margin-bottom: 8px; font-weight: 700;">累積資產（含複利）</div>
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--gold); line-height: 1;"><span id="simFinal">983</span><span style="font-size: 18px; color: rgba(255,255,255,0.5); margin-left: 4px;">萬</span></div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 6px;">第 <span id="simYrTxt">10</span> 年末</div>
+          </div>
+          <div style="background: linear-gradient(135deg, var(--orange), var(--orange-deep)); color: #fff; padding: 22px 18px; border-radius: 14px; text-align: center; box-shadow: var(--shadow-orange);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.85); letter-spacing: 2px; margin-bottom: 8px; font-weight: 700;">每月預期配息</div>
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: #fff; line-height: 1;"><span id="simMonthly">35,417</span></div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 6px;">配息率 8.5% / 12</div>
+          </div>
+          <div style="background: linear-gradient(135deg, var(--green), #1a6b3a); color: #fff; padding: 22px 18px; border-radius: 14px; text-align: center; box-shadow: var(--shadow-md);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.85); letter-spacing: 2px; margin-bottom: 8px; font-weight: 700;">期間累積配息</div>
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: #fff; line-height: 1;"><span id="simDiv">425</span><span style="font-size: 18px; color: rgba(255,255,255,0.7); margin-left: 4px;">萬</span></div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 6px;">N 年總配息</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning-box" style="margin-top: 16px;">
+        <strong>⚠ 重要提示</strong>　以上為示意試算，採年化報酬 7%、年化配息率 8.5% 之假設。實際績效視市場表現而定，配息可能涉及本金。投資前請審慎評估自身風險承受度。
+      </div>
+
+      <script>
+      (function() {
+        const amt = document.getElementById('simAmt');
+        const yr = document.getElementById('simYr');
+        const amtOut = document.getElementById('simAmtOut');
+        const yrOut = document.getElementById('simYrOut');
+        const yrTxt = document.getElementById('simYrTxt');
+        const finalEl = document.getElementById('simFinal');
+        const monthlyEl = document.getElementById('simMonthly');
+        const divEl = document.getElementById('simDiv');
+        if (!amt || !yr) return;
+        function fmt(n) { return n.toLocaleString('en-US'); }
+        function calc() {
+          const a = parseFloat(amt.value);
+          const y = parseFloat(yr.value);
+          const r = 0.07, dr = 0.085;
+          const final = a * Math.pow(1 + r, y);
+          const monthly = (a * 10000 * dr) / 12;  // 萬 → 元
+          const cumDiv = a * dr * y;
+          amtOut.textContent = fmt(a);
+          yrOut.textContent = y;
+          yrTxt.textContent = y;
+          finalEl.textContent = fmt(Math.round(final));
+          monthlyEl.textContent = fmt(Math.round(monthly));
+          divEl.textContent = fmt(Math.round(cumDiv));
+        }
+        amt.addEventListener('input', calc);
+        yr.addEventListener('input', calc);
+        calc();
+      })();
+      </script>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 與其他投資工具比較 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">與其他投資工具比較</h2>
+      <p class="block-subtitle">投入 100 萬 ・ 10 年後預估累積資產（含複利或配息累積，**示意值**）</p>
+
+      <div class="table-scroll-mobile">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>投資工具</th>
+            <th class="right">年化報酬</th>
+            <th class="right">10 年累積</th>
+            <th class="right">10 年配息</th>
+            <th class="center">流動性</th>
+            <th class="center">保障</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: rgba(232,160,32,0.06);">
+            <td><strong style="color: var(--orange);">安聯收益成長基金（投資型保單）</strong></td>
+            <td class="right"><span class="num pct-up">+7.0%</span></td>
+            <td class="right"><span class="num">197 萬</span></td>
+            <td class="right"><span class="num pct-up">85 萬</span></td>
+            <td class="center"><span class="badge">月配息</span></td>
+            <td class="center"><span class="badge" style="background: rgba(46,139,87,0.15); color: var(--green);">★ 含壽險</span></td>
+          </tr>
+          <tr>
+            <td>0050 ETF（元大台灣 50）</td>
+            <td class="right"><span class="num pct-up">+7.5%</span></td>
+            <td class="right"><span class="num">206 萬</span></td>
+            <td class="right">—（殖利率 3%）</td>
+            <td class="center"><span class="badge">隨時買賣</span></td>
+            <td class="center">—</td>
+          </tr>
+          <tr>
+            <td>0056 ETF（元大高股息）</td>
+            <td class="right"><span class="num pct-up">+5.0%</span></td>
+            <td class="right"><span class="num">163 萬</span></td>
+            <td class="right">—（殖利率 5-6%）</td>
+            <td class="center"><span class="badge">隨時買賣</span></td>
+            <td class="center">—</td>
+          </tr>
+          <tr>
+            <td>銀行定存（年息 1.6%）</td>
+            <td class="right"><span class="num">+1.6%</span></td>
+            <td class="right"><span class="num">117 萬</span></td>
+            <td class="right">—（含於利息）</td>
+            <td class="center"><span class="badge">100% 流動</span></td>
+            <td class="center">—</td>
+          </tr>
+          <tr>
+            <td>美元儲蓄險（IRR 約 3%）</td>
+            <td class="right"><span class="num">+3.0%</span></td>
+            <td class="right"><span class="num">134 萬</span></td>
+            <td class="right">—（含於增值）</td>
+            <td class="center"><span class="badge" style="background: rgba(200,32,58,0.1); color: var(--red);">綁期 6-10 年</span></td>
+            <td class="center"><span class="badge" style="background: rgba(46,139,87,0.15); color: var(--green);">★ 含壽險</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="info-card" style="margin-top: 16px;">
+        <p style="font-size: 13px; line-height: 1.9; color: var(--navy);">
+          <strong style="color: var(--orange);">▸ 為何選安聯收益成長：</strong>同時兼顧 <strong>成長性</strong>（年化 7%）+ <strong>現金流</strong>（月配 8.5%）+ <strong>壽險保障</strong> + <strong>專業代操</strong>。對比單純買 ETF 沒保障、定存報酬太低、儲蓄險彈性差，安聯收益成長透過投資型保單配置是最平衡的方案。
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 獎項與認證 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">獎項與認證</h2>
+      <p class="block-subtitle">市場第三方權威機構肯定</p>
+
+      <div class="feature-list cols-1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <li style="display: flex; gap: 14px; padding: 18px;">
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--gold); font-size: 24px;">🏆</div>
+          <div class="feat-text">
+            <strong>Lipper Fund Awards</strong>
+            連續多年獲得理柏基金獎肯定 ・ 平衡型基金類別
+          </div>
+        </li>
+        <li style="display: flex; gap: 14px; padding: 18px;">
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--gold); font-size: 24px;">⭐</div>
+          <div class="feat-text">
+            <strong>Morningstar 4-5 星評等</strong>
+            晨星權威評等長期穩定 ・ 平衡型基金前段班
+          </div>
+        </li>
+        <li style="display: flex; gap: 14px; padding: 18px;">
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--gold); font-size: 24px;">🌍</div>
+          <div class="feat-text">
+            <strong>全球前三大資產管理</strong>
+            安聯集團 AuM 超過 2.5 兆歐元 ・ 規模穩定
+          </div>
+        </li>
+        <li style="display: flex; gap: 14px; padding: 18px;">
+          <div class="feat-icon" style="background: rgba(232,160,32,0.15); color: var(--gold); font-size: 24px;">💎</div>
+          <div class="feat-text">
+            <strong>國內保單熱門連結標的</strong>
+            幾乎所有國內投資型保單都列為核心標的 ・ 市場主流
+          </div>
+        </li>
+      </div>
+    </div>
+
     <!-- 為什麼選擇 -->
     <div class="section-block" data-reveal>
       <h2 class="block-title">為什麼選擇安聯收益成長</h2>
