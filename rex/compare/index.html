@@ -5925,8 +5925,12 @@ function actuarialCalc_prudential(plan, sex, age, sumAssured, period) {
 
 // === 工具：保額進位到 unit_size 倍數 + min/max 夾擊 ===
 function applyInsuranceLimits(rawSA, productMeta, age) {
-  const granular = productMeta.granular_sa === true;
-  const unit = granular ? 1 : (productMeta.unit_size || 1000);
+  // v51: unit_size / granular_sa 也優先從 loaded JSON 讀
+  // (PRODUCTS array 的硬編碼 unit_size 與 Drew 不一致 19+ 商品)
+  const _db = getDB(productMeta.plan_code);
+  const _meta = _db?.meta || {};
+  const granular = (_meta.granular_sa ?? productMeta.granular_sa) === true;
+  const unit = granular ? 1 : (_meta.unit_size || productMeta.unit_size || 1000);
   // 向下取整到 unit 倍數(因為「不能超出預算」,寧願保額不足也不超繳)
   let sa = Math.floor(rawSA / unit) * unit;
   // 套用 min/max(依年齡分段)
