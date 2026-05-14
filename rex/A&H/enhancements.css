@@ -384,3 +384,116 @@
   .pd-item { grid-template-columns: 1fr; gap: 4px; }
   .pd-item-val { text-align: left; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+ * Phase 3.1:每家公司專屬樣式(詳細模式內,模仿各家建議書配色)
+ * ═══════════════════════════════════════════════════════════ */
+
+/* 全球人壽 - 青綠色系(teal),模仿全球建議書藍綠主題 */
+.pd-style-quanqiu .pd-co-banner {
+  background: linear-gradient(90deg, #1A6B7215, #fff) !important;
+  border-left-color: #1A6B72 !important;
+}
+.pd-style-quanqiu .pd-product-head {
+  background: linear-gradient(135deg, #f0f7f8, #fff) !important;
+  border-bottom-color: #1A6B72 !important;
+}
+.pd-style-quanqiu .pd-product-name { color: #0D4347; }
+.pd-style-quanqiu .pd-val-num { color: #1A6B72 !important; }
+.pd-style-quanqiu .pd-pill-main {
+  background: #D0EAEC !important;
+  color: #0D4347 !important;
+  border-color: #1A6B72 !important;
+}
+
+/* 新光人壽 - 紅色系,模仿新光官方建議書紅色標頭 */
+.pd-style-xinguang .pd-co-banner {
+  background: linear-gradient(90deg, #E6001215, #fff) !important;
+  border-left-color: #E60012 !important;
+}
+.pd-style-xinguang .pd-product-head {
+  background: linear-gradient(135deg, #fff5f5, #fff) !important;
+  border-bottom-color: #E60012 !important;
+}
+.pd-style-xinguang .pd-product-name { color: #8B0010; }
+.pd-style-xinguang .pd-val-num { color: #C40010 !important; }
+.pd-style-xinguang .pd-pill-main {
+  background: #ffe4e7 !important;
+  color: #8B0010 !important;
+  border-color: #E60012 !important;
+}
+
+/* 宏泰人壽 - 紫色系 */
+.pd-style-hongtai .pd-co-banner {
+  background: linear-gradient(90deg, #6F4FB815, #fff) !important;
+  border-left-color: #6F4FB8 !important;
+}
+.pd-style-hongtai .pd-product-head {
+  background: linear-gradient(135deg, #f5f0ff, #fff) !important;
+  border-bottom-color: #6F4FB8 !important;
+}
+.pd-style-hongtai .pd-product-name { color: #3D2880; }
+.pd-style-hongtai .pd-val-num { color: #6F4FB8 !important; }
+.pd-style-hongtai .pd-pill-main {
+  background: #e8e0f7 !important;
+  color: #3D2880 !important;
+  border-color: #6F4FB8 !important;
+}
+
+/* 遠雄人壽 - 藍色系 */
+.pd-style-farglory .pd-co-banner {
+  background: linear-gradient(90deg, #2B7DC415, #fff) !important;
+  border-left-color: #2B7DC4 !important;
+}
+.pd-style-farglory .pd-product-head {
+  background: linear-gradient(135deg, #f0f6fc, #fff) !important;
+  border-bottom-color: #2B7DC4 !important;
+}
+.pd-style-farglory .pd-product-name { color: #144B7A; }
+.pd-style-farglory .pd-val-num { color: #2B7DC4 !important; }
+.pd-style-farglory .pd-pill-main {
+  background: #d6e8f7 !important;
+  color: #144B7A !important;
+  border-color: #2B7DC4 !important;
+}
+
+/* 富邦人壽 - 綠色系 */
+.pd-style-fubon .pd-co-banner {
+  background: linear-gradient(90deg, #0D6E3F15, #fff) !important;
+  border-left-color: #0D6E3F !important;
+}
+.pd-style-fubon .pd-product-head {
+  background: linear-gradient(135deg, #f0faf4, #fff) !important;
+  border-bottom-color: #0D6E3F !important;
+}
+.pd-style-fubon .pd-product-name { color: #08401E; }
+.pd-style-fubon .pd-val-num { color: #0D6E3F !important; }
+.pd-style-fubon .pd-pill-main {
+  background: #d4ecdb !important;
+  color: #08401E !important;
+  border-color: #0D6E3F !important;
+}
+
+/* 保誠人壽 - 深藍色系 */
+.pd-style-prudential .pd-co-banner {
+  background: linear-gradient(90deg, #003F8715, #fff) !important;
+  border-left-color: #003F87 !important;
+}
+.pd-style-prudential .pd-product-head {
+  background: linear-gradient(135deg, #f0f4fa, #fff) !important;
+  border-bottom-color: #003F87 !important;
+}
+.pd-style-prudential .pd-product-name { color: #002550; }
+.pd-style-prudential .pd-val-num { color: #003F87 !important; }
+.pd-style-prudential .pd-pill-main {
+  background: #d0dceb !important;
+  color: #002550 !important;
+  border-color: #003F87 !important;
+}
+
+/* ── 公司分隔加大空間 ── */
+.pd-co-section + .pd-co-section {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 2px dashed #ddd;
+}

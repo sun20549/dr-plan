@@ -935,14 +935,8 @@
       setTimeout(injectBenefitsFilter, 500);
       return;
     }
-    // ★ 預設切到「詳細」模式 (PDF 風格)
-    const detailBtn = sw.querySelector('.bms-btn[data-mode="detail"]');
-    const simpleBtn = sw.querySelector('.bms-btn[data-mode="simple"]');
-    if (detailBtn && simpleBtn && simpleBtn.classList.contains('active')) {
-      detailBtn.click();
-    }
-    // 隱藏 簡易 / 詳細 切換 (因為兩種都用 PDF 風格)
-    sw.style.display = 'none';
+    // 簡易模式由主檔渲染(5 大類橫排) / 詳細模式由我接管(PDF 風格)
+    // 兩個按鈕都保留
     if (document.getElementById('benefitsCompanyChips')) {
       console.log('[enhancements] chips 已存在,跳過');
       return;
@@ -1054,6 +1048,10 @@
   function renderProposalDetail() {
     const section = document.getElementById('benefitsSection');
     if (!section) return;
+    // 只在詳細模式接管;簡易模式讓主檔自己渲染
+    const sw = document.getElementById('benefitsModeSwitch');
+    const activeBtn = sw && sw.querySelector('.bms-btn.active');
+    if (!activeBtn || activeBtn.dataset.mode !== 'detail') return;
     
     const rows = collectSelectionsFromDOM();
     if (rows.length === 0) return;
@@ -1089,8 +1087,8 @@
         ? '<img class="pd-logo" src="' + co.logoUrl + '" alt="' + compName + '" onerror="this.style.display=\'none\'">'
         : '<span class="pd-logo pd-logo-text" style="background:' + compColor + ';">' + (co && co.shortName ? co.shortName.charAt(0) : compName.charAt(0)) + '</span>';
       
-      html += '<div class="pd-co-section">';
-      html += '<div class="pd-co-banner" style="border-color:' + compColor + ';">';
+      html += '<div class="pd-co-section pd-style-' + cid + '" data-cid="' + cid + '">';
+      html += '<div class="pd-co-banner" style="border-color:' + compColor + '; background:linear-gradient(90deg, ' + compColor + '11, transparent);">';
       html += logoHtml + '<span class="pd-co-name">' + compName + '</span>';
       html += '<span class="pd-co-count">' + grp.rows.length + ' 項商品</span>';
       html += '</div>';
@@ -1155,9 +1153,11 @@
     const section = document.getElementById('benefitsSection');
     if (section) {
       const obs = new MutationObserver(() => {
-        if (!section._enhDetailDrawing) {
+        const activeBtn = sw && sw.querySelector('.bms-btn.active');
+        const isDetail = activeBtn && activeBtn.dataset.mode === 'detail';
+        renderBenefitsFilterChips();
+        if (isDetail && !section._enhDetailDrawing) {
           section._enhDetailDrawing = true;
-          renderBenefitsFilterChips();
           renderProposalDetail();
           setTimeout(() => { section._enhDetailDrawing = false; }, 50);
         }
