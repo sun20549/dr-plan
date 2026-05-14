@@ -6350,7 +6350,10 @@ function calcProductForUser(productMeta, user) {
     const age = user.age;
     const budget = productMeta.currency === 'USD' ? user.budget_usd : user.budget_twd;
     const plan = productMeta.plan_code;
-    const engine = productMeta.engine || 'taishin_v1';
+    // v50: engine 優先從 loaded JSON 讀(meta.engine),fallback PRODUCTS 硬編碼
+    // (171 個商品 PRODUCTS 仍寫 v1,但 JSON 已升級 v2_full,要從 JSON 取才正確)
+    const _db_for_engine = getDB(plan);
+    const engine = _db_for_engine?.meta?.engine || productMeta.engine || 'taishin_v1';
     
     // v6: 若使用者有手動微調該商品保額,跳過預算反推路徑,直接用 override 值
     const saOverride = state.saOverrides[plan];
