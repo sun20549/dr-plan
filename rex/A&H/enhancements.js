@@ -925,7 +925,7 @@
   //  + 加「全部 / 各公司」篩選按鈕
   // ═══════════════════════════════════════════════════════════
   
-  let activeFilterCompanyId = 'all';
+  let activeFilterCompanyId = 'simple';   // 預設顯示簡易統整
   
   function injectBenefitsFilter() {
     const sw = document.getElementById('benefitsModeSwitch');
@@ -966,19 +966,40 @@
     const companies = (db && db.companies) || [];
     const used = companies.filter(c => cids.has(c.name) || cids.has(c.shortName));
     
-    let html = '<button class="bcc-btn ' + (activeFilterCompanyId === 'all' ? 'active' : '') + '" data-cid="all">📊 全部</button>';
+    // 「📋 簡易」按鈕(切回主檔的 5 大類統整視圖)
+    let html = '<button class="bcc-btn bcc-simple ' + (activeFilterCompanyId === 'simple' ? 'active' : '') + '" data-cid="simple">📋 簡易統整</button>';
+    // 每家公司一個按鈕(點下去看該家正式建議書)
     used.forEach(c => {
       const isAct = activeFilterCompanyId === c.id;
-      const dot = '<span class="bcc-dot" style="background:' + (c.color || '#1A6B72') + ';"></span>';
-      html += '<button class="bcc-btn ' + (isAct ? 'active' : '') + '" data-cid="' + c.id + '">' + dot + (c.shortName || c.name) + '</button>';
+      const compColor = c.color || '#1A6B72';
+      const dot = '<span class="bcc-dot" style="background:' + compColor + ';"></span>';
+      html += '<button class="bcc-btn bcc-company" style="--cc:' + compColor + '" ' +
+              'data-cid="' + c.id + '" class="bcc-btn ' + (isAct ? 'active' : '') + '">' +
+              dot + '📑 ' + (c.shortName || c.name) + '建議書</button>';
     });
     wrap.innerHTML = html;
+    // 修正 class (template literal 拼接的 class 重複)
+    wrap.querySelectorAll('.bcc-btn').forEach(btn => {
+      const isAct = btn.dataset.cid === activeFilterCompanyId;
+      btn.classList.toggle('active', isAct);
+    });
     
     wrap.querySelectorAll('.bcc-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         activeFilterCompanyId = btn.dataset.cid;
         renderBenefitsFilterChips();
-        renderProposalDetail();
+        // 簡易:讓主檔渲染(觸發 simple 按鈕);公司:接管渲染該公司建議書
+        const sw = document.getElementById('benefitsModeSwitch');
+        if (activeFilterCompanyId === 'simple') {
+          // 點簡易按鈕 → 觸發主檔 simple mode 渲染
+          const simpleBtn = sw && sw.querySelector('.bms-btn[data-mode="simple"]');
+          if (simpleBtn) simpleBtn.click();
+        } else {
+          // 點公司按鈕 → 切到 detail mode (隱藏的) 然後我接管
+          const detailBtn = sw && sw.querySelector('.bms-btn[data-mode="detail"]');
+          if (detailBtn) detailBtn.click();
+          setTimeout(renderProposalDetail, 200);
+        }
       });
     });
   }

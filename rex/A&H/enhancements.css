@@ -5,6 +5,10 @@
 #aggregateCheck { display: none !important; }
 #needsInputCard { display: none !important; }
 
+/* ── Phase 4 隱藏(改用公司按鈕當入口) ── */
+#analysisCard { display: none !important; }
+#benefitsModeSwitch .bms-btn[data-mode="detail"] { display: none !important; }
+
 /* 2. 共用容器 */
 .x-card { background:#fff; border-radius:14px; box-shadow:0 2px 10px rgba(13,42,58,0.06); margin-bottom:16px; overflow:hidden; border:1px solid var(--border); }
 .x-card-header { background:linear-gradient(135deg,#0D2A3A 0%,#143847 100%); color:#fff; padding:12px 18px; font-size:14px; font-weight:700; letter-spacing:1px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
