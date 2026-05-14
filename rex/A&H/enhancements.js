@@ -1190,9 +1190,13 @@
       
       let amount;
       if (product.amountMode === 'plan') {
+        // DOM 顯示 amount 把「計劃」前綴拿掉了 (line ~4908 的 .replace)
+        // 還原優先順序:1) 直接拼「計劃」+amtNum 2) raw amtNum
         const trial = '計劃' + amtNum;
-        if (product.planMapAmount && product.planMapAmount[trial]) amount = trial;
+        if (amtNum.startsWith('計劃')) amount = amtNum;       // 已含前綴
+        else if (product.planMapAmount && product.planMapAmount[trial]) amount = trial;
         else if (product.planMapAmount && product.planMapAmount[amtNum]) amount = amtNum;
+        else if (product.amountUnit === '計劃' || product.amountUnit === '計畫') amount = trial;  // ★ XHD/XHO/NIR/MIR 都是這條
         else amount = amtNum;
       } else {
         amount = isNaN(parseFloat(amtNum)) ? amtNum : parseFloat(amtNum);
