@@ -825,3 +825,141 @@
   border-bottom: 1px dashed #e8ecef !important;
 }
 .pd-item:last-child { border-bottom: none !important; }
+
+/* ═══════════════════════════════════════════════════════════
+ * Phase 12:重做給付項目佈局,模仿 PDF 條款說明書式
+ *   - 名稱左 + 金額右 (彈性 flex,自動填空白)
+ *   - 條款內文滿寬置左,密集大字方便閱讀
+ *   - 商品間留白拉大,結構清晰
+ * ═══════════════════════════════════════════════════════════ */
+
+/* 商品卡片整體留白 */
+.pd-product {
+  margin-bottom: 20px !important;
+  background: #fff !important;
+  border: 1px solid #d8dde2 !important;
+}
+.pd-product-head {
+  padding: 14px 18px !important;
+  background: linear-gradient(135deg, #fafbfc, #fff) !important;
+  border-bottom: 1px solid #e0e6eb !important;
+}
+.pd-product-name {
+  font-size: 15px !important;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+}
+.pd-product-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #5a6772;
+}
+.pd-product-meta b {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* 給付項目區留白 */
+.pd-items {
+  padding: 0 !important;
+}
+
+/* 單筆給付項目:整段框,內含「標題行 + 條款段」 */
+.pd-item {
+  display: block !important;       /* 改成 block,不用 grid */
+  padding: 0 !important;
+  border-bottom: 1px solid #eef0f2 !important;
+}
+.pd-item:last-child { border-bottom: none !important; }
+
+/* 標題行(名稱 ............... 金額) — 用 flex 自動填空白 */
+.pd-item-name {
+  display: flex !important;
+  align-items: baseline;
+  gap: 8px;
+  padding: 14px 18px 10px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--navy) !important;
+  background: rgba(0,0,0,0.012);
+}
+/* 在 name 後面自動加 dot leader (虛線填補空白) */
+.pd-item-name::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dotted #c5cdd4;
+  position: relative;
+  top: -3px;
+  margin: 0 6px;
+}
+.pd-star { font-size: 13px; }
+
+/* 金額右側對齊在同一行(透過 absolute 定位拉到 name 行右側) */
+.pd-item-val {
+  display: inline-block !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  max-width: none !important;
+  margin-left: auto;
+  padding: 14px 18px 10px 0 !important;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.pd-item { position: relative; }   /* 給 .pd-item-val 用 absolute 的 anchor */
+
+.pd-val-num {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  font-family: "Bebas Neue","Noto Sans TC",sans-serif;
+  letter-spacing: 0.8px;
+}
+.pd-val-text {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  color: #6a7785 !important;
+}
+
+/* 條款內文段:大字密集,一段一段易讀 */
+.pd-item-note {
+  font-size: 13px !important;
+  line-height: 1.85 !important;
+  color: #2c3e50 !important;
+  padding: 0 18px 16px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  text-align: justify;
+  letter-spacing: 0.3px;
+  text-indent: 2em;             /* 段首縮排 */
+  font-family: "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+
+/* 移除 Phase 11 加的灰底淡邊框 */
+.pd-style-quanqiu    .pd-item-note,
+.pd-style-xinguang   .pd-item-note,
+.pd-style-hongtai    .pd-item-note,
+.pd-style-farglory   .pd-item-note,
+.pd-style-fubon      .pd-item-note,
+.pd-style-prudential .pd-item-note {
+  border-left: none !important;
+}
+
+/* 手機:取消 absolute,改成 grid 兩行 */
+@media (max-width: 640px) {
+  .pd-item-val {
+    position: static !important;
+    display: block !important;
+    text-align: right !important;
+    padding: 0 18px 4px !important;
+    font-size: 16px;
+  }
+  .pd-item-name {
+    padding: 12px 18px 4px !important;
+    font-size: 13px !important;
+  }
+  .pd-item-name::after { display: none; }
+  .pd-item-note { padding-bottom: 12px !important; font-size: 12.5px !important; }
+}
