@@ -1454,17 +1454,21 @@ window.INSURANCE_DBS = {};
 window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
+// v61: cache-busting — 每天換版本,瀏覽器一定抓最新
+window.__DATA_VERSION__ = '20260515';
+
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
-  
+
   // 優先從 manifest 查 path(子目錄佈署),fallback 平鋪 ./data/<key>.json
   let url = `./data/${key}.json`;
   if (window.__MANIFEST__) {
     const m = window.__MANIFEST__.find(x => x.key === key);
     if (m && m.path) url = `./data/${m.path}`;
   }
-  
-  const r = await fetch(url);
+  url += `?v=${window.__DATA_VERSION__}`;
+
+  const r = await fetch(url, {cache: 'no-cache'});
   if (!r.ok) throw new Error('載入 '+key+' 失敗 (path: '+url+')');
   const d = await r.json();
   window.__DB_CACHE__[key] = d;
@@ -1473,7 +1477,7 @@ window.loadProductDB = async function(key) {
 };
 window.loadManifest = async function() {
   if (window.__MANIFEST__) return window.__MANIFEST__;
-  const m = await (await fetch('./data/_manifest.json')).json();
+  const m = await (await fetch(`./data/_manifest.json?v=${window.__DATA_VERSION__}`, {cache: 'no-cache'})).json();
   window.__MANIFEST__ = m;
   return m;
 };
