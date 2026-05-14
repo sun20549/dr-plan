@@ -359,74 +359,115 @@
 
     <span class="allianz-tag">FLAGSHIP FUND ・ 旗艦基金</span>
     <h1 class="allianz-name">安聯<span class="accent">收益成長</span>基金</h1>
-    <p class="allianz-en">Allianz Income and Growth Fund ・ AM (穩定月配息) USD</p>
-
-    <div class="allianz-quick-stats" data-reveal="fade">
-      <div class="a-stat">
-        <div class="a-stat-label">基金規模</div>
-        <div class="a-stat-value"><span data-countup="355" data-countup-duration="1800">0</span><span class="u">億美元</span></div>
-      </div>
-      <div class="a-stat">
-        <div class="a-stat-label">配息頻率</div>
-        <div class="a-stat-value">月配</div>
-      </div>
-      <div class="a-stat">
-        <div class="a-stat-label">年化配息率</div>
-        <div class="a-stat-value green"><span data-countup="8.7" data-countup-duration="1800">0.0</span><span class="u">%</span></div>
-      </div>
-      <div class="a-stat">
-        <div class="a-stat-label">成立年限</div>
-        <div class="a-stat-value"><span data-countup="2007" data-countup-duration="2000">0</span><span class="u">起</span></div>
-      </div>
-    </div>
+    <p class="allianz-en">Allianz Income and Growth Fund</p>
   </header>
 
   <div class="content">
 
-    <!-- 品牌專業視覺 -->
+    <!-- 品牌專業視覺（真 Allianz logo） -->
     <div class="section-block" style="margin-bottom: 32px;">
-      <div style="background: linear-gradient(135deg, #003781 0%, #001f4d 100%); border-radius: 18px; padding: 28px 32px; color: #fff; position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; align-items: center;">
-        <div style="position: relative; z-index: 1;">
-          <div style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; letter-spacing: 2px; margin-bottom: 6px;">Allianz</div>
-          <div style="font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 3px; margin-bottom: 14px; text-transform: uppercase;">Global Investors</div>
-          <div style="display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 14px; font-size: 11px; letter-spacing: 1.5px; color: rgba(255,255,255,0.8);">百年品牌 ・ 全球前三大</div>
+      <div style="background: linear-gradient(135deg, #003781 0%, #001f4d 100%); border-radius: 18px; padding: 32px 36px; color: #fff; position: relative; overflow: hidden; display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: center;">
+        <div style="position: relative; z-index: 1; text-align: center;">
+          <div style="background: #fff; border-radius: 12px; padding: 22px 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);">
+            <img src="https://logo.clearbit.com/allianz.com" alt="Allianz Logo"
+                 style="width: 100%; max-width: 160px; height: auto; display: block; margin: 0 auto;"
+                 onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Allianz_rgb_72.svg/640px-Allianz_rgb_72.svg.png'">
+          </div>
+          <div style="margin-top: 12px; display: inline-block; background: rgba(255,255,255,0.12); padding: 5px 14px; border-radius: 14px; font-size: 11px; letter-spacing: 2px; color: #FFD700; font-weight: 700;">EST. 1890 ・ 百年品牌</div>
         </div>
         <div style="position: relative; z-index: 1;">
-          <p style="font-size: 13px; line-height: 1.9; color: rgba(255,255,255,0.85);">
+          <p style="font-size: 14px; line-height: 1.9; color: rgba(255,255,255,0.92);">
             <strong style="color: #FFD700;">安聯集團（Allianz）</strong>創立於 1890 年，總部位於德國慕尼黑，是全球前三大資產管理公司，管理資產規模超過 <strong style="color: #FFD700;">2.5 兆歐元</strong>。安聯收益成長基金為旗艦商品，自 2007 年成立以來，是國內投資型保單最熱門的核心配置標的之一。
           </p>
         </div>
-        <div style="position: absolute; top: -50px; right: -50px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,215,0,0.06); pointer-events: none;"></div>
+        <div style="position: absolute; top: -50px; right: -50px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,215,0,0.08); pointer-events: none;"></div>
       </div>
     </div>
 
-    <!-- 三平衡型介紹 -->
+    <!-- 資產配置 ・ 投資類別實況（依官方月報實際比例） -->
     <div class="section-block" data-reveal>
-      <h2 class="block-title">三平衡型結構</h2>
-      <p class="block-subtitle">結合三大資產類別，創造穩定收益與成長動能</p>
+      <h2 class="block-title">資產配置</h2>
+      <p class="block-subtitle">投資類別 ・ 資料日期 2026/03/31 ・ 依官方月報實際比例</p>
 
-      <div class="three-balance">
-        <div class="balance-card div">
-          <div class="balance-pct">~33<span class="u">%</span></div>
-          <div class="balance-name">美國高股息股票</div>
-          <div class="balance-desc">精選高品質、有穩定股利政策的美國藍籌股，提供穩定股息收入並參與股市上漲機會。</div>
+      <style>
+        .asset-allocation { display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 18px; }
+        .asset-table { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+        .asset-table .ah {
+          background: linear-gradient(135deg, var(--bg-cream), rgba(232,160,32,0.08));
+          padding: 14px 18px; display: flex; justify-content: space-between;
+          font-size: 12px; font-weight: 900; letter-spacing: 1.5px; color: var(--navy);
+          border-bottom: 2px solid var(--gold);
+        }
+        .asset-row {
+          padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
+          border-bottom: 1px solid #f0ebdd; font-size: 14px; color: var(--navy);
+        }
+        .asset-row:last-child { border-bottom: none; }
+        .asset-row strong {
+          font-family: 'Bebas Neue', sans-serif; font-size: 20px;
+          color: var(--orange); letter-spacing: 1px;
+        }
+        .asset-bars { display: flex; flex-direction: column; gap: 14px; padding: 8px 0; }
+        .asset-bar-row { display: flex; align-items: center; gap: 12px; }
+        .asset-bar-name { width: 90px; font-size: 13px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+        .asset-bar-track { flex: 1; height: 22px; background: var(--bg-cream); border-radius: 11px; overflow: hidden; position: relative; }
+        .asset-bar-fill {
+          height: 100%; border-radius: 11px;
+          background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+          display: flex; align-items: center; padding-right: 10px;
+          color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 13px;
+          justify-content: flex-end; letter-spacing: 1px;
+          box-shadow: 0 2px 8px rgba(240,90,40,0.25);
+        }
+        .asset-bar-fill.bond { background: linear-gradient(90deg, #1A6B72, #0F4D52); box-shadow: 0 2px 8px rgba(26,107,114,0.25); }
+        .asset-bar-fill.stock { background: linear-gradient(90deg, #2E8B57, #1a6b3a); box-shadow: 0 2px 8px rgba(46,139,87,0.25); }
+        .asset-bar-fill.cb { background: linear-gradient(90deg, #E8A020, #B87010); box-shadow: 0 2px 8px rgba(232,160,32,0.25); }
+        .asset-bar-fill.cash { background: linear-gradient(90deg, #888, #555); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .asset-bar-fill.pref { background: linear-gradient(90deg, #c84080, #8b2853); box-shadow: 0 2px 8px rgba(200,64,128,0.25); }
+        @media (max-width: 720px) {
+          .asset-allocation { grid-template-columns: 1fr; }
+          .asset-bar-name { width: 70px; font-size: 12px; }
+        }
+      </style>
+
+      <div class="asset-allocation">
+        <!-- 表格 -->
+        <div class="asset-table">
+          <div class="ah"><span>資產類別</span><span>百分比</span></div>
+          <div class="asset-row"><span>債券</span><strong>34.14%</strong></div>
+          <div class="asset-row"><span>股票</span><strong>31.72%</strong></div>
+          <div class="asset-row"><span>可轉股債券</span><strong>24.79%</strong></div>
+          <div class="asset-row"><span>現金</span><strong>5.53%</strong></div>
+          <div class="asset-row"><span>優先股</span><strong>3.82%</strong></div>
+          <div class="asset-row" style="opacity:0.5;"><span>其他</span><strong>0.00%</strong></div>
         </div>
-        <div class="balance-card cb">
-          <div class="balance-pct">~33<span class="u">%</span></div>
-          <div class="balance-name">美國可轉換債券</div>
-          <div class="balance-desc">兼具債券保本特性與股票上漲潛力，為投資組合提供下檔保護與向上彈性。</div>
-        </div>
-        <div class="balance-card hy">
-          <div class="balance-pct">~33<span class="u">%</span></div>
-          <div class="balance-name">美國非投資級債券</div>
-          <div class="balance-desc">高收益債券提供較高利息收入，是配息來源的重要組成，享有信用風險溢酬。</div>
+        <!-- 視覺化條形圖 -->
+        <div class="asset-bars">
+          <div class="asset-bar-row">
+            <span class="asset-bar-name">債券</span>
+            <div class="asset-bar-track"><div class="asset-bar-fill bond" style="width: 34.14%;">34.14%</div></div>
+          </div>
+          <div class="asset-bar-row">
+            <span class="asset-bar-name">股票</span>
+            <div class="asset-bar-track"><div class="asset-bar-fill stock" style="width: 31.72%;">31.72%</div></div>
+          </div>
+          <div class="asset-bar-row">
+            <span class="asset-bar-name">可轉股債券</span>
+            <div class="asset-bar-track"><div class="asset-bar-fill cb" style="width: 24.79%;">24.79%</div></div>
+          </div>
+          <div class="asset-bar-row">
+            <span class="asset-bar-name">現金</span>
+            <div class="asset-bar-track"><div class="asset-bar-fill cash" style="width: 5.53%;">5.53%</div></div>
+          </div>
+          <div class="asset-bar-row">
+            <span class="asset-bar-name">優先股</span>
+            <div class="asset-bar-track"><div class="asset-bar-fill pref" style="width: 3.82%;">3.82%</div></div>
+          </div>
         </div>
       </div>
 
-      <div class="info-card">
-        <p style="font-size:13px; line-height:1.9; color:var(--navy);">
-          <strong style="color:var(--orange);">▸ 設計理念：</strong>透過三大美國資產的均衡配置，安聯收益成長基金能在不同市場環境下發揮各類資產特性 — 股票提供成長動能、可轉債兼顧攻守、高收益債創造穩定收益。長期績效顯示，這種「三平衡」結構在 2008 年金融海嘯、2020 年新冠疫情等重大事件中均展現相對穩定的回復力。
-        </p>
+      <div class="note-box" style="margin-top: 16px;">
+        <strong>📊 配置邏輯</strong>　債券（34.14%）+ 可轉債（24.79%）= 約 59% 防禦性配置；股票（31.72%）+ 優先股（3.82%）= 約 36% 成長型；現金 5.53% 機動運用。
       </div>
     </div>
 
@@ -801,15 +842,7 @@
       <div class="screenshots-grid"></div>
     </div>
 
-    <!-- 資料更新（保留長期走勢區段刪除後的官方連結） -->
-    <div class="section-block" data-reveal>
-      <div class="note-box">
-        <strong>📌 資料更新</strong>　最新淨值與報酬率請查
-        <a href="https://es.allianz.com.tw" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">安聯官網基金平台</a>
-        ・ Fed 利率查
-        <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">FRED 聯準會數據庫</a>
-      </div>
-    </div>
+    <!-- BIG_HIDE_START --><div style="display:none;">
 
     <!-- DELETE_START_MARKER --><div style="display:none;"><style>
 
@@ -1451,6 +1484,158 @@
           <h4>國內保單熱門選</h4>
           <p>幾乎所有國內保險公司投資型保單都將其列為連結標的，是市場最受歡迎的核心配置。</p>
         </div>
+      </div>
+    </div>
+    </div><!-- /BIG_HIDE_END -->
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 市場規模排行（外連結） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">市場規模排行</h2>
+      <p class="block-subtitle">查證安聯收益成長基金在全市場的規模地位</p>
+
+      <style>
+        .rank-link-card {
+          display: flex; align-items: center; gap: 16px;
+          background: #fff; border: 1.5px solid var(--border);
+          border-radius: 14px; padding: 22px 24px;
+          text-decoration: none; color: var(--navy);
+          transition: all 0.3s var(--ease-out-quint);
+          position: relative; overflow: hidden;
+        }
+        .rank-link-card:hover {
+          border-color: var(--orange); transform: translateY(-3px);
+          box-shadow: var(--shadow-md);
+        }
+        .rank-link-card .ricon {
+          font-size: 38px; line-height: 1; flex-shrink: 0;
+          width: 60px; height: 60px;
+          background: linear-gradient(135deg, var(--bg-cream), rgba(232,160,32,0.15));
+          border-radius: 14px;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .rank-link-card .rinfo { flex: 1; }
+        .rank-link-card h4 {
+          font-size: 16px; font-weight: 900; color: var(--navy);
+          margin: 0 0 4px; letter-spacing: 0.5px;
+        }
+        .rank-link-card p {
+          font-size: 12px; color: #888; margin: 0; letter-spacing: 0.5px;
+        }
+        .rank-link-card .rarrow {
+          font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+          color: var(--orange); transition: transform 0.3s;
+        }
+        .rank-link-card:hover .rarrow { transform: translateX(4px); }
+      </style>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <a href="https://www.fundrich.com.tw/2022OfficialWeb/fundCenter/fundHot/fundWatcher?area=B&fundType=b&type=ALL&invArea=all&currency=ALL&dataPeriod=b1m&sort=scale_desc&page=1&tab=0"
+           target="_blank" rel="noopener" class="rank-link-card">
+          <div class="ricon">📊</div>
+          <div class="rinfo">
+            <h4>全市場基金規模排行</h4>
+            <p>基富通 ・ 全市場基金統計 ・ 即時資料</p>
+          </div>
+          <span class="rarrow">→</span>
+        </a>
+        <a href="https://tw.stock.yahoo.com/tw-etf/total-assets"
+           target="_blank" rel="noopener" class="rank-link-card">
+          <div class="ricon">🇹🇼</div>
+          <div class="rinfo">
+            <h4>台灣 ETF 資產規模排行</h4>
+            <p>Yahoo 股市 ・ 對照參考</p>
+          </div>
+          <span class="rarrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 配息範例（1,000 萬本金試算） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">配息範例</h2>
+      <p class="block-subtitle">以 1,000 萬本金實際試算每月、每年配息</p>
+
+      <div style="background: linear-gradient(135deg, #fff 0%, var(--bg-cream) 100%); border: 2px solid var(--gold); border-radius: 18px; padding: 32px; text-align: center; box-shadow: var(--shadow-md);">
+        <div style="font-size: 18px; color: var(--green); font-weight: 900; letter-spacing: 1px; line-height: 2.6;">
+          本金 <strong style="color: var(--navy);">(1,000 萬)</strong>
+          ×
+          當月配息率 <strong style="color: var(--navy);">(0.75%)</strong>
+          <span style="color: #999; margin: 0 8px;">=</span>
+          <span style="color: var(--orange); font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px;">當月配息 7.5 萬</span>
+        </div>
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 18px 0;"></div>
+        <div style="font-size: 18px; color: var(--green); font-weight: 900; letter-spacing: 1px; line-height: 2.6;">
+          本金 <strong style="color: var(--navy);">(1,000 萬)</strong>
+          ×
+          當年配息率 <strong style="color: var(--navy);">(9%)</strong>
+          <span style="color: #999; margin: 0 8px;">=</span>
+          <span style="color: var(--orange); font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px;">當年配息 90 萬</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 規劃完全免費 + 轉存範例（強力銷售訴求） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal="scale">
+      <div style="background: linear-gradient(135deg, #C8203A 0%, #8b1a25 100%); color: #fff; border-radius: 20px; padding: 40px 32px; text-align: center; box-shadow: 0 20px 56px rgba(200,32,58,0.35); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,215,0,0.08); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: -40px; left: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.05); pointer-events: none;"></div>
+        <div style="font-size: 38px; font-weight: 900; letter-spacing: 4px; margin-bottom: 18px; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,0.3); position: relative;">
+          ✨ 這個規劃<span style="color: #FFD700;">完全免費！</span>
+        </div>
+        <div style="font-size: 16px; line-height: 1.9; color: rgba(255,255,255,0.92); position: relative;">
+          原先中國信託有 <strong style="color: #FFD700;">300 萬</strong>，<br>
+          轉存到郵局，<strong style="color: #FFD700; font-size: 22px;">單純只是「轉存」</strong>。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 歷史配息資訊（官方 3 個查詢入口 + Fed 資料） -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-block" data-reveal>
+      <h2 class="block-title">歷史配息資訊</h2>
+      <p class="block-subtitle">官方查詢入口 ・ 查證真實配息紀錄</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <a href="https://product.allianz.com.tw/target/fund/USDEQ3490/FUND_DIVIDEND"
+           target="_blank" rel="noopener" class="rank-link-card">
+          <div class="ricon" style="background: linear-gradient(135deg, #E6F1FB, #B5D4F4);">🏛️</div>
+          <div class="rinfo">
+            <h4 style="font-size:13px;">安聯人壽官網 ・ AM</h4>
+            <p style="font-size:11px;">最多可查 6 年配息紀錄</p>
+          </div>
+          <span class="rarrow">→</span>
+        </a>
+        <a href="https://es.allianz.com.tw/customer/product/target/fund/USDEQ5220/FUND_DIVIDEND"
+           target="_blank" rel="noopener" class="rank-link-card">
+          <div class="ricon" style="background: linear-gradient(135deg, #E6F1FB, #B5D4F4);">🏛️</div>
+          <div class="rinfo">
+            <h4 style="font-size:13px;">安聯人壽官網 ・ AMg7</h4>
+            <p style="font-size:11px;">最多可查 6 年配息紀錄</p>
+          </div>
+          <span class="rarrow">→</span>
+        </a>
+        <a href="https://fund.cnyes.com/detail/%E5%AE%89%E8%81%AF%E6%94%B6%E7%9B%8A%E6%88%90%E9%95%B7%E5%9F%BA%E9%87%91-AM%E7%A9%A9%E5%AE%9A%E6%9C%88%E6%94%B6%E9%A1%9E%E8%82%A1%EF%BC%88%E7%BE%8E%E5%85%83%EF%BC%89/B20,073/"
+           target="_blank" rel="noopener" class="rank-link-card">
+          <div class="ricon" style="background: linear-gradient(135deg, #FAEEDA, #FAC775);">📚</div>
+          <div class="rinfo">
+            <h4 style="font-size:13px;">鉅亨網 ・ 完整紀錄</h4>
+            <p style="font-size:11px;">可查成立至今全部配息</p>
+          </div>
+          <span class="rarrow">→</span>
+        </a>
+      </div>
+
+      <div class="note-box" style="margin-top: 14px;">
+        <strong>📌 Fed 利率資料</strong>　美國聯邦基金利率變化請查
+        <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank" rel="noopener" style="color: var(--orange); font-weight: 700;">FRED 聯準會數據庫</a>
+        ・ 配息率與升降息環境同步觀察。
       </div>
     </div>
 
