@@ -905,6 +905,8 @@
     setupObserver();
     bindChartRangeSlider();
     bindCustomTooltip();
+    injectBenefitsFilter();
+    setupBenefitsDetailOverride();
     annotateRiderRows();
     renderAnalysis();
     purgeTypeTotal();
@@ -917,11 +919,249 @@
     }
   }
 
+
+  // ═══════════════════════════════════════════════════════════
+  //  Phase 3:詳細模式重做 — 模仿正式建議書 PDF「投保利益」排版
+  //  + 加「全部 / 各公司」篩選按鈕
+  // ═══════════════════════════════════════════════════════════
+  
+  let activeFilterCompanyId = 'all';
+  
+  function injectBenefitsFilter() {
+    const sw = document.getElementById('benefitsModeSwitch');
+    if (!sw) return;
+    if (document.getElementById('benefitsCompanyChips')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'benefitsCompanyChips';
+    wrap.className = 'bcc-wrap no-print';
+    sw.parentNode.insertBefore(wrap, sw.nextSibling);
+  }
+  
+  function renderBenefitsFilterChips() {
+    const wrap = document.getElementById('benefitsCompanyChips');
+    if (!wrap) return;
+    const tbody = document.getElementById('resultTbody');
+    if (!tbody) { wrap.innerHTML = ''; return; }
+    const cids = new Set();
+    document.querySelectorAll('#resultTbody .group-header').forEach(tr => {
+      const txt = tr.textContent || '';
+      const nameMatch = txt.match(/([\u4e00-\u9fa5]+人壽|[\u4e00-\u9fa5]+保險)/);
+      if (nameMatch) cids.add(nameMatch[1]);
+    });
+    if (cids.size === 0) { wrap.innerHTML = ''; return; }
+    const db = window.INSURANCE_DB;
+    const companies = (db && db.companies) || [];
+    const used = companies.filter(c => cids.has(c.name) || cids.has(c.shortName));
+    
+    let html = '<button class="bcc-btn ' + (activeFilterCompanyId === 'all' ? 'active' : '') + '" data-cid="all">📊 全部</button>';
+    used.forEach(c => {
+      const isAct = activeFilterCompanyId === c.id;
+      const dot = '<span class="bcc-dot" style="background:' + (c.color || '#1A6B72') + ';"></span>';
+      html += '<button class="bcc-btn ' + (isAct ? 'active' : '') + '" data-cid="' + c.id + '">' + dot + (c.shortName || c.name) + '</button>';
+    });
+    wrap.innerHTML = html;
+    
+    wrap.querySelectorAll('.bcc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeFilterCompanyId = btn.dataset.cid;
+        renderBenefitsFilterChips();
+        renderProposalDetail();
+      });
+    });
+  }
+  
+  function collectSelectionsFromDOM() {
+    const tbody = document.getElementById('resultTbody');
+    if (!tbody) return [];
+    const db = window.INSURANCE_DB;
+    if (!db) return [];
+    const out = [];
+    let currentCompany = null;
+    let currentCid = null;
+    
+    tbody.querySelectorAll('tr').forEach(tr => {
+      if (tr.classList.contains('group-header')) {
+        const txt = tr.textContent || '';
+        const m = txt.match(/([\u4e00-\u9fa5]+人壽|[\u4e00-\u9fa5]+保險)/);
+        if (m) {
+          currentCompany = db.companies.find(c => c.name === m[1] || c.shortName === m[1]);
+          currentCid = currentCompany ? currentCompany.id : null;
+        }
+        return;
+      }
+      if (tr.classList.contains('group-subtotal')) return;
+      
+      const tds = tr.querySelectorAll('td');
+      if (tds.length < 7) return;
+      const codeMatch = (tds[0].textContent || '').match(/\(([A-Z0-9_]+)\)/);
+      if (!codeMatch) return;
+      const code = codeMatch[1];
+      const period = (tds[1].textContent || '').trim();
+      let amtNum = (tds[2].textContent || '').replace(/,/g, '').trim();
+      const fee = parseInt((tds[6].textContent || '').replace(/[^0-9]/g, ''), 10) || 0;
+      const isWaiver = tr.classList.contains('waiver-row');
+      
+      let product = null, cid = currentCid, co = currentCompany;
+      if (!cid) {
+        for (const c of db.companies) {
+          const found = (c.mainProducts || []).find(p => p.code === code) || 
+                        (c.riderProducts || []).find(p => p.code === code);
+          if (found) { product = found; cid = c.id; co = c; break; }
+        }
+      } else if (co) {
+        product = (co.mainProducts || []).find(p => p.code === code) ||
+                  (co.riderProducts || []).find(p => p.code === code);
+      }
+      if (!product) return;
+      
+      let amount;
+      if (product.amountMode === 'plan') {
+        const trial = '計劃' + amtNum;
+        if (product.planMapAmount && product.planMapAmount[trial]) amount = trial;
+        else if (product.planMapAmount && product.planMapAmount[amtNum]) amount = amtNum;
+        else amount = amtNum;
+      } else {
+        amount = isNaN(parseFloat(amtNum)) ? amtNum : parseFloat(amtNum);
+      }
+      
+      out.push({
+        companyId: cid, company: co, code, period, amount, fee, product, isWaiver,
+        type: tds[5].textContent.trim()
+      });
+    });
+    return out;
+  }
+  
+  function renderProposalDetail() {
+    const section = document.getElementById('benefitsSection');
+    if (!section) return;
+    const sw = document.getElementById('benefitsModeSwitch');
+    if (!sw) return;
+    const activeBtn = sw.querySelector('.bms-btn.active');
+    if (!activeBtn || activeBtn.dataset.mode !== 'detail') return;
+    
+    const rows = collectSelectionsFromDOM();
+    if (rows.length === 0) return;
+    
+    let filtered = rows;
+    if (activeFilterCompanyId !== 'all') {
+      filtered = rows.filter(r => r.companyId === activeFilterCompanyId);
+    }
+    
+    const benefitsLib = (window.INSURANCE_DB || {}).benefitsLib || {};
+    const calc = window.AHShared && window.AHShared.calcBenefitValue;
+    const conv = window.AHShared && window.AHShared.convertProductClaims;
+    if (!calc) return;
+    
+    const byCompany = {};
+    const cidOrder = [];
+    filtered.forEach(r => {
+      if (r.isWaiver) return;
+      if (!byCompany[r.companyId]) {
+        byCompany[r.companyId] = { company: r.company, rows: [] };
+        cidOrder.push(r.companyId);
+      }
+      byCompany[r.companyId].rows.push(r);
+    });
+    
+    let html = '';
+    cidOrder.forEach(cid => {
+      const grp = byCompany[cid];
+      const co = grp.company;
+      const compName = co ? co.name : '(未知公司)';
+      const compColor = co ? (co.color || '#1A6B72') : '#1A6B72';
+      const logoHtml = co && co.logoUrl 
+        ? '<img class="pd-logo" src="' + co.logoUrl + '" alt="' + compName + '" onerror="this.style.display=\'none\'">'
+        : '<span class="pd-logo pd-logo-text" style="background:' + compColor + ';">' + (co && co.shortName ? co.shortName.charAt(0) : compName.charAt(0)) + '</span>';
+      
+      html += '<div class="pd-co-section">';
+      html += '<div class="pd-co-banner" style="border-color:' + compColor + ';">';
+      html += logoHtml + '<span class="pd-co-name">' + compName + '</span>';
+      html += '<span class="pd-co-count">' + grp.rows.length + ' 項商品</span>';
+      html += '</div>';
+      
+      grp.rows.forEach(r => {
+        const def = benefitsLib[r.code] || (conv && conv(r.product));
+        if (!def || !def.items) return;
+        
+        const star = r.type === '主約' ? '<span class="pd-pill pd-pill-main">主約</span>' : '<span class="pd-pill pd-pill-rider">附約</span>';
+        html += '<div class="pd-product">';
+        html += '<div class="pd-product-head">';
+        html += '<div class="pd-product-title">';
+        html += '<span class="pd-product-name">【' + r.product.name + '】</span>';
+        html += '<span class="pd-product-code">' + r.code + '</span>' + star;
+        html += '</div>';
+        html += '<div class="pd-product-meta">';
+        html += '<span>繳費期間 <b>' + r.period + '</b></span>';
+        const amtDisp = typeof r.amount === 'number' ? r.amount.toLocaleString() : r.amount;
+        html += '<span>保額 <b>' + amtDisp + '</b> ' + (r.product.amountUnit || '') + '</span>';
+        html += '<span>年繳保費 <b style="color:var(--orange-dark);">' + r.fee.toLocaleString() + ' 元</b></span>';
+        html += '</div></div>';
+        html += '<div class="pd-items">';
+        
+        def.items.forEach(item => {
+          const v = calc(item, r.product, r.amount);
+          let valHtml;
+          if (!v) {
+            valHtml = '<span class="pd-val-text">依條款</span>';
+          } else if (v.type === 'num') {
+            valHtml = '<span class="pd-val-num">' + Math.round(v.val).toLocaleString() + '</span><span class="pd-val-unit">' + (item.unit || '元') + '</span>';
+          } else {
+            valHtml = '<span class="pd-val-text">' + (v.text || '依條款') + '</span>';
+          }
+          const starMark = item.star ? '<span class="pd-star" title="主要保障">⭐</span>' : '';
+          const noteHtml = item.note ? '<div class="pd-item-note">' + item.note + '</div>' : '';
+          html += '<div class="pd-item">';
+          html += '<div class="pd-item-name">' + starMark + item.name + '</div>';
+          html += '<div class="pd-item-val">' + valHtml + '</div>';
+          if (noteHtml) html += noteHtml;
+          html += '</div>';
+        });
+        
+        html += '</div></div>';
+      });
+      
+      html += '</div>';
+    });
+    
+    if (html) section.innerHTML = html;
+  }
+  
+  function setupBenefitsDetailOverride() {
+    const sw = document.getElementById('benefitsModeSwitch');
+    if (!sw) return;
+    sw.addEventListener('click', () => {
+      setTimeout(() => {
+        renderBenefitsFilterChips();
+        renderProposalDetail();
+      }, 200);
+    });
+    const section = document.getElementById('benefitsSection');
+    if (section) {
+      const obs = new MutationObserver(() => {
+        const activeBtn = sw.querySelector('.bms-btn.active');
+        if (activeBtn && activeBtn.dataset.mode === 'detail') {
+          if (!section._enhDetailDrawing) {
+            section._enhDetailDrawing = true;
+            renderBenefitsFilterChips();
+            renderProposalDetail();
+            setTimeout(() => { section._enhDetailDrawing = false; }, 50);
+          }
+        } else {
+          renderBenefitsFilterChips();
+        }
+      });
+      obs.observe(section, { childList: true });
+    }
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       setTimeout(startWhenReady, 100);
+      setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
     });
   } else {
     setTimeout(startWhenReady, 100);
+    setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
 })();
