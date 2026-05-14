@@ -929,12 +929,23 @@
   
   function injectBenefitsFilter() {
     const sw = document.getElementById('benefitsModeSwitch');
-    if (!sw) return;
-    if (document.getElementById('benefitsCompanyChips')) return;
+    console.log('[enhancements] injectBenefitsFilter sw=', !!sw);
+    if (!sw) {
+      // sw 還沒 ready,延後再試
+      setTimeout(injectBenefitsFilter, 500);
+      return;
+    }
+    if (document.getElementById('benefitsCompanyChips')) {
+      console.log('[enhancements] chips 已存在,跳過');
+      return;
+    }
     const wrap = document.createElement('div');
     wrap.id = 'benefitsCompanyChips';
     wrap.className = 'bcc-wrap no-print';
     sw.parentNode.insertBefore(wrap, sw.nextSibling);
+    console.log('[enhancements] chips 容器已注入');
+    // 立即嘗試渲染
+    renderBenefitsFilterChips();
   }
   
   function renderBenefitsFilterChips() {
