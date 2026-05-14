@@ -623,7 +623,9 @@ let _manifestCache = null;
 async function fetchManifest() {
   if (_manifestCache !== null) return _manifestCache;
   try {
-    const res = await fetch('assets/img/cases/manifest.json', { cache: 'force-cache' });
+    // 加時間戳避開瀏覽器/CDN cache
+    const url = 'assets/img/cases/manifest.json?t=' + Date.now();
+    const res = await fetch(url, { cache: 'no-cache' });
     if (!res.ok) { _manifestCache = {}; return {}; }
     _manifestCache = await res.json();
     return _manifestCache;
