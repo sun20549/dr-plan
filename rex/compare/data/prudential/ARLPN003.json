@@ -23,11 +23,13 @@
       "台幣利變(預定利率) 6年 sa=1172492 prem=200000",
       "Drew 2026-05-14 台幣利變非還本 3年 sa=599823 prem=200000"
     ],
-    "unit_size": 1000,
+    "unit_size": 1,
     "v2_full_format": "drew_synth",
     "drew_samples": 2,
     "schedule_synth": true,
-    "schedule_synth_note": "v54: 原 schedule 壞掉,用標準保本曲線合成 (y1=40% → y_period=95% → 後續用 declared_rate 複利)"
+    "schedule_synth_note": "v54: 原 schedule 壞掉,用標準保本曲線合成 (y1=40% → y_period=95% → 後續用 declared_rate 複利)",
+    "granular_sa": true,
+    "min_sa": 1
   },
   "schedule": [
     {

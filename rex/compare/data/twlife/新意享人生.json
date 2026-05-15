@@ -11,14 +11,16 @@
     "base_sa": 50000,
     "declared_rate": 0.04,
     "guaranteed_rate": 0.0225,
-    "unit_size": 1000,
+    "unit_size": 1,
     "extracted_at": "2026-05-13 batch",
     "extracted_by": "cowork-batch-twlife-extractor-v2",
     "plan_code": "新意享人生",
     "product_code": "新意享人生",
     "base_premium": 4166.67,
     "needs_revalidation": true,
-    "notes": "[v5: 異常 bp=0→4166.67=sa/12] [schedule 用 base 估算]"
+    "notes": "[v5: 異常 bp=0→4166.67=sa/12] [schedule 用 base 估算]",
+    "granular_sa": true,
+    "min_sa": 1
   },
   "gp_table": {
     "2000M": 23.5,

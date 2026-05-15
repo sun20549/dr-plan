@@ -6893,10 +6893,10 @@ async function goStep3(mode) {
   let codes = [];
   if (mode === 'all') codes = state.filteredProducts.map(p => p.plan_code);
   else codes = Array.from(state.selectedCodes);
-  
+
   if (codes.length === 0) { showToast('請至少選擇一個商品', 'warning'); return; }
 
-  // === Lazy-load:計算前先把所有要用的商品 DB 預載到快取(容錯模式)===
+  // === Lazy-load 所有 JSON(容錯)===
   const loadResults = await Promise.allSettled(codes.map(code => window.loadProductDB(code)));
   const failedCodes = [];
   loadResults.forEach((res, i) => {
@@ -6905,20 +6905,53 @@ async function goStep3(mode) {
       console.warn(`[STEP3] 載入 ${codes[i]} 失敗:`, res.reason?.message || res.reason);
     }
   });
-  if (failedCodes.length === codes.length) {
-    showToast('所有選定商品都載入失敗,請檢查 data/ 目錄是否完整部署:\n' + failedCodes.join(', '), 'error', 9000);
+
+  // v66: 逐商品分類,收集無法試算的「商品名稱 + 原因」做完整通知
+  const skippedReasons = [];  // [{plan_code, name, reason}]
+  failedCodes.forEach(c => {
+    const p = PRODUCTS.find(x => x.plan_code === c);
+    skippedReasons.push({plan_code: c, name: p?.product_name || c, reason: 'JSON 檔載入失敗(可能未部署)'});
+  });
+
+  state.compareList = codes
+    .filter(c => !failedCodes.includes(c))
+    .map(code => {
+      const p = PRODUCTS.find(x => x.plan_code === code);
+      const calc = calcProductForUser(p, state.user);
+      if (!calc) {
+        skippedReasons.push({plan_code: code, name: p?.product_name || code, reason: `${state.user.age}歲此商品無試算資料`});
+        return null;
+      }
+      if (calc.budget_insufficient) {
+        skippedReasons.push({plan_code: code, name: p?.product_name || code, reason: `預算不足(此商品最低保額需更高預算)`});
+        return null;
+      }
+      if (calc.unsupported) {
+        skippedReasons.push({plan_code: code, name: p?.product_name || code, reason: `引擎尚未實作(${calc.engine_name})`});
+        return null;
+      }
+      if (calc.error) {
+        skippedReasons.push({plan_code: code, name: p?.product_name || code, reason: `試算錯誤:${calc.error_message || '未知'}`});
+        return null;
+      }
+      return { product: p, calc };
+    })
+    .filter(Boolean);
+
+  // 全部都失敗 → toast + 不進 Step3
+  if (state.compareList.length === 0) {
+    const lines = skippedReasons.map(s => `• ${s.name} (${s.plan_code}):${s.reason}`).join('\n');
+    showToast(`所有 ${codes.length} 個商品都無法試算:\n${lines}`, 'error', 12000);
     return;
   }
-  if (failedCodes.length > 0) {
-    showToast(`${failedCodes.length} 個商品載入失敗(已跳過):${failedCodes.join(', ')}。其他 ${codes.length - failedCodes.length} 個正常顯示。`, 'warning', 7000);
-    codes = codes.filter(c => !failedCodes.includes(c));
-  }
 
-  state.compareList = codes.map(code => {
-    const p = PRODUCTS.find(x => x.plan_code === code);
-    const calc = calcProductForUser(p, state.user);
-    return { product: p, calc };
-  }).filter(x => x.calc && !x.calc.unsupported && !x.calc.error);
+  // 部分失敗 → toast 列出哪些不能算 + 仍進 Step3
+  if (skippedReasons.length > 0) {
+    const top = skippedReasons.slice(0, 8);
+    const more = skippedReasons.length > 8 ? `\n...另 ${skippedReasons.length - 8} 個` : '';
+    const lines = top.map(s => `• ${s.name}:${s.reason}`).join('\n');
+    showToast(`${skippedReasons.length} 個商品無法試算(已跳過,${state.compareList.length} 個正常顯示):\n${lines}${more}`, 'warning', 9000);
+  }
 
   // 預設幣別
   const hasUSD = state.compareList.some(c => c.product.currency === 'USD');
