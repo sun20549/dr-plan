@@ -2209,10 +2209,27 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
     gap: 12px;
     padding: 12px;
   }
+  /* v1.24 — 修復 iPad bug:picker 在頂端時改為可內部捲動,避免擋住底下的表格 */
   .picker {
-    position: static;
-    padding: 12px;
-    padding-right: 36px;
+    position: static !important;
+    padding: 12px 36px 12px 12px;
+    max-height: 40vh;       /* picker 最高佔螢幕 40%,避免擠掉表格 */
+    overflow-y: auto;        /* 內容過多時可在 picker 內捲動 */
+    -webkit-overflow-scrolling: touch;
+  }
+  /* picker 收合按鈕在直式時藏掉,並改用底部「收合」chip */
+  .picker-collapse-btn { top: 12px; right: 12px; }
+  /* 主表 first-col 在 iPad/手機取消 sticky,讓資料列完整顯示不被遮 */
+  .compare-table tbody td:first-child,
+  .compare-table thead th:first-child {
+    position: static !important;
+    z-index: auto !important;
+    min-width: 110px;
+  }
+  /* 表格外層加 wrapper 可橫向滾動 */
+  .compare-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .compare-table thead th { padding: 12px 8px 10px; }
   .th-product { min-width: 130px; max-width: 180px; }
@@ -2270,9 +2287,20 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   .compare-toolbar { padding: 10px 12px; font-size: 12px; }
   .compare-title { font-size: 13px; letter-spacing: 0.5px; }
   .btn { padding: 5px 9px; font-size: 11px; }
-  .picker { padding: 10px; padding-right: 32px; }
+  .picker {
+    padding: 10px 32px 10px 10px;
+    max-height: 35vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .client-info { padding: 10px; }
   .client-info-title { font-size: 11px; }
+  /* v1.24:取消主表第一欄 sticky,避免在窄螢幕橫向滾動時遮住資料 */
+  .compare-table tbody td:first-child,
+  .compare-table thead th:first-child {
+    position: static !important;
+    z-index: auto !important;
+  }
   /* 表格保持原樣 + 橫向滑動 */
   .compare-table-wrap {
     overflow-x: auto;
