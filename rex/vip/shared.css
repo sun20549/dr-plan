@@ -1638,7 +1638,7 @@ a, button {
   height: auto;
   display: block;
   background: var(--bg-cream);
-  min-height: 180px;
+  /* 保持原始比例，不再強制 min-height（避免細長表格被拉伸） */
 }
 /* 圖片上方薄條（不擋圖） */
 .ss-header {
