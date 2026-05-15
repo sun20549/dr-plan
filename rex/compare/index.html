@@ -248,6 +248,9 @@ body {
 .compare-table tbody td.label { background:var(--gray-100); font-weight:600;
   color:var(--gray-700); text-align:center; position:sticky; left:0; z-index:1; }
 .compare-table tbody td.label.year-col { background:#fff; color:var(--navy); border-right:2px solid var(--gray-200); }
+/* v69 修:第 1 排不被 sticky thead 切到 */
+.compare-table tbody tr:first-child td { padding-top:18px !important; }
+.compare-table tbody tr:first-child td.label.year-col { padding-top:18px !important; }
 .compare-table tbody td.value { text-align:right; }
 .compare-table tbody td.percent { text-align:right; color:var(--gray-700); border-right:2px solid var(--gray-200); }
 .compare-table tbody tr:nth-child(even) td.value, .compare-table tbody tr:nth-child(even) td.percent { background:#fafbfc; }
@@ -1455,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260515';
+window.__DATA_VERSION__ = '20260515b';
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
