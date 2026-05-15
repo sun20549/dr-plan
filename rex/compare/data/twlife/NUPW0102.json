@@ -7,7 +7,7 @@
     "product_name": "台灣人壽美紅旺美元分紅終身壽險",
     "currency": "USD",
     "period": 6,
-    "engine": "prudential_v2",
+    "engine": "twlife_v2_full",
     "base_sex": "M",
     "base_age": 20,
     "base_sa": 199459,
@@ -32,7 +32,8 @@
     "schedule_synth": false,
     "schedule_pdf_anchor_v71": "PDF 抽 y1-y10 cv 真實值",
     "dividend_already_in_schedule": true,
-    "drew_3anchors_v72": "20M USD 6yr 10k SA=199459 | 41M SA=93142 | 30F SA=176565, F-factor=0.7861"
+    "drew_3anchors_v72": "20M USD 6yr 10k SA=199459 | 41M SA=93142 | 30F SA=176565, F-factor=0.7861",
+    "engine_changed_v73": "從 prudential_v2 改 twlife_v2_full(已 v72 anchor 完整 gp_table)"
   },
   "schedule": [
     {
