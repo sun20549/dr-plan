@@ -6933,8 +6933,9 @@ function formatBudgetInput(e) {
 }
 document.getElementById('budget').addEventListener('input', formatBudgetInput);
 
-document.getElementById('product-type').addEventListener('change', e => {
-  const val = e.target.value;
+// v81: 抽成共用 fn,onChange + 頁面載入時都跑一次
+function updateCurrencyUI() {
+  const val = document.getElementById('product-type').value;
   const isUSD = val.includes('美元');
   document.getElementById('rate-row').classList.toggle('show', isUSD);
   if (!val) {
@@ -6944,7 +6945,12 @@ document.getElementById('product-type').addEventListener('change', e => {
     document.getElementById('currency-label').textContent = isUSD ? '美元' : '台幣';
     document.getElementById('budget-unit').textContent = isUSD ? 'USD' : '元';
   }
-});
+}
+document.getElementById('product-type').addEventListener('change', updateCurrencyUI);
+// 頁面載入時若 select 已有值(瀏覽器 autocomplete / 預設),也同步一次
+document.addEventListener('DOMContentLoaded', updateCurrencyUI);
+// 立刻也跑一次(若 DOM 已 ready)
+if (document.readyState !== 'loading') updateCurrencyUI();
 
 async function goStep2() {
   const name = document.getElementById('name').value.trim();
