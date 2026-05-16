@@ -475,8 +475,96 @@ body.dark tbody tr:nth-child(even) td.col-total-j,body.dark tbody tr:nth-child(e
 
 /* Dark mode 通用調整 */
 body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0F172A 50%,#1E293B 100%);}
-body.dark .product-hero{background:var(--card-bg);border-bottom-color:var(--gold);}
-body.dark .ph-logo{background:rgba(255,255,255,0.05);border-color:var(--border-subtle);}
+body.dark .product-hero{background:var(--card-bg);border-bottom:3px solid var(--gold);box-shadow:0 1px 4px rgba(0,0,0,0.4);}
+body.dark .product-hero .ph-name{color:var(--text-primary) !important;}
+body.dark .product-hero .ph-company{color:#38BDF8 !important;}
+body.dark .product-hero .ph-meta{color:var(--text-secondary) !important;}
+body.dark .product-hero .ph-meta code{background:rgba(245,158,11,0.18) !important;color:#FBBF24 !important;}
+body.dark .product-hero .ph-logo{background:rgba(255,255,255,0.05);border-color:var(--border-subtle);}
+body.dark #rates-status{color:#34D399 !important;}
+
+/* FX 換匯卡片 dark mode */
+body.dark .fx-card{background:rgba(245,158,11,0.06) !important;border:1.5px dashed rgba(245,158,11,0.4) !important;}
+body.dark .fx-card .fx-text{color:var(--text-muted);}
+body.dark .fx-card .fx-text b{color:var(--text-primary);}
+body.dark .fx-card .rate-input{background:rgba(255,255,255,0.05) !important;border-color:rgba(255,255,255,0.15) !important;color:var(--text-primary) !important;}
+body.dark .fx-card .fx-fetch{background:rgba(245,158,11,0.1) !important;border-color:rgba(245,158,11,0.4) !important;color:#FBBF24 !important;}
+body.dark .fx-card .fx-fetch:hover{background:rgba(245,158,11,0.2) !important;}
+body.dark #fx-info{color:#34D399;}
+
+/* 試算條件區 各種元素 dark 修正 */
+body.dark .card-input .field label{color:var(--text-muted);}
+body.dark .age-badge{background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;}
+body.dark .year-parse{color:var(--accent) !important;}
+body.dark .catalog-bar{background:rgba(255,255,255,0.03);}
+body.dark .catalog-bar label{color:rgba(255,255,255,0.55) !important;}
+body.dark .catalog-bar select{background:rgba(255,255,255,0.04) !important;color:#fff !important;border-color:rgba(255,255,255,0.15) !important;}
+
+/* Summary 區 dark */
+body.dark .summary{background:linear-gradient(135deg,rgba(245,158,11,0.12) 0%,rgba(245,158,11,0.04) 100%);border:1px solid rgba(245,158,11,0.25);}
+body.dark .summary-row{color:var(--text-secondary);}
+body.dark .summary-row span:first-child{color:#FBBF24;}
+body.dark .summary-row strong{color:var(--text-primary);}
+body.dark .summary-row.highlight{border-top:2px solid rgba(245,158,11,0.5);}
+body.dark .summary-row.highlight strong{color:#F59E0B;}
+
+/* 折扣 card dark */
+body.dark .discount-card{background:var(--accent-bg);border-left-color:var(--accent);}
+body.dark .discount-card .dc-title{color:#38BDF8;}
+body.dark .discount-row{color:var(--text-secondary);}
+body.dark .discount-row b{color:#38BDF8;}
+
+/* 動作按鈕 dark */
+body.dark .btn-ghost{background:rgba(255,255,255,0.05);color:var(--text-primary);border-color:rgba(255,255,255,0.15);}
+body.dark .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+body.dark .btn-jade{background:#059669;color:#fff;}
+body.dark .btn-jade:hover{background:#10B981;box-shadow:0 0 16px rgba(16,185,129,0.4);}
+
+/* Modal dark */
+body.dark .modal{background:var(--card-bg);}
+body.dark .modal-header{background:var(--card-bg);border-bottom-color:var(--border-subtle);}
+body.dark .modal-header h3{color:var(--text-primary);}
+body.dark .modal-footer{background:rgba(255,255,255,0.02);border-top-color:var(--border-subtle);}
+body.dark .modal-body p{color:var(--text-secondary);}
+body.dark .modal-close{color:var(--text-muted);}
+body.dark .cust-list{border-color:var(--border-subtle);background:rgba(255,255,255,0.02);}
+body.dark .cust-row{border-bottom-color:var(--border-subtle);}
+body.dark .cust-row b{color:var(--text-primary);}
+body.dark .cust-row small{color:var(--text-muted);}
+body.dark .cust-row button{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);color:var(--accent);}
+
+/* Scenario tabs dark */
+body.dark .scenario-tabs button{color:var(--text-muted);}
+body.dark .scenario-tabs button.active{color:#FBBF24;border-bottom-color:#F59E0B;}
+body.dark .seg-mini{background:rgba(255,255,255,0.04);border-color:var(--border-soft);}
+body.dark .seg-mini button{color:var(--text-muted);}
+body.dark .seg-mini button.active{background:var(--accent);color:#fff;}
+
+/* notice 區 dark */
+body.dark .notice{background:linear-gradient(90deg,rgba(16,185,129,0.08),rgba(14,165,233,0.04)) !important;color:#34D399 !important;border-bottom:1px solid rgba(16,185,129,0.2);}
+body.dark .notice b{color:#6EE7B7 !important;}
+
+/* 圖表 box dark */
+body.dark .chart-box{background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);}
+body.dark .chart-box h3{color:var(--text-primary);}
+
+/* 滑桿 bar dark */
+body.dark .chart-slider-bar{border-bottom-color:var(--border-subtle);}
+body.dark .csb-label{color:var(--text-muted);}
+body.dark .csb-readout{color:#38BDF8;}
+
+/* table caption dark */
+body.dark .tbl-caption{background:transparent;color:var(--text-muted);border-bottom-color:var(--border-subtle);}
+body.dark .cur-tag{background:#38BDF8;color:#0F172A;}
+body.dark .cur-tag.twd{background:#FBBF24;}
+
+/* legend dark */
+body.dark .legend{color:var(--text-muted);background:transparent;border-top-color:var(--border-subtle);}
+body.dark .legend code{background:rgba(245,158,11,0.15);color:#FBBF24;}
+
+/* topbar 按鈕 dark */
+body.dark .topbar .top-btn{background:rgba(255,255,255,0.06);}
+body.dark .topbar .top-btn:hover{background:rgba(255,255,255,0.14);}
 body.dark .input,body.dark select.input{background:rgba(255,255,255,0.03);border-color:var(--border-soft);color:var(--text-primary);}
 body.dark .seg{background:rgba(255,255,255,0.03);border-color:var(--border-soft);}
 body.dark .seg label{color:var(--text-muted);}

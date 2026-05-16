@@ -6,6 +6,32 @@
 
 ---
 
+## 新光-UPD061/UPD101-010 · 2026-05-17 — Dark Mode 完整覆蓋
+
+### 修正
+- 商品名稱在 Dark Mode 不可見 — 補齊 product-hero 內所有文字色
+- 換新台幣卡片在 Dark Mode 顯示白色突兀 — 改為半透明琥珀
+- 試算條件區的 input、segment、catalog 選單、summary 卡片、折扣卡 全部補 dark style
+- Notice 提示條、scenario tabs、圖表 box、表格 caption、legend 全面 dark 化
+- Modal 對話框 (LINE QR、客戶記錄) dark 化
+- 按鈕色 (btn-ghost、btn-jade) dark 化
+
+### 覆蓋的元素清單
+- `.product-hero` 公司名/商品名/meta/code badge/載入狀態
+- `.fx-card` 換匯卡片整組
+- `.summary` 摘要卡片
+- `.discount-card` 折扣卡片
+- `.notice` 試算情境條
+- `.scenario-tabs` 分頁
+- `.chart-box` 兩張圖外框
+- `.tbl-caption` 幣別標籤
+- `.legend` 欄位說明
+- `.modal-*` 所有對話框
+- `.cust-row` 客戶記錄列
+- `.btn-ghost` / `.btn-jade` 互動按鈕
+
+---
+
 ## 新光-UPD061/UPD101-009 · 2026-05-17
 
 ### 移除
