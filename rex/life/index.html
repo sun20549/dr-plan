@@ -615,7 +615,6 @@ body.dark .tbl-caption{background:transparent;color:var(--text-muted);}
     </div>
     <div class="ph-actions">
       <button class="btn btn-primary" onclick="window.print()">🖨 列印 PDF</button>
-      <button class="btn btn-ghost" onclick="exportCSV()">↓ CSV</button>
     </div>
   </div>
 </div>
@@ -1165,6 +1164,7 @@ function recalc() {
   // 更新圖表滑桿 snap 點(依 prod max_age - 投保年齡)
   refreshChartSlider(result.rows.length, inp.age);
 
+  updateDocTitle(inp);
   renderHero(result, inp);
   renderSummary(result, inp);
   renderDiscount(result, inp);
@@ -1174,6 +1174,23 @@ function recalc() {
   renderLeverageChart(result, inp);
   renderPrintFooter(inp);
   updateHash(inp);
+}
+
+// 動態檔名 (列印另存 PDF 會用這個當預設檔名)
+function updateDocTitle(inp){
+  const t = new Date();
+  const ymd = `${t.getFullYear()}${String(t.getMonth()+1).padStart(2,'0')}${String(t.getDate()).padStart(2,'0')}`;
+  // 公司簡稱:去掉「人壽」「保險」尾綴
+  const co = (RATES?.company_name || '新光').replace(/(人壽|保險)/g,'').trim() || '新光';
+  // 商品簡稱:從 catalog 抓 short 或用 product_name 前 4 字
+  let prod = '美鴻添富';
+  if (CATALOG) {
+    const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
+    const p = c?.products.find(x => x.code === $('cat-product').value);
+    if (p?.short) prod = p.short.replace(/[\s\(\)（）]/g,'').replace(/[0-9]+年/,'');
+  }
+  const name = (inp.name || '被保險人').trim() || '被保險人';
+  document.title = `鼎綸恩宇-${co}-${prod}-${name}-${ymd}`;
 }
 
 // ====== HERO 區渲染 ======
