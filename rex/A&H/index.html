@@ -3285,7 +3285,27 @@ tr
     <div style="text-align:center; padding: 20px 10px; color: var(--gray); font-size: 11px; line-height: 1.7;">
       <div>本建議書內容僅供參考,實際保障內容請以正式契約條款為準。</div>
       <div>鼎綸保險經紀人 ‧ 恩宇體系 ‧ 您專業的保險規劃夥伴</div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #d6dde3; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; font-size:10px; color:#aab2bb; font-family:'Consolas','Courier New',monospace;">
+        <span>系統版本 <b id="appVersion" style="color:var(--orange-dark);">v3.29.1</b></span>
+        <span>發佈時間 <b id="appBuildDate" style="color:var(--navy);">2026/05/16</b></span>
+        <span id="appLoadTime"></span>
+      </div>
     </div>
+    <script>
+      // 顯示瀏覽器載入時間(讓使用者確認看到的是最新版)
+      (function(){
+        const el = document.getElementById('appLoadTime');
+        if (!el) return;
+        const d = new Date();
+        const ts = d.getFullYear() + '/' +
+          String(d.getMonth()+1).padStart(2,'0') + '/' +
+          String(d.getDate()).padStart(2,'0') + ' ' +
+          String(d.getHours()).padStart(2,'0') + ':' +
+          String(d.getMinutes()).padStart(2,'0') + ':' +
+          String(d.getSeconds()).padStart(2,'0');
+        el.innerHTML = '本次載入 <b style="color:#1d6b1d;">' + ts + '</b>';
+      })();
+    </script>
 
   </div>
 </div>

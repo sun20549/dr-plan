@@ -1195,7 +1195,7 @@ body {
     <div class="brand">
       <div class="brand-icon">SI</div>
       <div class="brand-text">
-        <h1>儲蓄險分析系統</h1>
+        <h1>儲蓄險分析系統 <span id="version-badge" style="font-size:11px;font-weight:normal;background:#1A6B72;color:#fff;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle;font-family:monospace;letter-spacing:0.5px;">v---</span></h1>
         <p>SAVINGS INSURANCE ANALYTICS · ACTUARIAL</p>
       </div>
     </div>
@@ -1458,7 +1458,18 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517t';
+window.__DATA_VERSION__ = '20260517u';
+
+// v100c: 顯示版本號於右上角 — 方便確認部署狀態
+document.addEventListener('DOMContentLoaded', function() {
+  const badge = document.getElementById('version-badge');
+  if (badge) {
+    badge.textContent = 'v' + window.__DATA_VERSION__;
+    badge.title = '系統版本 ' + window.__DATA_VERSION__ + ' — 點擊強制刷新';
+    badge.style.cursor = 'pointer';
+    badge.onclick = function() { window.location.reload(true); };
+  }
+});
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
@@ -11131,7 +11142,7 @@ function calcProductForUser(productMeta, user) {
     // v6: 若使用者有手動微調該商品保額,跳過預算反推路徑,直接用 override 值
     const saOverride = state.saOverrides[plan];
 
-    // v97: Drew SA anchor 預先計算 — 若 JSON 有 drew_sa_per_premium,直接用 Drew 真值
+    // v97: Drew SA anchor 預先計算
     let drewSAOverride = null;
     if (!saOverride && _db_for_engine && _db_for_engine.drew_sa_per_premium) {
       const _sapp = _db_for_engine.drew_sa_per_premium;
@@ -11257,8 +11268,7 @@ function calcProductForUser(productMeta, user) {
     if (result) {
       result.is_sa_override = !!saOverride;
     }
-    // v100b: 若 drewSAOverride 啟用且非手動 override,premium 鎖回 budget
-    // (Drew ratio 定義 = SA / 折扣後保費,所以 budget × ratio = SA → 保費 ≈ budget)
+    // v100b: drewSAOverride 啟用且非手動 override → premium 鎖回 budget
     if (result && drewSAOverride && !saOverride) {
       const _origPrem = result.annual_premium_real || budget;
       const _scale = budget / _origPrem;
