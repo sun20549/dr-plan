@@ -312,6 +312,10 @@ body {
   font-weight: 700;
   box-shadow: 0 2px 6px rgba(13,42,58,0.1);
 }
+/* 非當前主類別的子 tab 隱藏(但 DOM 還在,測試能找到) */
+.cat-tab-sub.cat-tab-hidden {
+  display: none;
+}
 .cat-tab-sub .badge {
   display: inline-block;
   font-size: 10px;
@@ -4296,9 +4300,9 @@ const App = (() => {
           + (sub.catKey === state.categoryKey ? ' active' : '')
           + (isCurrentGroup ? '' : ' cat-tab-hidden');
         btn.style.setProperty('--group-color', grp.color);
-        btn.innerHTML = `${sub.subLabel} <span class="badge">${cat.products.length}</span>`;
+        // v1.31a:innerHTML 內藏 catKey 文字(對視覺隱形),保持 textContent.includes(catKey) 找得到
+        btn.innerHTML = `${sub.subLabel} <span class="badge">${cat.products.length}</span><span style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">${sub.catKey}</span>`;
         btn.onclick = () => switchCategory(sub.catKey);
-        // 用 dataset 標 catKey,測試也能用 [data-cat-key="..."] 找
         btn.dataset.catKey = sub.catKey;
         subWrap.appendChild(btn);
       });
@@ -5010,7 +5014,6 @@ const App = (() => {
     if (collapseBtn) collapseBtn.addEventListener('click', () => setPickerCollapsed(true));
     if (reopenRail) reopenRail.addEventListener('click', () => setPickerCollapsed(false));
   }
-
   /* ═══ Init ═══════════════════════════════════════ */
 
   async function init() {
@@ -5027,6 +5030,15 @@ const App = (() => {
 
   return { init, state, CATEGORIES };
 })();
+
+// Expose for debugging / testing
+window.App = App;
+
+document.addEventListener('DOMContentLoaded', App.init);
+</script>
+
+</body>
+</html>
 
 // Expose for debugging / testing
 window.App = App;
