@@ -19,12 +19,16 @@
   --row-alt:#FAF7F1;--row-hover:#FFF6E8;
   --border:#E5E0D3;
   --text:#0D2A3A;--text-muted:#6B7280;
-  --accent:var(--teal);--accent-dark:var(--teal-dark);--accent-light:var(--teal-light);
-  --accent-bg:rgba(26,107,114,0.06);
+  /* 主題色:男性=深藍 (古典金融感) */
+  --male-accent:#1E4762;--male-accent-dark:#142E40;--male-accent-light:#D5DFE8;
+  /* 主題色:女性=酒紅 (古典金融感) */
+  --female-accent:#8B2942;--female-accent-dark:#5C1A2C;--female-accent-light:#F5DCE3;
+  --accent:var(--male-accent);--accent-dark:var(--male-accent-dark);--accent-light:var(--male-accent-light);
+  --accent-bg:rgba(30,71,98,0.06);
 }
 body.theme-female{
-  --accent:#C2185B;--accent-dark:#8C0F40;--accent-light:#FCE4EC;
-  --accent-bg:rgba(194,24,91,0.05);
+  --accent:var(--female-accent);--accent-dark:var(--female-accent-dark);--accent-light:var(--female-accent-light);
+  --accent-bg:rgba(139,41,66,0.05);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -90,8 +94,9 @@ body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text
 .seg input{display:none;}
 .seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;margin:0;color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:1px;transition:all .15s;}
 .seg input:checked + label{background:var(--accent);color:#fff;box-shadow:inset 0 -2px 0 var(--accent-dark);}
-body.theme-female .seg input[value="M"]:checked + label{background:var(--teal);box-shadow:inset 0 -2px 0 var(--teal-dark);}
-body.theme-male .seg input[value="F"]:checked + label{background:#C2185B;box-shadow:inset 0 -2px 0 #8C0F40;}
+/* 性別按鈕固定色,不受 theme 影響 */
+.seg input[name="sex"][value="M"]:checked + label{background:var(--male-accent);box-shadow:inset 0 -2px 0 var(--male-accent-dark);}
+.seg input[name="sex"][value="F"]:checked + label{background:var(--female-accent);box-shadow:inset 0 -2px 0 var(--female-accent-dark);}
 
 .age-badge{display:inline-flex;align-items:center;gap:4px;background:var(--orange);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:900;letter-spacing:.5px;}
 .year-parse{font-size:10px;color:var(--accent);font-weight:700;margin-top:4px;min-height:14px;}
@@ -149,7 +154,14 @@ body.theme-male .seg input[value="F"]:checked + label{background:#C2185B;box-sha
 .chart-canvas-wrap{position:relative;height:220px;}
 
 /* ===== TABLE ===== */
-.table-wrap{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto;}
+.table-wrap{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto;background:#fff;border:1px solid var(--border);border-radius:6px;margin:0 4px;}
+/* 自訂 scrollbar — 統一白色系,避免滾動時看到深色 */
+.table-wrap::-webkit-scrollbar{width:10px;height:10px;}
+.table-wrap::-webkit-scrollbar-track{background:#fafafa;border-radius:5px;}
+.table-wrap::-webkit-scrollbar-thumb{background:#d4d4d4;border-radius:5px;border:2px solid #fafafa;}
+.table-wrap::-webkit-scrollbar-thumb:hover{background:#b4b4b4;}
+.table-wrap::-webkit-scrollbar-corner{background:#fafafa;}
+.table-wrap{scrollbar-width:thin;scrollbar-color:#d4d4d4 #fafafa;}
 table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;}
 thead{position:sticky;top:0;z-index:2;}
 thead tr.h1 th{background:linear-gradient(180deg,var(--navy),var(--navy-mid));color:#fff;padding:8px 6px;font-weight:700;font-size:11px;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.15);}
@@ -157,10 +169,11 @@ thead tr.h2 th{background:var(--gold-light);color:var(--navy);padding:6px 6px;fo
 thead tr.h2 th.guaranteed{background:#FEF3E0;}
 thead tr.h2 th.non-guaranteed{background:var(--orange-light);color:var(--orange-dark);}
 thead tr.h2 th.terminal{background:#FFF1D1;}
-thead tr.h2 th.total-j{background:#FFE4D6;color:#A03316;}
-thead tr.h2 th.total-k{background:var(--jade-light);color:var(--jade);}
-thead tr.h2 th.ratio-j{background:#FFD9C0;color:#A03316;}
-thead tr.h2 th.ratio-k{background:#B7E2DC;color:#0a5950;}
+/* 合計區四欄配色 — 主指標飽和、衍生指標白底淡色 */
+thead tr.h2 th.total-j{background:linear-gradient(180deg,#FFC9A8,#FFA875);color:#7A2911;border-left:2px solid #c2410c !important;}
+thead tr.h2 th.ratio-j{background:#fff;color:#A03316;border-right:2px solid #c2410c !important;font-style:italic;}
+thead tr.h2 th.total-k{background:linear-gradient(180deg,#A8DFD6,#7BCDC0);color:#0a5950;border-left:2px solid #0f766e !important;}
+thead tr.h2 th.ratio-k{background:#fff;color:#0a5950;font-style:italic;}
 
 tbody td{padding:7px 8px;border:1px solid var(--border);text-align:right;}
 tbody td.text-center{text-align:center;font-weight:700;color:var(--navy);}
@@ -168,16 +181,43 @@ tbody tr:nth-child(even) td{background:var(--row-alt);}
 tbody tr:hover td{background:var(--row-hover);}
 tbody td.zero{color:#bbb;}
 tbody td.pay-yr{font-weight:700;color:var(--orange-dark);}
-tbody td.col-total-j{background:#FFE4D6 !important;font-weight:700;color:#A03316;}
-tbody td.col-total-k{background:var(--jade-light) !important;font-weight:700;color:var(--jade);}
-tbody td.col-ratio-j{background:#FFF1E6 !important;font-weight:700;color:#A03316;font-size:11px;}
-tbody td.col-ratio-k{background:#E8F5F2 !important;font-weight:700;color:#0a5950;font-size:11px;}
-tbody tr:hover td.col-total-j{background:#FFD0B5 !important;}
-tbody tr:hover td.col-total-k{background:#B7E2DC !important;}
-tbody tr:hover td.col-ratio-j{background:#FFE0CB !important;}
-tbody tr:hover td.col-ratio-k{background:#D1EBE5 !important;}
-tbody tr.break-even td{box-shadow:inset 0 -2px 0 var(--jade);}
-tbody tr.break-even td.yr-col::after{content:' ⇣回本';font-size:9px;color:var(--jade);font-weight:700;}
+
+/* J 群組:身故(深暖橘)+ 保障倍率(白底配深邊) */
+tbody td.col-total-j{
+  background:#FFE4D0 !important;font-weight:900;color:#7A2911;
+  border-left:2px solid #c2410c !important;font-size:13px;
+}
+tbody td.col-ratio-j{
+  background:#fff !important;font-weight:600;color:#A03316;font-size:11px;
+  font-style:italic;border-right:2px solid #c2410c !important;
+}
+/* K 群組:解約(深玉綠)+ 保本率(白底配深邊) */
+tbody td.col-total-k{
+  background:#C5EAE2 !important;font-weight:900;color:#0a5950;
+  border-left:2px solid #0f766e !important;font-size:13px;
+}
+tbody td.col-ratio-k{
+  background:#fff !important;font-weight:600;color:#0f766e;font-size:11px;
+  font-style:italic;
+}
+
+/* hover 變深 */
+tbody tr:hover td.col-total-j{background:#FFCFA8 !important;}
+tbody tr:hover td.col-total-k{background:#A8DFD6 !important;}
+tbody tr:hover td.col-ratio-j{background:#FFF8F3 !important;}
+tbody tr:hover td.col-ratio-k{background:#F3FBF8 !important;}
+
+/* 偶數列也分群維持白色,確保「主+衍生」對比 */
+tbody tr:nth-child(even) td.col-total-j{background:#FFD8BD !important;}
+tbody tr:nth-child(even) td.col-total-k{background:#B5E0D5 !important;}
+tbody tr:nth-child(even) td.col-ratio-j{background:#FAFAFA !important;}
+tbody tr:nth-child(even) td.col-ratio-k{background:#FAFAFA !important;}
+/* 回本標示已移除,保留 class 以備未來用 */
+/* 保單年度/保險年齡 兩欄等寬 */
+table thead tr.h1 th:nth-child(1),
+table thead tr.h1 th:nth-child(2),
+table tbody td:nth-child(1),
+table tbody td:nth-child(2){width:52px;min-width:52px;}
 
 .tbl-caption{display:flex;justify-content:space-between;align-items:center;padding:8px 18px;font-size:11px;background:#fafafa;border-bottom:1px solid var(--border);color:var(--text-muted);}
 .tbl-caption .cur-tag{background:var(--navy);color:#fff;padding:3px 10px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:11px;}
@@ -248,41 +288,68 @@ body[data-view="summary"] .col-detail{display:none;}
 
 /* ===== PRINT ===== */
 .print-footer{display:none;padding:8px 14px;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:8px;line-height:1.6;}
+.print-header{display:none;}
 .watermark{display:none;}
 @media print {
-  @page { size: A4 landscape; margin: 10mm; }
-  body { background: white; font-size: 10px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .topbar, .scenario-tabs .right, .product-hero .ph-actions, .charts-wrap, .legend, .float-line, .catalog-bar, .fx-card, .action-row, .modal-backdrop { display:none !important; }
-  .container { display: block; padding: 0; max-width: none; }
-  .card { box-shadow: none; border:1px solid #999; border-radius:0; page-break-inside: avoid; }
+  @page { size: A4 landscape; margin: 8mm 10mm; }
+  body { background: white; font-size: 9.5px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  /* 隱藏所有互動元素 */
+  .topbar, .product-hero, .scenario-tabs, .charts-wrap, .legend, .float-line,
+  .catalog-bar, .fx-card, .action-row, .modal-backdrop, .tbl-caption,
+  #fx-info, #input-err, #rates-status { display:none !important; }
   .card-input { display: none !important; }
-  .product-hero { padding: 6px 0 8px; border-bottom:2px solid var(--navy); }
-  .product-hero .ph-name { font-size: 14px; }
-  .product-hero .ph-meta { font-size: 9px; }
-  .scenario-tabs { padding: 4px 8px; }
-  .scenario-tabs button { padding: 4px 8px; font-size: 10px; }
-  .scenario-tabs button:not(.active) { display:none; }
-  .notice { padding: 5px 8px; font-size: 9px; }
-  .table-wrap { max-height: none; overflow: visible; }
-  table { font-size: 9px; }
+  .container { display: block; padding: 0; max-width: none; }
+  .card { box-shadow: none; border:none; border-radius:0; }
+
+  /* 列印專用標題 */
+  .print-header { display:block !important;
+    border-bottom:2px solid #0D2A3A; padding-bottom:6px; margin-bottom:8px;
+    display:flex !important; align-items:center; gap:12px;
+  }
+  .print-header .ph-left { flex:1; }
+  .print-header .ph-co { font-size:9px; color:#1E4762; font-weight:700; letter-spacing:1.5px; }
+  .print-header .ph-prod { font-size:15px; font-weight:900; color:#0D2A3A; margin:1px 0 2px; }
+  .print-header .ph-meta { font-size:8.5px; color:#555; }
+  .print-header .ph-meta span { margin-right:10px; }
+  .print-header .ph-meta code { background:#FEF3E0; color:#b07800; padding:1px 4px; border-radius:3px; font-weight:700; margin-right:3px; }
+  .print-header .ph-right { text-align:right; font-size:8.5px; color:#666; }
+  .print-header .ph-right .ph-version { font-family:Montserrat,monospace; font-weight:700; color:#0D2A3A; font-size:10px; letter-spacing:1px; }
+
+  /* 試算摘要列(印在表格上方) */
+  .print-notice { display:block !important;
+    padding: 4px 8px; font-size: 9.5px; background:#FEF3E0 !important; color:#0D2A3A;
+    border-left:3px solid #E8A020; margin-bottom:4px; line-height:1.6;
+  }
+  .notice { display: none !important; }
+
+  .table-wrap { max-height: none; overflow: visible; padding: 0; }
+  table { font-size: 8.5px; width:100%; }
+  thead tr.h1 th { background: #0D2A3A !important; color:#fff !important; padding: 4px 3px; }
+  thead tr.h2 th { padding: 3px 3px; }
+  tbody td { padding: 3px 4px; }
   thead { display: table-header-group; }
   tbody tr { page-break-inside: avoid; }
-  .print-footer { display: block !important; }
-  /* watermark */
+  tbody tr.break-even td.yr-col::after { content:' ⇣'; color:#0f766e; font-weight:700; }
+
+  .print-footer { display: block !important; padding:4px 0; font-size:8px; color:#666;
+    border-top:1px solid #ccc; margin-top:6px; text-align:center;
+  }
+
+  /* 浮水印:單一行、淡、置中,不旋轉太大角度 */
   .watermark{
     display:block !important;
-    position:fixed;top:50%;left:50%;
-    transform:translate(-50%,-50%) rotate(-25deg);
-    font-size:80px;font-weight:900;
-    color:rgba(240,90,40,0.08);
-    letter-spacing:8px;
-    z-index:0;pointer-events:none;
+    position:fixed; top:50%; left:50%;
+    transform:translate(-50%,-50%) rotate(-18deg);
+    font-size:46px; font-weight:900;
+    color:rgba(13,42,58,0.045);
+    letter-spacing:4px;
+    z-index:0; pointer-events:none;
     white-space:nowrap;
   }
 }
 </style>
 </head>
-<body class="theme-male" data-view="detail">
+<body class="theme-male" data-view="summary">
 
 <!-- Watermark for print only -->
 <div class="watermark">僅供試算 · 非正式建議書</div>
@@ -430,13 +497,11 @@ body[data-view="summary"] .col-detail{display:none;}
   <!-- RIGHT: OUTPUT -->
   <div class="card">
     <div class="scenario-tabs">
-      <button class="active" data-scenario="M" onclick="setScenario('M')">最可能紅利</button>
-      <button data-scenario="L" onclick="setScenario('L')">較低紅利</button>
-      <button data-scenario="Z" onclick="setScenario('Z')">紅利為零</button>
+      <button class="active" data-scenario="M" onclick="setScenario('M')">最可能紅利 (中分紅)</button>
       <div class="right">
         <div class="seg-mini">
-          <button class="active" data-view="detail" onclick="setView('detail')">詳細</button>
-          <button data-view="summary" onclick="setView('summary')">要點</button>
+          <button data-view="detail" onclick="setView('detail')">詳細</button>
+          <button class="active" data-view="summary" onclick="setView('summary')">要點</button>
         </div>
       </div>
     </div>
@@ -456,7 +521,7 @@ body[data-view="summary"] .col-detail{display:none;}
 
     <div class="tbl-caption">
       <span>金額單位 <span class="cur-tag" id="cur-tag">USD</span> · <span id="cur-note">原幣別美元</span></span>
-      <span style="color:var(--text-muted);font-size:10px;">滑鼠移到列上會 highlight,「⇣回本」表示該年度解約金已超過已繳保費</span>
+      <span style="color:var(--text-muted);font-size:10px;">滑鼠移到列上會 highlight</span>
     </div>
     <div class="table-wrap" id="table-wrap"></div>
 
@@ -541,7 +606,7 @@ let RATES = null;
 let CATALOG = null;
 let SETTINGS = null;
 let scenario = 'M';
-let view = 'detail';
+let view = 'summary';
 let chartMain = null, chartLeverage = null;
 let currentPlan = 'UPD061';
 const ROC_OFFSET = 1911;
@@ -702,14 +767,15 @@ function insuranceAgeByBday(adYear, m, d) {
 // ================= DISCOUNT ==============
 function getDiscount(faceUSD) {
   const tiers = RATES.discounts.high_premium_tiers || [];
-  let hp = 0, tierLabel = '< 1 萬';
+  let hp = 0, tierLabel = '< 10 萬';
   for (const t of tiers) {
     if (faceUSD >= t.min_usd && faceUSD <= t.max_usd) {
       hp = t.rate;
-      const minWan = t.min_usd / 10000;
-      const maxWan = t.max_usd > 1e8 ? '∞' : (t.max_usd + 1) / 10000;
-      tierLabel = hp === 0 ? '< 1 萬' : `${minWan}-${maxWan === '∞' ? '∞' : maxWan} 萬`;
-      if (hp === 0.015) tierLabel = '≥ 2 萬';
+      const minWan = Math.floor(t.min_usd / 10000);
+      const maxWan = t.max_usd > 1e8 ? '∞' : Math.floor((t.max_usd + 1) / 10000);
+      if (hp === 0) tierLabel = `< ${(t.max_usd + 1) / 10000} 萬`;
+      else if (maxWan === '∞') tierLabel = `≥ ${minWan} 萬`;
+      else tierLabel = `${minWan}-${maxWan} 萬`;
       break;
     }
   }
@@ -859,8 +925,8 @@ function cellDec(usd, inp){
 function pctOf(num, den){
   if (!den || den === 0) return '—';
   const p = num / den * 100;
-  if (p >= 1000) return (p/100).toFixed(1) + '×';
-  return p.toFixed(1) + '%';
+  // 統一用 % 顯示;大於 999% 也用千分位 %
+  return p.toLocaleString('en-US', {maximumFractionDigits:1, minimumFractionDigits:1}) + '%';
 }
 
 function renderSummary(r, inp) {
@@ -967,7 +1033,7 @@ function renderTable(r, inp) {
 
 function renderChart(r, inp) {
   const ctx = $('chart-main');
-  const labels = r.rows.map(row => `${row.yr}`);
+  const labels = r.rows.map(row => `${row.attainedAge}`);
   const mul = inp.showTwd ? inp.fxRate : 1;
   const dataPaid  = r.rows.map(row => row.cumP * mul);
   const dataDeath = r.rows.map(row => row.J * mul);
@@ -985,11 +1051,25 @@ function renderChart(r, inp) {
       interaction: { intersect:false, mode:'index' },
       plugins: {
         legend: { position:'top', labels:{usePointStyle:true,boxWidth:8,font:{size:10}} },
-        tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${inp.showTwd?'NT$':'USD '}${Math.round(c.parsed.y).toLocaleString()}` } }
+        tooltip: {
+          callbacks: {
+            title: (items) => `${items[0].label} 歲 (第 ${items[0].dataIndex + 1} 年)`,
+            label: (c) => ` ${c.dataset.label}: ${inp.showTwd?'NT$':'USD '}${Math.round(c.parsed.y).toLocaleString()}`,
+          }
+        }
       },
       scales: {
-        x: { ticks:{maxTicksLimit:14,font:{size:10}}, grid:{display:false}, title:{display:true,text:'保單年度',font:{size:10},color:'#999'} },
-        y: { ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'}, grid:{color:'#eee'} },
+        x: { ticks:{maxTicksLimit:14,font:{size:10}}, grid:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10},color:'#999'} },
+        y: {
+          position:'left',
+          ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          grid:{color:'#eee'}
+        },
+        y1: {
+          position:'right',
+          ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          grid:{display:false}
+        },
       }
     }
   });
@@ -997,7 +1077,7 @@ function renderChart(r, inp) {
 
 function renderLeverageChart(r, inp) {
   const ctx = $('chart-leverage');
-  const labels = r.rows.map(row => `${row.yr}`);
+  const labels = r.rows.map(row => `${row.attainedAge}`);
   const dataLev = r.rows.map(row => row.cumP > 0 ? +(row.J / row.cumP).toFixed(2) : 0);
   if (chartLeverage) chartLeverage.destroy();
   chartLeverage = new Chart(ctx, {
@@ -1009,11 +1089,25 @@ function renderLeverageChart(r, inp) {
       responsive:true, maintainAspectRatio:false,
       plugins: {
         legend:{display:false},
-        tooltip: { callbacks:{ label: (c) => ` 每 1 元保費 → ${c.parsed.y.toFixed(2)} 元身故給付` } }
+        tooltip: {
+          callbacks: {
+            title: (items) => `${items[0].label} 歲 (第 ${items[0].dataIndex + 1} 年)`,
+            label: (c) => ` 每 1 元保費 → ${c.parsed.y.toFixed(2)} 元身故給付`,
+          }
+        }
       },
       scales: {
-        x: { ticks:{maxTicksLimit:12,font:{size:9}}, grid:{display:false} },
-        y: { ticks:{font:{size:10},callback:(v)=>v.toFixed(1)+'×'}, grid:{color:'#eee'}, beginAtZero:true },
+        x: { ticks:{maxTicksLimit:12,font:{size:9}}, grid:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10},color:'#999'} },
+        y: {
+          position:'left',
+          ticks:{font:{size:10},callback:(v)=>v+'×'},
+          grid:{color:'#eee'}, beginAtZero:true
+        },
+        y1: {
+          position:'right',
+          ticks:{font:{size:10},callback:(v)=>v+'×'},
+          grid:{display:false}, beginAtZero:true
+        },
       }
     }
   });
