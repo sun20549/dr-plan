@@ -6,6 +6,58 @@
 
 ---
 
+## 新光-UPD061/UPD101-030 · 2026-05-17
+
+### 修正 — Hover 數字溢出鄰欄
+* v020 加的 `transform: scale(1.08)` 在 K 群組 hover 時把數字視覺放大
+* 但 table cell 位置不會跟著被推開,造成數字溢出邊界,蓋到綠色分隔線與隔壁欄
+* 移除 transform:scale,改用「不動位置」的視覺強化:
+  - font-weight 700 → 900 (主指標)/ 600 → 800 (倍率)
+  - text-shadow 加深加大發光半徑
+  - color 加深(從 jade → emerald-700)
+* Dark mode 發光更明顯,鎖視線效果不變但不再溢出
+
+---
+
+## 新光-UPD061/UPD101-029 · 2026-05-17
+
+### 修正
+**網頁版 h1 row 也加垂直分隔線**(v028 只修了列印視角,網頁仍有割裂):
+- 改在 h1「合計(預估值)」cell 用 `::before` / `::after` 直接畫色帶
+- `::before` (left:0):橘色 2px 全高 — J 群組左邊緣
+- `::after` (left:50%):4px 寬,左半橘色 + 右半綠色 — J 結束 / K 開始
+- z-index:5 確保壓在 thead 漸層背景之上
+- 取代 v028 用 h2 ::before 向上延伸的脆弱寫法
+
+現在從 thead 頂端到 tbody 底部,J/K 色帶完全連續。
+
+---
+
+## 新光-UPD061/UPD101-028 · 2026-05-17
+
+### 修正
+1. **列印表格字級放大**(20 列/頁):
+   - table base 8.5 → 12px
+   - h1 thead 8.5 → 12.5px
+   - h2 thead 8.5 → 11.5px
+   - tbody td 8.5 → 12px
+   - J/K 合計欄 → 12.5px
+   - 倍率欄 → 11.5px
+   - 每頁約 20 列,客戶不用瞇眼看
+2. **欄位垂直分隔線割裂修復**:
+   - h1「合計 (預估值)」單一 colspan 無法畫內部線
+   - 解法:在 h2 row 的 col-total-j / col-ratio-j / col-total-k 加 `::before` / `::after` 偽元素
+   - 偽元素往上延伸 46px (跨越整個 h1 row),畫出橘/綠色帶
+   - J 群組左邊橘線、右邊橘線、K 群組左邊綠線,全部從 thead 頂端連續貫穿到 tbody 底部
+3. **浮水印縮小到不再壓圖**:
+   - 32px,top:78%,opacity 0.03
+   - 從中央移到頁面下方,不再蓋 hero/chart
+4. **chart canvas 強制 fit 容器**:
+   - 加 overflow:hidden + 明確 height 160px
+   - 列印時 canvas 不再「爆框」
+
+---
+
 ## 新光-UPD061/UPD101-027 · 2026-05-17 — 配色再整合
 
 ### 修正

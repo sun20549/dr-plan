@@ -338,6 +338,18 @@ thead tr.h2 th.ratio-j{background:#fff;color:#A03316;border-right:2px solid #c24
 thead tr.h2 th.total-k{background:linear-gradient(180deg,#A8DFD6,#7BCDC0);color:#0a5950;border-left:2px solid #0f766e !important;}
 thead tr.h2 th.ratio-k{background:#fff;color:#0a5950;font-style:italic;}
 
+/* 🆕 h1「合計(預估值)」cell 直接畫垂直分隔線,讓 J/K 色帶從頂端到底部連續 */
+thead tr.h1 th{position:relative;}
+thead tr.h1 th:last-child::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:#c2410c;pointer-events:none;z-index:5;
+}
+thead tr.h1 th:last-child::after{
+  content:'';position:absolute;left:calc(50% - 2px);top:0;bottom:0;width:4px;
+  background:linear-gradient(90deg,#c2410c 0,#c2410c 50%,#0f766e 50%,#0f766e 100%);
+  pointer-events:none;z-index:5;
+}
+
 tbody td{padding:8px 9px;border:1px solid var(--border);text-align:right;font-size:12.5px;}
 tbody td.text-center{text-align:center;font-weight:700;color:var(--navy);}
 tbody tr:nth-child(even) td{background:var(--row-alt);}
@@ -582,36 +594,35 @@ body.dark tbody tr:hover td.col-ratio-j{background:rgba(245,158,11,0.18) !import
 body.dark tbody tr:hover td.col-total-k,
 body.dark tbody tr:hover td.col-ratio-k{background:rgba(16,185,129,0.18) !important;}
 
-/* ===== 表格 hover 生命力:K + 保本率 微放大 + 發光,引導視線 ===== */
+/* ===== 表格 hover 生命力 — 不動位置,只加深 + 發光 (避免 scale 溢出) ===== */
 tbody td.col-total-k, tbody td.col-ratio-k{
-  transition:transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s, text-shadow 0.15s, font-weight 0.15s;
-  transform-origin:right center;
+  transition:color 0.15s, text-shadow 0.15s, font-weight 0.15s;
 }
 tbody tr:hover td.col-total-k{
-  transform:scale(1.08);
   color:#047857 !important;
-  text-shadow:0 0 8px rgba(16,185,129,0.25);
+  text-shadow:0 0 10px rgba(16,185,129,0.35);
+  font-weight:900 !important;
 }
 tbody tr:hover td.col-ratio-k{
-  transform:scale(1.06);
   color:#047857 !important;
-  text-shadow:0 0 6px rgba(16,185,129,0.2);
+  text-shadow:0 0 8px rgba(16,185,129,0.28);
+  font-weight:800 !important;
 }
 tbody tr:hover td.col-ratio-k.profit{
-  transform:scale(1.08);
-  text-shadow:0 0 10px rgba(16,185,129,0.45);
+  text-shadow:0 0 12px rgba(16,185,129,0.5);
+  font-weight:900 !important;
 }
 /* Dark mode 發光更明顯 */
 body.dark tbody tr:hover td.col-total-k{
   color:#34D399 !important;
-  text-shadow:0 0 12px rgba(52,211,153,0.6);
+  text-shadow:0 0 14px rgba(52,211,153,0.65);
 }
 body.dark tbody tr:hover td.col-ratio-k{
   color:#34D399 !important;
-  text-shadow:0 0 10px rgba(52,211,153,0.5);
+  text-shadow:0 0 12px rgba(52,211,153,0.55);
 }
 body.dark tbody tr:hover td.col-ratio-k.profit{
-  text-shadow:0 0 14px rgba(52,211,153,0.7);
+  text-shadow:0 0 16px rgba(52,211,153,0.75);
 }
 /* 保本率 >= 100% (profit) 在 hover 時也保持綠色,且加深 */
 tbody tr:hover td.col-ratio-k.profit{background:rgba(16,185,129,0.18) !important;color:var(--wealth-deep) !important;}
@@ -817,7 +828,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     background:radial-gradient(circle,rgba(14,165,233,0.05) 0%,transparent 70%);
   }
   .pc-top{position:relative;z-index:2;}
-  .pc-brand-mark{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:2px solid #0F172A;}
+  .pc-brand-mark{display:flex;align-items:center;justify-content:center;gap:14px;padding-bottom:14px;border-bottom:2px solid #0F172A;}
   .pc-brand-mark img{height:36px;width:36px;background:#fff;border-radius:7px;padding:3px;}
   .pc-brand-text{line-height:1.2;display:flex;flex-direction:column;}
   .pc-brand-name{font-size:13px;font-weight:900;color:#F05A28;letter-spacing:2px;}
@@ -915,6 +926,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     border:none !important;
     margin-bottom:10px;
     page-break-inside:avoid;
+    overflow:hidden;
   }
   .chart-box{
     background:#fff !important;
@@ -922,11 +934,29 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     border-radius:6px !important;
     padding:6px 10px 8px !important;
     box-shadow:none !important;
+    overflow:hidden !important;
+    position:relative;
   }
   .chart-box h3{font-size:9.5px !important;margin-bottom:3px !important;color:#0F172A !important;}
   .chart-box h3 .sub{font-size:8px !important;color:#94A3B8 !important;}
-  .chart-canvas-wrap{height:135px !important;}
-  .chart-canvas-wrap canvas{max-width:100% !important;}
+  /* 容器固定高度,canvas 必須 fit 在裡面 */
+  .chart-canvas-wrap{
+    height:160px !important;max-height:160px !important;
+    overflow:hidden !important;position:relative;
+  }
+  .chart-canvas-wrap canvas{
+    max-width:100% !important;
+    max-height:160px !important;
+    width:100% !important;height:160px !important;
+  }
+
+  /* 浮水印縮小 + 移到下方,不再壓圖表 */
+  .watermark{
+    font-size:32px !important;
+    color:rgba(13,42,58,0.03) !important;
+    top:78% !important;
+    letter-spacing:3px !important;
+  }
 
   /* 🆕 Hero 列印 — 漸層轉為實色,確保所有印表機/PDF 引擎都能正確呈現 */
   .hero-card .hc-value{
@@ -1031,10 +1061,14 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   .notice { display: none !important; }
 
   .table-wrap { max-height: none; overflow: visible; padding: 0; }
-  table { font-size: 8.5px; width:100%; }
-  thead tr.h1 th { background: #0D2A3A !important; color:#fff !important; padding: 4px 3px; }
-  thead tr.h2 th { padding: 3px 3px; }
-  tbody td { padding: 3px 4px; }
+  /* 字級放大,每頁約 20 列 */
+  table { font-size: 12px; width:100%; }
+  thead tr.h1 th { background: #0D2A3A !important; color:#fff !important; padding: 8px 6px; font-size:12.5px; }
+  thead tr.h2 th { padding: 7px 6px; font-size:11.5px; }
+  tbody td { padding: 7px 8px; font-size:12px; }
+  tbody td.col-total-j, tbody td.col-total-k { font-size:12.5px !important; }
+  tbody td.col-ratio-j, tbody td.col-ratio-k { font-size:11.5px !important; }
+  tbody td.text-center { font-weight:700; }
   thead { display: table-header-group; }
   tbody tr { page-break-inside: avoid; }
   tbody tr.break-even td.yr-col::after { content:' ⇣'; color:#0f766e; font-weight:700; }
