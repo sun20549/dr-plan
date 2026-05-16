@@ -46,9 +46,13 @@
         });
         return { title: product.claims.title || '理賠項目', items: items };
       }
-      function calcBenefitValue(item, product, amount) {
+      function calcBenefitValue(item, product, amount, insuredAge) {
         var calc = item.calc;
         if (!calc) return null;
+        // #9 年齡門檻
+        if (item.ageGate && insuredAge != null && insuredAge < item.ageGate.minAge) {
+          return { type: 'text', text: item.ageGate.belowText || '依條款' };
+        }
         if (calc.type === 'note') return { type: 'text', text: calc.text };
         if (calc.type === 'text') return { type: 'text', text: calc.value || calc.text || '' };
         if (calc.type === 'fixed') return calc.value != null ? { type: 'num', val: calc.value } : null;
@@ -372,6 +376,8 @@
 
     const db = getInsuranceDB();
     if (!db || !window.AHShared) return agg;
+    const __insAggr = (typeof collectInsuredFromDOM === 'function') ? collectInsuredFromDOM() : null;
+    const __ageAggr = __insAggr && __insAggr.age != null ? __insAggr.age : null;
     const benefitsLib = db.benefitsLib || {};
     const categorize5 = window.AHShared.categorize5;
     const classifyItem = window.AHShared.classifyItem;
@@ -407,7 +413,7 @@
 
       benefitDef.items.forEach(item => {
         const cls = classifyItem(item);
-        const val = calcBenefitValue(item, product, amount);
+        const val = calcBenefitValue(item, product, amount, __ageAggr);
         if (!val || val.type !== 'num') return;
         const n = val.val || 0;
 
@@ -1230,6 +1236,8 @@
     const calc = window.AHShared && window.AHShared.calcBenefitValue;
     const conv = window.AHShared && window.AHShared.convertProductClaims;
     if (!calc) return;
+    const __ins = collectInsuredFromDOM();
+    const __age = __ins && __ins.age != null ? __ins.age : null;
     
     const byCompany = {};
     const cidOrder = [];
@@ -1258,10 +1266,17 @@
       html += '<span class="pd-co-count">' + grp.rows.length + ' 項商品</span>';
       html += '</div>';
       
-      grp.rows.forEach(r => {
+      // #10/#11 ── 計算各醫療類給付合計(NIR 結尾要顯示「合計一般住院醫療給付」總表)──
+      const medAgg = { daily: 0, icuDaily: 0, burnDaily: 0, miscDaily: 0, surgery: 0, surgeryExtra: 0, nirRowPresent: false };
+      grp.rows.forEach((r, rIdx) => {
         const def = benefitsLib[r.code] || (conv && conv(r.product));
         if (!def || !def.items) return;
-        
+
+        // 商品之間插入星號分隔(第 2 個以上)
+        if (rIdx > 0) {
+          html += '<div class="pd-sep">' + '＊'.repeat(40) + '</div>';
+        }
+
         const star = r.type === '主約' ? '<span class="pd-pill pd-pill-main">主約</span>' : '<span class="pd-pill pd-pill-rider">附約</span>';
         html += '<div class="pd-product">';
         html += '<div class="pd-product-head">';
@@ -1278,16 +1293,21 @@
         html += '<div class="pd-items">';
         
         def.items.forEach(item => {
-          const v = calc(item, r.product, r.amount);
+          const v = calc(item, r.product, r.amount, __age);
           let valHtml;
           let extraNote = '';
+          // #8 ── 數值欄維持單行整齊:單位不換行(/天 /次 等只在 num 模式顯示,且 inline)
           if (!v) {
             valHtml = '<span class="pd-val-text">依條款</span>';
           } else if (v.type === 'num') {
-            valHtml = '<span class="pd-val-num">' + Math.round(v.val).toLocaleString() + '</span><span class="pd-val-unit">' + (item.unit || '元') + '</span>';
+            // 純整數金額 + 單位(同一行,單位字較小)
+            const unit = (item.unit || '元').replace(/^元$/, '元');
+            valHtml = '<span class="pd-val-num">' + Math.round(v.val).toLocaleString() + '</span>'
+                    + '<span class="pd-val-unit-inline">' + unit + '</span>';
           } else {
             const txt = v.text || '';
-            if (txt.length <= 25) {
+            // 短於 8 字才直接顯示,其餘一律收進 note(避免右欄出現長串說明文)
+            if (txt.length > 0 && txt.length <= 8) {
               valHtml = '<span class="pd-val-text">' + txt + '</span>';
             } else {
               valHtml = '<span class="pd-val-text">依條款</span>';
@@ -1303,13 +1323,39 @@
           if (noteHtml) html += noteHtml;
           html += '</div>';
         });
-        
+
+        // #10/#11 ── 每張醫療/癌症附約結尾加「疾病」定義段落(公版 PDF 慣例) ──
+        const medicalCodes = ['DCF','XHD','XHO','NIR','MIR','XCF','XCG','XDE','XHP','XHC','XHQN'];
+        if (medicalCodes.includes(r.code)) {
+          html += '<div class="pd-disease-def">';
+          html += '<b>「疾病」</b>係指被保險人自本附約生效日起持續有效三十一日(含)以後或自復效日起所發生之疾病。但續保者,自續保之日起發生的疾病,不受三十日限制。另如被保險人投保時之保險年齡為零歲者,就其依衛生福利部國民健康署公告之新生兒先天性代謝異常疾病篩檢項目所篩檢之疾病,亦不受三十日限制。';
+          html += '</div>';
+        }
+        // 癌症類額外加「癌症」定義
+        const cancerCodes = ['XCF','XCG'];
+        if (cancerCodes.includes(r.code)) {
+          html += '<div class="pd-disease-def">';
+          html += '<b>「癌症」</b>係指被保險人於本附約生效日起持續有效九十一日(含)以後或復效日起,組織細胞有惡性細胞不斷生長、擴張及對組織侵害的特性之惡性腫瘤或惡性白血球過多症,經病理檢驗確定符合最近採用之「國際疾病傷害及死因分類標準」版本歸屬於惡性腫瘤或原位癌之疾病。';
+          html += '</div>';
+        }
         html += '</div></div>';
       });
-      
+
+      // #10/#11 ── 公司區塊頁尾(模仿公版「壽險顧問 / 規劃日期 / 印表日期」) ──
+      const today = new Date();
+      const yROC = today.getFullYear() - 1911;
+      const dateStr = yROC + '/' + String(today.getMonth()+1).padStart(2,'0') + '/' + String(today.getDate()).padStart(2,'0');
+      html += '<div class="pd-footer">';
+      html += '<div class="pd-footer-row">';
+      html += '<span>壽險顧問:<b>李育松</b></span>';
+      html += '<span>規劃日期:<b>' + dateStr + '</b></span>';
+      html += '<span>印表日期:<b>' + dateStr + '</b></span>';
+      html += '<span style="color:#999;">本建議書由系統自動生成,實際給付以契約條款為準。</span>';
+      html += '</div>';
+      html += '</div>';
       html += '</div>';
     });
-    
+
     if (html) section.innerHTML = html;
   }
   

@@ -2224,18 +2224,35 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   .compare-table thead th:first-child {
     position: static !important;
     z-index: auto !important;
-    min-width: 110px;
+    min-width: 120px;
+    max-width: 140px;
+    background: #F8FAFB !important;
+    /* 強化分隔線:右側 2px 實線,避免跟下個 column 視覺糊在一起 */
+    border-right: 2px solid var(--border-strong, #cbd2d8) !important;
+    padding-right: 10px !important;
   }
-  /* 表格外層加 wrapper 可橫向滾動 */
+  /* 給付項目列 hover 時保持淡灰底,不變成 hover 橘 */
+  .compare-table tbody tr:hover td:first-child {
+    background: #EFF2F5 !important;
+  }
+  /* 表格外層加 wrapper 可橫向滾動 + 邊緣淡陰影提示橫向可滾動 */
   .compare-table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    background:
+      linear-gradient(to right, white 30%, rgba(255,255,255,0)) 0 0/40px 100% no-repeat,
+      linear-gradient(to right, rgba(0,0,0,0.1), rgba(255,255,255,0) 40px) 0 0/100% 100% no-repeat;
+    background-attachment: local, scroll;
   }
   .compare-table thead th { padding: 12px 8px 10px; }
   .th-product { min-width: 130px; max-width: 180px; }
   .th-name { font-size: 12px; }
   .cell-fee { font-size: 22px; }
-  .compare-table tbody td { padding: 10px 6px; font-size: 12px; }
+  .compare-table tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+    min-width: 100px;     /* 確保資料 cell 不被擠成過窄 */
+  }
 }
 
 /* 手機橫式 / 大手機 ~640px */
@@ -2295,11 +2312,22 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   }
   .client-info { padding: 10px; }
   .client-info-title { font-size: 11px; }
-  /* v1.24:取消主表第一欄 sticky,避免在窄螢幕橫向滾動時遮住資料 */
+  /* v1.24:取消主表第一欄 sticky + 加強分隔線(避免在窄螢幕跟下一欄重疊) */
   .compare-table tbody td:first-child,
   .compare-table thead th:first-child {
     position: static !important;
     z-index: auto !important;
+    min-width: 110px;
+    max-width: 130px;
+    background: #F8FAFB !important;
+    border-right: 2px solid var(--border-strong, #cbd2d8) !important;
+    padding-right: 8px !important;
+  }
+  .compare-table tbody tr:hover td:first-child {
+    background: #EFF2F5 !important;
+  }
+  .compare-table tbody td {
+    min-width: 90px;
   }
   /* 表格保持原樣 + 橫向滑動 */
   .compare-table-wrap {

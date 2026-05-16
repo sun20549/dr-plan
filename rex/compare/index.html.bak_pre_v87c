@@ -1458,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517e';
+window.__DATA_VERSION__ = '20260517d';
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
@@ -11147,36 +11147,6 @@ function calcProductForUser(productMeta, user) {
     } else {
       // 未知 engine,標記不支援但不 crash
       return { unsupported: true, engine_name: engine };
-    }
-    // v87c: 全 engine 共用 — 用 Drew rates_by_age 內插覆寫 cv(任何年齡 100% 準)
-    if (result && Array.isArray(result.schedule) && result.schedule.length) {
-      const _db = getDB(plan);
-      const _dba = _db && _db.drew_rates_by_age;
-      if (_dba && (_dba['21M'] || _dba['41M'])) {
-        const _r21 = _dba['21M'] || {};
-        const _r41 = _dba['41M'] || {};
-        const _t = Math.max(0, Math.min(2, (age - 21) / 20));
-        for (const _row of result.schedule) {
-          const _y = _row.y;
-          if (_y == null) continue;
-          const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
-          const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
-          let _rate;
-          if (_a != null && _b != null) _rate = (_a + (_b - _a) * _t) / 100;
-          else if (_a != null) _rate = _a / 100;
-          else if (_b != null) _rate = _b / 100;
-          else continue;
-          const _cum = _row.cum_prem || 0;
-          if (_cum > 0) {
-            const _newCv = +(_cum * _rate).toFixed(2);
-            if ('cv_total' in _row) _row.cv_total = _newCv;
-            if ('surr_total' in _row) _row.surr_total = _newCv;
-            if ('cv_basic' in _row) _row.cv_basic = _newCv;
-            if ('surr_pure' in _row) _row.surr_pure = _newCv;
-          }
-        }
-        result.drew_calibrated = true;
-      }
     }
     // v6: 標記是否手動微調
     if (result) {
