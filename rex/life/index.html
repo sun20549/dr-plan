@@ -336,10 +336,10 @@ body.dark .csb-slider::-webkit-slider-thumb{background:var(--card-bg);border-col
 .table-wrap::-webkit-scrollbar-thumb:hover{background:#b4b4b4;}
 .table-wrap::-webkit-scrollbar-corner{background:#fafafa;}
 .table-wrap{scrollbar-width:thin;scrollbar-color:#d4d4d4 #fafafa;}
-table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;}
 thead{position:sticky;top:0;z-index:2;}
-thead tr.h1 th{background:linear-gradient(180deg,var(--navy),var(--navy-mid));color:#fff;padding:8px 6px;font-weight:700;font-size:11px;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.15);}
-thead tr.h2 th{background:var(--gold-light);color:var(--navy);padding:6px 6px;font-weight:700;font-size:11px;border:1px solid var(--border);}
+thead tr.h1 th{background:linear-gradient(180deg,var(--navy),var(--navy-mid));color:#fff;padding:9px 6px;font-weight:700;font-size:12.5px;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.15);}
+thead tr.h2 th{background:var(--gold-light);color:var(--navy);padding:7px 6px;font-weight:700;font-size:12px;border:1px solid var(--border);}
 thead tr.h2 th.guaranteed{background:#FEF3E0;}
 thead tr.h2 th.non-guaranteed{background:var(--orange-light);color:var(--orange-dark);}
 thead tr.h2 th.terminal{background:#FFF1D1;}
@@ -349,7 +349,7 @@ thead tr.h2 th.ratio-j{background:#fff;color:#A03316;border-right:2px solid #c24
 thead tr.h2 th.total-k{background:linear-gradient(180deg,#A8DFD6,#7BCDC0);color:#0a5950;border-left:2px solid #0f766e !important;}
 thead tr.h2 th.ratio-k{background:#fff;color:#0a5950;font-style:italic;}
 
-tbody td{padding:7px 8px;border:1px solid var(--border);text-align:right;}
+tbody td{padding:8px 9px;border:1px solid var(--border);text-align:right;font-size:12.5px;}
 tbody td.text-center{text-align:center;font-weight:700;color:var(--navy);}
 tbody tr:nth-child(even) td{background:var(--row-alt);}
 tbody tr:hover td{background:var(--row-hover);}
@@ -359,19 +359,19 @@ tbody td.pay-yr{font-weight:700;color:var(--orange-dark);}
 /* J 群組:身故(深暖橘)+ 保障倍率(白底配深邊) */
 tbody td.col-total-j{
   background:#FFE4D0 !important;font-weight:900;color:#7A2911;
-  border-left:2px solid #c2410c !important;font-size:13px;
+  border-left:2px solid #c2410c !important;font-size:13.5px;
 }
 tbody td.col-ratio-j{
-  background:#fff !important;font-weight:600;color:#A03316;font-size:11px;
+  background:#fff !important;font-weight:600;color:#A03316;font-size:12.5px;
   font-style:italic;border-right:2px solid #c2410c !important;
 }
 /* K 群組:解約(深玉綠)+ 保本率(白底配深邊) */
 tbody td.col-total-k{
   background:#C5EAE2 !important;font-weight:900;color:#0a5950;
-  border-left:2px solid #0f766e !important;font-size:13px;
+  border-left:2px solid #0f766e !important;font-size:13.5px;
 }
 tbody td.col-ratio-k{
-  background:#fff !important;font-weight:600;color:#0f766e;font-size:11px;
+  background:#fff !important;font-weight:600;color:#0f766e;font-size:12.5px;
   font-style:italic;
 }
 
@@ -468,7 +468,9 @@ body.dark .af-row label{color:var(--text-secondary);}
 .cust-empty{padding:24px;text-align:center;color:var(--text-muted);font-size:12px;}
 
 /* Catalog selector */
-.catalog-bar{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:14px;padding:10px 12px;background:var(--navy);border-radius:8px;color:#fff;}
+/* 保險公司/商品選單區 — 依性別主題色,male=深藍/female=深粉 */
+.catalog-bar{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:14px;padding:10px 12px;background:linear-gradient(135deg,#1E3A8A,#1E40AF);border-radius:8px;color:#fff;transition:background 0.3s;}
+body.theme-female .catalog-bar{background:linear-gradient(135deg,#831843,#9F1239);}
 .catalog-bar label{display:block;font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;margin-bottom:3px;}
 .catalog-bar select{width:100%;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:6px;background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:700;font-family:inherit;}
 .catalog-bar select option{background:var(--navy);color:#fff;}
@@ -553,8 +555,11 @@ body.dark .hero-card.rose .hc-value{filter:drop-shadow(0 0 12px rgba(236,72,153,
 .card-body-flush > .table-wrap{margin:0;border:none;border-radius:0;}
 .table-wrap{background:transparent !important;border:none !important;border-radius:0 !important;margin:0 !important;}
 table thead{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
-table thead tr.h1 th{background:rgba(15,23,42,0.92) !important;color:#fff !important;border:none !important;border-bottom:1px solid rgba(255,255,255,0.1) !important;}
-body.dark table thead tr.h1 th{background:rgba(2,6,23,0.92) !important;}
+/* 表頭依性別主題色 male=深藍 / female=深粉 */
+table thead tr.h1 th{background:linear-gradient(180deg,#1E40AF,#1E3A8A) !important;color:#fff !important;border:none !important;border-bottom:1px solid rgba(255,255,255,0.15) !important;transition:background 0.3s;}
+body.theme-female table thead tr.h1 th{background:linear-gradient(180deg,#9F1239,#831843) !important;}
+body.dark table thead tr.h1 th{background:linear-gradient(180deg,#1E40AF,#0F172A) !important;}
+body.dark.theme-female table thead tr.h1 th{background:linear-gradient(180deg,#9F1239,#1F0E14) !important;}
 table thead tr.h2 th{background:rgba(248,250,252,0.85) !important;color:var(--text-primary) !important;border:none !important;border-bottom:1px solid var(--border-subtle) !important;}
 body.dark table thead tr.h2 th{background:rgba(15,23,42,0.85) !important;color:var(--text-secondary) !important;}
 
@@ -803,12 +808,14 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     display:flex !important;
     flex-direction:column;
     justify-content:space-between;
-    min-height:calc(100vh - 16mm);
+    height:178mm;max-height:178mm;
     page-break-after:always;
-    padding:14mm 18mm;
+    page-break-inside:avoid;
+    padding:10mm 18mm;
     background:linear-gradient(135deg,#FAFBFC 0%,#F8F5F0 100%) !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
     position:relative;overflow:hidden;
+    box-sizing:border-box;
   }
   .print-cover::before{
     content:'';position:absolute;top:-100px;right:-100px;
@@ -822,25 +829,31 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   }
   .pc-top{position:relative;z-index:2;}
   .pc-brand-mark{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:2px solid #0F172A;}
-  .pc-brand-mark img{height:42px;width:42px;background:#fff;border-radius:8px;padding:3px;}
-  .pc-brand-text{line-height:1.2;}
-  .pc-brand-name{font-size:14px;font-weight:900;color:#F05A28;letter-spacing:2px;}
-  .pc-brand-sub{font-size:9px;color:#94A3B8;letter-spacing:4px;}
+  .pc-brand-mark img{height:36px;width:36px;background:#fff;border-radius:7px;padding:3px;}
+  .pc-brand-text{line-height:1.2;display:flex;flex-direction:column;}
+  .pc-brand-name{font-size:13px;font-weight:900;color:#F05A28;letter-spacing:2px;}
+  /* 副標 — 用 justify 撐到跟上面同寬 */
+  .pc-brand-sub{
+    font-size:9px;color:#94A3B8;
+    text-align:justify;text-align-last:justify;
+    word-spacing:0;letter-spacing:1.5px;
+    margin-top:2px;
+  }
 
-  .pc-middle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;padding:30px 0;}
-  .pc-eyebrow{font-size:11px;color:#475569;letter-spacing:6px;margin-bottom:24px;font-weight:600;}
-  .pc-title{font-size:34px;font-weight:900;color:#0F172A;letter-spacing:2px;line-height:1.3;margin-bottom:10px;}
-  .pc-subtitle{font-size:15px;color:#475569;letter-spacing:6px;font-weight:500;}
-  .pc-divider{width:70px;height:3px;background:linear-gradient(90deg,#F59E0B,#D97706);margin:34px auto;border-radius:2px;}
-  .pc-info{background:rgba(255,255,255,0.85);border:1px solid #E5E0D3;border-left:4px solid #F59E0B;border-radius:8px;padding:22px 32px;min-width:380px;text-align:left;}
-  .pc-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:#64748B;padding:7px 0;border-bottom:1px dashed #E5E0D3;}
+  .pc-middle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;padding:14px 0;min-height:0;}
+  .pc-eyebrow{font-size:10px;color:#475569;letter-spacing:5px;margin-bottom:14px;font-weight:600;}
+  .pc-title{font-size:28px;font-weight:900;color:#0F172A;letter-spacing:2px;line-height:1.25;margin-bottom:8px;}
+  .pc-subtitle{font-size:13px;color:#475569;letter-spacing:5px;font-weight:500;}
+  .pc-divider{width:60px;height:3px;background:linear-gradient(90deg,#F59E0B,#D97706);margin:18px auto;border-radius:2px;}
+  .pc-info{background:rgba(255,255,255,0.92);border:1px solid #E5E0D3;border-left:4px solid #F59E0B;border-radius:8px;padding:14px 24px;min-width:360px;text-align:left;}
+  .pc-row{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:#64748B;padding:4px 0;border-bottom:1px dashed #E5E0D3;}
   .pc-row:last-child{border-bottom:none;}
-  .pc-row b{color:#0F172A;font-weight:700;font-size:14px;letter-spacing:.5px;}
+  .pc-row b{color:#0F172A;font-weight:700;font-size:13px;letter-spacing:.5px;}
 
-  .pc-bottom{text-align:center;color:#94A3B8;font-size:10px;position:relative;z-index:2;padding-top:18px;border-top:1px dashed #E5E0D3;}
-  .pc-by{color:#0F172A;font-weight:700;font-size:12px;letter-spacing:2px;margin-bottom:5px;}
-  .pc-date{letter-spacing:1.5px;}
-  .pc-version{font-size:9px;color:#94A3B8;margin-top:4px;letter-spacing:1.5px;}
+  .pc-bottom{text-align:center;color:#94A3B8;font-size:9.5px;position:relative;z-index:2;padding-top:10px;border-top:1px dashed #E5E0D3;}
+  .pc-by{color:#0F172A;font-weight:700;font-size:11px;letter-spacing:1.5px;margin-bottom:3px;}
+  .pc-date{letter-spacing:1.2px;}
+  .pc-version{font-size:8.5px;color:#94A3B8;margin-top:3px;letter-spacing:1.5px;}
 }
 
 /* ===== 列印用抬頭 (只在 print 時顯示) ===== */
@@ -926,13 +939,22 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   .chart-canvas-wrap{height:135px !important;}
   .chart-canvas-wrap canvas{max-width:100% !important;}
 
-  /* 🆕 Hero 漸層文字強制印出 */
+  /* 🆕 Hero 列印 — 漸層轉為實色,確保所有印表機/PDF 引擎都能正確呈現 */
   .hero-card .hc-value{
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust:exact !important;
-    color-adjust:exact !important;
+    background:none !important;
+    -webkit-background-clip:initial !important;background-clip:initial !important;
+    -webkit-text-fill-color:initial !important;
+    color:#0F172A !important;
+    filter:none !important;
   }
+  .hero-card.gold .hc-value{color:#B45309 !important;-webkit-text-fill-color:#B45309 !important;}
+  .hero-card.wealth .hc-value{color:#047857 !important;-webkit-text-fill-color:#047857 !important;}
+  .hero-card.primary .hc-value{color:#1E40AF !important;-webkit-text-fill-color:#1E40AF !important;}
   .hero-card::after{display:none !important;}
+
+  /* 🆕 試算表強制從新一頁開始(讓 Hero + 圖完整在 P2) */
+  .table-wrap{page-break-before:always !important;}
+  .tbl-caption{page-break-before:always !important;}
 
   /* 🆕 表格 break-even 高亮 + bold */
   tbody tr.break-even td{
@@ -1058,7 +1080,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
       <img src="../../images/favicon-32.png" alt="鼎綸" onerror="this.style.display='none'">
       <div class="pc-brand-text">
         <div class="pc-brand-name">鼎綸恩宇 · DING-LUN ELITE</div>
-        <div class="pc-brand-sub">PRIVATE WEALTH PLANNING</div>
+        <div class="pc-brand-sub">PRIVATE&nbsp;&nbsp;WEALTH&nbsp;&nbsp;PLANNING</div>
       </div>
     </div>
   </div>
@@ -1386,13 +1408,15 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
         設定一次,永久保存在本機(localStorage)。每次列印 PDF 會自動帶到封面、抬頭與頁尾。
       </p>
       <div class="agent-form">
-        <div class="af-row">
-          <label>業務員姓名 <span style="color:var(--danger)">*</span></label>
-          <input class="input" type="text" id="agent-name" placeholder="例:吳業務" maxlength="20">
-        </div>
-        <div class="af-row">
-          <label>招攬人登錄字號</label>
-          <input class="input" type="text" id="agent-license" placeholder="例:00BR1234567" maxlength="30">
+        <div class="af-grid2">
+          <div class="af-row">
+            <label>業務員姓名 <span style="color:var(--danger)">*</span></label>
+            <input class="input" type="text" id="agent-name" placeholder="例:李小松" maxlength="20">
+          </div>
+          <div class="af-row">
+            <label>招攬人登錄字號</label>
+            <input class="input" type="text" id="agent-license" placeholder="例:0123456789" maxlength="30">
+          </div>
         </div>
         <div class="af-grid2">
           <div class="af-row">
@@ -1400,20 +1424,16 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
             <input class="input" type="text" id="agent-mobile" placeholder="0912-345-678" maxlength="20">
           </div>
           <div class="af-row">
-            <label>直線電話 (選填)</label>
-            <input class="input" type="text" id="agent-tel" placeholder="(02) 1234-5678" maxlength="20">
+            <label>Email</label>
+            <input class="input" type="email" id="agent-email" placeholder="agent@example.com" maxlength="50">
           </div>
         </div>
         <div class="af-row">
-          <label>Email</label>
-          <input class="input" type="email" id="agent-email" placeholder="agent@example.com" maxlength="50">
-        </div>
-        <div class="af-row">
-          <label>個人 LINE 連結 (選填,留空用公司 LINE)</label>
+          <label>個人 LINE 連結 <span style="color:var(--text-muted);font-weight:500">(選填,留空用公司 LINE)</span></label>
           <input class="input" type="text" id="agent-line" placeholder="https://line.me/ti/p/XXXXX" maxlength="100">
         </div>
         <div class="af-row">
-          <label>一句話介紹 (選填,顯示在封面)</label>
+          <label>一句話介紹 <span style="color:var(--text-muted);font-weight:500">(選填,顯示在 PDF 封面)</span></label>
           <input class="input" type="text" id="agent-tagline" placeholder="例:您身邊最值得信賴的財務顧問" maxlength="40">
         </div>
       </div>
@@ -1549,7 +1569,7 @@ function ackDisclaimer() {
 function loadAgent() {
   try {
     const a = JSON.parse(localStorage.getItem('agent-info-v1') || '{}');
-    ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+    ['name','license','mobile','email','line','tagline'].forEach(k => {
       const el = $('agent-' + k);
       if (el) el.value = a[k] || '';
     });
@@ -1558,7 +1578,7 @@ function loadAgent() {
 }
 function saveAgent() {
   const a = {};
-  ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+  ['name','license','mobile','email','line','tagline'].forEach(k => {
     a[k] = $('agent-' + k).value.trim();
   });
   if (!a.name) { alert('請至少填寫業務員姓名'); return; }
@@ -1570,7 +1590,7 @@ function saveAgent() {
 function clearAgent() {
   if (!confirm('確定清除所有業務員資料?')) return;
   localStorage.removeItem('agent-info-v1');
-  ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+  ['name','license','mobile','email','line','tagline'].forEach(k => {
     const el = $('agent-' + k);
     if (el) el.value = '';
   });
@@ -2382,7 +2402,7 @@ function renderPrintFooter(inp) {
   const dateStr = `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
   const version = $('version-badge').textContent;
   const agent = getAgentInfo();
-  const agentStr = agent.name ? `業務員:${agent.name}${agent.license?` (${agent.license})`:''}${agent.mobile?` · ${agent.mobile}`:''}` : '';
+  const agentStr = agent.name ? `業務員:${agent.name}${agent.license?` (${agent.license})`:''}${agent.mobile?` · 📱 ${agent.mobile}`:''}${agent.email?` · ✉ ${agent.email}`:''}` : '';
   $('print-footer').innerHTML = `
     試算日期 ${dateStr} · 鼎綸保險經紀人 · 恩宇體系
     ${agentStr ? ' · ' + agentStr : ''}
@@ -2416,7 +2436,7 @@ function renderPrintFooter(inp) {
   setText('cover-name', inp.name || '—');
   setText('cover-sex-age', `${inp.sex === 'M' ? '男性' : '女性'} · ${inp.age} 歲`);
   setText('cover-plan', productFullName);
-  setText('cover-face', `${inp.faceWan.toLocaleString()} 萬美元 (USD)`);
+  setText('cover-face', `${inp.faceWan.toLocaleString()} 萬美元`);
   setText('cover-freq', `${inp.freq} · 金融機構自動轉帳`);
   setText('cover-date', `試算日期 · ${dateStr}`);
   setText('cover-version', version);
@@ -2426,7 +2446,7 @@ function renderPrintFooter(inp) {
     if (agent.name) {
       let html = `<div style="font-size:14px;color:#0F172A;font-weight:800;letter-spacing:2px;">您的專屬顧問 · ${agent.name}</div>`;
       if (agent.license) html += `<div style="font-size:9.5px;color:#94A3B8;margin-top:3px;letter-spacing:1px;">登錄字號 ${agent.license}</div>`;
-      const contacts = [agent.mobile && `📱 ${agent.mobile}`, agent.tel && `☎ ${agent.tel}`, agent.email && `✉ ${agent.email}`].filter(Boolean);
+      const contacts = [agent.mobile && `📱 ${agent.mobile}`, agent.email && `✉ ${agent.email}`].filter(Boolean);
       if (contacts.length) html += `<div style="font-size:10px;color:#475569;margin-top:6px;letter-spacing:.5px;">${contacts.join(' · ')}</div>`;
       if (agent.tagline) html += `<div style="font-size:10.5px;color:#94A3B8;margin-top:8px;font-style:italic;letter-spacing:1px;">「${agent.tagline}」</div>`;
       html += `<div style="font-size:11px;color:#94A3B8;margin-top:10px;letter-spacing:2px;">鼎綸保險經紀人 · 恩宇體系</div>`;
@@ -2436,10 +2456,10 @@ function renderPrintFooter(inp) {
         <div style="font-size:9px;color:#cbd5e1;margin-top:4px;">點擊右上「👤 業務員資料」設定您的專屬資訊</div>`;
     }
   }
-  // 抬頭也加業務員名
+  // 抬頭也加業務員名(呼應封面「您的專屬顧問」措辭)
   const plDate = $('pl-date');
   if (plDate && agent.name) {
-    plDate.innerHTML = `${dateStr}<span style="color:#3B82F6;font-weight:700;margin-left:8px;">| ${agent.name}</span>`;
+    plDate.innerHTML = `${dateStr}<span style="color:#3B82F6;font-weight:700;margin-left:8px;">| 您的專屬顧問 · ${agent.name}</span>`;
   }
 }
 
