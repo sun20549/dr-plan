@@ -69,6 +69,7 @@
   --c-prudential: #003F87;
   --c-tbl: #00754A;
   --c-allianz: #0070BA;
+  --c-twlife: #005BAC;
 }
 
 * { box-sizing: border-box; }
@@ -3024,6 +3025,17 @@ const App = (() => {
         { cid: 'yuanta', code: 'JO', defaultAmount: 100 },
         { cid: 'nanshan', code: 'LCA', defaultAmount: 100 }
       ]
+    },
+    { key: '實支實付(高齡)', products: [
+        { cid: 'cathay', code: 'FG2', defaultAmount: '10萬' },
+        { cid: 'mli', code: 'IHIA', defaultAmount: 'A' },
+        { cid: 'kgi', code: 'MAJID', defaultAmount: '10萬' },
+        { cid: 'twlife', code: 'NTPH2001', defaultAmount: '計劃一' },
+        { cid: 'twlife', code: 'NTPH2101', defaultAmount: '計劃一' },
+        { cid: 'quanqiu', code: 'PHF', defaultAmount: '10年期' },
+        { cid: 'xinguang', code: 'R3F', defaultAmount: '10年期' },
+        { cid: 'nanshan', code: 'WEHS', defaultAmount: '計劃10' }
+      ]
     }
   ];
 
@@ -3502,14 +3514,14 @@ const App = (() => {
 
   /* ═══ 載入 ═══════════════════════════════════════ */
   async function load() {
-    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','prudential.json','tbl.json','allianz.json','benefitsLib.json'];
+    const files = ['transglobe.json','hontai.json','skl.json','fglife.json','fubon.json','nanshan.json','mli.json','cathay.json','kgi.json','yuanta.json','prudential.json','tbl.json','allianz.json','twlife.json','benefitsLib.json'];
     const results = await Promise.all(files.map(async (f) => {
       const r = await fetch(f);
       if (!r.ok) throw new Error('Failed to load ' + f);
       return r.json();
     }));
-    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz, blib] = results;
-    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz].forEach(c => { state.db.companies[c.id] = c; });
+    const [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz, twlife, blib] = results;
+    [transglobe, hontai, skl, fglife, fubon, nanshan, mli, cathay, kgi, yuanta, prudential, tbl, allianz, twlife].forEach(c => { state.db.companies[c.id] = c; });
     state.db.benefitsLib = blib;
   }
 
@@ -4037,7 +4049,7 @@ const App = (() => {
       if (!byCompany[pp.cid]) byCompany[pp.cid] = [];
       byCompany[pp.cid].push(pp);
     });
-    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta','prudential','tbl','allianz'];
+    const cidOrder = ['quanqiu','hongtai','xinguang','farglory','fubon','nanshan','mli','cathay','kgi','yuanta','prudential','tbl','allianz','twlife'];
     cidOrder.forEach(cid => {
       if (!byCompany[cid]) return;
       const company = state.db.companies[cid];

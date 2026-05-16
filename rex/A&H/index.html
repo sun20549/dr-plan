@@ -3052,10 +3052,9 @@ tr
     <!-- 險種規劃 -->
     <div class="card" id="productCard">
       <div class="card-header teal">
-        <span><span class="header-icon">🏥</span>險種規劃</span>
-        <span style="display:inline-flex;gap:8px;align-items:center;">
-          <button class="tb-btn no-print" style="background: linear-gradient(135deg,#F05A28 0%,#FF8050 100%); border-color: rgba(255,255,255,0.3); font-weight:700;" onclick="App.applyRecommendedPlan()" title="一鍵套用最夯套裝(10 張)">⭐ 推薦規劃</button>
-          <button class="tb-btn no-print" style="background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3);" onclick="App.openCompanyAddModal()">+ 新增公司</button>
+        <span style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <span><span class="header-icon">🏥</span>險種規劃</span>
+          <button class="tb-btn no-print" style="background: linear-gradient(135deg,#F05A28 0%,#FF8050 100%); border-color: rgba(255,255,255,0.4); font-weight:700; padding:6px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);" onclick="App.applyRecommendedPlan()" title="一鍵套用最夯全球 10 張套裝">⭐ 推薦規劃</button>
         </span>
       </div>
       <div class="company-tabs no-print" id="companyTabs"></div>
@@ -7817,14 +7816,14 @@ const App = (() => {
         { code: 'XCG',  period: '1年期', amount: 3 },
         { code: 'XAB',  period: '1年期', amount: 200 },
         { code: 'XMBN', period: '1年期', amount: 30000 },
-        { code: 'NIR',  period: '1年期', amount: '計劃二' }
+        { code: 'NIR',  period: '1年期', amount: 'HI-20' }
       ]
     };
     state.selections[quanqiu.id] = reco;
     state.activeCompany = quanqiu.id;
     renderCompanyTabs();
-    renderProducts();
-    recompute();
+    renderProductSection();
+    recompute(true);
     // 平滑捲動到險種規劃區
     const card = $('#productCard');
     if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });

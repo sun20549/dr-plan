@@ -1458,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517e';
+window.__DATA_VERSION__ = '20260517g';
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
@@ -1629,6 +1629,8 @@ const PRODUCTS = [
     unit_size: 1,
     min_sa: 1,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'FVY1',
@@ -1647,6 +1649,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'KQA',
@@ -1665,6 +1669,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'NUIW7302',
@@ -1683,6 +1689,8 @@ const PRODUCTS = [
     unit_size: 1,
     min_sa: 1,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'NUPW0601',
@@ -1701,6 +1709,8 @@ const PRODUCTS = [
     unit_size: 1,
     min_sa: 1,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'P6UISD',
@@ -1719,6 +1729,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'P6UISE',
@@ -1737,6 +1749,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'P6ULSN',
@@ -1755,6 +1769,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'ULISWL',
@@ -1773,6 +1789,8 @@ const PRODUCTS = [
     unit_size: 1000,
     min_sa: 1000,
     max_sa: 100000000,
+    min_age: 0,
+    max_age: 90,
   },
 {
     plan_code: 'QI',
@@ -11148,24 +11166,51 @@ function calcProductForUser(productMeta, user) {
       // 未知 engine,標記不支援但不 crash
       return { unsupported: true, engine_name: engine };
     }
-    // v87c: 全 engine 共用 — 用 Drew rates_by_age 內插覆寫 cv(任何年齡 100% 準)
+    // v88: 全 engine + 全年期 + 性別 — Drew rates 三 anchor (21M/41M/31F) 內插覆寫 cv
     if (result && Array.isArray(result.schedule) && result.schedule.length) {
       const _db = getDB(plan);
-      const _dba = _db && _db.drew_rates_by_age;
-      if (_dba && (_dba['21M'] || _dba['41M'])) {
-        const _r21 = _dba['21M'] || {};
-        const _r41 = _dba['41M'] || {};
-        const _t = Math.max(0, Math.min(2, (age - 21) / 20));
+      // 優先 period-and-age 結構,fallback 舊的 by_age(只 6yr)
+      const _per = user.period;
+      const _pba = _db && _db.drew_rates_by_period_and_age;
+      let _src = null;
+      if (_pba && _pba[_per]) _src = _pba[_per];
+      else if (_pba && _pba[String(_per)]) _src = _pba[String(_per)];
+      // fallback: 若無 period-and-age,只用 6yr 的 drew_rates_by_age(向後相容)
+      if (!_src && _db && _db.drew_rates_by_age && _per === 6) _src = _db.drew_rates_by_age;
+      
+      if (_src && (_src['21M'] || _src['41M'] || _src['31F'] || _src['30F'])) {
+        const _r21 = _src['21M'] || {};
+        const _r41 = _src['41M'] || {};
+        const _rF = _src['31F'] || _src['30F'] || {};
+        const _hasF = Object.keys(_rF).length > 0;
+        const _t = Math.max(0, Math.min(2, (age - 21) / 20));  // 0 at 21, 1 at 41
         for (const _row of result.schedule) {
           const _y = _row.y;
           if (_y == null) continue;
-          const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
-          const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
+          // 性別判斷:男用 21M/41M 內插,女優先用 31F (若有),否則用 M 但乘 F 因子
           let _rate;
-          if (_a != null && _b != null) _rate = (_a + (_b - _a) * _t) / 100;
-          else if (_a != null) _rate = _a / 100;
-          else if (_b != null) _rate = _b / 100;
-          else continue;
+          if (sex === 'F' && _hasF) {
+            // F anchor 在 31歲 — 直接用 31F + age slope from M
+            const _f = _rF[_y] != null ? _rF[_y] : _rF[String(_y)];
+            const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
+            const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
+            if (_f != null) {
+              if (_a != null && _b != null) {
+                // 假設 F slope 跟 M slope 一樣,用 31F 為錨點
+                const _mSlope = (_b - _a) / 20;
+                _rate = (_f + _mSlope * (age - 31)) / 100;
+              } else {
+                _rate = _f / 100;
+              }
+            } else continue;
+          } else {
+            const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
+            const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
+            if (_a != null && _b != null) _rate = (_a + (_b - _a) * _t) / 100;
+            else if (_a != null) _rate = _a / 100;
+            else if (_b != null) _rate = _b / 100;
+            else continue;
+          }
           const _cum = _row.cum_prem || 0;
           if (_cum > 0) {
             const _newCv = +(_cum * _rate).toFixed(2);
@@ -11176,6 +11221,7 @@ function calcProductForUser(productMeta, user) {
           }
         }
         result.drew_calibrated = true;
+        result.drew_calib_source = 'p' + _per + (sex === 'F' && _hasF ? '_F' : '_M');
       }
     }
     // v6: 標記是否手動微調

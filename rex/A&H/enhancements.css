@@ -431,13 +431,17 @@
   font-weight: 600;
 }
 .pd-item-note {
-  grid-column: 1 / -1;
+  grid-column: 1 / 2;   /* #4-2 條款內文只佔左欄,不延伸到數值欄下方 */
   font-size: 11px;
   color: #8a99a6;
   margin-top: 4px;
   padding-left: 18px;
+  padding-right: 20px;
   line-height: 1.5;
   letter-spacing: 0.2px;
+  max-width: 100%;
+  white-space: normal;  /* 允許自動換行 */
+  word-break: break-all;
 }
 
 /* 手機 */
