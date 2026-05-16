@@ -50,15 +50,15 @@
   --white:#fff;--light:#F8FAFC;
   --border:var(--border-subtle);
 
-  /* Gender accent (柔化版) */
-  --male-accent:#0EA5E9;--male-accent-dark:#0284C7;--male-accent-light:#E0F2FE;
+  /* Gender accent — 鮮明色,主題全頁連動 */
+  --male-accent:#3B82F6;--male-accent-dark:#2563EB;--male-accent-light:#DBEAFE;
   --female-accent:#EC4899;--female-accent-dark:#DB2777;--female-accent-light:#FCE7F3;
   --accent:var(--male-accent);--accent-dark:var(--male-accent-dark);--accent-light:var(--male-accent-light);
-  --accent-bg:rgba(14,165,233,0.06);
+  --accent-bg:rgba(59,130,246,0.07);
 }
 body.theme-female{
   --accent:var(--female-accent);--accent-dark:var(--female-accent-dark);--accent-light:var(--female-accent-light);
-  --accent-bg:rgba(236,72,153,0.05);
+  --accent-bg:rgba(236,72,153,0.07);
 }
 /* ============ DARK MODE ============ */
 body.dark{
@@ -145,31 +145,36 @@ body{background:var(--bg);font-family:'Noto Sans TC','Inter',sans-serif;color:va
 .seg{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:#fafafa;}
 .seg input{display:none;}
 .seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;margin:0;color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:1px;transition:all .15s;}
-/* 左側表單 segment:收斂飽和度,維持工具感,把目光留給右邊主數據 */
+/* 一般 segment:中性灰,只有性別 segment 才用品牌色 */
 .seg input:checked + label{
   background:#475569;color:#fff;
   box-shadow:inset 0 -2px 0 rgba(0,0,0,0.18);
 }
+/* 性別:鮮明藍 / 鮮明粉,漸層 + 光暈 */
 .seg input[name="sex"][value="M"]:checked + label{
-  background:#1E4762;
-  box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2);
+  background:linear-gradient(135deg,#3B82F6,#2563EB);
+  color:#fff;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2),0 2px 8px rgba(59,130,246,0.35);
 }
 .seg input[name="sex"][value="F"]:checked + label{
-  background:#7C2D4D;
-  box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2);
+  background:linear-gradient(135deg,#EC4899,#DB2777);
+  color:#fff;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2),0 2px 8px rgba(236,72,153,0.35);
 }
-/* Dark mode:深灰帶微光,更安靜 */
+/* Dark mode:同樣鮮明 + 加強光暈,因為深色背景看起來更亮 */
 body.dark .seg input:checked + label{
   background:rgba(255,255,255,0.08) !important;color:#fff !important;
   box-shadow:inset 0 -2px 0 rgba(255,255,255,0.18) !important;
 }
 body.dark .seg input[name="sex"][value="M"]:checked + label{
-  background:rgba(14,165,233,0.18) !important;
-  box-shadow:inset 0 -2px 0 rgba(14,165,233,0.5) !important;
+  background:linear-gradient(135deg,#3B82F6,#2563EB) !important;
+  color:#fff !important;
+  box-shadow:0 0 16px rgba(59,130,246,0.45),inset 0 -2px 0 rgba(0,0,0,0.2) !important;
 }
 body.dark .seg input[name="sex"][value="F"]:checked + label{
-  background:rgba(236,72,153,0.18) !important;
-  box-shadow:inset 0 -2px 0 rgba(236,72,153,0.5) !important;
+  background:linear-gradient(135deg,#EC4899,#DB2777) !important;
+  color:#fff !important;
+  box-shadow:0 0 16px rgba(236,72,153,0.45),inset 0 -2px 0 rgba(0,0,0,0.2) !important;
 }
 /* age-badge 也降飽和:用深 slate 而非亮橘 */
 .age-badge{background:#475569 !important;color:#fff !important;}
@@ -438,6 +443,14 @@ body[data-view="summary"] .col-detail{display:none;}
 .line-qr-box{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0;}
 .line-qr-box .qr-img{width:240px;height:240px;border:8px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.1);background:#fff;}
 .line-qr-box .qr-tip{font-size:12px;color:var(--text-muted);text-align:center;line-height:1.6;}
+
+/* 業務員表單 */
+.agent-form{display:flex;flex-direction:column;gap:12px;}
+.af-row label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:4px;font-weight:600;letter-spacing:.5px;}
+.af-row .input{width:100%;}
+.af-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media (max-width:520px){.af-grid2{grid-template-columns:1fr;}}
+body.dark .af-row label{color:var(--text-secondary);}
 
 /* Customer DB */
 .cust-list{max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
@@ -1105,6 +1118,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   <div class="spacer"></div>
   <a class="top-btn" href="./compare.html" style="text-decoration:none;">📊 多商品比較</a>
   <button class="top-btn" onclick="openModal('modal-customers')">📋 客戶記錄</button>
+  <button class="top-btn" onclick="openModal('modal-agent')">👤 業務員資料</button>
   <button class="top-btn" onclick="shareLink()">🔗 分享連結</button>
   <button class="top-btn line" onclick="openModal('modal-line')">💬 加我 LINE</button>
   <button class="dark-toggle" id="dark-toggle" title="切換深色 / 淺色">🌙</button>
@@ -1360,6 +1374,59 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   </div>
 </div>
 
+<!-- ===== 業務員資料 MODAL ===== -->
+<div class="modal-backdrop" id="modal-agent">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <h3>👤 業務員資料</h3>
+      <button class="modal-close" onclick="closeModal('modal-agent')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">
+        設定一次,永久保存在本機(localStorage)。每次列印 PDF 會自動帶到封面、抬頭與頁尾。
+      </p>
+      <div class="agent-form">
+        <div class="af-row">
+          <label>業務員姓名 <span style="color:var(--danger)">*</span></label>
+          <input class="input" type="text" id="agent-name" placeholder="例:吳業務" maxlength="20">
+        </div>
+        <div class="af-row">
+          <label>招攬人登錄字號</label>
+          <input class="input" type="text" id="agent-license" placeholder="例:00BR1234567" maxlength="30">
+        </div>
+        <div class="af-grid2">
+          <div class="af-row">
+            <label>行動電話</label>
+            <input class="input" type="text" id="agent-mobile" placeholder="0912-345-678" maxlength="20">
+          </div>
+          <div class="af-row">
+            <label>直線電話 (選填)</label>
+            <input class="input" type="text" id="agent-tel" placeholder="(02) 1234-5678" maxlength="20">
+          </div>
+        </div>
+        <div class="af-row">
+          <label>Email</label>
+          <input class="input" type="email" id="agent-email" placeholder="agent@example.com" maxlength="50">
+        </div>
+        <div class="af-row">
+          <label>個人 LINE 連結 (選填,留空用公司 LINE)</label>
+          <input class="input" type="text" id="agent-line" placeholder="https://line.me/ti/p/XXXXX" maxlength="100">
+        </div>
+        <div class="af-row">
+          <label>一句話介紹 (選填,顯示在封面)</label>
+          <input class="input" type="text" id="agent-tagline" placeholder="例:您身邊最值得信賴的財務顧問" maxlength="40">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="clearAgent()">清除</button>
+      <div style="flex:1;"></div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-agent')">取消</button>
+      <button class="btn btn-primary" onclick="saveAgent()">💾 儲存</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== LINE QR MODAL ===== -->
 <div class="modal-backdrop" id="modal-line">
   <div class="modal">
@@ -1478,9 +1545,45 @@ function ackDisclaimer() {
   $('modal-disclaimer').classList.remove('open');
 }
 
+// ============ 業務員資料 ============
+function loadAgent() {
+  try {
+    const a = JSON.parse(localStorage.getItem('agent-info-v1') || '{}');
+    ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+      const el = $('agent-' + k);
+      if (el) el.value = a[k] || '';
+    });
+    return a;
+  } catch(e) { return {}; }
+}
+function saveAgent() {
+  const a = {};
+  ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+    a[k] = $('agent-' + k).value.trim();
+  });
+  if (!a.name) { alert('請至少填寫業務員姓名'); return; }
+  localStorage.setItem('agent-info-v1', JSON.stringify(a));
+  closeModal('modal-agent');
+  if (RATES) recalc(); // 更新封面/抬頭
+  alert(`✓ 已儲存業務員資料:${a.name}`);
+}
+function clearAgent() {
+  if (!confirm('確定清除所有業務員資料?')) return;
+  localStorage.removeItem('agent-info-v1');
+  ['name','license','mobile','tel','email','line','tagline'].forEach(k => {
+    const el = $('agent-' + k);
+    if (el) el.value = '';
+  });
+}
+function getAgentInfo() {
+  try { return JSON.parse(localStorage.getItem('agent-info-v1') || '{}'); }
+  catch(e) { return {}; }
+}
+
 function openModal(id) {
   $(id).classList.add('open');
   if (id === 'modal-customers') refreshCustomerList();
+  if (id === 'modal-agent') loadAgent();
 }
 function closeModal(id) { $(id).classList.remove('open'); }
 document.addEventListener('click', e => {
@@ -2278,10 +2381,13 @@ function renderPrintFooter(inp) {
   const t = new Date();
   const dateStr = `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
   const version = $('version-badge').textContent;
+  const agent = getAgentInfo();
+  const agentStr = agent.name ? `業務員:${agent.name}${agent.license?` (${agent.license})`:''}${agent.mobile?` · ${agent.mobile}`:''}` : '';
   $('print-footer').innerHTML = `
-    試算日期 ${dateStr} · 鼎綸保險經紀人 · 恩宇體系 ·
-    匯率 ${inp.fxRate} (USD→TWD) · 版本 ${version} ·
-    本試算僅供參考,非正式建議書,實際以保單條款為準。
+    試算日期 ${dateStr} · 鼎綸保險經紀人 · 恩宇體系
+    ${agentStr ? ' · ' + agentStr : ''}
+    · 匯率 ${inp.fxRate} (USD→TWD) · 版本 ${version}
+    · 本試算僅供參考,非正式建議書,實際以保單條款為準。
   `;
   // 同步更新列印用抬頭
   const co = (RATES?.company_name || '新光').replace(/(人壽|保險)/g,'');
@@ -2312,6 +2418,28 @@ function renderPrintFooter(inp) {
   $('cover-freq').textContent = `${inp.freq} · 金融機構自動轉帳`;
   $('cover-date').textContent = `試算日期 · ${dateStr}`;
   $('cover-version').textContent = version;
+  // 🆕 業務員資料注入封面「為您服務」
+  const agent = getAgentInfo();
+  const byEl = document.querySelector('.print-cover .pc-by');
+  if (byEl) {
+    if (agent.name) {
+      let html = `<div style="font-size:14px;color:#0F172A;font-weight:800;letter-spacing:2px;">您的專屬顧問 · ${agent.name}</div>`;
+      if (agent.license) html += `<div style="font-size:9.5px;color:#94A3B8;margin-top:3px;letter-spacing:1px;">登錄字號 ${agent.license}</div>`;
+      const contacts = [agent.mobile && `📱 ${agent.mobile}`, agent.tel && `☎ ${agent.tel}`, agent.email && `✉ ${agent.email}`].filter(Boolean);
+      if (contacts.length) html += `<div style="font-size:10px;color:#475569;margin-top:6px;letter-spacing:.5px;">${contacts.join(' · ')}</div>`;
+      if (agent.tagline) html += `<div style="font-size:10.5px;color:#94A3B8;margin-top:8px;font-style:italic;letter-spacing:1px;">「${agent.tagline}」</div>`;
+      html += `<div style="font-size:11px;color:#94A3B8;margin-top:10px;letter-spacing:2px;">鼎綸保險經紀人 · 恩宇體系</div>`;
+      byEl.innerHTML = html;
+    } else {
+      byEl.innerHTML = `<div>為您服務 · 鼎綸保險經紀人 · 恩宇體系</div>
+        <div style="font-size:9px;color:#cbd5e1;margin-top:4px;">點擊右上「👤 業務員資料」設定您的專屬資訊</div>`;
+    }
+  }
+  // 抬頭也加業務員名
+  const plDate = $('pl-date');
+  if (plDate && agent.name) {
+    plDate.innerHTML = `${dateStr}<span style="color:#3B82F6;font-weight:700;margin-left:8px;">| ${agent.name}</span>`;
+  }
 }
 
 // 列印前重畫圖表(確保 canvas 在列印時有正確尺寸)
