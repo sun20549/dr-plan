@@ -625,9 +625,30 @@ body.dark .chart-box{background:rgba(255,255,255,0.02);border-color:var(--border
 body.dark .chart-range-bar{background:transparent;border-color:var(--border-subtle);}
 body.dark .crb-seg{background:rgba(255,255,255,0.03);border-color:var(--border-soft);}
 body.dark .legend{background:transparent;color:var(--text-muted);}
-body.dark .table-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,0.02);}
-body.dark .table-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.02);}
-body.dark .tbl-caption{background:transparent;color:var(--text-muted);}
+/* === Dark Mode 全域 scrollbar === */
+body.dark::-webkit-scrollbar{width:12px;height:12px;}
+body.dark::-webkit-scrollbar-track{background:rgba(255,255,255,0.04) !important;}
+body.dark::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18) !important;border-radius:6px;border:2px solid rgba(255,255,255,0.04) !important;}
+body.dark::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.28) !important;}
+body.dark::-webkit-scrollbar-corner{background:rgba(255,255,255,0.04) !important;}
+body.dark{scrollbar-color:rgba(255,255,255,0.18) rgba(255,255,255,0.04);}
+
+/* Table-wrap 內滑桿,dark 強制覆蓋 */
+body.dark .table-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,0.04) !important;}
+body.dark .table-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18) !important;border:2px solid rgba(255,255,255,0.04) !important;}
+body.dark .table-wrap::-webkit-scrollbar-corner{background:rgba(255,255,255,0.04) !important;}
+body.dark .table-wrap{scrollbar-color:rgba(255,255,255,0.18) rgba(255,255,255,0.04) !important;}
+
+/* Modal、客戶清單也補 */
+body.dark .modal::-webkit-scrollbar-track,
+body.dark .cust-list::-webkit-scrollbar-track{background:rgba(255,255,255,0.04) !important;}
+body.dark .modal::-webkit-scrollbar-thumb,
+body.dark .cust-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18) !important;}
+
+/* 下方 legend / tbl-caption 在 dark 下強制透明 */
+body.dark .legend{background:transparent !important;border-top:1px solid var(--border-subtle) !important;color:var(--text-muted) !important;}
+body.dark .legend code{background:rgba(245,158,11,0.18) !important;color:#FBBF24 !important;}
+body.dark .tbl-caption{background:transparent !important;color:var(--text-muted) !important;border-bottom:1px solid var(--border-subtle) !important;}
 
 /* === Tooltip 玻璃感(主圖) === */
 .chart-tooltip-html{
@@ -1991,6 +2012,22 @@ document.querySelectorAll('input[name="age-mode"]').forEach(el => {
 document.querySelectorAll('input[name="sex"]').forEach(el =>
   el.addEventListener('change', recalc));
 $('fx-fetch').addEventListener('click', fetchFxRate);
+
+// 💱 NT$ 預算反推 — 即時計算 + 套用
+$('budget-twd').addEventListener('input', () => calcFaceFromBudget());
+$('bt-apply').addEventListener('click', () => {
+  const face = calcFaceFromBudget();
+  if (face != null && face >= 1 && face <= 1000) {
+    $('face').value = face;
+    recalc();
+    // 套用後給個視覺回饋
+    const out = $('bt-result');
+    const old = out.innerHTML;
+    out.innerHTML = `✓ 已套用 ${face} 萬美元 到投保金額`;
+    out.style.background = 'rgba(16,185,129,0.18)';
+    setTimeout(() => { out.innerHTML = old; out.style.background = ''; }, 1800);
+  }
+});
 
 // Dark Mode 切換
 function applyDarkMode(on) {
