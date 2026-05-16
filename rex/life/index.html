@@ -146,6 +146,14 @@ body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text
 .notice b{color:#0c5f59;}
 
 /* ===== CHARTS ===== */
+.chart-range-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#fafafa;border-bottom:1px solid var(--border);}
+.chart-range-bar .crb-label{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:1px;}
+.chart-range-bar .crb-seg{display:flex;background:#fff;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;}
+.chart-range-bar .crb-seg button{border:none;background:transparent;color:var(--text-muted);padding:6px 12px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px;font-family:inherit;border-right:1px solid var(--border);}
+.chart-range-bar .crb-seg button:last-child{border-right:none;}
+.chart-range-bar .crb-seg button:hover{color:var(--accent);background:var(--accent-bg);}
+.chart-range-bar .crb-seg button.active{background:var(--accent);color:#fff;}
+.chart-range-bar .crb-tip{font-size:10.5px;color:var(--text-muted);margin-left:auto;}
 .charts-wrap{padding:16px 18px;border-bottom:1px solid var(--border);background:#fcfcfa;display:grid;grid-template-columns:2fr 1fr;gap:14px;}
 @media (max-width:900px){.charts-wrap{grid-template-columns:1fr;}}
 .chart-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
@@ -508,6 +516,18 @@ body[data-view="summary"] .col-detail{display:none;}
 
     <div class="notice" id="notice"></div>
 
+    <div class="chart-range-bar">
+      <span class="crb-label">📐 圖表顯示範圍</span>
+      <div class="crb-seg" id="chart-range">
+        <button data-range="20">前 20 年</button>
+        <button data-range="40">前 40 年</button>
+        <button data-range="60">前 60 年</button>
+        <button data-range="80">前 80 年</button>
+        <button data-range="all" class="active">至終期</button>
+      </div>
+      <span class="crb-tip" id="crb-tip">含全部 ── 年</span>
+    </div>
+
     <div class="charts-wrap">
       <div class="chart-box">
         <h3>累計保費 vs 身故總和 vs 解約總和 <span class="sub">逐年累積走勢</span></h3>
@@ -607,6 +627,7 @@ let CATALOG = null;
 let SETTINGS = null;
 let scenario = 'M';
 let view = 'summary';
+let chartRange = 'all';  // 'all' | '20' | '40' | '60' | '80'
 let chartMain = null, chartLeverage = null;
 let currentPlan = 'UPD061';
 const ROC_OFFSET = 1911;
@@ -1031,13 +1052,28 @@ function renderTable(r, inp) {
   `;
 }
 
+// 圖表用:依 chartRange 切片
+function getChartRows(r) {
+  if (chartRange === 'all') return r.rows;
+  const n = parseInt(chartRange);
+  return r.rows.slice(0, n);
+}
+
 function renderChart(r, inp) {
   const ctx = $('chart-main');
-  const labels = r.rows.map(row => `${row.attainedAge}`);
+  const rows = getChartRows(r);
+  // 更新提示
+  const tip = $('crb-tip');
+  if (tip) {
+    const fromAge = rows[0]?.attainedAge ?? inp.age;
+    const toAge = rows[rows.length-1]?.attainedAge ?? inp.age;
+    tip.textContent = `顯示 ${rows.length} 年 (${fromAge}-${toAge} 歲)`;
+  }
+  const labels = rows.map(row => `${row.attainedAge}`);
   const mul = inp.showTwd ? inp.fxRate : 1;
-  const dataPaid  = r.rows.map(row => row.cumP * mul);
-  const dataDeath = r.rows.map(row => row.J * mul);
-  const dataSurr  = r.rows.map(row => row.K * mul);
+  const dataPaid  = rows.map(row => row.cumP * mul);
+  const dataDeath = rows.map(row => row.J * mul);
+  const dataSurr  = rows.map(row => row.K * mul);
   if (chartMain) chartMain.destroy();
   chartMain = new Chart(ctx, {
     type: 'line',
@@ -1077,8 +1113,9 @@ function renderChart(r, inp) {
 
 function renderLeverageChart(r, inp) {
   const ctx = $('chart-leverage');
-  const labels = r.rows.map(row => `${row.attainedAge}`);
-  const dataLev = r.rows.map(row => row.cumP > 0 ? +(row.J / row.cumP).toFixed(2) : 0);
+  const rows = getChartRows(r);
+  const labels = rows.map(row => `${row.attainedAge}`);
+  const dataLev = rows.map(row => row.cumP > 0 ? +(row.J / row.cumP).toFixed(2) : 0);
   if (chartLeverage) chartLeverage.destroy();
   chartLeverage = new Chart(ctx, {
     type: 'line',
@@ -1315,6 +1352,16 @@ document.querySelectorAll('input[name="age-mode"]').forEach(el => {
 document.querySelectorAll('input[name="sex"]').forEach(el =>
   el.addEventListener('change', recalc));
 $('fx-fetch').addEventListener('click', fetchFxRate);
+
+// 圖表範圍切換
+document.querySelectorAll('#chart-range button').forEach(b => {
+  b.addEventListener('click', () => {
+    chartRange = b.dataset.range;
+    document.querySelectorAll('#chart-range button').forEach(x =>
+      x.classList.toggle('active', x.dataset.range === chartRange));
+    recalc();
+  });
+});
 
 init();
 </script>
