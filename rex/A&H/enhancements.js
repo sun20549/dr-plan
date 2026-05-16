@@ -1280,15 +1280,23 @@
         def.items.forEach(item => {
           const v = calc(item, r.product, r.amount);
           let valHtml;
+          let extraNote = '';
           if (!v) {
             valHtml = '<span class="pd-val-text">依條款</span>';
           } else if (v.type === 'num') {
             valHtml = '<span class="pd-val-num">' + Math.round(v.val).toLocaleString() + '</span><span class="pd-val-unit">' + (item.unit || '元') + '</span>';
           } else {
-            valHtml = '<span class="pd-val-text">' + (v.text || '依條款') + '</span>';
+            const txt = v.text || '';
+            if (txt.length <= 25) {
+              valHtml = '<span class="pd-val-text">' + txt + '</span>';
+            } else {
+              valHtml = '<span class="pd-val-text">依條款</span>';
+              extraNote = txt;
+            }
           }
           const starMark = item.star ? '<span class="pd-star" title="主要保障">⭐</span>' : '';
-          const noteHtml = item.note ? '<div class="pd-item-note">' + item.note + '</div>' : '';
+          const noteText = [item.note, extraNote].filter(Boolean).join(' ');
+          const noteHtml = noteText ? '<div class="pd-item-note">' + noteText + '</div>' : '';
           html += '<div class="pd-item">';
           html += '<div class="pd-item-name">' + starMark + item.name + '</div>';
           html += '<div class="pd-item-val">' + valHtml + '</div>';
