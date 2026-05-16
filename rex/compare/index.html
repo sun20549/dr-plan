@@ -1458,14 +1458,15 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517y';
+window.__DATA_VERSION__ = '20260517z';
 
 // v101: 商品白名單模式 — 全部商品先隱藏,只有列在 WHITELIST 內才顯示
 //       一個一個校正驗證後再加入白名單
 //       要全部顯示就把 WHITELIST 設成 null 或 []
 window.__PRODUCT_WHITELIST__ = [
-  // 目前白名單為空 = 全部隱藏(資料仍保留,等待逐一驗證)
-  // 範例:'FKD', 'UED', '6UBS' — 校正完成後在此加入 plan_code
+  // 已校正完成上線的商品 — 加入後該商品在 Step 2 才會出現
+  'UPD061',  // 新光美鴻添富 6yr — 8 anchor (21M/41M/30F/50F/51F/54F/61F/71M)
+  'UPD101',  // 新光美鴻添富 10yr — 2 anchor (41F/71M)
 ];
 
 // v100c: 顯示版本號於右上角 — 方便確認部署狀態
