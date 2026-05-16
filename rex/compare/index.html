@@ -1458,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517u';
+window.__DATA_VERSION__ = '20260517v';
 
 // v100c: 顯示版本號於右上角 — 方便確認部署狀態
 document.addEventListener('DOMContentLoaded', function() {
@@ -11142,7 +11142,8 @@ function calcProductForUser(productMeta, user) {
     // v6: 若使用者有手動微調該商品保額,跳過預算反推路徑,直接用 override 值
     const saOverride = state.saOverrides[plan];
 
-    // v97: Drew SA anchor 預先計算
+    // v100d: Drew SA anchor 預先計算 — 只在 anchor 附近年齡(±10)生效
+    // 遠離 anchor 改用 engine 自己 gp_table 反推(避免外推偏差過大)
     let drewSAOverride = null;
     if (!saOverride && _db_for_engine && _db_for_engine.drew_sa_per_premium) {
       const _sapp = _db_for_engine.drew_sa_per_premium;
@@ -11151,16 +11152,18 @@ function calcProductForUser(productMeta, user) {
       if (_per_anchors) {
         let _ratio = null;
         if (sex === 'F') {
-          _ratio = _per_anchors['30F'] || _per_anchors['31F'] || null;
-        }
-        if (_ratio == null) {
+          const _F_age = _per_anchors['30F'] ? 30 : 31;
+          const _r_F = _per_anchors['30F'] || _per_anchors['31F'];
+          if (_r_F && Math.abs(age - _F_age) <= 10) {
+            _ratio = _r_F;
+          }
+        } else {
           const _r21 = _per_anchors['21M'];
           const _r41 = _per_anchors['41M'];
-          if (_r21 != null && _r41 != null) {
+          if (_r21 != null && _r41 != null && age >= 16 && age <= 46) {
             const _t = Math.max(0, Math.min(1, (age - 21) / 20));
             _ratio = _r21 + (_r41 - _r21) * _t;
-          } else if (_r21 != null) _ratio = _r21;
-          else if (_r41 != null) _ratio = _r41;
+          }
         }
         if (_ratio != null && _ratio > 0) {
           drewSAOverride = Math.round(budget * _ratio);
