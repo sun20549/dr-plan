@@ -914,6 +914,31 @@ body {
 }
 body.customer-mode .th-highlights { display: none; }
 
+/* v1.32 — 主約 / 附約 chip */
+.product-type-chip {
+  display: inline-block;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--r-xs);
+  margin-left: 4px;
+  letter-spacing: 0.3px;
+  cursor: help;
+  vertical-align: 1px;
+}
+.product-type-chip.type-main {
+  color: #1f7a4d;
+  background: #E1F5EE;
+  border: 1px solid #5DCAA5;
+}
+.product-type-chip.type-rider {
+  color: #6B4FA5;
+  background: #EEEDFE;
+  border: 1px solid #AFA9EC;
+}
+body.customer-mode .product-type-chip { display: none; }
+
 /* v1.10 — 新商品標籤(琥珀色 chip) */
 .th-new-badge {
   display: inline-block;
@@ -4213,29 +4238,23 @@ const App = (() => {
 
   /* ═══ 渲染 ═══════════════════════════════════════ */
 
-  // v1.31 — 二級 tab 設計:5 大主類別 + 子類別動態切換
+  // v1.32 — 二級 tab(user 提議的階層):
+  //   醫療-實支實付 / 醫療-定額給付 / 癌症險 / 重大傷病 / 其他特殊
   const TAB_GROUPS = [
     {
-      key: '醫療', label: '醫療險', color: '#2B7DC4',
+      key: '醫療實支', label: '醫療-實支實付', color: '#2B7DC4',
       subs: [
-        { catKey: '實支實付型', subLabel: '實支實付' },
-        { catKey: '實支實付型(自負額)', subLabel: '自負額型' },
-        { catKey: '實支實付(高齡)', subLabel: '高齡專屬' },
-        { catKey: '定額日額', subLabel: '定額日額' }
+        { catKey: '實支實付型', subLabel: '基礎型' },
+        { catKey: '實支實付型(自負額)', subLabel: '自負額' },
+        { catKey: '實支實付(高齡)', subLabel: '類終身' }
       ]
     },
     {
-      key: '手術', label: '手術險', color: '#6F4FB8',
+      key: '醫療定額', label: '醫療-定額給付', color: '#1A6B72',
       subs: [
-        { catKey: '手術險', subLabel: '一年期' },
-        { catKey: '手術險(終身)', subLabel: '終身' }
-      ]
-    },
-    {
-      key: '重大', label: '重大傷病', color: '#C24A6C',
-      subs: [
-        { catKey: '重大傷病(一年期)', subLabel: '一年期' },
-        { catKey: '重大傷病(終身)', subLabel: '終身' }
+        { catKey: '定額日額', subLabel: '日額型' },
+        { catKey: '手術險', subLabel: '一年期手術' },
+        { catKey: '手術險(終身)', subLabel: '終身手術' }
       ]
     },
     {
@@ -4246,9 +4265,16 @@ const App = (() => {
       ]
     },
     {
-      key: '婦嬰', label: '婦嬰險', color: '#E8A020',
+      key: '重大', label: '重大傷病', color: '#C24A6C',
       subs: [
-        { catKey: '婦嬰險', subLabel: '婦嬰' }
+        { catKey: '重大傷病(一年期)', subLabel: '一年期' },
+        { catKey: '重大傷病(終身)', subLabel: '終身' }
+      ]
+    },
+    {
+      key: '特殊', label: '其他特殊', color: '#E8A020',
+      subs: [
+        { catKey: '婦嬰險', subLabel: '婦嬰險' }
       ]
     }
   ];
@@ -4615,13 +4641,22 @@ const App = (() => {
       const hlBadges = highlightBadges[_colIdx];
       const hlBlock = hlBadges ? `<div class="th-highlights">${hlBadges}</div>` : '';
 
+      // v1.32 — 主約 / 附約 chip:從 JSON 結構偵測商品屬於 mainProducts 還是 riderProducts
+      const isMain = !!(company.mainProducts && company.mainProducts.some(mp => mp.code === col.code));
+      const isRider = !!(company.riderProducts && company.riderProducts.some(rp => rp.code === col.code));
+      const productTypeChip = isMain
+        ? '<span class="product-type-chip type-main" title="主約 — 可獨立投保">主約</span>'
+        : isRider
+          ? '<span class="product-type-chip type-rider" title="附約 — 需附加在主約下">附約</span>'
+          : '';
+
       // 公司 th 用 colspan="2",讓下方男/女兩格對齊
       // v1.15b:內容包一層 .th-product-wrap (flex column),讓 th-amt + th-actions 釘到卡底部
       html += `<th class="th-product" colspan="2" style="--th-color: var(${colorVar})">
         <div class="th-product-wrap">
           ${logoHtml}
           <div class="${companyClass}">${company.shortName || company.name || ''}</div>
-          <span class="th-code">${col.code}${newBadge}</span>
+          <span class="th-code">${col.code}${newBadge}${productTypeChip}</span>
           <div class="th-name">${p.name || col.code}</div>
           ${hlBlock}
           <div class="th-amt" data-print-amt="${col.sel.amount}${showUnitOutside ? ' '+unit : ''}">${amtField}${showUnitOutside ? `<span class="unit">${unit}</span>` : ''}</div>
@@ -4995,7 +5030,6 @@ const App = (() => {
     // 左側面板收合 / 展開
     const layout = document.querySelector('.main-layout');
     const collapseBtn = document.getElementById('pickerCollapseBtn');
-    const reopenRail = document.getElementById('pickerReopenRail');
     const PICKER_COLLAPSED_KEY = 'ah_picker_collapsed';
 
     // 還原上次狀態
@@ -5014,6 +5048,7 @@ const App = (() => {
     if (collapseBtn) collapseBtn.addEventListener('click', () => setPickerCollapsed(true));
     if (reopenRail) reopenRail.addEventListener('click', () => setPickerCollapsed(false));
   }
+
   /* ═══ Init ═══════════════════════════════════════ */
 
   async function init() {
@@ -5030,15 +5065,6 @@ const App = (() => {
 
   return { init, state, CATEGORIES };
 })();
-
-// Expose for debugging / testing
-window.App = App;
-
-document.addEventListener('DOMContentLoaded', App.init);
-</script>
-
-</body>
-</html>
 
 // Expose for debugging / testing
 window.App = App;
