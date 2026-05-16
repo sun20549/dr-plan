@@ -1458,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517w';
+window.__DATA_VERSION__ = '20260517x';
 
 // v100c: 顯示版本號於右上角 — 方便確認部署狀態
 document.addEventListener('DOMContentLoaded', function() {
@@ -11224,24 +11224,41 @@ function calcProductForUser(productMeta, user) {
       if (_src && (_src['21M'] || _src['41M'] || _src['31F'] || _src['30F'])) {
         const _r21 = _src['21M'] || {};
         const _r41 = _src['41M'] || {};
-        const _rF = _src['31F'] || _src['30F'] || {};
+        // v100g: 找最近 F anchor (支援多個 F anchor 如 30F/50F/54F)
+        let _rF = {};
+        let _fAge = 30;
+        if (sex === 'F') {
+          const _fKeys = Object.keys(_src).filter(k => k.endsWith('F'));
+          if (_fKeys.length > 0) {
+            // Parse anchor age, find closest
+            const _candidates = _fKeys.map(k => ({k, a: parseInt(k)})).filter(o => !isNaN(o.a));
+            _candidates.sort((a,b) => Math.abs(a.a - age) - Math.abs(b.a - age));
+            if (_candidates[0]) {
+              _rF = _src[_candidates[0].k] || {};
+              _fAge = _candidates[0].a;
+            }
+          }
+        } else {
+          _rF = _src['31F'] || _src['30F'] || {};
+          _fAge = _src['31F'] ? 31 : 30;
+        }
         const _hasF = Object.keys(_rF).length > 0;
         const _t = Math.max(0, Math.min(2, (age - 21) / 20));  // 0 at 21, 1 at 41
         for (const _row of result.schedule) {
           const _y = _row.y;
           if (_y == null) continue;
-          // 性別判斷:男用 21M/41M 內插,女優先用 31F (若有),否則用 M 但乘 F 因子
+          // 性別判斷:男用 21M/41M 內插,女優先用最近 F anchor + age slope from M
           let _rate;
           if (sex === 'F' && _hasF) {
-            // F anchor 在 31歲 — 直接用 31F + age slope from M
+            // F anchor 在 _fAge 歲 — 直接用 F + age slope from M
             const _f = _rF[_y] != null ? _rF[_y] : _rF[String(_y)];
             const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
             const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
             if (_f != null) {
               if (_a != null && _b != null) {
-                // 假設 F slope 跟 M slope 一樣,用 31F 為錨點
+                // 假設 F slope 跟 M slope 一樣,用 F 為錨點(_fAge)
                 const _mSlope = (_b - _a) / 20;
-                _rate = (_f + _mSlope * (age - 31)) / 100;
+                _rate = (_f + _mSlope * (age - _fAge)) / 100;
               } else {
                 _rate = _f / 100;
               }
