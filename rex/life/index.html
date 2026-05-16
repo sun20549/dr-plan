@@ -781,7 +781,54 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 }
 .print-header{display:none;}
 .print-letterhead{display:none;}
+.print-cover{display:none;}
 .watermark{display:none;}
+
+/* ========== 列印封面 ========== */
+@media print {
+  .print-cover{
+    display:flex !important;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:calc(100vh - 16mm);
+    page-break-after:always;
+    padding:14mm 18mm;
+    background:linear-gradient(135deg,#FAFBFC 0%,#F8F5F0 100%) !important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    position:relative;overflow:hidden;
+  }
+  .print-cover::before{
+    content:'';position:absolute;top:-100px;right:-100px;
+    width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle,rgba(245,158,11,0.08) 0%,transparent 70%);
+  }
+  .print-cover::after{
+    content:'';position:absolute;bottom:-150px;left:-150px;
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle,rgba(14,165,233,0.05) 0%,transparent 70%);
+  }
+  .pc-top{position:relative;z-index:2;}
+  .pc-brand-mark{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:2px solid #0F172A;}
+  .pc-brand-mark img{height:42px;width:42px;background:#fff;border-radius:8px;padding:3px;}
+  .pc-brand-text{line-height:1.2;}
+  .pc-brand-name{font-size:14px;font-weight:900;color:#F05A28;letter-spacing:2px;}
+  .pc-brand-sub{font-size:9px;color:#94A3B8;letter-spacing:4px;}
+
+  .pc-middle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;padding:30px 0;}
+  .pc-eyebrow{font-size:11px;color:#475569;letter-spacing:6px;margin-bottom:24px;font-weight:600;}
+  .pc-title{font-size:34px;font-weight:900;color:#0F172A;letter-spacing:2px;line-height:1.3;margin-bottom:10px;}
+  .pc-subtitle{font-size:15px;color:#475569;letter-spacing:6px;font-weight:500;}
+  .pc-divider{width:70px;height:3px;background:linear-gradient(90deg,#F59E0B,#D97706);margin:34px auto;border-radius:2px;}
+  .pc-info{background:rgba(255,255,255,0.85);border:1px solid #E5E0D3;border-left:4px solid #F59E0B;border-radius:8px;padding:22px 32px;min-width:380px;text-align:left;}
+  .pc-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:#64748B;padding:7px 0;border-bottom:1px dashed #E5E0D3;}
+  .pc-row:last-child{border-bottom:none;}
+  .pc-row b{color:#0F172A;font-weight:700;font-size:14px;letter-spacing:.5px;}
+
+  .pc-bottom{text-align:center;color:#94A3B8;font-size:10px;position:relative;z-index:2;padding-top:18px;border-top:1px dashed #E5E0D3;}
+  .pc-by{color:#0F172A;font-weight:700;font-size:12px;letter-spacing:2px;margin-bottom:5px;}
+  .pc-date{letter-spacing:1.5px;}
+  .pc-version{font-size:9px;color:#94A3B8;margin-top:4px;letter-spacing:1.5px;}
+}
 
 /* ===== 列印用抬頭 (只在 print 時顯示) ===== */
 @media print {
@@ -837,11 +884,82 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   @page { size: A4 landscape; margin: 8mm 10mm; }
   body { background: white !important; font-size: 9.5px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   body.dark { background: white !important; color: #0F172A !important; } /* 列印時強制 light */
-  /* 隱藏所有互動元素 */
-  .topbar, .product-hero, .scenario-tabs, .charts-wrap, .legend, .float-line,
+  /* 隱藏所有互動元素(charts-wrap 改為印出) */
+  .topbar, .product-hero, .scenario-tabs, .legend, .float-line,
   .catalog-bar, .fx-card, .action-row, .modal-backdrop, .tbl-caption, .budget-tool,
   .chart-slider-bar, #fx-info, #input-err, #rates-status,
   .dec-toggle { display:none !important; }
+
+  /* 🆕 圖表印出 — Hero 下方、表格上方 */
+  .charts-wrap{
+    display:grid !important;
+    grid-template-columns:2fr 1fr !important;
+    gap:10px !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:none !important;
+    margin-bottom:10px;
+    page-break-inside:avoid;
+  }
+  .chart-box{
+    background:#fff !important;
+    border:1px solid #E5E0D3 !important;
+    border-radius:6px !important;
+    padding:6px 10px 8px !important;
+    box-shadow:none !important;
+  }
+  .chart-box h3{font-size:9.5px !important;margin-bottom:3px !important;color:#0F172A !important;}
+  .chart-box h3 .sub{font-size:8px !important;color:#94A3B8 !important;}
+  .chart-canvas-wrap{height:135px !important;}
+  .chart-canvas-wrap canvas{max-width:100% !important;}
+
+  /* 🆕 Hero 漸層文字強制印出 */
+  .hero-card .hc-value{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+    color-adjust:exact !important;
+  }
+  .hero-card::after{display:none !important;}
+
+  /* 🆕 表格 break-even 高亮 + bold */
+  tbody tr.break-even td{
+    background:#D1FAE5 !important;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+    font-weight:800 !important;
+    color:#065F46 !important;
+  }
+  tbody tr.break-even td.yr-col::after{
+    content:' ⇣ 回本';font-size:8px;color:#059669;font-weight:800;
+  }
+  tbody tr.break-even td.col-total-k,
+  tbody tr.break-even td.col-ratio-k{
+    color:#047857 !important;
+  }
+
+  /* 🆕 表格斑馬紋更明顯(列印) */
+  tbody tr:nth-child(even) td{
+    background:#FAFBFC !important;
+    -webkit-print-color-adjust:exact !important;
+  }
+  /* break-even 覆蓋斑馬紋 */
+  tbody tr.break-even:nth-child(even) td,
+  tbody tr.break-even:nth-child(odd) td{
+    background:#D1FAE5 !important;
+  }
+  /* 表頭加深 */
+  thead tr.h1 th{
+    background:#0F172A !important;color:#fff !important;
+    -webkit-print-color-adjust:exact !important;
+  }
+  thead tr.h2 th{
+    background:#FEF3C7 !important;color:#0F172A !important;font-weight:700 !important;
+    -webkit-print-color-adjust:exact !important;
+  }
+  thead tr.h2 th.total-j{background:#FED7AA !important;color:#9A3412 !important;}
+  thead tr.h2 th.total-k{background:#A7F3D0 !important;color:#065F46 !important;}
+  thead tr.h2 th.ratio-j{background:#FFEDD5 !important;color:#C2410C !important;}
+  thead tr.h2 th.ratio-k{background:#D1FAE5 !important;color:#047857 !important;}
   .card-input { display: none !important; }
   .container { display: block; padding: 0; max-width: none; }
   .card { box-shadow: none; border:none; border-radius:0; }
@@ -919,6 +1037,37 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 
 <!-- Watermark for print only -->
 <div class="watermark">僅供試算 · 非正式建議書</div>
+
+<!-- ============ 列印專屬封面 ============ -->
+<div class="print-cover">
+  <div class="pc-top">
+    <div class="pc-brand-mark">
+      <img src="../../images/favicon-32.png" alt="鼎綸" onerror="this.style.display='none'">
+      <div class="pc-brand-text">
+        <div class="pc-brand-name">鼎綸恩宇 · DING-LUN ELITE</div>
+        <div class="pc-brand-sub">PRIVATE WEALTH PLANNING</div>
+      </div>
+    </div>
+  </div>
+  <div class="pc-middle">
+    <div class="pc-eyebrow" id="cover-company">— 新光人壽 SHIN KONG LIFE —</div>
+    <h1 class="pc-title" id="cover-title">美鴻添富美元分紅終身壽險</h1>
+    <div class="pc-subtitle">專屬財富傳承規劃建議書</div>
+    <div class="pc-divider"></div>
+    <div class="pc-info">
+      <div class="pc-row"><span>被保險人</span><b id="cover-name">—</b></div>
+      <div class="pc-row"><span>性別 · 保險年齡</span><b id="cover-sex-age">—</b></div>
+      <div class="pc-row"><span>商品 · 繳費年期</span><b id="cover-plan">—</b></div>
+      <div class="pc-row"><span>投保金額</span><b id="cover-face">—</b></div>
+      <div class="pc-row"><span>繳別 · 繳費方式</span><b id="cover-freq">—</b></div>
+    </div>
+  </div>
+  <div class="pc-bottom">
+    <div class="pc-by">為您服務 · 鼎綸保險經紀人 · 恩宇體系</div>
+    <div class="pc-date" id="cover-date">試算日期 —</div>
+    <div class="pc-version" id="cover-version">—</div>
+  </div>
+</div>
 
 <!-- ============ 列印專用抬頭 (只在 print 時顯示) ============ -->
 <div class="print-letterhead">
@@ -2142,6 +2291,7 @@ function renderPrintFooter(inp) {
     const p = c?.products.find(x => x.code === $('cat-product').value);
     if (p?.short) prodShort = p.short;
   }
+  const productFullName = $('cat-product').selectedOptions[0]?.text || prodShort;
   $('pl-title').textContent = `${co}人壽 ${prodShort || ''} 試算建議書`;
   $('pl-version').textContent = version;
   $('pl-name').textContent = inp.name || '—';
@@ -2149,9 +2299,30 @@ function renderPrintFooter(inp) {
   $('pl-age').textContent = `${inp.age} 歲`;
   $('pl-face').textContent = `${inp.faceWan} 萬美元`;
   $('pl-freq').textContent = inp.freq;
-  $('pl-product').textContent = $('cat-product').selectedOptions[0]?.text || prodShort;
+  $('pl-product').textContent = productFullName;
   $('pl-date').textContent = dateStr;
+
+  // 🆕 同步封面
+  $('cover-company').textContent = `— ${co}人壽 ${(co==='新光')?'SHIN KONG LIFE':''} —`;
+  $('cover-title').textContent = RATES?.product_name || '美鴻添富美元分紅終身壽險';
+  $('cover-name').textContent = inp.name || '—';
+  $('cover-sex-age').textContent = `${inp.sex === 'M' ? '男性' : '女性'} · ${inp.age} 歲`;
+  $('cover-plan').textContent = productFullName;
+  $('cover-face').textContent = `${inp.faceWan.toLocaleString()} 萬美元 (USD)`;
+  $('cover-freq').textContent = `${inp.freq} · 金融機構自動轉帳`;
+  $('cover-date').textContent = `試算日期 · ${dateStr}`;
+  $('cover-version').textContent = version;
 }
+
+// 列印前重畫圖表(確保 canvas 在列印時有正確尺寸)
+window.addEventListener('beforeprint', () => {
+  if (chartMain) chartMain.resize();
+  if (chartLeverage) chartLeverage.resize();
+});
+window.addEventListener('afterprint', () => {
+  if (chartMain) chartMain.resize();
+  if (chartLeverage) chartLeverage.resize();
+});
 
 // ================= SCENARIO/VIEW =========
 function setScenario(s) {
