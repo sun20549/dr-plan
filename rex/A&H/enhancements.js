@@ -1408,6 +1408,5 @@
     setTimeout(startWhenReady, 100);
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
-  // sync touchstamp v3.28.5
-})();
+  // sync touchstamp v3.28.6
 })();
