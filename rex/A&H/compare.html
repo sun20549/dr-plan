@@ -281,6 +281,73 @@ body {
   color: var(--gray);
   border: 1px solid var(--border);
 }
+/* v1.30 — tab 分組視覺:同組 tab 緊鄰,不同組之間加分隔 */
+.cat-tabs { gap: 2px !important; flex-wrap: wrap; }
+.cat-tab.cat-tab-group-start:not(:first-child) {
+  margin-left: 18px;
+  position: relative;
+}
+.cat-tab.cat-tab-group-start:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 25%;
+  bottom: 25%;
+  width: 1px;
+  background: var(--border-strong, #cbd2d8);
+}
+/* 各組頂部小色點(視覺辨識) */
+.cat-tab[data-group="醫療"]:not(.active)::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: #2B7DC4;  /* 醫療 = 藍 */
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.cat-tab[data-group="手術"]:not(.active)::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: #6F4FB8;  /* 手術 = 紫 */
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.cat-tab[data-group="重大"]:not(.active)::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: #C24A6C;  /* 重大 = 玫瑰紅 */
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.cat-tab[data-group="癌症"]:not(.active)::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: #7A2D2F;  /* 癌症 = 深紅 */
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.cat-tab[data-group="婦嬰"]:not(.active)::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: #E8A020;  /* 婦嬰 = 金 */
+  border-radius: 2px;
+  opacity: 0.6;
+}
+.cat-tab { position: relative; padding-top: 14px; }
 
 /* ─── 主版面 (左 picker 右 panel) ─── */
 .main-layout {
@@ -4020,9 +4087,23 @@ const App = (() => {
   function renderCatTabs() {
     const wrap = document.getElementById('catTabs');
     wrap.innerHTML = '';
+    // v1.30 — tab 分組:把同類型 tab 視覺歸組
+    const GROUP_MAP = {
+      '實支實付型': '醫療', '實支實付型(自負額)': '醫療', '實支實付(高齡)': '醫療', '定額日額': '醫療',
+      '手術險': '手術', '手術險(終身)': '手術',
+      '重大傷病(一年期)': '重大', '重大傷病(終身)': '重大',
+      '癌症險(單筆金)': '癌症', '癌症險(療程型)': '癌症',
+      '婦嬰險': '婦嬰'
+    };
+    let prevGroup = null;
     CATEGORIES.forEach(cat => {
+      const grp = GROUP_MAP[cat.key] || 'other';
+      // 不同組之間插入 group 分隔
+      const isFirstOfGroup = grp !== prevGroup;
+      prevGroup = grp;
       const btn = document.createElement('button');
-      btn.className = 'cat-tab' + (cat.key === state.categoryKey ? ' active' : '');
+      btn.className = 'cat-tab' + (cat.key === state.categoryKey ? ' active' : '') + (isFirstOfGroup ? ' cat-tab-group-start' : '');
+      btn.dataset.group = grp;
       btn.innerHTML = `${cat.key} <span class="badge">${cat.products.length}</span>`;
       btn.onclick = () => switchCategory(cat.key);
       wrap.appendChild(btn);
@@ -4704,6 +4785,7 @@ const App = (() => {
       btnHideEmpty.textContent = state.ui.hideEmpty ? '👁️ 顯示空欄' : '👁️ 隱藏空欄';
       document.body.classList.toggle('hide-empty', state.ui.hideEmpty);
     });
+
     // 左側面板收合 / 展開
     const layout = document.querySelector('.main-layout');
     const collapseBtn = document.getElementById('pickerCollapseBtn');
