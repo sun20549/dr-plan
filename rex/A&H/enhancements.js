@@ -1414,14 +1414,5 @@
     setTimeout(startWhenReady, 100);
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
-  // sync touchstamp v3.28.6
-})();
-      setTimeout(startWhenReady, 100);
-      setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
-    });
-  } else {
-    setTimeout(startWhenReady, 100);
-    setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
-  }
-  // sync touchstamp v3.28.7
+  // sync touchstamp v3.29.1
 })();
