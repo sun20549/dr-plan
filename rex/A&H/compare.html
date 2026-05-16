@@ -924,10 +924,15 @@ body.customer-mode .th-highlights { display: none; }
   left: 0;
   /* v1.13:不能用 inherit — 偶數列 <tr> 沒設背景,sticky 浮在上面時會變透明,
      導致水平滾動時右側 td 的數字穿透左欄文字。改用實心白底覆蓋。
-     odd 列也會被這條覆蓋(原本 odd 有半透明米色,改為左欄一律白),視覺上一致更好讀。 */
+     odd 列也會被這條覆蓋(原本 odd 有半透明米色,改為左欄一律白),視覺上一致更好讀。
+     v1.30a:z-index 從 1 提到 10,確保 sticky 蓋住所有 td(避免半透明穿透) */
   background: #fff;
-  z-index: 1;          /* 蓋過同列其他 td */
-  border-right: 1px solid var(--border);
+  z-index: 10;
+  border-right: 2px solid var(--border-strong, #cbd2d8);
+  box-shadow: 4px 0 8px -4px rgba(13, 42, 58, 0.08);  /* v1.30a:右側淡陰影,sticky 邊界更清楚 */
+}
+.compare-table thead th:first-child {
+  z-index: 11 !important;  /* v1.30a:thead first-cell z-index 比 tbody 高 */
 }
 
 .cell-val {
@@ -2263,8 +2268,8 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   .th-product { min-width: 140px; }
 }
 
-/* iPad portrait ~768px */
-@media (max-width: 768px) {
+/* v1.30a — iPad portrait 全涵蓋(原 768→1100,iPad Air/Pro portrait 是 810~1024px) */
+@media (max-width: 1100px) {
   .container { padding: 16px 12px 60px; }
   .toolbar-left { gap: 10px; }
   .brand-logo { width: 38px; height: 38px; font-size: 18px; }
@@ -2287,17 +2292,25 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   }
   /* picker 收合按鈕在直式時藏掉,並改用底部「收合」chip */
   .picker-collapse-btn { top: 12px; right: 12px; }
-  /* 主表 first-col 在 iPad/手機取消 sticky,讓資料列完整顯示不被遮 */
-  .compare-table tbody td:first-child,
-  .compare-table thead th:first-child {
+  /* v1.30a — 主表 first-col 在 iPad/手機完全取消 sticky:
+     資料 cell 不會被覆蓋,左右滑動時整列一起動 */
+  .compare-table thead th:first-child,
+  .compare-table tbody td:first-child {
     position: static !important;
+    left: auto !important;
     z-index: auto !important;
-    min-width: 120px;
-    max-width: 140px;
-    background: #F8FAFB !important;
-    /* 強化分隔線:右側 2px 實線,避免跟下個 column 視覺糊在一起 */
-    border-right: 2px solid var(--border-strong, #cbd2d8) !important;
+    box-shadow: none !important;
+    min-width: 130px !important;
+    max-width: 150px !important;
+    background: #F0F4F8 !important;  /* 較深的灰底,跟資料區明顯區隔 */
+    border-right: 3px solid #9CA8B5 !important;  /* 較粗深色分隔線 */
     padding-right: 10px !important;
+    color: var(--navy);
+    font-size: 12px !important;
+  }
+  /* 強制 thead 第一欄跟 tbody 一樣 */
+  .compare-table thead th:first-child {
+    background: #E5EAF0 !important;
   }
   /* 給付項目列 hover 時保持淡灰底,不變成 hover 橘 */
   .compare-table tbody tr:hover td:first-child {
@@ -2876,7 +2889,10 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
   </div>
 
   <!-- 險種類別 tabs -->
-  <div class="cat-tabs" id="catTabs"></div>
+  <div class="cat-tabs-wrap">
+    <div class="cat-tabs cat-tabs-main" id="catTabsMain"></div>
+    <div class="cat-tabs-sub" id="catTabsSub"></div>
+  </div>
 
   <!-- 主版面 -->
   <div class="main-layout">
@@ -4806,7 +4822,6 @@ const App = (() => {
       } catch(e) { /* ignore */ }
     }
     if (collapseBtn) collapseBtn.addEventListener('click', () => setPickerCollapsed(true));
-    if (reopenRail) reopenRail.addEventListener('click', () => setPickerCollapsed(false));
   }
 
   /* ═══ Init ═══════════════════════════════════════ */

@@ -1458,7 +1458,7 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260517q';
+window.__DATA_VERSION__ = '20260517j';
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
@@ -11130,59 +11130,30 @@ function calcProductForUser(productMeta, user) {
     
     // v6: 若使用者有手動微調該商品保額,跳過預算反推路徑,直接用 override 值
     const saOverride = state.saOverrides[plan];
-
-    // v97: Drew SA anchor 預先計算 — 若 JSON 有 drew_sa_per_premium,直接用 Drew 真值
-    let drewSAOverride = null;
-    if (!saOverride && _db_for_engine && _db_for_engine.drew_sa_per_premium) {
-      const _sapp = _db_for_engine.drew_sa_per_premium;
-      const _per_s = String(user.period);
-      const _per_anchors = _sapp[_per_s];
-      if (_per_anchors) {
-        let _ratio = null;
-        if (sex === 'F') {
-          _ratio = _per_anchors['30F'] || _per_anchors['31F'] || null;
-        }
-        if (_ratio == null) {
-          const _r21 = _per_anchors['21M'];
-          const _r41 = _per_anchors['41M'];
-          if (_r21 != null && _r41 != null) {
-            const _t = Math.max(0, Math.min(1, (age - 21) / 20));
-            _ratio = _r21 + (_r41 - _r21) * _t;
-          } else if (_r21 != null) _ratio = _r21;
-          else if (_r41 != null) _ratio = _r41;
-        }
-        if (_ratio != null && _ratio > 0) {
-          drewSAOverride = Math.round(budget * _ratio);
-          const _unit = (_db_for_engine.meta && _db_for_engine.meta.unit_size) || 1000;
-          drewSAOverride = Math.round(drewSAOverride / _unit) * _unit;
-        }
-      }
-    }
-    const effectiveSAOverride = saOverride || drewSAOverride;
-
+    
     let sumAssured, result;
     if (engine === 'prudential_v1') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_prudential(plan, sex, age, budget, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_prudential(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_prudential(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'prudential_v2') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_prudential_v2(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_prudential_v2(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'kgi_rv_v1') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budget, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_kgi_rv_v1(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_kgi_rv_v1(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'twlife_v1') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_twlife(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_twlife(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'twlife_v2_full') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_twlife_v2_full(plan, sex, age, budget, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_twlife_v2_full(plan, sex, age, budget, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_twlife_v2_full(plan, sex, age, sumAssured, user.period);
     } else if (engine === 'taishin_v1') {
-      sumAssured = effectiveSAOverride || calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
+      sumAssured = saOverride || calcSumAssuredFromBudget_taishin(plan, sex, age, budget, productMeta.discount, productMeta);
       if (!sumAssured) return { budget_insufficient: true };
       result = actuarialCalc_taishin(plan, sex, age, sumAssured, user.period, productMeta.discount);
       if (!result) return null;
