@@ -1408,23 +1408,6 @@
     setTimeout(startWhenReady, 100);
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
-  // sync touchstamp v3.28.4
+  // sync touchstamp v3.28.5
 })();
-._enhDetailDrawing = false; }, 50);
-        }
-      });
-      obs.observe(section, { childList: true });
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(startWhenReady, 100);
-      setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
-    });
-  } else {
-    setTimeout(startWhenReady, 100);
-    setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
-  }
-  // sync touchstamp v3.28.4
 })();
