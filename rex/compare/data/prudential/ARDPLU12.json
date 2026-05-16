@@ -1,2006 +1,1997 @@
 {
-  "schema": "v4",
-  "meta": {
-    "engine": "twlife_v2_full",
-    "company": "保誠人壽",
-    "company_dir": "prudential",
-    "plan_code": "ARDPLU12",
-    "product_code": "ARDPLU12",
-    "product_name": "新美旺傳家外幣終身壽險(定期給付型)",
-    "currency": "USD",
-    "period": 1,
-    "premium_mode": "lump_sum",
-    "is_lump_sum_demo": true,
-    "protection_period": "達100歲之保單週年日",
-    "guaranteed_rate": 0.015,
-    "scenarios": [
-      "none",
-      "mid",
-      "low"
-    ],
-    "scenarios_label": {
-      "none": "無分紅(0%)",
-      "mid": "中分紅(5.5%)",
-      "low": "低分紅(1.75%)"
-    },
-    "mid_dividend_rate": 0.055,
-    "low_dividend_rate": 0.0175,
-    "schedule_includes_dividend": true,
-    "base_age": 36,
-    "base_sex": "M",
-    "base_sa": 240700,
-    "base_premium": 200000,
-    "base_premium_gross": 90900,
-    "discount": 0,
-    "min_age": 0,
-    "max_age": 80,
-    "min_sa": 1,
-    "max_sa": 5000000,
-    "unit_size": 1,
-    "used_default_sa": true,
-    "current_sa_multiplier": {
-      "Y1_Y10": 3.0,
-      "Y11_plus": 1.0,
-      "note": "當年度保險金額 = 基本保額 × 3 (Y1-Y10) → × 1 (Y11+),即 schedule.death_benefit Y1-Y10=300K,Y11+ 維持 100K"
-    },
-    "extraction_note": "1. 三情境採 PDF/xlsx「假設無分紅(0%)/中分紅(5.5%)/低分紅(1.75%)」對應引擎 scenarios.none/mid/low 三槽位,本商品無高分紅情境(故 schedule_h 不寫,引擎 fallback 至 mid)。2. 高保費折扣門檻表:10萬美元(含)以上→1.0%、20萬美元(含)以上→1.2%。base case M40 / 90,900 未達 10 萬門檻,故 discount=0。系統 schema 不支援門檻折扣,預算反推時統一不套折扣;客戶實繳保費跨門檻的偏差需手動調整(列入 PENDING 等 schema 擴 discount_table)。3. min_sa/max_sa 用規則 C 安全預設(USD 10K~500萬),max_age 從 PE 表 S76L80 讀出 = 80;DM 校對前用 used_default_sa: true 標記。4. 商品為英式分紅保險(Profit-Linked),保單紅利非保證,實際金額由保誠人壽董事會年度宣告。預定利率 1.5%,中分紅情境投資報酬率假設 5.5%,低分紅 1.75%。5. 保險年齡達 100 歲之保單週年日仍生存時給付祝壽金 = 156,848 元 + 假設紅利_分紅保額(中)。本 schedule Y61 即為祝壽金那年(age 100)。",
-    "data_sources": [
-      "PDF: d-新美旺傳家外幣終身壽險_定期給付型_-20260510002701.pdf (M20/SA=156,848 試算範例)",
-      "xlsx: 保誠人壽新美旺傳家外幣終身壽險_定期給付型__ARDPLU12__V2_0_20260331-試算表20260403.xls (M40/SA=100,000 業務員試算 base case)",
-      "xlsx 試算表 sheet: 三情境 (none/mid/low) 完整 schedule Y1~Y61 (age 40~100)",
-      "備查文號: 民國114年06月30日保誠總字第1140001060號"
-    ],
-    "extraction_date": "2026-05-10",
-    "extracted_by": "Claude (校正流程 v3 + 規範 v6.1)",
-    "needs_revalidation": false,
-    "verified_against": "Drew 2026-05-14 美元利變躉繳",
-    "gp_drew_anchor_1yr": "v62: 21M USD 100k 1yr → SA 154450",
-    "granular_sa": true,
-    "drew_html_1yr_v79": "21M SA=154450 budget=100000 | 41M SA=- budget=- | 31F SA=148763 budget=100000 | F-factor=0.701",
-    "drew_align_v83_p01": "anchors=3 21M=SA154450, 30F=SA150987, 41M=SA110273",
-    "drew_1yr_anchors_v88": [
-      "21M",
-      "31F"
-    ]
-  },
-  "schedule": [
-    {
-      "y": 1,
-      "age": 40,
-      "cum_prem": 90900,
-      "cv_basic": 44500,
-      "death_benefit": 300000,
-      "pv": 59300,
-      "scenarios": {
-        "none": {
-          "cv_total": 44500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 44500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 44500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 2,
-      "age": 41,
-      "cum_prem": 90900,
-      "cv_basic": 44900,
-      "death_benefit": 300000,
-      "pv": 59800,
-      "scenarios": {
-        "none": {
-          "cv_total": 44900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 44900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 44900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 3,
-      "age": 42,
-      "cum_prem": 90900,
-      "cv_basic": 45200,
-      "death_benefit": 300000,
-      "pv": 60200,
-      "scenarios": {
-        "none": {
-          "cv_total": 45200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 45200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 45200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 4,
-      "age": 43,
-      "cum_prem": 90900,
-      "cv_basic": 48600,
-      "death_benefit": 300000,
-      "pv": 60700,
-      "scenarios": {
-        "none": {
-          "cv_total": 48600,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 48600,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 48600,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 5,
-      "age": 44,
-      "cum_prem": 90900,
-      "cv_basic": 48900,
-      "death_benefit": 300000,
-      "pv": 61100,
-      "scenarios": {
-        "none": {
-          "cv_total": 48900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 48900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 48900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 6,
-      "age": 45,
-      "cum_prem": 90900,
-      "cv_basic": 52200,
-      "death_benefit": 300000,
-      "pv": 61400,
-      "scenarios": {
-        "none": {
-          "cv_total": 52200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 52200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 52200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 7,
-      "age": 46,
-      "cum_prem": 90900,
-      "cv_basic": 52500,
-      "death_benefit": 300000,
-      "pv": 61700,
-      "scenarios": {
-        "none": {
-          "cv_total": 52500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 52500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 52500,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 8,
-      "age": 47,
-      "cum_prem": 90900,
-      "cv_basic": 55800,
-      "death_benefit": 300000,
-      "pv": 61900,
-      "scenarios": {
-        "none": {
-          "cv_total": 55800,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 55800,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 55800,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 9,
-      "age": 48,
-      "cum_prem": 90900,
-      "cv_basic": 55900,
-      "death_benefit": 300000,
-      "pv": 62100,
-      "scenarios": {
-        "none": {
-          "cv_total": 55900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 55900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 55900,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 10,
-      "age": 49,
-      "cum_prem": 90900,
-      "cv_basic": 59200,
-      "death_benefit": 300000,
-      "pv": 62300,
-      "scenarios": {
-        "none": {
-          "cv_total": 59200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 59200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        },
-        "low": {
-          "cv_total": 59200,
-          "db_with_dividend": 300000,
-          "dividend_year": 0
-        }
-      }
-    },
-    {
-      "y": 11,
-      "age": 50,
-      "cum_prem": 90900,
-      "cv_basic": 63100,
-      "death_benefit": 101000,
-      "pv": 63100,
-      "scenarios": {
-        "none": {
-          "cv_total": 63100,
-          "db_with_dividend": 101000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 110109,
-          "db_with_dividend": 668115,
-          "dividend_year": 1000
-        },
-        "low": {
-          "cv_total": 72431,
-          "db_with_dividend": 213524,
-          "dividend_year": 200
-        }
-      }
-    },
-    {
-      "y": 12,
-      "age": 51,
-      "cum_prem": 90900,
-      "cv_basic": 63900,
-      "death_benefit": 100000,
-      "pv": 63900,
-      "scenarios": {
-        "none": {
-          "cv_total": 63900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 112650,
-          "db_with_dividend": 695467,
-          "dividend_year": 1030
-        },
-        "low": {
-          "cv_total": 73498,
-          "db_with_dividend": 217198,
-          "dividend_year": 201
-        }
-      }
-    },
-    {
-      "y": 13,
-      "age": 52,
-      "cum_prem": 90900,
-      "cv_basic": 64700,
-      "death_benefit": 100000,
-      "pv": 64700,
-      "scenarios": {
-        "none": {
-          "cv_total": 64700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 115271,
-          "db_with_dividend": 715234,
-          "dividend_year": 1061
-        },
-        "low": {
-          "cv_total": 74571,
-          "db_with_dividend": 220081,
-          "dividend_year": 203
-        }
-      }
-    },
-    {
-      "y": 14,
-      "age": 53,
-      "cum_prem": 90900,
-      "cv_basic": 65500,
-      "death_benefit": 100000,
-      "pv": 65500,
-      "scenarios": {
-        "none": {
-          "cv_total": 65500,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 117950,
-          "db_with_dividend": 734953,
-          "dividend_year": 1093
-        },
-        "low": {
-          "cv_total": 75648,
-          "db_with_dividend": 222874,
-          "dividend_year": 203
-        }
-      }
-    },
-    {
-      "y": 15,
-      "age": 54,
-      "cum_prem": 90900,
-      "cv_basic": 66400,
-      "death_benefit": 100000,
-      "pv": 66400,
-      "scenarios": {
-        "none": {
-          "cv_total": 66400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 120800,
-          "db_with_dividend": 754656,
-          "dividend_year": 1125
-        },
-        "low": {
-          "cv_total": 76832,
-          "db_with_dividend": 225580,
-          "dividend_year": 205
-        }
-      }
-    },
-    {
-      "y": 16,
-      "age": 55,
-      "cum_prem": 90900,
-      "cv_basic": 67200,
-      "death_benefit": 100000,
-      "pv": 67200,
-      "scenarios": {
-        "none": {
-          "cv_total": 67200,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 123938,
-          "db_with_dividend": 771842,
-          "dividend_year": 1159
-        },
-        "low": {
-          "cv_total": 77981,
-          "db_with_dividend": 227731,
-          "dividend_year": 206
-        }
-      }
-    },
-    {
-      "y": 17,
-      "age": 56,
-      "cum_prem": 90900,
-      "cv_basic": 68000,
-      "death_benefit": 100000,
-      "pv": 68000,
-      "scenarios": {
-        "none": {
-          "cv_total": 68000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 127220,
-          "db_with_dividend": 780499,
-          "dividend_year": 1194
-        },
-        "low": {
-          "cv_total": 79146,
-          "db_with_dividend": 228197,
-          "dividend_year": 207
-        }
-      }
-    },
-    {
-      "y": 18,
-      "age": 57,
-      "cum_prem": 90900,
-      "cv_basic": 68900,
-      "death_benefit": 100000,
-      "pv": 68900,
-      "scenarios": {
-        "none": {
-          "cv_total": 68900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 130596,
-          "db_with_dividend": 789415,
-          "dividend_year": 1230
-        },
-        "low": {
-          "cv_total": 80396,
-          "db_with_dividend": 228666,
-          "dividend_year": 209
-        }
-      }
-    },
-    {
-      "y": 19,
-      "age": 58,
-      "cum_prem": 90900,
-      "cv_basic": 69700,
-      "death_benefit": 100000,
-      "pv": 69700,
-      "scenarios": {
-        "none": {
-          "cv_total": 69700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 134054,
-          "db_with_dividend": 798598,
-          "dividend_year": 1267
-        },
-        "low": {
-          "cv_total": 81575,
-          "db_with_dividend": 229139,
-          "dividend_year": 210
-        }
-      }
-    },
-    {
-      "y": 20,
-      "age": 59,
-      "cum_prem": 90900,
-      "cv_basic": 70500,
-      "death_benefit": 100000,
-      "pv": 70500,
-      "scenarios": {
-        "none": {
-          "cv_total": 70500,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 137263,
-          "db_with_dividend": 808058,
-          "dividend_year": 1305
-        },
-        "low": {
-          "cv_total": 82697,
-          "db_with_dividend": 229613,
-          "dividend_year": 211
-        }
-      }
-    },
-    {
-      "y": 21,
-      "age": 60,
-      "cum_prem": 90900,
-      "cv_basic": 71400,
-      "death_benefit": 100000,
-      "pv": 71400,
-      "scenarios": {
-        "none": {
-          "cv_total": 71400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 140633,
-          "db_with_dividend": 817800,
-          "dividend_year": 1344
-        },
-        "low": {
-          "cv_total": 83916,
-          "db_with_dividend": 230091,
-          "dividend_year": 212
-        }
-      }
-    },
-    {
-      "y": 22,
-      "age": 61,
-      "cum_prem": 90900,
-      "cv_basic": 72200,
-      "death_benefit": 100000,
-      "pv": 72200,
-      "scenarios": {
-        "none": {
-          "cv_total": 72200,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 143995,
-          "db_with_dividend": 827835,
-          "dividend_year": 1384
-        },
-        "low": {
-          "cv_total": 85042,
-          "db_with_dividend": 230572,
-          "dividend_year": 214
-        }
-      }
-    },
-    {
-      "y": 23,
-      "age": 62,
-      "cum_prem": 90900,
-      "cv_basic": 73100,
-      "death_benefit": 100000,
-      "pv": 73100,
-      "scenarios": {
-        "none": {
-          "cv_total": 73100,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 147555,
-          "db_with_dividend": 838171,
-          "dividend_year": 1426
-        },
-        "low": {
-          "cv_total": 86273,
-          "db_with_dividend": 231055,
-          "dividend_year": 215
-        }
-      }
-    },
-    {
-      "y": 24,
-      "age": 63,
-      "cum_prem": 90900,
-      "cv_basic": 73900,
-      "death_benefit": 100000,
-      "pv": 73900,
-      "scenarios": {
-        "none": {
-          "cv_total": 73900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 151114,
-          "db_with_dividend": 848817,
-          "dividend_year": 1468
-        },
-        "low": {
-          "cv_total": 87408,
-          "db_with_dividend": 231542,
-          "dividend_year": 216
-        }
-      }
-    },
-    {
-      "y": 25,
-      "age": 64,
-      "cum_prem": 90900,
-      "cv_basic": 74800,
-      "death_benefit": 100000,
-      "pv": 74800,
-      "scenarios": {
-        "none": {
-          "cv_total": 74800,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 154873,
-          "db_with_dividend": 859783,
-          "dividend_year": 1513
-        },
-        "low": {
-          "cv_total": 88650,
-          "db_with_dividend": 232030,
-          "dividend_year": 217
-        }
-      }
-    },
-    {
-      "y": 26,
-      "age": 65,
-      "cum_prem": 90900,
-      "cv_basic": 75600,
-      "death_benefit": 100000,
-      "pv": 75600,
-      "scenarios": {
-        "none": {
-          "cv_total": 75600,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 158628,
-          "db_with_dividend": 871077,
-          "dividend_year": 1558
-        },
-        "low": {
-          "cv_total": 89795,
-          "db_with_dividend": 232523,
-          "dividend_year": 219
-        }
-      }
-    },
-    {
-      "y": 27,
-      "age": 66,
-      "cum_prem": 90900,
-      "cv_basic": 76400,
-      "death_benefit": 100000,
-      "pv": 76400,
-      "scenarios": {
-        "none": {
-          "cv_total": 76400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 162488,
-          "db_with_dividend": 882711,
-          "dividend_year": 1605
-        },
-        "low": {
-          "cv_total": 90946,
-          "db_with_dividend": 233018,
-          "dividend_year": 220
-        }
-      }
-    },
-    {
-      "y": 28,
-      "age": 67,
-      "cum_prem": 90900,
-      "cv_basic": 77300,
-      "death_benefit": 100000,
-      "pv": 77300,
-      "scenarios": {
-        "none": {
-          "cv_total": 77300,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 166558,
-          "db_with_dividend": 894693,
-          "dividend_year": 1652
-        },
-        "low": {
-          "cv_total": 92201,
-          "db_with_dividend": 233517,
-          "dividend_year": 222
-        }
-      }
-    },
-    {
-      "y": 29,
-      "age": 68,
-      "cum_prem": 90900,
-      "cv_basic": 78100,
-      "death_benefit": 100000,
-      "pv": 78100,
-      "scenarios": {
-        "none": {
-          "cv_total": 78100,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 170635,
-          "db_with_dividend": 907035,
-          "dividend_year": 1703
-        },
-        "low": {
-          "cv_total": 93360,
-          "db_with_dividend": 234017,
-          "dividend_year": 222
-        }
-      }
-    },
-    {
-      "y": 30,
-      "age": 69,
-      "cum_prem": 90900,
-      "cv_basic": 78900,
-      "death_benefit": 100000,
-      "pv": 78900,
-      "scenarios": {
-        "none": {
-          "cv_total": 78900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 174915,
-          "db_with_dividend": 919746,
-          "dividend_year": 1753
-        },
-        "low": {
-          "cv_total": 94532,
-          "db_with_dividend": 234521,
-          "dividend_year": 224
-        }
-      }
-    },
-    {
-      "y": 31,
-      "age": 70,
-      "cum_prem": 90900,
-      "cv_basic": 79700,
-      "death_benefit": 100000,
-      "pv": 79700,
-      "scenarios": {
-        "none": {
-          "cv_total": 79700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 179484,
-          "db_with_dividend": 932840,
-          "dividend_year": 1806
-        },
-        "low": {
-          "cv_total": 95747,
-          "db_with_dividend": 235029,
-          "dividend_year": 226
-        }
-      }
-    },
-    {
-      "y": 32,
-      "age": 71,
-      "cum_prem": 90900,
-      "cv_basic": 80500,
-      "death_benefit": 100000,
-      "pv": 80500,
-      "scenarios": {
-        "none": {
-          "cv_total": 80500,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 184225,
-          "db_with_dividend": 946327,
-          "dividend_year": 1861
-        },
-        "low": {
-          "cv_total": 96965,
-          "db_with_dividend": 235539,
-          "dividend_year": 227
-        }
-      }
-    },
-    {
-      "y": 33,
-      "age": 72,
-      "cum_prem": 90900,
-      "cv_basic": 81300,
-      "death_benefit": 100000,
-      "pv": 81300,
-      "scenarios": {
-        "none": {
-          "cv_total": 81300,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 189143,
-          "db_with_dividend": 960217,
-          "dividend_year": 1916
-        },
-        "low": {
-          "cv_total": 98206,
-          "db_with_dividend": 236052,
-          "dividend_year": 228
-        }
-      }
-    },
-    {
-      "y": 34,
-      "age": 73,
-      "cum_prem": 90900,
-      "cv_basic": 82000,
-      "death_benefit": 100000,
-      "pv": 82000,
-      "scenarios": {
-        "none": {
-          "cv_total": 82000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 194247,
-          "db_with_dividend": 974524,
-          "dividend_year": 1973
-        },
-        "low": {
-          "cv_total": 99360,
-          "db_with_dividend": 236568,
-          "dividend_year": 229
-        }
-      }
-    },
-    {
-      "y": 35,
-      "age": 74,
-      "cum_prem": 90900,
-      "cv_basic": 82800,
-      "death_benefit": 100000,
-      "pv": 82800,
-      "scenarios": {
-        "none": {
-          "cv_total": 82800,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 199532,
-          "db_with_dividend": 989261,
-          "dividend_year": 2033
-        },
-        "low": {
-          "cv_total": 100618,
-          "db_with_dividend": 237088,
-          "dividend_year": 231
-        }
-      }
-    },
-    {
-      "y": 36,
-      "age": 75,
-      "cum_prem": 90900,
-      "cv_basic": 83500,
-      "death_benefit": 100000,
-      "pv": 83500,
-      "scenarios": {
-        "none": {
-          "cv_total": 83500,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 205013,
-          "db_with_dividend": 1004440,
-          "dividend_year": 2094
-        },
-        "low": {
-          "cv_total": 101800,
-          "db_with_dividend": 237610,
-          "dividend_year": 232
-        }
-      }
-    },
-    {
-      "y": 37,
-      "age": 76,
-      "cum_prem": 90900,
-      "cv_basic": 84300,
-      "death_benefit": 100000,
-      "pv": 84300,
-      "scenarios": {
-        "none": {
-          "cv_total": 84300,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 210697,
-          "db_with_dividend": 1020075,
-          "dividend_year": 2157
-        },
-        "low": {
-          "cv_total": 103079,
-          "db_with_dividend": 238136,
-          "dividend_year": 234
-        }
-      }
-    },
-    {
-      "y": 38,
-      "age": 77,
-      "cum_prem": 90900,
-      "cv_basic": 85000,
-      "death_benefit": 100000,
-      "pv": 85000,
-      "scenarios": {
-        "none": {
-          "cv_total": 85000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 216613,
-          "db_with_dividend": 1036178,
-          "dividend_year": 2221
-        },
-        "low": {
-          "cv_total": 104288,
-          "db_with_dividend": 238665,
-          "dividend_year": 235
-        }
-      }
-    },
-    {
-      "y": 39,
-      "age": 78,
-      "cum_prem": 90900,
-      "cv_basic": 85700,
-      "death_benefit": 100000,
-      "pv": 85700,
-      "scenarios": {
-        "none": {
-          "cv_total": 85700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 223648,
-          "db_with_dividend": 1052764,
-          "dividend_year": 2288
-        },
-        "low": {
-          "cv_total": 105637,
-          "db_with_dividend": 239198,
-          "dividend_year": 237
-        }
-      }
-    },
-    {
-      "y": 40,
-      "age": 79,
-      "cum_prem": 90900,
-      "cv_basic": 86400,
-      "death_benefit": 100000,
-      "pv": 86400,
-      "scenarios": {
-        "none": {
-          "cv_total": 86400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 231037,
-          "db_with_dividend": 1069848,
-          "dividend_year": 2356
-        },
-        "low": {
-          "cv_total": 107014,
-          "db_with_dividend": 239732,
-          "dividend_year": 237
-        }
-      }
-    },
-    {
-      "y": 41,
-      "age": 80,
-      "cum_prem": 90900,
-      "cv_basic": 87100,
-      "death_benefit": 100000,
-      "pv": 87100,
-      "scenarios": {
-        "none": {
-          "cv_total": 87100,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 238793,
-          "db_with_dividend": 1087445,
-          "dividend_year": 2428
-        },
-        "low": {
-          "cv_total": 108416,
-          "db_with_dividend": 240271,
-          "dividend_year": 240
-        }
-      }
-    },
-    {
-      "y": 42,
-      "age": 81,
-      "cum_prem": 90900,
-      "cv_basic": 87700,
-      "death_benefit": 100000,
-      "pv": 87700,
-      "scenarios": {
-        "none": {
-          "cv_total": 87700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 246902,
-          "db_with_dividend": 1105569,
-          "dividend_year": 2500
-        },
-        "low": {
-          "cv_total": 109753,
-          "db_with_dividend": 240813,
-          "dividend_year": 241
-        }
-      }
-    },
-    {
-      "y": 43,
-      "age": 82,
-      "cum_prem": 90900,
-      "cv_basic": 88400,
-      "death_benefit": 100000,
-      "pv": 88400,
-      "scenarios": {
-        "none": {
-          "cv_total": 88400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 266788,
-          "db_with_dividend": 1124237,
-          "dividend_year": 2575
-        },
-        "low": {
-          "cv_total": 112773,
-          "db_with_dividend": 241358,
-          "dividend_year": 242
-        }
-      }
-    },
-    {
-      "y": 44,
-      "age": 83,
-      "cum_prem": 90900,
-      "cv_basic": 89000,
-      "death_benefit": 100000,
-      "pv": 89000,
-      "scenarios": {
-        "none": {
-          "cv_total": 89000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 288984,
-          "db_with_dividend": 1143465,
-          "dividend_year": 2652
-        },
-        "low": {
-          "cv_total": 115951,
-          "db_with_dividend": 241905,
-          "dividend_year": 243
-        }
-      }
-    },
-    {
-      "y": 45,
-      "age": 84,
-      "cum_prem": 90900,
-      "cv_basic": 89700,
-      "death_benefit": 100000,
-      "pv": 89700,
-      "scenarios": {
-        "none": {
-          "cv_total": 89700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 313778,
-          "db_with_dividend": 1163270,
-          "dividend_year": 2732
-        },
-        "low": {
-          "cv_total": 119473,
-          "db_with_dividend": 242457,
-          "dividend_year": 245
-        }
-      }
-    },
-    {
-      "y": 46,
-      "age": 85,
-      "cum_prem": 90900,
-      "cv_basic": 90300,
-      "death_benefit": 100000,
-      "pv": 90300,
-      "scenarios": {
-        "none": {
-          "cv_total": 90300,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 341530,
-          "db_with_dividend": 1183669,
-          "dividend_year": 2814
-        },
-        "low": {
-          "cv_total": 123213,
-          "db_with_dividend": 243012,
-          "dividend_year": 247
-        }
-      }
-    },
-    {
-      "y": 47,
-      "age": 86,
-      "cum_prem": 90900,
-      "cv_basic": 90900,
-      "death_benefit": 100000,
-      "pv": 90900,
-      "scenarios": {
-        "none": {
-          "cv_total": 90900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 372632,
-          "db_with_dividend": 1204680,
-          "dividend_year": 2898
-        },
-        "low": {
-          "cv_total": 127276,
-          "db_with_dividend": 243570,
-          "dividend_year": 248
-        }
-      }
-    },
-    {
-      "y": 48,
-      "age": 87,
-      "cum_prem": 90900,
-      "cv_basic": 91400,
-      "death_benefit": 100000,
-      "pv": 91400,
-      "scenarios": {
-        "none": {
-          "cv_total": 91400,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 407542,
-          "db_with_dividend": 1226321,
-          "dividend_year": 2985
-        },
-        "low": {
-          "cv_total": 131628,
-          "db_with_dividend": 244132,
-          "dividend_year": 250
-        }
-      }
-    },
-    {
-      "y": 49,
-      "age": 88,
-      "cum_prem": 90900,
-      "cv_basic": 92000,
-      "death_benefit": 100000,
-      "pv": 92000,
-      "scenarios": {
-        "none": {
-          "cv_total": 92000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 446806,
-          "db_with_dividend": 1248612,
-          "dividend_year": 3075
-        },
-        "low": {
-          "cv_total": 136470,
-          "db_with_dividend": 244697,
-          "dividend_year": 251
-        }
-      }
-    },
-    {
-      "y": 50,
-      "age": 89,
-      "cum_prem": 90900,
-      "cv_basic": 92600,
-      "death_benefit": 100000,
-      "pv": 92600,
-      "scenarios": {
-        "none": {
-          "cv_total": 92600,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 491044,
-          "db_with_dividend": 1271571,
-          "dividend_year": 3167
-        },
-        "low": {
-          "cv_total": 141792,
-          "db_with_dividend": 245264,
-          "dividend_year": 252
-        }
-      }
-    },
-    {
-      "y": 51,
-      "age": 90,
-      "cum_prem": 90900,
-      "cv_basic": 93200,
-      "death_benefit": 100000,
-      "pv": 93200,
-      "scenarios": {
-        "none": {
-          "cv_total": 93200,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 540916,
-          "db_with_dividend": 1295219,
-          "dividend_year": 3262
-        },
-        "low": {
-          "cv_total": 147634,
-          "db_with_dividend": 245836,
-          "dividend_year": 254
-        }
-      }
-    },
-    {
-      "y": 52,
-      "age": 91,
-      "cum_prem": 90900,
-      "cv_basic": 93700,
-      "death_benefit": 100000,
-      "pv": 93700,
-      "scenarios": {
-        "none": {
-          "cv_total": 93700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 597323,
-          "db_with_dividend": 1319577,
-          "dividend_year": 3360
-        },
-        "low": {
-          "cv_total": 153979,
-          "db_with_dividend": 246411,
-          "dividend_year": 256
-        }
-      }
-    },
-    {
-      "y": 53,
-      "age": 92,
-      "cum_prem": 90900,
-      "cv_basic": 94300,
-      "death_benefit": 100000,
-      "pv": 94300,
-      "scenarios": {
-        "none": {
-          "cv_total": 94300,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 661160,
-          "db_with_dividend": 1344666,
-          "dividend_year": 3461
-        },
-        "low": {
-          "cv_total": 161080,
-          "db_with_dividend": 246990,
-          "dividend_year": 257
-        }
-      }
-    },
-    {
-      "y": 54,
-      "age": 93,
-      "cum_prem": 90900,
-      "cv_basic": 94900,
-      "death_benefit": 100000,
-      "pv": 94900,
-      "scenarios": {
-        "none": {
-          "cv_total": 94900,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 733575,
-          "db_with_dividend": 1370506,
-          "dividend_year": 3564
-        },
-        "low": {
-          "cv_total": 168932,
-          "db_with_dividend": 247572,
-          "dividend_year": 259
-        }
-      }
-    },
-    {
-      "y": 55,
-      "age": 94,
-      "cum_prem": 90900,
-      "cv_basic": 95500,
-      "death_benefit": 100000,
-      "pv": 95500,
-      "scenarios": {
-        "none": {
-          "cv_total": 95500,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 815862,
-          "db_with_dividend": 1397123,
-          "dividend_year": 3672
-        },
-        "low": {
-          "cv_total": 177651,
-          "db_with_dividend": 248157,
-          "dividend_year": 260
-        }
-      }
-    },
-    {
-      "y": 56,
-      "age": 95,
-      "cum_prem": 90900,
-      "cv_basic": 96100,
-      "death_benefit": 100000,
-      "pv": 96100,
-      "scenarios": {
-        "none": {
-          "cv_total": 96100,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 909535,
-          "db_with_dividend": 1424537,
-          "dividend_year": 3781
-        },
-        "low": {
-          "cv_total": 187345,
-          "db_with_dividend": 248746,
-          "dividend_year": 262
-        }
-      }
-    },
-    {
-      "y": 57,
-      "age": 96,
-      "cum_prem": 90900,
-      "cv_basic": 96800,
-      "death_benefit": 100000,
-      "pv": 96800,
-      "scenarios": {
-        "none": {
-          "cv_total": 96800,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 1016377,
-          "db_with_dividend": 1452775,
-          "dividend_year": 3896
-        },
-        "low": {
-          "cv_total": 198231,
-          "db_with_dividend": 249339,
-          "dividend_year": 263
-        }
-      }
-    },
-    {
-      "y": 58,
-      "age": 97,
-      "cum_prem": 90900,
-      "cv_basic": 97700,
-      "death_benefit": 100000,
-      "pv": 97700,
-      "scenarios": {
-        "none": {
-          "cv_total": 97700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 1138462,
-          "db_with_dividend": 1481858,
-          "dividend_year": 4011
-        },
-        "low": {
-          "cv_total": 210568,
-          "db_with_dividend": 249935,
-          "dividend_year": 265
-        }
-      }
-    },
-    {
-      "y": 59,
-      "age": 98,
-      "cum_prem": 90900,
-      "cv_basic": 98700,
-      "death_benefit": 100000,
-      "pv": 98700,
-      "scenarios": {
-        "none": {
-          "cv_total": 98700,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 1278221,
-          "db_with_dividend": 1511816,
-          "dividend_year": 4133
-        },
-        "low": {
-          "cv_total": 224435,
-          "db_with_dividend": 250535,
-          "dividend_year": 267
-        }
-      }
-    },
-    {
-      "y": 60,
-      "age": 99,
-      "cum_prem": 90900,
-      "cv_basic": 100000,
-      "death_benefit": 100000,
-      "pv": 100000,
-      "scenarios": {
-        "none": {
-          "cv_total": 100000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 1415695,
-          "db_with_dividend": 1542671,
-          "dividend_year": 4256
-        },
-        "low": {
-          "cv_total": 237821,
-          "db_with_dividend": 251138,
-          "dividend_year": 268
-        }
-      }
-    },
-    {
-      "y": 61,
-      "age": 100,
-      "cum_prem": 90900,
-      "cv_basic": 100000,
-      "death_benefit": 100000,
-      "pv": 100000,
-      "scenarios": {
-        "none": {
-          "cv_total": 100000,
-          "db_with_dividend": 100000,
-          "dividend_year": 0
-        },
-        "mid": {
-          "cv_total": 1574561,
-          "db_with_dividend": 1574561,
-          "dividend_year": 4384
-        },
-        "low": {
-          "cv_total": 251755,
-          "db_with_dividend": 251755,
-          "dividend_year": 269
-        }
-      }
-    }
+ "schema": "v4",
+ "meta": {
+  "engine": "twlife_v2_full",
+  "company": "保誠人壽",
+  "company_dir": "prudential",
+  "plan_code": "ARDPLU12",
+  "product_code": "ARDPLU12",
+  "product_name": "新美旺傳家外幣終身壽險(定期給付型)",
+  "currency": "USD",
+  "period": 1,
+  "premium_mode": "lump_sum",
+  "is_lump_sum_demo": true,
+  "protection_period": "達100歲之保單週年日",
+  "guaranteed_rate": 0.015,
+  "scenarios": [
+   "none",
+   "mid",
+   "low"
   ],
-  "gp_table": {
-    "0100M": 459.1365,
-    "0101M": 466.9364,
-    "0102M": 474.8688,
-    "0103M": 482.936,
-    "0104M": 491.1403,
-    "0105M": 499.4839,
-    "0106M": 507.9692,
-    "0107M": 516.5988,
-    "0108M": 525.3749,
-    "0109M": 534.3001,
-    "0110M": 543.3769,
-    "0111M": 552.6079,
-    "0112M": 561.9958,
-    "0113M": 571.5431,
-    "0114M": 581.2526,
-    "0115M": 591.1271,
-    "0116M": 601.1693,
-    "0117M": 611.3821,
-    "0118M": 621.7684,
-    "0119M": 632.3312,
-    "0120M": 643.0734,
-    "0121M": 653.9981,
-    "0122M": 665.1083,
-    "0123M": 676.4074,
-    "0124M": 687.8983,
-    "0125M": 699.5845,
-    "0126M": 711.4693,
-    "0127M": 723.5559,
-    "0128M": 735.8478,
-    "0129M": 748.3486,
-    "0130M": 761.0617,
-    "0131M": 773.9908,
-    "0132M": 787.1396,
-    "0133M": 800.5117,
-    "0134M": 814.111,
-    "0135M": 827.9413,
-    "0136M": 842.0066,
-    "0137M": 856.3108,
-    "0138M": 870.8581,
-    "0139M": 885.6524,
-    "0140M": 900.6981,
-    "0141M": 915.9994,
-    "0142M": 931.5606,
-    "0143M": 947.3862,
-    "0144M": 963.4806,
-    "0145M": 979.8485,
-    "0146M": 996.4944,
-    "0147M": 1013.4231,
-    "0148M": 1030.6394,
-    "0149M": 1048.1481,
-    "0150M": 1065.9544,
-    "0151M": 1084.0631,
-    "0152M": 1102.4794,
-    "0153M": 1121.2086,
-    "0154M": 1140.256,
-    "0155M": 1159.6269,
-    "0156M": 1179.327,
-    "0157M": 1199.3617,
-    "0158M": 1219.7367,
-    "0159M": 1240.4579,
-    "0160M": 1261.5311,
-    "0161M": 1282.9623,
-    "0162M": 1304.7576,
-    "0163M": 1326.9232,
-    "0164M": 1349.4653,
-    "0165M": 1372.3903,
-    "0166M": 1395.7048,
-    "0167M": 1419.4154,
-    "0168M": 1443.5288,
-    "0169M": 1468.0518,
-    "0170M": 1492.9915,
-    "0171M": 1518.3548,
-    "0172M": 1544.149,
-    "0173M": 1570.3814,
-    "0174M": 1597.0594,
-    "0175M": 1624.1907,
-    "0176M": 1651.7828,
-    "0177M": 1679.8437,
-    "0178M": 1708.3813,
-    "0179M": 1737.4038,
-    "0180M": 1766.9192,
-    "0181M": 1796.9361,
-    "0182M": 1827.4629,
-    "0183M": 1858.5083,
-    "0184M": 1890.0811,
-    "0185M": 1922.1903,
-    "0186M": 1954.8449,
-    "0187M": 1988.0543,
-    "0188M": 2021.8279,
-    "0189M": 2056.1752,
-    "0190M": 2091.106,
-    "0100F": 403.5959,
-    "0101F": 410.4523,
-    "0102F": 417.4251,
-    "0103F": 424.5165,
-    "0104F": 431.7283,
-    "0105F": 439.0626,
-    "0106F": 446.5215,
-    "0107F": 454.1072,
-    "0108F": 461.8216,
-    "0109F": 469.6672,
-    "0110F": 477.646,
-    "0111F": 485.7603,
-    "0112F": 494.0126,
-    "0113F": 502.405,
-    "0114F": 510.9399,
-    "0115F": 519.62,
-    "0116F": 528.4474,
-    "0117F": 537.4248,
-    "0118F": 546.5547,
-    "0119F": 555.8397,
-    "0120F": 565.2824,
-    "0121F": 574.8856,
-    "0122F": 584.6518,
-    "0123F": 594.5841,
-    "0124F": 604.685,
-    "0125F": 614.9575,
-    "0126F": 625.4047,
-    "0127F": 636.0292,
-    "0128F": 646.8342,
-    "0129F": 657.8228,
-    "0130F": 668.998,
-    "0131F": 680.3631,
-    "0132F": 691.9213,
-    "0133F": 703.6758,
-    "0134F": 715.6301,
-    "0135F": 727.7873,
-    "0136F": 740.1512,
-    "0137F": 752.7251,
-    "0138F": 765.5126,
-    "0139F": 778.5173,
-    "0140F": 791.7429,
-    "0141F": 805.1933,
-    "0142F": 818.8721,
-    "0143F": 832.7833,
-    "0144F": 846.9308,
-    "0145F": 861.3187,
-    "0146F": 875.951,
-    "0147F": 890.8319,
-    "0148F": 905.9656,
-    "0149F": 921.3563,
-    "0150F": 937.0086,
-    "0151F": 952.9267,
-    "0152F": 969.1153,
-    "0153F": 985.5788,
-    "0154F": 1002.3221,
-    "0155F": 1019.3498,
-    "0156F": 1036.6668,
-    "0157F": 1054.278,
-    "0158F": 1072.1882,
-    "0159F": 1090.4028,
-    "0160F": 1108.9269,
-    "0161F": 1127.7656,
-    "0162F": 1146.9244,
-    "0163F": 1166.4087,
-    "0164F": 1186.2239,
-    "0165F": 1206.3757,
-    "0166F": 1226.8699,
-    "0167F": 1247.7123,
-    "0168F": 1268.9088,
-    "0169F": 1290.4653,
-    "0170F": 1312.3881,
-    "0171F": 1334.6833,
-    "0172F": 1357.3572,
-    "0173F": 1380.4163,
-    "0174F": 1403.8672,
-    "0175F": 1427.7165,
-    "0176F": 1451.9708,
-    "0177F": 1476.6373,
-    "0178F": 1501.7227,
-    "0179F": 1527.2345,
-    "0180F": 1553.1795,
-    "0181F": 1579.5653,
-    "0182F": 1606.3993,
-    "0183F": 1633.6893,
-    "0184F": 1661.4428,
-    "0185F": 1689.6678,
-    "0186F": 1718.3723,
-    "0187F": 1747.5644,
-    "0188F": 1777.2525,
-    "0189F": 1807.4449,
-    "0190F": 1838.1502
+  "scenarios_label": {
+   "none": "無分紅(0%)",
+   "mid": "中分紅(5.5%)",
+   "low": "低分紅(1.75%)"
   },
-  "discounts": {
-    "auto_pay_first": 0.01
+  "mid_dividend_rate": 0.055,
+  "low_dividend_rate": 0.0175,
+  "schedule_includes_dividend": true,
+  "base_age": 36,
+  "base_sex": "M",
+  "base_sa": 240700,
+  "base_premium": 200000,
+  "base_premium_gross": 90900,
+  "discount": 0,
+  "min_age": 0,
+  "max_age": 80,
+  "min_sa": 1,
+  "max_sa": 5000000,
+  "unit_size": 1,
+  "used_default_sa": true,
+  "current_sa_multiplier": {
+   "Y1_Y10": 3.0,
+   "Y11_plus": 1.0,
+   "note": "當年度保險金額 = 基本保額 × 3 (Y1-Y10) → × 1 (Y11+),即 schedule.death_benefit Y1-Y10=300K,Y11+ 維持 100K"
   },
-  "drew_rates_by_age": {},
-  "drew_rates_by_period_and_age": {
-    "1": {
-      "21M": {
-        "1": 50.0,
-        "2": 50.7,
-        "3": 51.4,
-        "4": 55.4,
-        "5": 56.1,
-        "6": 60.4,
-        "7": 61.0,
-        "8": 65.3,
-        "9": 66.3,
-        "10": 70.6,
-        "11": 144.8,
-        "12": 150.2,
-        "13": 155.5,
-        "14": 161.1,
-        "15": 166.9,
-        "16": 172.9,
-        "17": 179.2,
-        "18": 185.9,
-        "19": 192.8,
-        "20": 200.0,
-        "21": 207.6,
-        "22": 215.5,
-        "23": 223.7,
-        "24": 232.3,
-        "25": 241.3,
-        "26": 250.8,
-        "27": 260.7,
-        "28": 271.0,
-        "29": 281.8,
-        "30": 293.2,
-        "31": 305.1,
-        "32": 317.6,
-        "33": 330.6,
-        "34": 344.3,
-        "35": 358.6,
-        "36": 373.7,
-        "37": 389.5,
-        "38": 406.0,
-        "39": 423.4,
-        "40": 441.7,
-        "41": 460.8,
-        "42": 481.0,
-        "43": 502.1,
-        "44": 524.3,
-        "45": 547.6,
-        "46": 572.2,
-        "47": 598.0,
-        "48": 625.1,
-        "49": 653.6,
-        "50": 683.6,
-        "51": 715.2,
-        "52": 748.5,
-        "53": 783.5,
-        "54": 820.4,
-        "55": 859.2,
-        "56": 900.1,
-        "57": 943.3,
-        "58": 988.7,
-        "59": 1036.7,
-        "60": 1087.2,
-        "61": 1140.5,
-        "62": 1208.0,
-        "63": 1272.6,
-        "64": 1341.3,
-        "65": 1414.1,
-        "66": 1491.5,
-        "67": 1573.6,
-        "68": 1661.0,
-        "69": 1753.9,
-        "70": 1852.6,
-        "71": 1957.7,
-        "72": 2131.4,
-        "73": 2323.2,
-        "74": 2535.4,
-        "75": 2770.6,
-        "76": 3032.2,
-        "77": 3325.1,
-        "78": 3657.1,
-        "79": 4038.4
-      },
-      "31F": {
-        "1": 51.2,
-        "2": 51.8,
-        "3": 52.5,
-        "4": 56.7,
-        "5": 57.4,
-        "6": 61.7,
-        "7": 62.5,
-        "8": 66.9,
-        "9": 67.8,
-        "10": 72.4,
-        "11": 136.5,
-        "12": 141.2,
-        "13": 146.7,
-        "14": 152.0,
-        "15": 157.7,
-        "16": 163.8,
-        "17": 170.3,
-        "18": 177.2,
-        "19": 184.6,
-        "20": 192.4,
-        "21": 200.7,
-        "22": 209.6,
-        "23": 219.1,
-        "24": 229.2,
-        "25": 238.0,
-        "26": 247.1,
-        "27": 256.6,
-        "28": 266.7,
-        "29": 277.1,
-        "30": 288.1,
-        "31": 299.5,
-        "32": 311.5,
-        "33": 324.1,
-        "34": 337.3,
-        "35": 351.2,
-        "36": 365.6,
-        "37": 380.8,
-        "38": 396.7,
-        "39": 413.6,
-        "40": 431.3,
-        "41": 449.9,
-        "42": 469.4,
-        "43": 489.8,
-        "44": 511.9,
-        "45": 536.0,
-        "46": 561.3,
-        "47": 586.8,
-        "48": 613.8,
-        "49": 642.5,
-        "50": 675.1,
-        "51": 709.8,
-        "52": 746.5,
-        "53": 785.5,
-        "54": 827.0,
-        "55": 871.0,
-        "56": 917.9,
-        "57": 967.7,
-        "58": 1020.6,
-        "59": 1092.0,
-        "60": 1211.0,
-        "61": 1332.0,
-        "62": 1447.6,
-        "63": 1575.3,
-        "64": 1716.6,
-        "65": 1873.3,
-        "66": 2047.4,
-        "67": 2241.3,
-        "68": 2457.8,
-        "69": 2700.3
-      }
+  "extraction_note": "1. 三情境採 PDF/xlsx「假設無分紅(0%)/中分紅(5.5%)/低分紅(1.75%)」對應引擎 scenarios.none/mid/low 三槽位,本商品無高分紅情境(故 schedule_h 不寫,引擎 fallback 至 mid)。2. 高保費折扣門檻表:10萬美元(含)以上→1.0%、20萬美元(含)以上→1.2%。base case M40 / 90,900 未達 10 萬門檻,故 discount=0。系統 schema 不支援門檻折扣,預算反推時統一不套折扣;客戶實繳保費跨門檻的偏差需手動調整(列入 PENDING 等 schema 擴 discount_table)。3. min_sa/max_sa 用規則 C 安全預設(USD 10K~500萬),max_age 從 PE 表 S76L80 讀出 = 80;DM 校對前用 used_default_sa: true 標記。4. 商品為英式分紅保險(Profit-Linked),保單紅利非保證,實際金額由保誠人壽董事會年度宣告。預定利率 1.5%,中分紅情境投資報酬率假設 5.5%,低分紅 1.75%。5. 保險年齡達 100 歲之保單週年日仍生存時給付祝壽金 = 156,848 元 + 假設紅利_分紅保額(中)。本 schedule Y61 即為祝壽金那年(age 100)。",
+  "data_sources": [
+   "PDF: d-新美旺傳家外幣終身壽險_定期給付型_-20260510002701.pdf (M20/SA=156,848 試算範例)",
+   "xlsx: 保誠人壽新美旺傳家外幣終身壽險_定期給付型__ARDPLU12__V2_0_20260331-試算表20260403.xls (M40/SA=100,000 業務員試算 base case)",
+   "xlsx 試算表 sheet: 三情境 (none/mid/low) 完整 schedule Y1~Y61 (age 40~100)",
+   "備查文號: 民國114年06月30日保誠總字第1140001060號"
+  ],
+  "extraction_date": "2026-05-10",
+  "extracted_by": "Claude (校正流程 v3 + 規範 v6.1)",
+  "needs_revalidation": false,
+  "verified_against": "Drew 2026-05-14 美元利變躉繳",
+  "gp_drew_anchor_1yr": "v62: 21M USD 100k 1yr → SA 154450",
+  "granular_sa": true,
+  "drew_html_1yr_v79": "21M SA=154450 budget=100000 | 41M SA=- budget=- | 31F SA=148763 budget=100000 | F-factor=0.701",
+  "drew_align_v83_p01": "anchors=3 21M=SA154450, 30F=SA150987, 41M=SA110273",
+  "drew_1yr_anchors_v88": [
+   "21M",
+   "31F"
+  ]
+ },
+ "schedule": [
+  {
+   "y": 1,
+   "age": 40,
+   "cum_prem": 90900,
+   "cv_basic": 44500,
+   "death_benefit": 300000,
+   "pv": 59300,
+   "scenarios": {
+    "none": {
+     "cv_total": 44500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
     },
-    "6": {}
-  },
-  "drew_rates_death_by_period_and_age": {
-    "1": {
-      "21M": {
-        "1": 50.0,
-        "2": 50.7,
-        "3": 51.4,
-        "4": 55.4,
-        "5": 56.1,
-        "6": 60.4,
-        "7": 61.0,
-        "8": 65.3,
-        "9": 66.3,
-        "10": 70.6,
-        "11": 144.8,
-        "12": 150.2,
-        "13": 155.5,
-        "14": 161.1,
-        "15": 166.9,
-        "16": 172.9,
-        "17": 179.2,
-        "18": 185.9,
-        "19": 192.8,
-        "20": 200.0,
-        "21": 207.6,
-        "22": 215.5,
-        "23": 223.7,
-        "24": 232.3,
-        "25": 241.3,
-        "26": 250.8,
-        "27": 260.7,
-        "28": 271.0,
-        "29": 281.8,
-        "30": 293.2
-      },
-      "31F": {
-        "1": 51.2,
-        "2": 51.8,
-        "3": 52.5,
-        "4": 56.7,
-        "5": 57.4,
-        "6": 61.7,
-        "7": 62.5,
-        "8": 66.9,
-        "9": 67.8,
-        "10": 72.4,
-        "11": 136.5,
-        "12": 141.2,
-        "13": 146.7,
-        "14": 152.0,
-        "15": 157.7,
-        "16": 163.8,
-        "17": 170.3,
-        "18": 177.2,
-        "19": 184.6,
-        "20": 192.4,
-        "21": 200.7,
-        "22": 209.6,
-        "23": 219.1,
-        "24": 229.2,
-        "25": 238.0,
-        "26": 247.1,
-        "27": 256.6,
-        "28": 266.7,
-        "29": 277.1,
-        "30": 288.1
-      }
+    "mid": {
+     "cv_total": 44500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 44500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
     }
+   }
+  },
+  {
+   "y": 2,
+   "age": 41,
+   "cum_prem": 90900,
+   "cv_basic": 44900,
+   "death_benefit": 300000,
+   "pv": 59800,
+   "scenarios": {
+    "none": {
+     "cv_total": 44900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 44900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 44900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 3,
+   "age": 42,
+   "cum_prem": 90900,
+   "cv_basic": 45200,
+   "death_benefit": 300000,
+   "pv": 60200,
+   "scenarios": {
+    "none": {
+     "cv_total": 45200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 45200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 45200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 4,
+   "age": 43,
+   "cum_prem": 90900,
+   "cv_basic": 48600,
+   "death_benefit": 300000,
+   "pv": 60700,
+   "scenarios": {
+    "none": {
+     "cv_total": 48600,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 48600,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 48600,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 5,
+   "age": 44,
+   "cum_prem": 90900,
+   "cv_basic": 48900,
+   "death_benefit": 300000,
+   "pv": 61100,
+   "scenarios": {
+    "none": {
+     "cv_total": 48900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 48900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 48900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 6,
+   "age": 45,
+   "cum_prem": 90900,
+   "cv_basic": 52200,
+   "death_benefit": 300000,
+   "pv": 61400,
+   "scenarios": {
+    "none": {
+     "cv_total": 52200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 52200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 52200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 7,
+   "age": 46,
+   "cum_prem": 90900,
+   "cv_basic": 52500,
+   "death_benefit": 300000,
+   "pv": 61700,
+   "scenarios": {
+    "none": {
+     "cv_total": 52500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 52500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 52500,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 8,
+   "age": 47,
+   "cum_prem": 90900,
+   "cv_basic": 55800,
+   "death_benefit": 300000,
+   "pv": 61900,
+   "scenarios": {
+    "none": {
+     "cv_total": 55800,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 55800,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 55800,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 9,
+   "age": 48,
+   "cum_prem": 90900,
+   "cv_basic": 55900,
+   "death_benefit": 300000,
+   "pv": 62100,
+   "scenarios": {
+    "none": {
+     "cv_total": 55900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 55900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 55900,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 10,
+   "age": 49,
+   "cum_prem": 90900,
+   "cv_basic": 59200,
+   "death_benefit": 300000,
+   "pv": 62300,
+   "scenarios": {
+    "none": {
+     "cv_total": 59200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 59200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    },
+    "low": {
+     "cv_total": 59200,
+     "db_with_dividend": 300000,
+     "dividend_year": 0
+    }
+   }
+  },
+  {
+   "y": 11,
+   "age": 50,
+   "cum_prem": 90900,
+   "cv_basic": 63100,
+   "death_benefit": 101000,
+   "pv": 63100,
+   "scenarios": {
+    "none": {
+     "cv_total": 63100,
+     "db_with_dividend": 101000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 110109,
+     "db_with_dividend": 668115,
+     "dividend_year": 1000
+    },
+    "low": {
+     "cv_total": 72431,
+     "db_with_dividend": 213524,
+     "dividend_year": 200
+    }
+   }
+  },
+  {
+   "y": 12,
+   "age": 51,
+   "cum_prem": 90900,
+   "cv_basic": 63900,
+   "death_benefit": 100000,
+   "pv": 63900,
+   "scenarios": {
+    "none": {
+     "cv_total": 63900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 112650,
+     "db_with_dividend": 695467,
+     "dividend_year": 1030
+    },
+    "low": {
+     "cv_total": 73498,
+     "db_with_dividend": 217198,
+     "dividend_year": 201
+    }
+   }
+  },
+  {
+   "y": 13,
+   "age": 52,
+   "cum_prem": 90900,
+   "cv_basic": 64700,
+   "death_benefit": 100000,
+   "pv": 64700,
+   "scenarios": {
+    "none": {
+     "cv_total": 64700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 115271,
+     "db_with_dividend": 715234,
+     "dividend_year": 1061
+    },
+    "low": {
+     "cv_total": 74571,
+     "db_with_dividend": 220081,
+     "dividend_year": 203
+    }
+   }
+  },
+  {
+   "y": 14,
+   "age": 53,
+   "cum_prem": 90900,
+   "cv_basic": 65500,
+   "death_benefit": 100000,
+   "pv": 65500,
+   "scenarios": {
+    "none": {
+     "cv_total": 65500,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 117950,
+     "db_with_dividend": 734953,
+     "dividend_year": 1093
+    },
+    "low": {
+     "cv_total": 75648,
+     "db_with_dividend": 222874,
+     "dividend_year": 203
+    }
+   }
+  },
+  {
+   "y": 15,
+   "age": 54,
+   "cum_prem": 90900,
+   "cv_basic": 66400,
+   "death_benefit": 100000,
+   "pv": 66400,
+   "scenarios": {
+    "none": {
+     "cv_total": 66400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 120800,
+     "db_with_dividend": 754656,
+     "dividend_year": 1125
+    },
+    "low": {
+     "cv_total": 76832,
+     "db_with_dividend": 225580,
+     "dividend_year": 205
+    }
+   }
+  },
+  {
+   "y": 16,
+   "age": 55,
+   "cum_prem": 90900,
+   "cv_basic": 67200,
+   "death_benefit": 100000,
+   "pv": 67200,
+   "scenarios": {
+    "none": {
+     "cv_total": 67200,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 123938,
+     "db_with_dividend": 771842,
+     "dividend_year": 1159
+    },
+    "low": {
+     "cv_total": 77981,
+     "db_with_dividend": 227731,
+     "dividend_year": 206
+    }
+   }
+  },
+  {
+   "y": 17,
+   "age": 56,
+   "cum_prem": 90900,
+   "cv_basic": 68000,
+   "death_benefit": 100000,
+   "pv": 68000,
+   "scenarios": {
+    "none": {
+     "cv_total": 68000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 127220,
+     "db_with_dividend": 780499,
+     "dividend_year": 1194
+    },
+    "low": {
+     "cv_total": 79146,
+     "db_with_dividend": 228197,
+     "dividend_year": 207
+    }
+   }
+  },
+  {
+   "y": 18,
+   "age": 57,
+   "cum_prem": 90900,
+   "cv_basic": 68900,
+   "death_benefit": 100000,
+   "pv": 68900,
+   "scenarios": {
+    "none": {
+     "cv_total": 68900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 130596,
+     "db_with_dividend": 789415,
+     "dividend_year": 1230
+    },
+    "low": {
+     "cv_total": 80396,
+     "db_with_dividend": 228666,
+     "dividend_year": 209
+    }
+   }
+  },
+  {
+   "y": 19,
+   "age": 58,
+   "cum_prem": 90900,
+   "cv_basic": 69700,
+   "death_benefit": 100000,
+   "pv": 69700,
+   "scenarios": {
+    "none": {
+     "cv_total": 69700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 134054,
+     "db_with_dividend": 798598,
+     "dividend_year": 1267
+    },
+    "low": {
+     "cv_total": 81575,
+     "db_with_dividend": 229139,
+     "dividend_year": 210
+    }
+   }
+  },
+  {
+   "y": 20,
+   "age": 59,
+   "cum_prem": 90900,
+   "cv_basic": 70500,
+   "death_benefit": 100000,
+   "pv": 70500,
+   "scenarios": {
+    "none": {
+     "cv_total": 70500,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 137263,
+     "db_with_dividend": 808058,
+     "dividend_year": 1305
+    },
+    "low": {
+     "cv_total": 82697,
+     "db_with_dividend": 229613,
+     "dividend_year": 211
+    }
+   }
+  },
+  {
+   "y": 21,
+   "age": 60,
+   "cum_prem": 90900,
+   "cv_basic": 71400,
+   "death_benefit": 100000,
+   "pv": 71400,
+   "scenarios": {
+    "none": {
+     "cv_total": 71400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 140633,
+     "db_with_dividend": 817800,
+     "dividend_year": 1344
+    },
+    "low": {
+     "cv_total": 83916,
+     "db_with_dividend": 230091,
+     "dividend_year": 212
+    }
+   }
+  },
+  {
+   "y": 22,
+   "age": 61,
+   "cum_prem": 90900,
+   "cv_basic": 72200,
+   "death_benefit": 100000,
+   "pv": 72200,
+   "scenarios": {
+    "none": {
+     "cv_total": 72200,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 143995,
+     "db_with_dividend": 827835,
+     "dividend_year": 1384
+    },
+    "low": {
+     "cv_total": 85042,
+     "db_with_dividend": 230572,
+     "dividend_year": 214
+    }
+   }
+  },
+  {
+   "y": 23,
+   "age": 62,
+   "cum_prem": 90900,
+   "cv_basic": 73100,
+   "death_benefit": 100000,
+   "pv": 73100,
+   "scenarios": {
+    "none": {
+     "cv_total": 73100,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 147555,
+     "db_with_dividend": 838171,
+     "dividend_year": 1426
+    },
+    "low": {
+     "cv_total": 86273,
+     "db_with_dividend": 231055,
+     "dividend_year": 215
+    }
+   }
+  },
+  {
+   "y": 24,
+   "age": 63,
+   "cum_prem": 90900,
+   "cv_basic": 73900,
+   "death_benefit": 100000,
+   "pv": 73900,
+   "scenarios": {
+    "none": {
+     "cv_total": 73900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 151114,
+     "db_with_dividend": 848817,
+     "dividend_year": 1468
+    },
+    "low": {
+     "cv_total": 87408,
+     "db_with_dividend": 231542,
+     "dividend_year": 216
+    }
+   }
+  },
+  {
+   "y": 25,
+   "age": 64,
+   "cum_prem": 90900,
+   "cv_basic": 74800,
+   "death_benefit": 100000,
+   "pv": 74800,
+   "scenarios": {
+    "none": {
+     "cv_total": 74800,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 154873,
+     "db_with_dividend": 859783,
+     "dividend_year": 1513
+    },
+    "low": {
+     "cv_total": 88650,
+     "db_with_dividend": 232030,
+     "dividend_year": 217
+    }
+   }
+  },
+  {
+   "y": 26,
+   "age": 65,
+   "cum_prem": 90900,
+   "cv_basic": 75600,
+   "death_benefit": 100000,
+   "pv": 75600,
+   "scenarios": {
+    "none": {
+     "cv_total": 75600,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 158628,
+     "db_with_dividend": 871077,
+     "dividend_year": 1558
+    },
+    "low": {
+     "cv_total": 89795,
+     "db_with_dividend": 232523,
+     "dividend_year": 219
+    }
+   }
+  },
+  {
+   "y": 27,
+   "age": 66,
+   "cum_prem": 90900,
+   "cv_basic": 76400,
+   "death_benefit": 100000,
+   "pv": 76400,
+   "scenarios": {
+    "none": {
+     "cv_total": 76400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 162488,
+     "db_with_dividend": 882711,
+     "dividend_year": 1605
+    },
+    "low": {
+     "cv_total": 90946,
+     "db_with_dividend": 233018,
+     "dividend_year": 220
+    }
+   }
+  },
+  {
+   "y": 28,
+   "age": 67,
+   "cum_prem": 90900,
+   "cv_basic": 77300,
+   "death_benefit": 100000,
+   "pv": 77300,
+   "scenarios": {
+    "none": {
+     "cv_total": 77300,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 166558,
+     "db_with_dividend": 894693,
+     "dividend_year": 1652
+    },
+    "low": {
+     "cv_total": 92201,
+     "db_with_dividend": 233517,
+     "dividend_year": 222
+    }
+   }
+  },
+  {
+   "y": 29,
+   "age": 68,
+   "cum_prem": 90900,
+   "cv_basic": 78100,
+   "death_benefit": 100000,
+   "pv": 78100,
+   "scenarios": {
+    "none": {
+     "cv_total": 78100,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 170635,
+     "db_with_dividend": 907035,
+     "dividend_year": 1703
+    },
+    "low": {
+     "cv_total": 93360,
+     "db_with_dividend": 234017,
+     "dividend_year": 222
+    }
+   }
+  },
+  {
+   "y": 30,
+   "age": 69,
+   "cum_prem": 90900,
+   "cv_basic": 78900,
+   "death_benefit": 100000,
+   "pv": 78900,
+   "scenarios": {
+    "none": {
+     "cv_total": 78900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 174915,
+     "db_with_dividend": 919746,
+     "dividend_year": 1753
+    },
+    "low": {
+     "cv_total": 94532,
+     "db_with_dividend": 234521,
+     "dividend_year": 224
+    }
+   }
+  },
+  {
+   "y": 31,
+   "age": 70,
+   "cum_prem": 90900,
+   "cv_basic": 79700,
+   "death_benefit": 100000,
+   "pv": 79700,
+   "scenarios": {
+    "none": {
+     "cv_total": 79700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 179484,
+     "db_with_dividend": 932840,
+     "dividend_year": 1806
+    },
+    "low": {
+     "cv_total": 95747,
+     "db_with_dividend": 235029,
+     "dividend_year": 226
+    }
+   }
+  },
+  {
+   "y": 32,
+   "age": 71,
+   "cum_prem": 90900,
+   "cv_basic": 80500,
+   "death_benefit": 100000,
+   "pv": 80500,
+   "scenarios": {
+    "none": {
+     "cv_total": 80500,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 184225,
+     "db_with_dividend": 946327,
+     "dividend_year": 1861
+    },
+    "low": {
+     "cv_total": 96965,
+     "db_with_dividend": 235539,
+     "dividend_year": 227
+    }
+   }
+  },
+  {
+   "y": 33,
+   "age": 72,
+   "cum_prem": 90900,
+   "cv_basic": 81300,
+   "death_benefit": 100000,
+   "pv": 81300,
+   "scenarios": {
+    "none": {
+     "cv_total": 81300,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 189143,
+     "db_with_dividend": 960217,
+     "dividend_year": 1916
+    },
+    "low": {
+     "cv_total": 98206,
+     "db_with_dividend": 236052,
+     "dividend_year": 228
+    }
+   }
+  },
+  {
+   "y": 34,
+   "age": 73,
+   "cum_prem": 90900,
+   "cv_basic": 82000,
+   "death_benefit": 100000,
+   "pv": 82000,
+   "scenarios": {
+    "none": {
+     "cv_total": 82000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 194247,
+     "db_with_dividend": 974524,
+     "dividend_year": 1973
+    },
+    "low": {
+     "cv_total": 99360,
+     "db_with_dividend": 236568,
+     "dividend_year": 229
+    }
+   }
+  },
+  {
+   "y": 35,
+   "age": 74,
+   "cum_prem": 90900,
+   "cv_basic": 82800,
+   "death_benefit": 100000,
+   "pv": 82800,
+   "scenarios": {
+    "none": {
+     "cv_total": 82800,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 199532,
+     "db_with_dividend": 989261,
+     "dividend_year": 2033
+    },
+    "low": {
+     "cv_total": 100618,
+     "db_with_dividend": 237088,
+     "dividend_year": 231
+    }
+   }
+  },
+  {
+   "y": 36,
+   "age": 75,
+   "cum_prem": 90900,
+   "cv_basic": 83500,
+   "death_benefit": 100000,
+   "pv": 83500,
+   "scenarios": {
+    "none": {
+     "cv_total": 83500,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 205013,
+     "db_with_dividend": 1004440,
+     "dividend_year": 2094
+    },
+    "low": {
+     "cv_total": 101800,
+     "db_with_dividend": 237610,
+     "dividend_year": 232
+    }
+   }
+  },
+  {
+   "y": 37,
+   "age": 76,
+   "cum_prem": 90900,
+   "cv_basic": 84300,
+   "death_benefit": 100000,
+   "pv": 84300,
+   "scenarios": {
+    "none": {
+     "cv_total": 84300,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 210697,
+     "db_with_dividend": 1020075,
+     "dividend_year": 2157
+    },
+    "low": {
+     "cv_total": 103079,
+     "db_with_dividend": 238136,
+     "dividend_year": 234
+    }
+   }
+  },
+  {
+   "y": 38,
+   "age": 77,
+   "cum_prem": 90900,
+   "cv_basic": 85000,
+   "death_benefit": 100000,
+   "pv": 85000,
+   "scenarios": {
+    "none": {
+     "cv_total": 85000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 216613,
+     "db_with_dividend": 1036178,
+     "dividend_year": 2221
+    },
+    "low": {
+     "cv_total": 104288,
+     "db_with_dividend": 238665,
+     "dividend_year": 235
+    }
+   }
+  },
+  {
+   "y": 39,
+   "age": 78,
+   "cum_prem": 90900,
+   "cv_basic": 85700,
+   "death_benefit": 100000,
+   "pv": 85700,
+   "scenarios": {
+    "none": {
+     "cv_total": 85700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 223648,
+     "db_with_dividend": 1052764,
+     "dividend_year": 2288
+    },
+    "low": {
+     "cv_total": 105637,
+     "db_with_dividend": 239198,
+     "dividend_year": 237
+    }
+   }
+  },
+  {
+   "y": 40,
+   "age": 79,
+   "cum_prem": 90900,
+   "cv_basic": 86400,
+   "death_benefit": 100000,
+   "pv": 86400,
+   "scenarios": {
+    "none": {
+     "cv_total": 86400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 231037,
+     "db_with_dividend": 1069848,
+     "dividend_year": 2356
+    },
+    "low": {
+     "cv_total": 107014,
+     "db_with_dividend": 239732,
+     "dividend_year": 237
+    }
+   }
+  },
+  {
+   "y": 41,
+   "age": 80,
+   "cum_prem": 90900,
+   "cv_basic": 87100,
+   "death_benefit": 100000,
+   "pv": 87100,
+   "scenarios": {
+    "none": {
+     "cv_total": 87100,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 238793,
+     "db_with_dividend": 1087445,
+     "dividend_year": 2428
+    },
+    "low": {
+     "cv_total": 108416,
+     "db_with_dividend": 240271,
+     "dividend_year": 240
+    }
+   }
+  },
+  {
+   "y": 42,
+   "age": 81,
+   "cum_prem": 90900,
+   "cv_basic": 87700,
+   "death_benefit": 100000,
+   "pv": 87700,
+   "scenarios": {
+    "none": {
+     "cv_total": 87700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 246902,
+     "db_with_dividend": 1105569,
+     "dividend_year": 2500
+    },
+    "low": {
+     "cv_total": 109753,
+     "db_with_dividend": 240813,
+     "dividend_year": 241
+    }
+   }
+  },
+  {
+   "y": 43,
+   "age": 82,
+   "cum_prem": 90900,
+   "cv_basic": 88400,
+   "death_benefit": 100000,
+   "pv": 88400,
+   "scenarios": {
+    "none": {
+     "cv_total": 88400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 266788,
+     "db_with_dividend": 1124237,
+     "dividend_year": 2575
+    },
+    "low": {
+     "cv_total": 112773,
+     "db_with_dividend": 241358,
+     "dividend_year": 242
+    }
+   }
+  },
+  {
+   "y": 44,
+   "age": 83,
+   "cum_prem": 90900,
+   "cv_basic": 89000,
+   "death_benefit": 100000,
+   "pv": 89000,
+   "scenarios": {
+    "none": {
+     "cv_total": 89000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 288984,
+     "db_with_dividend": 1143465,
+     "dividend_year": 2652
+    },
+    "low": {
+     "cv_total": 115951,
+     "db_with_dividend": 241905,
+     "dividend_year": 243
+    }
+   }
+  },
+  {
+   "y": 45,
+   "age": 84,
+   "cum_prem": 90900,
+   "cv_basic": 89700,
+   "death_benefit": 100000,
+   "pv": 89700,
+   "scenarios": {
+    "none": {
+     "cv_total": 89700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 313778,
+     "db_with_dividend": 1163270,
+     "dividend_year": 2732
+    },
+    "low": {
+     "cv_total": 119473,
+     "db_with_dividend": 242457,
+     "dividend_year": 245
+    }
+   }
+  },
+  {
+   "y": 46,
+   "age": 85,
+   "cum_prem": 90900,
+   "cv_basic": 90300,
+   "death_benefit": 100000,
+   "pv": 90300,
+   "scenarios": {
+    "none": {
+     "cv_total": 90300,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 341530,
+     "db_with_dividend": 1183669,
+     "dividend_year": 2814
+    },
+    "low": {
+     "cv_total": 123213,
+     "db_with_dividend": 243012,
+     "dividend_year": 247
+    }
+   }
+  },
+  {
+   "y": 47,
+   "age": 86,
+   "cum_prem": 90900,
+   "cv_basic": 90900,
+   "death_benefit": 100000,
+   "pv": 90900,
+   "scenarios": {
+    "none": {
+     "cv_total": 90900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 372632,
+     "db_with_dividend": 1204680,
+     "dividend_year": 2898
+    },
+    "low": {
+     "cv_total": 127276,
+     "db_with_dividend": 243570,
+     "dividend_year": 248
+    }
+   }
+  },
+  {
+   "y": 48,
+   "age": 87,
+   "cum_prem": 90900,
+   "cv_basic": 91400,
+   "death_benefit": 100000,
+   "pv": 91400,
+   "scenarios": {
+    "none": {
+     "cv_total": 91400,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 407542,
+     "db_with_dividend": 1226321,
+     "dividend_year": 2985
+    },
+    "low": {
+     "cv_total": 131628,
+     "db_with_dividend": 244132,
+     "dividend_year": 250
+    }
+   }
+  },
+  {
+   "y": 49,
+   "age": 88,
+   "cum_prem": 90900,
+   "cv_basic": 92000,
+   "death_benefit": 100000,
+   "pv": 92000,
+   "scenarios": {
+    "none": {
+     "cv_total": 92000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 446806,
+     "db_with_dividend": 1248612,
+     "dividend_year": 3075
+    },
+    "low": {
+     "cv_total": 136470,
+     "db_with_dividend": 244697,
+     "dividend_year": 251
+    }
+   }
+  },
+  {
+   "y": 50,
+   "age": 89,
+   "cum_prem": 90900,
+   "cv_basic": 92600,
+   "death_benefit": 100000,
+   "pv": 92600,
+   "scenarios": {
+    "none": {
+     "cv_total": 92600,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 491044,
+     "db_with_dividend": 1271571,
+     "dividend_year": 3167
+    },
+    "low": {
+     "cv_total": 141792,
+     "db_with_dividend": 245264,
+     "dividend_year": 252
+    }
+   }
+  },
+  {
+   "y": 51,
+   "age": 90,
+   "cum_prem": 90900,
+   "cv_basic": 93200,
+   "death_benefit": 100000,
+   "pv": 93200,
+   "scenarios": {
+    "none": {
+     "cv_total": 93200,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 540916,
+     "db_with_dividend": 1295219,
+     "dividend_year": 3262
+    },
+    "low": {
+     "cv_total": 147634,
+     "db_with_dividend": 245836,
+     "dividend_year": 254
+    }
+   }
+  },
+  {
+   "y": 52,
+   "age": 91,
+   "cum_prem": 90900,
+   "cv_basic": 93700,
+   "death_benefit": 100000,
+   "pv": 93700,
+   "scenarios": {
+    "none": {
+     "cv_total": 93700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 597323,
+     "db_with_dividend": 1319577,
+     "dividend_year": 3360
+    },
+    "low": {
+     "cv_total": 153979,
+     "db_with_dividend": 246411,
+     "dividend_year": 256
+    }
+   }
+  },
+  {
+   "y": 53,
+   "age": 92,
+   "cum_prem": 90900,
+   "cv_basic": 94300,
+   "death_benefit": 100000,
+   "pv": 94300,
+   "scenarios": {
+    "none": {
+     "cv_total": 94300,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 661160,
+     "db_with_dividend": 1344666,
+     "dividend_year": 3461
+    },
+    "low": {
+     "cv_total": 161080,
+     "db_with_dividend": 246990,
+     "dividend_year": 257
+    }
+   }
+  },
+  {
+   "y": 54,
+   "age": 93,
+   "cum_prem": 90900,
+   "cv_basic": 94900,
+   "death_benefit": 100000,
+   "pv": 94900,
+   "scenarios": {
+    "none": {
+     "cv_total": 94900,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 733575,
+     "db_with_dividend": 1370506,
+     "dividend_year": 3564
+    },
+    "low": {
+     "cv_total": 168932,
+     "db_with_dividend": 247572,
+     "dividend_year": 259
+    }
+   }
+  },
+  {
+   "y": 55,
+   "age": 94,
+   "cum_prem": 90900,
+   "cv_basic": 95500,
+   "death_benefit": 100000,
+   "pv": 95500,
+   "scenarios": {
+    "none": {
+     "cv_total": 95500,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 815862,
+     "db_with_dividend": 1397123,
+     "dividend_year": 3672
+    },
+    "low": {
+     "cv_total": 177651,
+     "db_with_dividend": 248157,
+     "dividend_year": 260
+    }
+   }
+  },
+  {
+   "y": 56,
+   "age": 95,
+   "cum_prem": 90900,
+   "cv_basic": 96100,
+   "death_benefit": 100000,
+   "pv": 96100,
+   "scenarios": {
+    "none": {
+     "cv_total": 96100,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 909535,
+     "db_with_dividend": 1424537,
+     "dividend_year": 3781
+    },
+    "low": {
+     "cv_total": 187345,
+     "db_with_dividend": 248746,
+     "dividend_year": 262
+    }
+   }
+  },
+  {
+   "y": 57,
+   "age": 96,
+   "cum_prem": 90900,
+   "cv_basic": 96800,
+   "death_benefit": 100000,
+   "pv": 96800,
+   "scenarios": {
+    "none": {
+     "cv_total": 96800,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 1016377,
+     "db_with_dividend": 1452775,
+     "dividend_year": 3896
+    },
+    "low": {
+     "cv_total": 198231,
+     "db_with_dividend": 249339,
+     "dividend_year": 263
+    }
+   }
+  },
+  {
+   "y": 58,
+   "age": 97,
+   "cum_prem": 90900,
+   "cv_basic": 97700,
+   "death_benefit": 100000,
+   "pv": 97700,
+   "scenarios": {
+    "none": {
+     "cv_total": 97700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 1138462,
+     "db_with_dividend": 1481858,
+     "dividend_year": 4011
+    },
+    "low": {
+     "cv_total": 210568,
+     "db_with_dividend": 249935,
+     "dividend_year": 265
+    }
+   }
+  },
+  {
+   "y": 59,
+   "age": 98,
+   "cum_prem": 90900,
+   "cv_basic": 98700,
+   "death_benefit": 100000,
+   "pv": 98700,
+   "scenarios": {
+    "none": {
+     "cv_total": 98700,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 1278221,
+     "db_with_dividend": 1511816,
+     "dividend_year": 4133
+    },
+    "low": {
+     "cv_total": 224435,
+     "db_with_dividend": 250535,
+     "dividend_year": 267
+    }
+   }
+  },
+  {
+   "y": 60,
+   "age": 99,
+   "cum_prem": 90900,
+   "cv_basic": 100000,
+   "death_benefit": 100000,
+   "pv": 100000,
+   "scenarios": {
+    "none": {
+     "cv_total": 100000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 1415695,
+     "db_with_dividend": 1542671,
+     "dividend_year": 4256
+    },
+    "low": {
+     "cv_total": 237821,
+     "db_with_dividend": 251138,
+     "dividend_year": 268
+    }
+   }
+  },
+  {
+   "y": 61,
+   "age": 100,
+   "cum_prem": 90900,
+   "cv_basic": 100000,
+   "death_benefit": 100000,
+   "pv": 100000,
+   "scenarios": {
+    "none": {
+     "cv_total": 100000,
+     "db_with_dividend": 100000,
+     "dividend_year": 0
+    },
+    "mid": {
+     "cv_total": 1574561,
+     "db_with_dividend": 1574561,
+     "dividend_year": 4384
+    },
+    "low": {
+     "cv_total": 251755,
+     "db_with_dividend": 251755,
+     "dividend_year": 269
+    }
+   }
   }
+ ],
+ "gp_table": {
+  "0100M": 459.1365,
+  "0101M": 466.9364,
+  "0102M": 474.8688,
+  "0103M": 482.936,
+  "0104M": 491.1403,
+  "0105M": 499.4839,
+  "0106M": 507.9692,
+  "0107M": 516.5988,
+  "0108M": 525.3749,
+  "0109M": 534.3001,
+  "0110M": 543.3769,
+  "0111M": 552.6079,
+  "0112M": 561.9958,
+  "0113M": 571.5431,
+  "0114M": 581.2526,
+  "0115M": 591.1271,
+  "0116M": 601.1693,
+  "0117M": 611.3821,
+  "0118M": 621.7684,
+  "0119M": 632.3312,
+  "0120M": 643.0734,
+  "0121M": 653.9981,
+  "0122M": 665.1083,
+  "0123M": 676.4074,
+  "0124M": 687.8983,
+  "0125M": 699.5845,
+  "0126M": 711.4693,
+  "0127M": 723.5559,
+  "0128M": 735.8478,
+  "0129M": 748.3486,
+  "0130M": 761.0617,
+  "0131M": 773.9908,
+  "0132M": 787.1396,
+  "0133M": 800.5117,
+  "0134M": 814.111,
+  "0135M": 827.9413,
+  "0136M": 842.0066,
+  "0137M": 856.3108,
+  "0138M": 870.8581,
+  "0139M": 885.6524,
+  "0140M": 900.6981,
+  "0141M": 915.9994,
+  "0142M": 931.5606,
+  "0143M": 947.3862,
+  "0144M": 963.4806,
+  "0145M": 979.8485,
+  "0146M": 996.4944,
+  "0147M": 1013.4231,
+  "0148M": 1030.6394,
+  "0149M": 1048.1481,
+  "0150M": 1065.9544,
+  "0151M": 1084.0631,
+  "0152M": 1102.4794,
+  "0153M": 1121.2086,
+  "0154M": 1140.256,
+  "0155M": 1159.6269,
+  "0156M": 1179.327,
+  "0157M": 1199.3617,
+  "0158M": 1219.7367,
+  "0159M": 1240.4579,
+  "0160M": 1261.5311,
+  "0161M": 1282.9623,
+  "0162M": 1304.7576,
+  "0163M": 1326.9232,
+  "0164M": 1349.4653,
+  "0165M": 1372.3903,
+  "0166M": 1395.7048,
+  "0167M": 1419.4154,
+  "0168M": 1443.5288,
+  "0169M": 1468.0518,
+  "0170M": 1492.9915,
+  "0171M": 1518.3548,
+  "0172M": 1544.149,
+  "0173M": 1570.3814,
+  "0174M": 1597.0594,
+  "0175M": 1624.1907,
+  "0176M": 1651.7828,
+  "0177M": 1679.8437,
+  "0178M": 1708.3813,
+  "0179M": 1737.4038,
+  "0180M": 1766.9192,
+  "0181M": 1796.9361,
+  "0182M": 1827.4629,
+  "0183M": 1858.5083,
+  "0184M": 1890.0811,
+  "0185M": 1922.1903,
+  "0186M": 1954.8449,
+  "0187M": 1988.0543,
+  "0188M": 2021.8279,
+  "0189M": 2056.1752,
+  "0190M": 2091.106,
+  "0100F": 403.5959,
+  "0101F": 410.4523,
+  "0102F": 417.4251,
+  "0103F": 424.5165,
+  "0104F": 431.7283,
+  "0105F": 439.0626,
+  "0106F": 446.5215,
+  "0107F": 454.1072,
+  "0108F": 461.8216,
+  "0109F": 469.6672,
+  "0110F": 477.646,
+  "0111F": 485.7603,
+  "0112F": 494.0126,
+  "0113F": 502.405,
+  "0114F": 510.9399,
+  "0115F": 519.62,
+  "0116F": 528.4474,
+  "0117F": 537.4248,
+  "0118F": 546.5547,
+  "0119F": 555.8397,
+  "0120F": 565.2824,
+  "0121F": 574.8856,
+  "0122F": 584.6518,
+  "0123F": 594.5841,
+  "0124F": 604.685,
+  "0125F": 614.9575,
+  "0126F": 625.4047,
+  "0127F": 636.0292,
+  "0128F": 646.8342,
+  "0129F": 657.8228,
+  "0130F": 668.998,
+  "0131F": 680.3631,
+  "0132F": 691.9213,
+  "0133F": 703.6758,
+  "0134F": 715.6301,
+  "0135F": 727.7873,
+  "0136F": 740.1512,
+  "0137F": 752.7251,
+  "0138F": 765.5126,
+  "0139F": 778.5173,
+  "0140F": 791.7429,
+  "0141F": 805.1933,
+  "0142F": 818.8721,
+  "0143F": 832.7833,
+  "0144F": 846.9308,
+  "0145F": 861.3187,
+  "0146F": 875.951,
+  "0147F": 890.8319,
+  "0148F": 905.9656,
+  "0149F": 921.3563,
+  "0150F": 937.0086,
+  "0151F": 952.9267,
+  "0152F": 969.1153,
+  "0153F": 985.5788,
+  "0154F": 1002.3221,
+  "0155F": 1019.3498,
+  "0156F": 1036.6668,
+  "0157F": 1054.278,
+  "0158F": 1072.1882,
+  "0159F": 1090.4028,
+  "0160F": 1108.9269,
+  "0161F": 1127.7656,
+  "0162F": 1146.9244,
+  "0163F": 1166.4087,
+  "0164F": 1186.2239,
+  "0165F": 1206.3757,
+  "0166F": 1226.8699,
+  "0167F": 1247.7123,
+  "0168F": 1268.9088,
+  "0169F": 1290.4653,
+  "0170F": 1312.3881,
+  "0171F": 1334.6833,
+  "0172F": 1357.3572,
+  "0173F": 1380.4163,
+  "0174F": 1403.8672,
+  "0175F": 1427.7165,
+  "0176F": 1451.9708,
+  "0177F": 1476.6373,
+  "0178F": 1501.7227,
+  "0179F": 1527.2345,
+  "0180F": 1553.1795,
+  "0181F": 1579.5653,
+  "0182F": 1606.3993,
+  "0183F": 1633.6893,
+  "0184F": 1661.4428,
+  "0185F": 1689.6678,
+  "0186F": 1718.3723,
+  "0187F": 1747.5644,
+  "0188F": 1777.2525,
+  "0189F": 1807.4449,
+  "0190F": 1838.1502
+ },
+ "discounts": {
+  "auto_pay_first": 0.01
+ },
+ "drew_rates_by_age": {},
+ "drew_rates_by_period_and_age": {
+  "1": {
+   "21M": {
+    "1": 50.0,
+    "2": 50.7,
+    "3": 51.4,
+    "4": 55.4,
+    "5": 56.1,
+    "6": 60.4,
+    "7": 61.0,
+    "8": 65.3,
+    "9": 66.3,
+    "10": 70.6,
+    "11": 144.8,
+    "12": 150.2,
+    "13": 155.5,
+    "14": 161.1,
+    "15": 166.9,
+    "16": 172.9,
+    "17": 179.2,
+    "18": 185.9,
+    "19": 192.8,
+    "20": 200.0,
+    "21": 207.6,
+    "22": 215.5,
+    "23": 223.7,
+    "24": 232.3,
+    "25": 241.3,
+    "26": 250.8,
+    "27": 260.7,
+    "28": 271.0,
+    "29": 281.8,
+    "30": 293.2,
+    "31": 305.1,
+    "32": 317.6,
+    "33": 330.6,
+    "34": 344.3,
+    "35": 358.6,
+    "36": 373.7,
+    "37": 389.5,
+    "38": 406.0,
+    "39": 423.4,
+    "40": 441.7,
+    "41": 460.8,
+    "42": 481.0,
+    "43": 502.1,
+    "44": 524.3,
+    "45": 547.6,
+    "46": 572.2,
+    "47": 598.0,
+    "48": 625.1,
+    "49": 653.6,
+    "50": 683.6,
+    "51": 715.2,
+    "52": 748.5,
+    "53": 783.5,
+    "54": 820.4,
+    "55": 859.2,
+    "56": 900.1,
+    "57": 943.3,
+    "58": 988.7,
+    "59": 1036.7,
+    "60": 1087.2,
+    "61": 1140.5,
+    "62": 1208.0,
+    "63": 1272.6,
+    "64": 1341.3,
+    "65": 1414.1,
+    "66": 1491.5,
+    "67": 1573.6,
+    "68": 1661.0,
+    "69": 1753.9,
+    "70": 1852.6,
+    "71": 1957.7,
+    "72": 2131.4,
+    "73": 2323.2,
+    "74": 2535.4,
+    "75": 2770.6,
+    "76": 3032.2,
+    "77": 3325.1,
+    "78": 3657.1,
+    "79": 4038.4
+   },
+   "31F": {
+    "1": 51.2,
+    "2": 51.8,
+    "3": 52.5,
+    "4": 56.7,
+    "5": 57.4,
+    "6": 61.7,
+    "7": 62.5,
+    "8": 66.9,
+    "9": 67.8,
+    "10": 72.4,
+    "11": 136.5,
+    "12": 141.2,
+    "13": 146.7,
+    "14": 152.0,
+    "15": 157.7,
+    "16": 163.8,
+    "17": 170.3,
+    "18": 177.2,
+    "19": 184.6,
+    "20": 192.4,
+    "21": 200.7,
+    "22": 209.6,
+    "23": 219.1,
+    "24": 229.2,
+    "25": 238.0,
+    "26": 247.1,
+    "27": 256.6,
+    "28": 266.7,
+    "29": 277.1,
+    "30": 288.1,
+    "31": 299.5,
+    "32": 311.5,
+    "33": 324.1,
+    "34": 337.3,
+    "35": 351.2,
+    "36": 365.6,
+    "37": 380.8,
+    "38": 396.7,
+    "39": 413.6,
+    "40": 431.3,
+    "41": 449.9,
+    "42": 469.4,
+    "43": 489.8,
+    "44": 511.9,
+    "45": 536.0,
+    "46": 561.3,
+    "47": 586.8,
+    "48": 613.8,
+    "49": 642.5,
+    "50": 675.1,
+    "51": 709.8,
+    "52": 746.5,
+    "53": 785.5,
+    "54": 827.0,
+    "55": 871.0,
+    "56": 917.9,
+    "57": 967.7,
+    "58": 1020.6,
+    "59": 1092.0,
+    "60": 1211.0,
+    "61": 1332.0,
+    "62": 1447.6,
+    "63": 1575.3,
+    "64": 1716.6,
+    "65": 1873.3,
+    "66": 2047.4,
+    "67": 2241.3,
+    "68": 2457.8,
+    "69": 2700.3
+   }
+  },
+  "6": {}
+ },
+ "drew_rates_death_by_period_and_age": {
+  "1": {
+   "21M": {
+    "1": 463.3,
+    "2": 463.3,
+    "3": 463.3,
+    "4": 463.3,
+    "5": 463.3,
+    "6": 463.3,
+    "7": 463.3,
+    "8": 463.3,
+    "9": 463.3,
+    "10": 463.3,
+    "11": 0.0,
+    "12": 0.0,
+    "13": 0.0,
+    "14": 0.0,
+    "15": 0.0,
+    "16": 0.0,
+    "17": 0.0,
+    "18": 0.0,
+    "19": 0.0,
+    "20": 0.0,
+    "21": 0.0
+   },
+   "31F": {
+    "1": 51.2,
+    "2": 51.8,
+    "3": 52.5,
+    "4": 56.7,
+    "5": 57.4,
+    "6": 61.7,
+    "7": 62.5,
+    "8": 66.9,
+    "9": 67.8,
+    "10": 72.4,
+    "11": 136.5,
+    "12": 141.2,
+    "13": 146.7,
+    "14": 152.0,
+    "15": 157.7,
+    "16": 163.8,
+    "17": 170.3,
+    "18": 177.2,
+    "19": 184.6,
+    "20": 192.4,
+    "21": 200.7,
+    "22": 209.6,
+    "23": 219.1,
+    "24": 229.2,
+    "25": 238.0,
+    "26": 247.1,
+    "27": 256.6,
+    "28": 266.7,
+    "29": 277.1,
+    "30": 288.1
+   }
+  }
+ }
 }
