@@ -795,7 +795,9 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   .print-cover{
     display:flex !important;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:18px;
     height:178mm;max-height:178mm;
     page-break-after:always;
     page-break-inside:avoid;
@@ -805,6 +807,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     position:relative;overflow:hidden;
     box-sizing:border-box;
   }
+  .pc-top,.pc-middle,.pc-bottom{flex:none !important;width:100%;}
   .print-cover::before{
     content:'';position:absolute;top:-100px;right:-100px;
     width:400px;height:400px;border-radius:50%;
@@ -828,12 +831,13 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     margin-top:2px;
   }
 
-  .pc-middle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;padding:14px 0;min-height:0;}
-  .pc-eyebrow{font-size:10px;color:#475569;letter-spacing:5px;margin-bottom:14px;font-weight:600;}
-  .pc-title{font-size:28px;font-weight:900;color:#0F172A;letter-spacing:2px;line-height:1.25;margin-bottom:8px;}
-  .pc-subtitle{font-size:13px;color:#475569;letter-spacing:5px;font-weight:500;}
+  .pc-middle{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;padding:0;width:100%;}
+  .pc-eyebrow{font-size:10px;color:#475569;letter-spacing:5px;margin-bottom:14px;font-weight:600;width:100%;}
+  .pc-title{font-size:28px;font-weight:900;color:#0F172A;letter-spacing:2px;line-height:1.25;margin-bottom:8px;width:100%;}
+  .pc-subtitle{font-size:13px;color:#475569;letter-spacing:5px;font-weight:500;width:100%;}
   .pc-divider{width:60px;height:3px;background:linear-gradient(90deg,#F59E0B,#D97706);margin:18px auto;border-radius:2px;}
-  .pc-info{background:rgba(255,255,255,0.92);border:1px solid #E5E0D3;border-left:4px solid #F59E0B;border-radius:8px;padding:14px 24px;min-width:360px;text-align:left;}
+  /* min-width 改 width 確保 box 行為一致,margin auto 再保險 */
+  .pc-info{background:rgba(255,255,255,0.92);border:1px solid #E5E0D3;border-left:4px solid #F59E0B;border-radius:8px;padding:14px 24px;width:380px;max-width:90%;margin:0 auto;text-align:left;box-sizing:border-box;}
   .pc-row{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:#64748B;padding:4px 0;border-bottom:1px dashed #E5E0D3;}
   .pc-row:last-child{border-bottom:none;}
   .pc-row b{color:#0F172A;font-weight:700;font-size:13px;letter-spacing:.5px;}
@@ -927,22 +931,30 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   }
   .chart-box h3{font-size:9.5px !important;margin-bottom:3px !important;color:#0F172A !important;}
   .chart-box h3 .sub{font-size:8px !important;color:#94A3B8 !important;}
-  /* 容器固定高度,canvas 必須 fit 在裡面 */
+  /* 容器高度撐滿 P2 剩餘空間 — A4 橫向約 720px 減去 letterhead+case+hero(~170px) = ~550px 給 charts */
   .chart-canvas-wrap{
-    height:160px !important;max-height:160px !important;
+    height:400px !important;max-height:400px !important;
     overflow:hidden !important;position:relative;
   }
   .chart-canvas-wrap canvas{
     max-width:100% !important;
-    max-height:160px !important;
-    width:100% !important;height:160px !important;
+    max-height:400px !important;
+    width:100% !important;height:400px !important;
   }
+  .chart-box{
+    padding:10px 14px 12px !important;
+  }
+  .chart-box h3{font-size:11px !important;}
+  /* P2 用 flex 撐開,Hero 跟 charts 自然垂直均勻分布 */
+  .container{display:flex !important;flex-direction:column;min-height:0;}
+  .hero-section{margin:auto 0 12px !important;}
+  .charts-wrap{margin-bottom:auto !important;}
 
-  /* 浮水印縮小 + 移到下方,不再壓圖表 */
+  /* 浮水印縮小,挪到不擋圖位置 */
   .watermark{
-    font-size:32px !important;
-    color:rgba(13,42,58,0.03) !important;
-    top:78% !important;
+    font-size:28px !important;
+    color:rgba(13,42,58,0.025) !important;
+    top:88% !important;
     letter-spacing:3px !important;
   }
 
@@ -1049,13 +1061,13 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
   .notice { display: none !important; }
 
   .table-wrap { max-height: none; overflow: visible; padding: 0; }
-  /* 字級放大,每頁約 20 列 */
-  table { font-size: 12px; width:100%; }
-  thead tr.h1 th { background: #0D2A3A !important; color:#fff !important; padding: 8px 6px; font-size:12.5px; }
-  thead tr.h2 th { padding: 7px 6px; font-size:11.5px; }
-  tbody td { padding: 7px 8px; font-size:12px; }
-  tbody td.col-total-j, tbody td.col-total-k { font-size:12.5px !important; }
-  tbody td.col-ratio-j, tbody td.col-ratio-k { font-size:11.5px !important; }
+  /* 字級略縮,精準每頁 20 列 */
+  table { font-size: 11.5px; width:100%; }
+  thead tr.h1 th { background: #0D2A3A !important; color:#fff !important; padding: 6px 6px; font-size:12px; }
+  thead tr.h2 th { padding: 5px 6px; font-size:11px; }
+  tbody td { padding: 5px 8px; font-size:11.5px; }
+  tbody td.col-total-j, tbody td.col-total-k { font-size:12px !important; }
+  tbody td.col-ratio-j, tbody td.col-ratio-k { font-size:11px !important; }
   tbody td.text-center { font-weight:700; }
   thead { display: table-header-group; }
   tbody tr { page-break-inside: avoid; }

@@ -6,6 +6,53 @@
 
 ---
 
+## 新光-UPD061/UPD101-034 · 2026-05-17
+
+### 修正 — 列印每頁精準 20 列
+* v028 設 12px 字級可塞 18 列,差 2 列
+* 微調:
+  - tbody padding 7px → 5px
+  - tbody font-size 12 → 11.5px
+  - thead h1 padding 8 → 6px,12.5 → 12px
+  - thead h2 padding 7 → 5px,11.5 → 11px
+  - J/K 合計 12.5 → 12px
+  - 倍率欄 11.5 → 11px
+* 每行高度從 ~30 → ~26px,正好 20 列填滿 A4 橫向頁面
+
+---
+
+## 新光-UPD061/UPD101-033 · 2026-05-17
+
+### 修正 — 封面 P1 上下置中
+* 原本用 `justify-content: space-between` + `pc-middle: flex:1` 把中段撐開
+* 視覺上 brand-mark 黏頂端、footer 黏底端,中段被拉太大,整體不像「置中」
+* 修正:
+  - 改用 `justify-content: center` 把三塊當一個整體垂直置中
+  - 所有區塊 `flex: none`,不再 flex:1 強制撐開
+  - gap: 18px 統一間距
+  - pc-middle 不再強制 flex:1,讓內容自然高度
+* 結果:整個封面內容變成一個垂直置中區塊,上下空白均分
+
+---
+
+## 新光-UPD061/UPD101-032 · 2026-05-17
+
+### 列印 P2 排版優化
+* 圖被壓扁(canvas 160px)+ 下方大片空白問題
+* 修正:
+  - chart-canvas-wrap 從 160px 拉大到 400px,撐滿 P2 剩餘空間
+  - chart-box padding 10×14
+  - container 改 flex column
+  - hero-section `margin: auto 0 12px`
+  - charts-wrap `margin-bottom: auto`
+  - 結果:Hero + 圖在 P2 自然上下置中,不再有大片空白
+
+### 封面置中保險
+* pc-info 從 min-width:360px 改為 width:380px + max-width:90% + margin:0 auto
+* pc-eyebrow / pc-title / pc-subtitle 都加 width:100% 確保 text-align:center 生效
+
+---
+
 ## 新光-UPD061/UPD101-031 · 2026-05-17
 
 ### Revert v029 — 拿掉 h1 row 的垂直色帶
