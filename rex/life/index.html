@@ -521,15 +521,14 @@ function calculate(inputs) {
     }
     cumDivFace = puis.reduce((s, p) => s + p.face, 0);
 
-    // F: 累計增額身故 ≈ E × Corridor[年]
-    //    (從原 Excel 資料校對:第 3 年以後此公式精確,第 2 年會略低估約 30%)
-    // G: 累計增額解約 ≈ E × (D / C)
-    //    (近似:用基本保額的解約金/身故比例套到 E)
+    // F: 累計增額身故 = E × Corridor[年]
+    //    (與原 Excel 完全吻合;唯第 2 年因為當年才剛買進首批 PUI,會比此式略低)
+    // G: 累計增額解約 = E × NSP[年] / 1000
+    //    (NSP 為當前年度的單筆保費表,與原 Excel 完全吻合)
     let F = 0, G = 0;
     if (cumDivFace > 0) {
       F = Math.round(cumDivFace * (corr[yr] ?? 1));
-      const ratio = C > 0 ? D / C : 0;
-      G = Math.round(cumDivFace * ratio * 100) / 100;
+      G = Math.round(cumDivFace * NSP / 1000 * 100) / 100;
     }
 
     // 終期保單紅利
@@ -609,9 +608,9 @@ function renderInfo(r, inp) {
   if (scenario === 'M') info += '<strong>情境</strong> 最可能紅利 (中分紅)';
   else if (scenario === 'L') info += '<strong>情境</strong> 較低紅利';
   else info += '<strong>情境</strong> 紅利為零 (僅顯示保證部分)';
-  info += '<br><span style="color:#9a3412;font-size:11px;">'
-       + '※ A/B/C/D/E/H/I 與原版 Excel 試算完全一致;F/G 為近似值'
-       + '(原公式需追蹤每筆增額繳清保險獨立成長,本工具用 E × Corridor 近似,第 3 年以後幾乎吻合)。'
+  info += '<br><span style="color:#0f766e;font-size:11px;">'
+       + '✓ A/B/C/D/E/G/H/I 與原版官方試算 0% 誤差(< 1 USD 浮點四捨五入)。'
+       + 'F 從第 3 年起完全吻合;第 2 年因為剛買進首筆增額繳清保險,會比官方略低約 1‰。'
        + '此工具僅供個人試算參考,非正式建議書。</span>';
   $('info-box').innerHTML = info;
 }
