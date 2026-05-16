@@ -872,11 +872,17 @@ body.dark .tbl-caption{background:transparent;color:var(--text-muted);}
     <div class="table-wrap" id="table-wrap"></div>
 
     <div class="legend">
-      <span><code>A</code>當年保費</span><span><code>B</code>累計保費</span>
-      <span><code>C</code>基本身故</span><span><code>D</code>基本解約</span>
-      <span><code>E</code>累計增額</span><span><code>F</code>增額身故</span><span><code>G</code>增額解約</span>
-      <span><code>H</code>終期身故</span><span><code>I</code>終期解約</span>
-      <span><code>J = C+F+H</code></span><span><code>K = D+G+I</code></span>
+      <span><code>A</code>當年保費</span>
+      <span><code>B</code>累計保費</span>
+      <span class="col-detail"><code>C</code>基本身故</span>
+      <span class="col-detail"><code>D</code>基本解約</span>
+      <span class="col-detail"><code>E</code>累計增額</span>
+      <span class="col-detail"><code>F</code>增額身故</span>
+      <span class="col-detail"><code>G</code>增額解約</span>
+      <span class="col-detail"><code>H</code>終期身故</span>
+      <span class="col-detail"><code>I</code>終期解約</span>
+      <span><code>J</code>身故總和<span class="col-detail" style="margin-left:4px;opacity:.7"> = C+F+H</span></span>
+      <span><code>K</code>解約總和<span class="col-detail" style="margin-left:4px;opacity:.7"> = D+G+I</span></span>
     </div>
 
     <div class="print-footer" id="print-footer"></div>
@@ -1113,15 +1119,19 @@ function insuranceAgeByBday(adYear, m, d) {
 }
 
 // ================= DISCOUNT ==============
-function getDiscount(faceUSD) {
+// 高保費折扣 — 依「原始保費 USD」分級(非面額)
+function getDiscount(origPremiumUSD) {
   const tiers = RATES.discounts.high_premium_tiers || [];
-  let hp = 0, tierLabel = '< 10 萬';
+  let hp = 0, tierLabel = '< 1 萬';
   for (const t of tiers) {
-    if (faceUSD >= t.min_usd && faceUSD <= t.max_usd) {
+    // 支援新欄位 min_prem/max_prem,fallback 到舊欄位 min_usd/max_usd
+    const lo = t.min_prem ?? t.min_usd ?? 0;
+    const hi = t.max_prem ?? t.max_usd ?? 0;
+    if (origPremiumUSD >= lo && origPremiumUSD <= hi) {
       hp = t.rate;
-      const minWan = Math.floor(t.min_usd / 10000);
-      const maxWan = t.max_usd > 1e8 ? '∞' : Math.floor((t.max_usd + 1) / 10000);
-      if (hp === 0) tierLabel = `< ${(t.max_usd + 1) / 10000} 萬`;
+      const minWan = lo / 10000;
+      const maxWan = hi > 1e8 ? '∞' : (hi + 1) / 10000;
+      if (hp === 0) tierLabel = `< ${(hi + 1) / 10000} 萬`;
       else if (maxWan === '∞') tierLabel = `≥ ${minWan} 萬`;
       else tierLabel = `${minWan}-${maxWan} 萬`;
       break;
@@ -1147,8 +1157,8 @@ function calculate(inp) {
   if (gp == null) throw new Error('費率表未涵蓋此 (險種/性別/年齡)');
 
   const faceUSD = faceWan * 10000;
-  const orig = gp * faceWan * 10;
-  const discount = getDiscount(faceUSD);
+  const orig = gp * faceWan * 10;  // 原始年保費 USD
+  const discount = getDiscount(orig);  // 折扣依「保費」分級,非面額
   const freqFactor = RATES.pay_freq_factors[freq];
   const periods = RATES.pay_freq_periods[freq];
 
@@ -1346,7 +1356,7 @@ function renderDiscount(r, inp) {
   const pct = (x) => (x * 100).toFixed(1) + '%';
   $('discount-info').innerHTML = `
     <div class="dc-title">📋 此保件適用折扣</div>
-    <div class="discount-row"><span>高保費折扣 <small style="color:#999">(投保${d.tier_label}美元)</small></span><b>${pct(d.high_prem)}</b></div>
+    <div class="discount-row"><span>高保費折扣 <small style="color:#999">(原始保費 ${d.tier_label}美元)</small></span><b>${pct(d.high_prem)}</b></div>
     <div class="discount-row"><span>首期繳費折扣 (轉帳)</span><b>${pct(d.first_period)}</b></div>
     <div class="discount-row"><span>續期繳費折扣 (轉帳)</span><b>${pct(d.renewal)}</b></div>
     <div class="discount-row total"><span>首期合計</span><b>${pct(d.first_total)}</b></div>
