@@ -1414,5 +1414,8 @@
     setTimeout(startWhenReady, 100);
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
-  // sync touchstamp v3.29.1
+  // ═══════════════════════════════════════════════════════════
+  //  Build: v3.29.2 (2026-05-16) — clean tail, no garbage
+  //  Modified: 強制觸發 GitHub Desktop 偵測檔案變動
+  // ═══════════════════════════════════════════════════════════
 })();
