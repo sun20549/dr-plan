@@ -865,7 +865,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
         </div>
         <div class="field">
           <label>投保金額 <span class="hint">萬美元</span></label>
-          <input class="input" type="number" id="face" value="100" min="1" step="1">
+          <input class="input" type="number" id="face" value="100" min="1" max="1000" step="0.1">
           <div class="face-warn" id="face-warn"></div>
         </div>
       </div>
@@ -1324,19 +1324,23 @@ function getInputs() {
   };
 }
 
-// 投保金額驗證
+// 投保金額驗證 (新光官方規則)
+// 0-15 歲:1 萬 ~ 200 萬美元;16-75 歲:1 萬 ~ 1000 萬美元
+// 單位:千美元 (= 0.1 萬美元),最多到小數一位
 function validateFace(faceWan, age) {
   const warn = $('face-warn');
   if (!warn) return true;
   if (faceWan == null || isNaN(faceWan) || faceWan <= 0) {
     warn.textContent = '請輸入投保金額'; return false;
   }
-  if (faceWan !== Math.floor(faceWan)) {
-    warn.textContent = `投保金額需為整數萬美元 (建議:${Math.round(faceWan)} 萬美元)`;
+  // 小數一位檢查:面額 × 10 必須為整數
+  const scaled = Math.round(faceWan * 10);
+  if (Math.abs(scaled / 10 - faceWan) > 0.0001) {
+    warn.textContent = `最多到小數一位(千美元為單位),建議:${(scaled/10).toFixed(1)}`;
     return false;
   }
   if (faceWan < 1) {
-    warn.textContent = '投保金額至少 1 萬美元'; return false;
+    warn.textContent = '投保金額最低 1 萬美元'; return false;
   }
   if (age <= 15 && faceWan > 200) {
     warn.textContent = '15 歲(含)以下投保上限 200 萬美元'; return false;
@@ -1392,10 +1396,14 @@ function calcFaceFromBudget() {
     const disc = getDiscount(tryOrig);
     face = annualBudgetUsd / (freqFactor * periods * (1 - disc.first_total)) / (gp * 10);
   }
-  // 四捨五入到整數萬美元
-  const faceWan = Math.round(face);
+  // 四捨五入到小數一位(千美元為單位)
+  const faceWan = Math.round(face * 10) / 10;
   if (faceWan < 1) {
     out.innerHTML = `⚠ 預算太低,計算結果僅 ${face.toFixed(2)} 萬美元(最低 1 萬)`;
+    out.classList.add('error'); return null;
+  }
+  if (inp.age <= 15 && faceWan > 200) {
+    out.innerHTML = `⚠ 15 歲以下投保上限 200 萬美元 (計算結果 ${faceWan})`;
     out.classList.add('error'); return null;
   }
   if (faceWan > 1000) {
