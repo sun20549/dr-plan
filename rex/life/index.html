@@ -145,9 +145,9 @@ body{background:var(--bg);font-family:'Noto Sans TC','Inter',sans-serif;color:va
 .seg{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:#fafafa;}
 .seg input{display:none;}
 .seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;margin:0;color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:1px;transition:all .15s;}
-/* 一般 segment:中性灰,只有性別 segment 才用品牌色 */
+/* 一般 segment:跟性別主題色同步(藍/粉) */
 .seg input:checked + label{
-  background:#475569;color:#fff;
+  background:var(--accent);color:#fff;
   box-shadow:inset 0 -2px 0 rgba(0,0,0,0.18);
 }
 /* 性別:鮮明藍 / 鮮明粉,漸層 + 光暈 */
@@ -176,11 +176,10 @@ body.dark .seg input[name="sex"][value="F"]:checked + label{
   color:#fff !important;
   box-shadow:0 0 16px rgba(236,72,153,0.45),inset 0 -2px 0 rgba(0,0,0,0.2) !important;
 }
-/* age-badge 也降飽和:用深 slate 而非亮橘 */
-.age-badge{background:#475569 !important;color:#fff !important;}
-body.dark .age-badge{
-  background:rgba(255,255,255,0.1) !important;color:#FBBF24 !important;
-}
+/* age-badge 跟性別色同步 */
+.age-badge{background:var(--accent) !important;color:#fff !important;}
+body.dark .age-badge{background:var(--accent) !important;color:#fff !important;box-shadow:0 0 8px rgba(59,130,246,0.4);}
+body.dark.theme-female .age-badge{box-shadow:0 0 8px rgba(236,72,153,0.4);}
 
 .age-badge{display:inline-flex;align-items:center;gap:4px;background:var(--orange);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:900;letter-spacing:.5px;}
 .year-parse{font-size:10px;color:var(--accent);font-weight:700;margin-top:4px;min-height:14px;}
@@ -253,7 +252,7 @@ body.dark .bt-result.error{background:rgba(239,68,68,0.12);}
 .scenario-tabs .right{margin-left:auto;display:flex;align-items:center;gap:6px;padding:7px 0;}
 .seg-mini{display:flex;background:#fff;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;}
 .seg-mini button{border:none;background:transparent;color:var(--text-muted);padding:6px 12px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:1px;font-family:inherit;}
-.seg-mini button.active{background:var(--navy);color:#fff;}
+.seg-mini button.active{background:var(--accent);color:#fff;}
 
 .notice{padding:10px 18px;font-size:11.5px;background:var(--jade-light);color:var(--jade);border-bottom:1px solid #b8e0db;line-height:1.7;}
 .notice b{color:#0c5f59;}
@@ -267,18 +266,8 @@ body.dark .bt-result.error{background:rgba(239,68,68,0.12);}
 body.dark .csb-readout{filter:drop-shadow(0 0 6px rgba(14,165,233,0.4));}
 
 .csb-slider-wrap{position:relative;height:30px;display:flex;align-items:center;}
-/* 浮動氣泡(顯示當前值) */
-.csb-bubble{
-  position:absolute;top:-6px;transform:translateX(-50%);
-  background:var(--text-primary);color:#fff;padding:5px 12px;
-  font-size:11px;font-weight:800;border-radius:14px;white-space:nowrap;
-  pointer-events:none;font-family:'Montserrat','Inter',sans-serif;letter-spacing:.5px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
-  transition:left 0.15s ease;
-  z-index:2;
-}
-.csb-bubble::after{content:'';position:absolute;left:50%;bottom:-3px;width:6px;height:6px;background:inherit;transform:translateX(-50%) rotate(45deg);}
-body.dark .csb-bubble{background:var(--primary);}
+/* 浮動氣泡已隱藏,改用下方 ticks + 右上 readout 文字說明 */
+.csb-bubble{display:none !important;}
 
 /* 滑桿軌道(自繪) */
 .csb-track-fill{
