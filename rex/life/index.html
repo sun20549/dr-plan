@@ -2398,28 +2398,29 @@ function renderPrintFooter(inp) {
     if (p?.short) prodShort = p.short;
   }
   const productFullName = $('cat-product').selectedOptions[0]?.text || prodShort;
-  $('pl-title').textContent = `${co}人壽 ${prodShort || ''} 試算建議書`;
-  $('pl-version').textContent = version;
-  $('pl-name').textContent = inp.name || '—';
-  $('pl-sex').textContent = inp.sex === 'M' ? '男性' : '女性';
-  $('pl-age').textContent = `${inp.age} 歲`;
-  $('pl-face').textContent = `${inp.faceWan} 萬美元`;
-  $('pl-freq').textContent = inp.freq;
-  $('pl-product').textContent = productFullName;
-  $('pl-date').textContent = dateStr;
+  // 防呆 setter:元素不存在就 skip,不拋錯
+  const setText = (id, text) => { const el = $(id); if (el) el.textContent = text; };
+  setText('pl-title', `${co}人壽 ${prodShort || ''} 試算建議書`);
+  setText('pl-version', version);
+  setText('pl-name', inp.name || '—');
+  setText('pl-sex', inp.sex === 'M' ? '男性' : '女性');
+  setText('pl-age', `${inp.age} 歲`);
+  setText('pl-face', `${inp.faceWan} 萬美元`);
+  setText('pl-freq', inp.freq);
+  setText('pl-product', productFullName);
+  setText('pl-date', dateStr);
 
-  // 🆕 同步封面
-  $('cover-company').textContent = `— ${co}人壽 ${(co==='新光')?'SHIN KONG LIFE':''} —`;
-  $('cover-title').textContent = RATES?.product_name || '美鴻添富美元分紅終身壽險';
-  $('cover-name').textContent = inp.name || '—';
-  $('cover-sex-age').textContent = `${inp.sex === 'M' ? '男性' : '女性'} · ${inp.age} 歲`;
-  $('cover-plan').textContent = productFullName;
-  $('cover-face').textContent = `${inp.faceWan.toLocaleString()} 萬美元 (USD)`;
-  $('cover-freq').textContent = `${inp.freq} · 金融機構自動轉帳`;
-  $('cover-date').textContent = `試算日期 · ${dateStr}`;
-  $('cover-version').textContent = version;
-  // 🆕 業務員資料注入封面「為您服務」
-  const agent = getAgentInfo();
+  // 🆕 同步封面(防呆)
+  setText('cover-company', `— ${co}人壽 ${(co==='新光')?'SHIN KONG LIFE':''} —`);
+  setText('cover-title', RATES?.product_name || '美鴻添富美元分紅終身壽險');
+  setText('cover-name', inp.name || '—');
+  setText('cover-sex-age', `${inp.sex === 'M' ? '男性' : '女性'} · ${inp.age} 歲`);
+  setText('cover-plan', productFullName);
+  setText('cover-face', `${inp.faceWan.toLocaleString()} 萬美元 (USD)`);
+  setText('cover-freq', `${inp.freq} · 金融機構自動轉帳`);
+  setText('cover-date', `試算日期 · ${dateStr}`);
+  setText('cover-version', version);
+  // 🆕 業務員資料注入封面「為您服務」(複用上面已宣告的 agent)
   const byEl = document.querySelector('.print-cover .pc-by');
   if (byEl) {
     if (agent.name) {

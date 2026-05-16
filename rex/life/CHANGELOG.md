@@ -6,6 +6,20 @@
 
 ---
 
+## 新光-UPD061/UPD101-024 · 2026-05-17 — 緊急 Hotfix
+
+### 修正
+- 🔥 **整頁不會動的 bug**:v023 加業務員資料注入時,在 `renderPrintFooter()` 內重複宣告了 `const agent = getAgentInfo()` 兩次
+  - SyntaxError: Identifier 'agent' has already been declared
+  - 整個 script 直接 die,init() 從未執行 → Hero/catalog 全空
+- 修正:第二個 `agent` 宣告改為複用上面已宣告的變數
+
+### 防呆強化
+- renderPrintFooter 內所有 `$('xxx').textContent = ...` 改為 `setText()` helper,元素不存在時 skip 而非 throw
+- 避免未來新增元素未同步部署時整頁掛掉
+
+---
+
 ## 新光-UPD061/UPD101-023 · 2026-05-17
 
 ### 新增 — 業務員資料區
