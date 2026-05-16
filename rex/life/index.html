@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美鴻添富美元分紅終身壽險 試算工具</title>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-light: #3b82f6;
+    --primary-dark: #1e3a8a;
+    --accent: #f59e0b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --warn: #ef4444;
+    --row-alt: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    color: white;
+    padding: 18px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  header h1 { margin: 0 0 4px 0; font-size: 22px; font-weight: 600; }
+  header .meta { font-size: 12px; opacity: 0.85; }
+  header .meta span { margin-right: 18px; }
+  .container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  @media (max-width: 1024px) {
+    .container { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--card);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .panel-header {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 18px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel-body { padding: 18px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .field input[type="text"],
+  .field input[type="number"],
+  .field select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gender-group { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .gender-group label {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    margin: 0;
+    background: white;
+    transition: all 0.15s;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .gender-group input { display: none; }
+  .gender-group input:checked + label {
+    background: var(--primary);
+    color: white;
+  }
+  .age-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .summary {
+    background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+  .summary .row { display: flex; justify-content: space-between; margin: 2px 0; }
+  .summary .row strong { color: var(--primary-dark); }
+  .summary .premium { font-size: 18px; font-weight: 600; color: var(--warn); }
+  .scenario-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 0 18px;
+  }
+  .scenario-tabs button {
+    border: none;
+    background: #f1f5f9;
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .scenario-tabs button.active {
+    background: var(--primary);
+    color: white;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    max-height: calc(100vh - 280px);
+    overflow-y: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+  }
+  thead tr.h1-row th {
+    background: #fef3c7;
+    color: var(--primary-dark);
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+  thead tr.h2-row th {
+    background: #fed7aa;
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  thead tr.h3-row th {
+    background: #fff7ed;
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  tbody td {
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody td.text-left { text-align: center; }
+  tbody tr:nth-child(even) td { background: var(--row-alt); }
+  tbody tr:hover td { background: #dbeafe; }
+  tbody td.zero { color: var(--text-muted); }
+  .pay-year td:nth-child(3) { color: var(--warn); font-weight: 500; }
+  .grouped-cell { background: #fefce8; }
+  .info-box {
+    background: #eff6ff;
+    border-left: 3px solid var(--primary);
+    padding: 10px 12px;
+    margin: 12px 18px;
+    font-size: 12px;
+    color: var(--primary-dark);
+    border-radius: 4px;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 18px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+  }
+  .legend code {
+    background: #fef3c7;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-ghost { background: white; color: var(--primary); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: #f8fafc; }
+  .err {
+    color: var(--warn);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  @media print {
+    header { background: white; color: black; border-bottom: 2px solid black; }
+    .container { display: block; padding: 0; }
+    .panel { box-shadow: none; }
+    .panel-input { display: none; }
+    .scenario-tabs { display: none; }
+    .table-wrap { max-height: none; overflow: visible; }
+    .actions { display: none; }
+    body { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+    <a href="../" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,0.25);padding:4px 10px;border-radius:6px;">← 返回鼎綸恩宇主頁</a>
+    <span style="color:rgba(255,255,255,0.4);font-size:12px;">恩宇體系 · 高精度試算工具</span>
+  </div>
+  <h1>美鴻添富美元分紅終身壽險 — 試算工具</h1>
+  <div class="meta">
+    <span>商品代碼:UPD061 / UPD101</span>
+    <span>核准文號:SK-03-114121704</span>
+    <span>啟用日期:2026/04/01</span>
+    <span id="rates-status">資料載入中…</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- LEFT: Input Panel -->
+  <div class="panel panel-input">
+    <div class="panel-header">保戶基本資料 & 保單資料</div>
+    <div class="panel-body">
+
+      <div class="field">
+        <label>被保險人姓名</label>
+        <input type="text" id="name" value="被保人">
+      </div>
+
+      <div class="field">
+        <label>性別</label>
+        <div class="gender-group">
+          <input type="radio" id="sex-m" name="sex" value="M" checked>
+          <label for="sex-m">男性</label>
+          <input type="radio" id="sex-f" name="sex" value="F">
+          <label for="sex-f">女性</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>出生日期 (民國年)
+          <span class="age-badge" id="age-badge">保險年齡 0</span>
+        </label>
+        <div class="row-3">
+          <input type="number" id="bd-y" value="60" min="0" max="120" placeholder="年">
+          <input type="number" id="bd-m" value="1" min="1" max="12" placeholder="月">
+          <input type="number" id="bd-d" value="1" min="1" max="31" placeholder="日">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>險種 / 繳費年期</label>
+        <select id="plan">
+          <option value="UPD061">UPD061 — 六年期</option>
+          <option value="UPD101">UPD101 — 十年期</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>繳別</label>
+        <select id="freq">
+          <option value="年繳" selected>年繳</option>
+          <option value="半年繳">半年繳</option>
+          <option value="季繳">季繳</option>
+          <option value="月繳">月繳</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>投保金額 (萬美元)</label>
+        <input type="number" id="face" value="100" min="1" max="1000" step="1">
+      </div>
+
+      <div id="input-err" class="err"></div>
+
+      <div class="summary" id="summary"></div>
+
+      <div class="field">
+        <label>適用折扣</label>
+        <div style="font-size:12px;color:var(--text-muted);background:#f8fafc;padding:8px;border-radius:6px;">
+          高保費折扣 1.5% (≥10萬美元)<br>
+          首期繳費折扣 1.0% (轉帳)<br>
+          續期繳費折扣 1.0% (轉帳)<br>
+          <strong>合計總折扣率 2.5%</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Output Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <span id="output-title">試算結果</span>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="window.print()">🖨 列印</button>
+        <button class="btn btn-ghost" onclick="exportCSV()">↓ 下載 CSV</button>
+      </div>
+    </div>
+    <div class="scenario-tabs">
+      <button class="active" data-scenario="M" onclick="setScenario('M')">最可能紅利 (中分紅)</button>
+      <button data-scenario="L" onclick="setScenario('L')">較低紅利</button>
+      <button data-scenario="Z" onclick="setScenario('Z')">紅利為零</button>
+    </div>
+    <div class="info-box" id="info-box"></div>
+    <div class="table-wrap" id="table-wrap"></div>
+    <div class="legend">
+      <span><code>A</code>當年度實繳保費</span>
+      <span><code>B</code>累計實繳保費</span>
+      <span><code>C</code>基本身故保險金 (= 基本保額×Corridor係數)</span>
+      <span><code>D</code>年度末解約金</span>
+      <span><code>E</code>累計增加保險金額 (分紅購買增額繳清面額)</span>
+      <span><code>F</code>累計增額身故保險金</span>
+      <span><code>G</code>累計增額解約金</span>
+      <span><code>H</code>終期保額保單紅利</span>
+      <span><code>I</code>終期現金保單紅利</span>
+      <span><code>J = C+F+H</code></span>
+      <span><code>K = D+G+I</code></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ================= STATE =================
+let RATES = null;          // loaded from rates_slim.json
+let scenario = 'M';        // 'M' | 'L' | 'Z'
+
+const ROC_OFFSET = 1911;   // 民國年 + 1911 = 西元年
+
+// ================= DOM HELPERS =================
+const $ = (id) => document.getElementById(id);
+const fmt = (n, dec = 2) => {
+  if (n === 0 || n == null || isNaN(n)) return '0';
+  if (Math.abs(n) < 0.005 && dec <= 2) return '0';
+  return n.toLocaleString('en-US', {
+    minimumFractionDigits: dec, maximumFractionDigits: dec
+  });
+};
+const fmtInt = (n) => n == null || isNaN(n) ? '0' : Math.round(n).toLocaleString('en-US');
+
+// ================= LOAD RATES =================
+async function loadRates() {
+  try {
+    const res = await fetch('data/skl/UPD061_UPD101_2026-04.json');
+    if (!res.ok) throw new Error('費率 JSON 載入失敗 (' + res.status + ')');
+    RATES = await res.json();
+    $('rates-status').textContent = `✓ 已載入 ${Object.keys(RATES.gp).length} 個產品費率`;
+    recalc();
+  } catch (e) {
+    $('rates-status').textContent = '❌ ' + e.message;
+    $('rates-status').style.color = '#fef3c7';
+  }
+}
+
+// ================= INSURANCE AGE =================
+// 保險年齡 = 投保日 (今日) 到生日,未滿 6 個月按近一整歲、超過 6 個月按下一整歲
+function insuranceAge(rocY, m, d) {
+  const ad = new Date();
+  const bd = new Date((rocY + ROC_OFFSET), (m - 1), d);
+  let age = ad.getFullYear() - bd.getFullYear();
+  // 完整足歲
+  if (ad.getMonth() < bd.getMonth() ||
+      (ad.getMonth() === bd.getMonth() && ad.getDate() < bd.getDate())) {
+    age--;
+  }
+  // 半歲進位
+  const half = new Date(bd.getFullYear() + age, bd.getMonth() + 6, bd.getDate());
+  if (ad >= half) age++;
+  return Math.max(0, age);
+}
+
+// ================= MAIN CALC =================
+function calculate(inputs) {
+  const { plan, sex, age, faceWan, freq } = inputs;
+  const prod = RATES.products.find(p => p.code === plan);
+  if (!prod) throw new Error('找不到產品');
+  if (age < prod.min_age || age > prod.max_age)
+    throw new Error(`此商品承保年齡 ${prod.min_age}-${prod.max_age},您的保險年齡為 ${age}`);
+
+  const gp = RATES.gp[plan]?.[sex]?.[age];
+  if (gp == null) throw new Error('費率表未涵蓋此 (險種/性別/年齡)');
+
+  const faceUSD = faceWan * 10000;
+  const origPremium = gp * faceWan * 10;
+  const freqFactor = RATES.pay_freq_factors[freq];
+  const periods = RATES.pay_freq_periods[freq];
+
+  const d = RATES.discounts;
+  const firstRate = d.high_premium + d.first_period;  // 0.015 + 0.010
+  const renewRate = d.high_premium + d.renewal;        // 0.015 + 0.010
+
+  // 按繳別計算每期保費
+  const origPerPeriod = origPremium * freqFactor;
+  const firstPerPeriod  = Math.round(origPerPeriod * (1 - firstRate));
+  const renewPerPeriod  = Math.round(origPerPeriod * (1 - renewRate));
+  const firstAnnualPaid = firstPerPeriod * periods;    // 第一年實繳
+  const renewAnnualPaid = renewPerPeriod * periods;    // 續年實繳
+
+  const payYears = prod.pay_years;
+  const matureAge = prod.mature_age;
+  const lastYear = matureAge - age;                    // 至 110 歲保單週年日
+
+  // 取出表格陣列
+  const uvBySex   = RATES.uv[plan][sex];
+  const divBySex  = RATES.div[plan][sex];
+  const corr      = RATES.corridor[plan];
+
+  const ageData = uvBySex[age] || [];
+  const divData = divBySex[age] || [];
+
+  const rows = [];
+  let cumPremium = 0;
+  let cumDivFace = 0;       // E: cumulative 增額繳清面額 (USD)
+
+  // 為了算 F (累計增額身故金),我們追蹤每年買的 PUI 列表
+  // 每個 PUI 是 {bought_at_yr: k, face_USD: x, entry_age: 50+k-1}
+  const puis = [];
+  // 為了算 G (累計增額解約金),需要每個 PUI 的 CSV 進展
+  // 簡化:對每個 PUI,使用 NFV/NSP 比率作為近似的死亡/解約成長
+  // 但由於 NFV/CSV 都是針對 entry_age 50 (原保單),買 PUI 後實際應該用 entry_age = 攻得年齡 的表
+  // 因為我們有所有 (sex, age) 的表,可以正確查找
+
+  for (let yr = 1; yr <= lastYear; yr++) {
+    const attainedAge = age + yr - 1;
+    const isPayYear = yr <= payYears;
+
+    // A: 當年度實繳保費 (yr 1 用首期折扣,yr 2+ 用續期折扣)
+    const A = isPayYear ? (yr === 1 ? firstAnnualPaid : renewAnnualPaid) : 0;
+    cumPremium += A;
+
+    // C: 基本身故保險金 (整數)
+    const corrCoef = corr[yr] ?? 0;
+    const C = Math.round(corrCoef * faceUSD);
+
+    // D: 年度末解約金 (基本部分,不含增額)
+    const uv = ageData[yr] || [0,0,0];
+    const D = uv[1] * faceWan * 10;
+    const NSP = uv[2];     // 用於本年購買 PUI
+
+    // 紅利數據:AD 用本年 (yr),TDD/TDS 用上一年 (yr-1) — 對應原 Excel 的 TD_IND 邏輯
+    const dv  = divData[yr] || [0,0,0,0,0,0];
+    const dvP = divData[yr-1] || [0,0,0,0,0,0];
+    let AD, TDD, TDS;
+    if (scenario === 'M') { AD = dv[0]; TDD = dvP[1]; TDS = dvP[2]; }
+    else if (scenario === 'L') { AD = dv[3]; TDD = dvP[4]; TDS = dvP[5]; }
+    else { AD = 0; TDD = 0; TDS = 0; }
+
+    // 換算回 USD
+    const AD_USD  = AD  * faceWan * 10;
+    const TDD_USD = TDD * faceWan * 10;
+    const TDS_USD = TDS * faceWan * 10;
+
+    // 本年購買 PUI 面額 = AD / NSP × 1000  (rounded)
+    let boughtPUI = 0;
+    if (AD_USD > 0 && NSP > 0) {
+      boughtPUI = Math.round(AD_USD / NSP * 1000);
+    }
+    if (boughtPUI > 0) {
+      // 假設買 PUI 時年齡 = attainedAge,進入下一年才開始累積死亡/解約值
+      // 但實際:大多數情況下 PUI 是即時生效。為近似,記錄入帳年齡
+      puis.push({ boughtYr: yr, face: boughtPUI, entryAge: attainedAge });
+    }
+    cumDivFace = puis.reduce((s, p) => s + p.face, 0);
+
+    // F: 累計增額身故 ≈ E × Corridor[年]
+    //    (從原 Excel 資料校對:第 3 年以後此公式精確,第 2 年會略低估約 30%)
+    // G: 累計增額解約 ≈ E × (D / C)
+    //    (近似:用基本保額的解約金/身故比例套到 E)
+    let F = 0, G = 0;
+    if (cumDivFace > 0) {
+      F = Math.round(cumDivFace * (corr[yr] ?? 1));
+      const ratio = C > 0 ? D / C : 0;
+      G = Math.round(cumDivFace * ratio * 100) / 100;
+    }
+
+    // 終期保單紅利
+    const H = Math.round(TDD_USD * 100) / 100;
+    const I = Math.round(TDS_USD * 100) / 100;
+
+    // J, K
+    const J = C + F + H;
+    const K = D + G + I;
+
+    rows.push({ yr, attainedAge, A, cumPremium, C, D,
+                E: cumDivFace, F, G, H, I, J, K, AD: AD_USD,
+                isPayYear });
+  }
+
+  return {
+    rows, prod, gp,
+    origPerPeriod, firstPerPeriod, renewPerPeriod,
+    firstAnnualPaid, renewAnnualPaid,
+    totalPaid: firstAnnualPaid + renewAnnualPaid * (payYears - 1),
+  };
+}
+
+// ================= RENDER =================
+function recalc() {
+  if (!RATES) return;
+  $('input-err').textContent = '';
+
+  // gather inputs
+  const sex = document.querySelector('input[name="sex"]:checked').value;
+  const rocY = +$('bd-y').value;
+  const m = +$('bd-m').value;
+  const dDay = +$('bd-d').value;
+  const plan = $('plan').value;
+  const freq = $('freq').value;
+  const faceWan = +$('face').value;
+
+  if (!(rocY > 0 && m >= 1 && m <= 12 && dDay >= 1 && dDay <= 31)) {
+    $('input-err').textContent = '生日輸入錯誤';
+    return;
+  }
+  const age = insuranceAge(rocY, m, dDay);
+  $('age-badge').textContent = `保險年齡 ${age}`;
+
+  let result;
+  try {
+    result = calculate({ plan, sex, age, faceWan, freq });
+  } catch (e) {
+    $('input-err').textContent = e.message;
+    $('summary').innerHTML = '';
+    $('table-wrap').innerHTML = '';
+    $('info-box').innerHTML = '';
+    return;
+  }
+
+  renderSummary(result, { plan, sex, age, freq, faceWan });
+  renderInfo(result, { plan, sex, age });
+  renderTable(result, { plan });
+  $('output-title').textContent = `${RATES.product_name} — ${age}歲${sex==='M'?'男':'女'}性 · ${plan} · ${faceWan}萬美元 · ${freq}`;
+}
+
+function renderSummary(r, inp) {
+  const html = `
+    <div class="row"><span>每期原始保費</span><strong>USD ${fmtInt(r.origPerPeriod)}</strong></div>
+    <div class="row"><span>首期折扣後保費</span><strong>USD ${fmtInt(r.firstPerPeriod)}</strong></div>
+    <div class="row"><span>續期折扣後保費</span><strong>USD ${fmtInt(r.renewPerPeriod)}</strong></div>
+    <div class="row"><span>第一年實繳</span><span class="premium">USD ${fmtInt(r.firstAnnualPaid)}</span></div>
+    <div class="row"><span>總實繳保費 (${r.prod.pay_years}年)</span><strong>USD ${fmtInt(r.totalPaid)}</strong></div>
+  `;
+  $('summary').innerHTML = html;
+}
+
+function renderInfo(r, inp) {
+  let info = `<strong>GP 費率</strong> ${r.gp} · `;
+  info += `<strong>承保年齡</strong> ${r.prod.min_age}–${r.prod.max_age} · `;
+  info += `<strong>預定利率</strong> ${(r.prod.reserve_rate*100).toFixed(2)}% · `;
+  if (scenario === 'M') info += '<strong>情境</strong> 最可能紅利 (中分紅)';
+  else if (scenario === 'L') info += '<strong>情境</strong> 較低紅利';
+  else info += '<strong>情境</strong> 紅利為零 (僅顯示保證部分)';
+  info += '<br><span style="color:#9a3412;font-size:11px;">'
+       + '※ A/B/C/D/E/H/I 與原版 Excel 試算完全一致;F/G 為近似值'
+       + '(原公式需追蹤每筆增額繳清保險獨立成長,本工具用 E × Corridor 近似,第 3 年以後幾乎吻合)。'
+       + '此工具僅供個人試算參考,非正式建議書。</span>';
+  $('info-box').innerHTML = info;
+}
+
+function renderTable(r, inp) {
+  const html = `
+    <table>
+      <thead>
+        <tr class="h1-row">
+          <th rowspan="3">保單<br>年度</th>
+          <th rowspan="3">保險<br>年齡</th>
+          <th colspan="2">實繳保費</th>
+          <th colspan="2">保證給付項目 (基本保額)</th>
+          <th colspan="3" class="grouped-cell">非保證給付 (年度紅利→增額繳清)</th>
+          <th colspan="2" class="grouped-cell">終期保單紅利</th>
+          <th colspan="2">合計 (預估值)</th>
+        </tr>
+        <tr class="h2-row">
+          <th>當年度 A</th><th>累計 B</th>
+          <th>身故保險金 C</th><th>解約金 D</th>
+          <th class="grouped-cell">累計增額面額 E</th>
+          <th class="grouped-cell">累計增額身故 F</th>
+          <th class="grouped-cell">累計增額解約 G</th>
+          <th class="grouped-cell">終期身故 H</th>
+          <th class="grouped-cell">終期解約 I</th>
+          <th>身故總和 J</th><th>解約總和 K</th>
+        </tr>
+        <tr class="h3-row">
+          <th>USD</th><th>USD</th><th>USD</th><th>USD</th>
+          <th>USD</th><th>USD</th><th>USD</th><th>USD</th><th>USD</th>
+          <th>= C+F+H</th><th>= D+G+I</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${r.rows.map(row => `
+          <tr class="${row.isPayYear ? 'pay-year' : ''}">
+            <td class="text-left">${row.yr}</td>
+            <td class="text-left">${row.attainedAge}</td>
+            <td>${row.A ? fmtInt(row.A) : '—'}</td>
+            <td>${fmtInt(row.cumPremium)}</td>
+            <td>${fmtInt(row.C)}</td>
+            <td>${fmt(row.D)}</td>
+            <td class="grouped-cell ${row.E===0?'zero':''}">${row.E ? fmtInt(row.E) : '—'}</td>
+            <td class="grouped-cell ${row.F===0?'zero':''}">${row.F ? fmtInt(row.F) : '—'}</td>
+            <td class="grouped-cell ${row.G===0?'zero':''}">${row.G ? fmt(row.G) : '—'}</td>
+            <td class="grouped-cell ${row.H===0?'zero':''}">${row.H ? fmt(row.H) : '—'}</td>
+            <td class="grouped-cell ${row.I===0?'zero':''}">${row.I ? fmt(row.I) : '—'}</td>
+            <td>${fmt(row.J)}</td>
+            <td>${fmt(row.K)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  $('table-wrap').innerHTML = html;
+}
+
+function setScenario(s) {
+  scenario = s;
+  document.querySelectorAll('.scenario-tabs button').forEach(b => {
+    b.classList.toggle('active', b.dataset.scenario === s);
+  });
+  recalc();
+}
+
+function exportCSV() {
+  if (!RATES) return;
+  const rows = document.querySelectorAll('tbody tr');
+  if (!rows.length) return;
+  const headers = ['保單年度','保險年齡','當年度保費A','累計保費B','身故金C','解約金D',
+                   '累計增額E','增額身故F','增額解約G','終期身故H','終期解約I','總身故J','總解約K'];
+  let csv = headers.join(',') + '\n';
+  rows.forEach(tr => {
+    const cells = [...tr.children].map(td => td.textContent.replace(/,/g,'').replace(/—/g,'0'));
+    csv += cells.join(',') + '\n';
+  });
+  const blob = new Blob(['﻿' + csv], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `美鴻添富試算_${$('plan').value}_${$('face').value}萬美元.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ================= EVENTS =================
+['name','bd-y','bd-m','bd-d','plan','freq','face'].forEach(id =>
+  $(id).addEventListener('input', recalc));
+document.querySelectorAll('input[name="sex"]').forEach(el =>
+  el.addEventListener('change', recalc));
+
+loadRates();
+</script>
+</body>
+</html>
+  

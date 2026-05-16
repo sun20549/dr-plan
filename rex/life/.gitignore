@@ -1,0 +1,20 @@
+# 私有來源檔案 — 絕對不要 push 到 GitHub
+private/
+*.xls
+*.xlsx
+*.xlsm
+*.decrypted.xls
+**/vba_src/
+**/vba_dumps/
+
+# 測試與暫存
+*.tmp
+*.bak
+__pycache__/
+.DS_Store
+node_modules/
+
+# 個別客戶試算結果(若有匯出)
+exports/
+*_試算_*.csv
+*_試算_*.pdf
