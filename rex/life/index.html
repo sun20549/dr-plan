@@ -680,17 +680,92 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 
 .print-footer{display:none;padding:8px 14px;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:8px;line-height:1.6;}
 .print-header{display:none;}
+.print-letterhead{display:none;}
 .watermark{display:none;}
+
+/* ===== 列印用抬頭 (只在 print 時顯示) ===== */
+@media print {
+  .print-letterhead{
+    display:block !important;
+    margin-bottom:14px;
+    page-break-after:avoid;
+  }
+  .print-letterhead .pl-top{
+    display:flex !important;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 0 10px;
+    border-bottom:2px solid #0F172A;
+    margin-bottom:8px;
+  }
+  .print-letterhead .pl-brand{
+    display:flex;align-items:center;gap:10px;
+  }
+  .print-letterhead .pl-brand img{
+    height:32px;width:32px;background:#fff;border-radius:6px;padding:2px;
+  }
+  .print-letterhead .pl-brand-text{line-height:1.15;}
+  .print-letterhead .pl-b1{
+    font-size:13px;font-weight:900;color:#F05A28;letter-spacing:1px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .print-letterhead .pl-b2{
+    font-size:9px;color:#666;letter-spacing:1.5px;
+  }
+  .print-letterhead .pl-title{
+    font-size:16px;font-weight:900;color:#0F172A;letter-spacing:1.5px;
+    text-align:center;flex:1;
+  }
+  .print-letterhead .pl-version{
+    font-family:'Montserrat',monospace;
+    font-size:10px;color:#999;font-weight:700;
+    background:#FEF3C7;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    padding:3px 8px;border-radius:4px;letter-spacing:1px;
+  }
+  .print-letterhead .pl-case{
+    display:flex !important;flex-wrap:wrap;gap:6px 18px;
+    background:#FAF7F1;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    border-left:3px solid #F59E0B;
+    padding:6px 12px;font-size:10px;color:#0F172A;
+  }
+  .print-letterhead .pl-case b{font-weight:700;color:#475569;margin-right:2px;}
+  .print-letterhead .pl-case span{white-space:nowrap;}
+}
 @media print {
   @page { size: A4 landscape; margin: 8mm 10mm; }
-  body { background: white; font-size: 9.5px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body { background: white !important; font-size: 9.5px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body.dark { background: white !important; color: #0F172A !important; } /* 列印時強制 light */
   /* 隱藏所有互動元素 */
   .topbar, .product-hero, .scenario-tabs, .charts-wrap, .legend, .float-line,
-  .catalog-bar, .fx-card, .action-row, .modal-backdrop, .tbl-caption,
-  #fx-info, #input-err, #rates-status { display:none !important; }
+  .catalog-bar, .fx-card, .action-row, .modal-backdrop, .tbl-caption, .budget-tool,
+  .chart-slider-bar, #fx-info, #input-err, #rates-status,
+  .dec-toggle { display:none !important; }
   .card-input { display: none !important; }
   .container { display: block; padding: 0; max-width: none; }
   .card { box-shadow: none; border:none; border-radius:0; }
+
+  /* Hero 改為橫向 3 欄,縮小但保留漸層色 */
+  .hero-section{
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:8px !important;
+    padding:0 !important;
+    margin:0 0 10px !important;
+    page-break-inside:avoid;
+  }
+  .hero-card{
+    padding:8px 12px !important;
+    box-shadow:none !important;
+    border:1px solid #E5E0D3 !important;
+    border-radius:10px !important;
+  }
+  .hero-card .hc-label{font-size:9px !important;margin-bottom:4px !important;letter-spacing:1.5px !important;}
+  .hero-card .hc-value{font-size:18px !important;letter-spacing:-0.5px !important;-webkit-print-color-adjust:exact;}
+  .hero-card .hc-unit{font-size:10px !important;}
+  .hero-card .hc-sub{font-size:8.5px !important;margin-top:2px !important;}
+  .hero-card::after{display:none !important;}
 
   /* 列印專用標題 */
   .print-header { display:block !important;
@@ -744,6 +819,30 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 
 <!-- Watermark for print only -->
 <div class="watermark">僅供試算 · 非正式建議書</div>
+
+<!-- ============ 列印專用抬頭 (只在 print 時顯示) ============ -->
+<div class="print-letterhead">
+  <div class="pl-row pl-top">
+    <div class="pl-brand">
+      <img src="../../images/favicon-32.png" alt="鼎綸" onerror="this.style.display='none'">
+      <div class="pl-brand-text">
+        <div class="pl-b1">鼎綸恩宇</div>
+        <div class="pl-b2">保險經紀人 · 試算建議書</div>
+      </div>
+    </div>
+    <div class="pl-title" id="pl-title">商品試算建議書</div>
+    <div class="pl-version" id="pl-version">—</div>
+  </div>
+  <div class="pl-row pl-case" id="pl-case">
+    <span><b>被保險人:</b> <span id="pl-name">—</span></span>
+    <span><b>性別:</b> <span id="pl-sex">—</span></span>
+    <span><b>保險年齡:</b> <span id="pl-age">—</span></span>
+    <span><b>投保金額:</b> <span id="pl-face">—</span></span>
+    <span><b>繳別:</b> <span id="pl-freq">—</span></span>
+    <span><b>商品:</b> <span id="pl-product">—</span></span>
+    <span><b>試算日期:</b> <span id="pl-date">—</span></span>
+  </div>
+</div>
 
 <div class="topbar">
   <a href="../" class="back">← 返回主頁</a>
@@ -1539,6 +1638,26 @@ function pctOf(num, den){
   // 統一用 % 顯示;大於 999% 也用千分位 %
   return p.toLocaleString('en-US', {maximumFractionDigits:1, minimumFractionDigits:1}) + '%';
 }
+// 把 max 拉到下一個「整齊」值,避免頂端 tick 間距不一致
+// 例如 283 萬 → 300 萬;4.82× → 5×
+function niceMax(v) {
+  if (v <= 0) return 1;
+  const magnitude = Math.pow(10, Math.floor(Math.log10(v)));
+  const normalized = v / magnitude;
+  let nice;
+  if (normalized <= 1) nice = 1;
+  else if (normalized <= 1.5) nice = 1.5;
+  else if (normalized <= 2) nice = 2;
+  else if (normalized <= 2.5) nice = 2.5;
+  else if (normalized <= 3) nice = 3;
+  else if (normalized <= 4) nice = 4;
+  else if (normalized <= 5) nice = 5;
+  else if (normalized <= 6) nice = 6;
+  else if (normalized <= 8) nice = 8;
+  else nice = 10;
+  return nice * magnitude;
+}
+
 // 圖表軸刻度格式 — USD 用 k/M, NT$ 用 萬/億(去尾數零)
 function fmtAxis(v, isTwd) {
   if (v === 0) return isTwd ? 'NT$0' : '$0';
@@ -1738,8 +1857,9 @@ function renderChart(r, inp) {
   const dataPaid  = rows.map(row => row.cumP * mul);
   const dataDeath = rows.map(row => safeJ(row) * mul);
   const dataSurr  = rows.map(row => row.K * mul);
-  // 計算最大值給雙 Y 軸共用(避免右側自動 scale 跑出 $0.001k 怪值)
-  const maxY = Math.max(...dataPaid, ...dataDeath, ...dataSurr) * 1.05;
+  // 計算最大值給雙 Y 軸共用,並 niceRound 到整齊值
+  const rawMax = Math.max(...dataPaid, ...dataDeath, ...dataSurr);
+  const maxY = niceMax(rawMax);
   if (chartMain) chartMain.destroy();
   // 漸層工廠
   const gradFn = (color, alpha) => (ctx) => {
@@ -1806,7 +1926,7 @@ function renderLeverageChart(r, inp) {
   const labels = rows.map(row => `${row.attainedAge}`);
   // 與主圖一致用 safeJ
   const dataLev = rows.map(row => row.cumP > 0 ? +(Math.max(row.J, row.K) / row.cumP).toFixed(2) : 0);
-  const maxLev = Math.max(...dataLev) * 1.05;
+  const maxLev = niceMax(Math.max(...dataLev));
   if (chartLeverage) chartLeverage.destroy();
   const gradGold = (ctx2) => {
     const {ctx:cx, chartArea} = ctx2.chart;
@@ -1847,11 +1967,30 @@ function renderLeverageChart(r, inp) {
 
 function renderPrintFooter(inp) {
   const t = new Date();
+  const dateStr = `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
+  const version = $('version-badge').textContent;
   $('print-footer').innerHTML = `
-    試算日期 ${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()} · 鼎綸保險經紀人 · 恩宇體系 ·
-    匯率 ${inp.fxRate} (USD→TWD) · 版本 ${$('version-badge').textContent} ·
+    試算日期 ${dateStr} · 鼎綸保險經紀人 · 恩宇體系 ·
+    匯率 ${inp.fxRate} (USD→TWD) · 版本 ${version} ·
     本試算僅供參考,非正式建議書,實際以保單條款為準。
   `;
+  // 同步更新列印用抬頭
+  const co = (RATES?.company_name || '新光').replace(/(人壽|保險)/g,'');
+  let prodShort = '';
+  if (CATALOG) {
+    const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
+    const p = c?.products.find(x => x.code === $('cat-product').value);
+    if (p?.short) prodShort = p.short;
+  }
+  $('pl-title').textContent = `${co}人壽 ${prodShort || ''} 試算建議書`;
+  $('pl-version').textContent = version;
+  $('pl-name').textContent = inp.name || '—';
+  $('pl-sex').textContent = inp.sex === 'M' ? '男性' : '女性';
+  $('pl-age').textContent = `${inp.age} 歲`;
+  $('pl-face').textContent = `${inp.faceWan} 萬美元`;
+  $('pl-freq').textContent = inp.freq;
+  $('pl-product').textContent = $('cat-product').selectedOptions[0]?.text || prodShort;
+  $('pl-date').textContent = dateStr;
 }
 
 // ================= SCENARIO/VIEW =========
