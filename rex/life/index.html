@@ -364,6 +364,16 @@ table tbody td:nth-child(2){width:52px;min-width:52px;}
 .tbl-caption{display:flex;justify-content:space-between;align-items:center;padding:8px 18px;font-size:11px;background:#fafafa;border-bottom:1px solid var(--border);color:var(--text-muted);}
 .tbl-caption .cur-tag{background:var(--navy);color:#fff;padding:3px 10px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:11px;}
 .tbl-caption .cur-tag.twd{background:var(--gold);}
+/* 小數位切換 mini-toggle */
+.dec-toggle{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--border-soft);border-radius:14px;padding:4px 10px 4px 12px;cursor:pointer;font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.5px;font-family:inherit;transition:all 0.15s;}
+.dec-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.dec-toggle.on{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.dec-toggle .dt-switch{width:26px;height:14px;background:#cbd5e1;border-radius:8px;position:relative;transition:.18s;}
+.dec-toggle.on .dt-switch{background:var(--accent);}
+.dec-toggle .dt-thumb{width:10px;height:10px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.18s;box-shadow:0 1px 2px rgba(0,0,0,0.15);}
+.dec-toggle.on .dt-thumb{left:14px;}
+body.dark .dec-toggle{border-color:var(--border-soft);}
+body.dark .dec-toggle .dt-switch{background:rgba(255,255,255,0.15);}
 
 /* 詳細/要點 視圖切換 */
 body[data-view="summary"] .col-detail{display:none;}
@@ -952,7 +962,10 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 
     <div class="tbl-caption">
       <span>金額單位 <span class="cur-tag" id="cur-tag">USD</span> · <span id="cur-note">原幣別美元</span></span>
-      <span style="color:var(--text-muted);font-size:10px;">滑鼠移到列上會 highlight</span>
+      <button class="dec-toggle" id="dec-toggle" title="切換是否顯示小數兩位">
+        <span class="dt-label">顯示小數</span>
+        <div class="dt-switch"><div class="dt-thumb"></div></div>
+      </button>
     </div>
     <div class="table-wrap" id="table-wrap"></div>
 
@@ -1044,6 +1057,7 @@ let CATALOG = null;
 let SETTINGS = null;
 let scenario = 'M';
 let view = 'summary';
+let showDecimals = false;  // 預設整數,客戶簡報友善
 let chartRangeYears = null;  // null = 全部;否則為年數
 let chartSnaps = [];          // 當前 snap 點 [20,40,55] 或 [20,35] 或 [20,40,60,80,100,110]
 let chartMain = null, chartLeverage = null;
@@ -1516,7 +1530,8 @@ function cell(usd, inp){
 }
 function cellDec(usd, inp){
   const v = inp.showTwd ? usd * inp.fxRate : usd;
-  return fmt(v);
+  // 依 showDecimals 切換:預設整數,需要時兩位小數
+  return showDecimals ? fmt(v) : fmtInt(v);
 }
 function pctOf(num, den){
   if (!den || den === 0) return '—';
@@ -2020,6 +2035,22 @@ document.querySelectorAll('input[name="age-mode"]').forEach(el => {
 document.querySelectorAll('input[name="sex"]').forEach(el =>
   el.addEventListener('change', recalc));
 $('fx-fetch').addEventListener('click', fetchFxRate);
+
+// 小數位切換
+const decToggle = $('dec-toggle');
+if (decToggle) {
+  // 從 localStorage 還原偏好
+  if (localStorage.getItem('show-decimals') === '1') {
+    showDecimals = true;
+    decToggle.classList.add('on');
+  }
+  decToggle.addEventListener('click', () => {
+    showDecimals = !showDecimals;
+    decToggle.classList.toggle('on', showDecimals);
+    localStorage.setItem('show-decimals', showDecimals ? '1' : '0');
+    if (RATES) recalc();
+  });
+}
 
 // 💱 NT$ 預算反推 — 即時計算 + 套用
 $('budget-twd').addEventListener('input', () => calcFaceFromBudget());
