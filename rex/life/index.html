@@ -1539,6 +1539,20 @@ function pctOf(num, den){
   // 統一用 % 顯示;大於 999% 也用千分位 %
   return p.toLocaleString('en-US', {maximumFractionDigits:1, minimumFractionDigits:1}) + '%';
 }
+// 圖表軸刻度格式 — USD 用 k/M, NT$ 用 萬/億(去尾數零)
+function fmtAxis(v, isTwd) {
+  if (v === 0) return isTwd ? 'NT$0' : '$0';
+  const trim = s => s.replace(/\.0$/, ''); // 1.0M → 1M
+  if (isTwd) {
+    if (Math.abs(v) >= 1e8) return 'NT$' + trim((v/1e8).toFixed(1)) + '億';
+    if (Math.abs(v) >= 1e4) return 'NT$' + Math.round(v/1e4).toLocaleString() + '萬';
+    return 'NT$' + Math.round(v).toLocaleString();
+  } else {
+    if (Math.abs(v) >= 1e6) return '$' + trim((v/1e6).toFixed(1)) + 'M';
+    if (Math.abs(v) >= 1e3) return '$' + Math.round(v/1e3).toLocaleString() + 'k';
+    return '$' + Math.round(v).toLocaleString();
+  }
+}
 
 function renderSummary(r, inp) {
   const cur = inp.showTwd ? `NT$ (×${inp.fxRate})` : 'USD';
@@ -1771,13 +1785,13 @@ function renderChart(r, inp) {
         x: { ticks:{maxTicksLimit:14,font:{size:10},color:'#94A3B8'}, grid:{display:false}, border:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10,weight:600},color:'#94A3B8'} },
         y: {
           position:'left', min:0, max:maxY,
-          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>fmtAxis(v, inp.showTwd)},
           grid:{color:'rgba(148,163,184,0.12)',drawTicks:false},
           border:{display:false},
         },
         y1: {
           position:'right', min:0, max:maxY,
-          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>fmtAxis(v, inp.showTwd)},
           grid:{display:false},
           border:{display:false},
         },
