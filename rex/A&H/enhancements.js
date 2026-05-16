@@ -1197,12 +1197,26 @@
       let amount;
       if (product.amountMode === 'plan') {
         // DOM 顯示 amount 把「計劃」前綴拿掉了 (line ~4908 的 .replace)
-        // 還原優先順序:1) 直接拼「計劃」+amtNum 2) raw amtNum
+        // ★ 嗅探 claims.items[*].calc.planMap 看 key 真正格式 (新光 HS-/MI-/HI- 沒前綴; 全球 XHD/XHO 有前綴)
         const trial = '計劃' + amtNum;
-        if (amtNum.startsWith('計劃')) amount = amtNum;       // 已含前綴
+        let detected = null;
+        try {
+          const claims = product.claims && product.claims.items;
+          if (Array.isArray(claims)) {
+            for (const it of claims) {
+              const pm = it && it.calc && it.calc.planMap;
+              if (pm) {
+                if (pm[amtNum] != null) { detected = amtNum; break; }
+                if (pm[trial] != null)  { detected = trial; break; }
+              }
+            }
+          }
+        } catch (e) {}
+        if (detected) amount = detected;
+        else if (amtNum.startsWith('計劃')) amount = amtNum;
         else if (product.planMapAmount && product.planMapAmount[trial]) amount = trial;
         else if (product.planMapAmount && product.planMapAmount[amtNum]) amount = amtNum;
-        else if (product.amountUnit === '計劃' || product.amountUnit === '計畫') amount = trial;  // ★ XHD/XHO/NIR/MIR 都是這條
+        else if (product.amountUnit === '計劃' || product.amountUnit === '計畫') amount = trial;
         else amount = amtNum;
       } else {
         amount = isNaN(parseFloat(amtNum)) ? amtNum : parseFloat(amtNum);
@@ -1394,4 +1408,23 @@
     setTimeout(startWhenReady, 100);
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
+  // sync touchstamp v3.28.4
+})();
+._enhDetailDrawing = false; }, 50);
+        }
+      });
+      obs.observe(section, { childList: true });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(startWhenReady, 100);
+      setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
+    });
+  } else {
+    setTimeout(startWhenReady, 100);
+    setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
+  }
+  // sync touchstamp v3.28.4
 })();
