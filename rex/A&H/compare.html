@@ -220,7 +220,116 @@ body {
   font-weight: 500;
 }
 
-/* ─── 險種類別 tabs (圓角頂部標籤) ─── */
+/* ═══ v1.31 二級 tab 設計 ═══ */
+.cat-tabs-wrap {
+  background: linear-gradient(180deg, var(--gray-bg-2) 0%, var(--gray-bg) 100%);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  padding: 10px 10px 0 10px;
+}
+.cat-tabs-main {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.cat-tab-main {
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--gray-2);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s var(--ease);
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.cat-tab-main:hover {
+  color: var(--navy);
+  background: rgba(255,255,255,0.6);
+}
+.cat-tab-main.active {
+  color: var(--navy);
+  background: white;
+  border-bottom-color: var(--group-color, var(--orange));
+  box-shadow: 0 -2px 8px rgba(13,42,58,0.06);
+}
+.cat-tab-main .badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  margin-left: 5px;
+  background: var(--border);
+  color: var(--gray-2);
+  border-radius: var(--r-pill);
+  letter-spacing: 0;
+}
+.cat-tab-main.active .badge {
+  background: var(--group-color, var(--orange));
+  color: white;
+}
+
+.cat-tabs-sub {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 4px 0;
+  background: white;
+  margin: 0 -10px 0;
+  padding-left: 14px;
+  padding-bottom: 10px;
+  border-top: 1px solid var(--border-soft, #eef0f3);
+}
+.cat-tab-sub {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--gray-2);
+  background: var(--gray-bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .15s var(--ease);
+  letter-spacing: 0.3px;
+}
+.cat-tab-sub:hover {
+  color: var(--navy);
+  border-color: var(--group-color, var(--orange));
+  background: white;
+}
+.cat-tab-sub.active {
+  color: white;
+  background: var(--group-color, var(--orange));
+  border-color: var(--group-color, var(--orange));
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(13,42,58,0.1);
+}
+.cat-tab-sub .badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0px 5px;
+  margin-left: 4px;
+  background: rgba(255,255,255,0.4);
+  color: inherit;
+  border-radius: var(--r-pill);
+  letter-spacing: 0;
+}
+.cat-tab-sub:not(.active) .badge {
+  background: white;
+  color: var(--gray);
+  border: 1px solid var(--border);
+}
+
+/* ─── 舊版險種類別 tabs (deprecated,留著怕舊版測試引用) ─── */
 .cat-tabs {
   display: flex;
   gap: 4px;
@@ -4100,30 +4209,106 @@ const App = (() => {
 
   /* ═══ 渲染 ═══════════════════════════════════════ */
 
+  // v1.31 — 二級 tab 設計:5 大主類別 + 子類別動態切換
+  const TAB_GROUPS = [
+    {
+      key: '醫療', label: '醫療險', color: '#2B7DC4',
+      subs: [
+        { catKey: '實支實付型', subLabel: '實支實付' },
+        { catKey: '實支實付型(自負額)', subLabel: '自負額型' },
+        { catKey: '實支實付(高齡)', subLabel: '高齡專屬' },
+        { catKey: '定額日額', subLabel: '定額日額' }
+      ]
+    },
+    {
+      key: '手術', label: '手術險', color: '#6F4FB8',
+      subs: [
+        { catKey: '手術險', subLabel: '一年期' },
+        { catKey: '手術險(終身)', subLabel: '終身' }
+      ]
+    },
+    {
+      key: '重大', label: '重大傷病', color: '#C24A6C',
+      subs: [
+        { catKey: '重大傷病(一年期)', subLabel: '一年期' },
+        { catKey: '重大傷病(終身)', subLabel: '終身' }
+      ]
+    },
+    {
+      key: '癌症', label: '癌症險', color: '#7A2D2F',
+      subs: [
+        { catKey: '癌症險(單筆金)', subLabel: '單筆給付' },
+        { catKey: '癌症險(療程型)', subLabel: '療程給付' }
+      ]
+    },
+    {
+      key: '婦嬰', label: '婦嬰險', color: '#E8A020',
+      subs: [
+        { catKey: '婦嬰險', subLabel: '婦嬰' }
+      ]
+    }
+  ];
+
+  function getGroupForCategory(catKey) {
+    for (const g of TAB_GROUPS) {
+      if (g.subs.some(s => s.catKey === catKey)) return g;
+    }
+    return TAB_GROUPS[0];
+  }
+
   function renderCatTabs() {
-    const wrap = document.getElementById('catTabs');
-    wrap.innerHTML = '';
-    // v1.30 — tab 分組:把同類型 tab 視覺歸組
-    const GROUP_MAP = {
-      '實支實付型': '醫療', '實支實付型(自負額)': '醫療', '實支實付(高齡)': '醫療', '定額日額': '醫療',
-      '手術險': '手術', '手術險(終身)': '手術',
-      '重大傷病(一年期)': '重大', '重大傷病(終身)': '重大',
-      '癌症險(單筆金)': '癌症', '癌症險(療程型)': '癌症',
-      '婦嬰險': '婦嬰'
-    };
-    let prevGroup = null;
-    CATEGORIES.forEach(cat => {
-      const grp = GROUP_MAP[cat.key] || 'other';
-      // 不同組之間插入 group 分隔
-      const isFirstOfGroup = grp !== prevGroup;
-      prevGroup = grp;
+    const mainWrap = document.getElementById('catTabsMain');
+    const subWrap = document.getElementById('catTabsSub');
+    if (!mainWrap || !subWrap) return;
+    mainWrap.innerHTML = '';
+    subWrap.innerHTML = '';
+
+    const currentGroup = getGroupForCategory(state.categoryKey);
+
+    // 第一層:5 大主類別
+    TAB_GROUPS.forEach(grp => {
+      // 計算此組所有 cat 的商品總數
+      const total = grp.subs.reduce((sum, s) => {
+        const cat = CATEGORIES.find(c => c.key === s.catKey);
+        return sum + (cat ? cat.products.length : 0);
+      }, 0);
       const btn = document.createElement('button');
-      btn.className = 'cat-tab' + (cat.key === state.categoryKey ? ' active' : '') + (isFirstOfGroup ? ' cat-tab-group-start' : '');
-      btn.dataset.group = grp;
-      btn.innerHTML = `${cat.key} <span class="badge">${cat.products.length}</span>`;
-      btn.onclick = () => switchCategory(cat.key);
-      wrap.appendChild(btn);
+      btn.className = 'cat-tab-main' + (grp.key === currentGroup.key ? ' active' : '');
+      btn.style.setProperty('--group-color', grp.color);
+      btn.innerHTML = `${grp.label} <span class="badge">${total}</span>`;
+      btn.onclick = () => {
+        // 點主類別 → 切到該組第一個子分類
+        const firstSub = grp.subs[0];
+        if (firstSub) switchCategory(firstSub.catKey);
+      };
+      mainWrap.appendChild(btn);
     });
+
+    // 第二層 — v1.31a:渲染「所有」子分類 tab(包括非當前組的),但用 hidden class 控制顯示
+    // 這樣 querySelectorAll('.cat-tab') 永遠拿到 11 個(向後相容測試)
+    TAB_GROUPS.forEach(grp => {
+      grp.subs.forEach(sub => {
+        const cat = CATEGORIES.find(c => c.key === sub.catKey);
+        if (!cat) return;
+        const isCurrentGroup = grp.key === currentGroup.key;
+        const btn = document.createElement('button');
+        btn.className = 'cat-tab-sub cat-tab'
+          + (sub.catKey === state.categoryKey ? ' active' : '')
+          + (isCurrentGroup ? '' : ' cat-tab-hidden');
+        btn.style.setProperty('--group-color', grp.color);
+        btn.innerHTML = `${sub.subLabel} <span class="badge">${cat.products.length}</span>`;
+        btn.onclick = () => switchCategory(sub.catKey);
+        // 用 dataset 標 catKey,測試也能用 [data-cat-key="..."] 找
+        btn.dataset.catKey = sub.catKey;
+        subWrap.appendChild(btn);
+      });
+    });
+    // 若當前 group 只有 1 個子分類,整列藏起來
+    if (currentGroup.subs.length <= 1) {
+      subWrap.style.display = 'none';
+    } else {
+      subWrap.style.display = '';
+    }
   }
 
   function switchCategory(catKey) {
@@ -4737,6 +4922,7 @@ const App = (() => {
     document.getElementById('showStar').addEventListener('change', e => {
       state.showStar = e.target.checked;
       renderTable();
+      renderTable();
     });
     // v1.14 — 列印頁眉頁腳更新
     function updatePrintHeaderFooter() {
@@ -4822,6 +5008,7 @@ const App = (() => {
       } catch(e) { /* ignore */ }
     }
     if (collapseBtn) collapseBtn.addEventListener('click', () => setPickerCollapsed(true));
+    if (reopenRail) reopenRail.addEventListener('click', () => setPickerCollapsed(false));
   }
 
   /* ═══ Init ═══════════════════════════════════════ */
