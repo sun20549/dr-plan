@@ -6,6 +6,32 @@
 
 ---
 
+## 新光-UPD061/UPD101-020 · 2026-05-17 — 魔鬼細節三大微調
+
+### #1 Hero 數字字體精緻化(金融科技感)
+- 字體改為 `'Inter', 'SF Pro Display', 'DIN Alternate', 'Roboto Mono'` 順序
+- font-weight 從 800 改為 700(俐落感、不臃腫)
+- letter-spacing 從 -1.2px 改為 -0.8px(數字之間呼吸感)
+- 啟用 `font-feature-settings: 'tnum' 1, 'lnum' 1`(tabular 等寬數字)
+- USD / NT$ / 倍 單位:字體縮小到 11px、baseline 對齊主數字,凸顯主數字張力
+- 用 `inline-flex + align-items:baseline + gap:5px` 確保對齊
+
+### #2 左側表單按鈕收斂飽和度(把目光留給右邊)
+- Light Mode:選中色從亮藍/亮橘改為 deep slate(#475569 / #1E4762 / #7C2D4D)
+- Dark Mode:選中色改為「半透明微光」(rgba 0.08-0.18),不再亮眼搶戲
+- 性別、年齡輸入方式 toggle、age-badge 全部統一風格
+- Dark Mode 的 age-badge 改為深灰底 + 琥珀字,專業內斂
+
+### #3 表格 Hover 生命力(K + 保本率輕微放大發光)
+- 滑鼠移到任一列,「解約 K」cell scale(1.08) + 翠綠加深 + text-shadow 發光
+- 「保本率」cell scale(1.06) + 同色系發光
+- 保本率 ≥ 100% (profit) hover 時放大 1.08 + 加強發光(視覺鎖定回本後年度)
+- transform-origin: right center(數字向左微伸不破壞 right-align)
+- Dark Mode 發光更強(rgba 0.5-0.7)
+- ease-out-cubic-spring 曲線,有彈跳感不突兀
+
+---
+
 ## 新光-UPD061/UPD101-019 · 2026-05-17 — 體驗 + 法遵
 
 ### 新增 — Hero 跳數字動畫 (count-up)
