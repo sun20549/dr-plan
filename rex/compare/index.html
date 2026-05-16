@@ -1458,18 +1458,8 @@ window.__DB_CACHE__ = {};
 window.__MANIFEST__ = null;  // 全域 manifest 快取,用來查 path
 
 // v61: cache-busting — 每天換版本,瀏覽器一定抓最新
-window.__DATA_VERSION__ = '20260516-0002';
+window.__DATA_VERSION__ = '20260516-0003';
 
-// v101: 商品白名單模式 — 全部商品先隱藏,只有列在 WHITELIST 內才顯示
-//       一個一個校正驗證後再加入白名單
-//       要全部顯示就把 WHITELIST 設成 null 或 []
-window.__PRODUCT_WHITELIST__ = [
-  // 已校正完成上線的商品 — 加入後該商品在 Step 2 才會出現
-  'UPD061',  // 新光美鴻添富 6yr — 8 anchor (21M/41M/30F/50F/51F/54F/61F/71M)
-  'UPD101',  // 新光美鴻添富 10yr — 2 anchor (41F/71M)
-];
-
-// v100c: 顯示版本號於右上角 — 方便確認部署狀態
 document.addEventListener('DOMContentLoaded', function() {
   const badge = document.getElementById('version-badge');
   if (badge) {
@@ -1479,6 +1469,12 @@ document.addEventListener('DOMContentLoaded', function() {
     badge.onclick = function() { window.location.reload(true); };
   }
 });
+
+// v101: 商品白名單模式 — 校正完成才上線
+window.__PRODUCT_WHITELIST__ = [
+  'UPD061',  // 新光美鴻添富 6yr (9 anchor)
+  'UPD101',  // 新光美鴻添富 10yr (2 anchor)
+];
 
 window.loadProductDB = async function(key) {
   if (window.__DB_CACHE__[key]) return window.__DB_CACHE__[key];
@@ -11151,8 +11147,7 @@ function calcProductForUser(productMeta, user) {
     // v6: 若使用者有手動微調該商品保額,跳過預算反推路徑,直接用 override 值
     const saOverride = state.saOverrides[plan];
 
-    // v100d: Drew SA anchor 預先計算 — 只在 anchor 附近年齡(±10)生效
-    // 遠離 anchor 改用 engine 自己 gp_table 反推(避免外推偏差過大)
+    // v100d: Drew SA anchor 只對 anchor 附近年齡(±10)生效
     let drewSAOverride = null;
     if (!saOverride && _db_for_engine && _db_for_engine.drew_sa_per_premium) {
       const _sapp = _db_for_engine.drew_sa_per_premium;
@@ -11161,17 +11156,36 @@ function calcProductForUser(productMeta, user) {
       if (_per_anchors) {
         let _ratio = null;
         if (sex === 'F') {
-          const _F_age = _per_anchors['30F'] ? 30 : 31;
-          const _r_F = _per_anchors['30F'] || _per_anchors['31F'];
-          if (_r_F && Math.abs(age - _F_age) <= 10) {
-            _ratio = _r_F;
+          // 找最近 F anchor
+          const _fKeys = Object.keys(_per_anchors).filter(k => k.endsWith('F'));
+          if (_fKeys.length > 0) {
+            const _candidates = _fKeys.map(k => ({k, a: parseInt(k)})).filter(o => !isNaN(o.a));
+            _candidates.sort((a,b) => Math.abs(a.a - age) - Math.abs(b.a - age));
+            if (_candidates[0] && Math.abs(_candidates[0].a - age) <= 10) {
+              _ratio = _per_anchors[_candidates[0].k];
+            }
           }
         } else {
-          const _r21 = _per_anchors['21M'];
-          const _r41 = _per_anchors['41M'];
-          if (_r21 != null && _r41 != null && age >= 16 && age <= 46) {
-            const _t = Math.max(0, Math.min(1, (age - 21) / 20));
-            _ratio = _r21 + (_r41 - _r21) * _t;
+          // 找最近 M anchor
+          const _mKeys = Object.keys(_per_anchors).filter(k => k.endsWith('M'));
+          if (_mKeys.length > 0) {
+            const _candidates = _mKeys.map(k => ({k, a: parseInt(k)})).filter(o => !isNaN(o.a));
+            _candidates.sort((a,b) => Math.abs(a.a - age) - Math.abs(b.a - age));
+            if (_candidates[0] && Math.abs(_candidates[0].a - age) <= 10) {
+              _ratio = _per_anchors[_candidates[0].k];
+            } else if (_candidates.length >= 2) {
+              // 兩 anchor 內插
+              _candidates.sort((a, b) => a.a - b.a);
+              for (let i = 0; i < _candidates.length - 1; i++) {
+                if (age >= _candidates[i].a && age <= _candidates[i+1].a) {
+                  const r1 = _per_anchors[_candidates[i].k];
+                  const r2 = _per_anchors[_candidates[i+1].k];
+                  const t = (age - _candidates[i].a) / (_candidates[i+1].a - _candidates[i].a);
+                  _ratio = r1 + (r2 - r1) * t;
+                  break;
+                }
+              }
+            }
           }
         }
         if (_ratio != null && _ratio > 0) {
@@ -11239,7 +11253,6 @@ function calcProductForUser(productMeta, user) {
         if (sex === 'F') {
           const _fKeys = Object.keys(_src).filter(k => k.endsWith('F'));
           if (_fKeys.length > 0) {
-            // Parse anchor age, find closest
             const _candidates = _fKeys.map(k => ({k, a: parseInt(k)})).filter(o => !isNaN(o.a));
             _candidates.sort((a,b) => Math.abs(a.a - age) - Math.abs(b.a - age));
             if (_candidates[0]) {
@@ -11252,20 +11265,17 @@ function calcProductForUser(productMeta, user) {
           _fAge = _src['31F'] ? 31 : 30;
         }
         const _hasF = Object.keys(_rF).length > 0;
-        const _t = Math.max(0, Math.min(2, (age - 21) / 20));  // 0 at 21, 1 at 41
+        const _t = Math.max(0, Math.min(2, (age - 21) / 20));
         for (const _row of result.schedule) {
           const _y = _row.y;
           if (_y == null) continue;
-          // 性別判斷:男用 21M/41M 內插,女優先用最近 F anchor + age slope from M
           let _rate;
           if (sex === 'F' && _hasF) {
-            // F anchor 在 _fAge 歲 — 直接用 F + age slope from M
             const _f = _rF[_y] != null ? _rF[_y] : _rF[String(_y)];
             const _a = _r21[_y] != null ? _r21[_y] : _r21[String(_y)];
             const _b = _r41[_y] != null ? _r41[_y] : _r41[String(_y)];
             if (_f != null) {
               if (_a != null && _b != null) {
-                // 假設 F slope 跟 M slope 一樣,用 F 為錨點(_fAge)
                 const _mSlope = (_b - _a) / 20;
                 _rate = (_f + _mSlope * (age - _fAge)) / 100;
               } else {
@@ -11523,6 +11533,9 @@ async function goStep2() {
     ? `USD ${budget.toLocaleString()} (≈ TWD ${Math.round(budget*rate).toLocaleString()})`
     : `TWD ${budget.toLocaleString()}`;
 
+  // v103: 每次從 Step 1 進到 Step 2,清空手動微調 saOverrides
+  state.saOverrides = {};
+
   await filterProducts();
   showStep(2);
 }
@@ -11531,15 +11544,10 @@ async function filterProducts() {
   const period = state.user.period;
   const type = state.user.type;
   state.filteredProducts = PRODUCTS.filter(p => {
-    if (p.hidden === true) return false;  // v78: Drew 沒收的隱藏
-    // v101: 白名單模式 — 若 WHITELIST 有設,只顯示在內者
+    if (p.hidden === true) return false;
     const _wl = window.__PRODUCT_WHITELIST__;
-    if (Array.isArray(_wl) && _wl.length > 0) {
-      if (!_wl.includes(p.plan_code)) return false;
-    } else if (Array.isArray(_wl) && _wl.length === 0) {
-      // 空白名單 = 全部隱藏(等待校正)
-      return false;
-    }
+    if (Array.isArray(_wl) && _wl.length > 0 && !_wl.includes(p.plan_code)) return false;
+    else if (Array.isArray(_wl) && _wl.length === 0) return false;
     if (p.period !== period) return false;
     // 類型符合或同幣別
     if (p.type === type) return true;
@@ -11563,12 +11571,6 @@ async function renderProductList() {
     `${state.user.age}歲 ${state.user.gender==='M'?'男性':'女性'},共 ${state.filteredProducts.length} 種商品符合年期條件`;
 
   if (state.filteredProducts.length === 0) {
-    // v101: 白名單模式檢查
-    const _wl = window.__PRODUCT_WHITELIST__;
-    if (Array.isArray(_wl) && _wl.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" class="empty" style="padding:60px 20px; text-align:center;"><div style="font-size:18px; color:#1A6B72; margin-bottom:12px;">🔧 系統正在重新校正中</div><div style="color:#666; line-height:1.6;">商品目前已暫時下架,正在逐一驗證後重新上架。<br>請聯絡業務員確認最新可用商品。</div></td></tr>';
-      return;
-    }
     // 列出資料庫目前有什麼類型供使用者參考
     const availableTypes = [...new Set(PRODUCTS.map(p => p.type))];
     const availablePeriods = [...new Set(PRODUCTS.filter(p => p.type === state.user.type).map(p => p.period))].sort((a,b)=>a-b);
