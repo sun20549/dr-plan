@@ -911,6 +911,12 @@
   //  不依賴主檔 onmousemove (可能被覆寫或快取殘留)
   // ═══════════════════════════════════════════════════════════
   function bindCustomTooltip() {
+    // ★ v3.28.7 ── 主檔 (index.html) 的 drawChartTo 已自己處理 svg.onmousemove
+    //   這裡再 addEventListener 會跟主檔的 onmousemove 衝突,造成 hover 不顯示。
+    //   直接回傳,讓主檔獨佔 tooltip 邏輯。
+    return;
+
+    /* 以下舊邏輯保留為註解 (避免遺失) */
     const svg = document.getElementById('rateChart');
     const tooltip = document.getElementById('chartTooltip');
     const wrap = svg && svg.parentElement;
@@ -1409,4 +1415,13 @@
     setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
   }
   // sync touchstamp v3.28.6
+})();
+      setTimeout(startWhenReady, 100);
+      setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
+    });
+  } else {
+    setTimeout(startWhenReady, 100);
+    setTimeout(function() { injectBenefitsFilter(); setupBenefitsDetailOverride(); }, 800);
+  }
+  // sync touchstamp v3.28.7
 })();
