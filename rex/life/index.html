@@ -479,6 +479,20 @@ body.dark .hero-card.wealth .hc-value{filter:drop-shadow(0 0 12px rgba(16,185,12
 body.dark .hero-card.gold .hc-value{filter:drop-shadow(0 0 12px rgba(245,158,11,0.5));}
 body.dark .hero-card.rose .hc-value{filter:drop-shadow(0 0 12px rgba(236,72,153,0.5));}
 
+/* Hero 進場 / 更新 動畫 */
+@keyframes heroFadeIn{
+  0%{opacity:0.4;transform:translateY(6px) scale(0.98);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+.hero-card.flash{animation:heroFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);}
+.hero-card .hc-value{will-change:contents;}
+/* 進場時左下角光暈也順便動 */
+@keyframes heroAfterPulse{
+  0%{opacity:0;transform:scale(0.5);}
+  100%{opacity:0.4;transform:scale(1);}
+}
+.hero-card.flash::after{animation:heroAfterPulse 0.6s cubic-bezier(0.22, 1, 0.36, 1);}
+
 /* Dark mode toggle (in topbar) */
 .dark-toggle{
   width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);
@@ -679,6 +693,25 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
 .chart-tooltip-html .tt-value{font-weight:700;font-feature-settings:'tnum';}
 
 .print-footer{display:none;padding:8px 14px;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:8px;line-height:1.6;}
+.print-disclaimer{display:none;}
+@media print {
+  .print-disclaimer{
+    display:block !important;
+    page-break-before:always;
+    margin-top:14px;padding:14px 16px;
+    border:1px solid #E5E0D3;border-radius:6px;
+    background:#FAF7F1;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    font-size:8.5px;line-height:1.65;color:#0F172A;
+  }
+  .print-disclaimer .pd-title{
+    font-size:10px;font-weight:900;color:#D04618;
+    margin-bottom:6px;letter-spacing:1px;
+  }
+  .print-disclaimer ol{padding-left:18px;}
+  .print-disclaimer li{margin-bottom:3px;}
+  .print-disclaimer b{color:#0F172A;font-weight:800;}
+}
 .print-header{display:none;}
 .print-letterhead{display:none;}
 .watermark{display:none;}
@@ -1083,6 +1116,18 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
     </div>
 
     <div class="print-footer" id="print-footer"></div>
+    <!-- 列印用完整法遵警語 -->
+    <div class="print-disclaimer">
+      <div class="pd-title">⚠ 重要警語(依保險法及主管機關規範)</div>
+      <ol>
+        <li>本保險為分紅保險單,保單紅利之決定及其分配比例係依新光人壽保險股份有限公司之經驗、預期及審慎評估後決定,新光人壽保險股份有限公司並不保證紅利之分配金額。</li>
+        <li>本建議書係招攬人員於銷售過程中提供予要保人參考使用,當建議書所列要保資料與要保書填寫不同時,試算金額也會隨之異動;詳細金額仍須以要保書/保單首頁內容為準。</li>
+        <li>本商品宣告利率/分紅率僅供試算參考用,實際利率/紅利率依保險公司每月公告為準,可能調整。</li>
+        <li>外幣保單之保費繳納、保險給付、費用收取及費用返還均以外幣為單位,以新台幣計價部分僅供試算參考,實際匯率以交易當時為準。</li>
+        <li>本試算工具僅為一般銷售輔助工具,非保險契約之一部份,亦不構成任何要約或承諾;實際保障內容、給付方式、除外條款請以保險公司核發之保單契約為準。</li>
+        <li>消費者購買本商品前,請充分了解商品內容、相關費用、風險及給付條件等;如有疑義,請洽鼎綸恩宇業務員或撥打新光人壽客服 <b>0800-031-115</b>。</li>
+      </ol>
+    </div>
   </div>
 </div>
 
@@ -1591,23 +1636,55 @@ function updateDocTitle(inp){
 }
 
 // ====== HERO 區渲染 ======
+// Count-up 動畫:從目前顯示值跑到目標值
+function animateValue(el, to, opts = {}) {
+  const duration = opts.duration ?? 700;
+  const decimals = opts.decimals ?? 0;
+  const fromText = (el.textContent || '0').replace(/[^0-9.-]/g,'');
+  const from = parseFloat(fromText) || 0;
+  if (Math.abs(from - to) < (decimals > 0 ? 0.05 : 1)) {
+    el.textContent = decimals > 0 ? to.toFixed(decimals) : Math.round(to).toLocaleString('en-US');
+    return;
+  }
+  const start = performance.now();
+  const step = (now) => {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const v = from + (to - from) * eased;
+    el.textContent = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-US');
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// 觸發 hero 卡片 flash 動畫(用於姓名/性別/險種變更時)
+function flashHero() {
+  document.querySelectorAll('.hero-card').forEach(c => {
+    c.classList.remove('flash');
+    void c.offsetWidth; // 強制 reflow,重啟動畫
+    c.classList.add('flash');
+  });
+}
+
+let _lastFlashKey = '';
 function renderHero(r, inp) {
   // 1. 總繳保費
-  $('hero-paid').textContent = fmtInt(inp.showTwd ? r.totalPaid * inp.fxRate : r.totalPaid);
+  const totalPaid = inp.showTwd ? r.totalPaid * inp.fxRate : r.totalPaid;
+  animateValue($('hero-paid'), totalPaid);
   $('hero-paid-unit').textContent = inp.showTwd ? 'NT$' : 'USD';
   $('hero-paid-sub').textContent = `繳費期 ${r.prod.pay_years} 年 · 折扣後實繳`;
-  // 2. 第 20 年(或可達最近的指標年)解約金
+  // 2. 第 20 年解約金
   const targetYr = Math.min(20, r.rows.length);
   const tRow = r.rows[targetYr - 1];
   if (tRow) {
     $('hero-year').textContent = targetYr;
     const cvVal = inp.showTwd ? tRow.K * inp.fxRate : tRow.K;
-    $('hero-cv').textContent = fmtInt(cvVal);
+    animateValue($('hero-cv'), cvVal);
     $('hero-cv-unit').textContent = inp.showTwd ? 'NT$' : 'USD';
     const recoupPct = tRow.cumP > 0 ? (tRow.K / tRow.cumP * 100).toFixed(1) : '—';
     $('hero-cv-sub').textContent = `保險年齡 ${tRow.attainedAge} 歲 · 保本率 ${recoupPct}%`;
   }
-  // 3. 最高保障倍率(整個保單期)— 用 safeJ
+  // 3. 最高保障倍率 — 用 safeJ
   let maxLev = 0, maxLevYr = 0;
   for (const row of r.rows) {
     if (row.cumP > 0) {
@@ -1615,9 +1692,16 @@ function renderHero(r, inp) {
       if (lev > maxLev) { maxLev = lev; maxLevYr = row.yr; }
     }
   }
-  $('hero-lev').textContent = maxLev.toFixed(1);
+  animateValue($('hero-lev'), maxLev, {decimals: 1});
   const peakAge = inp.age + maxLevYr - 1;
   $('hero-lev-sub').textContent = `於第 ${maxLevYr} 年 (${peakAge} 歲) 達成`;
+
+  // 觸發 flash 動畫:被保人姓名/性別/險種/面額變化時
+  const flashKey = `${inp.name}|${inp.sex}|${inp.plan}|${inp.faceWan}|${inp.freq}`;
+  if (flashKey !== _lastFlashKey) {
+    _lastFlashKey = flashKey;
+    flashHero();
+  }
 }
 
 function showAmount(usd, inp){ return inp.showTwd ? 'NT$ ' + fmtInt(usd * inp.fxRate) : 'USD ' + fmtInt(usd); }
@@ -1881,6 +1965,14 @@ function renderChart(r, inp) {
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction: { intersect:false, mode:'index' },
+      animation: { duration: 650, easing: 'easeInOutCubic' },
+      animations: {
+        tension: { duration: 650, easing: 'easeInOutCubic', from: 0.4, to: 0.4 },
+        y: { duration: 650, easing: 'easeOutQuart' },
+      },
+      transitions: {
+        active: { animation: { duration: 250 } },
+      },
       plugins: {
         legend: { position:'top', labels:{usePointStyle:true,boxWidth:8,font:{size:11,weight:600},color:document.body.classList.contains('dark')?'#CBD5E1':'#475569'} },
         tooltip: {
@@ -1943,6 +2035,7 @@ function renderLeverageChart(r, inp) {
     ]},
     options: {
       responsive:true, maintainAspectRatio:false,
+      animation: { duration: 650, easing: 'easeInOutCubic' },
       plugins: {
         legend:{display:false},
         tooltip: {
