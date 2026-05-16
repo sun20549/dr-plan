@@ -9,30 +9,80 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
-  --orange:#F05A28;--orange-dark:#D04618;--orange-light:#FDE8DF;
-  --teal:#1A6B72;--teal-dark:#0F4D52;--teal-light:#D0EAEC;
-  --navy:#0D2A3A;--navy-mid:#0a2334;--navy-light:#1E4762;
-  --gold:#E8A020;--gold-dark:#b07800;--gold-light:#FEF3E0;
-  --jade:#0f766e;--jade-light:#D1F2EE;
+  /* ============ Premium Surface System ============ */
+  --bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --card-shadow: 0 20px 50px rgba(15,23,42,0.05), 0 4px 12px rgba(15,23,42,0.025);
+  --card-shadow-hover: 0 28px 60px rgba(15,23,42,0.08), 0 6px 18px rgba(15,23,42,0.04);
+  --card-radius: 24px;
+  --card-radius-sm: 16px;
+  --card-radius-xs: 12px;
+  --border-subtle: #F1F5F9;
+  --border-soft: #E2E8F0;
+  --row-alt: #FAFBFC;
+  --row-hover: #F0F9FF;
+
+  /* Text hierarchy */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text: var(--text-primary);
+
+  /* Brand: 寶石藍 + 祖母綠 + 金 */
+  --primary: #0EA5E9; --primary-deep: #0284C7; --primary-soft: #E0F2FE;
+  --wealth: #10B981; --wealth-deep: #059669; --wealth-soft: #D1FAE5;
+  --gold: #F59E0B; --gold-deep: #D97706; --gold-soft: #FEF3C7;
+  --danger: #EF4444; --danger-soft: #FEE2E2;
+
+  /* Gradient text helpers */
+  --grad-wealth: linear-gradient(135deg,#10B981 0%,#059669 100%);
+  --grad-primary: linear-gradient(135deg,#0EA5E9 0%,#0284C7 100%);
+  --grad-gold: linear-gradient(135deg,#FBBF24 0%,#D97706 100%);
+  --grad-rose: linear-gradient(135deg,#F472B6 0%,#DB2777 100%);
+
+  /* Legacy aliases (keep舊 code 可運作) */
+  --orange:#F59E0B;--orange-dark:#D97706;--orange-light:#FEF3C7;
+  --teal:var(--primary);--teal-dark:var(--primary-deep);--teal-light:var(--primary-soft);
+  --navy:var(--text-primary);--navy-mid:#1E293B;--navy-light:#334155;
+  --gold-light:var(--gold-soft);
+  --jade:var(--wealth-deep);--jade-light:var(--wealth-soft);
   --line:#06C755;
-  --white:#fff;--light:#F8F5F0;--bg:#F2EFE9;
-  --row-alt:#FAF7F1;--row-hover:#FFF6E8;
-  --border:#E5E0D3;
-  --text:#0D2A3A;--text-muted:#6B7280;
-  /* 主題色:男性=深藍 (古典金融感) */
-  --male-accent:#1E4762;--male-accent-dark:#142E40;--male-accent-light:#D5DFE8;
-  /* 主題色:女性=酒紅 (古典金融感) */
-  --female-accent:#8B2942;--female-accent-dark:#5C1A2C;--female-accent-light:#F5DCE3;
+  --white:#fff;--light:#F8FAFC;
+  --border:var(--border-subtle);
+
+  /* Gender accent (柔化版) */
+  --male-accent:#0EA5E9;--male-accent-dark:#0284C7;--male-accent-light:#E0F2FE;
+  --female-accent:#EC4899;--female-accent-dark:#DB2777;--female-accent-light:#FCE7F3;
   --accent:var(--male-accent);--accent-dark:var(--male-accent-dark);--accent-light:var(--male-accent-light);
-  --accent-bg:rgba(30,71,98,0.06);
+  --accent-bg:rgba(14,165,233,0.06);
 }
 body.theme-female{
   --accent:var(--female-accent);--accent-dark:var(--female-accent-dark);--accent-light:var(--female-accent-light);
-  --accent-bg:rgba(139,41,66,0.05);
+  --accent-bg:rgba(236,72,153,0.05);
+}
+/* ============ DARK MODE ============ */
+body.dark{
+  --bg:#020617;
+  --card-bg:#0F172A;
+  --card-shadow:0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  --card-shadow-hover:0 28px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
+  --border-subtle:rgba(255,255,255,0.06);
+  --border-soft:rgba(255,255,255,0.1);
+  --row-alt:rgba(255,255,255,0.02);
+  --row-hover:rgba(14,165,233,0.08);
+  --text-primary:#F8FAFC;
+  --text-secondary:#CBD5E1;
+  --text-muted:#64748B;
+  --text:var(--text-primary);
+  --gold-soft:rgba(245,158,11,0.12);
+  --wealth-soft:rgba(16,185,129,0.12);
+  --primary-soft:rgba(14,165,233,0.12);
+  --accent-bg:rgba(14,165,233,0.12);
+  --orange-light:rgba(245,158,11,0.12);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text);font-size:14px;line-height:1.55;}
+body{background:var(--bg);font-family:'Noto Sans TC','Inter',sans-serif;color:var(--text);font-size:14px;line-height:1.55;transition:background 0.3s ease, color 0.3s ease;}
 
 /* ===== TOPBAR ===== */
 .topbar{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--navy) 60%,var(--navy-light) 100%);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.15);position:sticky;top:0;z-index:50;flex-wrap:wrap;}
@@ -75,11 +125,12 @@ body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text
 .container{max-width:1500px;margin:0 auto;padding:16px;display:grid;grid-template-columns:340px 1fr;gap:16px;}
 @media (max-width:1100px){.container{grid-template-columns:1fr;}}
 
-.card{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(13,42,58,.05),0 8px 24px rgba(13,42,58,.04);overflow:hidden;}
-.card-header{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#fff,#fafafa);}
-.card-header h2{font-size:14px;font-weight:900;color:var(--navy);letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.card{background:var(--card-bg);border-radius:var(--card-radius);box-shadow:var(--card-shadow);overflow:hidden;transition:box-shadow 0.3s ease;}
+.card:hover{box-shadow:var(--card-shadow-hover);}
+.card-header{padding:18px 22px 14px;display:flex;justify-content:space-between;align-items:center;background:transparent;}
+.card-header h2{font-size:13px;font-weight:700;color:var(--text-secondary);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
 .card-header h2::before{content:'';width:3px;height:14px;background:var(--accent);border-radius:2px;}
-.card-body{padding:16px 18px 18px;}
+.card-body{padding:0 22px 22px;}
 
 /* ===== FORM ===== */
 .field{margin-bottom:13px;}
@@ -146,14 +197,67 @@ body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text
 .notice b{color:#0c5f59;}
 
 /* ===== CHARTS ===== */
-.chart-range-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#fafafa;border-bottom:1px solid var(--border);}
-.chart-range-bar .crb-label{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:1px;}
-.chart-range-bar .crb-seg{display:flex;background:#fff;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;}
-.chart-range-bar .crb-seg button{border:none;background:transparent;color:var(--text-muted);padding:6px 12px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px;font-family:inherit;border-right:1px solid var(--border);}
-.chart-range-bar .crb-seg button:last-child{border-right:none;}
-.chart-range-bar .crb-seg button:hover{color:var(--accent);background:var(--accent-bg);}
-.chart-range-bar .crb-seg button.active{background:var(--accent);color:#fff;}
-.chart-range-bar .crb-tip{font-size:10.5px;color:var(--text-muted);margin-left:auto;}
+/* ===== Premium 滑桿:圖表顯示範圍 ===== */
+.chart-slider-bar{padding:14px 28px 12px;background:transparent;border-bottom:1px solid var(--border-subtle);user-select:none;}
+.csb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.csb-label{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.csb-readout{font-size:13px;color:var(--accent);font-weight:800;letter-spacing:.5px;}
+body.dark .csb-readout{filter:drop-shadow(0 0 6px rgba(14,165,233,0.4));}
+
+.csb-slider-wrap{position:relative;height:30px;display:flex;align-items:center;}
+/* 浮動氣泡(顯示當前值) */
+.csb-bubble{
+  position:absolute;top:-6px;transform:translateX(-50%);
+  background:var(--text-primary);color:#fff;padding:5px 12px;
+  font-size:11px;font-weight:800;border-radius:14px;white-space:nowrap;
+  pointer-events:none;font-family:'Montserrat','Inter',sans-serif;letter-spacing:.5px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transition:left 0.15s ease;
+  z-index:2;
+}
+.csb-bubble::after{content:'';position:absolute;left:50%;bottom:-3px;width:6px;height:6px;background:inherit;transform:translateX(-50%) rotate(45deg);}
+body.dark .csb-bubble{background:var(--primary);}
+
+/* 滑桿軌道(自繪) */
+.csb-track-fill{
+  position:absolute;left:0;top:50%;height:6px;border-radius:3px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  transform:translateY(-50%);pointer-events:none;
+  transition:width 0.15s ease;width:100%;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.3) inset;
+}
+body.dark .csb-track-fill{box-shadow:0 0 10px rgba(14,165,233,0.5);}
+
+.csb-slider{
+  -webkit-appearance:none;appearance:none;
+  position:relative;z-index:1;width:100%;height:30px;background:transparent;cursor:pointer;outline:none;
+  margin:0;
+}
+/* 軌道(底色) */
+.csb-slider::-webkit-slider-runnable-track{height:6px;background:var(--border-soft);border-radius:3px;}
+.csb-slider::-moz-range-track{height:6px;background:var(--border-soft);border-radius:3px;}
+/* Thumb */
+.csb-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:22px;height:22px;border-radius:50%;background:#fff;
+  border:3px solid var(--accent);
+  margin-top:-8px;
+  box-shadow:0 4px 12px rgba(14,165,233,0.3),0 2px 6px rgba(0,0,0,0.1);
+  cursor:grab;transition:transform 0.15s,box-shadow 0.15s;
+}
+.csb-slider::-webkit-slider-thumb:hover{transform:scale(1.15);box-shadow:0 6px 18px rgba(14,165,233,0.4);}
+.csb-slider:active::-webkit-slider-thumb{cursor:grabbing;transform:scale(1.2);}
+.csb-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--accent);
+  box-shadow:0 4px 12px rgba(14,165,233,0.3);cursor:grab;
+}
+body.dark .csb-slider::-webkit-slider-thumb{background:var(--card-bg);border-color:var(--primary);box-shadow:0 0 16px rgba(14,165,233,0.6);}
+
+/* Tick 標籤(下方) */
+.csb-ticks{display:flex;justify-content:space-between;margin-top:8px;padding:0 2px;font-size:10.5px;color:var(--text-muted);font-weight:600;}
+.csb-ticks span{cursor:pointer;padding:4px 8px;border-radius:6px;transition:all 0.15s;text-align:center;white-space:nowrap;}
+.csb-ticks span:hover{color:var(--accent);background:var(--accent-bg);}
+.csb-ticks span.active{color:var(--accent);font-weight:800;background:var(--accent-bg);}
 .charts-wrap{padding:16px 18px;border-bottom:1px solid var(--border);background:#fcfcfa;display:grid;grid-template-columns:2fr 1fr;gap:14px;}
 @media (max-width:900px){.charts-wrap{grid-template-columns:1fr;}}
 .chart-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
@@ -295,6 +399,120 @@ body[data-view="summary"] .col-detail{display:none;}
 .float-line svg{width:32px;height:32px;fill:#fff;}
 
 /* ===== PRINT ===== */
+/* =============================================
+   v008 Premium — Hero / Dark Mode / Glassmorphism
+   ============================================= */
+.hero-section{
+  max-width:1500px;margin:0 auto;padding:18px 18px 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+@media (max-width:900px){.hero-section{grid-template-columns:1fr;}}
+.hero-card{
+  background:var(--card-bg);border-radius:var(--card-radius);padding:28px 30px;
+  box-shadow:var(--card-shadow);position:relative;overflow:hidden;
+  transition:box-shadow 0.3s, transform 0.3s;
+}
+.hero-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px);}
+.hero-card .hc-label{font-size:11px;color:var(--text-muted);letter-spacing:2.5px;font-weight:700;margin-bottom:10px;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.hero-card .hc-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.5;}
+.hero-card .hc-value{
+  font-size:38px;font-weight:800;letter-spacing:-1.2px;line-height:1.05;
+  font-family:'Montserrat','Inter',sans-serif;
+  background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-card .hc-unit{font-size:14px;color:var(--text-muted);font-weight:600;margin-left:4px;-webkit-text-fill-color:var(--text-muted);}
+.hero-card .hc-sub{font-size:11.5px;color:var(--text-muted);margin-top:8px;letter-spacing:0.5px;}
+.hero-card.wealth .hc-value{background:var(--grad-wealth);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-card.gold .hc-value{background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-card.primary .hc-value{background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-card.rose .hc-value{background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-card::after{
+  content:'';position:absolute;right:-30px;bottom:-30px;width:140px;height:140px;
+  border-radius:50%;opacity:0.4;filter:blur(36px);pointer-events:none;
+  background:var(--primary-soft);
+}
+.hero-card.wealth::after{background:var(--wealth-soft);}
+.hero-card.gold::after{background:var(--gold-soft);}
+.hero-card.rose::after{background:rgba(236,72,153,0.15);}
+body.dark .hero-card .hc-value{filter:drop-shadow(0 0 12px rgba(14,165,233,0.4));}
+body.dark .hero-card.wealth .hc-value{filter:drop-shadow(0 0 12px rgba(16,185,129,0.5));}
+body.dark .hero-card.gold .hc-value{filter:drop-shadow(0 0 12px rgba(245,158,11,0.5));}
+body.dark .hero-card.rose .hc-value{filter:drop-shadow(0 0 12px rgba(236,72,153,0.5));}
+
+/* Dark mode toggle (in topbar) */
+.dark-toggle{
+  width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;display:inline-flex;
+  align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;
+}
+.dark-toggle:hover{background:rgba(255,255,255,0.18);}
+
+/* ===== Premium 表格淨化 ===== */
+.card-body-flush > .table-wrap{margin:0;border:none;border-radius:0;}
+.table-wrap{background:transparent !important;border:none !important;border-radius:0 !important;margin:0 !important;}
+table thead{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+table thead tr.h1 th{background:rgba(15,23,42,0.92) !important;color:#fff !important;border:none !important;border-bottom:1px solid rgba(255,255,255,0.1) !important;}
+body.dark table thead tr.h1 th{background:rgba(2,6,23,0.92) !important;}
+table thead tr.h2 th{background:rgba(248,250,252,0.85) !important;color:var(--text-primary) !important;border:none !important;border-bottom:1px solid var(--border-subtle) !important;}
+body.dark table thead tr.h2 th{background:rgba(15,23,42,0.85) !important;color:var(--text-secondary) !important;}
+
+/* 移除所有垂直分隔線 */
+tbody td{border-left:none !important;border-right:none !important;border-bottom:1px solid var(--border-subtle);}
+tbody tr:nth-child(even) td{background:var(--row-alt) !important;}
+tbody tr:hover td{background:var(--row-hover) !important;}
+
+/* 主指標欄:保留左側細色帶,移除其他邊框 */
+tbody td.col-total-j{background:transparent !important;color:var(--gold-deep) !important;font-weight:800 !important;font-size:13px !important;border-left:3px solid var(--gold) !important;}
+tbody td.col-total-k{background:transparent !important;color:var(--wealth-deep) !important;font-weight:800 !important;font-size:13px !important;border-left:3px solid var(--wealth) !important;}
+tbody td.col-ratio-j{background:transparent !important;color:var(--gold-deep) !important;font-weight:600 !important;font-size:11px !important;font-style:italic;border:none !important;}
+tbody td.col-ratio-k{background:transparent !important;color:var(--text-muted) !important;font-weight:600 !important;font-size:11px !important;font-style:italic;border:none !important;}
+/* 保本率 >= 100% 變綠粗體 */
+tbody td.col-ratio-k.profit{color:var(--wealth-deep) !important;font-weight:800 !important;font-style:normal !important;font-size:12.5px !important;}
+body.dark tbody td.col-ratio-k.profit{color:#34D399 !important;text-shadow:0 0 8px rgba(16,185,129,0.3);}
+
+tbody tr:nth-child(even) td.col-total-j,tbody tr:nth-child(even) td.col-total-k,tbody tr:nth-child(even) td.col-ratio-j,tbody tr:nth-child(even) td.col-ratio-k{background:rgba(0,0,0,0.012) !important;}
+body.dark tbody tr:nth-child(even) td.col-total-j,body.dark tbody tr:nth-child(even) td.col-total-k,body.dark tbody tr:nth-child(even) td.col-ratio-j,body.dark tbody tr:nth-child(even) td.col-ratio-k{background:rgba(255,255,255,0.02) !important;}
+
+/* Dark mode 通用調整 */
+body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0F172A 50%,#1E293B 100%);}
+body.dark .product-hero{background:var(--card-bg);border-bottom-color:var(--gold);}
+body.dark .ph-logo{background:rgba(255,255,255,0.05);border-color:var(--border-subtle);}
+body.dark .input,body.dark select.input{background:rgba(255,255,255,0.03);border-color:var(--border-soft);color:var(--text-primary);}
+body.dark .seg{background:rgba(255,255,255,0.03);border-color:var(--border-soft);}
+body.dark .seg label{color:var(--text-muted);}
+body.dark .summary{background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(245,158,11,0.04) 100%);border-color:rgba(245,158,11,0.2);}
+body.dark .summary-row span:first-child{color:var(--text-secondary);}
+body.dark .summary-row strong{color:var(--text-primary);}
+body.dark .discount-card{background:var(--accent-bg);}
+body.dark .notice{background:rgba(16,185,129,0.08);color:#34D399;border-color:rgba(16,185,129,0.2);}
+body.dark .scenario-tabs{background:transparent;border-bottom-color:var(--border-subtle);}
+body.dark .charts-wrap{background:transparent;}
+body.dark .chart-box{background:rgba(255,255,255,0.02);border-color:var(--border-subtle);}
+body.dark .chart-range-bar{background:transparent;border-color:var(--border-subtle);}
+body.dark .crb-seg{background:rgba(255,255,255,0.03);border-color:var(--border-soft);}
+body.dark .legend{background:transparent;color:var(--text-muted);}
+body.dark .table-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,0.02);}
+body.dark .table-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.02);}
+body.dark .tbl-caption{background:transparent;color:var(--text-muted);}
+
+/* === Tooltip 玻璃感(主圖) === */
+.chart-tooltip-html{
+  position:absolute;pointer-events:none;z-index:100;
+  background:rgba(15,23,42,0.85);color:#fff;
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  border:1px solid rgba(255,255,255,0.1);border-radius:12px;
+  padding:10px 14px;font-size:11.5px;line-height:1.6;
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+  opacity:0;transition:opacity 0.15s, transform 0.15s;transform:translate(-50%,-110%);
+  font-family:'Inter','Noto Sans TC',sans-serif;
+}
+.chart-tooltip-html.visible{opacity:1;}
+.chart-tooltip-html .tt-title{font-weight:800;font-size:12px;margin-bottom:4px;color:#FCD34D;letter-spacing:0.5px;}
+.chart-tooltip-html .tt-row{display:flex;align-items:center;gap:8px;justify-content:space-between;}
+.chart-tooltip-html .tt-label{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);}
+.chart-tooltip-html .tt-dot{width:8px;height:8px;border-radius:50%;}
+.chart-tooltip-html .tt-value{font-weight:700;font-feature-settings:'tnum';}
+
 .print-footer{display:none;padding:8px 14px;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:8px;line-height:1.6;}
 .print-header{display:none;}
 .watermark{display:none;}
@@ -376,6 +594,7 @@ body[data-view="summary"] .col-detail{display:none;}
   <button class="top-btn" onclick="openModal('modal-customers')">📋 客戶記錄</button>
   <button class="top-btn" onclick="shareLink()">🔗 分享連結</button>
   <button class="top-btn line" onclick="openModal('modal-line')">💬 加我 LINE</button>
+  <button class="dark-toggle" id="dark-toggle" title="切換深色 / 淺色">🌙</button>
   <div class="version-badge" id="version-badge" title="保險公司-商品-版本">新光-美鴻添富-003</div>
 </div>
 
@@ -398,6 +617,25 @@ body[data-view="summary"] .col-detail{display:none;}
       <button class="btn btn-primary" onclick="window.print()">🖨 列印 PDF</button>
       <button class="btn btn-ghost" onclick="exportCSV()">↓ CSV</button>
     </div>
+  </div>
+</div>
+
+<!-- ===== HERO 關鍵數據區 ===== -->
+<div class="hero-section" id="hero-section">
+  <div class="hero-card gold">
+    <div class="hc-label">💰 總繳保費</div>
+    <div class="hc-value"><span id="hero-paid">—</span><span class="hc-unit" id="hero-paid-unit">USD</span></div>
+    <div class="hc-sub" id="hero-paid-sub">繳費期 — 年</div>
+  </div>
+  <div class="hero-card wealth">
+    <div class="hc-label">💎 第 <span id="hero-year">20</span> 年解約金</div>
+    <div class="hc-value"><span id="hero-cv">—</span><span class="hc-unit" id="hero-cv-unit">USD</span></div>
+    <div class="hc-sub" id="hero-cv-sub">保險年齡 — 歲 · 保本率 —</div>
+  </div>
+  <div class="hero-card primary">
+    <div class="hc-label">🛡 最高保障倍率</div>
+    <div class="hc-value"><span id="hero-lev">—</span><span class="hc-unit">倍</span></div>
+    <div class="hc-sub" id="hero-lev-sub">於第 — 年達成</div>
   </div>
 </div>
 
@@ -516,16 +754,17 @@ body[data-view="summary"] .col-detail{display:none;}
 
     <div class="notice" id="notice"></div>
 
-    <div class="chart-range-bar">
-      <span class="crb-label">📐 圖表顯示範圍</span>
-      <div class="crb-seg" id="chart-range">
-        <button data-range="20">前 20 年</button>
-        <button data-range="40">前 40 年</button>
-        <button data-range="60">前 60 年</button>
-        <button data-range="80">前 80 年</button>
-        <button data-range="all" class="active">至終期</button>
+    <div class="chart-slider-bar">
+      <div class="csb-header">
+        <span class="csb-label">📐 圖表顯示範圍</span>
+        <span class="csb-readout" id="csb-readout">至終期</span>
       </div>
-      <span class="crb-tip" id="crb-tip">含全部 ── 年</span>
+      <div class="csb-slider-wrap">
+        <div class="csb-bubble" id="csb-bubble">至終期</div>
+        <input type="range" id="chart-range-slider" min="0" max="5" step="1" value="5" class="csb-slider">
+        <div class="csb-track-fill" id="csb-track-fill"></div>
+      </div>
+      <div class="csb-ticks" id="csb-ticks"></div>
     </div>
 
     <div class="charts-wrap">
@@ -627,7 +866,8 @@ let CATALOG = null;
 let SETTINGS = null;
 let scenario = 'M';
 let view = 'summary';
-let chartRange = 'all';  // 'all' | '20' | '40' | '60' | '80'
+let chartRangeYears = null;  // null = 全部;否則為年數
+let chartSnaps = [];          // 當前 snap 點 [20,40,55] 或 [20,35] 或 [20,40,60,80,100,110]
 let chartMain = null, chartLeverage = null;
 let currentPlan = 'UPD061';
 const ROC_OFFSET = 1911;
@@ -922,6 +1162,10 @@ function recalc() {
     if (chartLeverage) { chartLeverage.destroy(); chartLeverage = null; }
     return;
   }
+  // 更新圖表滑桿 snap 點(依 prod max_age - 投保年齡)
+  refreshChartSlider(result.rows.length, inp.age);
+
+  renderHero(result, inp);
   renderSummary(result, inp);
   renderDiscount(result, inp);
   renderNotice(result, inp);
@@ -930,6 +1174,36 @@ function recalc() {
   renderLeverageChart(result, inp);
   renderPrintFooter(inp);
   updateHash(inp);
+}
+
+// ====== HERO 區渲染 ======
+function renderHero(r, inp) {
+  // 1. 總繳保費
+  $('hero-paid').textContent = fmtInt(inp.showTwd ? r.totalPaid * inp.fxRate : r.totalPaid);
+  $('hero-paid-unit').textContent = inp.showTwd ? 'NT$' : 'USD';
+  $('hero-paid-sub').textContent = `繳費期 ${r.prod.pay_years} 年 · 折扣後實繳`;
+  // 2. 第 20 年(或可達最近的指標年)解約金
+  const targetYr = Math.min(20, r.rows.length);
+  const tRow = r.rows[targetYr - 1];
+  if (tRow) {
+    $('hero-year').textContent = targetYr;
+    const cvVal = inp.showTwd ? tRow.K * inp.fxRate : tRow.K;
+    $('hero-cv').textContent = fmtInt(cvVal);
+    $('hero-cv-unit').textContent = inp.showTwd ? 'NT$' : 'USD';
+    const recoupPct = tRow.cumP > 0 ? (tRow.K / tRow.cumP * 100).toFixed(1) : '—';
+    $('hero-cv-sub').textContent = `保險年齡 ${tRow.attainedAge} 歲 · 保本率 ${recoupPct}%`;
+  }
+  // 3. 最高保障倍率(整個保單期)
+  let maxLev = 0, maxLevYr = 0;
+  for (const row of r.rows) {
+    if (row.cumP > 0) {
+      const lev = row.J / row.cumP;
+      if (lev > maxLev) { maxLev = lev; maxLevYr = row.yr; }
+    }
+  }
+  $('hero-lev').textContent = maxLev.toFixed(1);
+  const peakAge = inp.age + maxLevYr - 1;
+  $('hero-lev-sub').textContent = `於第 ${maxLevYr} 年 (${peakAge} 歲) 達成`;
 }
 
 function showAmount(usd, inp){ return inp.showTwd ? 'NT$ ' + fmtInt(usd * inp.fxRate) : 'USD ' + fmtInt(usd); }
@@ -1028,6 +1302,7 @@ function renderTable(r, inp) {
           const j = safeJ(row);
           const ratioJ = pctOf(j, row.cumP);
           const ratioK = pctOf(row.K, row.cumP);
+          const recoupOK = row.cumP > 0 && row.K >= row.cumP; // 保本率 >= 100%
           return `
           <tr class="${row.yr === breakEvenYr ? 'break-even' : ''}">
             <td class="text-center yr-col">${row.yr}</td>
@@ -1044,7 +1319,7 @@ function renderTable(r, inp) {
             <td class="col-total-j">${cellDec(j, inp)}</td>
             <td class="col-ratio-j">${ratioJ}</td>
             <td class="col-total-k">${cellDec(row.K, inp)}</td>
-            <td class="col-ratio-k">${ratioK}</td>
+            <td class="col-ratio-k${recoupOK ? ' profit' : ''}">${ratioK}</td>
           </tr>`;
         }).join('')}
       </tbody>
@@ -1052,11 +1327,70 @@ function renderTable(r, inp) {
   `;
 }
 
-// 圖表用:依 chartRange 切片
+// 圖表用:依 chartRangeYears 切片
 function getChartRows(r) {
-  if (chartRange === 'all') return r.rows;
-  const n = parseInt(chartRange);
-  return r.rows.slice(0, n);
+  if (chartRangeYears == null || chartRangeYears >= r.rows.length) return r.rows;
+  return r.rows.slice(0, chartRangeYears);
+}
+
+// 根據投保年齡產出 snap 點
+function computeSnapPoints(maxYears) {
+  const candidates = [20, 40, 60, 80, 100];
+  const snaps = candidates.filter(c => c < maxYears);
+  snaps.push(maxYears);
+  return snaps;
+}
+
+// 更新滑桿:重新依當前 maxYears 設定 snap、tick 標籤、bubble、軌道填色
+function refreshChartSlider(maxYears, attainedAgeAt) {
+  chartSnaps = computeSnapPoints(maxYears);
+  const slider = $('chart-range-slider');
+  const oldYears = chartRangeYears;
+  slider.min = 0;
+  slider.max = chartSnaps.length - 1;
+  // 預設選最大,除非舊值還適用
+  let idx = chartSnaps.length - 1;
+  if (oldYears != null) {
+    const found = chartSnaps.indexOf(oldYears);
+    if (found >= 0) idx = found;
+  }
+  slider.value = idx;
+  chartRangeYears = chartSnaps[idx];
+  // 重繪 ticks
+  $('csb-ticks').innerHTML = chartSnaps.map((s, i) => {
+    const isLast = i === chartSnaps.length - 1;
+    const lbl = isLast ? `至終期<br><small style="opacity:.6">${s}年</small>` : `前 ${s} 年`;
+    return `<span data-idx="${i}" class="${i===idx?'active':''}">${lbl}</span>`;
+  }).join('');
+  // 綁定 tick 點擊
+  document.querySelectorAll('#csb-ticks span').forEach(sp => {
+    sp.onclick = () => { slider.value = sp.dataset.idx; slider.dispatchEvent(new Event('input')); };
+  });
+  // 更新位置/顯示
+  updateSliderUI(attainedAgeAt);
+}
+
+function updateSliderUI(attainedAgeBase) {
+  const slider = $('chart-range-slider');
+  const idx = +slider.value;
+  const max = +slider.max || 1;
+  const pct = max > 0 ? (idx / max) * 100 : 100;
+  const years = chartSnaps[idx];
+  chartRangeYears = years;
+  // 軌道填色寬度
+  $('csb-track-fill').style.width = pct + '%';
+  // bubble 跟著 thumb 走 — 留邊距校正
+  const bubble = $('csb-bubble');
+  bubble.style.left = `calc(${pct}% + ${(11 - pct/100*22)}px)`;
+  const isLast = idx === chartSnaps.length - 1;
+  const targetAge = (attainedAgeBase ?? 0) + years - 1;
+  bubble.textContent = isLast ? `至終期 ${years} 年` : `前 ${years} 年`;
+  $('csb-readout').textContent = isLast
+    ? `顯示 ${years} 年(至 ${targetAge} 歲)`
+    : `顯示 ${years} 年(${attainedAgeBase ?? 0}-${targetAge} 歲)`;
+  // tick highlight
+  document.querySelectorAll('#csb-ticks span').forEach(sp =>
+    sp.classList.toggle('active', +sp.dataset.idx === idx));
 }
 
 function renderChart(r, inp) {
@@ -1075,19 +1409,40 @@ function renderChart(r, inp) {
   const dataDeath = rows.map(row => row.J * mul);
   const dataSurr  = rows.map(row => row.K * mul);
   if (chartMain) chartMain.destroy();
+  // 漸層工廠
+  const gradFn = (color, alpha) => (ctx) => {
+    const {ctx:cx, chartArea} = ctx.chart;
+    if (!chartArea) return color + (Math.round(alpha*255).toString(16).padStart(2,'0'));
+    const g = cx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    const a = c => color + Math.round(c*255).toString(16).padStart(2,'0');
+    g.addColorStop(0, a(alpha));
+    g.addColorStop(1, a(0));
+    return g;
+  };
   chartMain = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets: [
-      { label: `累計保費`, data: dataPaid, borderColor: '#F05A28', backgroundColor:'rgba(240,90,40,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
-      { label: `身故總和 J`, data: dataDeath, borderColor: '#0D2A3A', backgroundColor:'rgba(13,42,58,0.05)', tension:0.2, borderWidth:2.5, pointRadius:0 },
-      { label: `解約總和 K`, data: dataSurr, borderColor: '#0f766e', backgroundColor:'rgba(15,118,110,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
+      { label:`累計保費`,  data:dataPaid,  borderColor:'#F59E0B', backgroundColor:gradFn('#F59E0B',0.18), tension:0.4, borderWidth:2.5, pointRadius:0, fill:true },
+      { label:`身故總和 J`,data:dataDeath, borderColor:'#0EA5E9', backgroundColor:gradFn('#0EA5E9',0.12), tension:0.4, borderWidth:2.5, pointRadius:0, fill:true },
+      { label:`解約總和 K`,data:dataSurr,  borderColor:'#10B981', backgroundColor:gradFn('#10B981',0.22), tension:0.4, borderWidth:2.5, pointRadius:0, fill:true },
     ]},
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction: { intersect:false, mode:'index' },
       plugins: {
-        legend: { position:'top', labels:{usePointStyle:true,boxWidth:8,font:{size:10}} },
+        legend: { position:'top', labels:{usePointStyle:true,boxWidth:8,font:{size:11,weight:600},color:document.body.classList.contains('dark')?'#CBD5E1':'#475569'} },
         tooltip: {
+          backgroundColor: 'rgba(15,23,42,0.92)',
+          titleColor: '#FCD34D',
+          titleFont: {size:12,weight:700},
+          bodyColor: '#fff',
+          bodyFont: {size:11.5,weight:500},
+          padding: 12,
+          cornerRadius: 12,
+          displayColors: true,
+          boxPadding: 4,
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
           callbacks: {
             title: (items) => `${items[0].label} 歲 (第 ${items[0].dataIndex + 1} 年)`,
             label: (c) => ` ${c.dataset.label}: ${inp.showTwd?'NT$':'USD '}${Math.round(c.parsed.y).toLocaleString()}`,
@@ -1095,16 +1450,18 @@ function renderChart(r, inp) {
         }
       },
       scales: {
-        x: { ticks:{maxTicksLimit:14,font:{size:10}}, grid:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10},color:'#999'} },
+        x: { ticks:{maxTicksLimit:14,font:{size:10},color:'#94A3B8'}, grid:{display:false}, border:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10,weight:600},color:'#94A3B8'} },
         y: {
           position:'left',
-          ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
-          grid:{color:'#eee'}
+          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          grid:{color:'rgba(148,163,184,0.12)',drawTicks:false},
+          border:{display:false},
         },
         y1: {
           position:'right',
-          ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
-          grid:{display:false}
+          ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'},
+          grid:{display:false},
+          border:{display:false},
         },
       }
     }
@@ -1117,16 +1474,28 @@ function renderLeverageChart(r, inp) {
   const labels = rows.map(row => `${row.attainedAge}`);
   const dataLev = rows.map(row => row.cumP > 0 ? +(row.J / row.cumP).toFixed(2) : 0);
   if (chartLeverage) chartLeverage.destroy();
+  const gradGold = (ctx2) => {
+    const {ctx:cx, chartArea} = ctx2.chart;
+    if (!chartArea) return 'rgba(245,158,11,0.3)';
+    const g = cx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    g.addColorStop(0, 'rgba(245,158,11,0.35)');
+    g.addColorStop(1, 'rgba(245,158,11,0)');
+    return g;
+  };
   chartLeverage = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets: [
-      { label:'保障槓桿 J÷B', data:dataLev, borderColor:'#E8A020', backgroundColor:'rgba(232,160,32,0.15)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
+      { label:'保障槓桿 J÷B', data:dataLev, borderColor:'#F59E0B', backgroundColor:gradGold, tension:0.4, borderWidth:2.5, pointRadius:0, fill:true },
     ]},
     options: {
       responsive:true, maintainAspectRatio:false,
       plugins: {
         legend:{display:false},
         tooltip: {
+          backgroundColor:'rgba(15,23,42,0.92)',titleColor:'#FCD34D',
+          titleFont:{size:12,weight:700},bodyColor:'#fff',bodyFont:{size:11.5,weight:500},
+          padding:12,cornerRadius:12,displayColors:false,
+          borderColor:'rgba(255,255,255,0.1)',borderWidth:1,
           callbacks: {
             title: (items) => `${items[0].label} 歲 (第 ${items[0].dataIndex + 1} 年)`,
             label: (c) => ` 每 1 元保費 → ${c.parsed.y.toFixed(2)} 元身故給付`,
@@ -1134,17 +1503,9 @@ function renderLeverageChart(r, inp) {
         }
       },
       scales: {
-        x: { ticks:{maxTicksLimit:12,font:{size:9}}, grid:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10},color:'#999'} },
-        y: {
-          position:'left',
-          ticks:{font:{size:10},callback:(v)=>v+'×'},
-          grid:{color:'#eee'}, beginAtZero:true
-        },
-        y1: {
-          position:'right',
-          ticks:{font:{size:10},callback:(v)=>v+'×'},
-          grid:{display:false}, beginAtZero:true
-        },
+        x: { ticks:{maxTicksLimit:12,font:{size:9},color:'#94A3B8'}, grid:{display:false}, border:{display:false}, title:{display:true,text:'保險年齡 (歲)',font:{size:10,weight:600},color:'#94A3B8'} },
+        y: { position:'left', ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>v+'×'}, grid:{color:'rgba(148,163,184,0.12)',drawTicks:false}, border:{display:false}, beginAtZero:true },
+        y1:{ position:'right',ticks:{font:{size:10},color:'#94A3B8',callback:(v)=>v+'×'}, grid:{display:false}, border:{display:false}, beginAtZero:true },
       }
     }
   });
@@ -1353,14 +1714,35 @@ document.querySelectorAll('input[name="sex"]').forEach(el =>
   el.addEventListener('change', recalc));
 $('fx-fetch').addEventListener('click', fetchFxRate);
 
-// 圖表範圍切換
-document.querySelectorAll('#chart-range button').forEach(b => {
-  b.addEventListener('click', () => {
-    chartRange = b.dataset.range;
-    document.querySelectorAll('#chart-range button').forEach(x =>
-      x.classList.toggle('active', x.dataset.range === chartRange));
-    recalc();
-  });
+// Dark Mode 切換
+function applyDarkMode(on) {
+  document.body.classList.toggle('dark', on);
+  $('dark-toggle').textContent = on ? '☀' : '🌙';
+  $('dark-toggle').title = on ? '切換淺色' : '切換深色';
+  // 重畫圖表以同步配色
+  if (RATES) {
+    try { const inp = getInputs(); const r = calculate(inp); renderChart(r,inp); renderLeverageChart(r,inp); } catch(e){}
+  }
+}
+$('dark-toggle').addEventListener('click', () => {
+  const next = !document.body.classList.contains('dark');
+  localStorage.setItem('dark-mode', next ? '1' : '0');
+  applyDarkMode(next);
+});
+// 載入時讀取偏好
+if (localStorage.getItem('dark-mode') === '1') applyDarkMode(true);
+
+// 圖表範圍滑桿
+$('chart-range-slider').addEventListener('input', () => {
+  const inp = getInputs();
+  updateSliderUI(inp.age);
+  // 只重畫圖,不重算
+  if (!RATES) return;
+  try {
+    const r = calculate(inp);
+    renderChart(r, inp);
+    renderLeverageChart(r, inp);
+  } catch(e) {}
 });
 
 init();
