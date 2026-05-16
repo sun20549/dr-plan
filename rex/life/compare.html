@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="../../images/favicon-32.png">
+<title>商品比較 · 鼎綸恩宇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --orange:#F05A28;--orange-dark:#D04618;--orange-light:#FDE8DF;
+  --teal:#1A6B72;--teal-dark:#0F4D52;--teal-light:#D0EAEC;
+  --navy:#0D2A3A;--navy-mid:#0a2334;
+  --gold:#E8A020;--gold-dark:#b07800;--gold-light:#FEF3E0;
+  --jade:#0f766e;--jade-light:#D1F2EE;
+  --white:#fff;--bg:#F2EFE9;--border:#E5E0D3;
+  --text:#0D2A3A;--text-muted:#6B7280;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text);font-size:14px;line-height:1.55;}
+.topbar{background:linear-gradient(135deg,var(--navy-mid),var(--navy));color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.topbar a.back{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;}
+.topbar h1{font-size:16px;font-weight:900;letter-spacing:1px;}
+.container{max-width:1500px;margin:0 auto;padding:18px;}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(13,42,58,.05);overflow:hidden;margin-bottom:16px;}
+.card-header{padding:14px 18px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff,#fafafa);}
+.card-header h2{font-size:14px;font-weight:900;color:var(--navy);letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.card-header h2::before{content:'';width:3px;height:14px;background:var(--orange);border-radius:2px;}
+.card-body{padding:18px;}
+.input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;width:100%;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;color:var(--text-muted);margin-bottom:4px;font-weight:600;letter-spacing:1px;}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;}
+@media (max-width:900px){.row{grid-template-columns:1fr 1fr;}}
+.btn{padding:8px 16px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;}
+.btn-primary{background:var(--orange);color:#fff;}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px;}
+.product-pick{background:#fafafa;border:2px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .2s;}
+.product-pick.active{background:var(--orange-light);border-color:var(--orange);}
+.product-pick:hover{border-color:var(--orange);}
+.product-pick .pp-name{font-weight:900;color:var(--navy);font-size:13px;margin-bottom:2px;}
+.product-pick .pp-info{font-size:11px;color:var(--text-muted);}
+table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;}
+th{background:var(--navy);color:#fff;padding:8px;font-size:11px;font-weight:700;letter-spacing:1px;}
+td{padding:7px 8px;border:1px solid var(--border);text-align:right;}
+td.lbl{text-align:left;font-weight:700;color:var(--navy);background:#fafafa;}
+tbody tr:nth-child(even) td{background:#fafafa;}
+.chart-wrap{position:relative;height:320px;padding:14px;}
+.notice{padding:10px 14px;font-size:12px;background:var(--jade-light);color:var(--jade);border-radius:8px;margin-bottom:14px;}
+.col-orange{color:var(--orange-dark);font-weight:700;}
+.col-jade{color:var(--jade);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="./" class="back">← 試算頁</a>
+  <h1>📊 多商品比較</h1>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header"><h2>共同條件</h2></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="field">
+          <label>性別</label>
+          <select class="input" id="sex"><option value="M" selected>男性</option><option value="F">女性</option></select>
+        </div>
+        <div class="field">
+          <label>保險年齡</label>
+          <input class="input" type="number" id="age" value="55" min="0" max="75">
+        </div>
+        <div class="field">
+          <label>投保金額 (萬美元)</label>
+          <input class="input" type="number" id="face" value="100" min="1">
+        </div>
+        <div class="field">
+          <label>繳別</label>
+          <select class="input" id="freq"><option>年繳</option><option>半年繳</option><option>季繳</option><option>月繳</option></select>
+        </div>
+        <div class="field">
+          <label>情境</label>
+          <select class="input" id="scenario"><option value="M">中分紅</option><option value="L">較低紅利</option><option value="Z">零分紅</option></select>
+        </div>
+        <div class="field">
+          <label>檢視年度</label>
+          <input class="input" type="number" id="checkYear" value="20" min="1" max="55">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="compare()">🔍 開始比較</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>勾選比較商品(可多選)</h2></div>
+    <div class="card-body">
+      <div class="product-grid" id="product-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>結果對照</h2></div>
+    <div class="card-body" id="result-area">
+      <div class="notice">勾選 2 個以上商品,點「開始比較」即可橫向對照。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>身故總和走勢圖</h2></div>
+    <div class="chart-wrap"><canvas id="chart-j"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>解約總和走勢圖</h2></div>
+    <div class="chart-wrap"><canvas id="chart-k"></canvas></div>
+  </div>
+</div>
+
+<script>
+let CATALOG=null, SELECTED=new Set(), CACHE={};
+let chartJ=null, chartK=null;
+
+async function init(){
+  CATALOG = await fetch('data/_catalog.json').then(r=>r.json());
+  const g = document.getElementById('product-grid');
+  let html = '';
+  CATALOG.companies.forEach(c => {
+    c.products.forEach(p => {
+      const key = c.code+'/'+p.code;
+      html += `<div class="product-pick" data-key="${key}" onclick="togglePick('${key}')">
+        <div class="pp-name">${p.short || p.name}</div>
+        <div class="pp-info">${c.name} · ${p.plan_code} · ${p.pay_years}年 · ${p.currency}</div>
+      </div>`;
+    });
+  });
+  g.innerHTML = html;
+  // 預設勾選全部
+  CATALOG.companies.forEach(c => c.products.forEach(p => {
+    const key = c.code+'/'+p.code;
+    SELECTED.add(key);
+    document.querySelector(`[data-key="${key}"]`).classList.add('active');
+  }));
+  compare();
+}
+function togglePick(key){
+  const el = document.querySelector(`[data-key="${key}"]`);
+  if (SELECTED.has(key)) { SELECTED.delete(key); el.classList.remove('active'); }
+  else { SELECTED.add(key); el.classList.add('active'); }
+}
+
+async function loadProduct(c, p){
+  const cacheKey = p.data_file + '/' + p.plan_code;
+  if (CACHE[cacheKey]) return CACHE[cacheKey];
+  const data = await fetch('data/'+p.data_file).then(r=>r.json());
+  CACHE[cacheKey] = {data, plan_code: p.plan_code, company: c, product: p};
+  return CACHE[cacheKey];
+}
+
+function calc(RATES, plan, sex, age, faceWan, scenario){
+  const prod = RATES.products.find(x=>x.code===plan);
+  if (!prod) return null;
+  if (age < prod.min_age || age > prod.max_age) return null;
+  const gp = RATES.gp[plan]?.[sex]?.[age];
+  if (gp == null) return null;
+  const faceUSD = faceWan*10000;
+  const orig = gp*faceWan*10;
+  let hp=0;
+  for (const t of (RATES.discounts.high_premium_tiers||[])){
+    if (faceUSD >= t.min_usd && faceUSD <= t.max_usd){ hp=t.rate; break; }
+  }
+  const firstRate = hp + RATES.discounts.first_period;
+  const renewRate = hp + RATES.discounts.renewal;
+  const firstA = Math.round(orig*(1-firstRate));
+  const renewA = Math.round(orig*(1-renewRate));
+  const uvA = RATES.uv[plan][sex][age];
+  const dvA = RATES.div[plan][sex][age];
+  const corr = RATES.corridor[plan];
+  const last = prod.mature_age - age;
+  let cumP=0, cumE=0;
+  const rows=[];
+  for (let yr=1; yr<=last; yr++){
+    const isPay = yr <= prod.pay_years;
+    const A = isPay ? (yr===1?firstA:renewA) : 0;
+    cumP += A;
+    const C = Math.round((corr[yr]||0)*faceUSD);
+    const uv = uvA[yr]||[0,0,0];
+    const D = uv[1]*faceWan*10;
+    const NSP = uv[2];
+    const dv = dvA[yr]||[0,0,0,0,0,0];
+    const dvP = dvA[yr-1]||[0,0,0,0,0,0];
+    const AD = (scenario==='M'?dv[0]:scenario==='L'?dv[3]:0)*faceWan*10;
+    const TDD = (scenario==='M'?dvP[1]:scenario==='L'?dvP[4]:0)*faceWan*10;
+    const TDS = (scenario==='M'?dvP[2]:scenario==='L'?dvP[5]:0)*faceWan*10;
+    const bought = (AD>0&&NSP>0) ? Math.round(AD/NSP*1000) : 0;
+    cumE += bought;
+    const F = cumE>0 ? Math.round(cumE*(corr[yr]??1)) : 0;
+    const G = cumE>0 ? Math.round(cumE*NSP/1000*100)/100 : 0;
+    rows.push({yr, age:age+yr-1, A, cumP, C, D, E:cumE, F, G, H:TDD, I:TDS, J:C+F+TDD, K:D+G+TDS});
+  }
+  return {rows, prod, gp};
+}
+
+async function compare(){
+  const sex = document.getElementById('sex').value;
+  const age = +document.getElementById('age').value;
+  const faceWan = +document.getElementById('face').value;
+  const scenario = document.getElementById('scenario').value;
+  const checkYear = +document.getElementById('checkYear').value;
+
+  if (!SELECTED.size){ document.getElementById('result-area').innerHTML='<div class="notice">請先勾選至少一個商品</div>'; return; }
+
+  const promises = [...SELECTED].map(async key => {
+    const [cCode, pCode] = key.split('/');
+    const c = CATALOG.companies.find(x=>x.code===cCode);
+    const p = c.products.find(x=>x.code===pCode);
+    const loaded = await loadProduct(c, p);
+    const r = calc(loaded.data, p.plan_code, sex, age, faceWan, scenario);
+    return { key, c, p, r };
+  });
+  const results = await Promise.all(promises);
+  const valid = results.filter(x => x.r);
+
+  // 表格
+  const yr = checkYear;
+  let html = `<table><thead><tr>
+    <th class="lbl">項目</th>
+    ${valid.map(v => `<th>${v.c.name}<br><small style="font-weight:500;opacity:.7">${v.p.short}</small></th>`).join('')}
+  </tr></thead><tbody>`;
+  const row = (label, fn, fmt) => {
+    html += `<tr><td class="lbl">${label}</td>`;
+    valid.forEach(v => {
+      const r = v.r.rows[yr-1];
+      if (!r){ html += `<td>—</td>`; return; }
+      const val = fn(v.r, r);
+      html += `<td>${fmt(val)}</td>`;
+    });
+    html += `</tr>`;
+  };
+  const usd = v => v == null ? '—' : 'USD ' + Math.round(v).toLocaleString();
+  const pct = v => v == null ? '—' : (v*100).toFixed(1)+'%';
+
+  row('GP 費率', (r,_)=>r.gp, v=>v.toFixed(2));
+  row('第一年保費', (r,_)=>r.rows[0]?.A, usd);
+  row('總實繳保費 ('+results[0]?.p.pay_years+'年)', (r,_)=>{ let t=0; for(const x of r.rows) t+=x.A; return t;}, usd);
+  row(`第 ${yr} 年 · 累計保費 B`, (_,r)=>r.cumP, usd);
+  row(`第 ${yr} 年 · 身故總和 J`, (_,r)=>Math.max(r.J,r.K), usd);
+  row(`第 ${yr} 年 · 解約總和 K`, (_,r)=>r.K, usd);
+  row(`第 ${yr} 年 · 保障倍率 (J/B)`, (_,r)=>Math.max(r.J,r.K)/r.cumP, v=>(v).toFixed(2)+'×');
+  row(`第 ${yr} 年 · 保本率 (K/B)`, (_,r)=>r.K/r.cumP, pct);
+
+  // 回本年
+  const breakEven = (rows) => {
+    for (const x of rows){ if (x.cumP>0 && x.K>=x.cumP) return x.yr; }
+    return null;
+  };
+  html += `<tr><td class="lbl">回本年度</td>`;
+  valid.forEach(v => {
+    const be = breakEven(v.r.rows);
+    html += `<td class="col-jade">${be ? `第 ${be} 年` : '尚未回本'}</td>`;
+  });
+  html += `</tr>`;
+  html += `</tbody></table>`;
+  document.getElementById('result-area').innerHTML = html;
+
+  // 圖表
+  const labels = Array.from({length:55}, (_,i) => `年${i+1}`);
+  const colors = ['#F05A28','#0D2A3A','#0f766e','#E8A020','#C2185B','#1A6B72','#7c3aed'];
+  const dsJ = valid.map((v,i) => ({
+    label: `${v.c.name} ${v.p.short}`, data: v.r.rows.slice(0,55).map(r=>Math.max(r.J,r.K)),
+    borderColor: colors[i%colors.length], backgroundColor: colors[i%colors.length]+'22',
+    tension:0.2, borderWidth:2.5, pointRadius:0, fill:false,
+  }));
+  const dsK = valid.map((v,i) => ({
+    label: `${v.c.name} ${v.p.short}`, data: v.r.rows.slice(0,55).map(r=>r.K),
+    borderColor: colors[i%colors.length], backgroundColor: colors[i%colors.length]+'22',
+    tension:0.2, borderWidth:2.5, pointRadius:0, fill:false,
+  }));
+  if (chartJ) chartJ.destroy();
+  if (chartK) chartK.destroy();
+  chartJ = new Chart(document.getElementById('chart-j'), {
+    type:'line', data:{labels, datasets:dsJ},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},
+      plugins:{legend:{position:'top',labels:{font:{size:10}}}}, scales:{y:{ticks:{callback:v=>'$'+(v/1000).toLocaleString()+'k'}}}},
+  });
+  chartK = new Chart(document.getElementById('chart-k'), {
+    type:'line', data:{labels, datasets:dsK},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},
+      plugins:{legend:{position:'top',labels:{font:{size:10}}}}, scales:{y:{ticks:{callback:v=>'$'+(v/1000).toLocaleString()+'k'}}}},
+  });
+}
+
+init();
+</script>
+</body>
+</html>

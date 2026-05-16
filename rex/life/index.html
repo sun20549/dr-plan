@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="../../images/favicon-32.png">
-<title>美鴻添富 試算工具 · 鼎綸恩宇</title>
+<title>美鴻添富 試算 · 鼎綸恩宇</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -14,116 +14,122 @@
   --navy:#0D2A3A;--navy-mid:#0a2334;--navy-light:#1E4762;
   --gold:#E8A020;--gold-dark:#b07800;--gold-light:#FEF3E0;
   --jade:#0f766e;--jade-light:#D1F2EE;
+  --line:#06C755;
   --white:#fff;--light:#F8F5F0;--bg:#F2EFE9;
   --row-alt:#FAF7F1;--row-hover:#FFF6E8;
   --border:#E5E0D3;
-  --text:var(--navy);
-  --text-muted:#6B7280;
-  /* Gender-driven accent (set on body) */
-  --accent:var(--teal);
-  --accent-dark:var(--teal-dark);
-  --accent-light:var(--teal-light);
+  --text:#0D2A3A;--text-muted:#6B7280;
+  --accent:var(--teal);--accent-dark:var(--teal-dark);--accent-light:var(--teal-light);
   --accent-bg:rgba(26,107,114,0.06);
 }
 body.theme-female{
-  --accent:#C2185B;
-  --accent-dark:#8C0F40;
-  --accent-light:#FCE4EC;
+  --accent:#C2185B;--accent-dark:#8C0F40;--accent-light:#FCE4EC;
   --accent-bg:rgba(194,24,91,0.05);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);font-family:'Noto Sans TC',sans-serif;color:var(--text);font-size:14px;line-height:1.55;}
 
-/* ===== HEADER ===== */
-.topbar{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--navy) 60%,var(--navy-light) 100%);color:#fff;padding:14px 28px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 20px rgba(0,0,0,.15);position:sticky;top:0;z-index:50;}
-.topbar a.back{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;transition:all .2s;display:flex;align-items:center;gap:6px;}
+/* ===== TOPBAR ===== */
+.topbar{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--navy) 60%,var(--navy-light) 100%);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.15);position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.topbar a.back{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;transition:all .2s;}
 .topbar a.back:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.4);}
-.topbar .brand{display:flex;align-items:center;gap:14px;}
-.topbar .brand img{height:32px;width:auto;background:rgba(255,255,255,.95);padding:4px 6px;border-radius:6px;}
+.topbar .brand{display:flex;align-items:center;gap:12px;}
+.topbar .brand img{height:30px;width:auto;background:rgba(255,255,255,.95);padding:3px 5px;border-radius:5px;}
 .topbar .brand-text{display:flex;flex-direction:column;line-height:1.15;}
 .topbar .brand-text .b1{font-size:13px;font-weight:900;letter-spacing:1px;color:var(--orange);}
 .topbar .brand-text .b2{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1.5px;}
 .topbar .spacer{flex:1;}
-.topbar .product-tag{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:2px;text-align:right;}
-.topbar .product-tag b{display:block;font-size:13px;color:rgba(255,255,255,.9);font-weight:700;margin-top:2px;letter-spacing:0;}
+.topbar .top-btn{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:6px 12px;font-size:11.5px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-family:inherit;}
+.topbar .top-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);}
+.topbar .top-btn.line{background:var(--line);border-color:var(--line);color:#fff;}
+.topbar .top-btn.line:hover{background:#05a847;}
+.topbar .version-badge{font-family:'Montserrat',monospace;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.5);color:#FBC15E;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1.5px;}
 
 /* ===== PRODUCT HERO ===== */
-.product-hero{background:#fff;padding:20px 28px;border-bottom:3px solid var(--orange);box-shadow:0 1px 4px rgba(0,0,0,.04);}
-.product-hero-inner{max-width:1500px;margin:0 auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
-.product-hero .ph-logo{display:flex;align-items:center;justify-content:center;padding:10px 14px;background:#fafafa;border:1px solid var(--border);border-radius:10px;height:64px;}
-.product-hero .ph-logo img{height:42px;width:auto;object-fit:contain;}
-.product-hero .ph-info{flex:1;min-width:240px;}
-.product-hero .ph-company{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:2px;margin-bottom:2px;}
-.product-hero .ph-name{font-size:20px;font-weight:900;color:var(--navy);letter-spacing:.5px;margin-bottom:4px;}
-.product-hero .ph-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--text-muted);}
-.product-hero .ph-meta span code{background:var(--gold-light);color:var(--gold-dark);padding:2px 6px;border-radius:4px;font-weight:700;margin-right:4px;}
-.product-hero .ph-actions{display:flex;gap:8px;}
-.btn{padding:8px 16px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;letter-spacing:.5px;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+.product-hero{background:#fff;padding:18px 24px;border-bottom:3px solid var(--orange);box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.product-hero-inner{max-width:1500px;margin:0 auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.product-hero .ph-logo{display:flex;align-items:center;justify-content:center;padding:8px 12px;background:#fafafa;border:1px solid var(--border);border-radius:10px;height:58px;}
+.product-hero .ph-logo img{height:36px;width:auto;object-fit:contain;}
+.product-hero .ph-info{flex:1;min-width:200px;}
+.product-hero .ph-company{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:2px;}
+.product-hero .ph-name{font-size:18px;font-weight:900;color:var(--navy);letter-spacing:.3px;margin:2px 0 4px;}
+.product-hero .ph-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--text-muted);}
+.product-hero .ph-meta code{background:var(--gold-light);color:var(--gold-dark);padding:1px 6px;border-radius:4px;font-weight:700;margin-right:4px;}
+.product-hero .ph-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.btn{padding:7px 14px;border:none;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:700;font-family:inherit;letter-spacing:.5px;transition:all .15s;display:inline-flex;align-items:center;gap:5px;text-decoration:none;}
 .btn-primary{background:var(--orange);color:#fff;}
 .btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(240,90,40,.3);}
 .btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--border);}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
 .btn-jade{background:var(--jade);color:#fff;}
 .btn-jade:hover{background:#0c5f59;}
+.btn-line{background:var(--line);color:#fff;}
+.btn-line:hover{background:#05a847;}
 
 /* ===== LAYOUT ===== */
-.container{max-width:1500px;margin:0 auto;padding:18px;display:grid;grid-template-columns:340px 1fr;gap:18px;}
+.container{max-width:1500px;margin:0 auto;padding:16px;display:grid;grid-template-columns:340px 1fr;gap:16px;}
 @media (max-width:1100px){.container{grid-template-columns:1fr;}}
 
 .card{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(13,42,58,.05),0 8px 24px rgba(13,42,58,.04);overflow:hidden;}
-.card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#fff,#fafafa);}
+.card-header{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#fff,#fafafa);}
 .card-header h2{font-size:14px;font-weight:900;color:var(--navy);letter-spacing:1px;display:flex;align-items:center;gap:8px;}
 .card-header h2::before{content:'';width:3px;height:14px;background:var(--accent);border-radius:2px;}
-.card-body{padding:18px;}
+.card-body{padding:16px 18px 18px;}
 
 /* ===== FORM ===== */
-.field{margin-bottom:14px;}
-.field label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-muted);margin-bottom:5px;font-weight:600;letter-spacing:1px;}
+.field{margin-bottom:13px;}
+.field label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-muted);margin-bottom:4px;font-weight:600;letter-spacing:1px;}
 .field label .hint{font-size:10px;color:var(--accent);font-weight:700;}
 .input,select.input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text);transition:all .15s;}
 .input:focus,select.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
 .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 
-.seg{display:flex;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:#fafafa;}
+.seg{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:#fafafa;}
 .seg input{display:none;}
-.seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;margin:0;background:transparent;color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:1px;transition:all .15s;}
+.seg label{flex:1;text-align:center;padding:8px 6px;cursor:pointer;margin:0;color:var(--text-muted);font-size:12px;font-weight:700;letter-spacing:1px;transition:all .15s;}
 .seg input:checked + label{background:var(--accent);color:#fff;box-shadow:inset 0 -2px 0 var(--accent-dark);}
 body.theme-female .seg input[value="M"]:checked + label{background:var(--teal);box-shadow:inset 0 -2px 0 var(--teal-dark);}
 body.theme-male .seg input[value="F"]:checked + label{background:#C2185B;box-shadow:inset 0 -2px 0 #8C0F40;}
 
 .age-badge{display:inline-flex;align-items:center;gap:4px;background:var(--orange);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:900;letter-spacing:.5px;}
-.year-parse{font-size:10px;color:var(--accent);font-weight:700;margin-top:4px;}
+.year-parse{font-size:10px;color:var(--accent);font-weight:700;margin-top:4px;min-height:14px;}
 
-.summary{background:linear-gradient(135deg,var(--gold-light) 0%,#FEF8E8 100%);border:1px solid #F2D78A;border-radius:10px;padding:12px 14px;margin-bottom:14px;}
-.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:3px 0;}
+.summary{background:linear-gradient(135deg,var(--gold-light) 0%,#FEF8E8 100%);border:1px solid #F2D78A;border-radius:10px;padding:11px 14px;margin-bottom:12px;}
+.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:2px 0;}
 .summary-row + .summary-row{border-top:1px dashed rgba(176,120,0,.2);}
 .summary-row span:first-child{color:#7c5500;}
 .summary-row strong{color:var(--navy);font-weight:900;font-variant-numeric:tabular-nums;}
-.summary-row.highlight{margin-top:4px;padding-top:8px;border-top:2px solid var(--gold-dark);}
-.summary-row.highlight strong{color:var(--orange-dark);font-size:16px;}
+.summary-row.highlight{margin-top:3px;padding-top:6px;border-top:2px solid var(--gold-dark);}
+.summary-row.highlight strong{color:var(--orange-dark);font-size:15px;}
 
-.discount-card{background:var(--accent-bg);border-left:3px solid var(--accent);padding:10px 12px;border-radius:6px;font-size:11px;line-height:1.7;margin-bottom:14px;}
-.discount-card .dc-title{font-size:11px;font-weight:700;color:var(--accent-dark);margin-bottom:4px;letter-spacing:1px;}
+.discount-card{background:var(--accent-bg);border-left:3px solid var(--accent);padding:9px 12px;border-radius:6px;font-size:11px;line-height:1.7;margin-bottom:12px;}
+.discount-card .dc-title{font-size:11px;font-weight:700;color:var(--accent-dark);margin-bottom:3px;letter-spacing:1px;}
 .discount-row{display:flex;justify-content:space-between;align-items:center;}
 .discount-row b{color:var(--accent-dark);font-variant-numeric:tabular-nums;}
-.discount-row.total{margin-top:4px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.1);font-weight:700;}
+.discount-row.total{margin-top:3px;padding-top:5px;border-top:1px dashed rgba(0,0,0,.1);font-weight:700;}
 
-.rate-toggle{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1.5px dashed var(--gold);border-radius:8px;margin-bottom:14px;}
+.fx-card{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#fff;border:1.5px dashed var(--gold);border-radius:8px;margin-bottom:12px;}
 .toggle{position:relative;display:inline-block;width:38px;height:20px;flex-shrink:0;}
 .toggle input{opacity:0;width:0;height:0;}
-.toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.2s;border-radius:20px;}
+.toggle .slider{position:absolute;cursor:pointer;inset:0;background:#ccc;transition:.2s;border-radius:20px;}
 .toggle .slider::before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#fff;transition:.2s;border-radius:50%;}
 .toggle input:checked + .slider{background:var(--gold);}
 .toggle input:checked + .slider::before{transform:translateX(18px);}
-.rate-toggle .rt-text{font-size:11px;color:var(--text-muted);flex:1;}
-.rate-toggle .rt-text b{color:var(--navy);}
-.rate-toggle input.rate-input{width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums;}
+.fx-card .fx-text{font-size:11px;color:var(--text-muted);flex:1;}
+.fx-card .fx-text b{color:var(--navy);}
+.fx-card input.rate-input{width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums;}
+.fx-card .fx-fetch{background:none;border:1px solid var(--gold);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--gold-dark);cursor:pointer;font-weight:700;transition:all .15s;font-family:inherit;}
+.fx-card .fx-fetch:hover{background:var(--gold);color:#fff;}
+.fx-card .fx-fetch.loading{opacity:.5;pointer-events:none;}
+
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.action-row button{font-size:11px;padding:8px 6px;font-weight:700;letter-spacing:.5px;}
 
 /* ===== RIGHT PANEL ===== */
-.scenario-tabs{display:flex;gap:0;padding:0 18px;background:#fafafa;border-bottom:1px solid var(--border);}
-.scenario-tabs button{border:none;background:transparent;color:var(--text-muted);padding:11px 18px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1px;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:inherit;}
+.scenario-tabs{display:flex;padding:0 18px;background:#fafafa;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.scenario-tabs button{border:none;background:transparent;color:var(--text-muted);padding:11px 16px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1px;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:inherit;}
 .scenario-tabs button:hover{color:var(--accent);}
 .scenario-tabs button.active{color:var(--orange);border-bottom-color:var(--orange);}
 .scenario-tabs .right{margin-left:auto;display:flex;align-items:center;gap:6px;padding:7px 0;}
@@ -135,23 +141,26 @@ body.theme-male .seg input[value="F"]:checked + label{background:#C2185B;box-sha
 .notice b{color:#0c5f59;}
 
 /* ===== CHARTS ===== */
-.charts-wrap{padding:18px;border-bottom:1px solid var(--border);background:#fcfcfa;}
-.chart-row{display:grid;grid-template-columns:1fr;gap:14px;}
-.chart-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;}
+.charts-wrap{padding:16px 18px;border-bottom:1px solid var(--border);background:#fcfcfa;display:grid;grid-template-columns:2fr 1fr;gap:14px;}
+@media (max-width:900px){.charts-wrap{grid-template-columns:1fr;}}
+.chart-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
 .chart-box h3{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
 .chart-box h3 .sub{font-size:10px;color:var(--text-muted);font-weight:500;}
-.chart-canvas-wrap{position:relative;height:260px;}
+.chart-canvas-wrap{position:relative;height:220px;}
 
 /* ===== TABLE ===== */
 .table-wrap{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto;}
 table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;}
 thead{position:sticky;top:0;z-index:2;}
 thead tr.h1 th{background:linear-gradient(180deg,var(--navy),var(--navy-mid));color:#fff;padding:8px 6px;font-weight:700;font-size:11px;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.15);}
-thead tr.h2 th{background:var(--gold-light);color:var(--navy);padding:7px 6px;font-weight:700;font-size:11px;border:1px solid var(--border);}
+thead tr.h2 th{background:var(--gold-light);color:var(--navy);padding:6px 6px;font-weight:700;font-size:11px;border:1px solid var(--border);}
 thead tr.h2 th.guaranteed{background:#FEF3E0;}
 thead tr.h2 th.non-guaranteed{background:var(--orange-light);color:var(--orange-dark);}
 thead tr.h2 th.terminal{background:#FFF1D1;}
-thead tr.h2 th.total{background:var(--jade-light);color:var(--jade);}
+thead tr.h2 th.total-j{background:#FFE4D6;color:#A03316;}
+thead tr.h2 th.total-k{background:var(--jade-light);color:var(--jade);}
+thead tr.h2 th.ratio-j{background:#FFD9C0;color:#A03316;}
+thead tr.h2 th.ratio-k{background:#B7E2DC;color:#0a5950;}
 
 tbody td{padding:7px 8px;border:1px solid var(--border);text-align:right;}
 tbody td.text-center{text-align:center;font-weight:700;color:var(--navy);}
@@ -159,46 +168,124 @@ tbody tr:nth-child(even) td{background:var(--row-alt);}
 tbody tr:hover td{background:var(--row-hover);}
 tbody td.zero{color:#bbb;}
 tbody td.pay-yr{font-weight:700;color:var(--orange-dark);}
-tbody td.col-total{background:var(--jade-light) !important;font-weight:700;color:var(--jade);}
-tbody tr:hover td.col-total{background:#B7E2DC !important;}
+tbody td.col-total-j{background:#FFE4D6 !important;font-weight:700;color:#A03316;}
+tbody td.col-total-k{background:var(--jade-light) !important;font-weight:700;color:var(--jade);}
+tbody td.col-ratio-j{background:#FFF1E6 !important;font-weight:700;color:#A03316;font-size:11px;}
+tbody td.col-ratio-k{background:#E8F5F2 !important;font-weight:700;color:#0a5950;font-size:11px;}
+tbody tr:hover td.col-total-j{background:#FFD0B5 !important;}
+tbody tr:hover td.col-total-k{background:#B7E2DC !important;}
+tbody tr:hover td.col-ratio-j{background:#FFE0CB !important;}
+tbody tr:hover td.col-ratio-k{background:#D1EBE5 !important;}
+tbody tr.break-even td{box-shadow:inset 0 -2px 0 var(--jade);}
+tbody tr.break-even td.yr-col::after{content:' ⇣回本';font-size:9px;color:var(--jade);font-weight:700;}
 
-/* 隱藏 USD 那排重複的 hdr-unit row 已經拿掉,直接不寫 */
+.tbl-caption{display:flex;justify-content:space-between;align-items:center;padding:8px 18px;font-size:11px;background:#fafafa;border-bottom:1px solid var(--border);color:var(--text-muted);}
+.tbl-caption .cur-tag{background:var(--navy);color:#fff;padding:3px 10px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:11px;}
+.tbl-caption .cur-tag.twd{background:var(--gold);}
 
 /* 詳細/要點 視圖切換 */
 body[data-view="summary"] .col-detail{display:none;}
 
-.legend{padding:12px 18px;font-size:10.5px;color:var(--text-muted);background:#fafafa;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;}
+.legend{padding:10px 18px;font-size:10.5px;color:var(--text-muted);background:#fafafa;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;}
 .legend code{background:var(--gold-light);color:var(--gold-dark);padding:1px 6px;border-radius:3px;font-weight:700;margin-right:3px;}
 
-/* === BREAK-EVEN HIGHLIGHT === */
-tbody tr.break-even td{box-shadow:inset 0 -2px 0 var(--jade);}
-tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;color:var(--jade);font-weight:700;margin-left:4px;}
+/* ===== MOBILE TABLE — collapse to card view on very small screens ===== */
+@media (max-width:640px) {
+  .container { padding:10px; }
+  .topbar { padding: 10px 14px; }
+  .topbar .product-tag, .topbar .brand-text { display:none; }
+  .product-hero { padding: 14px; }
+  .product-hero .ph-name { font-size: 15px; }
+  .product-hero .ph-actions .btn { padding: 6px 10px; font-size: 11px; }
+  table { font-size: 10.5px; }
+  thead tr.h1 th, thead tr.h2 th { padding: 4px 3px; font-size: 10px; }
+  tbody td { padding: 5px 4px; }
+}
+
+/* ===== MODAL ===== */
+.modal-backdrop{position:fixed;inset:0;background:rgba(13,42,58,.7);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;animation:fadein .2s ease;}
+.modal-backdrop.open{display:flex;}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:14px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:slideup .25s ease;}
+@keyframes slideup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,#fff,#fafafa);}
+.modal-header h3{font-size:16px;font-weight:900;color:var(--navy);letter-spacing:.5px;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;line-height:1;padding:4px 8px;}
+.modal-body{padding:22px;}
+.modal-body p{margin-bottom:12px;line-height:1.7;font-size:13px;color:var(--text);}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;background:#fafafa;}
+
+/* LINE modal */
+.line-qr-box{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0;}
+.line-qr-box .qr-img{width:240px;height:240px;border:8px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.1);background:#fff;}
+.line-qr-box .qr-tip{font-size:12px;color:var(--text-muted);text-align:center;line-height:1.6;}
+
+/* Customer DB */
+.cust-list{max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+.cust-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.cust-row:last-child{border-bottom:none;}
+.cust-row:hover{background:var(--row-hover);}
+.cust-row .cust-info{flex:1;}
+.cust-row .cust-info b{display:block;color:var(--navy);font-weight:700;}
+.cust-row .cust-info small{color:var(--text-muted);font-size:11px;}
+.cust-row .cust-actions{display:flex;gap:4px;}
+.cust-row button{background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:10px;cursor:pointer;color:var(--accent);font-weight:700;font-family:inherit;}
+.cust-row button:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.cust-row button.danger{color:#dc2626;}
+.cust-row button.danger:hover{background:#dc2626;color:#fff;border-color:#dc2626;}
+.cust-empty{padding:24px;text-align:center;color:var(--text-muted);font-size:12px;}
+
+/* Catalog selector */
+.catalog-bar{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:14px;padding:10px 12px;background:var(--navy);border-radius:8px;color:#fff;}
+.catalog-bar label{display:block;font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;margin-bottom:3px;}
+.catalog-bar select{width:100%;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:6px;background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:700;font-family:inherit;}
+.catalog-bar select option{background:var(--navy);color:#fff;}
+
+/* ===== FLOATING LINE BUTTON ===== */
+.float-line{position:fixed;bottom:24px;right:24px;width:60px;height:60px;background:var(--line);border-radius:50%;box-shadow:0 6px 20px rgba(6,199,85,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:90;border:none;transition:all .2s;}
+.float-line:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(6,199,85,.6);}
+.float-line svg{width:32px;height:32px;fill:#fff;}
 
 /* ===== PRINT ===== */
+.print-footer{display:none;padding:8px 14px;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:8px;line-height:1.6;}
+.watermark{display:none;}
 @media print {
   @page { size: A4 landscape; margin: 10mm; }
-  body { background: white; font-size: 10px; }
-  .topbar, .scenario-tabs, .product-hero .ph-actions, .charts-wrap, .legend { display:none !important; }
+  body { background: white; font-size: 10px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .topbar, .scenario-tabs .right, .product-hero .ph-actions, .charts-wrap, .legend, .float-line, .catalog-bar, .fx-card, .action-row, .modal-backdrop { display:none !important; }
   .container { display: block; padding: 0; max-width: none; }
   .card { box-shadow: none; border:1px solid #999; border-radius:0; page-break-inside: avoid; }
   .card-input { display: none !important; }
-  .product-hero { padding: 8px 0; border-bottom:2px solid var(--navy); }
-  .product-hero .ph-name { font-size: 16px; }
+  .product-hero { padding: 6px 0 8px; border-bottom:2px solid var(--navy); }
+  .product-hero .ph-name { font-size: 14px; }
   .product-hero .ph-meta { font-size: 9px; }
+  .scenario-tabs { padding: 4px 8px; }
+  .scenario-tabs button { padding: 4px 8px; font-size: 10px; }
+  .scenario-tabs button:not(.active) { display:none; }
+  .notice { padding: 5px 8px; font-size: 9px; }
   .table-wrap { max-height: none; overflow: visible; }
   table { font-size: 9px; }
-  thead tr.h1 th { background: var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  thead tr.h2 th { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  tbody tr:nth-child(even) td { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  tbody td.col-total { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  tbody tr { page-break-inside: avoid; }
   thead { display: table-header-group; }
+  tbody tr { page-break-inside: avoid; }
   .print-footer { display: block !important; }
+  /* watermark */
+  .watermark{
+    display:block !important;
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(-25deg);
+    font-size:80px;font-weight:900;
+    color:rgba(240,90,40,0.08);
+    letter-spacing:8px;
+    z-index:0;pointer-events:none;
+    white-space:nowrap;
+  }
 }
-.print-footer{display:none;padding:8px 0;font-size:9px;color:#666;border-top:1px solid #ccc;margin-top:10px;line-height:1.5;}
 </style>
 </head>
 <body class="theme-male" data-view="detail">
+
+<!-- Watermark for print only -->
+<div class="watermark">僅供試算 · 非正式建議書</div>
 
 <div class="topbar">
   <a href="../" class="back">← 返回主頁</a>
@@ -210,29 +297,30 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
     </div>
   </div>
   <div class="spacer"></div>
-  <div class="product-tag">
-    高精度試算工具
-    <b>美元分紅終身壽險</b>
-  </div>
+  <a class="top-btn" href="./compare.html" style="text-decoration:none;">📊 多商品比較</a>
+  <button class="top-btn" onclick="openModal('modal-customers')">📋 客戶記錄</button>
+  <button class="top-btn" onclick="shareLink()">🔗 分享連結</button>
+  <button class="top-btn line" onclick="openModal('modal-line')">💬 加我 LINE</button>
+  <div class="version-badge" id="version-badge" title="保險公司-商品-版本">新光-美鴻添富-003</div>
 </div>
 
 <div class="product-hero">
   <div class="product-hero-inner">
     <div class="ph-logo">
-      <img id="company-logo" src="" alt="保險公司 LOGO" onerror="this.style.display='none'">
+      <img id="company-logo" src="" alt="" onerror="this.style.display='none'">
     </div>
     <div class="ph-info">
       <div class="ph-company" id="company-name">—</div>
-      <div class="ph-name" id="product-name">商品試算工具</div>
+      <div class="ph-name" id="product-name">商品試算</div>
       <div class="ph-meta">
-        <span><code id="meta-code">UPD061/UPD101</code>商品代碼</span>
-        <span><code id="meta-approval">—</code>核准文號</span>
-        <span><code id="meta-effective">—</code>啟用日期</span>
+        <span><code id="meta-code">—</code>代碼</span>
+        <span><code id="meta-approval">SK-03-114121704</code>核准</span>
+        <span><code id="meta-effective">2026-04-01</code>啟用</span>
         <span id="rates-status" style="color:var(--jade)">資料載入中…</span>
       </div>
     </div>
     <div class="ph-actions">
-      <button class="btn btn-ghost" onclick="window.print()">🖨 列印 PDF</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨 列印 PDF</button>
       <button class="btn btn-ghost" onclick="exportCSV()">↓ CSV</button>
     </div>
   </div>
@@ -243,6 +331,17 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
   <div class="card card-input">
     <div class="card-header"><h2>試算條件</h2></div>
     <div class="card-body">
+
+      <div class="catalog-bar">
+        <div>
+          <label>保險公司</label>
+          <select id="cat-company"></select>
+        </div>
+        <div>
+          <label>商品</label>
+          <select id="cat-product"></select>
+        </div>
+      </div>
 
       <div class="field">
         <label>被保險人姓名</label>
@@ -273,7 +372,7 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
       </div>
 
       <div class="field" id="bday-block">
-        <label>出生日期 <span class="hint">民國或西元皆可</span></label>
+        <label>出生日期 <span class="hint">民國/西元皆可</span></label>
         <div class="row-3">
           <input class="input" type="number" id="bd-y" value="60" placeholder="年">
           <input class="input" type="number" id="bd-m" value="1" min="1" max="12" placeholder="月">
@@ -285,14 +384,6 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
       <div class="field" id="direct-block" style="display:none;">
         <label>保險年齡(歲)</label>
         <input class="input" type="number" id="direct-age" value="55" min="0" max="75">
-      </div>
-
-      <div class="field">
-        <label>險種 / 繳費年期</label>
-        <select class="input" id="plan">
-          <option value="UPD061">UPD061 · 六年期</option>
-          <option value="UPD101">UPD101 · 十年期</option>
-        </select>
       </div>
 
       <div class="row-2">
@@ -311,14 +402,16 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
         </div>
       </div>
 
-      <div class="rate-toggle">
+      <div class="fx-card">
         <label class="toggle">
           <input type="checkbox" id="show-twd">
           <span class="slider"></span>
         </label>
-        <span class="rt-text">換算 <b>新台幣</b> 顯示</span>
-        <input class="input rate-input" type="number" id="fx-rate" value="32" min="20" max="50" step="0.1">
+        <span class="fx-text">換 <b>新台幣</b></span>
+        <input class="input rate-input" type="number" id="fx-rate" value="32" min="20" max="50" step="0.01">
+        <button class="fx-fetch" id="fx-fetch" title="抓取當前匯率">↻ 即時</button>
       </div>
+      <div id="fx-info" style="font-size:10px;color:var(--text-muted);margin-top:-8px;margin-bottom:10px;padding-left:4px;"></div>
 
       <div id="input-err" style="color:#dc2626;font-size:11px;margin-bottom:10px;"></div>
 
@@ -326,13 +419,18 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
 
       <div class="discount-card" id="discount-info"></div>
 
+      <div class="action-row">
+        <button class="btn btn-jade" onclick="saveCurrentCase()">💾 儲存此試算</button>
+        <button class="btn btn-ghost" onclick="resetCase()">↺ 重設</button>
+      </div>
+
     </div>
   </div>
 
   <!-- RIGHT: OUTPUT -->
   <div class="card">
     <div class="scenario-tabs">
-      <button class="active" data-scenario="M" onclick="setScenario('M')">最可能紅利 (中分紅)</button>
+      <button class="active" data-scenario="M" onclick="setScenario('M')">最可能紅利</button>
       <button data-scenario="L" onclick="setScenario('L')">較低紅利</button>
       <button data-scenario="Z" onclick="setScenario('Z')">紅利為零</button>
       <div class="right">
@@ -347,63 +445,207 @@ tbody tr.break-even td.text-center::after{content:'⇣回本';font-size:9px;colo
 
     <div class="charts-wrap">
       <div class="chart-box">
-        <h3>累計保費 vs 身故總和 vs 解約總和 <span class="sub" id="chart-sub">逐年累積走勢</span></h3>
+        <h3>累計保費 vs 身故總和 vs 解約總和 <span class="sub">逐年累積走勢</span></h3>
         <div class="chart-canvas-wrap"><canvas id="chart-main"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>保障槓桿 <span class="sub">身故給付 ÷ 累計保費</span></h3>
+        <div class="chart-canvas-wrap"><canvas id="chart-leverage"></canvas></div>
       </div>
     </div>
 
+    <div class="tbl-caption">
+      <span>金額單位 <span class="cur-tag" id="cur-tag">USD</span> · <span id="cur-note">原幣別美元</span></span>
+      <span style="color:var(--text-muted);font-size:10px;">滑鼠移到列上會 highlight,「⇣回本」表示該年度解約金已超過已繳保費</span>
+    </div>
     <div class="table-wrap" id="table-wrap"></div>
 
     <div class="legend">
-      <span><code>A</code>當年度實繳保費</span>
-      <span><code>B</code>累計實繳保費</span>
-      <span><code>C</code>基本身故金</span>
-      <span><code>D</code>基本解約金</span>
-      <span><code>E</code>累計增額面額</span>
-      <span><code>F</code>增額身故</span>
-      <span><code>G</code>增額解約</span>
-      <span><code>H</code>終期保額紅利</span>
-      <span><code>I</code>終期現金紅利</span>
-      <span><code>J = C+F+H</code></span>
-      <span><code>K = D+G+I</code></span>
+      <span><code>A</code>當年保費</span><span><code>B</code>累計保費</span>
+      <span><code>C</code>基本身故</span><span><code>D</code>基本解約</span>
+      <span><code>E</code>累計增額</span><span><code>F</code>增額身故</span><span><code>G</code>增額解約</span>
+      <span><code>H</code>終期身故</span><span><code>I</code>終期解約</span>
+      <span><code>J = C+F+H</code></span><span><code>K = D+G+I</code></span>
     </div>
 
     <div class="print-footer" id="print-footer"></div>
   </div>
 </div>
 
+<!-- ===== DISCLAIMER MODAL (first-time) ===== -->
+<div class="modal-backdrop" id="modal-disclaimer">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="disc-title">使用前請閱讀</h3>
+    </div>
+    <div class="modal-body" id="disc-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="ackDisclaimer()">我已了解,開始試算</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LINE QR MODAL ===== -->
+<div class="modal-backdrop" id="modal-line">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💬 加入 LINE 諮詢</h3>
+      <button class="modal-close" onclick="closeModal('modal-line')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="line-qr-box">
+        <img class="qr-img" id="line-qr" src="" alt="LINE QR">
+        <div class="qr-tip">
+          請用 LINE 掃描上方 QR Code,或點選下方按鈕直接加入好友。
+        </div>
+        <a class="btn btn-line" id="line-link" href="" target="_blank" rel="noopener" style="padding:10px 22px;font-size:14px;">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="white" style="margin-right:6px;"><path d="M16 3C8.27 3 2 8.07 2 14.3c0 5.58 5.04 10.26 11.83 11.14.46.1 1.09.3 1.25.69.14.36.09.91.05 1.27 0 0-.17 1.02-.21 1.24-.06.36-.29 1.42 1.25.78 1.54-.65 8.28-4.88 11.3-8.35C29.36 19.5 30 17 30 14.3 30 8.07 23.73 3 16 3z"/></svg>
+          加入好友
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CUSTOMER RECORDS MODAL ===== -->
+<div class="modal-backdrop" id="modal-customers">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3>📋 客戶試算記錄</h3>
+      <button class="modal-close" onclick="closeModal('modal-customers')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
+        儲存在你的瀏覽器本機(localStorage),不會上傳。換電腦就看不到,記得重要案例自行備份。
+      </p>
+      <div class="cust-list" id="cust-list"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="exportCustomers()">↓ 匯出 JSON</button>
+      <button class="btn btn-ghost" onclick="importCustomers()">↑ 匯入</button>
+      <input type="file" id="cust-import" accept=".json" style="display:none;">
+      <div style="flex:1;"></div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-customers')">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating LINE button -->
+<button class="float-line" onclick="openModal('modal-line')" title="加入 LINE">
+  <svg viewBox="0 0 32 32"><path d="M16 3C8.27 3 2 8.07 2 14.3c0 5.58 5.04 10.26 11.83 11.14.46.1 1.09.3 1.25.69.14.36.09.91.05 1.27 0 0-.17 1.02-.21 1.24-.06.36-.29 1.42 1.25.78 1.54-.65 8.28-4.88 11.3-8.35C29.36 19.5 30 17 30 14.3 30 8.07 23.73 3 16 3z"/></svg>
+</button>
+
 <script>
 // ================= STATE =================
 let RATES = null;
+let CATALOG = null;
+let SETTINGS = null;
 let scenario = 'M';
 let view = 'detail';
-let chart = null;
+let chartMain = null, chartLeverage = null;
+let currentPlan = 'UPD061';
 const ROC_OFFSET = 1911;
 
 const $ = (id) => document.getElementById(id);
-
-// ================= FORMATTING =================
-function fmt(n, dec = 2) {
+const fmt = (n, dec = 2) => {
   if (n === 0 || n == null || isNaN(n)) return '0';
   if (Math.abs(n) < 0.005 && dec <= 2) return '0';
   return n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
-}
-function fmtInt(n) {
-  return n == null || isNaN(n) ? '0' : Math.round(n).toLocaleString('en-US');
+};
+const fmtInt = (n) => n == null || isNaN(n) ? '0' : Math.round(n).toLocaleString('en-US');
+
+// ================= INIT =================
+async function init() {
+  // 1. settings
+  try {
+    SETTINGS = await fetch('settings.json').then(r => r.json());
+  } catch (e) { SETTINGS = {}; }
+  applySettings();
+  // 2. catalog
+  try {
+    CATALOG = await fetch('data/_catalog.json').then(r => r.json());
+  } catch (e) { CATALOG = { companies: [] }; }
+  buildCatalogSelectors();
+  // 3. first product
+  if (CATALOG.companies?.length && CATALOG.companies[0].products?.length) {
+    const c = CATALOG.companies[0], p = c.products[0];
+    await loadProduct(c, p);
+  }
+  // 4. restore from URL hash if present
+  if (location.hash.length > 1) {
+    try { restoreFromHash(); } catch (e) {}
+  }
+  // 5. disclaimer
+  if (!localStorage.getItem('disclaimer-acked-v1')) showDisclaimer();
 }
 
-// ================= LOAD RATES =================
-async function loadRates() {
+function applySettings() {
+  const s = SETTINGS || {};
+  if (s.agent?.line_url) {
+    $('line-link').href = s.agent.line_url;
+    const qrUrl = (s.agent.qr_provider || 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=') +
+                   encodeURIComponent(s.agent.line_url);
+    $('line-qr').src = qrUrl;
+  }
+  if (s.fx?.default_rate) $('fx-rate').value = s.fx.default_rate;
+  if (s.disclaimer) {
+    $('disc-title').textContent = s.disclaimer.title || '使用前請閱讀';
+    $('disc-body').innerHTML = (s.disclaimer.body || '').split('\n').map(p => `<p>${p}</p>`).join('');
+  }
+}
+
+function showDisclaimer() { $('modal-disclaimer').classList.add('open'); }
+function ackDisclaimer() {
+  localStorage.setItem('disclaimer-acked-v1', new Date().toISOString());
+  $('modal-disclaimer').classList.remove('open');
+}
+
+function openModal(id) {
+  $(id).classList.add('open');
+  if (id === 'modal-customers') refreshCustomerList();
+}
+function closeModal(id) { $(id).classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-backdrop')) e.target.classList.remove('open');
+});
+
+// ================= CATALOG ==============
+function buildCatalogSelectors() {
+  const cSel = $('cat-company');
+  cSel.innerHTML = (CATALOG.companies || []).map(c =>
+    `<option value="${c.code}">${c.name}</option>`).join('');
+  cSel.onchange = () => onCompanyChange();
+  onCompanyChange();
+}
+function onCompanyChange() {
+  const cCode = $('cat-company').value;
+  const c = CATALOG.companies.find(x => x.code === cCode);
+  if (!c) return;
+  const pSel = $('cat-product');
+  pSel.innerHTML = c.products.map(p =>
+    `<option value="${p.code}">${p.short || p.name}</option>`).join('');
+  pSel.onchange = () => loadProductByCode(c, pSel.value);
+  loadProductByCode(c, pSel.value);
+}
+async function loadProductByCode(c, prodCode) {
+  const p = c.products.find(x => x.code === prodCode);
+  if (p) await loadProduct(c, p);
+}
+async function loadProduct(c, p) {
   try {
-    const res = await fetch('data/skl/UPD061_UPD101_2026-04.json');
-    if (!res.ok) throw new Error('費率 JSON 載入失敗 (' + res.status + ')');
+    const res = await fetch('data/' + p.data_file);
+    if (!res.ok) throw new Error('資料載入失敗');
     RATES = await res.json();
-    // populate header
-    $('company-name').textContent = RATES.company_name || '新光人壽';
-    $('product-name').textContent = RATES.product_name || '美鴻添富美元分紅終身壽險';
-    $('company-logo').src = RATES.company_logo || '../../images/img_05_1d05f38a7f49.png';
+    currentPlan = p.plan_code;
+    $('company-name').textContent = c.name;
+    $('product-name').textContent = p.name;
+    $('company-logo').src = c.logo;
+    $('company-logo').style.display = '';
+    $('meta-code').textContent = p.plan_code;
     $('meta-approval').textContent = RATES.approval_no || '—';
-    $('meta-effective').textContent = RATES.effective_date || '—';
+    $('meta-effective').textContent = p.effective_date || RATES.effective_date || '—';
+    const v = p.version || '001';
+    $('version-badge').textContent = `${c.code.toUpperCase()}-${p.plan_code}-${v}`;
     $('rates-status').textContent = '✓ 已載入官方費率';
     recalc();
   } catch (e) {
@@ -412,39 +654,67 @@ async function loadRates() {
   }
 }
 
-// ================= AGE LOGIC =================
-// Auto-detect 民國 vs 西元
+// ================= FX AUTO-FETCH =========
+async function fetchFxRate() {
+  const btn = $('fx-fetch');
+  btn.classList.add('loading');
+  btn.textContent = '抓取中…';
+  try {
+    const url = SETTINGS?.fx?.api_url || 'https://open.er-api.com/v6/latest/USD';
+    const pair = SETTINGS?.fx?.api_pair || 'TWD';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API 失敗');
+    const data = await res.json();
+    const rate = data.rates?.[pair] || data.conversion_rates?.[pair];
+    if (!rate) throw new Error('找不到 ' + pair);
+    $('fx-rate').value = rate.toFixed(2);
+    const updated = data.time_last_update_utc || new Date().toISOString();
+    $('fx-info').textContent = `✓ 即時匯率(${rate.toFixed(4)})· 來源:open.er-api · ${new Date(updated).toLocaleDateString('zh-TW')}`;
+    $('fx-info').style.color = 'var(--jade)';
+    recalc();
+  } catch (e) {
+    $('fx-info').textContent = `⚠ 無法抓取即時匯率,沿用 ${$('fx-rate').value}`;
+    $('fx-info').style.color = '#dc2626';
+  } finally {
+    btn.classList.remove('loading');
+    btn.textContent = '↻ 即時';
+  }
+}
+
+// ================= AGE LOGIC =============
 function parseYear(y) {
-  // y = number user entered.
-  // If 1..199 → 民國年; if 1900+ → 西元
   if (y == null || isNaN(y)) return null;
-  if (y >= 1 && y <= 200) return { rocYear: y, adYear: y + ROC_OFFSET, label: `民國 ${y} 年 / 西元 ${y + ROC_OFFSET} 年` };
-  if (y >= 1900) return { rocYear: y - ROC_OFFSET, adYear: y, label: `西元 ${y} 年 / 民國 ${y - ROC_OFFSET} 年` };
+  if (y >= 1 && y <= 200) return { rocYear: y, adYear: y + ROC_OFFSET, label: `民國 ${y} / 西元 ${y + ROC_OFFSET}` };
+  if (y >= 1900) return { rocYear: y - ROC_OFFSET, adYear: y, label: `西元 ${y} / 民國 ${y - ROC_OFFSET}` };
   return null;
 }
 function insuranceAgeByBday(adYear, m, d) {
   const today = new Date();
-  const bd = new Date(adYear, (m - 1), d);
+  const bd = new Date(adYear, m - 1, d);
   let age = today.getFullYear() - bd.getFullYear();
   if (today.getMonth() < bd.getMonth() ||
-      (today.getMonth() === bd.getMonth() && today.getDate() < bd.getDate())) {
-    age--;
-  }
-  // 半歲進位
+      (today.getMonth() === bd.getMonth() && today.getDate() < bd.getDate())) age--;
   const half = new Date(bd.getFullYear() + age, bd.getMonth() + 6, bd.getDate());
   if (today >= half) age++;
   return Math.max(0, age);
 }
 
-// ================= DISCOUNT (TIERED) =================
+// ================= DISCOUNT ==============
 function getDiscount(faceUSD) {
   const tiers = RATES.discounts.high_premium_tiers || [];
-  let hp = 0;
+  let hp = 0, tierLabel = '< 1 萬';
   for (const t of tiers) {
-    if (faceUSD >= t.min_usd && faceUSD <= t.max_usd) { hp = t.rate; break; }
+    if (faceUSD >= t.min_usd && faceUSD <= t.max_usd) {
+      hp = t.rate;
+      const minWan = t.min_usd / 10000;
+      const maxWan = t.max_usd > 1e8 ? '∞' : (t.max_usd + 1) / 10000;
+      tierLabel = hp === 0 ? '< 1 萬' : `${minWan}-${maxWan === '∞' ? '∞' : maxWan} 萬`;
+      if (hp === 0.015) tierLabel = '≥ 2 萬';
+      break;
+    }
   }
   return {
-    high_prem: hp,
+    high_prem: hp, tier_label: tierLabel,
     first_period: RATES.discounts.first_period,
     renewal: RATES.discounts.renewal,
     first_total: hp + RATES.discounts.first_period,
@@ -452,14 +722,13 @@ function getDiscount(faceUSD) {
   };
 }
 
-// ================= CALC =================
+// ================= CALCULATION ===========
 function calculate(inp) {
   const { plan, sex, age, faceWan, freq } = inp;
   const prod = RATES.products.find(p => p.code === plan);
   if (!prod) throw new Error('找不到產品');
   if (age < prod.min_age || age > prod.max_age)
     throw new Error(`此商品承保年齡 ${prod.min_age}-${prod.max_age},您的保險年齡為 ${age}`);
-
   const gp = RATES.gp[plan]?.[sex]?.[age];
   if (gp == null) throw new Error('費率表未涵蓋此 (險種/性別/年齡)');
 
@@ -502,11 +771,9 @@ function calculate(inp) {
     cumE += bought;
     const F = cumE > 0 ? Math.round(cumE * (corr[yr] ?? 1)) : 0;
     const G = cumE > 0 ? Math.round(cumE * NSP / 1000 * 100) / 100 : 0;
-    const J = C + F + TDD;
-    const K = D + G + TDS;
     rows.push({
       yr, attainedAge: age + yr - 1, A, cumP, C, D, E: cumE, F, G,
-      H: TDD, I: TDS, J, K, isPay
+      H: TDD, I: TDS, J: C + F + TDD, K: D + G + TDS, isPay
     });
   }
   return {
@@ -517,7 +784,7 @@ function calculate(inp) {
   };
 }
 
-// ================= RENDER =================
+// ================= RENDER ================
 function getInputs() {
   const sex = document.querySelector('input[name="sex"]:checked').value;
   const ageMode = document.querySelector('input[name="age-mode"]:checked').value;
@@ -537,8 +804,10 @@ function getInputs() {
   }
   $('year-parse').textContent = bdayLabel;
   return {
-    sex, age,
-    plan: $('plan').value,
+    name: $('name').value,
+    sex, age, ageMode,
+    bdY: +$('bd-y').value, bdM: +$('bd-m').value, bdD: +$('bd-d').value,
+    plan: currentPlan,
     freq: $('freq').value,
     faceWan: +$('face').value || 0,
     showTwd: $('show-twd').checked,
@@ -551,8 +820,6 @@ function recalc() {
   $('input-err').textContent = '';
   const inp = getInputs();
   $('age-badge').textContent = `保險年齡 ${inp.age}`;
-
-  // body theme by gender
   document.body.classList.toggle('theme-male', inp.sex === 'M');
   document.body.classList.toggle('theme-female', inp.sex === 'F');
 
@@ -564,7 +831,8 @@ function recalc() {
     $('discount-info').innerHTML = '';
     $('table-wrap').innerHTML = '';
     $('notice').textContent = '';
-    if (chart) { chart.destroy(); chart = null; }
+    if (chartMain) { chartMain.destroy(); chartMain = null; }
+    if (chartLeverage) { chartLeverage.destroy(); chartLeverage = null; }
     return;
   }
   renderSummary(result, inp);
@@ -572,28 +840,38 @@ function recalc() {
   renderNotice(result, inp);
   renderTable(result, inp);
   renderChart(result, inp);
+  renderLeverageChart(result, inp);
   renderPrintFooter(inp);
+  updateHash(inp);
 }
 
-// ----- currency display helpers -----
-function showAmount(usd, inp) {
-  if (!inp.showTwd) return 'USD ' + fmtInt(usd);
-  return 'NT$ ' + fmtInt(usd * inp.fxRate);
+function showAmount(usd, inp){ return inp.showTwd ? 'NT$ ' + fmtInt(usd * inp.fxRate) : 'USD ' + fmtInt(usd); }
+function showAmountDec(usd, inp){ return inp.showTwd ? fmt(usd * inp.fxRate) : fmt(usd); }
+// 表格內用(無幣別前綴)
+function cell(usd, inp){
+  const v = inp.showTwd ? usd * inp.fxRate : usd;
+  return fmtInt(v);
 }
-function showAmountDec(usd, inp) {
-  if (!inp.showTwd) return fmt(usd);
-  return fmt(usd * inp.fxRate);
+function cellDec(usd, inp){
+  const v = inp.showTwd ? usd * inp.fxRate : usd;
+  return fmt(v);
+}
+function pctOf(num, den){
+  if (!den || den === 0) return '—';
+  const p = num / den * 100;
+  if (p >= 1000) return (p/100).toFixed(1) + '×';
+  return p.toFixed(1) + '%';
 }
 
 function renderSummary(r, inp) {
-  const curLabel = inp.showTwd ? `NT$ (×${inp.fxRate})` : 'USD';
+  const cur = inp.showTwd ? `NT$ (×${inp.fxRate})` : 'USD';
   $('summary').innerHTML = `
     <div class="summary-row"><span>每期原始保費</span><strong>${showAmount(r.origPerPeriod, inp)}</strong></div>
-    <div class="summary-row"><span>每期折扣後 (首期)</span><strong>${showAmount(r.firstPerPeriod, inp)}</strong></div>
-    <div class="summary-row"><span>每期折扣後 (續期)</span><strong>${showAmount(r.renewPerPeriod, inp)}</strong></div>
+    <div class="summary-row"><span>首期折扣後</span><strong>${showAmount(r.firstPerPeriod, inp)}</strong></div>
+    <div class="summary-row"><span>續期折扣後</span><strong>${showAmount(r.renewPerPeriod, inp)}</strong></div>
     <div class="summary-row highlight"><span>第一年實繳 ${inp.freq}</span><strong>${showAmount(r.firstAnnualPaid, inp)}</strong></div>
-    <div class="summary-row"><span>總實繳保費 (${r.prod.pay_years}年)</span><strong>${showAmount(r.totalPaid, inp)}</strong></div>
-    <div class="summary-row" style="font-size:10px;color:#999;justify-content:flex-end;">幣別:${curLabel}</div>
+    <div class="summary-row"><span>總實繳 (${r.prod.pay_years}年)</span><strong>${showAmount(r.totalPaid, inp)}</strong></div>
+    <div class="summary-row" style="font-size:10px;color:#999;justify-content:flex-end;">幣別:${cur}</div>
   `;
 }
 
@@ -602,7 +880,7 @@ function renderDiscount(r, inp) {
   const pct = (x) => (x * 100).toFixed(1) + '%';
   $('discount-info').innerHTML = `
     <div class="dc-title">📋 此保件適用折扣</div>
-    <div class="discount-row"><span>高保費折扣 <small style="color:#999">(投保金額 ${(r.prod && inp.faceWan*10000>=20000)?'≥ 2 萬':inp.faceWan*10000>=15000?'1.5-2 萬':inp.faceWan*10000>=10000?'1-1.5 萬':'< 1 萬'}美元)</small></span><b>${pct(d.high_prem)}</b></div>
+    <div class="discount-row"><span>高保費折扣 <small style="color:#999">(投保${d.tier_label}美元)</small></span><b>${pct(d.high_prem)}</b></div>
     <div class="discount-row"><span>首期繳費折扣 (轉帳)</span><b>${pct(d.first_period)}</b></div>
     <div class="discount-row"><span>續期繳費折扣 (轉帳)</span><b>${pct(d.renewal)}</b></div>
     <div class="discount-row total"><span>首期合計</span><b>${pct(d.first_total)}</b></div>
@@ -611,22 +889,28 @@ function renderDiscount(r, inp) {
 }
 
 function renderNotice(r, inp) {
-  const scLabel = scenario==='M'?'最可能紅利 (中分紅)':scenario==='L'?'較低紅利':'紅利為零';
+  const sc = scenario==='M'?'最可能紅利 (中分紅)':scenario==='L'?'較低紅利':'紅利為零';
   $('notice').innerHTML = `
     <b>${RATES.product_name}</b> · ${inp.age} 歲${inp.sex==='M'?'男':'女'}性 · ${r.prod.code} · ${inp.faceWan} 萬美元 · ${inp.freq} ·
-    GP費率 ${r.gp} · 預定利率 ${(r.prod.reserve_rate*100).toFixed(2)}% · 情境:${scLabel}
-    ${inp.showTwd ? `· <span style="color:var(--orange-dark)">已換算新台幣 (×${inp.fxRate})</span>` : ''}
+    GP ${r.gp} · 預定利率 ${(r.prod.reserve_rate*100).toFixed(2)}% · 情境:${sc}
+    ${inp.showTwd ? `· <span style="color:var(--orange-dark)">已換算 NT$ (匯率 ${inp.fxRate})</span>` : ''}
   `;
 }
 
 function renderTable(r, inp) {
-  // Find break-even (first year cumP <= K)
   let breakEvenYr = -1;
   for (const row of r.rows) {
     if (row.cumP > 0 && row.K >= row.cumP) { breakEvenYr = row.yr; break; }
   }
+  // 顯示用安全:J 不應低於 K(極高齡 Corridor 表特性導致原 C 低於 D,用 max 顯示)
+  const safeJ = (row) => Math.max(row.J, row.K);
 
-  const html = `
+  // 更新表頭幣別標籤
+  $('cur-tag').textContent = inp.showTwd ? 'NT$' : 'USD';
+  $('cur-tag').className = 'cur-tag' + (inp.showTwd ? ' twd' : '');
+  $('cur-note').textContent = inp.showTwd ? `已換算新台幣 (匯率 ${inp.fxRate})` : '原幣別美元';
+
+  $('table-wrap').innerHTML = `
     <table>
       <thead>
         <tr class="h1">
@@ -636,7 +920,7 @@ function renderTable(r, inp) {
           <th colspan="2" class="col-detail">保證給付 (基本保額)</th>
           <th colspan="3" class="col-detail">非保證 (年度紅利→增額繳清)</th>
           <th colspan="2" class="col-detail">終期保單紅利</th>
-          <th colspan="2">合計 (預估值)</th>
+          <th colspan="4">合計 (預估值)</th>
         </tr>
         <tr class="h2">
           <th>當年 A</th><th>累計 B</th>
@@ -646,87 +930,105 @@ function renderTable(r, inp) {
           <th class="non-guaranteed col-detail">增額解約 G</th>
           <th class="terminal col-detail">終期身故 H</th>
           <th class="terminal col-detail">終期解約 I</th>
-          <th class="total">身故 J</th><th class="total">解約 K</th>
+          <th class="total-j">身故 J</th>
+          <th class="ratio-j">保障倍率<br><small style="font-weight:500;color:#bb6b3d">J ÷ B</small></th>
+          <th class="total-k">解約 K</th>
+          <th class="ratio-k">保本率<br><small style="font-weight:500;color:#0a5950">K ÷ B</small></th>
         </tr>
       </thead>
       <tbody>
-        ${r.rows.map(row => `
+        ${r.rows.map(row => {
+          const j = safeJ(row);
+          const ratioJ = pctOf(j, row.cumP);
+          const ratioK = pctOf(row.K, row.cumP);
+          return `
           <tr class="${row.yr === breakEvenYr ? 'break-even' : ''}">
-            <td class="text-center">${row.yr}</td>
+            <td class="text-center yr-col">${row.yr}</td>
             <td class="text-center">${row.attainedAge}</td>
-            <td class="${row.isPay ? 'pay-yr' : 'zero'}">${row.A ? showAmount(row.A, inp) : '—'}</td>
-            <td>${showAmount(row.cumP, inp)}</td>
-            <td class="col-detail">${showAmount(row.C, inp)}</td>
-            <td class="col-detail">${showAmountDec(row.D, inp)}</td>
-            <td class="col-detail ${row.E===0?'zero':''}">${row.E ? showAmount(row.E, inp) : '—'}</td>
-            <td class="col-detail ${row.F===0?'zero':''}">${row.F ? showAmount(row.F, inp) : '—'}</td>
-            <td class="col-detail ${row.G===0?'zero':''}">${row.G ? showAmountDec(row.G, inp) : '—'}</td>
-            <td class="col-detail ${row.H===0?'zero':''}">${row.H ? showAmountDec(row.H, inp) : '—'}</td>
-            <td class="col-detail ${row.I===0?'zero':''}">${row.I ? showAmountDec(row.I, inp) : '—'}</td>
-            <td class="col-total">${showAmountDec(row.J, inp)}</td>
-            <td class="col-total">${showAmountDec(row.K, inp)}</td>
-          </tr>
-        `).join('')}
+            <td class="${row.isPay ? 'pay-yr' : 'zero'}">${row.A ? cell(row.A, inp) : '—'}</td>
+            <td>${cell(row.cumP, inp)}</td>
+            <td class="col-detail">${cell(row.C, inp)}</td>
+            <td class="col-detail">${cellDec(row.D, inp)}</td>
+            <td class="col-detail ${row.E===0?'zero':''}">${row.E ? cell(row.E, inp) : '—'}</td>
+            <td class="col-detail ${row.F===0?'zero':''}">${row.F ? cell(row.F, inp) : '—'}</td>
+            <td class="col-detail ${row.G===0?'zero':''}">${row.G ? cellDec(row.G, inp) : '—'}</td>
+            <td class="col-detail ${row.H===0?'zero':''}">${row.H ? cellDec(row.H, inp) : '—'}</td>
+            <td class="col-detail ${row.I===0?'zero':''}">${row.I ? cellDec(row.I, inp) : '—'}</td>
+            <td class="col-total-j">${cellDec(j, inp)}</td>
+            <td class="col-ratio-j">${ratioJ}</td>
+            <td class="col-total-k">${cellDec(row.K, inp)}</td>
+            <td class="col-ratio-k">${ratioK}</td>
+          </tr>`;
+        }).join('')}
       </tbody>
     </table>
   `;
-  $('table-wrap').innerHTML = html;
 }
 
 function renderChart(r, inp) {
   const ctx = $('chart-main');
-  const labels = r.rows.map(row => `${row.yr}/${row.attainedAge}歲`);
+  const labels = r.rows.map(row => `${row.yr}`);
   const mul = inp.showTwd ? inp.fxRate : 1;
-  const dataPaid = r.rows.map(row => row.cumP * mul);
+  const dataPaid  = r.rows.map(row => row.cumP * mul);
   const dataDeath = r.rows.map(row => row.J * mul);
-  const dataSurr = r.rows.map(row => row.K * mul);
-  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim();
-  if (chart) chart.destroy();
-  chart = new Chart(ctx, {
+  const dataSurr  = r.rows.map(row => row.K * mul);
+  if (chartMain) chartMain.destroy();
+  chartMain = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: `累計保費 ${inp.showTwd?'NT$':'USD'}`, data: dataPaid, borderColor: '#F05A28', backgroundColor:'rgba(240,90,40,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
-        { label: `身故總和 J`, data: dataDeath, borderColor: '#0D2A3A', backgroundColor:'rgba(13,42,58,0.05)', tension:0.2, borderWidth:2.5, pointRadius:0 },
-        { label: `解約總和 K`, data: dataSurr, borderColor: '#0f766e', backgroundColor:'rgba(15,118,110,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
-      ]
-    },
+    data: { labels, datasets: [
+      { label: `累計保費`, data: dataPaid, borderColor: '#F05A28', backgroundColor:'rgba(240,90,40,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
+      { label: `身故總和 J`, data: dataDeath, borderColor: '#0D2A3A', backgroundColor:'rgba(13,42,58,0.05)', tension:0.2, borderWidth:2.5, pointRadius:0 },
+      { label: `解約總和 K`, data: dataSurr, borderColor: '#0f766e', backgroundColor:'rgba(15,118,110,0.08)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
+    ]},
     options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { intersect: false, mode: 'index' },
+      responsive:true, maintainAspectRatio:false,
+      interaction: { intersect:false, mode:'index' },
       plugins: {
-        legend: { position: 'top', labels:{usePointStyle:true,boxWidth:8,font:{size:11}} },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => ` ${ctx.dataset.label}: ${inp.showTwd?'NT$':'USD '}${Math.round(ctx.parsed.y).toLocaleString()}`,
-          }
-        }
+        legend: { position:'top', labels:{usePointStyle:true,boxWidth:8,font:{size:10}} },
+        tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${inp.showTwd?'NT$':'USD '}${Math.round(c.parsed.y).toLocaleString()}` } }
       },
       scales: {
-        x: { ticks:{maxTicksLimit:15,font:{size:10}}, grid:{display:false} },
-        y: {
-          ticks:{
-            font:{size:10},
-            callback: (v) => (inp.showTwd?'NT$':'$') + (v/1000).toLocaleString() + 'k'
-          },
-          grid: { color: '#eee' }
-        }
+        x: { ticks:{maxTicksLimit:14,font:{size:10}}, grid:{display:false}, title:{display:true,text:'保單年度',font:{size:10},color:'#999'} },
+        y: { ticks:{font:{size:10},callback:(v)=>(inp.showTwd?'NT$':'$')+(v/1000).toLocaleString()+'k'}, grid:{color:'#eee'} },
+      }
+    }
+  });
+}
+
+function renderLeverageChart(r, inp) {
+  const ctx = $('chart-leverage');
+  const labels = r.rows.map(row => `${row.yr}`);
+  const dataLev = r.rows.map(row => row.cumP > 0 ? +(row.J / row.cumP).toFixed(2) : 0);
+  if (chartLeverage) chartLeverage.destroy();
+  chartLeverage = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [
+      { label:'保障槓桿 J÷B', data:dataLev, borderColor:'#E8A020', backgroundColor:'rgba(232,160,32,0.15)', tension:0.2, borderWidth:2.5, pointRadius:0, fill:true },
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend:{display:false},
+        tooltip: { callbacks:{ label: (c) => ` 每 1 元保費 → ${c.parsed.y.toFixed(2)} 元身故給付` } }
       },
+      scales: {
+        x: { ticks:{maxTicksLimit:12,font:{size:9}}, grid:{display:false} },
+        y: { ticks:{font:{size:10},callback:(v)=>v.toFixed(1)+'×'}, grid:{color:'#eee'}, beginAtZero:true },
+      }
     }
   });
 }
 
 function renderPrintFooter(inp) {
-  const today = new Date();
-  const dateStr = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
+  const t = new Date();
   $('print-footer').innerHTML = `
-    試算日期:${dateStr} · 鼎綸保險經紀人 - 恩宇體系 ·
-    匯率:${inp.fxRate} (USD→TWD) ·
-    本試算僅供參考,非正式建議書,實際金額以保單條款為準。
+    試算日期 ${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()} · 鼎綸保險經紀人 · 恩宇體系 ·
+    匯率 ${inp.fxRate} (USD→TWD) · 版本 ${$('version-badge').textContent} ·
+    本試算僅供參考,非正式建議書,實際以保單條款為準。
   `;
 }
 
+// ================= SCENARIO/VIEW =========
 function setScenario(s) {
   scenario = s;
   document.querySelectorAll('.scenario-tabs button[data-scenario]').forEach(b => {
@@ -742,11 +1044,157 @@ function setView(v) {
   });
 }
 
+// ================= URL HASH (Share) ======
+function updateHash(inp) {
+  const params = {
+    co:$('cat-company').value, pr:$('cat-product').value,
+    n:inp.name, s:inp.sex, am:inp.ageMode,
+    by:inp.bdY, bm:inp.bdM, bd:inp.bdD, da:+$('direct-age').value,
+    fq:inp.freq, f:inp.faceWan, sc:scenario, tw:inp.showTwd?1:0, fx:inp.fxRate,
+  };
+  history.replaceState(null, '', '#' + btoa(unescape(encodeURIComponent(JSON.stringify(params)))));
+}
+function restoreFromHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const p = JSON.parse(decodeURIComponent(escape(atob(hash))));
+  if (p.co) $('cat-company').value = p.co;
+  onCompanyChange();
+  setTimeout(() => {
+    if (p.pr) $('cat-product').value = p.pr;
+    $('name').value = p.n || '';
+    document.querySelector(`input[name="sex"][value="${p.s}"]`).checked = true;
+    document.querySelector(`input[name="age-mode"][value="${p.am}"]`).checked = true;
+    $('bday-block').style.display = p.am === 'bday' ? '' : 'none';
+    $('direct-block').style.display = p.am === 'direct' ? '' : 'none';
+    $('bd-y').value = p.by; $('bd-m').value = p.bm; $('bd-d').value = p.bd;
+    $('direct-age').value = p.da;
+    $('freq').value = p.fq; $('face').value = p.f;
+    $('show-twd').checked = !!p.tw;
+    $('fx-rate').value = p.fx;
+    scenario = p.sc || 'M';
+    document.querySelectorAll('.scenario-tabs button[data-scenario]').forEach(b =>
+      b.classList.toggle('active', b.dataset.scenario === scenario));
+    if (p.pr && CATALOG) {
+      const c = CATALOG.companies.find(x=>x.code===p.co);
+      if (c) loadProductByCode(c, p.pr);
+    } else { recalc(); }
+  }, 200);
+}
+async function shareLink() {
+  const url = location.href;
+  try {
+    await navigator.clipboard.writeText(url);
+    alert('✓ 試算連結已複製!\n貼到 LINE 或 Email 給客戶,他打開就能看到一樣的試算。');
+  } catch (e) {
+    prompt('複製此連結傳給客戶:', url);
+  }
+}
+
+// ================= CUSTOMER DB ===========
+function getCustomers() {
+  try { return JSON.parse(localStorage.getItem('customers-v1') || '[]'); }
+  catch (e) { return []; }
+}
+function setCustomers(arr) { localStorage.setItem('customers-v1', JSON.stringify(arr)); }
+function saveCurrentCase() {
+  const inp = getInputs();
+  if (!inp.name || inp.name === '被保人') {
+    alert('請先輸入客戶姓名(被保險人欄)再儲存。');
+    $('name').focus();
+    return;
+  }
+  const customers = getCustomers();
+  const entry = {
+    id: Date.now(),
+    name: inp.name,
+    saved_at: new Date().toISOString(),
+    snapshot: inp,
+    plan_code: currentPlan,
+    company: $('cat-company').value,
+    product: $('cat-product').value,
+    hash: location.hash,
+  };
+  customers.unshift(entry);
+  if (customers.length > 50) customers.length = 50;
+  setCustomers(customers);
+  alert(`✓ 已儲存:${inp.name} · ${currentPlan} · ${inp.faceWan} 萬美元`);
+}
+function refreshCustomerList() {
+  const customers = getCustomers();
+  if (!customers.length) {
+    $('cust-list').innerHTML = '<div class="cust-empty">尚未儲存任何試算記錄。<br>填好參數後,按下方「💾 儲存此試算」即可建立。</div>';
+    return;
+  }
+  $('cust-list').innerHTML = customers.map(c => {
+    const d = new Date(c.saved_at);
+    const ds = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    return `
+      <div class="cust-row">
+        <div class="cust-info">
+          <b>${c.name}</b>
+          <small>${ds} · ${c.plan_code} · ${c.snapshot.faceWan} 萬美元 · ${c.snapshot.sex==='M'?'男':'女'} ${c.snapshot.age} 歲 · ${c.snapshot.freq}</small>
+        </div>
+        <div class="cust-actions">
+          <button onclick="loadCase(${c.id})">載入</button>
+          <button class="danger" onclick="deleteCase(${c.id})">刪除</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+function loadCase(id) {
+  const c = getCustomers().find(x => x.id === id);
+  if (!c) return;
+  location.hash = c.hash || '';
+  closeModal('modal-customers');
+  restoreFromHash();
+}
+function deleteCase(id) {
+  if (!confirm('確定刪除這筆記錄?')) return;
+  setCustomers(getCustomers().filter(x => x.id !== id));
+  refreshCustomerList();
+}
+function exportCustomers() {
+  const blob = new Blob([JSON.stringify(getCustomers(), null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `客戶試算記錄_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+function importCustomers() {
+  $('cust-import').click();
+}
+$('cust-import').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data)) throw new Error('格式錯誤');
+      const existing = getCustomers();
+      const merged = [...data, ...existing];
+      const seen = new Set();
+      const dedup = merged.filter(x => !seen.has(x.id) && seen.add(x.id));
+      setCustomers(dedup);
+      refreshCustomerList();
+      alert(`✓ 已匯入 ${data.length} 筆`);
+    } catch (e) { alert('匯入失敗:' + e.message); }
+  };
+  reader.readAsText(f);
+});
+
+function resetCase() {
+  if (!confirm('重設所有輸入?')) return;
+  location.hash = '';
+  location.reload();
+}
+
+// ================= CSV ===================
 function exportCSV() {
   if (!RATES) return;
   const rows = document.querySelectorAll('tbody tr');
   if (!rows.length) return;
-  const headers = ['保單年度','保險年齡','當年保費A','累計保費B','身故C','解約D','累計增額E','增額身故F','增額解約G','終期身故H','終期解約I','總身故J','總解約K'];
+  const headers = ['保單年度','保險年齡','當年保費A','累計保費B','身故C','解約D','累計增額E','增額身故F','增額解約G','終期身故H','終期解約I','總身故J','保障倍率','總解約K','保本率'];
   let csv = headers.join(',') + '\n';
   rows.forEach(tr => {
     const cells = [...tr.children].map(td => td.textContent.replace(/,|USD|NT\$/g,'').replace(/—/g,'0').trim());
@@ -755,12 +1203,11 @@ function exportCSV() {
   const blob = new Blob(['﻿' + csv], {type:'text/csv'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `美鴻添富試算_${$('plan').value}_${$('face').value}萬美元.csv`;
+  a.download = `${$('name').value || '試算'}_${currentPlan}_${$('face').value}萬美元.csv`;
   a.click();
-  URL.revokeObjectURL(a.href);
 }
 
-// Age-mode toggle UI
+// ================= EVENTS ================
 document.querySelectorAll('input[name="age-mode"]').forEach(el => {
   el.addEventListener('change', () => {
     const mode = document.querySelector('input[name="age-mode"]:checked').value;
@@ -769,13 +1216,13 @@ document.querySelectorAll('input[name="age-mode"]').forEach(el => {
     recalc();
   });
 });
-
-['name','bd-y','bd-m','bd-d','direct-age','plan','freq','face','fx-rate','show-twd'].forEach(id =>
+['name','bd-y','bd-m','bd-d','direct-age','freq','face','fx-rate','show-twd'].forEach(id =>
   $(id).addEventListener('input', recalc));
 document.querySelectorAll('input[name="sex"]').forEach(el =>
   el.addEventListener('change', recalc));
+$('fx-fetch').addEventListener('click', fetchFxRate);
 
-loadRates();
+init();
 </script>
 </body>
 </html>
