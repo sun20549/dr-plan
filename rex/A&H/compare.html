@@ -914,6 +914,28 @@ body {
 }
 body.customer-mode .th-highlights { display: none; }
 
+/* v1.33 — 可排序列 label */
+.sortable-row-label {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s var(--ease);
+}
+.sortable-row-label:hover {
+  background: var(--orange-light) !important;
+}
+.sort-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--orange-dark);
+  font-weight: 800;
+  font-size: 14px;
+}
+.sort-arrow.sort-arrow-dim {
+  color: #c0c8d0;
+  font-weight: 400;
+  font-size: 12px;
+}
+
 /* v1.32 — 主約 / 附約 chip */
 .product-type-chip {
   display: inline-block;
@@ -3151,6 +3173,7 @@ const App = (() => {
     customerMode: false,
     showStar: true,
     client: { age: _loadClientAge(), gender: _loadClientGender() },  // v1.23:從 localStorage 載入
+    sortByKey: null,   // v1.33:手動排序(null=原序;cpPrimary/cpDaily/feeCurrent)
     ui: { fullAgeExpanded: false, hideEmpty: false },   // v1.13:全年齡表預設收起、空欄預設顯示
     db: {
       companies: {},       // cid → company JSON
@@ -4553,22 +4576,18 @@ const App = (() => {
     const maxCpP = Math.max(...cpData.map(d => d.cpPrimary), 0);
     const maxCpD = Math.max(...cpData.map(d => d.cpDaily), 0);
 
-    // v1.14b — 依「主打 CP」由高到低排序(各 tab 自動用該 tab 的主打 CP:
-    //   實支實付/自負額 → 住院雜費限額 CP、手術險 → 住院手術 CP、
-    //   定額日額 → 住院日額 CP、4 個重大傷病/癌症 → 一次金 CP)
-    // cpPrimary = 0(無法計算/無對應給付項)一律推到最右邊
-    // tiebreaker:同 cpPrimary 用 cpDaily 降序
-    {
+    // v1.33 — 手動排序:若使用者點過 CP 列(state.sortByKey 不空)則套用該排序,否則保持原順序
+    if (state.sortByKey === 'cpPrimary' || state.sortByKey === 'cpDaily' || state.sortByKey === 'feeCurrent') {
+      const key = state.sortByKey;
       const order = cols.map((_, i) => i).sort((a, b) => {
-        const A = cpData[a], B = cpData[b];
-        // 0/負 推到最後
-        const aZero = !(A.cpPrimary > 0);
-        const bZero = !(B.cpPrimary > 0);
-        if (aZero !== bZero) return aZero ? 1 : -1;
-        // 主打 CP 降序
-        if (B.cpPrimary !== A.cpPrimary) return B.cpPrimary - A.cpPrimary;
-        // tiebreaker:日額 CP 降序
-        return B.cpDaily - A.cpDaily;
+        const A = cpData[a][key] || 0;
+        const B = cpData[b][key] || 0;
+        // 0 推到最後
+        if (A === 0 && B === 0) return 0;
+        if (A === 0) return 1;
+        if (B === 0) return -1;
+        // feeCurrent 是價格,越低越好(升序);CP 是性價比,越高越好(降序)
+        return key === 'feeCurrent' ? A - B : B - A;
       });
       const colsSorted = order.map(i => cols[i]);
       const cpDataSorted = order.map(i => cpData[i]);
@@ -4576,27 +4595,8 @@ const App = (() => {
       cpData.length = 0; cpData.push(...cpDataSorted);
     }
 
-    // v1.23 — 亮點 badge:該類別內計算「最便宜 / CP最高 / 續保最高」
-    const _stats = cols.map((c, i) => ({
-      i,
-      fee: (cpData[i] && cpData[i].feeCurrent) || 0,
-      cp: (cpData[i] && cpData[i].cpPrimary) || 0,
-      maxAge: (c.product && c.product.maxAgeContinuous) || 0
-    }));
-    const _validFees = _stats.filter(s => s.fee > 0);
-    const _cheapestIdx = _validFees.length > 0
-      ? _validFees.reduce((m, s) => s.fee < m.fee ? s : m).i : -1;
-    const _bestCpIdx = _stats.reduce((m, s) => s.cp > m.cp ? s : m, {cp:0,i:-1}).i;
-    const _maxAgeVal = Math.max(..._stats.map(s => s.maxAge), 0);
-    const _longestAgeIdx = _maxAgeVal > 0
-      ? _stats.findIndex(s => s.maxAge === _maxAgeVal) : -1;
-    const highlightBadges = cols.map((_c, i) => {
-      const arr = [];
-      if (i === _cheapestIdx) arr.push('<span class="hl-badge hl-cheap" title="本類別當年保費最低">最便宜</span>');
-      if (i === _bestCpIdx && _stats[i].cp > 0) arr.push('<span class="hl-badge hl-bestcp" title="本類別 CP 值最高">CP 最高</span>');
-      if (i === _longestAgeIdx && _stats[i].maxAge > 0) arr.push(`<span class="hl-badge hl-longage" title="本類別續保至最高(${_stats[i].maxAge} 歲)">續保 ${_stats[i].maxAge}</span>`);
-      return arr.join('');
-    });
+    // v1.33 — 亮點 badge 已移除(user 要求,改成乾淨無自動標示)
+    const highlightBadges = cols.map(() => '');
 
     // 比較範圍註記
     const compareRangeNote = `比較範圍: ${age}–${endAge} 歲, 共 ${endAge - age + 1} 年`;
@@ -4626,9 +4626,8 @@ const App = (() => {
       const linkTpl = company.linkTemplate || {};
       const linkUrls = (k) => (linkTpl[k] || '').replace('{code}', p.code).replace('{name}', encodeURIComponent(p.name||''));
 
-      // v1.10 — 新商品 badge:v1.9 新增的 4 個商品
-      const NEW_CODES = ['HSY', 'WV4', 'MAHUGA', '1HSD'];
-      const newBadge = NEW_CODES.includes(col.code) ? '<span class="th-new-badge">新</span>' : '';
+      // v1.33 — 「新」badge 移除(user 要求乾淨)
+      const newBadge = '';
 
       // v1.11 — 公司 logo:有 logoUrl 就用 <img>、沒有就 fallback 圓點(由 .th-company 的 ::before 處理)
       const hasLogo = !!(company.logoUrl);
@@ -4716,8 +4715,9 @@ const App = (() => {
       html += `<tr${rowCls}><td>${titleHtml}</td>${cellsHtml}</tr>`;
     });
 
-    // ─── 分隔:當年保費 ───
-    html += `<tr class="row-fee-divider row-fee-current"><td><strong>💰 當年保費</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
+    // ─── 分隔:當年保費 ─── (v1.33 加 click → sort by feeCurrent)
+    const sortArrow = (k) => state.sortByKey === k ? '<span class="sort-arrow" title="當前依此排序(再點取消)">↓</span>' : '<span class="sort-arrow sort-arrow-dim">↕</span>';
+    html += `<tr class="row-fee-divider row-fee-current"><td class="sortable-row-label" data-sort-key="feeCurrent" title="點我:依保費從便宜到貴排序"><strong>💰 當年保費${sortArrow('feeCurrent')}</strong><div class="row-fee-sub">${age} 歲 ${gender==='F'?'女':'男'}</div></td>`;
     cpData.forEach(d => {
       html += `<td colspan="2" class="cell-fee">${d.feeCurrent !== null ? d.feeCurrent.toLocaleString() : '—'}<span class="cell-unit">元/年</span></td>`;
     });
@@ -4743,7 +4743,7 @@ const App = (() => {
 
     // ─── CP 兩列(只用「客戶→上限」平均保費當分母,v1.10 加 mini bar)───
     const primaryLabel = cpData[0]?.primary?.label || '主打項';
-    html += `<tr class="row-cp"><td><strong>${primaryLabel} CP</strong><div class="row-cp-sub">${primaryLabel} ÷ ${age}→${endAge} 平均</div></td>`;
+    html += `<tr class="row-cp"><td class="sortable-row-label" data-sort-key="cpPrimary" title="點我:依此 CP 由高到低排序"><strong>${primaryLabel} CP${sortArrow('cpPrimary')}</strong><div class="row-cp-sub">${primaryLabel} ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpPrimary > 0 && d.cpPrimary === maxCpP;
       const pct = maxCpP > 0 ? Math.min(100, Math.round((d.cpPrimary / maxCpP) * 100)) : 0;
@@ -4754,7 +4754,7 @@ const App = (() => {
     });
     html += '</tr>';
 
-    html += `<tr class="row-cp"><td><strong>住院日額 CP</strong><div class="row-cp-sub">日額 ÷ ${age}→${endAge} 平均</div></td>`;
+    html += `<tr class="row-cp"><td class="sortable-row-label" data-sort-key="cpDaily" title="點我:依日額 CP 由高到低排序"><strong>住院日額 CP${sortArrow('cpDaily')}</strong><div class="row-cp-sub">日額 ÷ ${age}→${endAge} 平均</div></td>`;
     cpData.forEach(d => {
       const isBest = d.cpDaily > 0 && d.cpDaily === maxCpD;
       const pct = maxCpD > 0 ? Math.min(100, Math.round((d.cpDaily / maxCpD) * 100)) : 0;
@@ -4845,6 +4845,16 @@ const App = (() => {
       };
       el.addEventListener('change', handler);
       if (el.tagName === 'INPUT') el.addEventListener('input', handler);
+    });
+
+    // v1.33 — 手動排序:點 CP/保費 label 切換排序
+    table.querySelectorAll('.sortable-row-label').forEach(td => {
+      td.addEventListener('click', () => {
+        const key = td.dataset.sortKey;
+        // 同一個 key 再點 = 取消(改回原序)
+        state.sortByKey = state.sortByKey === key ? null : key;
+        renderTable();
+      });
     });
 
     // v1.1:費率區整合進主表,#fullAgeSection 隱藏不再使用
