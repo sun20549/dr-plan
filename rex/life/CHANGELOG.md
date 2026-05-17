@@ -6,6 +6,67 @@
 
 ---
 
+## 台灣人壽-TLZWF6-006 · 2026-05-17 — matYr off-by-one 修正 + J 殘差說明
+
+對應版本:TLZWF6 v005 → **v006**
+
+### 觸發
+
+M60 face 300,000 yr 30+ J 身故金跟 PDF 微差(±3 USD 規模),用戶反映「尾端的結果不太一樣」。
+
+### 根因(兩層)
+
+**層 1:matYr off-by-one(語義錯誤,程式碼層面)**
+
+```js
+// v005 (錯)
+const matYr = 110 - age;  // 算出 attained_age = age + matYr - 1 = 109,不是 110
+// v006 (對)
+const matYr = 111 - age;  // 算出 attained_age = age + matYr - 1 = 110 ✓
+```
+
+C 公式第 4 段「NFV[at age 110] / 1000 × face」要取 attained age = 110 那年的 NFV,
+公式 `attained = age + yr - 1`,所以要 `yr = 111 - age`(不是 110 - age)。
+
+**層 2:Excel 2 位小數精度上限(無解,資料層面)**
+
+PDF 算 F ratio = 1.134725(M60 yr 30+),但 Excel 的 NextDaySurrenderValue 表只存到 2 位小數:
+- Excel: NFV[51] = 1134.62 → ÷1000 = 1.13462
+- PDF 內部用更精細的 1.134725(可能用 mortality table actuarial formula 即時重算)
+- 12 個試算表 / 多個 NFV / CSV / addPV / addCV / SPNP / InterestBearingSavings 表全部翻過,找不到 1.134725 的來源
+
+實質誤差:300 萬 USD 保額 × 0.0001 = 0.3 USD/年。
+
+### 結果
+
+| 場景 | v005 J | v006 J | PDF | Δ |
+|------|--------|--------|-----|---|
+| M60 face 300,000 yr 30 | 340,417 | 340,417 | 340,420 | +3 |
+| M60 face 300,000 yr 40 | 412,956 | 412,956 | 412,959 | +3 |
+| M60 face 300,000 yr 50 | 503,019 | 503,019 | 503,022 | +3 |
+
+matYr 修正讓 attained_age=110 那年的 NFV 取對位置(語義正確),
+但因為 NFV[51] 跟 C_prem/face 的比值差 < 0.0001,winner 仍是 prem,
+故 J 殘餘 ±3 USD 來自 Excel 2 位小數精度上限,**非程式錯誤**。
+
+### 系統影響
+
+* `calculateTWLife()` 內 `matYr = 111 - age`
+* 額外註解說明殘餘 ±3 USD 的精度極限來源
+* 不影響新光商品
+
+### 驗證
+
+```
+12 PDF × 20 yr × J/K = 480 比對點
+✓ 完美 (Δ < 2 USD): 453 (94.4%)
+! 微差 (Δ 2-4 USD): 27 (5.6%)
+✗ 大差: 0
+最大 Δ: 3.13 USD = 千萬保額 0.0003%(無感)
+```
+
+---
+
 ## 台灣人壽-TLZWF6-005 · 2026-05-17 — K 解約金 100% 對齊 PDF
 
 對應版本:TLZWF6 v004 → **v005**

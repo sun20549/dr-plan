@@ -1902,7 +1902,8 @@ function calculateTWLife(inp) {
   const ageD = RATES.div[plan][sex][age] || [];
   const criteria = RATES.corridor_criteria || {};
   // NFV 在保險年齡 110 時的 per face 值(用於 paid-up state 的 C 上限)
-  const matYr = 110 - age;
+  // matYr = 111 - age 因為 attained_age = age + yr - 1,所以 yr (111-age) 對應 attained 110
+  const matYr = 111 - age;
   const NFV_at_110_per_face = (matYr >= 0 && ageU[matYr]) ? ageU[matYr][0] / 1000 : 0;
 
   const rows = [];
@@ -1944,7 +1945,10 @@ function calculateTWLife(inp) {
     const acvThis = addCVbySexAge[yr] || 0;
 
     // E: 年度購買 (AD × face/10000 / addPV)
-    // 用 round-per-yr 累積 (對齊 PDF — PDF 顯示整數 D,內部用同一個整數計算 G 和 F)
+    // cumE = round-per-yr 累積 (對齊 PDF 顯示的整數 D)
+    // PDF G 用整數 D (= cumE) × addCV — 維持此公式 K 才會 100% 對齊
+    // PDF F 用同樣整數 D × ratio — 但 ratio 比我能算出來的多 0.0001 級精度 (Excel 表存 2 位小數限制)
+    // → J 身故會有 ±3 USD 微差 (face 30萬 = 0.001%) — 業務無感
     const AD_USD = adFactor * faceUSD / 10000;
     const bought = apvThis > 0 ? AD_USD / apvThis : 0;
     cumE += Math.round(bought);

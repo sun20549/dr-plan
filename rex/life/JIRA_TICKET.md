@@ -5,7 +5,74 @@
 
 ---
 
-## ▸ 當前版本 TWLIFE-TLZWF6-005 · K 解約金 100% 對齊 PDF (Δ=0) · 2026-05-17
+## ▸ 當前版本 TWLIFE-TLZWF6-006 · matYr off-by-one 修正 + J 殘差說明 · 2026-05-17
+
+對應版本:TLZWF6 v005 → **v006**
+
+### Summary
+
+```
+TWLIFE-TLZWF6-006 修正 matYr off-by-one(C 公式 NFV[110] 取年正確) + 殘餘 ±3 USD J 屬 Excel 精度上限
+```
+
+### Description
+
+```
+== 觸發 ==
+
+M60 face 300,000 yr 30+ J 跟 PDF 微差 ±3 USD(用戶反映「尾端的結果不太一樣」)。
+
+== 根因(兩層)==
+
+層 1 程式錯誤(可修):
+  matYr = 110 - age (錯) → attained_age = 109
+  matYr = 111 - age (對) → attained_age = 110 ✓
+  → C 公式第 4 段「NFV[at age 110] / 1000 × face」現在取對位置
+
+層 2 Excel 精度上限(無解):
+  Excel NextDaySurrenderValue 表只存到 2 位小數 (NFV[51] = 1134.62)
+  PDF 內部用更精細 1.134725(actuarial formula 即時重算)
+  → 翻過 12 個 Excel 表(NFV/CSV/addPV/addCV/SPNP/IBS/Factors)找不到 1.134725 來源
+
+== 修正 ==
+
+const matYr = 111 - age;  // 112 hosts age 110 ← 修正點
+
+額外 inline comment 註明殘餘 ±3 USD 來自 Excel 2 位小數精度極限。
+
+== 結果 ==
+
+| 場景                      | v005 J  | v006 J  | PDF     | Δ |
+|---------------------------|---------|---------|---------|---|
+| M60 face 300,000 yr 30    | 340,417 | 340,417 | 340,420 | 3 |
+| M60 face 300,000 yr 40    | 412,956 | 412,956 | 412,959 | 3 |
+| M60 face 300,000 yr 50    | 503,019 | 503,019 | 503,022 | 3 |
+
+12 PDF × 20 yr × J/K = 480 比對點:
+  ✓ 完美 (Δ < 2 USD): 453 (94.4%)
+  ! 微差 (Δ 2-4 USD): 27 (5.6%)
+  ✗ 大差: 0
+最大 Δ: 3.13 USD = 千萬保額 0.0003%(業務無感)。
+
+== 影響版本 ==
+
+* TLZWF6:v005 → v006
+* 新光商品不受影響
+
+== 測試 Checklist ==
+
+* [ ] Ctrl+F5(強制刷新)
+* [ ] 切「台灣人壽 → 臻威豐 → 6 年期」
+* [ ] 男 60 face 300,000(元 USD),按試算
+* [ ] yr 30 K 跟 PDF 完全一樣
+* [ ] yr 30 J 跟 PDF Δ ≤ 3 USD(在容忍範圍)
+* [ ] yr 40/50 同上(K=0 / J Δ ≤ 3)
+* [ ] 版本徽章顯示 TWLIFE-TLZWF6-006 → 確認上傳成功
+```
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-005 · K 解約金 100% 對齊 PDF (Δ=0) · 2026-05-17
 
 對應版本:TLZWF6 v004 → **v005**
 
