@@ -3109,7 +3109,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.2</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.3</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -3273,7 +3273,10 @@ tr
       <div class="card-header teal">
         <span style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;">
           <span><span class="header-icon">🏥</span>險種規劃</span>
-          <button class="tb-btn no-print" style="background: linear-gradient(135deg,#F05A28 0%,#FF8050 100%); border-color: rgba(255,255,255,0.4); font-weight:700; padding:6px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);" onclick="App.applyRecommendedPlan()" title="一鍵套用最夯全球 10 張套裝">⭐ 推薦規劃</button>
+          <span style="display:inline-flex;gap:6px;align-items:center;">
+            <button class="tb-btn no-print" style="background: linear-gradient(135deg,#5C6BC0 0%,#7986CB 100%); border-color: rgba(255,255,255,0.4); font-weight:700; padding:6px 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); font-size:12px;" onclick="App.applyRecommendedPlan('child')" title="0~14 歲兒童版:XTK 69 萬 + XCF 200 萬(兒童免體檢)">👶 兒童規劃</button>
+            <button class="tb-btn no-print" style="background: linear-gradient(135deg,#F05A28 0%,#FF8050 100%); border-color: rgba(255,255,255,0.4); font-weight:700; padding:6px 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); font-size:12px;" onclick="App.applyRecommendedPlan('adult')" title="15 歲以上成人版:無 XTK、XCF 100 萬(不觸發體檢)">🧑 成人規劃</button>
+          </span>
         </span>
         <span style="display:inline-flex;gap:8px;align-items:center;" class="no-print">
           <button id="btnUWCheckup" class="uw-badge uw-badge-checkup" style="display:none;" onclick="App.openUWModal('checkup')" title="點此查看須做的體檢項目">🩺 體檢提醒 <b id="uwCheckupCount">0</b></button>
@@ -4521,7 +4524,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.30.2 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.3 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4530,7 +4533,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.2 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.3 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5777,7 +5780,7 @@ const App = (() => {
       }
     }
 
-    // Med-6/7:XCF 防癌體檢
+    // Med-6/7:XCF 防癌體檢(15 歲以下原則上免體檢)
     if (has['XCF']) {
       const xcfTotal = wan('XCF') * 1;  // XCF 換算 ×1
       if (xcfTotal > 150 && age >= 16) {
@@ -5786,7 +5789,7 @@ const App = (() => {
           : ['普通體檢','尿液常規檢查','血液生化檢查','胸部 X 光檢查'];
         out.checkup.push({
           title: `XCF 防癌一次金 — 須體檢 (${age} 歲)`,
-          detail: `XCF <span class="num">${xcfTotal}</span> 萬,超過 <b>150 萬</b> 門檻 (${age <= 45 ? '16~45 歲帶' : '46 歲以上帶'})`,
+          detail: `XCF <span class="num">${xcfTotal}</span> 萬,超過 <b>150 萬</b> 門檻 (${age <= 45 ? '適用 16~45 歲體檢項目' : '適用 46 歲以上體檢項目'})`,
           items: items,
           source: '投保規則 p.176 XCF 八、體檢規則'
         });
@@ -5842,7 +5845,7 @@ const App = (() => {
       setTimeout(() => wBtn.classList.remove('pulse'), 2500);
     } else { wBtn.style.display = 'none'; }
 
-    // ★ v3.30.2 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
+    // ★ v3.30.3 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
     //   體檢與警示分開,各自記憶上次 signature
     const sig = (arr) => arr.map(x => x.title).sort().join('|');
     const checkupSig = sig(r.checkup);
@@ -6498,7 +6501,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.30.2 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.3 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -7031,7 +7034,7 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.30.2 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.3 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
       // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(優先於 daily,避免「加護病房雜費限額」誤分 daily)
@@ -8630,26 +8633,49 @@ const App = (() => {
     }, 1800);
   }
 
-  /** ⭐ 推薦規劃:一鍵套用最夯套裝 */
-  function applyRecommendedPlan() {
+  /** ⭐ 推薦規劃:依被保險人年齡套用對應版本(兒童 0~14 vs 成人 15+) */
+  function applyRecommendedPlan(version) {
     if (!state.db) return;
-    // 全球人壽 10 張預設套裝(主約 DCF 30年/20萬 + 9 張附約) — 排除 XHP/MIR
     const quanqiu = state.db.companies.find(c => c.id === 'quanqiu' || /全球/.test(c.name));
     if (!quanqiu) { alert('找不到全球人壽資料'); return; }
-    const reco = {
-      main: { code: 'DCF', period: '30年期', amount: 20 },
-      riders: [
-        { code: 'XTK',  period: '1年期', amount: 69 },
-        { code: 'XDE',  period: '1年期', amount: 180 },
-        { code: 'XHD',  period: '1年期', amount: '計劃一' },
-        { code: 'XHO',  period: '1年期', amount: '計劃4A' },
-        { code: 'XCF',  period: '1年期', amount: 200 },
-        { code: 'XCG',  period: '1年期', amount: 3 },
-        { code: 'XAB',  period: '1年期', amount: 200 },
-        { code: 'XMBN', period: '1年期', amount: 30000 },
-        { code: 'NIR',  period: '1年期', amount: 'HI-40' }
-      ]
-    };
+    // 沒傳版本就依年齡自動選
+    if (!version) {
+      const ins = getCurrentInsured();
+      version = (ins.age != null && ins.age <= 14) ? 'child' : 'adult';
+    }
+    let reco;
+    if (version === 'child') {
+      // 👶 兒童版(0~14 歲):含 XTK,XCF 200 萬(兒童免體檢)
+      reco = {
+        main: { code: 'DCF', period: '30年期', amount: 20 },
+        riders: [
+          { code: 'XTK',  period: '1年期', amount: 69 },
+          { code: 'XDE',  period: '1年期', amount: 180 },
+          { code: 'XHD',  period: '1年期', amount: '計劃一' },
+          { code: 'XHO',  period: '1年期', amount: '計劃4A' },
+          { code: 'XCF',  period: '1年期', amount: 200 },
+          { code: 'XCG',  period: '1年期', amount: 3 },
+          { code: 'XAB',  period: '1年期', amount: 200 },
+          { code: 'XMBN', period: '1年期', amount: 30000 },
+          { code: 'NIR',  period: '1年期', amount: 'HI-40' }
+        ]
+      };
+    } else {
+      // 🧑 成人版(15+ 歲):無 XTK,XCF 100 萬(≤150 萬避體檢)
+      reco = {
+        main: { code: 'DCF', period: '30年期', amount: 20 },
+        riders: [
+          { code: 'XDE',  period: '1年期', amount: 180 },
+          { code: 'XHD',  period: '1年期', amount: '計劃一' },
+          { code: 'XHO',  period: '1年期', amount: '計劃4A' },
+          { code: 'XCF',  period: '1年期', amount: 100 },
+          { code: 'XCG',  period: '1年期', amount: 3 },
+          { code: 'XAB',  period: '1年期', amount: 200 },
+          { code: 'XMBN', period: '1年期', amount: 30000 },
+          { code: 'NIR',  period: '1年期', amount: 'HI-40' }
+        ]
+      };
+    }
     state.selections[quanqiu.id] = reco;
     state.activeCompany = quanqiu.id;
     renderCompanyTabs();
