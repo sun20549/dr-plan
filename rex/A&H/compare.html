@@ -576,6 +576,32 @@ body {
   align-items: center;
   gap: 8px;
   text-transform: uppercase;
+  justify-content: space-between;
+}
+/* v1.34 — 全選 / 全部取消按鈕 */
+.btn-toggle-all {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--gray-2);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  text-transform: none;
+}
+.btn-toggle-all:hover {
+  color: var(--orange-dark);
+  border-color: var(--orange);
+  background: var(--orange-light);
+}
+.btn-toggle-all.all-selected {
+  color: var(--orange-dark);
+  border-color: var(--orange);
+  background: var(--orange-light);
 }
 .picker-title::before {
   content: '';
@@ -3060,7 +3086,10 @@ body.hide-empty .compare-table tbody tr.row-all-empty { display: none; }
     <!-- 左側商品選取 -->
     <aside class="picker" id="picker">
       <button class="picker-collapse-btn" id="pickerCollapseBtn" type="button" title="收合左側面板" aria-label="收合左側面板">◀</button>
-      <div class="picker-title">選要比的商品</div>
+      <div class="picker-title">
+        <span>選要比的商品</span>
+        <button type="button" id="btnToggleAll" class="btn-toggle-all" title="一鍵切換 全選/全部取消">全選</button>
+      </div>
       <div id="pickerBody">
         <div class="picker-empty">載入中...</div>
       </div>
