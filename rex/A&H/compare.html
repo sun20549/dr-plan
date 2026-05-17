@@ -4410,6 +4410,29 @@ const App = (() => {
     const body = document.getElementById('pickerBody');
     body.innerHTML = '';
     const cat = CATEGORIES.find(c => c.key === state.categoryKey);
+
+    // v1.34 — 更新「全選/全部取消」按鈕狀態
+    const btnToggleAll = document.getElementById('btnToggleAll');
+    if (btnToggleAll && cat) {
+      const allSelected = cat.products.every(pp => !!state.selected[pp.code]);
+      btnToggleAll.textContent = allSelected ? '全部取消' : '全選';
+      btnToggleAll.classList.toggle('all-selected', allSelected);
+      btnToggleAll.onclick = () => {
+        if (allSelected) {
+          // 全部取消
+          state.selected = {};
+        } else {
+          // 全選(套用所有商品的 defaultAmount)
+          state.selected = {};
+          cat.products.forEach(pp => {
+            state.selected[pp.code] = { cid: pp.cid, amount: pp.defaultAmount };
+          });
+        }
+        renderPicker();
+        renderTable();
+      };
+    }
+
     // 依公司分組
     const byCompany = {};
     cat.products.forEach(pp => {
@@ -5066,10 +5089,9 @@ const App = (() => {
       document.body.classList.toggle('hide-empty', state.ui.hideEmpty);
     });
 
-    // 左側面板收合 / 展開
     const layout = document.querySelector('.main-layout');
     const collapseBtn = document.getElementById('pickerCollapseBtn');
-    const reopenRail = document.querySelector('.picker-reopen-rail');  // v1.33a:之前漏宣告造成 ReferenceError 害 picker 不能展開
+    const reopenRail = document.getElementById('pickerReopenRail');
     const PICKER_COLLAPSED_KEY = 'ah_picker_collapsed';
 
     // 還原上次狀態
