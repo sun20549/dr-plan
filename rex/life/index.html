@@ -2102,27 +2102,25 @@ function getInputs() {
   };
 }
 
-// 投保金額驗證 (新光官方規則)
-// 0-15 歲:1 萬 ~ 200 萬美元;16-75 歲:1 萬 ~ 1000 萬美元
-// 單位:千美元 (= 0.1 萬美元),最多到小數一位
+// 投保金額驗證 — 規則 per-product (不同公司不同)
+// 新光: 1-1000 萬美元,單位千美元 (小數一位)
+// 台灣人壽: 1-500 萬元 USD,整數
 function validateFace(faceWan, age) {
   const warn = $('face-warn');
   if (!warn) return true;
   if (faceWan == null || isNaN(faceWan) || faceWan <= 0) {
     warn.textContent = '請輸入投保金額'; return false;
   }
-  // 小數一位檢查:面額 × 10 必須為整數
-  const scaled = Math.round(faceWan * 10);
-  if (Math.abs(scaled / 10 - faceWan) > 0.0001) {
-    warn.textContent = `最多到小數一位(千美元為單位),建議:${(scaled/10).toFixed(1)}`;
-    return false;
-  }
   const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === currentPlan) : null;
   const unit = _prod?.unit || '萬元';
-  const faceUSD = unit === '元' ? faceWan * 10000 : faceWan * 10000; // already in faceWan-units
-  // 元 USD 商品有單獨上限 (face_max_usd)
+  const userInput = +document.getElementById('face').value || 0;
+
   if (unit === '元') {
-    const userInput = faceUSD; // since faceWan was already converted from input
+    // 台灣人壽:整數元 USD
+    if (Math.abs(Math.round(userInput) - userInput) > 0.0001) {
+      warn.textContent = `投保金額需為整數元 USD,建議:${Math.round(userInput).toLocaleString()}`;
+      return false;
+    }
     if (userInput < 1) {
       warn.textContent = '投保金額最低 1 元 USD'; return false;
     }
@@ -2131,6 +2129,12 @@ function validateFace(faceWan, age) {
       warn.textContent = '投保上限 ' + maxUSD.toLocaleString() + ' USD'; return false;
     }
   } else {
+    // 新光:萬美元,小數一位(= 千美元粒度)
+    const scaled = Math.round(faceWan * 10);
+    if (Math.abs(scaled / 10 - faceWan) > 0.0001) {
+      warn.textContent = `最多到小數一位(千美元為單位),建議:${(scaled/10).toFixed(1)}`;
+      return false;
+    }
     if (faceWan < 1) {
       warn.textContent = '投保金額最低 1 萬美元'; return false;
     }
