@@ -135,6 +135,196 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: var(--orange-dark);
 }
 
+/* ════════════════════════════════════════════════════════════
+ * v3.30 核保提醒 UI(uw-* 系列)
+ * ════════════════════════════════════════════════════════════ */
+.uw-badge {
+  border: none;
+  padding: 6px 13px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+}
+.uw-badge:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.25); }
+.uw-badge b {
+  background: rgba(255, 255, 255, 0.95);
+  color: inherit;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.uw-badge-checkup { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: white; }
+.uw-badge-checkup b { color: #1976D2; }
+.uw-badge-warn { background: linear-gradient(135deg, #FFA726 0%, #F57C00 100%); color: white; }
+.uw-badge-warn b { color: #F57C00; }
+@keyframes uwBadgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.uw-badge.pulse { animation: uwBadgePulse 1.2s ease-in-out 2; }
+
+/* Modal mask */
+.uw-modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 42, 58, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: uwFadeIn 0.2s ease-out;
+}
+.uw-modal-mask.show { display: flex; }
+@keyframes uwFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.uw-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 88vh;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: uwSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes uwSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.uw-modal-header {
+  padding: 18px 22px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.uw-modal-header.uw-mh-checkup { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
+.uw-modal-header.uw-mh-warn { background: linear-gradient(135deg, #FFA726 0%, #F57C00 100%); }
+.uw-modal-header.uw-mh-block { background: linear-gradient(135deg, #E53935 0%, #C62828 100%); }
+.uw-modal-header #uwModalIcon { font-size: 22px; }
+.uw-modal-header #uwModalTitle { flex: 1; }
+.uw-modal-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.uw-modal-close:hover { background: rgba(255,255,255,0.35); transform: rotate(90deg); }
+.uw-modal-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  flex: 1;
+  background: linear-gradient(180deg, #fafbfc 0%, #ffffff 100%);
+}
+.uw-item {
+  background: white;
+  border: 1px solid #e8edf2;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: all 0.15s;
+}
+.uw-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.uw-item:last-child { margin-bottom: 0; }
+.uw-item.uw-it-checkup { border-left: 4px solid #2196F3; }
+.uw-item.uw-it-warn { border-left: 4px solid #FFA726; }
+.uw-item.uw-it-block { border-left: 4px solid #E53935; }
+.uw-it-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.uw-it-title .uw-ico { font-size: 17px; }
+.uw-it-detail {
+  font-size: 13px;
+  color: #5a6776;
+  line-height: 1.7;
+  margin: 6px 0;
+}
+.uw-it-detail b { color: var(--navy); }
+.uw-it-detail .num { color: var(--orange-dark); font-weight: 800; font-family: 'Bebas Neue','Noto Sans TC'; font-size: 15px; letter-spacing: 0.5px; }
+.uw-it-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.uw-it-chip {
+  background: #e3f2fd;
+  color: #1565c0;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #bbdefb;
+}
+.uw-it-source {
+  font-size: 11px;
+  color: #99a4af;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #e0e6eb;
+  font-family: 'Consolas','Courier New',monospace;
+}
+.uw-it-source::before { content: '📖 '; }
+.uw-modal-footer {
+  padding: 14px 22px;
+  border-top: 1px solid #e8edf2;
+  text-align: right;
+  background: #f7f9fc;
+}
+.uw-modal-btn {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 9px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.uw-modal-btn:hover { background: #1a3d52; box-shadow: 0 4px 10px rgba(13,42,58,0.3); }
+/* 列印 / RWD */
+@media print { .uw-badge, .uw-modal-mask { display: none !important; } }
+@media (max-width: 640px) {
+  .uw-modal-header { font-size: 15px; padding: 14px 16px; }
+  .uw-modal-body { padding: 14px 16px; }
+}
+
 /* ── Person Block ── */
 .person-flow {
   display: grid; grid-template-columns: 1fr auto 1fr;
@@ -2891,7 +3081,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.29.18</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.0</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -3057,12 +3247,31 @@ tr
           <span><span class="header-icon">🏥</span>險種規劃</span>
           <button class="tb-btn no-print" style="background: linear-gradient(135deg,#F05A28 0%,#FF8050 100%); border-color: rgba(255,255,255,0.4); font-weight:700; padding:6px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);" onclick="App.applyRecommendedPlan()" title="一鍵套用最夯全球 10 張套裝">⭐ 推薦規劃</button>
         </span>
+        <span style="display:inline-flex;gap:8px;align-items:center;" class="no-print">
+          <button id="btnUWCheckup" class="uw-badge uw-badge-checkup" style="display:none;" onclick="App.openUWModal('checkup')" title="點此查看須做的體檢項目">🩺 體檢提醒 <b id="uwCheckupCount">0</b></button>
+          <button id="btnUWAlert" class="uw-badge uw-badge-warn" style="display:none;" onclick="App.openUWModal('warn')" title="點此查看核保警示">⚠️ 核保警示 <b id="uwAlertCount">0</b></button>
+        </span>
       </div>
       <div class="company-tabs no-print" id="companyTabs"></div>
       <div id="productSection"></div>
 
       <!-- 豁免保費附約 -->
-      
+
+    </div>
+
+    <!-- 核保提醒 modal -->
+    <div class="uw-modal-mask" id="uwModalMask" onclick="App.closeUWModal(event)">
+      <div class="uw-modal" onclick="event.stopPropagation();">
+        <div class="uw-modal-header" id="uwModalHeader">
+          <span id="uwModalIcon">🩺</span>
+          <span id="uwModalTitle">核保提醒</span>
+          <button class="uw-modal-close" onclick="App.closeUWModal()">×</button>
+        </div>
+        <div class="uw-modal-body" id="uwModalBody"></div>
+        <div class="uw-modal-footer">
+          <button class="uw-modal-btn" onclick="App.closeUWModal()">我知道了</button>
+        </div>
+      </div>
     </div>
 
     <!-- 累計核保檢查警告 -->
@@ -4284,7 +4493,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.29.18 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.0 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4293,7 +4502,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.29.18 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.0 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5289,8 +5498,365 @@ const App = (() => {
     // 累計核保檢查(醫療日額累計上限等)
     renderAggregateUnderwriteCheck(ins);
 
+    // ★ v3.30 全面核保規則檢查(體檢/累積/特殊狀態)
+    refreshUnderwriteBadges(rows, ins);
+
     // 責任曲線:更新商品勾選清單與預覽
     renderCurveCard(ins);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  v3.30 核保規則引擎(基於現有資料:年齡/性別/職業/險種/保額)
+  //  條文出處皆標註頁碼,符合 2026/04/27 起經代通路投保規則
+  // ═══════════════════════════════════════════════════════════
+  /** 把所有 rows 跑過所有規則,回傳 {checkup:[], warn:[], block:[]} */
+  function evaluateUnderwriting(rows, ins) {
+    const out = { checkup: [], warn: [], block: [] };
+    if (!ins || ins.age == null) return out;
+    const age = ins.age;
+    const job = ins.job || 1;
+    // ── 用 code 索引 row(快速查) ──
+    const has = {};
+    rows.forEach(r => {
+      if (!r || !r.product) return;
+      has[r.product.code] = r;
+    });
+    // 取保額(萬元為單位)
+    const wan = (code) => {
+      const r = has[code];
+      if (!r) return 0;
+      const v = parseFloat(r.amount);
+      return isNaN(v) ? 0 : v;
+    };
+    // XHD/XHO/NIR/MIR 計畫對應的「住院日額」(元/日)
+    const dailyMap = {
+      'XHD': { '計劃一': 1000, '計劃二': 2000, '計劃三': 3000, '計劃四': 4000, '計劃五': 5000 },
+      'XHO': { '計劃1': 1000, '計劃2': 2000, '計劃3': 3000, '計劃4': 4000, '計劃4A': 4000, '計劃5': 5000 },
+      'NIR': { '計劃一': 1000, '計劃二': 2000, '計劃三': 3000, '計劃四': 4000, 'HI-05': 500, 'HI-10': 1000, 'HI-20': 2000, 'HI-30': 3000, 'HI-40': 4000 },
+      'MIR': { 'MI-05': 500, 'MI-10': 1000, 'MI-15': 1500, 'MI-20': 2000, 'MI-25': 2500, 'MI-30': 3000, 'MI-35': 3500, 'MI-40': 4000, 'MI-45': 4500, 'MI-50': 5000 }
+    };
+    const getDaily = (code) => {
+      const r = has[code];
+      if (!r) return 0;
+      const dm = dailyMap[code];
+      if (!dm) return 0;
+      return dm[r.amount] || 0;
+    };
+
+    // ────────────────────────────────────────
+    // 🔴 BLOCK 拒保
+    // ────────────────────────────────────────
+
+    // Block-1:XAB 限承保 1-4 級
+    if (has['XAB'] && job >= 5) {
+      out.block.push({
+        title: 'XAB 御守傷害失能 — 職業等級限制',
+        detail: `被保險人職業 <b>${job} 級</b>,XAB 限承保 <b>1~4 級</b>。本商品<b style="color:#c62828;">不予承保</b>。`,
+        source: '投保規則 p.190 XAB 八、特殊規定'
+      });
+    }
+
+    // Block-2:重大傷病累積 > 500 萬(DCF 含壽險性質,XDE 一年期)
+    const ciTotal = wan('DCF') + wan('XDE');
+    if (ciTotal > 500) {
+      out.block.push({
+        title: '重大傷病累積保額超限',
+        detail: `DCF <span class="num">${wan('DCF')}</span> 萬 + XDE <span class="num">${wan('XDE')}</span> 萬 = <span class="num">${ciTotal}</span> 萬,超過上限 <b>500 萬</b>。`,
+        source: '投保規則 p.18 三、2(4) 重大傷病險'
+      });
+    }
+
+    // Block-3:重大疾病/重大傷病/特定疾病合計 > 1,000 萬
+    // 系統現有商品只有 DCF + XDE,合計 1000 萬難達到,但仍檢查
+    const ciAllTotal = wan('DCF') + wan('XDE');  // 將來若加 LLA/B/C/DDB 等再加
+    if (ciAllTotal > 1000) {
+      out.block.push({
+        title: '重大疾病/重大傷病/特定疾病合計超限',
+        detail: `合計 <span class="num">${ciAllTotal}</span> 萬,超過上限 <b>1,000 萬</b>。`,
+        source: '投保規則 p.18 三、2(3)'
+      });
+    }
+
+    // Block-4:防癌單筆金累積 > 300 萬 (XCF×1,XCC×2,PCC×3,XCE×12,XCG 不算)
+    const cancerLump = wan('XCF') * 1;
+    if (cancerLump > 300) {
+      out.block.push({
+        title: '防癌單筆金累積保額超限',
+        detail: `XCF <span class="num">${wan('XCF')}</span> 萬 = <span class="num">${cancerLump}</span> 萬,超過上限 <b>300 萬</b>。`,
+        source: '投保規則 p.18 三、2(10) / p.176 XCF'
+      });
+    }
+
+    // Block-5:傷害險累積 > 4,000 萬
+    const accidentTotal = wan('XAB');
+    if (accidentTotal > 4000) {
+      out.block.push({
+        title: '傷害險累積保額超限',
+        detail: `XAB <span class="num">${accidentTotal}</span> 萬,超過 <b>4,000 萬</b>。`,
+        source: '投保規則 p.18 三、2(5)'
+      });
+    }
+
+    // Block-6:未滿 15 歲累積喪葬金 > 69 萬
+    if (age < 15) {
+      const funeral = wan('XTK') + wan('XAB');
+      if (funeral > 69) {
+        out.block.push({
+          title: '未滿 15 歲喪葬保險金超限',
+          detail: `被保險人 <b>${age} 歲</b> (未滿 15);XTK <span class="num">${wan('XTK')}</span> 萬 + XAB <span class="num">${wan('XAB')}</span> 萬 = <span class="num">${funeral}</span> 萬,超過保險法第 107 條限額 <b>69 萬</b>。`,
+          source: '投保規則 p.24 四、學生、未滿 15 足歲者'
+        });
+      }
+    }
+
+    // Block-7:醫療住院日額累積
+    const dailyTotal = getDaily('XHD') + getDaily('NIR') + getDaily('MIR');
+    const dailyCap = age < 15 ? 8000 : 10000;
+    if (dailyTotal > dailyCap) {
+      out.block.push({
+        title: `醫療住院日額累積超限 (${age < 15 ? '未滿 15 歲' : '15 歲以上'})`,
+        detail: `XHD <span class="num">${getDaily('XHD')}</span> + NIR <span class="num">${getDaily('NIR')}</span> + MIR <span class="num">${getDaily('MIR')}</span> = <span class="num">${dailyTotal}</span> 元/日,超過上限 <b>${dailyCap.toLocaleString()} 元/日</b>。<br><small>(XHO/XHP 依規定不計入累積)</small>`,
+        source: '投保規則 p.18 三、2(7)'
+      });
+    }
+
+    // Block-8:壽險累積 > 2,000 萬 (DCF 含壽險性質 + XTK)
+    const lifeTotal = wan('DCF') + wan('XTK');
+    if (lifeTotal > 2000) {
+      out.block.push({
+        title: '壽險累積保額超限',
+        detail: `DCF <span class="num">${wan('DCF')}</span> 萬 + XTK <span class="num">${wan('XTK')}</span> 萬 = <span class="num">${lifeTotal}</span> 萬,超過上限 <b>2,000 萬</b>。`,
+        source: '投保規則 p.18 三、2(1)'
+      });
+    }
+
+    // ────────────────────────────────────────
+    // 🟡 WARN 警示
+    // ────────────────────────────────────────
+
+    // Warn-1:壽險累積 > 1,500 萬 — 先核保再繳費
+    if (lifeTotal > 1500 && lifeTotal <= 2000) {
+      out.warn.push({
+        title: '壽險累積 1,500 萬以上 — 須先核保通過',
+        detail: `合計 <span class="num">${lifeTotal}</span> 萬。<b>須待核保通過後再通知繳交首期保險費</b>。`,
+        source: '投保規則 p.21 三、3(4)'
+      });
+    }
+
+    // Warn-2:壽險累積 > 1,001 萬 — 需財務告知書
+    if (lifeTotal >= 1001) {
+      out.warn.push({
+        title: '壽險累積 1,001 萬以上 — 須附財務狀況告知書',
+        detail: `合計 <span class="num">${lifeTotal}</span> 萬,須檢附「<b>財務狀況告知書</b>」。`,
+        source: '投保規則 p.19 三、3(1)'
+      });
+    }
+    // Warn-2b:壽險累積 > 3,001 萬 — 需財力證明
+    if (lifeTotal >= 3001) {
+      out.warn.push({
+        title: '壽險累積 3,001 萬以上 — 須附財力證明影本',
+        detail: `合計 <span class="num">${lifeTotal}</span> 萬。除財務告知書外,還須提供<b>財力證明影本</b>(存款證明/繳稅證明/不動產權狀等)。`,
+        source: '投保規則 p.19 三、3(2)'
+      });
+    }
+
+    // Warn-3:傷害險累積 > 1,001 萬 — 需財務告知書
+    if (accidentTotal >= 1001) {
+      out.warn.push({
+        title: '傷害險累積 1,001 萬以上 — 須附財務狀況告知書',
+        detail: `XAB <span class="num">${accidentTotal}</span> 萬,須檢附「<b>財務狀況告知書</b>」。`,
+        source: '投保規則 p.19 三、3(1)'
+      });
+    }
+
+    // Warn-4:同業實支實付傷害醫療 20 萬上限提示(XMBN)
+    if (has['XMBN']) {
+      const xmbn = parseFloat(has['XMBN'].amount) || 0;
+      if (xmbn >= 30000) {
+        out.warn.push({
+          title: '實支實付傷害醫療(XMBN)— 同業合計 20 萬上限',
+          detail: `XMBN 本公司 <span class="num">${xmbn.toLocaleString()}</span> 元。<b>含同業實支實付傷害醫療合計不得超過 200,000 元</b>。請確認被保險人在他公司已投保金額。`,
+          source: '投保規則 p.18 三、2(6)'
+        });
+      }
+    }
+
+    // Warn-5:醫療住院日額同業 15,000 提示
+    if (dailyTotal >= 6000) {
+      out.warn.push({
+        title: '醫療住院日額 — 同業合計 15,000 元上限',
+        detail: `本公司合計 <span class="num">${dailyTotal}</span> 元/日。<b>含同業合計不得超過 15,000 元/日</b>。請確認被保險人在他公司已投保金額。`,
+        source: '投保規則 p.18 三、2(7)'
+      });
+    }
+
+    // Warn-6:傷害險職業分級限額(1-2 級 2,000 萬 / 3-4 級 1,000 萬)
+    if (has['XAB']) {
+      const accLimit = (job <= 2) ? 2000 : (job <= 4 ? 1000 : 0);
+      if (accLimit > 0 && accidentTotal > accLimit) {
+        out.warn.push({
+          title: `傷害險超過職業 ${job} 級限額`,
+          detail: `XAB <span class="num">${accidentTotal}</span> 萬,職業 ${job} 級限額 <b>${accLimit} 萬</b>。`,
+          source: '投保規則 p.146 APB 一、(類比 XAB)'
+        });
+      }
+    }
+
+    // ────────────────────────────────────────
+    // 🩺 CHECKUP 體檢
+    // ────────────────────────────────────────
+
+    // Med-1:壽險累積危險保額體檢(年齡帶)
+    // (DCF 200 萬 + XTK 上限 69 萬 → 全球體系內難觸發 1,200 萬,但保留邏輯)
+    const lifeRiskAmt = wan('DCF') + wan('XTK');
+    const lifeThres = age <= 45 ? 1200 : (age <= 55 ? 700 : (age <= 60 ? 300 : (age <= 69 ? 100 : 0)));
+    if ((age >= 70 || lifeRiskAmt > lifeThres) && lifeRiskAmt > 0) {
+      const items = age >= 70 ? ['普通體檢','尿液常規檢查','靜止心電圖檢查']
+        : (lifeRiskAmt > 1200 ? ['普通體檢','尿液','血生化','靜止心電圖','胸部 X 光','運動心電圖']
+        : (lifeRiskAmt > 700 ? ['普通體檢','尿液','血生化','靜止心電圖','胸部 X 光']
+        : (lifeRiskAmt > 300 ? ['普通體檢','尿液','血生化','靜止心電圖']
+        : ['普通體檢','尿液','血生化','靜止心電圖'])));
+      out.checkup.push({
+        title: `壽險累積危險保額 — 須體檢 (${age} 歲)`,
+        detail: `累積危險保額 <span class="num">${lifeRiskAmt}</span> 萬${age >= 70 ? ',70 歲(含)以上一律體檢' : ',超過該年齡帶門檻 ' + lifeThres + ' 萬'}。`,
+        items: items,
+        source: '投保規則 p.31 六、1(1) 壽險須體檢之保額表'
+      });
+    }
+
+    // Med-2/3/4/5:DCF 商品體檢(DCF+XDE 合併保額)
+    if (has['DCF'] || has['XDE']) {
+      const dcfTotal = wan('DCF') + wan('XDE');
+      let items = null;
+      let bandDesc = '';
+      if (age <= 55) {
+        if (dcfTotal > 300) { items = ['普通體檢','尿液常規檢查','血液生化檢查','靜止心電圖檢查']; bandDesc = '301 萬以上'; }
+        else if (dcfTotal > 200) { items = ['普通體檢','尿液常規檢查','靜止心電圖檢查']; bandDesc = '201~300 萬'; }
+      } else {
+        if (dcfTotal > 300) { items = ['普通體檢','尿液常規檢查','血液生化檢查','靜止心電圖檢查','胸部 X 光檢查']; bandDesc = '301 萬以上'; }
+        else if (dcfTotal > 200) { items = ['普通體檢','尿液常規檢查','血液生化檢查','靜止心電圖檢查']; bandDesc = '201~300 萬'; }
+        else if (dcfTotal >= 101) { items = ['普通體檢','尿液常規檢查','血液生化檢查','靜止心電圖檢查']; bandDesc = '101~200 萬'; }
+      }
+      if (items && (age >= 16 || !age)) {  // 15 歲以下原則上免體檢
+        if (age >= 16) {
+          out.checkup.push({
+            title: `DCF 重大傷病終身 — 須體檢 (${age} 歲)`,
+            detail: `DCF <span class="num">${wan('DCF')}</span> 萬 + XDE <span class="num">${wan('XDE')}</span> 萬 = <span class="num">${dcfTotal}</span> 萬 (${bandDesc})`,
+            items: items,
+            source: '投保規則 p.144 DCF 九、體檢規則'
+          });
+        }
+      }
+    }
+
+    // Med-6/7:XCF 防癌體檢
+    if (has['XCF']) {
+      const xcfTotal = wan('XCF') * 1;  // XCF 換算 ×1
+      if (xcfTotal > 150 && age >= 16) {
+        const items = age <= 45
+          ? ['普通體檢','尿液常規檢查','血液生化檢查']
+          : ['普通體檢','尿液常規檢查','血液生化檢查','胸部 X 光檢查'];
+        out.checkup.push({
+          title: `XCF 防癌一次金 — 須體檢 (${age} 歲)`,
+          detail: `XCF <span class="num">${xcfTotal}</span> 萬,超過 <b>150 萬</b> 門檻 (${age <= 45 ? '16~45 歲帶' : '46 歲以上帶'})`,
+          items: items,
+          source: '投保規則 p.176 XCF 八、體檢規則'
+        });
+      }
+    }
+
+    // Med-8:XHC/XHD/XHO/XHP 抽樣體檢提示
+    const samplingProducts = ['XHC','XHD','XHO','XHP'].filter(c => has[c]);
+    if (samplingProducts.length > 0) {
+      out.checkup.push({
+        title: '實支實付類 — 4% 抽樣體檢機率',
+        detail: `已選 <b>${samplingProducts.join(' / ')}</b>;此類商品有 <b>4% 隨機抽樣體檢</b> 機率,被抽中時須完成指定體檢。`,
+        items: ['依抽中體檢通知執行'],
+        source: '投保規則 p.22 三、7(2)'
+      });
+    }
+
+    return out;
+  }
+
+  /** 更新 header badge 與 modal 內容 */
+  let _uwLastResult = { checkup: [], warn: [], block: [] };
+  function refreshUnderwriteBadges(rows, ins) {
+    const r = evaluateUnderwriting(rows, ins);
+    _uwLastResult = r;
+    const cBtn = $('#btnUWCheckup');
+    const wBtn = $('#btnUWAlert');
+    // 體檢 badge
+    if (r.checkup.length > 0) {
+      $('#uwCheckupCount').textContent = r.checkup.length;
+      cBtn.style.display = '';
+      cBtn.classList.add('pulse');
+      setTimeout(() => cBtn.classList.remove('pulse'), 2500);
+    } else { cBtn.style.display = 'none'; }
+    // 警示 badge (block + warn 合計)
+    const alertCount = r.block.length + r.warn.length;
+    if (alertCount > 0) {
+      $('#uwAlertCount').textContent = alertCount;
+      wBtn.style.display = '';
+      // block 等級高 → 紅色;warn 橙色
+      if (r.block.length > 0) {
+        wBtn.classList.remove('uw-badge-warn');
+        wBtn.style.background = 'linear-gradient(135deg,#E53935 0%,#C62828 100%)';
+        wBtn.querySelector('b').style.color = '#C62828';
+        wBtn.innerHTML = '🚫 拒保警示 <b id="uwAlertCount" style="color:#C62828;">' + alertCount + '</b>';
+      } else {
+        wBtn.classList.add('uw-badge-warn');
+        wBtn.style.background = '';
+        wBtn.innerHTML = '⚠️ 核保警示 <b id="uwAlertCount" style="color:#F57C00;">' + alertCount + '</b>';
+      }
+      wBtn.classList.add('pulse');
+      setTimeout(() => wBtn.classList.remove('pulse'), 2500);
+    } else { wBtn.style.display = 'none'; }
+  }
+
+  /** 開啟 modal */
+  function openUWModal(type) {
+    const mask = $('#uwModalMask');
+    const header = $('#uwModalHeader');
+    const body = $('#uwModalBody');
+    let items = [];
+    let title = '', icon = '', headerClass = '';
+    if (type === 'checkup') {
+      items = _uwLastResult.checkup;
+      title = '須完成的體檢項目';
+      icon = '🩺';
+      headerClass = 'uw-mh-checkup';
+    } else {
+      items = [..._uwLastResult.block, ..._uwLastResult.warn];
+      const hasBlock = _uwLastResult.block.length > 0;
+      title = hasBlock ? '拒保 / 核保警示' : '核保警示';
+      icon = hasBlock ? '🚫' : '⚠️';
+      headerClass = hasBlock ? 'uw-mh-block' : 'uw-mh-warn';
+    }
+    header.className = 'uw-modal-header ' + headerClass;
+    $('#uwModalTitle').textContent = title;
+    $('#uwModalIcon').textContent = icon;
+    if (items.length === 0) {
+      body.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">目前無相關提醒</div>';
+    } else {
+      const isBlockSet = new Set(_uwLastResult.block);
+      body.innerHTML = items.map(it => {
+        const klass = isBlockSet.has(it) ? 'uw-it-block' : (type === 'checkup' ? 'uw-it-checkup' : 'uw-it-warn');
+        const ico = isBlockSet.has(it) ? '🚫' : (type === 'checkup' ? '🩺' : '⚠️');
+        const itemsHtml = it.items ? '<div class="uw-it-items">' + it.items.map(x => '<span class="uw-it-chip">' + x + '</span>').join('') + '</div>' : '';
+        return '<div class="uw-item ' + klass + '">' +
+          '<div class="uw-it-title"><span class="uw-ico">' + ico + '</span>' + it.title + '</div>' +
+          '<div class="uw-it-detail">' + it.detail + '</div>' +
+          itemsHtml +
+          '<div class="uw-it-source">' + it.source + '</div>' +
+          '</div>';
+      }).join('');
+    }
+    mask.classList.add('show');
+  }
+  function closeUWModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    $('#uwModalMask').classList.remove('show');
   }
 
   /** 顯示累計核保檢查結果(渲染到 #resultCard 上方的提示區) */
@@ -5872,7 +6438,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.29.18 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.0 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -6405,7 +6971,7 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.29.18 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.0 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
       // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(優先於 daily,避免「加護病房雜費限額」誤分 daily)
@@ -8042,7 +8608,8 @@ const App = (() => {
     closeModal, openModal,
     toggleAllMain, toggleAllRiders,
     copySummaryToClipboard,
-    applyRecommendedPlan
+    applyRecommendedPlan,
+    openUWModal, closeUWModal
   };
 
 })();
