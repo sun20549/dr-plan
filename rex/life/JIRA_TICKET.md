@@ -5,7 +5,54 @@
 
 ---
 
-## ▸ 當前版本 TWLIFE-TLZWF6-003 · 修正小數一位驗證 per-product · 2026-05-17
+## ▸ 當前版本 TWLIFE-TLZWF6-004 · cum_buy 浮點累積,F 計算精度提升 · 2026-05-17
+
+對應版本:TLZWF6 v003 → **v004**
+
+### Summary
+
+```
+TWLIFE-TLZWF6-004 cum_buy 改浮點累積,M70 yr 21+ F 從 ±3 USD 收到 ±1 USD
+```
+
+### Description
+
+```
+== 問題 ==
+
+v003 之前 cumE 每年 round 後累積,yr 20+ 高齡時 F 跟 PDF 有 ±3 USD 偏離。
+PDF 內部用 float,我之前每次 round 後累積,造成微小漂移。
+
+實際影響:M70 face 300,000 yr 21 J = 1,458,877 vs PDF 1,458,874 (Δ +2.95)。
+
+== 修正 ==
+
+cumE += bought (float) 取代 cumE += Math.round(bought)
+顯示時才 round。F 計算用 unrounded cumE → 精度提升。
+
+== 結果 ==
+
+* J/K 對齊 PDF ±1 USD (vs v003 ±3 USD)
+* E 顯示仍整數
+* 早年 (yr 1-15) 數字完全不變
+
+== 影響版本 ==
+
+* TLZWF6:v003 → v004
+
+== 測試 Checklist ==
+
+* [ ] Ctrl+F5 刷新
+* [ ] 切「台灣人壽 → 臻威豐 6 年期」
+* [ ] M70 face 300,000 yr 21 身故 J ≈ 1,458,874 (應更接近 PDF)
+* [ ] M65 face 300,000 yr 6 身故 J ≈ 884,499 (不變)
+* [ ] 早年 yr 1-15 數字跟 v003 一致
+* [ ] 版本徽章顯示 TWLIFE-TLZWF6-004 → 確認上傳成功
+```
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-003 · 修正小數一位驗證 per-product · 2026-05-17
 
 對應版本:TLZWF6 v002 → **v003**
 

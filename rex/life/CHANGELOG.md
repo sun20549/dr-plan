@@ -6,6 +6,35 @@
 
 ---
 
+## 台灣人壽-TLZWF6-004 · 2026-05-17 — cum_buy 浮點累積,F 計算更精準
+
+對應版本:TLZWF6 v003 → **v004**
+
+### 問題
+
+v003 之前 `cumE` (累計購買增額面額) 每年呼叫 `Math.round(bought)` 後才累積,
+導致 yr 20+ 高齡時 F (累計增額身故) 的 ratio 跟 PDF 有 0.0001 級的差異
+(因為 PDF 內部用 float 累積)。
+
+實際影響:M70 yr 21+ J 偏離 PDF ±0.3 ~ +2.95 USD(1.5M 規模 0.0002%)。
+
+### 修正
+
+```js
+// 之前
+cumE += Math.round(bought);  // 每年 round → 累積誤差
+
+// 改為
+cumE += bought;  // 浮點累積,精度保留
+// 顯示時才 round (rows.push 用 Math.round(cumE))
+```
+
+### 結果
+
+F 計算更精準,跟 PDF 對齊到 ±1 USD 以內。E 顯示仍是整數(不變)。
+
+---
+
 ## 台灣人壽-TLZWF6-003 · 2026-05-17 — 修正小數一位驗證 (per-product)
 
 對應版本:TLZWF6 v002 → **v003**
