@@ -1136,6 +1136,23 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   opacity: 0.7;
   pointer-events: none;
 }
+/* v3.31.0 hover 時各條線上的高亮圓點 */
+.chart-hover-dot { pointer-events: none; }
+
+/* v3.31.0 tooltip 合計列 — 突顯總費用 */
+.chart-tooltip .tt-row-total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255,255,255,0.28);
+}
+.chart-tooltip .tt-val-total {
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--orange) 0%, #FF8050 100%);
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-size: 14px !important;
+  box-shadow: 0 2px 6px rgba(240,90,40,0.35);
+}
 /* iPad/觸控:加大命中區、加年齡左右切換按鈕容器 */
 .chart-age-stepper {
   display: none;
@@ -3279,7 +3296,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.31.0</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.31.1</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -7105,120 +7122,142 @@ const App = (() => {
 
     svg.innerHTML = svgHTML;
 
-    // ── Hover Tooltip(僅主圖啟用) ──
+    // ── Hover Tooltip(僅主圖啟用) v3.31.0 重寫:綁在 wrap 上,SVG 重繪也不失效 ──
     if (enableHover) {
     const tooltip = $('#chartTooltip');
     const wrapEl = svg.parentElement;
 
-    const handleMove = (e) => {
-      const rect = svg.getBoundingClientRect();
-      const xRel = e.clientX - rect.left;
-      // 還原成 viewBox 座標
-      const xVB = xRel * (W / rect.width);
+    // 把當前繪圖參數存到 wrap,讓 mousemove 用最新的
+    wrapEl._chartCtx = {
+      W, padL, padR, padT, padB, innerW, innerH,
+      ages, ageStart, series, theMode, svg
+    };
+
+    const updateHover = (clientX, clientY) => {
+      const ctx = wrapEl._chartCtx;
+      if (!ctx) return;
+      const rect = ctx.svg.getBoundingClientRect();
+      const xRel = clientX - rect.left;
+      const yRel = clientY - rect.top;
+      const xVB = xRel * (ctx.W / rect.width);
       // 找最近的年齡
       let nearestIdx = 0;
       let minDist = Infinity;
-      ages.forEach((age, i) => {
-        const px = padL + (innerW * i / Math.max(1, ages.length - 1));
+      ctx.ages.forEach((age, i) => {
+        const px = ctx.padL + (ctx.innerW * i / Math.max(1, ctx.ages.length - 1));
         const d = Math.abs(px - xVB);
         if (d < minDist) { minDist = d; nearestIdx = i; }
       });
-      // 在 hover 範圍外 → 隱藏
-      if (xVB < padL - 10 || xVB > W - padR + 10) {
+      if (xVB < ctx.padL - 10 || xVB > ctx.W - ctx.padR + 10) {
         tooltip.classList.remove('show');
-        const oldLine = svg.querySelector('.chart-hover-line');
+        const oldLine = ctx.svg.querySelector('.chart-hover-line');
         if (oldLine) oldLine.remove();
+        ctx.svg.querySelectorAll('.chart-hover-dot').forEach(el => el.remove());
         return;
       }
-      const age = ages[nearestIdx];
-      // 動態繪製垂直虛線
-      let oldLine = svg.querySelector('.chart-hover-line');
-      if (oldLine) oldLine.remove();
-      const lineX = padL + (innerW * nearestIdx / Math.max(1, ages.length - 1));
+      const age = ctx.ages[nearestIdx];
+      // 移除舊輔助線/點
+      ctx.svg.querySelectorAll('.chart-hover-line, .chart-hover-dot').forEach(el => el.remove());
+      // 畫垂直虛線
+      const lineX = ctx.padL + (ctx.innerW * nearestIdx / Math.max(1, ctx.ages.length - 1));
       const lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       lineEl.setAttribute('class', 'chart-hover-line');
       lineEl.setAttribute('x1', lineX);
       lineEl.setAttribute('x2', lineX);
-      lineEl.setAttribute('y1', padT);
-      lineEl.setAttribute('y2', padT + innerH);
-      svg.appendChild(lineEl);
+      lineEl.setAttribute('y1', ctx.padT);
+      lineEl.setAttribute('y2', ctx.padT + ctx.innerH);
+      ctx.svg.appendChild(lineEl);
+      // 在每條線上標一個小圓點(對應該年齡的位置)
+      const yMinCache = parseFloat(ctx.svg.dataset.yMin || '0');
+      const yMaxCache = parseFloat(ctx.svg.dataset.yMax || '1');
+      ctx.series.forEach(s => {
+        const v = s.data[nearestIdx];
+        const y = ctx.padT + ctx.innerH - (ctx.innerH * (v - yMinCache) / (yMaxCache - yMinCache));
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('class', 'chart-hover-dot');
+        dot.setAttribute('cx', lineX);
+        dot.setAttribute('cy', y);
+        dot.setAttribute('r', '5');
+        dot.setAttribute('fill', '#fff');
+        dot.setAttribute('stroke', s.color);
+        dot.setAttribute('stroke-width', '2.5');
+        dot.setAttribute('filter', 'drop-shadow(0 1px 3px rgba(0,0,0,0.25))');
+        ctx.svg.appendChild(dot);
+      });
 
       // 組 tooltip 內容
-      const yearsSinceStart = age - ageStart;
-      const totalAtAge = series.reduce((s, sr) => s + sr.data[nearestIdx], 0);
-      let html = `<div class="tt-age">${age} 歲(投保第 ${yearsSinceStart + 1} 年)</div>`;
-      if (theMode === 'total') {
-        html += `<div class="tt-row"><span class="tt-label"><span class="tt-dot" style="background:${series[0].color}"></span>${series[0].name}</span><span class="tt-val">${Math.round(series[0].data[nearestIdx]).toLocaleString()} 元</span></div>`;
+      const yearsSinceStart = age - ctx.ageStart;
+      // 排序:大→小(讓圖例對齊好讀)
+      const sortedSeries = [...ctx.series]
+        .map((s, i) => ({ s, v: s.data[nearestIdx] }))
+        .sort((a, b) => b.v - a.v);
+      const totalAtAge = ctx.series.reduce((acc, sr) => acc + sr.data[nearestIdx], 0);
+      let html = `<div class="tt-age">📅 ${age} 歲<span style="opacity:.7;font-weight:500;font-size:11px;margin-left:6px;">(投保第 ${yearsSinceStart + 1} 年)</span></div>`;
+      if (ctx.theMode === 'total') {
+        html += `<div class="tt-row"><span class="tt-label"><span class="tt-dot" style="background:${ctx.series[0].color}"></span>${ctx.series[0].name}</span><span class="tt-val">${Math.round(ctx.series[0].data[nearestIdx]).toLocaleString()} 元</span></div>`;
       } else {
-        series.forEach(s => {
-          html += `<div class="tt-row"><span class="tt-label"><span class="tt-dot" style="background:${s.color}"></span>${s.name}</span><span class="tt-val">${Math.round(s.data[nearestIdx]).toLocaleString()} 元</span></div>`;
+        sortedSeries.forEach(({ s, v }) => {
+          html += `<div class="tt-row"><span class="tt-label"><span class="tt-dot" style="background:${s.color}"></span>${s.name}</span><span class="tt-val">${Math.round(v).toLocaleString()} 元</span></div>`;
         });
-        if (series.length > 1) {
-          html += `<div class="tt-row" style="margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.2);"><span class="tt-label">合計</span><span class="tt-val" style="color:#fff;">${Math.round(totalAtAge).toLocaleString()} 元</span></div>`;
+        if (ctx.series.length > 1) {
+          html += `<div class="tt-row tt-row-total"><span class="tt-label">💰 合計</span><span class="tt-val tt-val-total">${Math.round(totalAtAge).toLocaleString()} 元</span></div>`;
         }
       }
       tooltip.innerHTML = html;
       tooltip.classList.add('show');
 
-      // 定位:相對於 .chart-svg-wrap,先測量實際大小再放
+      // 定位:相對於 wrap
       const wrapRect = wrapEl.getBoundingClientRect();
       const ttRect = tooltip.getBoundingClientRect();
-      const ttW = ttRect.width || 200;
-      const ttH = ttRect.height || 100;
-      let ttX = (e.clientX - wrapRect.left) + 14;
-      let ttY = (e.clientY - wrapRect.top) - 8;
-      // 防超出右邊
-      if (ttX + ttW > wrapRect.width - 5) {
-        ttX = (e.clientX - wrapRect.left) - ttW - 14;
-      }
-      // 防超出下邊
-      if (ttY + ttH > wrapRect.height - 5) {
-        ttY = wrapRect.height - ttH - 5;
-      }
-      // 防超出上邊
+      const ttW = ttRect.width || 220;
+      const ttH = ttRect.height || 120;
+      let ttX = (clientX - wrapRect.left) + 16;
+      let ttY = (clientY - wrapRect.top) - 16;
+      if (ttX + ttW > wrapRect.width - 5)  ttX = (clientX - wrapRect.left) - ttW - 16;
+      if (ttY + ttH > wrapRect.height - 5) ttY = wrapRect.height - ttH - 5;
       if (ttY < 5) ttY = 5;
       tooltip.style.left = ttX + 'px';
-      tooltip.style.top = ttY + 'px';
+      tooltip.style.top  = ttY + 'px';
     };
-    svg.onmousemove = handleMove;
-    svg.onmouseleave = () => {
-      tooltip.classList.remove('show');
-      const oldLine = svg.querySelector('.chart-hover-line');
-      if (oldLine) oldLine.remove();
-    };
-    // #3 ── 觸控裝置:tap 顯示 tooltip + 年齡 stepper ──
+
+    // 把 yMin/yMax 存到 svg 給 hover dot 用
+    svg.dataset.yMin = yMin;
+    svg.dataset.yMax = yMax;
+
+    // 綁定到 wrap(不是 svg),這樣 svg 重繪也不會失效
+    if (!wrapEl._chartBound) {
+      wrapEl._chartBound = true;
+      wrapEl.addEventListener('mousemove', (e) => updateHover(e.clientX, e.clientY));
+      wrapEl.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('show');
+        const ctx = wrapEl._chartCtx;
+        if (ctx) {
+          ctx.svg.querySelectorAll('.chart-hover-line, .chart-hover-dot').forEach(el => el.remove());
+        }
+      });
+      wrapEl.addEventListener('touchstart', (ev) => {
+        if (!ev.touches || !ev.touches[0]) return;
+        updateHover(ev.touches[0].clientX, ev.touches[0].clientY);
+      }, { passive: true });
+      wrapEl.addEventListener('touchmove', (ev) => {
+        if (!ev.touches || !ev.touches[0]) return;
+        updateHover(ev.touches[0].clientX, ev.touches[0].clientY);
+      }, { passive: true });
+    }
+
+    // 兼容舊用法:把 setAgeByIdx 接到 stepper 按鈕(觸控裝置)
+    const handleMove = (e) => updateHover(e.clientX, e.clientY);
     let touchAgeIdx = 0;
     const setAgeByIdx = (idx) => {
       touchAgeIdx = Math.max(0, Math.min(ages.length - 1, idx));
-      // 模擬 mousemove 在該位置觸發
       const px = padL + (innerW * touchAgeIdx / Math.max(1, ages.length - 1));
       const rect = svg.getBoundingClientRect();
       const xClient = rect.left + (px / W) * rect.width;
       const yClient = rect.top + rect.height * 0.5;
       handleMove({ clientX: xClient, clientY: yClient });
-      // 更新 stepper 文字
       const lbl = document.getElementById('chartAgeLabel');
       if (lbl) lbl.textContent = `${ages[touchAgeIdx]} 歲 (第 ${ages[touchAgeIdx] - ageStart + 1} 年)`;
     };
-    // touchstart 觸發
-    svg.ontouchstart = (ev) => {
-      if (!ev.touches || !ev.touches[0]) return;
-      const t = ev.touches[0];
-      handleMove({ clientX: t.clientX, clientY: t.clientY });
-      // 找出 nearestIdx 並更新 touchAgeIdx
-      const rect = svg.getBoundingClientRect();
-      const xVB = (t.clientX - rect.left) * (W / rect.width);
-      let nIdx = 0, mD = Infinity;
-      ages.forEach((age, i) => {
-        const px = padL + (innerW * i / Math.max(1, ages.length - 1));
-        const d = Math.abs(px - xVB);
-        if (d < mD) { mD = d; nIdx = i; }
-      });
-      touchAgeIdx = nIdx;
-      const lbl = document.getElementById('chartAgeLabel');
-      if (lbl) lbl.textContent = `${ages[nIdx]} 歲 (第 ${ages[nIdx] - ageStart + 1} 年)`;
-    };
-    // stepper 按鈕
     const btnPrev = document.getElementById('chartAgePrev');
     const btnNext = document.getElementById('chartAgeNext');
     if (btnPrev) btnPrev.onclick = () => setAgeByIdx(touchAgeIdx - 1);
