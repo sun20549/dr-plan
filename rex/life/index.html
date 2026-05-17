@@ -1274,6 +1274,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
         <div class="field">
           <label>繳別</label>
           <select class="input" id="freq">
+            <option value="一次繳">一次繳</option>
             <option value="年繳" selected>年繳</option>
             <option value="半年繳">半年繳</option>
             <option value="季繳">季繳</option>
@@ -1671,6 +1672,7 @@ async function loadProduct(c, p) {
     const v = p.version || '001';
     $('version-badge').textContent = `${c.code.toUpperCase()}-${p.plan_code}-${v}`;
     $('rates-status').textContent = '✓ 已載入官方費率';
+    refreshFreqOptions(p.plan_code);
     recalc();
   } catch (e) {
     $('rates-status').textContent = '❌ ' + e.message;
@@ -1725,8 +1727,45 @@ function insuranceAgeByBday(adYear, m, d) {
 
 // ================= DISCOUNT ==============
 // 高保費折扣 — 依「原始保費 USD」分級(非面額)
-function getDiscount(origPremiumUSD) {
-  const tiers = RATES.discounts.high_premium_tiers || [];
+// 支援 per-plan discount(從 product.discounts 讀);若不存在則 fallback 到 top-level RATES.discounts
+function _resolveDiscounts(planCode){
+  if (planCode) {
+    const p = (RATES.products || []).find(x => x.code === planCode);
+    if (p && p.discounts) return p.discounts;
+  }
+  return RATES.discounts || {};
+}
+function refreshFreqOptions(planCode){
+  if (!RATES) return;
+  const pf = _resolvePayFreq(planCode);
+  const allowed = Object.keys(pf.factors || {});
+  if (!allowed.length) return;
+  const sel = document.getElementById('freq');
+  if (!sel) return;
+  const prev = sel.value;
+  sel.innerHTML = allowed.map(k => '<option value="'+k+'">'+k+'</option>').join('');
+  if (allowed.includes(prev)) sel.value = prev;
+  else if (allowed.includes('年繳')) sel.value = '年繳';
+  else sel.value = allowed[0];
+}
+function _resolvePayFreq(planCode){
+  if (planCode){
+    const p = (RATES.products || []).find(x => x.code === planCode);
+    if (p && p.pay_freq_factors) {
+      return {
+        factors: p.pay_freq_factors,
+        periods: p.pay_freq_periods || RATES.pay_freq_periods || {},
+      };
+    }
+  }
+  return {
+    factors: RATES.pay_freq_factors || {},
+    periods: RATES.pay_freq_periods || {},
+  };
+}
+function getDiscount(origPremiumUSD, planCode) {
+  const D = _resolveDiscounts(planCode);
+  const tiers = D.high_premium_tiers || [];
   let hp = 0, tierLabel = '< 1 萬';
   for (const t of tiers) {
     // 支援新欄位 min_prem/max_prem,fallback 到舊欄位 min_usd/max_usd
@@ -1742,12 +1781,14 @@ function getDiscount(origPremiumUSD) {
       break;
     }
   }
+  const fp = D.first_period ?? 0;
+  const rn = D.renewal ?? 0;
   return {
     high_prem: hp, tier_label: tierLabel,
-    first_period: RATES.discounts.first_period,
-    renewal: RATES.discounts.renewal,
-    first_total: hp + RATES.discounts.first_period,
-    renew_total: hp + RATES.discounts.renewal,
+    first_period: fp,
+    renewal: rn,
+    first_total: hp + fp,
+    renew_total: hp + rn,
   };
 }
 
@@ -1763,9 +1804,10 @@ function calculate(inp) {
 
   const faceUSD = faceWan * 10000;
   const orig = gp * faceWan * 10;  // 原始年保費 USD
-  const discount = getDiscount(orig);  // 折扣依「保費」分級,非面額
-  const freqFactor = RATES.pay_freq_factors[freq];
-  const periods = RATES.pay_freq_periods[freq];
+  const discount = getDiscount(orig, plan);  // 折扣依「保費」分級,非面額(per-plan)
+  const _pf = _resolvePayFreq(plan);
+  const freqFactor = _pf.factors[freq] ?? 1;
+  const periods = _pf.periods[freq] ?? 1;
 
   const origPerPeriod = orig * freqFactor;
   const firstPerPeriod = Math.round(origPerPeriod * (1 - discount.first_total));
@@ -1781,14 +1823,29 @@ function calculate(inp) {
   const ageU = uvBySex[age] || [];
   const ageD = divBySex[age] || [];
 
+  const criteria = RATES.corridor_criteria || null;
+  const funeralCap = RATES.funeral_cap_usd || null;
+
   const rows = [];
   let cumP = 0, cumE = 0;
   for (let yr = 1; yr <= lastYear; yr++) {
     const isPay = yr <= payYears;
     const A = isPay ? (yr === 1 ? firstAnnualPaid : renewAnnualPaid) : 0;
     cumP += A;
-    const C = Math.round((corr[yr] || 0) * faceUSD);
+    const attainedAge = age + yr - 1;
     const uv = ageU[yr] || [0, 0, 0];
+    const NFV = uv[0];
+    let C;
+    if (funeralCap && attainedAge <= 15) {
+      C = funeralCap;
+    } else if (criteria) {
+      const crit = criteria[String(Math.min(attainedAge, 110))] ?? 1;
+      const cByCorr = (corr[yr] || 0) * faceUSD;
+      const cByPVR  = NFV * faceUSD / 1000 * crit;
+      C = Math.max(cByCorr, cByPVR);
+    } else {
+      C = Math.round((corr[yr] || 0) * faceUSD);
+    }
     const D = uv[1] * faceWan * 10;
     const NSP = uv[2];
     const dv = ageD[yr] || [0,0,0,0,0,0];
@@ -1798,7 +1855,8 @@ function calculate(inp) {
     const TDS = (scenario==='M'?dvP[2]:scenario==='L'?dvP[5]:0) * faceWan * 10;
     const bought = (AD>0 && NSP>0) ? Math.round(AD/NSP*1000) : 0;
     cumE += bought;
-    const F = cumE > 0 ? Math.round(cumE * (corr[yr] ?? 1)) : 0;
+    const underFuneralCap = funeralCap && attainedAge <= 15;
+    const F = (cumE > 0 && !underFuneralCap) ? Math.round(cumE * (corr[yr] ?? 1)) : 0;
     const G = cumE > 0 ? Math.round(cumE * NSP / 1000 * 100) / 100 : 0;
     rows.push({
       yr, attainedAge: age + yr - 1, A, cumP, C, D, E: cumE, F, G,
@@ -1862,11 +1920,14 @@ function validateFace(faceWan, age) {
   if (faceWan < 1) {
     warn.textContent = '投保金額最低 1 萬美元'; return false;
   }
-  if (age <= 15 && faceWan > 200) {
-    warn.textContent = '15 歲(含)以下投保上限 200 萬美元'; return false;
+  const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === (window._currentPlan || document.getElementById('plan-select')?.value)) : null;
+  const maxYoung = (_prod && _prod.face_max_wan_young) || 200;
+  const maxAdult = (_prod && _prod.face_max_wan) || 1000;
+  if (age <= 15 && faceWan > maxYoung) {
+    warn.textContent = '15 歲(含)以下投保上限 ' + maxYoung + ' 萬美元'; return false;
   }
-  if (faceWan > 1000) {
-    warn.textContent = '投保上限 1000 萬美元'; return false;
+  if (faceWan > maxAdult) {
+    warn.textContent = '投保上限 ' + maxAdult + ' 萬美元'; return false;
   }
   warn.textContent = '';
   return true;
@@ -1889,9 +1950,10 @@ function calcFaceFromBudget() {
   if (!prod || gp == null) {
     out.textContent = '⚠ 此年齡/性別/險種沒有費率資料'; out.classList.add('error'); return null;
   }
-  // 預算 NT$/每期 → 預算 USD/年
-  const periods = RATES.pay_freq_periods[inp.freq];
-  const freqFactor = RATES.pay_freq_factors[inp.freq];
+  // 預算 NT$/每期 → 預算 USD/年(per-plan)
+  const _pf2 = _resolvePayFreq(inp.plan);
+  const periods = _pf2.periods[inp.freq] ?? 1;
+  const freqFactor = _pf2.factors[inp.freq] ?? 1;
   const annualBudgetUsd = (budgetTwd / fxRate) * periods;
   // 每期保費 USD = origAnnual × freqFactor × (1 - discount)
   //              => annualBudgetUsd = origAnnual × (1 - discount) × periods × freqFactor / periods
@@ -1913,7 +1975,7 @@ function calcFaceFromBudget() {
   // 迭代以收斂高保費折扣
   for (let i = 0; i < 5; i++) {
     const tryOrig = gp * face * 10;
-    const disc = getDiscount(tryOrig);
+    const disc = getDiscount(tryOrig, inp.plan);
     face = annualBudgetUsd / (freqFactor * periods * (1 - disc.first_total)) / (gp * 10);
   }
   // 四捨五入到小數一位(千美元為單位)
@@ -1922,17 +1984,19 @@ function calcFaceFromBudget() {
     out.innerHTML = `⚠ 預算太低,計算結果僅 ${face.toFixed(2)} 萬美元(最低 1 萬)`;
     out.classList.add('error'); return null;
   }
-  if (inp.age <= 15 && faceWan > 200) {
-    out.innerHTML = `⚠ 15 歲以下投保上限 200 萬美元 (計算結果 ${faceWan})`;
+  const _maxYoungB = (prod && prod.face_max_wan_young) || 200;
+  const _maxAdultB = (prod && prod.face_max_wan) || 1000;
+  if (inp.age <= 15 && faceWan > _maxYoungB) {
+    out.innerHTML = `⚠ 15 歲以下投保上限 ${_maxYoungB} 萬美元 (計算結果 ${faceWan})`;
     out.classList.add('error'); return null;
   }
-  if (faceWan > 1000) {
-    out.innerHTML = `⚠ 預算過高,計算結果 ${faceWan} 萬美元 (超過上限 1000 萬)`;
+  if (faceWan > _maxAdultB) {
+    out.innerHTML = `⚠ 預算過高,計算結果 ${faceWan} 萬美元 (超過上限 ${_maxAdultB} 萬)`;
     out.classList.add('error'); return null;
   }
   // 反算實際保費
   const actualOrig = gp * faceWan * 10;
-  const actualDisc = getDiscount(actualOrig);
+  const actualDisc = getDiscount(actualOrig, inp.plan);
   const actualPeriodUsd = Math.round(actualOrig * freqFactor * (1 - actualDisc.first_total));
   const actualPeriodTwd = Math.round(actualPeriodUsd * fxRate);
   out.classList.remove('error');
