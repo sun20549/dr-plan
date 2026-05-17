@@ -488,6 +488,70 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
 }
 .select-all-btn:hover { background: var(--orange); color: white; border-color: var(--orange); }
 
+/* v3.30.8 「更多主約/更多附約」摺疊區開關(內嵌於 group header) */
+.more-products-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f8f9fb 0%, #eef1f5 100%);
+  border: 1px dashed #c7cdd6;
+  color: var(--navy);
+  padding: 5px 12px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-left: 8px;
+  line-height: 1;
+}
+.more-products-toggle:hover {
+  background: linear-gradient(135deg, var(--orange) 0%, #ff8050 100%);
+  color: white;
+  border-color: var(--orange);
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(240,90,40,0.25);
+}
+.more-products-toggle.expanded {
+  background: linear-gradient(135deg, #fff5f0 0%, #ffe8dc 100%);
+  border-color: var(--orange);
+  border-style: solid;
+  color: var(--orange);
+}
+.more-products-toggle .mp-icon {
+  font-size: 9px;
+  transition: transform 0.2s ease;
+}
+.more-products-toggle .mp-label {
+  font-weight: 700;
+}
+.more-products-toggle .mp-codes {
+  font-size: 10.5px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  opacity: 0.65;
+  letter-spacing: 0.5px;
+}
+.more-products-toggle:hover .mp-codes {
+  opacity: 0.95;
+}
+.more-products-toggle .mp-badge {
+  background: var(--orange);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9px;
+  letter-spacing: 0.3px;
+}
+.more-products-toggle.expanded .mp-badge {
+  background: var(--orange);
+  color: white;
+}
+.more-products-toggle:hover .mp-badge {
+  background: white;
+  color: var(--orange);
+}
+
 .product-list {
   display: flex; flex-direction: column; gap: 0;
   border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
@@ -3115,7 +3179,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.7</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.9</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -4127,6 +4191,9 @@ const App = (() => {
     lastAge: null,    // 最近一次 recompute 時的保險年齡(用於商品列表顯示超齡警告)
     lastJob: 1,       // 最近一次的職業等級(核保用)
     benefitsMode: 'simple',   // 'simple' | 'detail' — 理賠卡片顯示模式
+    moreProductsExpanded: {}, // v3.30.8 (舊欄位,保留向下相容)
+    moreMainExpanded:   {},   // v3.30.8 「更多主約」摺疊狀態 { companyId: bool }
+    moreRiderExpanded:  {},   // v3.30.8 「更多附約」摺疊狀態 { companyId: bool }
     // ── 責任曲線調整 ──
     curve: {
       enabled: false,           // 是否啟用
@@ -4838,7 +4905,20 @@ const App = (() => {
 
     // 未成年警示已移除(使用者要求)
 
-    // 主約
+    // ★ v3.30.8 把較少使用的商品收進「更多主約/更多附約」摺疊區
+    //   主約:PHF(較少規劃)
+    //   附約:XHP / MIR(較少規劃)
+    const LESS_COMMON_MAIN_CODES  = ['PHF'];
+    const LESS_COMMON_RIDER_CODES = ['XHP', 'MIR'];
+
+    // ===== 主約 =====
+    const commonMains    = c.mainProducts.filter(p => !LESS_COMMON_MAIN_CODES.includes(p.code));
+    const lessCommonMains = c.mainProducts.filter(p =>  LESS_COMMON_MAIN_CODES.includes(p.code));
+    const hasSelectedLessMain = sel.main && LESS_COMMON_MAIN_CODES.includes(sel.main.code);
+    const mainExpanded = !!(state.moreMainExpanded?.[c.id] ?? hasSelectedLessMain);
+    const lessMainSelectedCount = hasSelectedLessMain ? 1 : 0;
+    const lessMainCodes = lessCommonMains.map(p => p.code).join(' · ');
+
     html += `<div class="product-group">
       <div class="product-group-header">
         <div class="product-group-title-wrap">
@@ -4846,30 +4926,37 @@ const App = (() => {
             ${sel.main ? '☐ 取消選擇' : '☑ 全部清空'}
           </button>
           <div class="product-group-title">主約 (請選擇一項)</div>
+          ${lessCommonMains.length > 0 ? `
+            <button type="button" class="more-products-toggle ${mainExpanded ? 'expanded' : ''} no-print"
+                    onclick="App.toggleMoreMain('${c.id}')">
+              <span class="mp-icon">${mainExpanded ? '▼' : '▶'}</span>
+              <span class="mp-label">更多主約</span>
+              <span class="mp-codes">${lessMainCodes}</span>
+              ${lessMainSelectedCount > 0 ? `<span class="mp-badge">已選 ${lessMainSelectedCount}</span>` : ''}
+            </button>` : ''}
         </div>
       </div>`;
     html += `<div class="product-list">`;
-    c.mainProducts.forEach(p => {
+    commonMains.forEach(p => {
       const isSelected = sel.main && sel.main.code === p.code;
       const selPeriod = isSelected ? sel.main.period : (p.defaultPeriod || p.periodOptions[0]);
       const selAmount = isSelected ? sel.main.amount : p.defaultAmount;
       const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
       html += renderProductRow('main', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
     });
+    if (lessCommonMains.length > 0 && mainExpanded) {
+      lessCommonMains.forEach(p => {
+        const isSelected = sel.main && sel.main.code === p.code;
+        const selPeriod = isSelected ? sel.main.period : (p.defaultPeriod || p.periodOptions[0]);
+        const selAmount = isSelected ? sel.main.amount : p.defaultAmount;
+        const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
+        html += renderProductRow('main', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
+      });
+    }
     html += `</div></div>`;
 
-    // 附約
+    // ===== 附約 =====
     const allRiderSelected = c.riderProducts.length > 0 && c.riderProducts.every(p => sel.riders.find(r => r.code === p.code));
-    html += `<div class="product-group">
-      <div class="product-group-header">
-        <div class="product-group-title-wrap">
-          <button class="select-all-btn no-print" onclick="App.toggleAllRiders('${c.id}')">
-            ${allRiderSelected ? '☐ 全部取消' : '☑ 全部選取'}
-          </button>
-          <div class="product-group-title rider">附約 (可複選)</div>
-        </div>
-      </div>`;
-    html += `<div class="product-list">`;
     // ★ 豁免保費附約二擇一邏輯(僅限宏泰 WRA/WRB):
     //   - 沒開「輸入要保人」→ 只顯示 WRB(乙型,被保人=要保人時用)
     //   - 開了「輸入要保人」→ 只顯示 WRA(甲型,被保人≠要保人時用)
@@ -4891,7 +4978,32 @@ const App = (() => {
     } else {
       sel.riders = sel.riders.filter(r => r.code !== 'WRA');
     }
-    ridersToShow.forEach(p => {
+    const commonRiders    = ridersToShow.filter(p => !LESS_COMMON_RIDER_CODES.includes(p.code));
+    const lessCommonRiders = ridersToShow.filter(p =>  LESS_COMMON_RIDER_CODES.includes(p.code));
+    const lessRiderSelectedCount = lessCommonRiders.filter(p => sel.riders.find(r => r.code === p.code)).length;
+    const hasSelectedLessRider = lessRiderSelectedCount > 0;
+    const riderExpanded = !!(state.moreRiderExpanded?.[c.id] ?? hasSelectedLessRider);
+    const lessRiderCodes = lessCommonRiders.map(p => p.code).join(' · ');
+
+    html += `<div class="product-group">
+      <div class="product-group-header">
+        <div class="product-group-title-wrap">
+          <button class="select-all-btn no-print" onclick="App.toggleAllRiders('${c.id}')">
+            ${allRiderSelected ? '☐ 全部取消' : '☑ 全部選取'}
+          </button>
+          <div class="product-group-title rider">附約 (可複選)</div>
+          ${lessCommonRiders.length > 0 ? `
+            <button type="button" class="more-products-toggle ${riderExpanded ? 'expanded' : ''} no-print"
+                    onclick="App.toggleMoreRider('${c.id}')">
+              <span class="mp-icon">${riderExpanded ? '▼' : '▶'}</span>
+              <span class="mp-label">更多附約</span>
+              <span class="mp-codes">${lessRiderCodes}</span>
+              ${lessRiderSelectedCount > 0 ? `<span class="mp-badge">已選 ${lessRiderSelectedCount}</span>` : ''}
+            </button>` : ''}
+        </div>
+      </div>`;
+    html += `<div class="product-list">`;
+    commonRiders.forEach(p => {
       const r = sel.riders.find(r => r.code === p.code);
       const isSelected = !!r;
       const selPeriod = isSelected ? r.period : (p.defaultPeriod || p.periodOptions[0]);
@@ -4899,6 +5011,16 @@ const App = (() => {
       const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
       html += renderProductRow('rider', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
     });
+    if (lessCommonRiders.length > 0 && riderExpanded) {
+      lessCommonRiders.forEach(p => {
+        const r = sel.riders.find(r => r.code === p.code);
+        const isSelected = !!r;
+        const selPeriod = isSelected ? r.period : (p.defaultPeriod || p.periodOptions[0]);
+        const selAmount = isSelected ? r.amount : p.defaultAmount;
+        const fee = (isSelected && validInsured) ? calcProductFee(p, ins.gender, age, selPeriod, selAmount, true, ins.job) : 0;
+        html += renderProductRow('rider', c.id, p, isSelected, selPeriod, selAmount, fee, validInsured);
+      });
+    }
     html += `</div></div>`;
 
     html += `</div>`;
@@ -5103,10 +5225,101 @@ const App = (() => {
         const v = e.target.value;
         const numVal = isNaN(parseFloat(v)) ? v : parseFloat(v);
         updateProductField(e.target.dataset.cid, e.target.dataset.code, e.target.dataset.type, 'amount', numVal);
+        // ★ v3.30.8 強制最低/最高保額驗證 — 跳警示,要求套用合法值或取消選擇
+        enforceAmountLimits(e.target.dataset.cid, e.target.dataset.code, e.target.dataset.type);
       };
       el.onblur = fullUpdate;
       el.onchange = fullUpdate;
     });
+  }
+
+  /** ★ v3.30.8 強制最低/最高保額驗證
+   *  使用者輸入低於最低保額時 → 跳 confirm:
+   *    確定 = 套用最低保額
+   *    取消 = 取消此商品選擇
+   *  避免印出建議書時保額不符規定
+   *  只對「已勾選」的商品做檢查(未勾選不打擾)
+   */
+  function enforceAmountLimits(cid, code, type) {
+    const c = state.db.companies.find(x => x.id === cid);
+    if (!c) return;
+    const list = type === 'main' ? c.mainProducts : c.riderProducts;
+    const p = list.find(p => p.code === code);
+    if (!p) return;
+    const sel = state.selections[cid];
+    if (!sel) return;
+    const target = type === 'main' ? sel.main : sel.riders.find(r => r.code === code);
+    if (!target || target.code !== code) return;  // 沒勾選不檢查
+    const numAmt = parseFloat(target.amount);
+    if (isNaN(numAmt)) return;
+
+    const productLabel = `${p.code}「${p.name}」`;
+
+    // 1) 最低保額
+    if (p.minAmount != null && numAmt < p.minAmount) {
+      const unit = p.amountUnit || '';
+      const ok = window.confirm(
+        `⚠️ ${productLabel} 保額過低\n\n` +
+        `目前保額:${numAmt} ${unit}\n` +
+        `規定最低:${p.minAmount} ${unit}\n\n` +
+        `【確定】= 自動套用最低 ${p.minAmount} ${unit}\n` +
+        `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
+      );
+      if (ok) {
+        target.amount = p.minAmount;
+      } else {
+        if (type === 'main') sel.main = null;
+        else sel.riders = sel.riders.filter(r => r.code !== code);
+      }
+      renderProductSection();
+      recompute();
+      return;
+    }
+
+    // 2) 最高保額(本商品)
+    if (p.maxAmount != null && numAmt > p.maxAmount) {
+      const unit = p.amountUnit || '';
+      const ok = window.confirm(
+        `⚠️ ${productLabel} 保額過高\n\n` +
+        `目前保額:${numAmt} ${unit}\n` +
+        `規定最高:${p.maxAmount} ${unit}\n\n` +
+        `【確定】= 自動套用最高 ${p.maxAmount} ${unit}\n` +
+        `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
+      );
+      if (ok) {
+        target.amount = p.maxAmount;
+      } else {
+        if (type === 'main') sel.main = null;
+        else sel.riders = sel.riders.filter(r => r.code !== code);
+      }
+      renderProductSection();
+      recompute();
+      return;
+    }
+
+    // 3) 依年齡上限(如 XAB)
+    if (p.amountByAge && state.lastAge != null) {
+      const slot = p.amountByAge.find(s => state.lastAge >= s.ageMin && state.lastAge <= s.ageMax);
+      if (slot && numAmt > slot.max) {
+        const unit = p.amountUnit || '';
+        const ok = window.confirm(
+          `⚠️ ${productLabel} 保額超過該年齡上限\n\n` +
+          `投保年齡:${state.lastAge} 歲\n` +
+          `目前保額:${numAmt} ${unit}\n` +
+          `年齡上限:${slot.max} ${unit}\n\n` +
+          `【確定】= 自動套用 ${slot.max} ${unit}\n` +
+          `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
+        );
+        if (ok) {
+          target.amount = slot.max;
+        } else {
+          if (type === 'main') sel.main = null;
+          else sel.riders = sel.riders.filter(r => r.code !== code);
+        }
+        renderProductSection();
+        recompute();
+      }
+    }
   }
 
   /** 同步「自動帶入保額」商品(WRA / WRB)的保額欄位與保費顯示
@@ -5220,6 +5433,21 @@ const App = (() => {
     sel.main = null;
     renderProductSection();
     recompute();
+  }
+  // ★ v3.30.8 「更多主約 / 更多附約」摺疊區開關
+  function toggleMoreMain(cid) {
+    if (!state.moreMainExpanded) state.moreMainExpanded = {};
+    state.moreMainExpanded[cid] = !(state.moreMainExpanded[cid] ?? false);
+    renderProductSection();
+  }
+  function toggleMoreRider(cid) {
+    if (!state.moreRiderExpanded) state.moreRiderExpanded = {};
+    state.moreRiderExpanded[cid] = !(state.moreRiderExpanded[cid] ?? false);
+    renderProductSection();
+  }
+  // 舊版相容(若還有地方在用)
+  function toggleMoreProducts(cid) {
+    toggleMoreRider(cid);
   }
   function toggleAllRiders(cid) {
     const c = state.db.companies.find(c => c.id === cid);
@@ -8716,7 +8944,7 @@ const App = (() => {
     openCompanyAddModal, saveNewCompany,
     openProductEditModal, openProductAddModal, saveProductEdit, deleteProduct,
     closeModal, openModal,
-    toggleAllMain, toggleAllRiders,
+    toggleAllMain, toggleAllRiders, toggleMoreProducts, toggleMoreMain, toggleMoreRider,
     copySummaryToClipboard,
     applyRecommendedPlan,
     openUWModal, closeUWModal
