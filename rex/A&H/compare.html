@@ -4406,32 +4406,36 @@ const App = (() => {
     renderTable();
   }
 
+  // v1.34 — 全選/全部取消按鈕邏輯(每次都重算當前狀態,不依賴閉包)
+  function _updateToggleAllBtn(cat) {
+    const btn = document.getElementById('btnToggleAll');
+    if (!btn || !cat) return;
+    const allSelected = cat.products.length > 0 && cat.products.every(pp => !!state.selected[pp.code]);
+    btn.textContent = allSelected ? '全部取消' : '全選';
+    btn.classList.toggle('all-selected', allSelected);
+    btn.onclick = () => {
+      // 重新計算當前狀態(不用閉包,避免狀態錯位)
+      const stillAll = cat.products.every(pp => !!state.selected[pp.code]);
+      if (stillAll) {
+        state.selected = {};
+      } else {
+        state.selected = {};
+        cat.products.forEach(pp => {
+          state.selected[pp.code] = { cid: pp.cid, amount: pp.defaultAmount };
+        });
+      }
+      renderPicker();
+      renderTable();
+    };
+  }
+
   function renderPicker() {
     const body = document.getElementById('pickerBody');
     body.innerHTML = '';
     const cat = CATEGORIES.find(c => c.key === state.categoryKey);
 
-    // v1.34 — 更新「全選/全部取消」按鈕狀態
-    const btnToggleAll = document.getElementById('btnToggleAll');
-    if (btnToggleAll && cat) {
-      const allSelected = cat.products.every(pp => !!state.selected[pp.code]);
-      btnToggleAll.textContent = allSelected ? '全部取消' : '全選';
-      btnToggleAll.classList.toggle('all-selected', allSelected);
-      btnToggleAll.onclick = () => {
-        if (allSelected) {
-          // 全部取消
-          state.selected = {};
-        } else {
-          // 全選(套用所有商品的 defaultAmount)
-          state.selected = {};
-          cat.products.forEach(pp => {
-            state.selected[pp.code] = { cid: pp.cid, amount: pp.defaultAmount };
-          });
-        }
-        renderPicker();
-        renderTable();
-      };
-    }
+    // v1.34 — 更新「全選/全部取消」按鈕(每次 renderPicker 或 checkbox 變動都重算)
+    _updateToggleAllBtn(cat);
 
     // 依公司分組
     const byCompany = {};
@@ -4473,6 +4477,8 @@ const App = (() => {
           } else {
             delete state.selected[code];
           }
+          // v1.34 — 同步更新「全選/全部取消」按鈕狀態
+          _updateToggleAllBtn(cat);
           renderTable();
         };
         div.appendChild(label);
