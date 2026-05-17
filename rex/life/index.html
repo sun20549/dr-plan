@@ -458,7 +458,7 @@ body.dark .af-row label{color:var(--text-secondary);}
 
 /* Catalog selector */
 /* 保險公司/商品選單區 — 依性別主題色,male=深藍/female=深粉 */
-.catalog-bar{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:14px;padding:10px 12px;background:linear-gradient(135deg,#1E3A8A,#1E40AF);border-radius:8px;color:#fff;transition:background 0.3s;}
+.catalog-bar{display:grid;grid-template-columns:1.2fr 1.5fr 1fr;gap:8px;margin-bottom:14px;padding:10px 12px;background:linear-gradient(135deg,#1E3A8A,#1E40AF);border-radius:8px;color:#fff;transition:background 0.3s;}
 body.theme-female .catalog-bar{background:linear-gradient(135deg,#831843,#9F1239);}
 .catalog-bar label{display:block;font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;margin-bottom:3px;}
 .catalog-bar select{width:100%;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:6px;background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:700;font-family:inherit;}
@@ -1223,8 +1223,13 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
         </div>
         <div>
           <label>商品</label>
-          <select id="cat-product"></select>
+          <select id="cat-family"></select>
         </div>
+        <div>
+          <label>年期</label>
+          <select id="cat-term"></select>
+        </div>
+        <select id="cat-product" style="display:none"></select>
       </div>
 
       <div class="field">
@@ -1634,27 +1639,78 @@ document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-backdrop')) e.target.classList.remove('open');
 });
 
-// ================= CATALOG ==============
+// ================= CATALOG (3 段下拉:公司 → 商品系列 → 年期) ==============
 function buildCatalogSelectors() {
   const cSel = $('cat-company');
   cSel.innerHTML = (CATALOG.companies || []).map(c =>
     `<option value="${c.code}">${c.name}</option>`).join('');
   cSel.onchange = () => onCompanyChange();
+  $('cat-family').onchange = () => onFamilyChange();
+  $('cat-term').onchange = () => onTermChange();
   onCompanyChange();
 }
-function onCompanyChange() {
-  const cCode = $('cat-company').value;
-  const c = CATALOG.companies.find(x => x.code === cCode);
-  if (!c) return;
-  const pSel = $('cat-product');
-  pSel.innerHTML = c.products.map(p =>
-    `<option value="${p.code}">${p.short || p.name}</option>`).join('');
-  pSel.onchange = () => loadProductByCode(c, pSel.value);
-  loadProductByCode(c, pSel.value);
+
+// 從 product 取得 family / term 名稱(舊資料 fallback 解析 short 名)
+function _familyOf(p) {
+  if (p.family) return p.family;
+  const s = p.short || p.name || p.code;
+  return s.replace(/\s*[0-9]+\s*年.*$/, '').replace(/\s*躉繳.*$/, '').trim();
 }
+function _termOf(p) {
+  if (p.term) return p.term;
+  if (p.pay_years === 1) return '躉繳';
+  return `${p.pay_years} 年期`;
+}
+
+function onCompanyChange() {
+  const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
+  if (!c) return;
+  // 取出此公司下所有不重複的「商品系列」
+  const families = [];
+  const seen = new Set();
+  for (const p of c.products) {
+    const f = _familyOf(p);
+    if (!seen.has(f)) { seen.add(f); families.push(f); }
+  }
+  const fSel = $('cat-family');
+  fSel.innerHTML = families.map(f => `<option value="${f}">${f}</option>`).join('');
+  onFamilyChange();
+}
+
+function onFamilyChange() {
+  const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
+  if (!c) return;
+  const family = $('cat-family').value;
+  const terms = c.products.filter(p => _familyOf(p) === family);
+  const tSel = $('cat-term');
+  tSel.innerHTML = terms.map(p => `<option value="${p.code}">${_termOf(p)}</option>`).join('');
+  onTermChange();
+}
+
+function onTermChange() {
+  const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
+  if (!c) return;
+  const prodCode = $('cat-term').value;
+  // 同步隱藏的 cat-product 給 share/restore 用
+  if ($('cat-product')) $('cat-product').value = prodCode;
+  loadProductByCode(c, prodCode);
+}
+
 async function loadProductByCode(c, prodCode) {
   const p = c.products.find(x => x.code === prodCode);
-  if (p) await loadProduct(c, p);
+  if (p) {
+    // 切換時也同步 family / term 下拉(從 hash restore 進來時用)
+    const family = _familyOf(p);
+    if ($('cat-family') && $('cat-family').value !== family) {
+      $('cat-family').value = family;
+      // 重新填 term 列表
+      const terms = c.products.filter(x => _familyOf(x) === family);
+      $('cat-term').innerHTML = terms.map(x => `<option value="${x.code}">${_termOf(x)}</option>`).join('');
+    }
+    if ($('cat-term')) $('cat-term').value = prodCode;
+    if ($('cat-product')) $('cat-product').value = prodCode;
+    await loadProduct(c, p);
+  }
 }
 async function loadProduct(c, p) {
   try {
