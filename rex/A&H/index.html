@@ -298,8 +298,36 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   padding-top: 8px;
   border-top: 1px dashed #e0e6eb;
   font-family: 'Consolas','Courier New',monospace;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .uw-it-source::before { content: '📖 '; }
+.uw-it-source-text { flex: 1; min-width: 0; }
+.uw-pdf-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+  color: white !important;
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.uw-pdf-link:hover {
+  background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(229,57,53,0.35);
+}
 .uw-modal-footer {
   padding: 14px 22px;
   border-top: 1px solid #e8edf2;
@@ -3081,7 +3109,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.0</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.2</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -4493,7 +4521,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.30.0 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.2 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4502,7 +4530,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.0 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.2 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5781,6 +5809,7 @@ const App = (() => {
 
   /** 更新 header badge 與 modal 內容 */
   let _uwLastResult = { checkup: [], warn: [], block: [] };
+  let _uwSeenSignature = { checkup: '', alert: '' };  // 記憶上次顯示過的內容簽名,避免重複跳窗
   function refreshUnderwriteBadges(rows, ins) {
     const r = evaluateUnderwriting(rows, ins);
     _uwLastResult = r;
@@ -5812,6 +5841,33 @@ const App = (() => {
       wBtn.classList.add('pulse');
       setTimeout(() => wBtn.classList.remove('pulse'), 2500);
     } else { wBtn.style.display = 'none'; }
+
+    // ★ v3.30.2 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
+    //   體檢與警示分開,各自記憶上次 signature
+    const sig = (arr) => arr.map(x => x.title).sort().join('|');
+    const checkupSig = sig(r.checkup);
+    const alertSig = sig([...r.block, ...r.warn]);
+    // 首次或新增規則時自動彈體檢
+    if (checkupSig && checkupSig !== _uwSeenSignature.checkup) {
+      _uwSeenSignature.checkup = checkupSig;
+      // 若拒保警示也同時觸發,優先彈拒保(更嚴重)
+      if (r.block.length === 0) {
+        setTimeout(() => openUWModal('checkup'), 350);
+      }
+    }
+    // 拒保一定要主動跳
+    if (r.block.length > 0 && alertSig !== _uwSeenSignature.alert) {
+      _uwSeenSignature.alert = alertSig;
+      setTimeout(() => openUWModal('warn'), 350);
+    }
+    // 若無 block 但 warn 有新增也跳
+    else if (r.block.length === 0 && r.warn.length > 0 && alertSig !== _uwSeenSignature.alert) {
+      _uwSeenSignature.alert = alertSig;
+      // warn 不主動跳,只 pulse(避免太煩)
+    }
+    // 規則全消失時 reset signature(下次再觸發會重跳)
+    if (r.checkup.length === 0) _uwSeenSignature.checkup = '';
+    if (r.block.length === 0 && r.warn.length === 0) _uwSeenSignature.alert = '';
   }
 
   /** 開啟 modal */
@@ -5844,11 +5900,15 @@ const App = (() => {
         const klass = isBlockSet.has(it) ? 'uw-it-block' : (type === 'checkup' ? 'uw-it-checkup' : 'uw-it-warn');
         const ico = isBlockSet.has(it) ? '🚫' : (type === 'checkup' ? '🩺' : '⚠️');
         const itemsHtml = it.items ? '<div class="uw-it-items">' + it.items.map(x => '<span class="uw-it-chip">' + x + '</span>').join('') + '</div>' : '';
+        // 從 source 抽出頁碼,作為 PDF#page= 參數開啟
+        const pageMatch = String(it.source).match(/p\.(\d+)/);
+        const pdfPage = pageMatch ? '#page=' + pageMatch[1] : '';
+        const pdfBtn = '<a class="uw-pdf-link" href="全球投保規則.pdf' + pdfPage + '" target="_blank" rel="noopener" title="開啟全球人壽新契約投保規則 PDF(經代通路,2026/04/27 起適用)">📥 下載條文</a>';
         return '<div class="uw-item ' + klass + '">' +
           '<div class="uw-it-title"><span class="uw-ico">' + ico + '</span>' + it.title + '</div>' +
           '<div class="uw-it-detail">' + it.detail + '</div>' +
           itemsHtml +
-          '<div class="uw-it-source">' + it.source + '</div>' +
+          '<div class="uw-it-source"><span class="uw-it-source-text">' + it.source + '</span>' + pdfBtn + '</div>' +
           '</div>';
       }).join('');
     }
@@ -6438,7 +6498,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.30.0 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.2 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -6971,7 +7031,7 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.30.0 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.2 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
       // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(優先於 daily,避免「加護病房雜費限額」誤分 daily)
