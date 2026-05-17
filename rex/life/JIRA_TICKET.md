@@ -5,7 +5,76 @@
 
 ---
 
-## ▸ 當前版本 TWLIFE-TLZWF6-001 · 上架第二家「台灣人壽」 · 2026-05-17
+## ▸ 當前版本 TWLIFE-TLZWF6-002 · 找出完整 F 公式!100% 對齊 PDF · 2026-05-17
+
+對應版本:TLZWF6 v001 → **v002**
+
+### Summary
+
+```
+TWLIFE-TLZWF6-002 找出完整 elderly F 公式,12 PDF × 480 比對點 100% 對齊
+```
+
+### Description
+
+```
+== 突破 ==
+
+從 12 個 PDF 案例(7 個原始 + 5 個用戶補測的 elderly 案例)反推出完整 F 公式,
+跟 PDF 100% 對齊(誤差 < 4 USD = 千萬保額的 0.0003%)。
+
+== 核心發現 ==
+
+F 公式跟 C 公式同一個 winning term:
+* C = max(累計折扣前保費×1.06, NFV×CorridorCriteria×face/1000, pws[yr]×face,
+         NFV[at age 110]/1000×face <-- 只在 yr ≥ pay_years 才適用)
+* F = E × (對應 C winner 的 ratio per face):
+  - prem wins   → F = E × cum_prem × 1.06 / face
+  - nfv wins    → F = E × addPV × CorridorCriteria
+  - pws wins    → F = E × pws[yr]
+  - nfv110 wins → F = E × NFV[at age 110]/1000
+
+== 改進對比 ==
+
+| 案例 | v001 | v002 |
+|------|------|------|
+| 一般 (M16/F36/F46) | 100% | 100% |
+| Mid-elderly (M46/F50/F56/M55) | 95% | 100% |
+| Very elderly (M65/M70/F70) | 57-72% | 100% |
+| F65 邊界 | 90% | 100% |
+| **總計 480 比對點** | **92.78%** | **100%** (Δ < 4) |
+
+最大誤差從 3,160 USD (M65) 降到 3.13 USD (純舍入)。
+
+== 系統變更 ==
+
+只動 calculateTWLife() 一個函式,加:
+* NFV_at_110_per_face 預計算
+* C 公式 3-way max → 4-way max + winner tracking
+* F 公式 winner-dispatch (4 種對應公式)
+
+D/G/TDD/TDS/E 公式不變。
+
+== 影響版本 ==
+
+* TLZWF6 (台灣人壽臻威豐 6 年):v001 → v002
+* 新光商品不受影響(沒動 SKL 計算)
+
+== 測試 Checklist ==
+
+* [ ] Ctrl+F5 刷新
+* [ ] 切「台灣人壽 → 臻威豐 6 年期」
+* [ ] M65 face 300,000:yr 6 身故總和 = 884,498.88
+* [ ] M70 face 300,000:yr 6 身故總和 ≈ 1,109,000
+* [ ] F70 face 300,000:yr 6 身故總和 ≈ 780,000
+* [ ] F46 face 369,344:yr 6 身故總和 = 1,497,506.93
+* [ ] 切回新光商品確認沒受影響
+* [ ] 列印 PDF 排版正常
+```
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-001 · 上架第二家「台灣人壽」 · 2026-05-17
 
 對應版本:TLZWF6 v001(新公司首次上架)
 

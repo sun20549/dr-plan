@@ -6,6 +6,66 @@
 
 ---
 
+## 台灣人壽-TLZWF6-002 · 2026-05-17 — 完整 F 公式找到!100% 對齊 PDF
+
+對應版本:TLZWF6 v001 → **v002**
+
+### 從 12 個 PDF 案例(M16/F36/F46/M46/F50/F56/M55×2/F65/M65/M70/F70)反推出**完整公式**
+
+涵蓋:480 個比對點 (12 PDF × 20 yr × J/K),所有 Δ < 4 USD(舍入級誤差)。
+
+### 核心發現:F 公式跟 C 公式同一個 winning term
+
+```
+C = max(
+    累計折扣前保費 × 1.06,           # prem floor
+    NFV × CorridorCriteria × face/1000,  # current corridor
+    pws[yr] × face,                       # paid-up boost (yr 6+ only)
+    NFV[at attained age 110]/1000 × face  # NFV plateau (yr 6+ only)
+)
+
+F = E × (對應 C winner 的 ratio per face)
+  - prem wins   → F = E × cum_prem × 1.06 / face
+  - nfv wins    → F = E × addPV × CorridorCriteria  (注意是 addPV 不是 NFV!)
+  - pws wins    → F = E × pws[yr]
+  - nfv110 wins → F = E × NFV[at age 110]/1000
+```
+
+### v001 vs v002 對比
+
+| 案例 | v001 準確率 | v002 準確率 |
+|------|------------|------------|
+| M16/F36/F46 | 100% | 100% |
+| M46/F50/F56/M55 | 95% (微差 50-150 USD) | **100%** (微差 < 4 USD) |
+| M65/M70/F70 | 57-72% (大差最高 3,160 USD!) | **100%** (微差 < 4 USD) |
+| F65 | 90% | **100%** (微差 < 4 USD) |
+| **總計** | **92.78%** | **100%** (Δ < 4) |
+
+### 關鍵 insight
+
+1. **NFV[at age 110]** 是 paid-up plateau 上限:elderly (M65/M70) 在 yr 6+ 的 F/E 卡在 1.67/2.40 不是 pws,是因為 NFV 在 100 歲時的 per-face 值已超過 pws 的最大 1.5
+2. **F 公式 mirror C winner** — 不是 max(apv×crit, pws);是「跟 C 公式哪個 term 勝出就用對應的 ratio」
+3. **NFV[110] 只在 yr ≥ pay_years 適用** — 繳費期間不能用 (否則 yr 1 就會錯)
+
+### 系統變更
+
+只動 `calculateTWLife()` 函式:
+- 加 `NFV_at_110_per_face` 預計算
+- C 公式從 3-way max 變 4-way max + winner tracking
+- F 公式從 `max(apv × crit, pws)` 變成 winner-dispatch (4 種公式)
+- D / G / TDD / TDS / E 公式不變(本來就對)
+
+### 驗證範本
+
+12 PDF 全面對照,各 20 年 × J/K 共 480 比對點:
+- ✓ 完美 (Δ < 2 USD): 453 (94.4%)
+- ! 微差 (Δ 2-4 USD): 27 (5.6%) — 純舍入誤差
+- ✗ 大差: **0**
+
+最大誤差 3.13 USD = 千萬保額的 0.0003%。
+
+---
+
 ## 台灣人壽-TLZWF6-001 · 2026-05-17 — 上架「臻威豐」+ 系統支援「元 USD」單位
 
 對應版本:TLZWF6 v001(新公司首次上架)

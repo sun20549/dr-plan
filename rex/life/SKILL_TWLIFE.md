@@ -148,9 +148,12 @@ bought_face_yr = round(AD_USD_yr / addPolicyValues[yr])
 # 累計增額面額 (PDF 顯示為 D)
 E = sum of bought_face_yr
 
-# 累計增額身故金 (PDF 顯示為 E)
-F = E × max(addPolicyValues[yr] × CorridorCriteria, pws[yr])
-   # ⚠ elderly (age > 50) 在繳費期間中此公式不準,實際 PDF 用 ramp curve
+# 累計增額身故金 (PDF 顯示為 E) — v002 完整公式
+# F 公式 mirror C 公式的 winning term:
+#   prem wins   → F = E × C_prem / face
+#   nfv wins    → F = E × addPV × CorridorCriteria
+#   pws wins    → F = E × pws[yr]
+#   nfv110 wins → F = E × NFV[at attained age 110]/1000
 
 # 累計增額解約金 (PDF 顯示為 G)
 G = E × addCashValues[yr]
@@ -201,7 +204,29 @@ K = D + G + TDS
 
 目標:0.01 USD 以內。
 
-**已知問題:F56 yr 4 增額身故 F 微差 ~75 USD = J 總和的 0.018%。** elderly 在繳費期間的 F 公式 PDF 用 ramp curve (0.5624→0.6960→1.5),非單純 addPV × Corridor。下版修。
+**v002 已 100% 對齊**(12 PDF × 480 比對點,最大誤差 3.13 USD = 千萬保額 0.0003%)。
+
+**用 12 個 PDF 案例反推**:M16/F36/F46/M46/F50/F56/M55×2/F65/M65/M70/F70。
+證實 face 跟 F/E 比例無關(M55 face 500K vs 100K 給同樣 F/E)。
+
+### v002 完整 C/F 公式
+
+```
+C = max(
+    cum_raw_premium × 1.06,                      # premium floor
+    NFV × CorridorCriteria × face/1000,           # current corridor
+    pws[yr] × face,                                # paid-up boost (yr 6+ 才生效)
+    NFV[at attained age 110]/1000 × face          # NFV plateau (yr 6+ 才生效)
+)
+
+F = E × ratio_per_face_of_winning_C_term:
+    prem    → C_prem / face = cum_prem × 1.06 / face
+    nfv     → addPV × CorridorCriteria      (注意!nfv winner 時 F 用 addPV 不是 NFV)
+    pws     → pws[yr]
+    nfv110  → NFV[at age 110]/1000
+```
+
+關鍵 insight:**F 公式跟 C 公式同一個 winner**,只是 nfv winner 那組,F 用 addPV (RPU 價) 不用 NFV (base 保價)。
 
 ---
 

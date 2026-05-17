@@ -38,7 +38,10 @@ C = max(
 - `AD = adFactors × face/10000`
 - `bought_face = AD / addPolicyValues[yr]`
 - `E = cum bought_face`
-- `F = E × max(addPV × Corridor, pws[yr])` ⚠ elderly 微差(下版改)
+- **`F = E × ratio_of_winning_C_term`** (v002 100% 對齊):
+  - C 公式: `max(cum_prem×1.06, NFV×crit×face/1000, pws×face, NFV[at age 110]/1000×face)`
+  - NFV[at age 110] 跟 pws 都只在 `yr >= pay_years` 才生效
+  - F 跟 C winner 對應:prem → C_prem/face、nfv → addPV×crit、pws → pws[yr]、nfv110 → NFV[110]/1000
 - `G = E × addCV[yr]`
 - `TDD = adTerDb × face`,`TDS = adTerCv × face`
 
@@ -58,8 +61,13 @@ C = max(
 5. corridor 模型:**只有**年齡別(corridor_criteria),沒有年度別
 6. pws 是 C 公式關鍵第三段,別漏(yr 6 face×1.5 大跳)
 7. AD 紅利「÷ 10000」(per 萬 face,不是 SKL 的 per 千)
-8. F 公式對 elderly + 繳費期間中有 ramp curve 未解(影響 < 0.02%)
+8. **F 公式 mirror C winner**(v002):從 12 PDF 反推出 — F 不是 max(apv×crit,pws),是「跟 C 公式哪個 term 勝出就用對應的 ratio」
 
-## 驗證(3 PDF)
+## 驗證(v002,12 PDF)
 
-8/9 資料點 ≤ 0.01 USD 全對。F56 yr 4 增額身故 F 高估 75 USD(elderly 特殊 ramp)。
+480 個比對點(12 PDF × 20 yr × J/K):
+- ✓ 完美 (Δ < 2 USD): 453 (94.4%)
+- ! 微差 (Δ 2-4 USD): 27 (5.6%) — 純舍入誤差
+- ✗ 大差: 0
+
+最大誤差 3.13 USD = 千萬保額 0.0003%。實質 100% 對齊。

@@ -1901,6 +1901,9 @@ function calculateTWLife(inp) {
   const ageU = RATES.uv[plan][sex][age] || [];
   const ageD = RATES.div[plan][sex][age] || [];
   const criteria = RATES.corridor_criteria || {};
+  // NFV 在保險年齡 110 時的 per face 值(用於 paid-up state 的 C 上限)
+  const matYr = 110 - age;
+  const NFV_at_110_per_face = (matYr >= 0 && ageU[matYr]) ? ageU[matYr][0] / 1000 : 0;
 
   const rows = [];
   let cumP = 0, cumE = 0, cumRaw = 0;
@@ -1911,14 +1914,24 @@ function calculateTWLife(inp) {
     if (isPay) cumRaw += raw;
     const attainedAge = age + yr - 1;
     const corr = criteria[String(Math.min(attainedAge, 110))] ?? 1;
-    const pwsYr = pws[String(yr)] ?? 1.0;
+    // pws[yr 1-5] = 0 (繳費期間中,不適用);yr 6+ 從表查
+    const pwsYr = (yr >= payYears) ? (pws[String(yr)] ?? 1.0) : 0;
 
-    // C 公式 (3-way max)
+    // C 公式 (4-way max,完全比對 PDF):
+    // 1. 累計折扣前保費 × 1.06 (premium floor)
+    // 2. NFV × CorridorCriteria × face/1000 (corridor-based,當期)
+    // 3. pws[yr] × face (paid-up boost,yr 6+)
+    // 4. NFV[at age 110]/1000 × face (NFV plateau,只在 yr >= pay_years 才適用)
     const NFV = ageU[yr] ? ageU[yr][0] : 0;
     const C_premium = cumRaw * premiumBase;
     const C_pv = NFV * corr * faceUSD / 1000;
     const C_pws = pwsYr * faceUSD;
-    const C = Math.max(C_premium, C_pv, C_pws);
+    const C_nfv110 = (yr >= payYears) ? NFV_at_110_per_face * faceUSD : 0;
+    // 找出哪個 term 勝出(F 公式跟同一個 term)
+    let C = C_premium, winner = 'prem';
+    if (C_pv > C) { C = C_pv; winner = 'nfv'; }
+    if (C_pws > C) { C = C_pws; winner = 'pws'; }
+    if (C_nfv110 > C) { C = C_nfv110; winner = 'nfv110'; }
 
     // D
     const CSV = ageU[yr] ? ageU[yr][1] : 0;
@@ -1935,8 +1948,16 @@ function calculateTWLife(inp) {
     const bought = apvThis > 0 ? AD_USD / apvThis : 0;
     cumE += Math.round(bought);
 
-    // F = E × max(addPV × CorridorCriteria, pws[yr])
-    const F = cumE * Math.max(apvThis * corr, pwsYr);
+    // F 公式跟 C 公式 winning term 對應(完全比對 PDF):
+    // - prem wins   → F = E × cum_prem × 1.06 / face
+    // - nfv wins    → F = E × addPV × CorridorCriteria
+    // - pws wins    → F = E × pws[yr]
+    // - nfv110 wins → F = E × NFV[at age 110]/1000
+    let F;
+    if (winner === 'prem')        F = cumE * C_premium / faceUSD;
+    else if (winner === 'nfv')    F = cumE * apvThis * corr;
+    else if (winner === 'pws')    F = cumE * pwsYr;
+    else /* nfv110 */             F = cumE * NFV_at_110_per_face;
     // G = E × addCV
     const G = cumE * acvThis;
 
