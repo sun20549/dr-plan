@@ -99,6 +99,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   background: var(--navy); color: white;
   padding: 12px 20px; font-size: 15px; font-weight: 700; letter-spacing: 1px;
   display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; row-gap: 8px;   /* v3.30.4 自適應高度,避免徽章擠出邊界 */
 }
 .card-header.orange { background: var(--orange); }
 .card-header.teal { background: var(--teal); }
@@ -3109,7 +3110,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.3</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.4</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -4524,7 +4525,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.30.3 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.4 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4533,7 +4534,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.3 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.4 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5845,7 +5846,7 @@ const App = (() => {
       setTimeout(() => wBtn.classList.remove('pulse'), 2500);
     } else { wBtn.style.display = 'none'; }
 
-    // ★ v3.30.3 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
+    // ★ v3.30.4 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
     //   體檢與警示分開,各自記憶上次 signature
     const sig = (arr) => arr.map(x => x.title).sort().join('|');
     const checkupSig = sig(r.checkup);
@@ -6501,7 +6502,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.30.3 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.4 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -7034,10 +7035,14 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.30.3 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.4 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
-      // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(優先於 daily,避免「加護病房雜費限額」誤分 daily)
+      // 加護病房雜費(加倍版)→ 獨立類別,避免重算入主雜費
+      if (/加護|燒燙傷/.test(name) && /雜費/.test(name)) return { key: 'icu_reimburse', icon: '🚨', title: '加護病房雜費(加倍)' };
+      // 意外醫療實支(XMBN「傷害醫療保險金」)→ reimburse
+      if (/傷害醫療|意外醫療/.test(name) && !/日額|每日|加護/.test(name)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
+      // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(已排除加護雜費)
       if (/雜費|實支|病房費用|住院醫療費用|住院.*醫療.*費/.test(name)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
       // daily: name 含「住院/每日/日額」,且 name 不含「加護/燒燙/雜費/手術/處置/門診/實支」
       if (/(住院|每日|日額)/.test(name) && !/加護|燒燙傷|雜費|手術|處置|門診|實支/.test(name)) return { key: 'daily', icon: '🏥', title: '住院日額' };
@@ -7244,17 +7249,19 @@ const App = (() => {
 
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
+        // ★ v3.30.4 同一張險種內多 item 的加總策略:
+        //   - SUM:醫療類可同時領 (daily / reimburse / surgery / opsurg / opd / special)
+        //   - MAX:互斥或累計類 (critical / death / disability / burn / icu_daily / icu_reimburse)
+        const SUM_KEYS = new Set(['daily', 'reimburse', 'surgery', 'opsurg', 'opd', 'special']);
+        const isAdditive = SUM_KEYS.has(cls.key);
 
         // ── 計算每個 row 的「淨給付」+ 收集 tooltip 用的明細 ──
         const perRowMax = new Map();
         const rowItemBuckets = new Map();  // row → { limit, deduct, unit }
         items.forEach(x => {
           if (!x.result || x.result.type !== 'num') return;
-          // ★ 自負額偵測 — 只用 item.name 判斷(最精準, 避免 note 內文誤判)
-          //   匹配:「(自負)」「(自負額)」「(自負金額)」「(雜費自負額)」等,
-          //   不論半形 ( 或全形(
           const nm = x.item.name || '';
-          const isDeduct = /[\(（](?:[^)）]*?)自負(?:額|金額)?(?:[^)）]*?)[\)）]/.test(nm);
+          const isDeduct = /[\((](?:[^)）]*?)自負(?:額|金額)?(?:[^)）]*?)[\))]/.test(nm);
           if (!rowItemBuckets.has(x.row)) {
             rowItemBuckets.set(x.row, { limit: 0, deduct: 0, unit: '' });
           }
@@ -7262,9 +7269,14 @@ const App = (() => {
           if (isDeduct) {
             if (x.result.val > b.deduct) b.deduct = x.result.val;
           } else {
-            if (x.result.val > b.limit) {
-              b.limit = x.result.val;
-              b.unit = x.item.unit || '';
+            if (isAdditive) {
+              b.limit += x.result.val;                              // SUM
+              if (!b.unit) b.unit = x.item.unit || '';
+            } else {
+              if (x.result.val > b.limit) {                         // MAX
+                b.limit = x.result.val;
+                b.unit = x.item.unit || '';
+              }
             }
           }
         });
@@ -8668,7 +8680,7 @@ const App = (() => {
           { code: 'XDE',  period: '1年期', amount: 180 },
           { code: 'XHD',  period: '1年期', amount: '計劃一' },
           { code: 'XHO',  period: '1年期', amount: '計劃4A' },
-          { code: 'XCF',  period: '1年期', amount: 100 },
+          { code: 'XCF',  period: '1年期', amount: 150 },
           { code: 'XCG',  period: '1年期', amount: 3 },
           { code: 'XAB',  period: '1年期', amount: 200 },
           { code: 'XMBN', period: '1年期', amount: 30000 },
