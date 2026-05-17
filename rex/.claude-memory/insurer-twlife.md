@@ -16,11 +16,19 @@
 
 `TLZWF6` = TWLife + 臻威豐 + 6 年期。簡單命名,無強規則。
 
-## 已上架(2026-05-17)
+## 已上架(2026-05-17,多商品)
 
 | Plan | 商品 | 啟用 | data file |
 |------|------|------|-----------|
-| TLZWF6 | 臻威豐 6 年期 | 2026-04-01 | `twlife/TLZWF6_2026-04.json` |
+| TLZWF6 | 臻威豐 6 年期 | 2026-04-01 | `twlife/TLZWF6_2026-04.json` (v009) |
+| TLMSCH06 | 美世長紅 6 年期 | 2026-04-01 | `twlife/TLMSCH06_2026-04.json` (v001) |
+| TLMHW06 | 美紅旺 6 年期 | 2026-04-01 | `twlife/TLMHW06_2026-04.json` (v001) |
+
+## 抽好但暫不上架(待驗證)
+
+* 美紅勝利 TLMHSL01/02 — pws 衰減型,待 PDF 驗證
+* 美紅富利 TLMHFL01 — 分紅 0,待業務確認
+* 美紅鑽 TLMHZ02 — 還本險,需新公式
 
 ## 公式重點
 
@@ -52,7 +60,7 @@ C = max(
 * calculate() 入口判斷 `RATES.twlife_specific` → 走 `calculateTWLife()` 分支
 * face_max_usd: 500 萬 (≤60 歲) / 300 萬 (61-70) / 100 萬 (71-74)
 
-## 八大地雷
+## 十大地雷
 
 1. 加密密碼 = 客服電話 0800099850(不是 VelvetSweatshop)
 2. .xlsm 用 openpyxl 必須 `read_only=True, keep_vba=False`
@@ -62,12 +70,25 @@ C = max(
 6. pws 是 C 公式關鍵第三段,別漏(yr 6 face×1.5 大跳)
 7. AD 紅利「÷ 10000」(per 萬 face,不是 SKL 的 per 千)
 8. **F 公式 mirror C winner**(v002):從 12 PDF 反推出 — F 不是 max(apv×crit,pws),是「跟 C 公式哪個 term 勝出就用對應的 ratio」
+9. **matYr = 111 − age**(NOT 110 − age),因為 `attained = age + yr − 1`,要找 attained=110 那年的 NFV
+10. **滿期年必須包含 ★★★** (v008):`lastYear = mature_age − age + 1`,差 1 就漏掉**最尾端那一列**。滿期年合約給付祝壽保險金 = 身故保險金,必須 force `K_val = J_val` 在 attainedAge ≥ 110
 
-## 驗證(v002,12 PDF)
+## 系統實作(v008 lastYear + force K=J)
+
+```js
+const lastYear = prod.mature_age - age + 1;       // 含滿期年那一列
+// ... loop ...
+let J_val = C + F + TDD;
+let K_val = D + G + TDS;
+if (attainedAge >= 110) K_val = J_val;            // 祝壽保險金
+```
+
+## 驗證(v008,12 PDF + 滿期年)
 
 480 個比對點(12 PDF × 20 yr × J/K):
 - ✓ 完美 (Δ < 2 USD): 453 (94.4%)
 - ! 微差 (Δ 2-4 USD): 27 (5.6%) — 純舍入誤差
 - ✗ 大差: 0
 
-最大誤差 3.13 USD = 千萬保額 0.0003%。實質 100% 對齊。
+最大誤差 3.13 USD = 千萬保額 0.0003%。
+**v008 加上滿期年 force K=J 後,attained=110 那列 0 誤差**。

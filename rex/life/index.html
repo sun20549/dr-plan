@@ -1918,7 +1918,9 @@ function calculateTWLife(inp) {
     const attainedAge = age + yr - 1;
     const corr = criteria[String(Math.min(attainedAge, 110))] ?? 1;
     // pws[yr 1-5] = 0 (繳費期間中,不適用);yr 6+ 從表查
-    const pwsYr = (yr >= payYears) ? (pws[String(yr)] ?? 1.0) : 0;
+    // 若商品本身無 pws 表(如美世長紅、美紅旺),pws 不參與 C max
+    const hasPws = Object.keys(pws).length > 0;
+    const pwsYr = (hasPws && yr >= payYears) ? (pws[String(yr)] ?? 1.0) : 0;
 
     // C 公式 (4-way max,完全比對 PDF):
     // 1. 累計折扣前保費 × 1.06 (premium floor)

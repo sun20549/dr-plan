@@ -21,7 +21,7 @@
 ## 工作流程慣例
 
 - [workflow-versioning.md](workflow-versioning.md) — 每次改動必做:bump version + CHANGELOG + JIRA_TICKET
-- [workflow-validation.md](workflow-validation.md) — 商品上架必驗:對照官方 PDF 至少 3 案例,誤差 ≤ 0.01 USD
+- [workflow-validation.md](workflow-validation.md) — 商品上架必驗:對照官方 PDF 至少 3 案例,誤差 ≤ 0.01 USD;**滿期年 attained=110 那列 J=K 強制驗(v008 踩過)**
 
 ## 已知坑
 

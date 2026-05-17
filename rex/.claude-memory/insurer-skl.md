@@ -46,6 +46,17 @@
 7. `corridor[yr]` 跟 `corridor_criteria[age]` 是兩張獨立表,key 不一樣
 8. 商品代碼前綴 6 字元(`k[:6]` 切割)
 
+## ⚠ TODO 驗證:滿期年 lastYear off-by-one(v008 TWLife 踩過,SKL 也要查)
+
+TWLife 在 2026-05-17 v008 發現:`lastYear = mature_age - age` 會漏掉 attained=110 那列。
+SKL `calculate()` 也是同樣寫法(`index.html` 第 2013 行),**還沒驗證**。
+
+下次處理 SKL 時:
+1. 找個 SKL 終身壽險 PDF,看最後一列 attained age 是不是 110
+2. 看那一列 J 是不是 = K(祝壽保險金)
+3. 若是 → 同樣套 `lastYear + 1` 跟 `if (attainedAge >= 110) K = J` 修正
+4. 詳細看 `../life/SKILL.md` ▸「滿期年處理」
+
 ## 驗證 SOP
 
 至少跑 3 個 PDF 案例,誤差 ≤ 0.01 USD:

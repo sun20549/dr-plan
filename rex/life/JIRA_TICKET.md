@@ -5,7 +5,76 @@
 
 ---
 
-## ▸ 當前版本 TWLIFE-TLZWF6-008 · 補滿期年 (attained 110) + 強制 K = J · 2026-05-17
+## ▸ 當前版本 台灣人壽多商品上架 · 美世長紅 + 美紅旺 + TLZWF6-009 · 2026-05-17
+
+### Summary
+
+```
+台灣人壽多商品上架 — 美世長紅 / 美紅旺(6 年期)+ TLZWF6 v009(支援無 pws 商品)
+```
+
+### Description
+
+```
+== 新上架 2 個商品 ==
+
+| 商品   | Plan Code | 年期 | 版本 |
+|--------|-----------|------|------|
+| 美世長紅 | TLMSCH06  | 6 年 | v001 |
+| 美紅旺   | TLMHW06   | 6 年 | v001 |
+
+兩個結構接近臻威豐(TLZWF6)但無 pws 表(無 paid-up 加成)。
+
+== 抽好 JSON 但暫不上架 ==
+
+* 美紅勝利 TLMHSL01 / TLMHSL02 — pws 衰減型(0.97→0.69,跟臻威豐相反),
+  待 PDF 驗證後決定是否套用現有計算邏輯。
+* 美紅富利 TLMHFL01 — adFactors 整張表為 0,不確定是「無分紅商品」還是「資料未填」。
+* 美紅鑽 TLMHZ02 — 還本險,需新公式(生存還本 + 增值回饋分享金 + 累計儲存生息)。
+
+JSON 都已抽出存在 data/twlife/,催驗證確認後加 catalog 即可上線。
+
+== 計算器變動 (TLZWF6 v008 → v009) ==
+
+calculateTWLife() 新增「無 pws 商品」分支:
+
+  const hasPws = Object.keys(pws).length > 0;
+  const pwsYr = (hasPws && yr >= payYears) ? (pws[String(yr)] ?? 1.0) : 0;
+
+之前無 pws 表的商品會被 fallback 成 1.0(讓 C ≥ faceUSD 錯誤計算),
+現在無表時 pws 不參與 C max,正確跳過。
+
+臻威豐行為完全不變(pws 非空)。滿期年 K=J 保留 (v008)。
+
+== 影響範圍 ==
+
+* TLZWF6: v008 → v009 (calc 邏輯升級,結果同)
+* TLMSCH06: v001 新上架
+* TLMHW06: v001 新上架
+* 新光商品不受影響
+
+== 未完成 / 需用戶決策 ==
+
+1. 業務(用戶)確認美紅富利是否真的「無分紅」(adFactors=0)
+2. 提供美紅勝利 PDF 試算表(任一年齡/面額),驗證 pws 衰減型計算
+3. 提供美紅鑽 PDF + 生存還本金的計算邏輯(可能要查條款)
+4. 5 個新商品的核准文號(approval_no 都是 "TBD")
+5. 5 個新商品的 face_max_usd(現在預設 500 萬,可能各商品實際上限不同)
+
+== 測試 Checklist ==
+
+* [ ] git push
+* [ ] 等 GitHub Pages 重 build(1-2 分鐘)
+* [ ] Ctrl+F5
+* [ ] 切「台灣人壽 → 美世長紅 → 6 年期」 → 試算
+* [ ] 切「台灣人壽 → 美紅旺 → 6 年期」 → 試算
+* [ ] 切「台灣人壽 → 臻威豐 → 6 年期」 → 試算(確認 v009 沒打到舊行為)
+* [ ] 版本徽章看「TWLIFE-TLZWF6-009」/「TWLIFE-TLMSCH06-001」/「TWLIFE-TLMHW06-001」
+```
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-008 · 補滿期年 (attained 110) + 強制 K = J · 2026-05-17
 
 對應版本:TLZWF6 v007 → **v008**
 

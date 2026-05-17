@@ -191,12 +191,39 @@ python3 tools/extract_xls.py \
 * 新光 yr 35+ C 凍結於 NSP × face
 * 其他公司可能不同,**驗證 yr 30/40/50 看 C 走勢**
 
+### 滿期年處理 ★★★(2026-05 踩過,必查)
+
+**終身壽險合約都在保險年齡 110 歲滿期**,給付「祝壽保險金」= 身故保險金。
+
+PDF 表格**最後一列就是 attained = 110 那年,J(身故)= K(解約)完全相同**。
+
+容易踩兩個 bug:
+
+1. **`lastYear` off-by-one** — `lastYear = mature_age - age + 1`(差 1 就漏掉最尾端那一列)
+   - 因為 `attained = age + yr - 1`,要看到 attained=110 需 `yr = 111 - age`
+   - 漏掉那一列 → 用戶會抓「最後一列數字不見」
+
+2. **滿期年 K = J 必須對齊** — 即使資料層自然收斂(CSV[110]=NFV[110]、addCV=addPV、TDS=TDD),
+   Excel 2 位小數會留 ±1 USD 殘差,**直接 force `K_val = J_val` 在 attainedAge ≥ 110**
+
+```js
+// 標準寫法(任何終身壽險都應該這樣)
+const lastYear = prod.mature_age - age + 1;
+// ... loop ...
+let J_val = C + F + TDD;
+let K_val = D + G + TDS;
+if (attainedAge >= 110) K_val = J_val;  // 祝壽保險金 = 身故保險金
+```
+
+驗證:對照官方 PDF 看最後一列 attained age,確認 J = K(若不是 110 滿期,要查條款)。
+
 ## 上架完成 Checklist
 
 - [ ] adapter 函式寫好並通過驗證
 - [ ] JSON 產出 + 大小合理(1-2 MB)
 - [ ] catalog.json 新 entry
 - [ ] 對照官方 PDF 2 個案例 0% 誤差
+- [ ] **PDF 最後一列(滿期年)attained age 確認,J = K 對齊** ★ v008 新增
 - [ ] CHANGELOG 紀錄
 - [ ] 公司 LOGO 放到 `../../images/`
 - [ ] 瀏覽器測試:切換公司、性別、年齡、面額都正常
