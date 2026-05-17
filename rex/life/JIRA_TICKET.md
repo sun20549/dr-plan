@@ -5,7 +5,78 @@
 
 ---
 
-## ▸ 當前版本 TWLIFE-TLZWF6-006 · matYr off-by-one 修正 + J 殘差說明 · 2026-05-17
+## ▸ 當前版本 TWLIFE-TLZWF6-008 · 補滿期年 (attained 110) + 強制 K = J · 2026-05-17
+
+對應版本:TLZWF6 v007 → **v008**
+
+### Summary
+
+```
+TWLIFE-TLZWF6-008 補滿期年那一列 (attained 110) + 強制 K = J (祝壽保險金=身故保險金)
+```
+
+### Description
+
+```
+== 用戶回報 ==
+
+「最尾端的解約金會等於身故保險金,您有看到正義書上的資訊嗎」
+
+== 根因 ==
+
+對照官方 PDF (M60 face 300,000),共 51 列 (yr 1-51, attained 60-110)。
+最後 yr 51 attained 110 是【滿期年:祝壽保險金】,J = K = 1,198,024.56 完全相同。
+
+但 v007 計算器 `lastYear = prod.mature_age - age = 50`,只跑到 yr 50 attained 109,
+完全切掉了滿期年那一列。
+
+== 修正 ==
+
+1. lastYear off-by-one:
+   v007: const lastYear = prod.mature_age - age;       // 漏一列
+   v008: const lastYear = prod.mature_age - age + 1;   // 補上滿期年 ✓
+   (attained = age + yr - 1,故 yr = 111 - age 對應 attained = 110)
+
+2. 滿期年 force K = J:
+   理論上資料層自動收斂 (CSV[110]=NFV[110]、addCV=addPV、TDS=TDD),
+   但 Excel 2 位小數有 ±1 USD 殘差,直接 force 一致:
+
+   if (attainedAge >= 110) K_val = J_val;  // 祝壽保險金 = 身故保險金
+
+== 結果 ==
+
+| 場景                          | v007                | v008               | PDF                |
+|-------------------------------|---------------------|--------------------|--------------------|
+| M60 face 300k, yr 51 atn=110  | (無此列) ❌         | J=K=1,198,024.56  | J=K=1,198,024.56  |
+| M70 face 300k, yr 41 atn=110  | (無此列) ❌         | J=K=1,136,708.34  | J=1,136,708.34, K=1,136,707.32 (Δ 1.02 → force=0) |
+| M55 face 100k, yr 56 atn=110  | (無此列) ❌         | J=K=421,740.00    | J=K=421,740.00    |
+
+== 影響版本 ==
+
+* TLZWF6:v007 → v008
+* 新光商品不變(若 SKL 也需補滿期年,另外驗證)
+
+== 測試 Checklist ==
+
+* [ ] git push
+* [ ] 等 GitHub Pages 重 build(1-2 分鐘)
+* [ ] Ctrl+F5
+* [ ] 切「台灣人壽 → 臻威豐 → 6 年期」
+* [ ] 男 60 face 300,000,按試算
+* [ ] 表格最後一列:yr 51 attained 110,J = K = 1,198,024.56 ✓
+* [ ] 男 70 face 300,000:最後一列 yr 41 attained 110,J = K ✓
+* [ ] 版本徽章 TWLIFE-TLZWF6-008 → 確認上傳成功
+```
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-007 · 重新 bump 版號確認部署 · 2026-05-17
+
+純 bump 給部署訊號,無實質變動。
+
+---
+
+## ▸ 歷史版本 TWLIFE-TLZWF6-006 · matYr off-by-one 修正 + J 殘差說明 · 2026-05-17
 
 對應版本:TLZWF6 v005 → **v006**
 

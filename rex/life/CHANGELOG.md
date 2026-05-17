@@ -6,6 +6,68 @@
 
 ---
 
+## 台灣人壽-TLZWF6-008 · 2026-05-17 — 補滿期年 (attained 110) + 強制 K = J
+
+對應版本:TLZWF6 v007 → **v008**
+
+### 用戶回報
+
+> 最尾端的解約金會等於身故保險金,您有看到正義書上的資訊嗎
+
+### 根因(完全切掉滿期年那一列)
+
+對照 PDF:M60 face 300,000 共 **51 列**(yr 1-51,attained 60-110),最後 yr 51 attained 110 是 **滿期年(祝壽保險金)**:
+- J(身故)= 1,198,024.56
+- K(解約)= 1,198,024.56 ← **完全相同**(契約條款設計)
+
+我的計算器卻只跑到 yr 50(attained=109),把滿期年那一列**完全切掉**。
+
+```js
+// v007 (錯)
+const lastYear = prod.mature_age - age;  // 60→50, 最後 attained=109(漏一列)
+
+// v008 (對)
+const lastYear = prod.mature_age - age + 1;  // 60→51, 最後 attained=110 ✓
+```
+
+### Force K = J at attained 110
+
+理論上資料層應該自動收斂(CSV[110]=NFV[110]、addCV[matYr]=addPV[matYr]、TDS=TDD),
+但 Excel 2 位小數會留 ±1 USD 殘差(M70 PDF 也有 Δ 1.02)。
+
+直接 force `K = J` 在 attained ≥ 110 那年,跟官方 PDF 完全一致:
+
+```js
+let J_val = C + F + TDD;
+let K_val = D + G + TDS;
+if (attainedAge >= 110) {
+  K_val = J_val;  // 祝壽保險金 = 身故保險金
+}
+```
+
+### 對照(M60 face 300,000)
+
+| yr | attained | v007 | v008 | PDF |
+|----|---------|------|------|-----|
+| 50 | 109 | J=503,019 K=496,??? | J=503,022 K=496,??? | J=503,022 K=496,?? |
+| **51** | **110** | (無此列)❌ | J=K=1,198,024.56 ✓ | J=K=1,198,024.56 |
+
+### 系統影響
+
+* `calculateTWLife()` lastYear +1、attained≥110 force K=J
+* 新光 `calculate()` **不變**(SKL 商品如果也要補滿期年,要另外驗證)
+
+---
+
+## 台灣人壽-TLZWF6-007 · 2026-05-17 — 重新 bump 版號確認部署
+
+對應版本:TLZWF6 v006 → **v007**
+
+純 bump,無實質程式碼變動。v006 matYr 修正後線上徽章沒更新,推測 GitHub Pages 快取,
+bump 給用戶乾淨的「push + 部署成功」訊號。
+
+---
+
 ## 台灣人壽-TLZWF6-006 · 2026-05-17 — matYr off-by-one 修正 + J 殘差說明
 
 對應版本:TLZWF6 v005 → **v006**

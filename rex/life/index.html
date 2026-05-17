@@ -1897,7 +1897,9 @@ function calculateTWLife(inp) {
   const renewAnnualPaid = renewPerPeriod * periods;
 
   const payYears = prod.pay_years;
-  const lastYear = prod.mature_age - age;
+  // attained_age = age + yr - 1,要包含滿期年 (attained=110) 需 yr = 111 - age
+  // 滿期年保險公司給付祝壽保險金 (= 身故保險金),所以 K 收斂等於 J
+  const lastYear = prod.mature_age - age + 1;
   const ageU = RATES.uv[plan][sex][age] || [];
   const ageD = RATES.div[plan][sex][age] || [];
   const criteria = RATES.corridor_criteria || {};
@@ -1970,9 +1972,17 @@ function calculateTWLife(inp) {
     const TDD = divThis[1] * faceUSD;
     const TDS = divThis[2] * faceUSD;
 
+    let J_val = C + F + TDD;
+    let K_val = D + G + TDS;
+    // 滿期年 (attained = 110):祝壽保險金 = 身故保險金 (契約條款)
+    // 公式上 D≈C, G≈F, TDS≈TDD 自然收斂,但 Excel 2位小數會留 ±1 USD 殘差
+    // 直接 force K = J 跟官方 PDF 完全一致
+    if (attainedAge >= 110) {
+      K_val = J_val;
+    }
     rows.push({
       yr, attainedAge, A, cumP, C, D, E: cumE, F, G,
-      H: TDD, I: TDS, J: C + F + TDD, K: D + G + TDS, isPay
+      H: TDD, I: TDS, J: J_val, K: K_val, isPay
     });
   }
   return {
