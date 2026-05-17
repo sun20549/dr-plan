@@ -1287,7 +1287,7 @@ body.dark .tbl-caption{background:transparent !important;color:var(--text-muted)
           </select>
         </div>
         <div class="field">
-          <label>投保金額 <span class="hint">萬美元</span></label>
+          <label>投保金額 <span class="hint" id="face-unit-hint">萬美元</span></label>
           <input class="input" type="number" id="face" value="100" min="1" max="1000" step="0.1">
           <div class="face-warn" id="face-warn"></div>
         </div>
@@ -1727,6 +1727,19 @@ async function loadProduct(c, p) {
     $('version-badge').textContent = `${c.code.toUpperCase()}-${p.plan_code}-${v}`;
     $('rates-status').textContent = '✓ 已載入官方費率';
     refreshFreqOptions(p.plan_code);
+    // 切商品時更新 face input 單位 (元 / 萬元)
+    const _unitHint = document.getElementById('face-unit-hint');
+    const _faceInput = document.getElementById('face');
+    const _isUSD = p.unit === '元';
+    if (_unitHint) _unitHint.textContent = _isUSD ? '元 (USD)' : '萬美元';
+    if (_faceInput) {
+      _faceInput.step = _isUSD ? '1' : '0.1';
+      _faceInput.min = _isUSD ? '1' : '1';
+      _faceInput.max = _isUSD ? '5000000' : '1000';
+      // 切到台灣人壽預設給個有意義值
+      if (_isUSD && +_faceInput.value < 100) _faceInput.value = '111111';
+      if (!_isUSD && +_faceInput.value > 1000) _faceInput.value = '100';
+    }
     recalc();
   } catch (e) {
     $('rates-status').textContent = '❌ ' + e.message;
@@ -1846,8 +1859,109 @@ function getDiscount(origPremiumUSD, planCode) {
   };
 }
 
+// ================= TWLife-specific CALCULATION =============
+// 台灣人壽 臻威豐 — 公式跟新光不同:
+//   * face 單位是「元 USD」非「萬元」
+//   * C 用 max(累計premium×1.06, NFV×CorridorCriteria[age]×face/1000, pws[yr]×face)
+//   * E (增額) = sum of round(adFactors[yr] × face/10000 / addPV[yr])
+//   * F = E × max(addPV × CorridorCriteria, pws[yr])
+//   * G = E × addCV
+//   * TDD = adTerDb[yr] × face
+//   * TDS = adTerCv[yr] × face
+//   * 折扣前保費 = round(face × premrate / 1000)
+function calculateTWLife(inp) {
+  const { plan, sex, age, faceUSD, freq } = inp;
+  const prod = RATES.products.find(p => p.code === plan);
+  if (!prod) throw new Error('找不到產品');
+  if (age < prod.min_age || age > prod.max_age)
+    throw new Error(`此商品承保年齡 ${prod.min_age}-${prod.max_age},您的保險年齡為 ${age}`);
+  const premrate = RATES.gp[plan]?.[sex]?.[age];
+  if (premrate == null) throw new Error('費率表未涵蓋此 (險種/性別/年齡)');
+
+  const tws = RATES.twlife_specific;
+  const addPVbySexAge = (tws.addPolicyValues[sex] || {})[age] || [];
+  const addCVbySexAge = (tws.addCashValues[sex] || {})[age] || [];
+  const pws = tws.pws;
+  const premiumBase = tws.premium_base || 1.06;
+
+  // 折扣前保費 (元 USD整數)
+  const raw = Math.round(faceUSD * premrate / 1000);
+  const discount = getDiscount(raw, plan);
+  const pf = _resolvePayFreq(plan);
+  const freqFactor = pf.factors[freq] ?? 1;
+  const periods = pf.periods[freq] ?? 1;
+  const origPerPeriod = raw * freqFactor;
+  const firstPerPeriod = Math.round(origPerPeriod * (1 - discount.first_total));
+  const renewPerPeriod = Math.round(origPerPeriod * (1 - discount.renew_total));
+  const firstAnnualPaid = firstPerPeriod * periods;
+  const renewAnnualPaid = renewPerPeriod * periods;
+
+  const payYears = prod.pay_years;
+  const lastYear = prod.mature_age - age;
+  const ageU = RATES.uv[plan][sex][age] || [];
+  const ageD = RATES.div[plan][sex][age] || [];
+  const criteria = RATES.corridor_criteria || {};
+
+  const rows = [];
+  let cumP = 0, cumE = 0, cumRaw = 0;
+  for (let yr = 1; yr <= lastYear; yr++) {
+    const isPay = yr <= payYears;
+    const A = isPay ? (yr === 1 ? firstAnnualPaid : renewAnnualPaid) : 0;
+    cumP += A;
+    if (isPay) cumRaw += raw;
+    const attainedAge = age + yr - 1;
+    const corr = criteria[String(Math.min(attainedAge, 110))] ?? 1;
+    const pwsYr = pws[String(yr)] ?? 1.0;
+
+    // C 公式 (3-way max)
+    const NFV = ageU[yr] ? ageU[yr][0] : 0;
+    const C_premium = cumRaw * premiumBase;
+    const C_pv = NFV * corr * faceUSD / 1000;
+    const C_pws = pwsYr * faceUSD;
+    const C = Math.max(C_premium, C_pv, C_pws);
+
+    // D
+    const CSV = ageU[yr] ? ageU[yr][1] : 0;
+    const D = CSV * faceUSD / 1000;
+
+    // 紅利 (中分紅) — div[plan][sex][age][yr] = [AD_factor, TDD_factor, TDS_factor]
+    const divThis = ageD[yr] || [0,0,0];
+    const adFactor = divThis[0] || 0;
+    const apvThis = addPVbySexAge[yr] || 0;  // index = yr (col 1 = yr 0)
+    const acvThis = addCVbySexAge[yr] || 0;
+
+    // E: 年度購買 (AD × face/10000 / addPV)
+    const AD_USD = adFactor * faceUSD / 10000;
+    const bought = apvThis > 0 ? AD_USD / apvThis : 0;
+    cumE += Math.round(bought);
+
+    // F = E × max(addPV × CorridorCriteria, pws[yr])
+    const F = cumE * Math.max(apvThis * corr, pwsYr);
+    // G = E × addCV
+    const G = cumE * acvThis;
+
+    // TDD / TDS
+    const TDD = divThis[1] * faceUSD;
+    const TDS = divThis[2] * faceUSD;
+
+    rows.push({
+      yr, attainedAge, A, cumP, C, D, E: cumE, F, G,
+      H: TDD, I: TDS, J: C + F + TDD, K: D + G + TDS, isPay
+    });
+  }
+  return {
+    rows, prod, gp: premrate, discount,
+    origPerPeriod, firstPerPeriod, renewPerPeriod,
+    firstAnnualPaid, renewAnnualPaid,
+    totalPaid: firstAnnualPaid + renewAnnualPaid * (payYears - 1),
+  };
+}
+
 // ================= CALCULATION ===========
 function calculate(inp) {
+  // 若是台灣人壽 (有 twlife_specific 欄位) → 走專屬計算
+  if (RATES.twlife_specific) return calculateTWLife(inp);
+
   const { plan, sex, age, faceWan, freq } = inp;
   const prod = RATES.products.find(p => p.code === plan);
   if (!prod) throw new Error('找不到產品');
@@ -1950,7 +2064,18 @@ function getInputs() {
     bdY: +$('bd-y').value, bdM: +$('bd-m').value, bdD: +$('bd-d').value,
     plan: currentPlan,
     freq: $('freq').value,
-    faceWan: +$('face').value || 0,
+    faceWan: (function(){
+      const raw = +document.getElementById('face').value || 0;
+      const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === currentPlan) : null;
+      const unit = _prod?.unit || '萬元';
+      return unit === '元' ? raw / 10000 : raw;
+    })(),
+    faceUSD: (function(){
+      const raw = +document.getElementById('face').value || 0;
+      const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === currentPlan) : null;
+      const unit = _prod?.unit || '萬元';
+      return unit === '元' ? raw : raw * 10000;
+    })(),
     showTwd: $('show-twd').checked,
     fxRate: +$('fx-rate').value || 32,
   };
@@ -1971,17 +2096,31 @@ function validateFace(faceWan, age) {
     warn.textContent = `最多到小數一位(千美元為單位),建議:${(scaled/10).toFixed(1)}`;
     return false;
   }
-  if (faceWan < 1) {
-    warn.textContent = '投保金額最低 1 萬美元'; return false;
-  }
-  const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === (window._currentPlan || document.getElementById('plan-select')?.value)) : null;
-  const maxYoung = (_prod && _prod.face_max_wan_young) || 200;
-  const maxAdult = (_prod && _prod.face_max_wan) || 1000;
-  if (age <= 15 && faceWan > maxYoung) {
-    warn.textContent = '15 歲(含)以下投保上限 ' + maxYoung + ' 萬美元'; return false;
-  }
-  if (faceWan > maxAdult) {
-    warn.textContent = '投保上限 ' + maxAdult + ' 萬美元'; return false;
+  const _prod = (RATES && RATES.products) ? RATES.products.find(p => p.code === currentPlan) : null;
+  const unit = _prod?.unit || '萬元';
+  const faceUSD = unit === '元' ? faceWan * 10000 : faceWan * 10000; // already in faceWan-units
+  // 元 USD 商品有單獨上限 (face_max_usd)
+  if (unit === '元') {
+    const userInput = faceUSD; // since faceWan was already converted from input
+    if (userInput < 1) {
+      warn.textContent = '投保金額最低 1 元 USD'; return false;
+    }
+    const maxUSD = _prod?.face_max_usd || 5000000;
+    if (userInput > maxUSD) {
+      warn.textContent = '投保上限 ' + maxUSD.toLocaleString() + ' USD'; return false;
+    }
+  } else {
+    if (faceWan < 1) {
+      warn.textContent = '投保金額最低 1 萬美元'; return false;
+    }
+    const maxYoung = (_prod && _prod.face_max_wan_young) || 200;
+    const maxAdult = (_prod && _prod.face_max_wan) || 1000;
+    if (age <= 15 && faceWan > maxYoung) {
+      warn.textContent = '15 歲(含)以下投保上限 ' + maxYoung + ' 萬美元'; return false;
+    }
+    if (faceWan > maxAdult) {
+      warn.textContent = '投保上限 ' + maxAdult + ' 萬美元'; return false;
+    }
   }
   warn.textContent = '';
   return true;
