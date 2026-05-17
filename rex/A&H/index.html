@@ -99,7 +99,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   background: var(--navy); color: white;
   padding: 12px 20px; font-size: 15px; font-weight: 700; letter-spacing: 1px;
   display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; row-gap: 8px;   /* v3.30.4 自適應高度,避免徽章擠出邊界 */
+  flex-wrap: wrap; row-gap: 8px;   /* v3.30.5 自適應高度,避免徽章擠出邊界 */
 }
 .card-header.orange { background: var(--orange); }
 .card-header.teal { background: var(--teal); }
@@ -1616,15 +1616,20 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   color: white;
   font-size: 11px;
   font-weight: 500;
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: normal;          /* v3.30.5 允許換行避免超出視窗 */
+  word-break: break-word;
+  width: max-content;
+  max-width: min(320px, 90vw);
+  text-align: left;
+  line-height: 1.6;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s ease, visibility 0.15s ease;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
   letter-spacing: 0;
   font-family: 'Inter', system-ui, sans-serif;
 }
@@ -3110,7 +3115,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.4</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.5</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -3883,20 +3888,22 @@ const INSURANCE_DB = {
     "XHO": {
       title: "自負額實支實付(住院升等)",
       icon: "🏨",
-      highlights: ["搭配主實支：住院 50 萬雜費，門診 6 萬手術", "★ 屬「自負額型」，實際給付 = 限額 - 自負額"],
+      highlights: ["搭配主實支:雜費 1-4A 自負 10萬／1-3B 自負 20萬／1-2C 自負 30萬", "★ 屬「自負額型」,實際給付 = 限額 − 自負額"],
       items: [
-        { name: "住院日額(限額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 2000, "計劃3": 3000, "計劃4": 4000, "計劃4A": 4000, "計劃5": 5000 } }, unit: "元/天", note: "被保險人以全民健保身分住院診療時,按健保自行負擔及非健保給付範圍之超等病房差額、管灌飲食外膳食費、特別護士外護理費,於扣除每日病房費用保險金之自負金額後的餘額核付。住進加護病房或燒燙傷處理中心治療時限額提高為原限額之二倍,合計給付日數最高 15 日,含加護病房之合計住院給付日數最高 365 日。" },
-        { name: "住院日額(自負額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 1000, "計劃3": 1000, "計劃4": 1000, "計劃4A": 1000, "計劃5": 1000 } }, unit: "元/天", note: "每日病房費用保險金之自負金額,係依附表一其投保計劃所載每日病房費用保險金之自負額乘以住院日數後所得之數值,由被保險人自行負擔。" },
-        { name: "加護病房日額(限額)", calc: { type: "plan", planMap: { "計劃1": 2000, "計劃2": 4000, "計劃3": 6000, "計劃4": 8000, "計劃4A": 8000, "計劃5": 10000 } }, unit: "元/天", note: "經醫師診斷必須住進加護病房或燒燙傷處理中心治療時,每日病房費用保險金之限額自動提高為原限額之二倍。" },
-        { name: "加護病房日額(自負額)", calc: { type: "plan", planMap: { "計劃1": 1000, "計劃2": 1000, "計劃3": 1000, "計劃4": 1000, "計劃4A": 1000, "計劃5": 1000 } }, unit: "元/天", note: "被保人自行負擔之每日自負額,即使住進加護病房亦不變動。" },
-        { name: "住院實支(雜費限額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 200000, "計劃3": 300000, "計劃4": 400000, "計劃4A": 400000, "計劃5": 500000 } }, unit: "元/次", star: true, note: "被保險人住院(含該次住院前 7 日及出院後 15 日內因同一事故之門診)所發生之健保自負額及非健保給付項目,包含醫師指示用藥、血液、掛號費、救護車費、超過健保給付之住院醫療費用、手術費等,於扣除住院醫療特定費用保險金之自負金額後的餘額核付,每次最高不超過所載限額。住進加護病房或燒燙傷中心治療時,限額提高為原限額的二倍。" },
-        { name: "住院實支(雜費自負額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 100000, "計劃3": 100000, "計劃4": 100000, "計劃4A": 100000, "計劃5": 100000 } }, unit: "元/次", note: "住院醫療特定費用保險金之自負金額,係依附表一其投保計劃所載住院醫療特定費用保險金之自負額數值,由被保險人自行負擔。" },
-        { name: "加護病房雜費(限額)", calc: { type: "plan", planMap: { "計劃1": 200000, "計劃2": 400000, "計劃3": 600000, "計劃4": 800000, "計劃4A": 800000, "計劃5": 1000000 } }, unit: "元/次", note: "於同一次住院期間經醫師診斷必須住進加護病房或燒燙傷處理中心治療時,住院醫療特定費用保險金限額自動提高為原限額之二倍。" },
-        { name: "加護病房雜費(自負額)", calc: { type: "plan", planMap: { "計劃1": 100000, "計劃2": 100000, "計劃3": 100000, "計劃4": 100000, "計劃4A": 100000, "計劃5": 100000 } }, unit: "元/次", note: "被保人自行負擔之雜費自負額。" },
-        { name: "門診手術(限額)", calc: { type: "plan", planMap: { "計劃1": 7500, "計劃2": 15000, "計劃3": 22500, "計劃4": 30000, "計劃4A": 30000, "計劃5": 37500 } }, unit: "元/次", note: "於醫院或診所門診接受門診手術或附表三的門診特定診療時,按健保自行負擔及非健保給付範圍之手術或特定診療費用,於扣除自負金額後核付,每次最高不超過所載限額。同一保單年度內最多給付 10 次。" },
-        { name: "門診手術(自負額)", calc: { type: "plan", planMap: { "計劃1": 15000, "計劃2": 15000, "計劃3": 15000, "計劃4": 15000, "計劃4A": 15000, "計劃5": 15000 } }, unit: "元/次", note: "門診手術或門診特定診療費用保險金之自負金額,依附表一其投保計劃所載之自負額數值,由被保險人自行負擔。" },
-        { name: "義齒/義肢/眼鏡/助聽器限額", calc: { type: "plan", planMap: { "計劃1": 11000, "計劃2": 11000, "計劃3": 11000, "計劃4": 11000, "計劃4A": 11000, "計劃5": 11000 } }, unit: "元", note: "限因意外傷害事故所致,且必須裝設義齒、義肢、眼鏡或助聽器者,以一次為限給付。" },
-        { name: "住院照護保險金(每日)", calc: { type: "plan", planMap: { "計劃1": 500, "計劃2": 1000, "計劃3": 1500, "計劃4": 2000, "計劃4A": 1000, "計劃5": 2500 } }, unit: "元/天", note: "被保險人住院期間,本公司按其實際住院日數依投保計劃所載每日金額給付住院照護保險金。同一保單年度合計給付日數最高 180 日。" }
+        // v3.30.5 完整對照 PDF 附表一(9 個計劃別):
+        // A 系列 自負 1,000/10萬/15,000  B 系列 自負 2,000/20萬/20,000  C 系列 自負 3,000/30萬/25,000
+        { name: "住院日額(限額)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 2000, "計劃3A": 3000, "計劃4A": 4000, "計劃1B": 1000, "計劃2B": 2000, "計劃3B": 3000, "計劃1C": 1000, "計劃2C": 2000 } }, unit: "元/天", note: "被保險人以全民健保身分住院診療時,按健保自行負擔及非健保給付範圍之超等病房差額、管灌飲食外膳食費、特別護士外護理費,於扣除自負額後的餘額核付。" },
+        { name: "住院日額(自負額)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 2000, "計劃2B": 2000, "計劃3B": 2000, "計劃1C": 3000, "計劃2C": 3000 } }, unit: "元/天", note: "每日病房費用之自負金額,由被保險人自行負擔。A 系列 1,000、B 系列 2,000、C 系列 3,000。" },
+        { name: "加護病房日額(限額)", calc: { type: "plan", planMap: { "計劃1A": 2000, "計劃2A": 4000, "計劃3A": 6000, "計劃4A": 8000, "計劃1B": 2000, "計劃2B": 4000, "計劃3B": 6000, "計劃1C": 2000, "計劃2C": 4000 } }, unit: "元/天", note: "住進加護病房或燒燙傷中心,每日病房費用限額自動提高為原限額之二倍。" },
+        { name: "加護病房日額(自負額)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 2000, "計劃2B": 2000, "計劃3B": 2000, "計劃1C": 3000, "計劃2C": 3000 } }, unit: "元/天", note: "自負額不論是否住加護病房均維持原值。" },
+        { name: "住院實支(雜費限額)", calc: { type: "plan", planMap: { "計劃1A": 100000, "計劃2A": 200000, "計劃3A": 300000, "計劃4A": 400000, "計劃1B": 100000, "計劃2B": 200000, "計劃3B": 300000, "計劃1C": 100000, "計劃2C": 200000 } }, unit: "元/次", star: true, note: "被保險人住院(含住院前 7 日及出院後 15 日內因同一事故之門診)發生之健保自負額及非健保給付項目,扣除自負金額後核付,每次最高不超過所載限額。" },
+        { name: "住院實支(雜費自負額)", calc: { type: "plan", planMap: { "計劃1A": 100000, "計劃2A": 100000, "計劃3A": 100000, "計劃4A": 100000, "計劃1B": 200000, "計劃2B": 200000, "計劃3B": 200000, "計劃1C": 300000, "計劃2C": 300000 } }, unit: "元/次", note: "住院醫療特定費用保險金之自負金額。A 系列 10 萬、B 系列 20 萬、C 系列 30 萬。" },
+        { name: "加護病房雜費(限額)", calc: { type: "plan", planMap: { "計劃1A": 200000, "計劃2A": 400000, "計劃3A": 600000, "計劃4A": 800000, "計劃1B": 200000, "計劃2B": 400000, "計劃3B": 600000, "計劃1C": 200000, "計劃2C": 400000 } }, unit: "元/次", note: "住進加護病房或燒燙傷處理中心治療時,住院醫療特定費用保險金限額自動提高為原限額之二倍。" },
+        { name: "加護病房雜費(自負額)", calc: { type: "plan", planMap: { "計劃1A": 100000, "計劃2A": 100000, "計劃3A": 100000, "計劃4A": 100000, "計劃1B": 200000, "計劃2B": 200000, "計劃3B": 200000, "計劃1C": 300000, "計劃2C": 300000 } }, unit: "元/次", note: "被保人自行負擔之雜費自負額(同主雜費自負額)。" },
+        { name: "門診手術(限額)", calc: { type: "plan", planMap: { "計劃1A": 15000, "計劃2A": 20000, "計劃3A": 25000, "計劃4A": 30000, "計劃1B": 15000, "計劃2B": 20000, "計劃3B": 25000, "計劃1C": 15000, "計劃2C": 20000 } }, unit: "元/次", note: "於醫院或診所門診接受門診手術或附表三的門診特定診療時,按健保自行負擔及非健保給付範圍之手術或特定診療費用,於扣除自負金額後核付,每次最高不超過所載限額。同一保單年度內最多給付 10 次。" },
+        { name: "門診手術(自負額)", calc: { type: "plan", planMap: { "計劃1A": 15000, "計劃2A": 15000, "計劃3A": 15000, "計劃4A": 15000, "計劃1B": 20000, "計劃2B": 20000, "計劃3B": 20000, "計劃1C": 25000, "計劃2C": 25000 } }, unit: "元/次", note: "門診手術費用之自負金額。A 系列 15,000、B 系列 20,000、C 系列 25,000。" },
+        { name: "義齒/義肢/眼鏡/助聽器限額", calc: { type: "plan", planMap: { "計劃1A": 8000, "計劃2A": 9000, "計劃3A": 10000, "計劃4A": 11000, "計劃1B": 8000, "計劃2B": 9000, "計劃3B": 10000, "計劃1C": 8000, "計劃2C": 9000 } }, unit: "元", note: "限因意外傷害事故所致,且必須裝設義齒、義肢、眼鏡或助聽器者,以一次為限給付。" },
+        { name: "住院照護保險金(每日)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 1000, "計劃2B": 1000, "計劃3B": 1000, "計劃1C": 1000, "計劃2C": 1000 } }, unit: "元/天", note: "被保險人住院期間,本公司按其實際住院日數每日給付 1,000 元(全計劃相同)。同一保單年度合計給付日數最高 180 日。" }
       ]
     },
     "XCF": {
@@ -4525,7 +4532,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.30.4 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.5 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4534,7 +4541,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.4 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.5 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5846,7 +5853,7 @@ const App = (() => {
       setTimeout(() => wBtn.classList.remove('pulse'), 2500);
     } else { wBtn.style.display = 'none'; }
 
-    // ★ v3.30.4 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
+    // ★ v3.30.5 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
     //   體檢與警示分開,各自記憶上次 signature
     const sig = (arr) => arr.map(x => x.title).sort().join('|');
     const checkupSig = sig(r.checkup);
@@ -6502,7 +6509,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.30.4 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.5 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -7035,14 +7042,17 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.30.4 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.5 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
       // 加護病房雜費(加倍版)→ 獨立類別,避免重算入主雜費
       if (/加護|燒燙傷/.test(name) && /雜費/.test(name)) return { key: 'icu_reimburse', icon: '🚨', title: '加護病房雜費(加倍)' };
+      // ★ 補助金日額類(NIR「住院雜費補助金日額」)— 雖含雜費但本質是日額補貼,歸 daily
+      //   優先於 reimburse,避免被「含雜費 → reimburse」規則攔截
+      if (/補助.{0,3}日額|日額.{0,3}補助/.test(name) && !/加護|燒燙傷/.test(name)) return { key: 'daily', icon: '🏥', title: '住院日額' };
       // 意外醫療實支(XMBN「傷害醫療保險金」)→ reimburse
       if (/傷害醫療|意外醫療/.test(name) && !/日額|每日|加護/.test(name)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
-      // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(已排除加護雜費)
+      // reimburse: name 含「雜費/實支/病房費用/住院醫療費用」(已排除加護雜費 + 補助金日額)
       if (/雜費|實支|病房費用|住院醫療費用|住院.*醫療.*費/.test(name)) return { key: 'reimburse', icon: '💊', title: '實支實付' };
       // daily: name 含「住院/每日/日額」,且 name 不含「加護/燒燙/雜費/手術/處置/門診/實支」
       if (/(住院|每日|日額)/.test(name) && !/加護|燒燙傷|雜費|手術|處置|門診|實支/.test(name)) return { key: 'daily', icon: '🏥', title: '住院日額' };
@@ -7249,7 +7259,7 @@ const App = (() => {
 
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
-        // ★ v3.30.4 同一張險種內多 item 的加總策略:
+        // ★ v3.30.5 同一張險種內多 item 的加總策略:
         //   - SUM:醫療類可同時領 (daily / reimburse / surgery / opsurg / opd / special)
         //   - MAX:互斥或累計類 (critical / death / disability / burn / icu_daily / icu_reimburse)
         const SUM_KEYS = new Set(['daily', 'reimburse', 'surgery', 'opsurg', 'opd', 'special']);
