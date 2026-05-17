@@ -5,7 +5,51 @@
 
 ---
 
-## ▸ 當前版本 SKL-UI-3DROP · 全商品 UI 改版 · 2026-05-17
+## ▸ 當前版本 SKL-PRINT-FIX · 列印 PDF 修復 · 2026-05-17
+
+對應版本:UPD061/UPD101 → **v037**,UPD012/UPD022 → **v003**
+
+### Summary
+
+```
+SKL-PRINT 修復列印 PDF 拉伸:@page margin 加大 + container 限寬 240mm
+```
+
+### Description
+
+```
+== 問題 ==
+
+列印 PDF 時 Hero 三卡 + 圖表被拉到塞滿 A4 橫向印區 (~277mm),
+視覺上太空、像「Excel 列印稿」而非建議書。
+
+== 修正 ==
+
+1. @page margin 從 8mm 10mm 改為 12mm 18mm(左右 +8mm,上下 +4mm)
+2. 列印 .container max-width 從 none 改為 240mm + margin:0 auto 置中
+
+== 結果 ==
+
+* A4 橫向印區從 277mm 縮為 240mm,Hero/圖表自然收緊
+* 整體像「私人銀行報告」風格
+
+== 影響版本 ==
+
+* UPD061 / UPD101:v036 → v037
+* UPD012 / UPD022:v002 → v003
+
+== 測試 Checklist ==
+
+* [ ] Ctrl+F5 刷新
+* [ ] Ctrl+P 預覽列印
+* [ ] 確認封面 P1 置中、Hero 卡寬度收斂
+* [ ] 確認試算表 P3+ 每頁仍 20 列填滿
+* [ ] 列印出 PDF 後左右邊距比之前明顯
+```
+
+---
+
+## ▸ 歷史版本 SKL-UI-3DROP · 全商品 UI 改版 · 2026-05-17
 
 對應版本:UPD061/UPD101 → **v036**,UPD012/UPD022 → **v002**
 
