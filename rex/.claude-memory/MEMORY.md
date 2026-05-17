@@ -8,8 +8,10 @@
 
 ## 專案結構
 
-- [project-life.md](project-life.md) — life/ 試算頁(主力):架構、版本管理、3 段下拉、PDF 列印、計算邏輯雙軌
-- 其他子模組:rex/A&H/(意外醫療)、rex/income/(失能扶助)、rex/compare/(多商品比較),目前重心都在 life/
+- [project-life.md](project-life.md) — life/ 試算頁(**主力 + 唯一可信賴**):架構、版本管理、3 段下拉、PDF 列印、計算邏輯雙軌
+- 其他子模組:rex/A&H/(意外醫療)、rex/income/(失能扶助)
+- ⚠ **rex/compare/ 是舊版(2026-05 v64 卡 65%),已凍結** — 看 `../life/BOUNDARY.md` 跟 `../compare/DEPRECATED.md`。**絕對不可從 compare/ 複製資料進 life/**
+- ✨ **`life/_reference/`** — 從 compare/ 搶救的有用資料(2026-05-17 snapshot):Drew 247 條真值 / 491 商品清單 / 11 個 extractor。**讀來學設計、查真值用,不可信數字**。看 `life/REFERENCES.md`
 
 ## 保險公司知識
 
