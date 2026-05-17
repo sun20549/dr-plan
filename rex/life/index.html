@@ -1944,10 +1944,10 @@ function calculateTWLife(inp) {
     const acvThis = addCVbySexAge[yr] || 0;
 
     // E: 年度購買 (AD × face/10000 / addPV)
-    // 內部用 float 累積 (對 F 計算精準),顯示時才 round
+    // 用 round-per-yr 累積 (對齊 PDF — PDF 顯示整數 D,內部用同一個整數計算 G 和 F)
     const AD_USD = adFactor * faceUSD / 10000;
     const bought = apvThis > 0 ? AD_USD / apvThis : 0;
-    cumE += bought;  // 浮點累積,不每次 round
+    cumE += Math.round(bought);
 
     // F 公式跟 C 公式 winning term 對應(完全比對 PDF):
     // - prem wins   → F = E × cum_prem × 1.06 / face
@@ -1967,7 +1967,7 @@ function calculateTWLife(inp) {
     const TDS = divThis[2] * faceUSD;
 
     rows.push({
-      yr, attainedAge, A, cumP, C, D, E: Math.round(cumE), F, G,
+      yr, attainedAge, A, cumP, C, D, E: cumE, F, G,
       H: TDD, I: TDS, J: C + F + TDD, K: D + G + TDS, isPay
     });
   }
