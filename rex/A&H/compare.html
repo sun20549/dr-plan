@@ -5040,6 +5040,7 @@ const App = (() => {
     // 左側面板收合 / 展開
     const layout = document.querySelector('.main-layout');
     const collapseBtn = document.getElementById('pickerCollapseBtn');
+    const reopenRail = document.querySelector('.picker-reopen-rail');  // v1.33a:之前漏宣告造成 ReferenceError 害 picker 不能展開
     const PICKER_COLLAPSED_KEY = 'ah_picker_collapsed';
 
     // 還原上次狀態
