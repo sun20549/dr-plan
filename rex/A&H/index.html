@@ -99,7 +99,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   background: var(--navy); color: white;
   padding: 12px 20px; font-size: 15px; font-weight: 700; letter-spacing: 1px;
   display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; row-gap: 8px;   /* v3.30.6 自適應高度,避免徽章擠出邊界 */
+  flex-wrap: wrap; row-gap: 8px;   /* v3.30.7 自適應高度,避免徽章擠出邊界 */
 }
 .card-header.orange { background: var(--orange); }
 .card-header.teal { background: var(--teal); }
@@ -1618,7 +1618,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   font-weight: 500;
   padding: 8px 12px;
   border-radius: 8px;
-  white-space: normal;          /* v3.30.6 允許換行避免超出視窗 */
+  white-space: normal;          /* v3.30.7 允許換行避免超出視窗 */
   word-break: break-word;
   width: max-content;
   max-width: min(320px, 90vw);
@@ -3115,7 +3115,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.6</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.7</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -3890,7 +3890,7 @@ const INSURANCE_DB = {
       icon: "🏨",
       highlights: ["搭配主實支:雜費 1-4A 自負 10萬／1-3B 自負 20萬／1-2C 自負 30萬", "★ 屬「自負額型」,實際給付 = 限額 − 自負額"],
       items: [
-        // v3.30.6 完整對照 PDF 附表一(9 個計劃別):
+        // v3.30.7 完整對照 PDF 附表一(9 個計劃別):
         // A 系列 自負 1,000/10萬/15,000  B 系列 自負 2,000/20萬/20,000  C 系列 自負 3,000/30萬/25,000
         { name: "住院日額(限額)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 2000, "計劃3A": 3000, "計劃4A": 4000, "計劃1B": 1000, "計劃2B": 2000, "計劃3B": 3000, "計劃1C": 1000, "計劃2C": 2000 } }, unit: "元/天", note: "被保險人以全民健保身分住院診療時,按健保自行負擔及非健保給付範圍之超等病房差額、管灌飲食外膳食費、特別護士外護理費,於扣除自負額後的餘額核付。" },
         { name: "住院日額(自負額)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 2000, "計劃2B": 2000, "計劃3B": 2000, "計劃1C": 3000, "計劃2C": 3000 } }, unit: "元/天", note: "每日病房費用之自負金額,由被保險人自行負擔。A 系列 1,000、B 系列 2,000、C 系列 3,000。" },
@@ -4532,7 +4532,7 @@ const App = (() => {
   }
 
   /** 計算單一商品保費(統一單位費率制) */
-  // ★ v3.30.6 ── 意外類商品費率直接查 PDF 表
+  // ★ v3.30.7 ── 意外類商品費率直接查 PDF 表
   //   兩種結構:
   //   1) byAge(年齡分帶,費率×保額):XAB → ageBand → [class1..class6 費率元/萬]
   //   2) byAmount(保額分級直接查表):XMBN → amount → [class1..class6 整年保費元]
@@ -4541,7 +4541,7 @@ const App = (() => {
       kind: 'byAge',
       bands: {
         0:  [1.5, 1.9,  2.2,  3.3,  5.0,  6.4],   // 0~15 歲
-        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.6 修正 2級 10.3→10.2)
+        16: [8.2, 10.2, 12.3, 18.5, 28.5, 36.6]   // 16~80 歲(v3.30.7 修正 2級 10.3→10.2)
       }
     },
     'XMBN': {  // 全球 新傷害醫療(直接查表,保額遞減費率)— 最高 4 萬
@@ -5853,7 +5853,7 @@ const App = (() => {
       setTimeout(() => wBtn.classList.remove('pulse'), 2500);
     } else { wBtn.style.display = 'none'; }
 
-    // ★ v3.30.6 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
+    // ★ v3.30.7 自動彈窗:有「新增」的規則才主動 popup,避免每次 recompute 都打擾
     //   體檢與警示分開,各自記憶上次 signature
     const sig = (arr) => arr.map(x => x.title).sort().join('|');
     const checkupSig = sig(r.checkup);
@@ -6509,7 +6509,7 @@ const App = (() => {
       // ★ 續保場景(yearsSinceStart > 0)跳過投保上限核保檢查
       //   只要費率表查得到該年齡 → 視為可續保
       const skipCheck = yearsSinceStart > 0;
-      // ★ v3.30.6 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
+      // ★ v3.30.7 改:用實際職業等級(原 hardcoded 1)→ XMBN/XAB 等意外類正確套用倍率
       return calcProductFee(row.product, gender, age, row.period, adjusted.amount, isFirstYear, state.lastJob || 1, skipCheck);
     }
   }
@@ -7042,7 +7042,7 @@ const App = (() => {
       if (/失能/.test(text)) return { key: 'disability', icon: '♿', title: '失能保險金' };
       if (/老年.*住院|提前給付/.test(text)) return { key: 'elderly', icon: '🧓', title: '老年 / 提前給付' };
       if (/祝壽|滿期|生存|還本/.test(text)) return { key: 'maturity', icon: '🎂', title: '滿期 / 祝壽 / 生存' };
-      // ★★ v3.30.6 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
+      // ★★ v3.30.7 醫療類分類全部改成 name-only(避免 note 條款內文誤判) ★★
       // icu_daily: name 同時有「加護/燒燙傷中心/燒燙傷病房」+「日額/每日」
       if (/加護|燒燙傷中心|燒燙傷病房/.test(name) && /日額|每日/.test(name)) return { key: 'icu_daily', icon: '🚨', title: '加護病房 / 燒燙傷日額' };
       // 加護病房雜費(加倍版)→ 獨立類別,避免重算入主雜費
@@ -7259,7 +7259,7 @@ const App = (() => {
 
       const renderSubCard = (cls, items, mainKey, subKey, titleOverride) => {
         const NO_TOTAL_KEYS = new Set(['disability', 'dislocation', 'burn']);
-        // ★ v3.30.6 同一張險種內多 item 的加總策略:
+        // ★ v3.30.7 同一張險種內多 item 的加總策略:
         //   - SUM:醫療類可同時領 (daily / reimburse / surgery / opsurg / opd / special)
         //   - MAX:互斥或累計類 (critical / death / disability / burn / icu_daily / icu_reimburse)
         const SUM_KEYS = new Set(['daily', 'reimburse', 'surgery', 'opsurg', 'opd', 'special']);
@@ -7270,7 +7270,7 @@ const App = (() => {
         const rowItemBuckets = new Map();  // row → { limit, deduct, unit }
         items.forEach(x => {
           if (!x.result || x.result.type !== 'num') return;
-          // ★ v3.30.6 排除「excludeFromSummary」標記項目(如 NIR/MIR 重大手術額外金)
+          // ★ v3.30.7 排除「excludeFromSummary」標記項目(如 NIR/MIR 重大手術額外金)
           if (x.item && x.item.excludeFromSummary) return;
           const nm = x.item.name || '';
           const isDeduct = /[\((](?:[^)）]*?)自負(?:額|金額)?(?:[^)）]*?)[\))]/.test(nm);
