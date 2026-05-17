@@ -219,8 +219,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   letter-spacing: 0.5px;
 }
 .uw-modal-header.uw-mh-checkup { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
-.uw-modal-header.uw-mh-warn { background: linear-gradient(135deg, #FFA726 0%, #F57C00 100%); }
-.uw-modal-header.uw-mh-block { background: linear-gradient(135deg, #E53935 0%, #C62828 100%); }
+.uw-modal-header.uw-mh-warn    { background: linear-gradient(135deg, #FFA726 0%, #F57C00 100%); }
+.uw-modal-header.uw-mh-block   { background: linear-gradient(135deg, #E53935 0%, #C62828 100%); }
+/* v3.31.0 保額異常(紫色) — 跟體檢/核保警示區隔 */
+.uw-modal-header.uw-mh-amount  { background: linear-gradient(135deg, #8b5cf6 0%, #6f42c1 100%); }
 .uw-modal-header #uwModalIcon { font-size: 22px; }
 .uw-modal-header #uwModalTitle { flex: 1; }
 .uw-modal-close {
@@ -347,6 +349,104 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); ou
   transition: all 0.15s;
 }
 .uw-modal-btn:hover { background: #1a3d52; box-shadow: 0 4px 10px rgba(13,42,58,0.3); }
+
+/* v3.31.0 保額異常 modal 專屬樣式 */
+.uw-modal-footer.amount-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+.uw-modal-btn.amount-btn-apply {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6f42c1 100%);
+  box-shadow: 0 2px 6px rgba(111,66,193,0.25);
+}
+.uw-modal-btn.amount-btn-apply:hover {
+  background: linear-gradient(135deg, #7c4ce8 0%, #5a32a8 100%);
+  box-shadow: 0 4px 14px rgba(111,66,193,0.4);
+  transform: translateY(-1px);
+}
+.uw-modal-btn.amount-btn-cancel {
+  background: white;
+  color: #6f42c1;
+  border: 1.5px solid #d4c5f4;
+}
+.uw-modal-btn.amount-btn-cancel:hover {
+  background: #f8f4ff;
+  border-color: #8b5cf6;
+  color: #6f42c1;
+  box-shadow: 0 3px 10px rgba(111,66,193,0.15);
+}
+.amount-issue-card {
+  background: linear-gradient(135deg, #f8f4ff 0%, #ffffff 100%);
+  border: 1px solid #e0d4f8;
+  border-left: 4px solid #8b5cf6;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 4px 0;
+}
+.amount-issue-product {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.amount-issue-product .pcode {
+  background: #8b5cf6;
+  color: white;
+  font-family: 'Consolas','Courier New',monospace;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+.amount-issue-reason {
+  display: inline-block;
+  background: #fff4f0;
+  color: #c62828;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 10px;
+  border: 1px solid #ffcdc4;
+  margin-left: auto;
+}
+.amount-issue-table {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-size: 13.5px;
+}
+.amount-issue-table .lbl { color: #6c7785; font-weight: 600; }
+.amount-issue-table .val {
+  color: var(--navy);
+  font-weight: 800;
+  font-family: 'Bebas Neue','Noto Sans TC',sans-serif;
+  letter-spacing: 0.5px;
+}
+.amount-issue-table .val.cur  { color: #c62828; }
+.amount-issue-table .val.fix  { color: #6f42c1; font-size: 16px; }
+.amount-issue-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4c5f4, transparent);
+  margin: 12px 0 10px;
+}
+.amount-issue-hint {
+  font-size: 12px;
+  color: #6c7785;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.6;
+}
+.amount-issue-hint::before { content: '💡'; }
+
 /* 列印 / RWD */
 @media print { .uw-badge, .uw-modal-mask { display: none !important; } }
 @media (max-width: 640px) {
@@ -3179,7 +3279,7 @@ tr
         <div class="b-name">鼎綸恩宇</div>
         <div class="b-sub">INSURANCE PROPOSAL SYSTEM</div>
       </div>
-      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.30.9</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
+      <span id="topVersionBadge" class="no-print" style="margin-left:14px;padding:4px 10px;background:linear-gradient(135deg,#F05A28 0%,#FF8050 100%);color:white;border-radius:14px;font-size:11px;font-weight:700;font-family:'Consolas','Courier New',monospace;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(240,90,40,0.3);cursor:help;" title="點此查看詳細版本資訊"><b id="topVerNum">v3.31.0</b> <span id="topLoadTime" style="opacity:0.85;font-weight:500;margin-left:6px;"></span></span>
     </div>
     <div class="toolbar-right">
       <a class="tb-btn" href="compare.html">📊 險種比較</a>
@@ -3377,6 +3477,22 @@ tr
 
     <!-- 累計核保檢查警告 -->
     <div id="aggregateCheck" style="display:none;"></div>
+
+    <!-- ★ v3.31.0 保額異常 modal(紫色,提示低於最低/高於最高)-->
+    <div class="uw-modal-mask" id="amountModalMask" onclick="App.closeAmountModal(event, false)">
+      <div class="uw-modal" onclick="event.stopPropagation();">
+        <div class="uw-modal-header uw-mh-amount">
+          <span>💎</span>
+          <span id="amountModalTitle" style="flex:1;">保額異常提醒</span>
+          <button class="uw-modal-close" onclick="App.closeAmountModal(null, false)">×</button>
+        </div>
+        <div class="uw-modal-body" id="amountModalBody"></div>
+        <div class="uw-modal-footer amount-footer">
+          <button class="uw-modal-btn amount-btn-cancel" onclick="App.closeAmountModal(null, 'cancel')">取消選擇此商品</button>
+          <button class="uw-modal-btn amount-btn-apply"  onclick="App.closeAmountModal(null, 'apply')">套用合法保額</button>
+        </div>
+      </div>
+    </div>
 
     <!-- 責任曲線調整(可選) -->
     <div class="card no-print" id="curveCard" style="display:none;">
@@ -3967,7 +4083,11 @@ const INSURANCE_DB = {
         { name: "門診手術(限額)", calc: { type: "plan", planMap: { "計劃1A": 15000, "計劃2A": 20000, "計劃3A": 25000, "計劃4A": 30000, "計劃1B": 15000, "計劃2B": 20000, "計劃3B": 25000, "計劃1C": 15000, "計劃2C": 20000 } }, unit: "元/次", note: "於醫院或診所門診接受門診手術或附表三的門診特定診療時,按健保自行負擔及非健保給付範圍之手術或特定診療費用,於扣除自負金額後核付,每次最高不超過所載限額。同一保單年度內最多給付 10 次。" },
         { name: "門診手術(自負額)", calc: { type: "plan", planMap: { "計劃1A": 15000, "計劃2A": 15000, "計劃3A": 15000, "計劃4A": 15000, "計劃1B": 20000, "計劃2B": 20000, "計劃3B": 20000, "計劃1C": 25000, "計劃2C": 25000 } }, unit: "元/次", note: "門診手術費用之自負金額。A 系列 15,000、B 系列 20,000、C 系列 25,000。" },
         { name: "義齒/義肢/眼鏡/助聽器限額", calc: { type: "plan", planMap: { "計劃1A": 8000, "計劃2A": 9000, "計劃3A": 10000, "計劃4A": 11000, "計劃1B": 8000, "計劃2B": 9000, "計劃3B": 10000, "計劃1C": 8000, "計劃2C": 9000 } }, unit: "元", note: "限因意外傷害事故所致,且必須裝設義齒、義肢、眼鏡或助聽器者,以一次為限給付。" },
-        { name: "住院照護保險金(每日)", calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 1000, "計劃2B": 1000, "計劃3B": 1000, "計劃1C": 1000, "計劃2C": 1000 } }, unit: "元/天", note: "被保險人住院期間,本公司按其實際住院日數每日給付 1,000 元(全計劃相同)。同一保單年度合計給付日數最高 180 日。" }
+        // ★ v3.30.9 「住院照護保險金」屬獨立的住院補助(每日 1,000)
+        //   不應併入「住院日額」card 加總計算,否則 XHO 4A 會誤顯示為 5,000(4000+1000)
+        //   實際上 XHO 4A 住院日額限額 = 4,000,自負 1,000,淨額 3,000
+        //   加 XHD 1,000 → 真實住院日額 4,000 元/天
+        { name: "住院照護保險金(每日)", excludeFromSummary: true, calc: { type: "plan", planMap: { "計劃1A": 1000, "計劃2A": 1000, "計劃3A": 1000, "計劃4A": 1000, "計劃1B": 1000, "計劃2B": 1000, "計劃3B": 1000, "計劃1C": 1000, "計劃2C": 1000 } }, unit: "元/天", note: "被保險人住院期間,本公司按其實際住院日數每日給付 1,000 元(全計劃相同)。同一保單年度合計給付日數最高 180 日。" }
       ]
     },
     "XCF": {
@@ -5233,13 +5353,14 @@ const App = (() => {
     });
   }
 
-  /** ★ v3.30.8 強制最低/最高保額驗證
-   *  使用者輸入低於最低保額時 → 跳 confirm:
-   *    確定 = 套用最低保額
-   *    取消 = 取消此商品選擇
-   *  避免印出建議書時保額不符規定
-   *  只對「已勾選」的商品做檢查(未勾選不打擾)
+  /** ★ v3.31.0 強制最低/最高保額驗證 — 改用美化 modal(紫色)
+   *  保額超出規定範圍時 → 跳紫色 modal,提供兩個按鈕:
+   *    [套用合法保額] = 自動帶最低/最高值
+   *    [取消選擇此商品] = 把該商品從選擇移除
+   *  關閉 modal(×) 預設視同「取消選擇」(避免印出錯誤建議書)
    */
+  let _amountModalContext = null;  // { cid, code, type, fixValue, action: 'min'|'max'|'byAge' }
+
   function enforceAmountLimits(cid, code, type) {
     const c = state.db.companies.find(x => x.id === cid);
     if (!c) return;
@@ -5249,77 +5370,116 @@ const App = (() => {
     const sel = state.selections[cid];
     if (!sel) return;
     const target = type === 'main' ? sel.main : sel.riders.find(r => r.code === code);
-    if (!target || target.code !== code) return;  // 沒勾選不檢查
+    if (!target || target.code !== code) return;
     const numAmt = parseFloat(target.amount);
     if (isNaN(numAmt)) return;
 
-    const productLabel = `${p.code}「${p.name}」`;
+    const unit = p.amountUnit || '';
 
     // 1) 最低保額
     if (p.minAmount != null && numAmt < p.minAmount) {
-      const unit = p.amountUnit || '';
-      const ok = window.confirm(
-        `⚠️ ${productLabel} 保額過低\n\n` +
-        `目前保額:${numAmt} ${unit}\n` +
-        `規定最低:${p.minAmount} ${unit}\n\n` +
-        `【確定】= 自動套用最低 ${p.minAmount} ${unit}\n` +
-        `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
-      );
-      if (ok) {
-        target.amount = p.minAmount;
-      } else {
-        if (type === 'main') sel.main = null;
-        else sel.riders = sel.riders.filter(r => r.code !== code);
-      }
-      renderProductSection();
-      recompute();
+      openAmountModal({
+        cid, code, type, fixValue: p.minAmount, action: 'min',
+        productCode: p.code, productName: p.name,
+        currentAmt: numAmt, limitAmt: p.minAmount, unit,
+        reason: '保額過低',
+        currentLabel: '目前保額', limitLabel: '規定最低',
+      });
       return;
     }
-
     // 2) 最高保額(本商品)
     if (p.maxAmount != null && numAmt > p.maxAmount) {
-      const unit = p.amountUnit || '';
-      const ok = window.confirm(
-        `⚠️ ${productLabel} 保額過高\n\n` +
-        `目前保額:${numAmt} ${unit}\n` +
-        `規定最高:${p.maxAmount} ${unit}\n\n` +
-        `【確定】= 自動套用最高 ${p.maxAmount} ${unit}\n` +
-        `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
-      );
-      if (ok) {
-        target.amount = p.maxAmount;
-      } else {
-        if (type === 'main') sel.main = null;
-        else sel.riders = sel.riders.filter(r => r.code !== code);
-      }
-      renderProductSection();
-      recompute();
+      openAmountModal({
+        cid, code, type, fixValue: p.maxAmount, action: 'max',
+        productCode: p.code, productName: p.name,
+        currentAmt: numAmt, limitAmt: p.maxAmount, unit,
+        reason: '保額過高',
+        currentLabel: '目前保額', limitLabel: '規定最高',
+      });
       return;
     }
-
     // 3) 依年齡上限(如 XAB)
     if (p.amountByAge && state.lastAge != null) {
       const slot = p.amountByAge.find(s => state.lastAge >= s.ageMin && state.lastAge <= s.ageMax);
       if (slot && numAmt > slot.max) {
-        const unit = p.amountUnit || '';
-        const ok = window.confirm(
-          `⚠️ ${productLabel} 保額超過該年齡上限\n\n` +
-          `投保年齡:${state.lastAge} 歲\n` +
-          `目前保額:${numAmt} ${unit}\n` +
-          `年齡上限:${slot.max} ${unit}\n\n` +
-          `【確定】= 自動套用 ${slot.max} ${unit}\n` +
-          `【取消】= 取消此${type === 'main' ? '主約' : '附約'}選擇`
-        );
-        if (ok) {
-          target.amount = slot.max;
-        } else {
-          if (type === 'main') sel.main = null;
-          else sel.riders = sel.riders.filter(r => r.code !== code);
-        }
-        renderProductSection();
-        recompute();
+        openAmountModal({
+          cid, code, type, fixValue: slot.max, action: 'byAge',
+          productCode: p.code, productName: p.name,
+          currentAmt: numAmt, limitAmt: slot.max, unit,
+          reason: `${state.lastAge}歲上限`,
+          currentLabel: '目前保額', limitLabel: `${state.lastAge}歲上限`,
+        });
       }
     }
+  }
+
+  function openAmountModal(ctx) {
+    _amountModalContext = ctx;
+    const fmt = (v) => Number(v).toLocaleString();
+    const typeLabel = ctx.type === 'main' ? '主約' : '附約';
+    const body = `
+      <div class="amount-issue-card">
+        <div class="amount-issue-product">
+          <span class="pcode">${ctx.productCode}</span>
+          <span>${ctx.productName}</span>
+          <span class="amount-issue-reason">⚠️ ${ctx.reason}</span>
+        </div>
+        <div class="amount-issue-divider"></div>
+        <div class="amount-issue-table">
+          <span class="lbl">${ctx.currentLabel}</span>
+          <span class="val cur">${fmt(ctx.currentAmt)} ${ctx.unit}</span>
+          <span class="lbl">${ctx.limitLabel}</span>
+          <span class="val">${fmt(ctx.limitAmt)} ${ctx.unit}</span>
+          <span class="lbl">建議調整為</span>
+          <span class="val fix">${fmt(ctx.fixValue)} ${ctx.unit}</span>
+        </div>
+        <div class="amount-issue-hint">
+          按【套用合法保額】= 自動帶入 <b>${fmt(ctx.fixValue)} ${ctx.unit}</b>;按【取消選擇此商品】= 把此${typeLabel}從規劃中移除。
+        </div>
+      </div>
+    `;
+    document.getElementById('amountModalBody').innerHTML = body;
+    document.getElementById('amountModalTitle').textContent =
+      `保額異常提醒 — ${ctx.productCode}`;
+    document.getElementById('amountModalMask').classList.add('show');
+  }
+
+  /** 關閉保額異常 modal
+   *  decision: 'apply' = 套用合法值;'cancel' / false = 取消此商品選擇
+   *  若使用者點背景或 × → decision = false → 視同取消(保護建議書)
+   */
+  function closeAmountModal(ev, decision) {
+    // 如果是背景點擊,確認真的點到 mask 才關閉
+    if (ev && ev.target && ev.target.id !== 'amountModalMask') return;
+    const ctx = _amountModalContext;
+    if (!ctx) {
+      document.getElementById('amountModalMask').classList.remove('show');
+      return;
+    }
+    const c = state.db.companies.find(x => x.id === ctx.cid);
+    const sel = state.selections[ctx.cid];
+    if (c && sel) {
+      if (decision === 'apply') {
+        // 套用合法值
+        if (ctx.type === 'main' && sel.main && sel.main.code === ctx.code) {
+          sel.main.amount = ctx.fixValue;
+        } else if (ctx.type === 'rider') {
+          const r = sel.riders.find(r => r.code === ctx.code);
+          if (r) r.amount = ctx.fixValue;
+        }
+      } else {
+        // 取消選擇(decision='cancel' 或 false/null)
+        if (ctx.type === 'main') {
+          sel.main = null;
+        } else {
+          sel.riders = sel.riders.filter(r => r.code !== ctx.code);
+        }
+      }
+    }
+    _amountModalContext = null;
+    document.getElementById('amountModalMask').classList.remove('show');
+    renderProductSection();
+    recompute();
   }
 
   /** 同步「自動帶入保額」商品(WRA / WRB)的保額欄位與保費顯示
@@ -8945,6 +9105,7 @@ const App = (() => {
     openProductEditModal, openProductAddModal, saveProductEdit, deleteProduct,
     closeModal, openModal,
     toggleAllMain, toggleAllRiders, toggleMoreProducts, toggleMoreMain, toggleMoreRider,
+    closeAmountModal,  // v3.31.0 保額異常 modal
     copySummaryToClipboard,
     applyRecommendedPlan,
     openUWModal, closeUWModal
