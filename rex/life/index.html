@@ -1691,7 +1691,6 @@ function onTermChange() {
   const c = CATALOG.companies.find(x => x.code === $('cat-company').value);
   if (!c) return;
   const prodCode = $('cat-term').value;
-  // 同步隱藏的 cat-product 給 share/restore 用
   if ($('cat-product')) $('cat-product').value = prodCode;
   loadProductByCode(c, prodCode);
 }
@@ -1703,7 +1702,6 @@ async function loadProductByCode(c, prodCode) {
     const family = _familyOf(p);
     if ($('cat-family') && $('cat-family').value !== family) {
       $('cat-family').value = family;
-      // 重新填 term 列表
       const terms = c.products.filter(x => _familyOf(x) === family);
       $('cat-term').innerHTML = terms.map(x => `<option value="${x.code}">${_termOf(x)}</option>`).join('');
     }
