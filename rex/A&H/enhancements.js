@@ -1246,10 +1246,12 @@
     
     const rows = collectSelectionsFromDOM();
     if (rows.length === 0) return;
-    
-    let filtered = rows;
+
+    // ★ v3.29.10 過濾:年繳保費 = 0 表示不符規則/超齡/未投保,不應出現在詳細建議書
+    //   (XTK 40 歲超齡、其他被核保攔截的險種)
+    let filtered = rows.filter(r => (r.fee || 0) > 0 || r.isWaiver);
     if (activeFilterCompanyId !== 'all') {
-      filtered = rows.filter(r => r.companyId === activeFilterCompanyId);
+      filtered = filtered.filter(r => r.companyId === activeFilterCompanyId);
     }
     
     const __db = getInsuranceDB(); const benefitsLib = (__db && __db.benefitsLib) || {};
